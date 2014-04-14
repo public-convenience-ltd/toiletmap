@@ -1,0 +1,8 @@
+# Node.js
+
+lib-cov
+*.seed
+*.log
+
+npm-debug.log
+node_modules/

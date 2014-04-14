@@ -1,0 +1,37 @@
+{
+  "name": "gbptm-api",
+  "version": "0.0.0",
+  "description": "API server for the Great British Public Toilet Map",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --harmony app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/neontribe/gbptm-api.git"
+  },
+  "keywords": [
+    "public",
+    "toilet",
+    "uk",
+    "geoJSON",
+    "koa",
+    "mongodb"
+  ],
+  "author": "Rupert Redington",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/neontribe/gbptm-api/issues"
+  },
+  "homepage": "https://github.com/neontribe/gbptm-api",
+  "dependencies": {
+    "co": "^3.0.5",
+    "co-monk": "^1.0.0",
+    "koa": "^0.5.4",
+    "koa-logger": "^1.2.0",
+    "koa-router": "^3.1.2",
+    "lodash": "^2.4.1",
+    "monk": "^0.8.1"
+  }
+}
