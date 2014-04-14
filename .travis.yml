@@ -1,5 +1,13 @@
 language: node_js
 node_js:
-    - "0.11"
+- '0.11'
 services:
-  - mongodb    
+- mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: PEHwBVlANBR4goE6j5MBNs3xs5XXNnLxYOhgrjaJBhlXCNKOZv2Lx/UTdu4URD51eLhBOO+LXclFdVVp3fDGRRSDQnKsAUwcpFgE8TIBCL3eLRXgfaVYxTLp9DFli7pP69gmgMhJe/6xxlKJMMD2KajSRjRDPOE4FgyFDAU4HdQ=
+  app: 
+    develop: gbptm-api-stage
+  on:
+    repo: neontribe/gbptm-api
