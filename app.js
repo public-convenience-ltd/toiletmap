@@ -18,3 +18,5 @@ app.init = co(function *(){
 if (!module.parent) {
     app.init();
 }
+
+module.exports = app;

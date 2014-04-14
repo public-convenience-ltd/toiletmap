@@ -23,5 +23,3 @@ Testing
 Unit and Functional tests can be run with:
 
     npm test
-
-The output is [TAP](http://testanything.org/)
