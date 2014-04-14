@@ -10,7 +10,7 @@ var base = {
         env: process.env.NODE_ENV || 'development'
     },
     mongo: {
-        url: process.env.MONGO_url || 'mongodb://localhost:27017/gbptm'
+        url: process.env.MONGO_URL || process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/gbptm'
     }
 };
 
@@ -27,6 +27,12 @@ var platforms = {
         mongo: {
             url: 'mongodb://localhost:27017/gbptm-test'
         }
+    },
+    production: {
+
+    },
+    staging: {
+        
     }
 };
 
