@@ -1,47 +1,20 @@
 FORMAT: 1A
-HOST: http://www.google.com
+HOST: http://gbptm-stage.herokuapp.com/api
 
 # Great British Public Toilet Map
-Notes API is a *short texts saving* service similar to its physical paper presence on your table.
+The GBPTM API is a service for collection, submission and discovery of Public Toilets in the UK
 
-# Group Notes
-Notes related resources of the **Notes API**
+# Group Loos
+Loos related resources of the **GBPTM API**
 
-## Notes Collection [/notes]
-### List all Notes [GET]
+## Loos Collection [/loos]
+### List all Loos [GET]
 + Response 200 (application/json)
 
         [{
-          "id": 1, "title": "Jogging in park"
+          "id": 1, "name": "Loo 1"
         }, {
-          "id": 2, "title": "Pick-up posters from post-office"
+          "id": 2, "name": "Loo 2"
         }]
 
-### Create a Note [POST]
-+ Request (application/json)
 
-        { "title": "Buy cheese and bread for breakfast." }
-
-+ Response 201 (application/json)
-
-        { "id": 3, "title": "Buy cheese and bread for breakfast." }
-
-## Note [/notes/{id}]
-A single Note object with all its details
-
-+ Parameters
-    + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
-
-### Retrieve a Note [GET]
-+ Response 200 (application/json)
-
-    + Header
-
-            X-My-Header: The Value
-
-    + Body
-
-            { "id": 2, "title": "Pick-up posters from post-office" }
-
-### Remove a Note [DELETE]
-+ Response 204
