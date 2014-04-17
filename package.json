@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "description": "API server for the Great British Public Toilet Map",
   "main": "app.js",
-  "engines" : { 
-    "node" : ">=0.11.2" 
+  "engines": {
+    "node": ">=0.11.2"
   },
   "scripts": {
     "test": "export NODE_ENV=test && node --harmony  ./node_modules/.bin/_mocha --recursive test/**/*.js -R spec",
@@ -36,7 +36,14 @@
     "koa-router": "^3.1.2",
     "lodash": "^2.4.1",
     "monk": "^0.8.1",
-    "co-request": "^0.2.0"
+    "co-request": "^0.2.0",
+    "osmtogeojson": "^2.0.5",
+    "request": "^2.34.0",
+    "JSONStream": "^0.7.2",
+    "event-stream": "^3.1.2",
+    "through": "^2.3.4",
+    "co-from-stream": "0.0.0",
+    "commander": "^2.2.0"
   },
   "devDependencies": {
     "mocha": "^1.18.2",
