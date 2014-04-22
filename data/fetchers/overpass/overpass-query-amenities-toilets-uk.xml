@@ -1,22 +1,12 @@
-<osm-script output="json" timeout="25">
+<osm-script output="json" timeout="160">
   <!-- gather results -->
   <union>
     <!-- query part for: “amenity=toilets” -->
     <query type="node">
       <has-kv k="amenity" v="toilets"/>
-      <bbox-query e="2.197265625" n="60.973107109199404" s="49.55372551347579" w="-11.1181640625"/>
-    </query>
-    <query type="way">
-      <has-kv k="amenity" v="toilets"/>
-      <bbox-query e="2.197265625" n="60.973107109199404" s="49.55372551347579" w="-11.1181640625"/>
-    </query>
-    <query type="relation">
-      <has-kv k="amenity" v="toilets"/>
-      <bbox-query e="2.197265625" n="60.973107109199404" s="49.55372551347579" w="-11.1181640625"/>
+      <bbox-query e="2.69" n="60.85" s="49.84" w="-9.23"/>
     </query>
   </union>
   <!-- print results -->
-  <print mode="body"/>
-  <recurse type="down"/>
-  <print mode="skeleton" order="quadtile"/>
+  <print mode="body" order="quadtile"/>
 </osm-script>

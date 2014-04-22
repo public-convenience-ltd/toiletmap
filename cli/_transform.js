@@ -20,7 +20,7 @@ program.on('--help', function(){
     console.log('  Examples:');
     console.log('');
     console.log('    Transform items arriving on stdin with an attribution:');
-    console.log('      ./transform -t ./data/transformers/attribution OpenStreetMap');
+    console.log('      ./transform -t ./data/transformers/attribute attribution OpenStreetMap');
     console.log('');
 });
 

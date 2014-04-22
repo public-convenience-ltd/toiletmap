@@ -1,18 +1,16 @@
-var through = require('through'),
-    _ = require('lodash'),
-    JSONStream = require('JSONStream');
+var through = require('through');
 
-function transform(attribution) {
+function transform(attribute, value) {
     return through(function write(data){
-        this.queue(_.extend(data, {'attribution': attribution}));
+        data[attribute] = value;
+        this.queue(data);
     });
-    
 }
 
-module.exports = function(items, attribution) {
+module.exports = function(items, attribute, value) {
     var out = through();
     items
-        .pipe(transform(attribution))
+        .pipe(transform(attribute, value))
         .pipe(out);
     return out;
 };
