@@ -26,7 +26,44 @@ Offers affordances in the form of HTTP Link headers and HAL content.
             }
 
 # Group Loos
+Loo-related resources of the **GBPTM API**
+
+## Loo [/loos/{id}]
 A **Loo** resource represents an individual publicly accessible toilet.
+
+A Loo is represented as a [GeoJSON Feature](http://geojson.org/geojson-spec.html#feature-objects) 
+
++ Parameters
+    + id (string) ... ID of the Loo (an ObjectId)[http://docs.mongodb.org/manual/reference/object-id/]
+
++ Model (application/hal+json)
+
+    HAL+JSON representation of a Loo. In additon to its state representation in GeoJSON it is enhanced with affordances through HAL sections an HTTP Link headers.
+
+    + Headers
+
+            Link: <http://gbptm-api-stage.herokuapp.com/api/loos/5357d189003abe7007b41e56>
+
+    + Body
+
+            {
+                "_links": {
+                    "self": { "href": "/loos/5357d189003abe7007b41e56" }
+                },
+                _id: "5357d189003abe7007b41e56",
+                type: "Feature",
+                geohash: "u10j3z4qbcrg",
+                properties: {
+                    name: "Barkingside Recreation Ground"
+                },
+                geometry: {
+                    type: "Point",
+                    coordinates: [
+                        0.08003711700439438,
+                        51.587469736279594
+                    ]
+                }
+            }
 
 ## Loos Collection [/loos]
 ### List all Loos [GET]
