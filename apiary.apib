@@ -11,19 +11,19 @@ Offers affordances in the form of HTTP Link headers and HAL content.
 
 ## Retrieve Entry Point [GET]
 
-+ Response 200 (application/hal+json)
-    + Headers
+    + Response 200 (application/hal+json)
+        + Headers
 
-        Link: <http://gbptm-api-stage.herokuapp.com/api/>;rel="self",<http:gbptm-api-stage.herokuapp.com/api/loos/>;rel="loos"
+            Link: <http://gbptm-api-stage.herokuapp.com/api/>;rel="self",<http:gbptm-api-stage.herokuapp.com/api/loos/>;rel="loos"
 
-    + Body
+        + Body
 
-        {
-            "_links": {
-                "self": { "href": "/" },
-                "loos": { "href": "/loos" }
+            {
+                "_links": {
+                    "self": { "href": "/" },
+                    "loos": { "href": "/loos" }
+                }
             }
-        }
 
 # Group Loos
 Loos related resources of the **GBPTM API**
