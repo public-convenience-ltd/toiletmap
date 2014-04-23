@@ -6,5 +6,5 @@
  ../../cli/transform -t ../transformers/attribute.js source http://overpass-api.de \
  | \
  ../../cli/transform -t ../transformers/attribute.js attribution 'Open Street Map' \
- #| \
- #../../cli/write -f ../writers/upsert_mongo loos
+ | \
+ ../../cli/write -vv -w ../writers/upsert_mongo loos

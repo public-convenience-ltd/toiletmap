@@ -13,6 +13,10 @@ module.exports = function items(uri) {
         var dom = (new DOMParser()).parseFromString(res.body, 'text/xml');
         var gj = kmltogeojson.kml(dom);
         gj.features.forEach(function(feat){
+            // Some KML files will have altitude - which we don't support
+            if (feat.geometry.coordinates.length > 2) {
+                feat.geometry.coordinates = feat.geometry.coordinates.slice(0,2);
+            }
             out.write(feat);
         });
     });

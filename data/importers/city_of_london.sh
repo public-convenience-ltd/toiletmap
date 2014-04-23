@@ -9,4 +9,4 @@
  | \
  ../../cli/transform -t ../transformers/attribute.js attribution 'City of London Corporation' \
  | \
- ../../cli/write -f ../writers/upsert_mongo loos
+ ../../cli/write -w ../writers/upsert_mongo loos

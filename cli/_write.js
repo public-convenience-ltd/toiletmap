@@ -25,7 +25,7 @@ program.on('--help', function(){
     console.log('  Examples:');
     console.log('');
     console.log('    Upsert items from stdin to the \'loos\' collection in mongo:');
-    console.log('      ./write -v -f ./data/writers/upsert_mongo loos');
+    console.log('      ./write -v -w ./data/writers/upsert_mongo loos');
     console.log('');
 });
 
