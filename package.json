@@ -19,6 +19,7 @@
     "toilet",
     "uk",
     "geoJSON",
+    "hal",
     "koa",
     "mongodb"
   ],
@@ -30,12 +31,10 @@
   "homepage": "https://github.com/neontribe/gbptm-api",
   "dependencies": {
     "co": "^3.0.5",
-    "co-monk": "^1.0.0",
     "koa": "^0.5.4",
     "koa-logger": "^1.2.0",
     "koa-router": "^3.1.2",
     "lodash": "^2.4.1",
-    "monk": "^0.8.1",
     "co-request": "^0.2.0",
     "osmtogeojson": "^2.0.5",
     "request": "^2.34.0",
@@ -45,7 +44,11 @@
     "co-from-stream": "0.0.0",
     "commander": "^2.2.0",
     "togeojson": "^0.7.0",
-    "geo-hash": "0.0.2"
+    "geo-hash": "0.0.2",
+    "mongoose": "^3.8.8",
+    "mongoose-geojson-schema": "0.0.2",
+    "koa-hal": "^2.0.1",
+    "halson": "^2.1.0"
   },
   "devDependencies": {
     "mocha": "^1.18.2",

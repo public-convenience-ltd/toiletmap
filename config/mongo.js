@@ -1,16 +1,8 @@
 'use strict';
-
-var monk = require('monk'),
-    wrap = require('co-monk'),
+var mongoose = require('mongoose'),
     config = require('./config'),
-    co = require('co'),
-    db = monk(config.mongo.url),
-    loos = wrap(db.get('loos'));
+    db;
 
-// Build indexes
-co(function*(){
-    yield loos.index({'geometry': '2dsphere'});
-})();
+mongoose.connect(config.mongo.url);
 
-
-module.exports.loos = loos;
+module.exports = mongoose.connection;

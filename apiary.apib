@@ -4,6 +4,27 @@ HOST: http://gbptm-api-stage.herokuapp.com/api
 # Great British Public Toilet Map
 The GBPTM API is a service for collection, submission and discovery of Public Toilets in the UK
 
+# GBPTM  API Root [/]
+GBPTM API entry point
+
+Offers affordances in the form of HTTP Link headers and HAL content.
+
+## Retrieve Entry Point [GET]
+
++ Response 200 (application/hal+json)
+    + Headers
+
+        Link: <http://gbptm-api-stage.herokuapp.com/api/>;rel="self",<http:gbptm-api-stage.herokuapp.com/api/loos/>;rel="loos"
+
+    + Body
+
+        {
+            "_links": {
+                "self": { "href": "/" },
+                "loos": { "href": "/loos" }
+            }
+        }
+
 # Group Loos
 Loos related resources of the **GBPTM API**
 

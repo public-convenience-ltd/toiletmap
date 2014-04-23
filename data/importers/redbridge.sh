@@ -1,7 +1,7 @@
 #! /bin/bash
 ../../cli/fetch -f ../fetchers/kml http://www2.redbridge.gov.uk/Data/Kml/PublicToilets.kml \
  | \
- ../../cli/transform -t ../transformers/geo_hash_id.js \
+ ../../cli/transform -t ../transformers/geohash_property.js \
  | \
  ../../cli/transform -t ../transformers/omit_properties.js styleUrl styleHash \
  | \

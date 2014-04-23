@@ -4,6 +4,7 @@ var fs = require('fs'),
     path = require('path'),
     logger = require('koa-logger'),
     router = require('koa-router'),
+    koahal = require('koa-hal'),
     config = require('./config');
 
 module.exports = function(app){
@@ -11,6 +12,7 @@ module.exports = function(app){
         app.use(logger());
     }
 
+    app.use(koahal());
     app.use(router(app));
 
     // mount all the routes defined in the api/controllers

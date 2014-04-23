@@ -1,4 +1,5 @@
 var mongo = require('../../config/mongo'),
+    Loo = require('../../models/loo').Loo,
     co = require('co'),
     fromStream = require('co-from-stream'),
     events = require('events');
@@ -10,11 +11,8 @@ function write(items, collection){
             read = fromStream(items),
             data;
         while ((data = yield read())) {
-            yield mongo[collection].update({id: data.id}, data, {upsert: true});
+            yield Loo.update({geohash: data.geohash}, data, {upsert: true}).exec();
             log.emit('detail', 'Item.id ' + data.id + ' written');
-            if (!data.id) {
-                console.log(data);
-            }
             counter++;
         }
         log.emit('summary', counter + ' items imported');

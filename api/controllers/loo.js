@@ -1,34 +1,25 @@
 'use strict';
 
 var mongo = require('../../config/mongo'),
+    Loo = require('../../models/loo').Loo,
     config = require('../../config/config'),
     handlers = {};
 
 handlers.list_loos = function*(){
-    var loos = yield mongo.loos.find({});
+    var loos = yield Loo.find().exec();
     this.status = 200;
     this.body = loos;
 };
 
 handlers.nearby_loos = function*(){
     var maxDistance = this.query.radius || this.query.maxDistance || config.query_defaults.maxDistance;
-    var loos = yield mongo.loos.find({
-        geometry: {
-            $near: {
-                $geometry: {
-                    type: 'Point',
-                    coordinates: [parseFloat(this.params.lon), parseFloat(this.params.lat)]
-                },
-                $maxDistance: parseFloat(maxDistance)
-            }
-        }
-    });
+    var loos = yield Loo.findNear(this.params.lon, this.params.lat, maxDistance).exec();
     this.status = 200;
     this.body = loos;
 };
 
 handlers.view_loo = function*(){
-    var loo = yield mongo.loos.findById(this.params.id);
+    var loo = yield Loo.findById(this.params.id).exec();
     if (!loo) {
         this.throw(404);
     }
