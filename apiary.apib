@@ -33,6 +33,14 @@ A **Loo** resource represents an individual publicly accessible toilet.
 
 A Loo is represented as a [GeoJSON Feature](http://geojson.org/geojson-spec.html#feature-objects) 
 
+The Loo resource has the following properties:
+
+- _id
+- type
+- geohash
+- geometry
+- properties
+
 + Parameters
     + id (string) ... ID of the Loo (an ObjectId)[http://docs.mongodb.org/manual/reference/object-id/]
 
@@ -64,6 +72,11 @@ A Loo is represented as a [GeoJSON Feature](http://geojson.org/geojson-spec.html
                     ]
                 }
             }
+
+### Retrieve a single Loo [GET]
++ Response 200
+
+    [Loo][]
 
 ## Loos Collection [/loos]
 ### List all Loos [GET]
