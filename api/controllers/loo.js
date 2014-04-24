@@ -2,7 +2,6 @@
 
 var mongo = require('../../config/mongo'),
     Loo = require('../../models/loo').Loo,
-    serializer = require('../serializers/resource'),
     config = require('../../config/config'),
     handlers = {};
 
@@ -25,7 +24,7 @@ handlers.view_loo = function*(){
         this.throw(404);
     }
     this.status = 200;
-    this.body = serializer(this, loo);
+    this.body = loo;
 };
 
 exports.init = function(app){

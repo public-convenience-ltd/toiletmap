@@ -9,7 +9,7 @@
   "scripts": {
     "test": "export NODE_ENV=test && node --harmony  ./node_modules/.bin/_mocha --recursive test/**/*.js -R spec",
     "start": "node --harmony app.js",
-    "dev": "nodemon --harmony app.js"
+    "dev": "nodemon --harmony --debug app.js"
   },
   "repository": {
     "type": "git",
