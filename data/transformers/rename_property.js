@@ -6,6 +6,7 @@ function transform(rename) {
     return through(function write(data){
         data[rename[1]] = data[rename[0]];
         delete data[rename[0]];
+        console.dir(data);
         this.queue(data);
     });
     

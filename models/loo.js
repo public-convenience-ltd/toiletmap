@@ -3,6 +3,7 @@
 var mongoose = require('mongoose'),
     geoJSON = require('mongoose-geojson-schema'),
     _ = require('lodash'),
+    halson = require('halson'),
     earth = 6731000;
 
 var looSchema = new mongoose.Schema(
@@ -27,6 +28,20 @@ looSchema.statics.findNear = function(lon, lat, maxDistance) {
             }
         }
     ]);
+};
+
+looSchema.methods.toHAL = function toHAL(app){
+    var hal = halson(this.toJSON());
+    hal.addLink('self', app.url('loo', { id: this._id }));
+    return hal;
+};
+
+looSchema.methods.toGeoJSON = function toGeoJSON(app){
+    return this.toJSON();
+};
+
+looSchema.methods.toCSV = function toCSV(app){
+    return '';
 };
 
 

@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "export NODE_ENV=test && node --harmony  ./node_modules/.bin/_mocha --recursive test/**/*.js -R spec",
-    "start": "node --harmony app.js"
+    "start": "node --harmony app.js",
+    "dev": "nodemon --harmony app.js"
   },
   "repository": {
     "type": "git",
@@ -49,10 +50,12 @@
     "mongoose-geojson-schema": "0.0.2",
     "koa-hal": "^2.0.1",
     "halson": "^2.1.0",
-    "xmldom": "^0.1.19"
+    "xmldom": "^0.1.19",
+    "json-csv": "0.0.7"
   },
   "devDependencies": {
     "mocha": "^1.18.2",
-    "supertest": "^0.11.0"
+    "supertest": "^0.11.0",
+    "nodemon": "^1.0.17"
   }
 }

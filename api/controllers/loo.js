@@ -2,6 +2,7 @@
 
 var mongo = require('../../config/mongo'),
     Loo = require('../../models/loo').Loo,
+    serializer = require('../serializers/resource'),
     config = require('../../config/config'),
     handlers = {};
 
@@ -24,11 +25,11 @@ handlers.view_loo = function*(){
         this.throw(404);
     }
     this.status = 200;
-    this.body = loo;
+    this.body = serializer(this, loo);
 };
 
 exports.init = function(app){
-    app.get('/api/loos', handlers.list_loos);
-    app.get('/api/loos/near/:lon/:lat', handlers.nearby_loos);
-    app.get('/api/loos/:id', handlers.view_loo);
+    app.get('loos', '/api/loos', handlers.list_loos);
+    app.get('loos_near', '/api/loos/near/:lon/:lat', handlers.nearby_loos);
+    app.get('loo', '/api/loos/:id', handlers.view_loo);
 };

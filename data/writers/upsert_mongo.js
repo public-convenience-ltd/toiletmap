@@ -12,7 +12,7 @@ function write(items, collection){
             data;
         while ((data = yield read())) {
             yield Loo.update({geohash: data.geohash}, data, {upsert: true}).exec();
-            log.emit('detail', 'Item.id ' + data.id + ' written');
+            log.emit('detail', 'Item.geohash ' + data.geohash + ' written');
             counter++;
         }
         log.emit('summary', counter + ' items imported');
