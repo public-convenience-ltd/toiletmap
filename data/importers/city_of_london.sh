@@ -1,4 +1,12 @@
 #!/usr/bin/env sh
+
+while getopts "vV" options; do
+    case $options in
+        v)  VERBOSE="-v";;
+        V)  VVERBOSE="-vv";;
+    esac
+done
+
 ../../cli/fetch -f ../fetchers/kml http://apps.cityoflondon.gov.uk/community-toilets/toilets_live.kml \
  | \
  ../../cli/transform -t ../transformers/geohash_property.js \
@@ -9,4 +17,4 @@
  | \
  ../../cli/transform -t ../transformers/attribute.js attribution 'City of London Corporation' \
  | \
- ../../cli/write -w ../writers/upsert_mongo loos
+ ../../cli/write $VERBOSE $VVERBOSE -w ../writers/upsert_mongo loos
