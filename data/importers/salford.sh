@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env sh
 ../../cli/fetch -f ../fetchers/kml http://services.salford.gov.uk/data/kml/public-toilet.kml \
  | \
  ../../cli/transform -t ../transformers/geohash_property.js \

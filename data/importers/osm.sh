@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env sh
 ../../cli/fetch -f ../fetchers/overpass ../fetchers/overpass/overpass-query-amenities-toilets-uk.xml http://overpass-api.de/api/interpreter \
  | \
  ../../cli/transform -t ../transformers/geohash_property.js \

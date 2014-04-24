@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env sh
 ../../cli/fetch -f ../fetchers/kml http://www2.lichfielddc.gov.uk/data/files/2010/11/toilets.kml \
  | \
  ../../cli/transform -t ../transformers/geohash_property.js \

@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env sh
 ../../cli/fetch -f ../fetchers/kml http://www.brighton-hove.gov.uk/downloads/bhcc/openData/mapFiles/PublicToiletsKML.kml \
  | \
  ../../cli/transform -t ../transformers/geohash_property.js \
