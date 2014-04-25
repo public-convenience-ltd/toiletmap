@@ -2,20 +2,21 @@
 
 var mongo = require('../../config/mongo'),
     Loo = require('../../models/loo').Loo,
+    LooList = require('../../models/loo').LooList,
     config = require('../../config/config'),
     handlers = {};
 
 handlers.list_loos = function*(){
     var loos = yield Loo.find().exec();
     this.status = 200;
-    this.body = loos;
+    this.body = new LooList({ features: loos });
 };
 
 handlers.nearby_loos = function*(){
     var maxDistance = this.query.radius || this.query.maxDistance || config.query_defaults.maxDistance;
     var loos = yield Loo.findNear(this.params.lon, this.params.lat, maxDistance).exec();
     this.status = 200;
-    this.body = loos;
+    this.body = new LooList({ features: loos });
 };
 
 handlers.view_loo = function*(){

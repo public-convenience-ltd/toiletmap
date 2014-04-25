@@ -44,6 +44,17 @@ looSchema.methods.toCSV = function toCSV(app){
     return '';
 };
 
+var looListSchema = new mongoose.Schema(
+    _.merge(
+        geoJSON.FeatureCollection,
+        {
+            features: [looSchema]
+        }
+    ),
+    { _id: false }
+);
 
 module.exports.looSchema = looSchema;
+module.exports.looListSchema =looListSchema;
+module.exports.LooList = mongoose.model('LooList', looListSchema);
 module.exports.Loo = mongoose.model('Loo', looSchema);
