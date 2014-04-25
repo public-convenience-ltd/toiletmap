@@ -1,6 +1,6 @@
 {
   "name": "gbptm-api",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "API server for the Great British Public Toilet Map",
   "main": "app.js",
   "engines": {
