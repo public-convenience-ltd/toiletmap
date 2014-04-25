@@ -17,4 +17,4 @@ done
  | \
  ../../cli/transform -t ../transformers/attribute.js attribution 'Brighton & Hove City Council' \
  | \
- ../../cli/write $VERBOSE $VVERBOSE -w ../writers/upsert_mongo.js loos
+ ../../cli/write $VERBOSE $VVERBOSE -w ../writers/process_loo_report.js

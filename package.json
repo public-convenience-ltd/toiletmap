@@ -51,7 +51,9 @@
     "koa-hal": "^2.0.1",
     "halson": "^2.1.0",
     "xmldom": "^0.1.19",
-    "json-csv": "0.0.7"
+    "json-csv": "0.0.7",
+    "mongoose-timestamp": "^0.2.1",
+    "thunkify": "^2.1.1"
   },
   "devDependencies": {
     "mocha": "^1.18.2",
