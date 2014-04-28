@@ -2,27 +2,30 @@
 
 var _ = require('lodash'),
     Schema = require('mongoose').Schema,
-    geoJSON = require('mongoose-geojson-schema'),
+    GeoJSON = require('mongoose-geojson-schema'),
     timestamps = require('mongoose-timestamp'),
     stampopts = {},
     specs = {},
     schemae = {};
 
 specs.looProperties = {};
-specs.looCore = _.merge(
-    geoJSON.Feature, 
-    {
-        properties: specs.looProperties,
-        geohash: String
-    }
-);
+specs.looCore = {
+    'type'    : { type: String, default: "Feature" },
+    geometry  : {
+        type: { type: String, required: '"{PATH}" should be "Point" and is required' },
+        coordinates: [{type: "Number"}],
+        
+    },
+    properties: specs.looProperties,
+    geohash: String
+};
 
 schemae.looReportSchema = new Schema(
     _.merge(
         specs.looCore,
         {
             source: String,
-            attribution: String,
+            attribution: {type: String, required: '"{PATH}" to a person or orgainisation is required'},
             trust: {type: Number, default: 5}
         }
     )

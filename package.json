@@ -58,7 +58,8 @@
     "koa-cors": "0.0.8",
     "koa-helmet": "0.0.1",
     "koa-jsonp": "0.0.3",
-    "koa-gzip": "^0.1.0"
+    "koa-gzip": "^0.1.0",
+    "co-body": "0.0.1"
   },
   "devDependencies": {
     "mocha": "^1.18.2",
