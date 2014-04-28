@@ -5,15 +5,27 @@ var fs = require('fs'),
     logger = require('koa-logger'),
     router = require('koa-router'),
     favicon = require('koa-favicon'),
+    cors = require('koa-cors'),
+    jsonp = require('koa-jsonp'),
+    gzip = require('koa-gzip'),
+    helmet = require('koa-helmet'),
     serializer = require('../api/koa-serializer'),
     config = require('./config');
 
 module.exports = function(app){
+    app.use(helmet.defaults()); // Some basic hardening
+    app.use(function*routeNotImplemented(next){
+        yield next;
+        if (this.status) { return; } // Already handled
+        this.throw(501);
+    });
     if (config.app.env !== 'test') {
         app.use(logger());
     }
-
     app.use(favicon()); // Bounce annoying favicon requests with a 404
+    app.use(cors());
+    app.use(gzip());
+    app.use(jsonp());
     app.use(serializer());
     app.use(router(app)); 
 

@@ -27,7 +27,7 @@ function geojsonify(){
 
 function items(qfile, endpoint) {
     var out = through();
-    fs.createReadStream(qfile || path.join(__dirname, 'overpass-query-amenities-toilets-norwich.xml'))
+    fs.createReadStream(qfile)
         .pipe(request.post(endpoint || 'http://overpass-api.de/api/interpreter'))
         .pipe(JSONStream.parse(['elements', true]))
         .pipe(geojsonify())

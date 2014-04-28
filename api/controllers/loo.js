@@ -22,7 +22,7 @@ handlers.nearby_loos = function*(){
 handlers.view_loo = function*(){
     var loo = yield Loo.findById(this.params.id).exec();
     if (!loo) {
-        this.throw(404);
+        return;
     }
     this.status = 200;
     this.body = loo;
