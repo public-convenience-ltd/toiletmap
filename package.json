@@ -53,7 +53,8 @@
     "xmldom": "^0.1.19",
     "json-csv": "0.0.7",
     "mongoose-timestamp": "^0.2.1",
-    "thunkify": "^2.1.1"
+    "thunkify": "^2.1.1",
+    "koa-favicon": "^1.0.1"
   },
   "devDependencies": {
     "mocha": "^1.18.2",
