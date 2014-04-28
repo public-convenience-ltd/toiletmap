@@ -22,12 +22,14 @@ schemae.looReportSchema = new Schema(
         specs.looCore,
         {
             source: String,
-            attribution: String
+            attribution: String,
+            trust: {type: Number, default: 5}
         }
     )
 );
 schemae.looReportSchema.plugin(timestamps, stampopts);
 schemae.looReportSchema.index({geohash: 1});
+schemae.looReportSchema.index({geohash: 1, attribution: 1});
 
 schemae.looSchema = new Schema(
     _.merge(
