@@ -13,11 +13,12 @@ var mongoose = require('mongoose'),
 looReportSchema.statics.findLooFor = function*(report){
     // Do we have a loo which references this report?
     var loo = yield Loo.findOne({reports: { $in: [report._id] }}).exec();
+
     if (!loo) {
         // Nope. How about one which is within x meters (and so is probably the same real loo)
         loo = yield Loo.findOne({geometry: {
             $near: {
-                $geometry : report.geometry,
+                $geometry : report.geometry.toJSON(),
                 $maxDistance : config.deduplication.radius
             }
         }}).exec();
@@ -40,7 +41,6 @@ looReportSchema.statics.findOrCreate = function*(data){
 looReportSchema.statics.processReport = function*(data){
     var report = yield LooReport.findOrCreate(data);
     var loo = yield LooReport.findLooFor(report);
-    
     if (!loo) {
         // Derive a new loo from this report
         loo = Loo.fromLooReport(report);

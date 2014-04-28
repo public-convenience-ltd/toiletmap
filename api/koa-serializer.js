@@ -13,6 +13,8 @@ module.exports = function(){
         if (!mt) {
             this.throw(406, 'Available mime types: ' + availableTypes.join(', '));
         }
-        this.body = this.body[methodLookup[mt]].apply(this.body, [this.app]);
+        if (this.body) {
+            this.body = this.body[methodLookup[mt]].apply(this.body, [this.app]);
+        }
     };
 };
