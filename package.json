@@ -47,8 +47,6 @@
     "togeojson": "^0.7.0",
     "geo-hash": "0.0.2",
     "mongoose": "^3.8.8",
-    "mongoose-geojson-schema": "0.0.2",
-    "koa-hal": "^2.0.1",
     "halson": "^2.1.0",
     "xmldom": "^0.1.19",
     "json-csv": "0.0.7",

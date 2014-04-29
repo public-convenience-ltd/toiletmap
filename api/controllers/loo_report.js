@@ -36,8 +36,10 @@ handlers.submit_report = function*(){
             throw e;
         }
     }
-    var report = yield LooReport.processReport(data);
-    console.log(report._id);
+    var results = yield LooReport.processReport(data);
+    this.status = 201;
+    this.set('Location', this.app.url('report', {id: results[0]._id}));
+    this.set('Content-Location', this.app.url('loo', {id: results[1]._id}));
     
 };
 
