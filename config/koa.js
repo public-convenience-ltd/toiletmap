@@ -2,19 +2,25 @@
 
 var fs = require('fs'),
     path = require('path'),
+    _ = require('lodash'),
     logger = require('koa-logger'),
+    compose = require('koa-compose'),
+    mount = require('koa-mount'),
     router = require('koa-router'),
     favicon = require('koa-favicon'),
     cors = require('koa-cors'),
     jsonp = require('koa-jsonp'),
     gzip = require('koa-gzip'),
     helmet = require('koa-helmet'),
-    serializer = require('../api/koa-serializer'),
-    config = require('./config');
+    jwt = require('koa-jwt'),
+    serializer = require('../lib/koa-serializer'),
+    config = require('./config'),
+    auth = require('../auth/auth'),
+    passport = require('koa-passport');
+
 
 module.exports = function(app){
     app.use(helmet.defaults()); // Some basic hardening
-
     if (config.app.env !== 'test') {
         app.use(logger());
     }
@@ -23,11 +29,32 @@ module.exports = function(app){
     app.use(gzip());
     app.use(jsonp());
     app.use(serializer());
-    app.use(router(app)); 
+    app.use(passport.initialize());
+    app.use(router(app));
 
-    // mount all the routes defined in the api/controllers
-    fs.readdirSync(path.join(config.app.root, 'api', 'controllers')).forEach(function(file){
-        require(path.join(config.app.root, 'api', 'controllers', file)).init(app);
+    // Auth routes for token retrieval
+    
+    _.each(auth.routes, function(route, name){
+        app[route.method](name, config.auth.mount + route.path, route.handler);
+    });
+    
+    // mount all the routes defined in the api/controllers/public
+    fs.readdirSync(path.join(config.app.root, 'api', 'v2', 'controllers', 'public')).forEach(function(file){
+        var routes = require(path.join(config.app.root, 'api', 'v2', 'controllers', 'public', file));
+        _.each(routes, function(route, name){
+            app[route.method](name, route.path, route.handler);
+        });
+    });
+    // mount all the routes defined in the api/controllers/private composing each with authorization middleware
+    fs.readdirSync(path.join(config.app.root, 'api', 'v2', 'controllers', 'private')).forEach(function(file){
+        var routes = require(path.join(config.app.root, 'api', 'v2', 'controllers', 'private', file));
+        _.each(routes, function(route, name){
+            var protected_handler = compose([
+                    jwt({ secret: config.jwt.secret }),
+                    route.handler
+                ]);
+            app[route.method](name, route.path, protected_handler);
+        });
     });
 
     app.use(function*routeNotImplemented(next){

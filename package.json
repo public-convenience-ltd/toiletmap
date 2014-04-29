@@ -57,7 +57,16 @@
     "koa-helmet": "0.0.1",
     "koa-jsonp": "0.0.3",
     "koa-gzip": "^0.1.0",
-    "co-body": "0.0.1"
+    "co-body": "0.0.1",
+    "koa-passport": "^0.3.0",
+    "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.2",
+    "jwt-simple": "^0.2.0",
+    "koa-mount": "^1.2.5",
+    "koa-jwt": "0.0.3",
+    "koa-compose": "^2.2.0",
+    "passport-http": "^0.2.2",
+    "passport-github": "^0.1.5"
   },
   "devDependencies": {
     "mocha": "^1.18.2",

@@ -10,10 +10,11 @@ function write(items, collection){
     co(function*(){
         var counter = 0,
             read = fromStream(items),
-            data, report;
+            data, result;
         while ((data = yield read())) {
-            yield LooReport.processReport(data);
-            log.emit('detail', 'Item.geohash ' + data.geohash + ' written');
+            result = yield LooReport.processReport(data);
+            log.emit('detail', 'Report id ' + result[0]._id + ' written');
+            log.emit('detail', 'Loo id ' + result[1]._id + ' written');
             counter++;
         }
         log.emit('summary', counter + ' items imported');

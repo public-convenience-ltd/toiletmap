@@ -1,5 +1,5 @@
 var config = require('../../config/config'),
-    baseUrl = 'http://localhost:'+ config.app.port +'/api',
+    baseUrl = 'http://localhost:'+ config.app.port,
     app = require('../../app'),
     supertest = require('supertest'),
     request = supertest(baseUrl);

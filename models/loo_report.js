@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
     thunk = require('thunkify'),
     Loo = require('./loo'),
     looReportSchema = require('./loo_schema').looReportSchema,
+    geohash = require('geo-hash'),
     LooReport;
 
 /**
@@ -27,8 +28,9 @@ looReportSchema.statics.findLooFor = function*(report){
 };
 
 looReportSchema.statics.findOrCreate = function*(data){
+    var ghash = geohash.encode(data.geometry.coordinates[1], data.geometry.coordinates[0]);
     // A report is a note about a place, from a person.
-    var report = yield LooReport.findOne({geohash: data.geohash, attribution: data.attribution}).exec();
+    var report = yield LooReport.findOne({geohash: ghash, attribution: data.attribution}).exec();
     if (!report) {
         report = new LooReport(data);
         // Necessary 'till save returns a promise in mongoose 3.10

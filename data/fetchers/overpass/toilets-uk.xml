@@ -1,4 +1,4 @@
-<osm-script output="json" timeout="160">
+<osm-script output="json" timeout="1600">
   <!-- gather results -->
   <union>
     <!-- query part for: “amenity=toilets” -->

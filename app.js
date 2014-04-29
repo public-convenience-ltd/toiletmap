@@ -2,6 +2,7 @@
 
 var config = require('./config/config'),
     koaConfig = require('./config/koa'),
+    mongo = require('./config/mongo'),
     co = require('co'),
     koa = require('koa'),
     app = koa();
