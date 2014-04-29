@@ -41,6 +41,7 @@ looReportSchema.statics.findOrCreate = function*(data){
 looReportSchema.statics.processReport = function*(data){
     var report = yield LooReport.findOrCreate(data);
     var loo = yield LooReport.findLooFor(report);
+
     if (!loo) {
         // Derive a new loo from this report
         loo = Loo.fromLooReport(report);
@@ -57,6 +58,7 @@ looReportSchema.statics.processReport = function*(data){
     // Save the result
     loo.save = thunk(loo.save);
     yield loo.save();
+
     return [report, loo];  
 };
 

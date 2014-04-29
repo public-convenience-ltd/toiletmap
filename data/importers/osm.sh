@@ -10,11 +10,9 @@ done
 # Fetch NORTH EAST
 ../../cli/fetch -f ../fetchers/overpass ../fetchers/overpass/toilets-uk-north-east.xml http://overpass-api.de/api/interpreter \
  | \
- ../../cli/transform -t ../transformers/geohash_property.js \
- | \
  ../../cli/transform -t ../transformers/rename_property.js id osm_id \
  | \
- ../../cli/transform -t ../transformers/attribute.js source http://overpass-api.de \
+ ../../cli/transform -t ../transformers/attribute.js origin http://overpass-api.de \
  | \
  ../../cli/transform -t ../transformers/attribute.js attribution 'Open Street Map' \
  | \
@@ -23,11 +21,9 @@ done
 # Fetch NORTH WEST
  ../../cli/fetch -f ../fetchers/overpass ../fetchers/overpass/toilets-uk-north-west.xml http://overpass-api.de/api/interpreter \
  | \
- ../../cli/transform -t ../transformers/geohash_property.js \
- | \
  ../../cli/transform -t ../transformers/rename_property.js id osm_id \
  | \
- ../../cli/transform -t ../transformers/attribute.js source http://overpass-api.de \
+ ../../cli/transform -t ../transformers/attribute.js origin http://overpass-api.de \
  | \
  ../../cli/transform -t ../transformers/attribute.js attribution 'Open Street Map' \
  | \
@@ -36,11 +32,9 @@ done
 # Fetch SOUTH WEST
  ../../cli/fetch -f ../fetchers/overpass ../fetchers/overpass/toilets-uk-south-west.xml http://overpass-api.de/api/interpreter \
  | \
- ../../cli/transform -t ../transformers/geohash_property.js \
- | \
  ../../cli/transform -t ../transformers/rename_property.js id osm_id \
  | \
- ../../cli/transform -t ../transformers/attribute.js source http://overpass-api.de \
+ ../../cli/transform -t ../transformers/attribute.js origin http://overpass-api.de \
  | \
  ../../cli/transform -t ../transformers/attribute.js attribution 'Open Street Map' \
  | \
@@ -49,11 +43,9 @@ done
 # Fetch SOUTH EAST
  ../../cli/fetch -f ../fetchers/overpass ../fetchers/overpass/toilets-uk-south-east.xml http://overpass-api.de/api/interpreter \
  | \
- ../../cli/transform -t ../transformers/geohash_property.js \
- | \
  ../../cli/transform -t ../transformers/rename_property.js id osm_id \
  | \
- ../../cli/transform -t ../transformers/attribute.js source http://overpass-api.de \
+ ../../cli/transform -t ../transformers/attribute.js origin http://overpass-api.de \
  | \
  ../../cli/transform -t ../transformers/attribute.js attribution 'Open Street Map' \
  | \

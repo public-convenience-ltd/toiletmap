@@ -14,11 +14,7 @@ var fs = require('fs'),
 
 module.exports = function(app){
     app.use(helmet.defaults()); // Some basic hardening
-    app.use(function*routeNotImplemented(next){
-        yield next;
-        if (this.status) { return; } // Already handled
-        this.throw(501);
-    });
+
     if (config.app.env !== 'test') {
         app.use(logger());
     }
@@ -32,5 +28,11 @@ module.exports = function(app){
     // mount all the routes defined in the api/controllers
     fs.readdirSync(path.join(config.app.root, 'api', 'controllers')).forEach(function(file){
         require(path.join(config.app.root, 'api', 'controllers', file)).init(app);
+    });
+
+    app.use(function*routeNotImplemented(next){
+        yield next;
+        if (this.status) { return; } // Already handled
+        this.throw(501);
     });
 };

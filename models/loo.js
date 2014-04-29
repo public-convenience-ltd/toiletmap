@@ -49,20 +49,20 @@ looSchema.methods.regenerate = function*(){
     // Merge them together in that order
     loo.properties = _.merge.apply(_, properties);
     // Record all the sources and attributions
-    loo.sources = _.pluck(loo.reports, 'source');
+    loo.sources = _.pluck(loo.reports, 'origin');
     loo.attributions = _.pluck(loo.reports, 'attribution');
     return this;
     
 };
 
 looSchema.statics.fromLooReport = function(report) {
-    var base = _.pick(report.toJSON(), 'geometry', 'properties', 'type', 'geohash'),
-        loo = new Loo(base);
+        var base = _.pick(report.toJSON(), 'geometry', 'properties', 'type'),
+            loo = new Loo(base);
 
-    loo.reports.push(report._id);
-    loo.sources.push(report.source);
-    loo.attributions.push(report.attribution);
-    return loo;
+        loo.reports.push(report._id);
+        loo.sources.push(report.origin);
+        loo.attributions.push(report.attribution);
+        return loo;
 };
 
 
