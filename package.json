@@ -1,6 +1,6 @@
 {
   "name": "gbptm-api",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "API server for the Great British Public Toilet Map",
   "main": "app.js",
   "engines": {
@@ -59,7 +59,6 @@
     "koa-gzip": "^0.1.0",
     "co-body": "0.0.1",
     "koa-passport": "^0.3.0",
-    "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.2",
     "jwt-simple": "^0.2.0",
     "koa-mount": "^1.2.5",
