@@ -3,13 +3,15 @@
 var Loo = require('../../../../models/loo'),
     LooList = require('../../../../models/loo_list'),
     config = require('../../../../config/config'),
+    _ = require('lodash'),
     routes = {};
 
 routes.loos = {
     handler: function*(){
-        var loos = yield Loo.find().exec();
+        var loos = yield Loo.find().paginate(this.paginate.options);
         this.status = 200;
-        this.body = new LooList(loos);
+        this.body = new LooList(loos.results);
+        this.paginate = _.omit(loos, 'results');
     },
     path: '/loos',
     method: 'get'

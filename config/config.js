@@ -30,6 +30,12 @@ var base = {
     query_defaults: {
         maxDistance: 1000
     },
+    paginate: {
+        perPage: 10,
+        delta: 0,
+        page: 0,
+        offset: 0
+    },
     deduplication: {
         radius: 50
     }

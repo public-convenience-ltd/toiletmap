@@ -16,7 +16,8 @@ var fs = require('fs'),
     serializer = require('../lib/koa-serializer'),
     config = require('./config'),
     auth = require('../auth/auth'),
-    passport = require('koa-passport');
+    passport = require('koa-passport'),
+    paginate = require('../lib/koa-paginate');
 
 
 module.exports = function(app){
@@ -29,6 +30,7 @@ module.exports = function(app){
     app.use(gzip());
     app.use(jsonp());
     app.use(serializer());
+    app.use(paginate(config.paginate));
     app.use(passport.initialize());
     app.use(router(app));
 

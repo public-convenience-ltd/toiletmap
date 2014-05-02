@@ -65,7 +65,8 @@
     "koa-jwt": "0.0.3",
     "koa-compose": "^2.2.0",
     "passport-http": "^0.2.2",
-    "passport-github": "^0.1.5"
+    "passport-github": "^0.1.5",
+    "mongoose-query-paginate": "^1.0.1"
   },
   "devDependencies": {
     "mocha": "^1.18.2",
