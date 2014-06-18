@@ -69,8 +69,10 @@
     "xmldom": "^0.1.19"
   },
   "devDependencies": {
+    "factory-lady": "^0.1.0",
     "mocha": "^1.18.2",
-    "supertest": "^0.13.0",
-    "nodemon": "^1.0.17"
+    "mongoose-fakery": "^0.1.7",
+    "nodemon": "^1.0.17",
+    "supertest": "^0.13.0"
   }
 }

@@ -1,23 +1,43 @@
 var config = require('../../config/config'),
     baseUrl = 'http://localhost:'+ config.app.port,
     app = require('../../app'),
+    thunk = require('thunkify'),
+    co = require('co'),
     supertest = require('supertest'),
-    request = supertest(baseUrl);
+    request = supertest(baseUrl),
+    _ = require('lodash'),
+    fakery = require('../fixtures'),
+    Loo = require('../../models/loo');
 
-// Bring up a server before each test
-beforeEach(function(done){
-    app.init(done);
-});
-// tear it down after
-afterEach(function(done){
-    app.server.close(done);
-});
+Loo.remove = thunk(Loo.remove);
 
 describe('Loos service', function(){
-    it('/loos should return an array of loos', function(done){
+
+    // Bring up a server before each test
+    before(function(done){
+        app.tinit = thunk(app.init);
+        co(function *(){
+            yield app.tinit();
+            yield _.map(_.range(12), function(){
+                return fakery.makeAndSave('loo');
+            });
+        })(done);
+    });
+    // tear it down after
+    after(function(done){
+        app.server.tclose = thunk(app.server.close);
+        co(function *(){
+            yield app.server.tclose();
+            yield Loo.remove({});
+        })(done);
+    });
+
+    it('/loos should return an array of loos', function(done){          
         request
             .get('/loos')
-            .expect(200, done);
+            .expect(200)
+            .expect('Total-Count', '12')
+            .end(done);
     });
 });
 
