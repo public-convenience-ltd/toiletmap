@@ -8,15 +8,35 @@ var _ = require('lodash'),
     specs = {},
     schemae = {};
 
-specs.looProperties = {};
 specs.looCore = {
     'type'    : { type: String, default: "Feature" },
     geometry  : {
         type: { type: String, required: '"{PATH}" should be "Point" and is required' },
-        coordinates: [{type: "Number"}],
-        
+        coordinates: [{type: "Number"}]
     },
-    properties: specs.looProperties,
+    properties: {
+        name: {type: String},
+        access: {type: String},
+        opening: {type: String},
+        type: {type: String},
+        accessibleType: {type: String},
+        disposalType: {type: String},
+        babyChange: {type: Boolean},
+        babyChangeLocation: {type: String},
+        changingPlace: {type: Boolean},
+        radar: {type: Boolean},
+        attended: {type: Boolean},
+        automatic: {type: Boolean},
+        parking: {type: Boolean},
+        cost: {type: String},
+        streetAddress: {type: String},
+        postcode: {type: String},
+        operator: {type: String},
+        reportEmail: {type: String},
+        reportPhone: {type: String},
+        notes: {type: String},
+        infoUrl: {type: String}
+    },
     geohash: String
 };
 
