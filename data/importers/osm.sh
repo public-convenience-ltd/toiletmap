@@ -11,6 +11,8 @@ done
  | \
  ../../cli/transform -t ../transformers/rename_property.js id osm_id \
  | \
+ ../../cli/transform -t ../transformers/convert_properties.js osm \
+ | \
  ../../cli/transform -t ../transformers/attribute.js origin http://overpass-api.de \
  | \
  ../../cli/transform -t ../transformers/attribute.js attribution 'Open Street Map' \

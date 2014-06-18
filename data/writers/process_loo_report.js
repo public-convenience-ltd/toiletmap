@@ -14,6 +14,7 @@ function write(items, collection){
         while ((data = yield read())) {
             result = yield LooReport.processReport(data);
             log.emit('detail', 'Report id ' + result[0]._id + ' written');
+            log.emit('detail', JSON.stringify(result[0].properties, null, '\t'));
             log.emit('detail', 'Loo id ' + result[1]._id + ' written');
             counter++;
         }

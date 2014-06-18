@@ -16,11 +16,11 @@ specs.looCore = {
     },
     properties: {
         name: {type: String},
-        access: {type: String},
+        access: {type: String, default: 'public'},
         opening: {type: String},
         type: {type: String},
         accessibleType: {type: String},
-        disposalType: {type: String},
+        disposal: {type: String},
         babyChange: {type: Boolean},
         babyChangeLocation: {type: String},
         changingPlace: {type: Boolean},
@@ -28,14 +28,15 @@ specs.looCore = {
         attended: {type: Boolean},
         automatic: {type: Boolean},
         parking: {type: Boolean},
-        cost: {type: String},
+        fee: {type: String},
         streetAddress: {type: String},
         postcode: {type: String},
         operator: {type: String},
         reportEmail: {type: String},
         reportPhone: {type: String},
         notes: {type: String},
-        infoUrl: {type: String}
+        infoUrl: {type: String},
+        orig: {type: Object }
     },
     geohash: String
 };

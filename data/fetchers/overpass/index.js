@@ -15,10 +15,10 @@ function geojsonify(){
     return through(function write(data){
         //osmtogeojson expects to operate on an osm wrapper so we fake one
         var osmw = {elements:[data]},
-            fc = osmtogeojson(osmw),
+            fc = osmtogeojson(osmw, {flatProperties: true}),
             f = fc.features[0];
         // queue up the single entry from the feature collection if we got one
-        if (f) {
+        if (f && (f.properties || f.tags)) {
             this.queue(f);
         }
         

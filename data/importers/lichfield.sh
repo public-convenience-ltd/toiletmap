@@ -11,6 +11,8 @@ done
  | \
  ../../cli/transform -t ../transformers/omit_properties.js styleUrl styleHash \
  | \
+ ../../cli/transform -t ../transformers/convert_properties.js \
+ | \
  ../../cli/transform -t ../transformers/attribute.js origin http://www2.lichfielddc.gov.uk/data/files/2010/11/toilets.kml \
  | \
 ../../cli/transform -t ../transformers/attribute.js attribution 'Lichfield District Council' \
