@@ -13,11 +13,12 @@ Loo.remove = thunk(Loo.remove);
 
 describe('Loos service', function(){
 
-    // Bring up a server before each test
+    // Bring up a server before testing
     before(function(done){
         app.tinit = thunk(app.init);
         co(function *(){
             yield app.tinit();
+            // Add 12 fake loos
             yield _.map(_.range(12), function(){
                 return fakery.makeAndSave('loo');
             });
