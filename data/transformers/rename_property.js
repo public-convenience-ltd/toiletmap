@@ -1,6 +1,5 @@
 var through = require('through'),
-    _ = require('lodash'),
-    JSONStream = require('JSONStream');
+    _ = require('lodash');
 
 function transform(rename) {
     return through(function write(data){

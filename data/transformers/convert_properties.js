@@ -4,12 +4,17 @@ var through = require('through'),
 
 var booleanify = function(data){
     return _.mapValues(data, function(val){
-        if (_.indexOf(['true', 'yes', '1'], val.toLowerCase()) !== -1) {
-            return true;
-        } else if (_.indexOf(['false', 'no', '0'], val.toLowerCase()) !== -1) {
-            return false;
-        } else {
-            return val;
+        try {
+            if (_.isBoolean(val)) { return val; }
+            if (_.indexOf(['true', 'yes', '1'], val.toLowerCase()) !== -1) {
+                return true;
+            } else if (_.indexOf(['false', 'no', '0', 'no charge'], val.toLowerCase()) !== -1) {
+                return false;
+            } else {
+                return val;
+            }
+        } catch (e) {
+            throw "Broken val: " + val + JSON.stringify(data);
         }
     });
 };
@@ -30,7 +35,7 @@ var convertTypeAndAccess = function(val, props) {
     }
 
     if (props.disabled || props.wheelchair) {
-        accessibilityType = (props.unisex) ? 'unisex' : type || 'unisex';
+        accessibilityType = (props.unisex) ? 'unisex55' : type || 'unisex';
     }
 
     return [{
@@ -78,9 +83,21 @@ var converters = {
             }
 
         },
+        radar: function(val){
+            return [{
+                key: 'radar',
+                value: val
+            }];
+        },
         operator: function(val){
             return [{
                 key: 'operator',
+                value: val
+            }];
+        },
+        geocoded: function(val){
+            return [{
+                key: 'geocoded',
                 value: val
             }];
         },
@@ -153,6 +170,74 @@ var converters = {
             }];
         },
         'wheelchair': convertTypeAndAccess
+    },
+    gbptm: {
+        'cost': function(val){
+            return [{
+                key: 'fee',
+                value: val
+            }];
+        },
+        'baby change': function(val){
+            return [{
+                key: 'babyChange',
+                value: val
+            }];
+        },
+        'provider': function(val){
+            return [{
+                key: 'operator',
+                value: val
+            }];
+        },
+        'toilet name': function(val){
+            return [{
+                key: 'name',
+                value: val
+            }];
+        },
+        'location of baby change': function(val){
+            return [{
+                key: 'babyChangeLocation',
+                value: val
+            }];
+        },
+        'attendant': function(val){
+            return [{
+                key: 'attended',
+                value: val
+            }];
+        },
+        'automatic?': function(val){
+            return [{
+                key: 'automatic',
+                value: val
+            }];
+        },
+        'car parking': function(val){
+            return [{
+                key: 'parking',
+                value: val
+            }];
+        },
+        'report problem': function(val){
+            return [{
+                key: 'reportPhone',
+                value: val
+            }];
+        },
+        'area': function(val, data){
+            return [{
+                key: 'streetAddress',
+                value: _.compact([data.location, data.area]).join(', ')
+            }];
+        },
+        'location': function(val, data){
+            return [{
+                key: 'streetAddress',
+                value: _.compact([data.location, data.area]).join(', ')
+            }];
+        }
     }
 };
 
@@ -161,11 +246,12 @@ function transform(from) {
     var args = _.compact([{}, converters.base, converters[from]]);
     var converter = _.merge.apply(_, args);
     return through(function write(data){
-        var props = {orig: data.properties};
-        _.forOwn(booleanify(data.properties), function(val, key){
+        var props = {orig: data.properties},
+            booled = booleanify(data.properties);
+        _.forOwn(booled, function(val, key){
             var out;
             if (converter[key]) {
-                out = converter[key](val, data.properties);
+                out = converter[key](val, booled);
                 if (out){
                     _.each(out, function(spec){
                         props[spec.key] = spec.value;

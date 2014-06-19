@@ -16,6 +16,7 @@ specs.looCore = {
     },
     properties: {
         name: {type: String},
+        active: {type: Boolean, default: true},
         access: {type: String, default: 'public'},
         opening: {type: String},
         type: {type: String},
@@ -36,6 +37,9 @@ specs.looCore = {
         reportPhone: {type: String},
         notes: {type: String},
         infoUrl: {type: String},
+        architecturalInterest: {type: String},
+        historicalInterest: {type: String},
+        geocoded: {type: Boolean},
         orig: {type: Object }
     },
     geohash: String
