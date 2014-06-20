@@ -27,23 +27,15 @@ looReportSchema.statics.findLooFor = function*(report){
     return loo;
 };
 
-looReportSchema.statics.findOrCreate = function*(data){
-    var ghash = geohash.encode(data.geometry.coordinates[1], data.geometry.coordinates[0]);
-    // A report is a note about a place, from a person.
-    var report = yield LooReport.findOne({geohash: ghash, attribution: data.attribution}).exec();
-    if (!report) {
-        report = new LooReport(data);
-        // Necessary 'till save returns a promise in mongoose 3.10
-        report.save = thunk(report.save);
-        yield report.save();
-    } 
-    return report;
-};
-
 looReportSchema.statics.processReport = function*(data){
-    var report = yield LooReport.findOrCreate(data);
-    var loo = yield LooReport.findLooFor(report);
+    var ghash = geohash.encode(data.geometry.coordinates[1], data.geometry.coordinates[0]);
+    var report = yield LooReport.findOneAndUpdate(
+            {geohash: ghash, attribution: data.attribution},
+            data,
+            {upsert: true}
+        ).exec();
 
+    var loo = yield LooReport.findLooFor(report);
     if (!loo) {
         // Derive a new loo from this report
         loo = Loo.fromLooReport(report);
