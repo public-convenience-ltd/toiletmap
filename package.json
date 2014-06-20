@@ -4,7 +4,7 @@
   "description": "API server for the Great British Public Toilet Map",
   "main": "app.js",
   "engines": {
-    "node": ">=0.11.2"
+    "node": ">=0.11.12"
   },
   "scripts": {
     "test": "export NODE_ENV=test && node --harmony  ./node_modules/.bin/_mocha --recursive test/**/*.js -R spec",
@@ -69,6 +69,7 @@
     "through": "^2.3.4",
     "thunkify": "^2.1.1",
     "togeojson": "^0.7.0",
+    "uk-postcodes-node": "^0.2.3",
     "xmldom": "^0.1.19"
   },
   "devDependencies": {

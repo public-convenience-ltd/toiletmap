@@ -16,5 +16,5 @@ done
  ../../cli/transform -t ../transformers/attribute.js origin http://apps.cityoflondon.gov.uk/community-toilets/toilets_live.kml \
  | \
  ../../cli/transform -t ../transformers/attribute.js attribution 'City of London Corporation' \
- | \ 
+ | \
  ../../cli/write $VERBOSE $VVERBOSE -w ../writers/process_loo_report

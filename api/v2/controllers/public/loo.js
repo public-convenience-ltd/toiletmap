@@ -28,6 +28,16 @@ routes.nearby_loos = {
     method: 'get'
 };
 
+routes.loos_in = {
+    handler: function *(){
+        var loos = yield Loo.findIn(this.params.sw, this.params.ne, this.params.nw, this.params.se).exec();
+        this.status = 200;
+        this.body = new LooList(loos);
+    },
+    path: '/loos/in/:sw/:ne/:nw/:se',
+    method: 'get'
+};
+
 routes.loo = {
     handler: function*(){
         var loo = yield Loo.findById(this.params.id).exec();

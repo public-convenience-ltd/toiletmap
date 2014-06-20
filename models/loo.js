@@ -22,6 +22,25 @@ looSchema.statics.findNear = function(lon, lat, maxDistance) {
     ]);
 };
 
+looSchema.statics.findIn = function(sw, ne, nw, se) {
+    return this.find({
+        geometry: {
+            $geoIntersects: {
+                $geometry: {
+                    type: 'Polygon',
+                    coordinates: [[
+                        _.map(sw.split(','), parseFloat),
+                        _.map(nw.split(','), parseFloat),
+                        _.map(ne.split(','), parseFloat),
+                        _.map(se.split(','), parseFloat),
+                        _.map(sw.split(','), parseFloat)
+                    ]]
+                }
+            }
+        }
+    });
+};
+
 looSchema.methods.toHAL = function(app){
     var hal = halson(this.toJSON());
     hal.addLink('self', app.url('loo', { id: this._id }));
