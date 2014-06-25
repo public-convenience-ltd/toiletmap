@@ -28,7 +28,8 @@ var base = {
         url: process.env.MONGO_URL || process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/gbptm'
     },
     query_defaults: {
-        maxDistance: 1000
+        maxDistance: 50000,
+        limit: 5
     },
     paginate: {
         perPage: 10,

@@ -20,7 +20,8 @@ routes.loos = {
 routes.nearby_loos = {
     handler: function*(){
         var maxDistance = this.query.radius || config.query_defaults.maxDistance;
-        var loos = yield Loo.findNear(this.params.lon, this.params.lat, maxDistance).exec();
+        var limit = this.query.limit || config.query_defaults.limit;
+        var loos = yield Loo.findNear(this.params.lon, this.params.lat, maxDistance, limit).exec();
         this.status = 200;
         this.body = new LooList(loos);
     },
