@@ -40,6 +40,7 @@ specs.looCore = {
         architecturalInterest: {type: String},
         historicalInterest: {type: String},
         geocoded: {type: Boolean},
+        geocoding_method: {type: String},
         orig: {type: Object }
     },
     geohash: String

@@ -5,21 +5,48 @@ var through = require('through'),
     UKPostcode = require('uk-postcodes-node'),
     fs = require('fs'),
     JSONStream = require('JSONStream'),
+    request = require('request'),
+    es = require('event-stream'),
     _ = require('lodash');
 
-function usePostcode(){
-    return through(function write(data){
-        var stream = this;
-        if (data.geometry.coordinates.length !== 2) {
-            if (data.properties.postcode) {
-                UKPostcode.getPostcode(data.properties.postcode, function(err, coded) {
-                    if (coded) {
-                        data.geometry.coordinates = [coded.geo.lng, coded.geo.lat];
+function useNominatim(){
+    return es.map(function(data, callback){
+        if (data.geometry.coordinates.length !== 2 && (data.properties.location && data.properties.area)) {
+                request({
+                    url: 'http://open.mapquestapi.com/nominatim/v1/search.php?',
+                    qs: {
+                        format: 'json',
+                        countrycodes: 'GB,UK',
+                        q: [data.properties.location, data.properties.area].join(', ').replace(/,,/g, ',')
+                    },
+                    json: true
+                }, function(err, response, body){
+                    if (body && body.length) {
+                        data.geometry.coordinates = [body[0].lon, body[0].lat];
                         data.properties.geocoded = true;
+                        data.properties.geocoding_method = 'nominatim';
                     }
-                    stream.queue(data);
+                    callback(null, data);
                 });
-            }
+        } else {
+            callback(null, data);
+        }
+    });
+}
+
+function usePostcode(){
+    return es.map(function(data, callback){
+        if (data.geometry.coordinates.length !== 2 && data.properties.postcode) {
+            UKPostcode.getPostcode(data.properties.postcode, function(err, coded) {
+                if (coded) {
+                    data.geometry.coordinates = [coded.geo.lng, coded.geo.lat];
+                    data.properties.geocoded = true;
+                    data.properties.geocoding_method = 'postcode';
+                }
+                callback(null, data);
+            });
+        } else {
+            callback(null, data);
         }
     });
 }
@@ -131,6 +158,7 @@ module.exports = function items(path) {
         .pipe(useEastNorth())
         .pipe(useGridRef())
         .pipe(usePostcode())
+        .pipe(useNominatim())
         .pipe(noteOrigin())
         .pipe(filterUnlocated())
         .pipe(out);
