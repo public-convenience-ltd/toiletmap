@@ -101,6 +101,12 @@ var converters = {
                 value: val
             }];
         },
+        geocoding_method: function(val){
+            return [{
+                key: 'geocoded',
+                value: val
+            }];
+        },
         male: convertTypeAndAccess,
         female: convertTypeAndAccess,
         unisex: convertTypeAndAccess

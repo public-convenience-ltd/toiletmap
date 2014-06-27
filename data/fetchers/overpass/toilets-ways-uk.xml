@@ -1,0 +1,18 @@
+<osm-script output="json" timeout="1600">
+  <!-- gather results -->
+  <union>
+    <!-- query part for: “amenity=toilets” -->
+    <query type="way">
+      <has-kv k="amenity" v="toilets"/>
+      <bbox-query e="2.69" n="60.85" s="49.84" w="-9.23"/>
+      <!-- Naarch <bbox-query s="52.62619921403298" w="1.284799575805664" n="52.6276579981903" e="1.289418339729309"/>-->
+    </query>
+  </union>
+  <!-- print results -->
+  <union>
+    <item/>
+    <recurse type="down"/>
+  </union>
+  <print mode="body"/>
+  
+</osm-script>

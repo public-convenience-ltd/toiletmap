@@ -7,7 +7,7 @@ while getopts "vV" options; do
     esac
 done
 
-../../cli/fetch -f ../fetchers/overpass ../fetchers/overpass/toilets-uk.xml http://overpass-api.de/api/interpreter \
+../../cli/fetch -f ../fetchers/overpass/ways ../fetchers/overpass/toilets-ways-uk.xml http://overpass-api.de/api/interpreter \
  | \
  ../../cli/transform -t ../transformers/rename_property.js id osm_id \
  | \
@@ -17,4 +17,4 @@ done
  | \
  ../../cli/transform -t ../transformers/attribute.js attribution 'Open Street Map' \
  | \
- ../../cli/write  $VERBOSE $VVERBOSE -w ../writers/process_loo_report
+../../cli/write  $VERBOSE $VVERBOSE -w ../writers/process_loo_report

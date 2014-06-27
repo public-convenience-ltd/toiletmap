@@ -7,7 +7,34 @@ var through = require('through'),
     JSONStream = require('JSONStream'),
     request = require('request'),
     es = require('event-stream'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    geocoder = require('geocoder');
+
+function useGoogle(){
+    return es.map(function(data, callback){
+        if (data.geometry.coordinates.length !== 2 && (data.properties.location && data.properties.area)) {
+                geocoder.geocode(
+                    [data.properties.location, data.properties.area].join(', ').replace(/,,/g, ','),
+                    function(err, res) {
+                        if (res && res.results.length) {
+                            data.geometry.coordinates = [
+                                res.results[0].geometry.location.lng,
+                                res.results[0].geometry.location.lat
+                            ];
+                            data.properties.geocoded = true;
+                            data.properties.geocoding_method = 'google';
+                        }
+                        callback(null, data);
+                    },
+                    {
+                        region: 'uk'
+                    }
+                );
+        } else {
+            callback(null, data);
+        }
+    });
+}
 
 function useNominatim(){
     return es.map(function(data, callback){
@@ -19,7 +46,8 @@ function useNominatim(){
                         countrycodes: 'GB,UK',
                         q: [data.properties.location, data.properties.area].join(', ').replace(/,,/g, ',')
                     },
-                    json: true
+                    json: true,
+                    timeout: 5000
                 }, function(err, response, body){
                     if (body && body.length) {
                         data.geometry.coordinates = [body[0].lon, body[0].lat];
@@ -95,7 +123,7 @@ function useLonLat(){
 
 function compact(){
     return through(function write(data){
-        var compact = _.pick(data, function(val){ return _.indexOf(['', '/'], val) === -1; });
+        var compact = _.pick(data, function(val){ return _.indexOf(['', '/', null], val) === -1; });
         this.queue(compact);
     });
 }
@@ -159,6 +187,7 @@ module.exports = function items(path) {
         .pipe(useGridRef())
         .pipe(usePostcode())
         .pipe(useNominatim())
+        .pipe(useGoogle())
         .pipe(noteOrigin())
         .pipe(filterUnlocated())
         .pipe(out);
