@@ -17,10 +17,12 @@ var fs = require('fs'),
     config = require('./config'),
     auth = require('../auth/auth'),
     passport = require('koa-passport'),
+    session = require('koa-session'),
     paginate = require('../lib/koa-paginate');
 
 
 module.exports = function(app){
+    app.keys = ['seekrit'];
     app.use(helmet.defaults()); // Some basic hardening
     if (config.app.env !== 'test') {
         app.use(logger());
@@ -32,6 +34,7 @@ module.exports = function(app){
     app.use(serializer());
     app.use(paginate(config.paginate));
     app.use(passport.initialize());
+    app.use(session());
     app.use(router(app));
 
     // Auth routes for token retrieval

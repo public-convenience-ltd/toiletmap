@@ -20,13 +20,28 @@ passport.deserializeUser(function(id, done) {
 /**
  * Middleware to build sign and return a JSON Web Token
  */
-function* tokenResponse(next){
+function *tokenResponse(next){
+  var token; 
   if (this.isAuthenticated()) {
+    token = jwt.sign(this.req.user, config.jwt.secret);
+    if (this.session && this.session.redirect) {
+      return this.redirect(this.session.redirect + '?token=' + token);
+    }
     this.status = 200;
-    this.body = { token: jwt.sign(this.req.user, config.jwt.secret) };
+    this.body = { token: token };
   } else {
     this.throw(401);
   }
+}
+
+/**
+ * Middleware to store a redirectURL in the session for later use
+ */
+function *storeRedirect(next){
+  if (this.request.query.redirect) {
+    this.session.redirect = this.request.query.redirect;
+  }
+  yield next;
 }
 
 // Admin auth if local user and pass were provided
@@ -51,6 +66,7 @@ if (config.auth.local.username && config.auth.local.password) {
 
   routes.admin = {
     handler: compose([
+      storeRedirect,
       passport.authenticate('digest', { session: false }),
       tokenResponse
     ]),
@@ -74,7 +90,11 @@ if (config.auth.github.client_id && config.auth.github.client_secret) {
 
   routes.github = {
     handler: compose([
-      passport.authenticate('github', {session: false })
+      storeRedirect,
+      passport.authenticate('github', {
+        session: false,
+        callbackURL:  config.app.baseUrl + config.auth.mount + '/github/callback'
+      })
     ]),
     path: '/github',
     method: 'get'
