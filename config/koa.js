@@ -33,8 +33,10 @@ module.exports = function(app){
     app.use(jsonp());
     app.use(serializer());
     app.use(paginate(config.paginate));
-    app.use(passport.initialize());
     app.use(session());
+    app.use(passport.initialize());
+    app.use(passport.session());
+    
     app.use(router(app));
 
     // Auth routes for token retrieval

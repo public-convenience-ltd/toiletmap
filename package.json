@@ -68,6 +68,7 @@
     "ospoint": "^0.2.0",
     "passport-github": "^0.1.5",
     "passport-http": "^0.2.2",
+    "passport-openstreetmap": "^0.1.2",
     "passport-twitter": "^1.0.2",
     "read-stream": "^2.1.1",
     "request": "^2.34.0",

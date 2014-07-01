@@ -3,6 +3,7 @@ var passport = require('koa-passport'),
     DigestStrategy = require('passport-http').DigestStrategy,
     TwitterStrategy = require('passport-twitter').Strategy,
     GitHubStrategy = require('passport-github').Strategy,
+    OpenStreetMapStrategy = require('passport-openstreetmap').Strategy,
     config = require('../config/config'),
     jwt = require('koa-jwt'),
     compose = require('koa-compose'),
@@ -84,7 +85,7 @@ if (config.auth.github.client_id && config.auth.github.client_secret) {
       callbackURL: config.app.baseUrl + config.auth.mount + '/github/callback'
     },
     function(accessToken, refreshToken, profile, done) {
-      return done(null, {name: profile.name});
+      return done(null, {name: profile.displayName});
     }
   ));
 
@@ -106,6 +107,70 @@ if (config.auth.github.client_id && config.auth.github.client_secret) {
       tokenResponse
     ]),
     path: '/github/callback',
+    method: 'get'
+  };
+}
+
+if (config.auth.twitter.consumerKey && config.auth.twitter.consumerSecret) {
+  passport.use(new TwitterStrategy({
+      consumerKey: config.auth.twitter.consumerKey,
+      consumerSecret: config.auth.twitter.consumerSecret,
+      callbackURL: config.app.baseUrl + config.auth.mount + '/twitter/callback'
+    },
+    function(token, tokenSecret, profile, done){
+      return done(null, {name: profile.displayName});
+    }
+  ));
+
+  routes.twitter = {
+    handler: compose([
+      storeRedirect,
+      passport.authenticate('twitter', {
+        callbackURL:  config.app.baseUrl + config.auth.mount + '/twitter/callback'
+      })
+    ]),
+    path: '/twitter',
+    method: 'get'
+  };
+
+  routes.twitter_callback = {
+    handler: compose([
+      passport.authenticate('twitter'),
+      tokenResponse
+    ]),
+    path: '/twitter/callback',
+    method: 'get'
+  };
+}
+
+if (config.auth.osm.consumerKey && config.auth.osm.consumerSecret) {
+  passport.use(new OpenStreetMapStrategy({
+      consumerKey: config.auth.osm.consumerKey,
+      consumerSecret: config.auth.osm.consumerSecret,
+      callbackURL: config.app.baseUrl + config.auth.mount + '/openstreetmap/callback'
+    },
+    function(token, tokenSecret, profile, done){
+      return done(null, {name: profile.displayName});
+    }
+  ));
+
+  routes.openstreetmap = {
+    handler: compose([
+      storeRedirect,
+      passport.authenticate('openstreetmap', {
+        callbackURL:  config.app.baseUrl + config.auth.mount + '/openstreetmap/callback'
+      })
+    ]),
+    path: '/openstreetmap',
+    method: 'get'
+  };
+
+  routes.openstreetmap_callback = {
+    handler: compose([
+      passport.authenticate('openstreetmap'),
+      tokenResponse
+    ]),
+    path: '/openstreetmap/callback',
     method: 'get'
   };
 }

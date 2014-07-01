@@ -22,7 +22,16 @@ var base = {
         github: {
             client_id: process.env.GITHUB_CLIENT_ID,
             client_secret: process.env.GITHUB_CLIENT_SECRET
+        },
+        twitter: {
+            consumerKey: process.env.TWITTER_CLIENT_ID,
+            consumerSecret: process.env.TWITTER_CLIENT_SECRET
+        },
+        osm: {
+            consumerKey: process.env.OSM_CLIENT_ID,
+            consumerSecret: process.env.OSM_CLIENT_SECRET
         }
+
     },
     mongo: {
         url: process.env.MONGO_URL || process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/gbptm'
