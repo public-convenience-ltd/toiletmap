@@ -7,6 +7,7 @@ var LooReport = require('../../../../models/loo_report'),
 routes.submit_report = {
     handler: function*(){
         var data = yield parse(this);
+        data.attribution = this.user.name;
         var validator = new LooReport(data);
         validator.validate = thunk(validator.validate);
         try {
