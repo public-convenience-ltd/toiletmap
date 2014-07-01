@@ -1,6 +1,7 @@
 var LooReport = require('../../../../models/loo_report'),
     thunk = require('thunkify'),
     parse = require('co-body'),
+    _ = require('lodash'),
     routes = {};
 
 routes.submit_report = {
