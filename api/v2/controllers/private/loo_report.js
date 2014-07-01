@@ -14,7 +14,7 @@ routes.submit_report = {
             yield validator.validate();
         } catch (e) {
             if (e.name === 'ValidationError') {
-                this.throw(400, _.pluck(e.errors, 'message').join('\n'));
+                this.throw(400, _.pluck(e.errors, 'message').concat(['Provided: '+JSON.stringify(data, null, '\t')]).join('\n'));
             } else {
                 throw e;
             }
