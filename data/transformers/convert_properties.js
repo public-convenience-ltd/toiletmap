@@ -1,5 +1,6 @@
 var through = require('through'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    oh = require('opening_hours');
 
 
 var booleanify = function(data){
@@ -103,7 +104,7 @@ var converters = {
         },
         geocoding_method: function(val){
             return [{
-                key: 'geocoded',
+                key: 'geocoding_method',
                 value: val
             }];
         },
@@ -243,6 +244,66 @@ var converters = {
                 key: 'streetAddress',
                 value: _.compact([data.location, data.area]).join(', ')
             }];
+        },
+        '24 hours': function(val) {
+            return [{
+                key: 'opening',
+                value: '24/7'
+            }];
+        },
+        'open': function(val, data){
+            var open = '', dow = '', notes = '';
+            try {
+                open = new oh(val.replace(/ - /g, '-').replace(/\./g, ':')).prettifyValue();
+            } catch (e) {
+                // nothing to do
+            }
+            if (data['days of the week open']) {
+                try {
+                    dow = new oh(data['days of the week open']).prettifyValue();
+                } catch (e) {
+                    //nothing to do
+                }
+            }
+            if (data['time notes:']) {
+                try {
+                    notes = new oh(data['time notes:'].replace(/ - /g, '-').replace(/\./g, ':')).prettifyValue();
+                } catch (e) {
+                    // nope still nothing
+                }
+            }
+            if ((dow + open + notes) !== '') {
+                return [{
+                    key: 'opening',
+                    value: _.compact([dow, open, notes]).join(' ')
+                }];
+            }
+        },
+        'open season - summer': function(val, data){
+            var opening = '', notes = '';
+            if (data.open) { return; }
+            try {
+                return [{
+                    key: 'opening',
+                    value: 'summer '+ new oh(val.replace(/\./, ':').replace(/12pm/g, '12:00pm')).prettifyValue()
+                }];
+            } catch (e) {
+                // natch
+            }
+            if (data['time notes:']) {
+                try {
+                    notes = new oh(data['time notes:'].replace(/ - /g, '-').replace(/\./g, ':')).prettifyValue();
+                } catch (e) {
+                    // nope still nothing
+                }
+            }
+
+            if (opening + notes !== '') {
+                return [{
+                    key: 'opening',
+                    value: _.compact([opening, notes]).join(' ')
+                }];
+            }
         }
     }
 };
