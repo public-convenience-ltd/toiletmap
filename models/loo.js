@@ -62,12 +62,16 @@ function calculate_credibility(reports){
         var completeness = 0,
             penalties = 0,
             trust = rep.trust, 
-            props = _.keys(rep.properties).length;
-        if (props > 3) {
+            props = _.size(
+                _.filter(rep.properties, function(v){ 
+                    return (!_.isFunction(v) && !_.isUndefined(v)); 
+                })
+            );
+        if (props > 4) {
             completeness = 2;
         }
         if (props > 5) {
-            completeness = 5;
+            completeness = 3;
         }
         if (props > 8) {
             completeness = 7
