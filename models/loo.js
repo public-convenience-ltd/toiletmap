@@ -56,6 +56,35 @@ looSchema.methods.toCSV = function(app){
     return '';
 };
 
+function calculate_credibility(reports){
+    //score each report out of 20, 10 for trust 10 for completeness
+    return _.reduce(reports, function(sum, rep){
+        var completeness = 0,
+            penalties = 0,
+            trust = rep.trust, 
+            props = _.keys(rep.properties).length;
+        if (props > 3) {
+            completeness = 2;
+        }
+        if (props > 5) {
+            completeness = 5;
+        }
+        if (props > 8) {
+            completeness = 7
+        }
+        if (props > 12) {
+            completeness = 9
+        }
+        if (props > 15) {
+            completeness = 10;
+        }
+        if (props.geocoded) {
+            penalties += -5;
+        }
+        return sum + ((trust + completeness) - penalties)
+    }, 0) / reports.length;
+}
+
 /**
  * Rebuild a loo's data by recompiling it from all the reports that have been attatched
  * Currently this leaves a loo's location as that of the first report submitted
@@ -71,6 +100,10 @@ looSchema.methods.regenerate = function*(){
     // Record all the sources and attributions
     loo.sources = _.pluck(loo.reports, 'origin');
     loo.attributions = _.pluck(loo.reports, 'attribution');
+
+    // Calculate credibility
+    loo.credibility = calculate_credibility(loo.reports);
+
     return this;
     
 };

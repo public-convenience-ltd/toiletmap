@@ -1,4 +1,5 @@
 var LooReport = require('../../../../models/loo_report'),
+    config = require('../../../../config/config'),
     thunk = require('thunkify'),
     parse = require('co-body'),
     _ = require('lodash'),
@@ -8,6 +9,7 @@ routes.submit_report = {
     handler: function*(){
         var data = yield parse(this);
         data.attribution = this.user.name;
+        data.trust = config.reports.trust;
         var validator = new LooReport(data);
         validator.validate = thunk(validator.validate);
         try {

@@ -17,4 +17,6 @@ done
  | \
  ../../cli/transform -t ../transformers/attribute.js attribution 'Open Street Map' \
  | \
+ ../../cli/transform -t ../transformers/attribute.js trust 6 \
+ | \
  ../../cli/write  $VERBOSE $VVERBOSE -w ../writers/process_loo_report

@@ -48,6 +48,9 @@ var base = {
     },
     deduplication: {
         radius: 50
+    },
+    reports: {
+        trust: 8
     }
 };
 

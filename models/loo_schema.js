@@ -53,7 +53,7 @@ schemae.looReportSchema = new Schema(
         {
             origin: String,
             attribution: {type: String, required: '"{PATH}" to a person or organisation is required'},
-            trust: {type: Number, default: 5}
+            trust: {type: "Number", default: 5, min: -1, max: 10}
         }
     )
 );
@@ -72,7 +72,8 @@ schemae.looSchema = new Schema(
         {
             sources: [String],
             attributions: [String],
-            reports: [{ type: Schema.Types.ObjectId, ref: 'LooReport' }]
+            reports: [{ type: Schema.Types.ObjectId, ref: 'LooReport' }],
+            credibility: { type: Number }
         }
     )
 );

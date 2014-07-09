@@ -13,4 +13,6 @@ done
 | \
 ../../cli/transform -t ../transformers/attribute.js attribution 'Great British Public Toilet Map' \
  | \
+ ../../cli/transform -t ../transformers/attribute.js trust 7 \
+ | \
  ../../cli/write $VERBOSE $VVERBOSE -w ../writers/process_loo_report

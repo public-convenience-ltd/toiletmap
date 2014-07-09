@@ -15,4 +15,6 @@ done
  | \
 ../../cli/transform -t ../transformers/attribute.js attribution 'Salford City Council' \
  | \
+ ../../cli/transform -t ../transformers/attribute.js trust 4 \
+ | \
  ../../cli/write $VERBOSE $VVERBOSE -w ../writers/process_loo_report
