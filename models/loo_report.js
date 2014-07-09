@@ -32,7 +32,7 @@ looReportSchema.statics.processReport = function*(data){
     var ghash = geohash.encode(data.geometry.coordinates[1], data.geometry.coordinates[0]);
     //Strip tags from plain text entries
     _.each(['notes', 'cost'], function(v, i){
-        if (data.properties[v]) {
+        if (data.properties && data.properties[v]) {
             data.properties[v] = data.properties[v].replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>?/gi, '').trim();
         }
     });
