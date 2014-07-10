@@ -3,6 +3,7 @@ var passport = require('koa-passport'),
     DigestStrategy = require('passport-http').DigestStrategy,
     TwitterStrategy = require('passport-twitter').Strategy,
     GitHubStrategy = require('passport-github').Strategy,
+    GoogleStrategy = require('passport-google').Strategy,
     OpenStreetMapStrategy = require('passport-openstreetmap').Strategy,
     FacebookStrategy = require('passport-facebook').Strategy,
     config = require('../config/config'),
@@ -206,6 +207,36 @@ if (config.auth.facebook.client_id && config.auth.facebook.client_secret) {
       tokenResponse
     ]),
     path: '/facebook/callback',
+    method: 'get'
+  };
+}
+
+// Google Auth if enabled
+if (config.auth.google) {
+  passport.use(new GoogleStrategy({
+      returnURL: config.app.baseUrl + config.auth.mount + '/google/callback',
+      realm: config.app.baseUrl
+    },
+    function(identifier, profile, done) {
+      return done(null, {name: profile.displayName});
+    }
+  ));
+
+  routes.google = {
+    handler: compose([
+      storeRedirect,
+      passport.authenticate('google')
+    ]),
+    path: '/google',
+    method: 'get'
+  };
+
+  routes.google_callback = {
+    handler: compose([
+      passport.authenticate('google'),
+      tokenResponse
+    ]),
+    path: '/google/callback',
     method: 'get'
   };
 }
