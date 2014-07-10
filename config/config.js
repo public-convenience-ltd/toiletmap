@@ -30,6 +30,10 @@ var base = {
         osm: {
             consumerKey: process.env.OSM_CLIENT_ID,
             consumerSecret: process.env.OSM_CLIENT_SECRET
+        },
+        facebook: {
+            client_id: process.env.FACEBOOK_CLIENT_ID,
+            client_secret: process.env.FACEBOOK_CLIENT_SECRET
         }
 
     },

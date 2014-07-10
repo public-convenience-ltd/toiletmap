@@ -4,6 +4,7 @@ var passport = require('koa-passport'),
     TwitterStrategy = require('passport-twitter').Strategy,
     GitHubStrategy = require('passport-github').Strategy,
     OpenStreetMapStrategy = require('passport-openstreetmap').Strategy,
+    FacebookStrategy = require('passport-facebook').Strategy,
     config = require('../config/config'),
     jwt = require('koa-jwt'),
     compose = require('koa-compose'),
@@ -171,6 +172,40 @@ if (config.auth.osm.consumerKey && config.auth.osm.consumerSecret) {
       tokenResponse
     ]),
     path: '/openstreetmap/callback',
+    method: 'get'
+  };
+}
+
+// Facebook Auth if id and secret were provided
+if (config.auth.facebook.client_id && config.auth.facebook.client_secret) {
+  passport.use(new FacebookStrategy({
+      clientID: config.auth.facebook.client_id,
+      clientSecret: config.auth.facebook.client_secret,
+      callbackURL: config.app.baseUrl + config.auth.mount + '/facebook/callback'
+    },
+    function(accessToken, refreshToken, profile, done) {
+      return done(null, {name: profile.displayName});
+    }
+  ));
+
+  routes.facebook = {
+    handler: compose([
+      storeRedirect,
+      passport.authenticate('facebook', {
+        session: false,
+        callbackURL:  config.app.baseUrl + config.auth.mount + '/facebook/callback'
+      })
+    ]),
+    path: '/facebook',
+    method: 'get'
+  };
+
+  routes.facebook_callback = {
+    handler: compose([
+      passport.authenticate('facebook', { session: false }),
+      tokenResponse
+    ]),
+    path: '/facebook/callback',
     method: 'get'
   };
 }
