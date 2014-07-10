@@ -83,7 +83,7 @@ function calculate_credibility(reports){
             completeness = 10;
         }
         if (props.geocoded) {
-            penalties += -5;
+            penalties += -8;
         }
         return sum + ((trust + completeness) - penalties)
     }, 0) / reports.length;
