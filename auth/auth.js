@@ -214,8 +214,8 @@ if (config.auth.facebook.client_id && config.auth.facebook.client_secret) {
 // Google Auth if enabled
 if (config.auth.google.consumerKey && config.auth.google.consumerSecret) {
   passport.use(new GoogleStrategy({
-      clientID: config.auth.google.consumerKey,
-      clientSecret: config.auth.google.consumerSecret,
+      consumerKey: config.auth.google.consumerKey,
+      consumerSecret: config.auth.google.consumerSecret,
       callbackURL: config.app.baseUrl + config.auth.mount + '/google/callback'
     },
     function(accessToken, refreshToken, profile, done) {
