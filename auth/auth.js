@@ -3,7 +3,7 @@ var passport = require('koa-passport'),
     DigestStrategy = require('passport-http').DigestStrategy,
     TwitterStrategy = require('passport-twitter').Strategy,
     GitHubStrategy = require('passport-github').Strategy,
-    GoogleStrategy = require('passport-google-oauth').Strategy,
+    GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
     OpenStreetMapStrategy = require('passport-openstreetmap').Strategy,
     FacebookStrategy = require('passport-facebook').Strategy,
     config = require('../config/config'),
@@ -214,8 +214,8 @@ if (config.auth.facebook.client_id && config.auth.facebook.client_secret) {
 // Google Auth if enabled
 if (config.auth.google.consumerKey && config.auth.google.consumerSecret) {
   passport.use(new GoogleStrategy({
-      consumerKey: config.auth.google.consumerKey,
-      consumerSecret: config.auth.google.consumerSecret,
+      clientID: config.auth.google.consumerKey,
+      clientSecret: config.auth.google.consumerSecret,
       callbackURL: config.app.baseUrl + config.auth.mount + '/google/callback'
     },
     function(accessToken, refreshToken, profile, done) {
@@ -226,7 +226,9 @@ if (config.auth.google.consumerKey && config.auth.google.consumerSecret) {
   routes.google = {
     handler: compose([
       storeRedirect,
-      passport.authenticate('google')
+      passport.authenticate('google', { scope: [
+        'https://www.googleapis.com/auth/userinfo.profile'
+      ]})
     ]),
     path: '/google',
     method: 'get'
