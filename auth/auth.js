@@ -3,7 +3,7 @@ var passport = require('koa-passport'),
     DigestStrategy = require('passport-http').DigestStrategy,
     TwitterStrategy = require('passport-twitter').Strategy,
     GitHubStrategy = require('passport-github').Strategy,
-    GoogleStrategy = require('passport-google').Strategy,
+    GoogleStrategy = require('passport-google-oauth').Strategy,
     OpenStreetMapStrategy = require('passport-openstreetmap').Strategy,
     FacebookStrategy = require('passport-facebook').Strategy,
     config = require('../config/config'),
@@ -212,12 +212,13 @@ if (config.auth.facebook.client_id && config.auth.facebook.client_secret) {
 }
 
 // Google Auth if enabled
-if (config.auth.google) {
+if (config.auth.google.consumerKey && config.auth.google.consumerSecret) {
   passport.use(new GoogleStrategy({
-      returnURL: config.app.baseUrl + config.auth.mount + '/google/callback',
-      realm: config.app.baseUrl
+      clientID: config.auth.google.consumerKey,
+      clientSecret: config.auth.google.consumerSecret,
+      callbackURL: config.app.baseUrl + config.auth.mount + '/google/callback'
     },
-    function(identifier, profile, done) {
+    function(accessToken, refreshToken, profile, done) {
       return done(null, {name: profile.displayName});
     }
   ));
