@@ -53,7 +53,8 @@ schemae.looReportSchema = new Schema(
         {
             origin: String,
             attribution: {type: String, required: '"{PATH}" to a person or organisation is required'},
-            trust: {type: "Number", default: 5, min: -1, max: 10}
+            trust: {type: "Number", default: 5, min: -1, max: 10},
+            collectionMethod: {type: String}
         }
     )
 );

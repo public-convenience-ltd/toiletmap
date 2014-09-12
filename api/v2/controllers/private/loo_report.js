@@ -10,6 +10,7 @@ routes.submit_report = {
         var data = yield parse(this);
         data.attribution = this.user.name;
         data.trust = config.reports.trust;
+        data.collectionMethod = 'api';
         var validator = new LooReport(data);
         validator.validate = thunk(validator.validate);
         try {
