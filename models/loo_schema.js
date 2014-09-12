@@ -19,7 +19,7 @@ specs.looCore = {
         active: {type: Boolean, default: true},
         access: {type: String, default: 'public'},
         opening: {type: String},
-        facilites: {type: String},
+        type: {type: String},
         accessibleType: {type: String},
         disposal: {type: String},
         babyChange: {type: Boolean},
