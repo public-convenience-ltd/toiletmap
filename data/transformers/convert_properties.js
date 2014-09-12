@@ -40,7 +40,7 @@ var convertTypeAndAccess = function(val, props) {
     }
 
     return [{
-        key: 'type',
+        key: 'facilities',
         value: type
     },
     {
@@ -110,7 +110,8 @@ var converters = {
         },
         male: convertTypeAndAccess,
         female: convertTypeAndAccess,
-        unisex: convertTypeAndAccess
+        unisex: convertTypeAndAccess,
+        type: convertTypeAndAccess
     },
     osm: {
         'addr:postcode': function(val) {
