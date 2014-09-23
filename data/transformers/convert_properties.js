@@ -197,7 +197,7 @@ var converters = {
                 value: val
             }];
         },
-        'toilet name': function(val){
+        'toilet name': function(val, data){
             return [{
                 key: 'name',
                 value: val
@@ -240,10 +240,19 @@ var converters = {
             }];
         },
         'location': function(val, data){
-            return [{
+            var out = [{
                 key: 'streetAddress',
                 value: _.compact([data.location, data.area]).join(', ')
             }];
+
+            if (val && !data['toilet name']) {
+                out.push({
+                    key: 'name',
+                    value: val
+                });
+            }
+
+            return out;
         },
         '24 hours': function(val) {
             return [{
