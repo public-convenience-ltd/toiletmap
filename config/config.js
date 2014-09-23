@@ -55,7 +55,7 @@ var base = {
         offset: 0
     },
     deduplication: {
-        radius: 50
+        radius: 25
     },
     reports: {
         trust: 8
