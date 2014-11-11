@@ -4,8 +4,9 @@ var through = require('through'),
 
 
 var booleanify = function(data){
-    return _.mapValues(data, function(val){
+    return _.mapValues(data, function(val, key){
         try {
+            if (_.isPlainObject(val)) { return booleanify(val); }
             if (_.isBoolean(val)) { return val; }
             if (_.indexOf(['true', 'yes', '1'], val.toLowerCase()) !== -1) {
                 return true;
@@ -15,7 +16,7 @@ var booleanify = function(data){
                 return val;
             }
         } catch (e) {
-            throw "Broken val: " + val + JSON.stringify(data);
+            throw "Broken val"+key+" : " + val + JSON.stringify(data);
         }
     });
 };
@@ -177,6 +178,26 @@ var converters = {
             }];
         },
         'wheelchair': convertTypeAndAccess
+    },
+    nationalrail: {
+        'wc available': function(val) {
+            return [{
+                key: 'active',
+                value: !val
+            }];
+        },
+        'baby change available': function(val){
+            return [{
+                key: 'babyChange',
+                value: val
+            }];
+        },
+        'national key toilets available': function(val){
+            return [{
+                key: 'radar',
+                value: val
+            }];
+        }
     },
     gbptm: {
         'cost': function(val){

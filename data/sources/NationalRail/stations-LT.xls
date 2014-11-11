@@ -1,0 +1,3780 @@
+<table><tr>
+<td colspan="6"></td>
+<td colspan="6">Address</td>
+<td colspan="3"></td>
+<td colspan="2">Staffing</td>
+<td colspan="5">Information Systems</td>
+<td colspan="20">Fares</td>
+<td>Customer Services</td>
+<td colspan="6">Left Luggage</td>
+<td colspan="7">Lost Property</td>
+<td colspan="31">Station Facilities</td>
+<td colspan="25">Accessibility</td>
+<td colspan="6">Cycle Storage</td>
+<td colspan="9">Getting To and From</td>
+<td colspan="4"></td>
+</tr>
+<tr>
+<td>Crs Code</td>
+<td>Name</td>
+<td>Changed By</td>
+<td>Changed Date</td>
+<td>NLC</td>
+<td>16 Char Name</td>
+<td>Address Line 1</td>
+<td>Address Line 2</td>
+<td>Address Line 3</td>
+<td>Address Line 4</td>
+<td>Address Line 5</td>
+<td>Postcode</td>
+<td>Longitude</td>
+<td>Latitude</td>
+<td>Station Operator</td>
+<td>Staffing Level</td>
+<td>CCTV Available</td>
+<td>Info. avail. from staff</td>
+<td>Opening Note</td>
+<td>CIS</td>
+<td>Help Points</td>
+<td>Help Points Available</td>
+<td>Ticket Office Opening Note</td>
+<td>Ticket Office Available</td>
+<td>Ticket Office Location</td>
+<td>Pre-purchase Collection</td>
+<td>Ticket Machine Available</td>
+<td>Oyster Issued</td>
+<td>Oyster Topup</td>
+<td>Oyster Pickup</td>
+<td>Use Oyster</td>
+<td>Oyster Comments</td>
+<td>Smartcard Issued</td>
+<td>Smartcard Topup</td>
+<td>Smartcard Pickup</td>
+<td>Smartcard Validator</td>
+<td>Smartcard Comments</td>
+<td>Travelcard Zone</td>
+<td>Penalty Fares</td>
+<td>Penalty Fares TOCs</td>
+<td>Penalty Fares URL</td>
+<td>Always show Oyster</td>
+<td>Note</td>
+<td>Primary Tel Country</td>
+<td>Primary Tel Nr.</td>
+<td>Primary Tel Ext.</td>
+<td>Url</td>
+<td>Available</td>
+<td>Operator Name</td>
+<td>Primary Tel Country</td>
+<td>Primary Tel Nr.</td>
+<td>Primary Tel Ext.</td>
+<td>Url</td>
+<td>Opening Note</td>
+<td>Available</td>
+<td>Operator Name</td>
+<td>1st Class Lounge Note</td>
+<td>1st Class Lounge Opening Note</td>
+<td>1st Class Lounge Available</td>
+<td>Seated Area Available</td>
+<td>Seated Area Location</td>
+<td>Waiting Room Opening Note</td>
+<td>Waiting Room Available</td>
+<td>Waiting Room Location</td>
+<td>Trolleys Available</td>
+<td>Refreshments Note</td>
+<td>Refreshments Available</td>
+<td>WC Available</td>
+<td>WC Location</td>
+<td>Baby Change Available</td>
+<td>Baby Change Location</td>
+<td>Showers Available</td>
+<td>Telephones Exist</td>
+<td>Telephones Usage Type</td>
+<td>Wifi Note</td>
+<td>Wifi Available</td>
+<td>Web Kiosk Opening Note</td>
+<td>Web Kiosk Available</td>
+<td>Postbox Available</td>
+<td>Postbox Location</td>
+<td>Tourist Info Available</td>
+<td>Tourist Info Location</td>
+<td>ATM Available</td>
+<td>ATM Location</td>
+<td>Bureau de Change Available</td>
+<td>Shops Note</td>
+<td>Shops Available</td>
+<td>Helpline Note</td>
+<td>Helpline Contact</td>
+<td>Helpline Opening Note</td>
+<td>Staff Help Note</td>
+<td>Staff Help Opening Note</td>
+<td>Staff Help Available</td>
+<td>Induction Loop</td>
+<td>Accessible Ticket Machines Note</td>
+<td>Accessible Ticket Machines Available</td>
+<td>Height Adjusted Counter Note</td>
+<td>Height Adjusted Counter Available</td>
+<td>Train Access Ramp Available</td>
+<td>Accessible Taxis</td>
+<td>Accessible Phones</td>
+<td>Nearest Stations More Facilities Note</td>
+<td>National Key Toilets Available</td>
+<td>National Key Toilets Location</td>
+<td>Step Free Access Note</td>
+<td>Step Free Access Available</td>
+<td>Ticket Gates Note</td>
+<td>Ticket Gates Available</td>
+<td>Impaired Mobility Set Down Note</td>
+<td>Impaired Mobility Set Down Available</td>
+<td>Wheelchairs Opening Note</td>
+<td>Wheelchairs Available</td>
+<td>Spaces</td>
+<td>Sheltered</td>
+<td>Security</td>
+<td>Location</td>
+<td>Note</td>
+<td>Type</td>
+<td>Rail Replacement Note</td>
+<td>Rail Replacement Map</td>
+<td>Taxi Rank</td>
+<td>Onward Travel</td>
+<td>Metro Services</td>
+<td>Airport</td>
+<td>Port</td>
+<td>Car Hire</td>
+<td>Cycle Hire</td>
+<td>Station Alert</td>
+<td>TOCs</td>
+<td>Station Category</td>
+<td>Page Guid</td>
+</tr>
+<tr>
+<td>AMR</td>
+<td>Amersham</td>
+<td>iwatson</td>
+<td>02/01/2014</td>
+<td>50600</td>
+<td>AMERSHAM (UND)</td>
+<td>Station Approach</td>
+<td>Amersham</td>
+<td>Buckinghamshire</td>
+<td></td>
+<td></td>
+<td>HP6 5AZ</td>
+<td>-0.607590127</td>
+<td>51.6742069133</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;All trains carry a ramp for wheelchair access&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>NotAvailable</td><td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 9</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>Chiltern Railways Customer Services</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Male and female toilets are available on the platform - no charge.</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=HP6 5AZ&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Amersham station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td>&lt;p&gt;Staff are at Amersham when trains are running&lt;/p&gt;</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>&lt;p&gt;Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.&lt;/p&gt;</td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket office staff provide assistance where possible. See ticket office opening hours.&lt;/p&gt;</td>
+<td>N</td>
+<td>N</td>
+<td>&lt;p&gt;Contact taxi operator directly&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>&lt;p&gt;There is step free access between the street and Platform 3 for Southbound Metropolitan Line services.  Customers need to be aware that there is a step between train and platform of up to 200mm for London Underground services.  There is no step-free access between the street and Platforms 1 and 2 for Chiltern services.  Boarding ramps are not available at this station.&lt;/p&gt;</td>
+<td>N</td>
+<td></td><td></td>
+<td>&lt;p&gt;Drop-off point close by with drop curb but no safe crossing.&lt;/p&gt;</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td>56</td>
+<td>Yes</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Hill Avenue. Bus Stop J&amp;nbsp;&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html&lt;/p&gt;</td>
+<td>&lt;p&gt;Metropolitan Line&lt;/p&gt;</td>
+<td>&lt;p&gt;Interchange in Central London for services to Gatwick, Heathrow, Stansted and London City&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>016E908539C5476786F7C072EB265AB8</td>
+</tr>
+<tr>
+<td>ZBB</td>
+<td>Barbican</td>
+<td>donohuej</td>
+<td>26/04/2013</td>
+<td>50100</td>
+<td>BARBICAN UND</td>
+<td>Aldersgate Street</td>
+<td>London</td>
+<td></td>
+<td></td>
+<td></td>
+<td>EC1A 4JA</td>
+<td>-0.0974358805</td>
+<td>51.5196864173</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Please seek assistance from station staff&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>NotAvailable</td><td>N</td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td></td>
+<td></td><td></td><td></td>
+<td>N</td>
+<td>&lt;p&gt;First Capital Connect Customer Relations&lt;/p&gt;</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>N</td>
+<td>None</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=EC1A 4JA&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Barbican station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td><td></td><td></td>
+<td>For First Capital Connect phone 0800 058 2844 or Text 0800 975 1052. Phone staffed 7 days a week, 0700 - 2200, except Christmas Day.</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>&lt;p&gt;Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards. Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.&lt;/p&gt;</td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket office staff provide assistance where possible. See ticket office opening hours.&lt;/p&gt;</td>
+<td>N</td>
+<td>N</td>
+<td>&lt;p&gt;Contact taxi operator directly&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td>&lt;p&gt;Drop-off point close by with drop curb and pelican crossing.&lt;/p&gt;</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td>20</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html&lt;/p&gt;</td>
+<td>&lt;p&gt;Metropolitan, Circle, Hammersmith &amp; City Lines&lt;/p&gt;</td>
+<td>&lt;p&gt;Interchange at Farringdon for National Rail services to Luton. Interchange at King&#39;s Cross St Pancras for the Piccadilly Line to Heathrow Terminals 1, 2, 3, 4 and 5&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Barbican Railway station is no longer part of the National Rail network following the closure of the Moorgate to Farringdon route as part of the &lt;a href=&quot;http://www.nationalrail.co.uk/service_disruptions/thameslink-programme.html&quot;&gt;Thameslink&lt;/a&gt; Improvement Programme&lt;/p&gt;</td>
+<td>LT</td>
+<td></td>
+<td>33E66E75F1314C9A8F493CB4700012FE</td>
+</tr>
+<tr>
+<td>BHO</td>
+<td>Blackhorse Road</td>
+<td>donohuej</td>
+<td>26/04/2013</td>
+<td>740000</td>
+<td>BLACKHORSE ROAD</td>
+<td>Blackhorse Road Railway Station</td>
+<td>Blackhorse Road</td>
+<td>Walthamstow</td>
+<td>Greater London</td>
+<td></td>
+<td>E17 6NH</td>
+<td>-0.0412458332</td>
+<td>51.5862075528</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Please seek assistance from on train staff</td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket Hall&lt;/p&gt;</td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 3</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>London Overground Customer Service Centre</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>N</td>
+<td>None</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=E17 6NH&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Blackhorse Road station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.</td>
+<td>Y</td>
+<td>Ticket office staff provide assistance where possible. See ticket office opening hours.</td>
+<td>N</td>
+<td>N</td>
+<td>Contact taxi operator directly</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td>Forest Road and car park entrance - Drop-off point close by with drop curb and pelican crossing.</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>15</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>Victoria Line</td>
+<td>Interchange at Tottenham Hale for National Rail Services to Stansted</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>4CFFA2628EBE4B3CBDE3D5A8639DCE08</td>
+</tr>
+<tr>
+<td>ZCW</td>
+<td>Canada Water</td>
+<td>chrystad</td>
+<td>19/03/2013</td>
+<td>0788</td>
+<td>Canada Water</td>
+<td>Deal Porter Way</td>
+<td>Surrey Quays</td>
+<td>London</td>
+<td></td>
+<td></td>
+<td>SE16 2YS</td>
+<td>-0.050791</td>
+<td>51.498231</td>
+<td>LT</td>
+<td>unstaffed</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 2</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>&lt;p&gt;To be confirmed by station operator.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;</td>
+<td></td><td></td><td></td><td></td>
+<td>N</td>
+<td></td>
+<td></td><td></td><td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>CardsAndCoins</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>No</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Interchange between London Overground East London Line service and London Underground Jubilee Line trains between Stratford and Stanmore.&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>C6176F3804AB4B108EAC9D06735E7A37</td>
+</tr>
+<tr>
+<td>CFO</td>
+<td>Chalfont &amp; Latimer</td>
+<td>iwatson</td>
+<td>02/01/2014</td>
+<td>53900</td>
+<td>-</td>
+<td>Station Approach</td>
+<td>Little Chalfont</td>
+<td>Buckinghamshire</td>
+<td></td>
+<td></td>
+<td>HP7 9PR</td>
+<td>-0.5605191022</td>
+<td>51.6681092656</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Please seek assistance from staff&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 8</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>Chiltern Railways Customer Services</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Male and female toilets are available on the platform - no charge.</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=HP7 9PR&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Chalfont &amp; Latimer station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td><td></td><td></td>
+<td>&lt;p&gt;London Underground staff are available when trains are running.&lt;/p&gt;</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>&lt;p&gt;Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.&lt;/p&gt;</td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket office staff provide assistance where possible. See ticket office opening hours.&lt;/p&gt;</td>
+<td>N</td>
+<td>Y</td>
+<td>&lt;p&gt;Contact taxi operator directly&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>&lt;p&gt;There is step free access between the street and all platforms, but be aware that step free access between the street and ticket office is only available via the Bedford Road entrance, and that it is not possible to interchange between Northbound and Southbound platforms without a street journey.  Customers need to be aware that there is a step between train and platform of up to 300mm for London Underground services.&lt;/p&gt;</td>
+<td>Y</td>
+<td></td><td></td>
+<td>&lt;p&gt;Drop-off point close by with drop curb but no safe crossing.&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>7</td>
+<td>Yes</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Mini cab office outside the station.</td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>Metropolitan Line</td>
+<td>Interchange in Central London for services to Gatwick, Heathrow, Stansted and London City</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>C8E6B072CF10426B9B333EE25BBDFC3B</td>
+</tr>
+<tr>
+<td>CLW</td>
+<td>Chorleywood</td>
+<td>dhanley</td>
+<td>02/01/2014</td>
+<td>54600</td>
+<td>CHORLEYWOOD UND</td>
+<td>Station Approach</td>
+<td>Chorleywood</td>
+<td>Hertfordshire</td>
+<td></td>
+<td></td>
+<td>WD3 5ND</td>
+<td>-0.5183116683</td>
+<td>51.6542489506</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Available when station is staffed&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>NotAvailable</td><td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 7</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>Chiltern Railways Customer Services</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>Male and female toilets are available on the platform - no charge.</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=WD3 5ND&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Chorleywood station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td>London Underground staff are available when trains are running.
+        &lt;dl class=&quot;zebra&quot;&gt;
+            &lt;dd class=&quot;clear hlt&quot;&gt;
+            &lt;br /&gt;
+            &lt;/dd&gt;
+        &lt;/dl&gt;</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>&lt;p&gt;Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.&lt;/p&gt;</td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket office staff provide assistance where possible. See ticket office opening hours.&lt;/p&gt;</td>
+<td>N</td>
+<td>Y</td>
+<td>&lt;p&gt;Contact taxi operator directly&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>&lt;p&gt;Customers need to be aware that there is a step between train and platform of up to 300mm for London Underground services.&lt;/p&gt;</td>
+<td>Y</td>
+<td></td><td></td>
+<td>&lt;p&gt;Drop-off point close by with drop curb but no safe crossing.&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>0</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Mini cab office outside the station.</td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>Metropolitan Line</td>
+<td>Interchange in Central London for services to Gatwick, Heathrow, Stansted and London City</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>BF84017F19214CBCB6F5CB6B63E9B51B</td>
+</tr>
+<tr>
+<td>ZEL</td>
+<td>Elephant &amp; Castle (Underground)</td>
+<td>kdaniels</td>
+<td>18/02/2014</td>
+<td>0000</td>
+<td>NA</td>
+<td>Camberwell</td>
+<td>Greater London</td>
+<td></td>
+<td></td>
+<td></td>
+<td>SE17 1LB</td>
+<td>0.060266</td>
+<td>51.294506</td>
+<td>LT</td>
+<td>unstaffed</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>NotAvailable</td><td>N</td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 1/2</td>
+<td></td><td></td><td></td>
+<td>N</td>
+<td>&lt;p&gt;For more information, please contact Transport for London on 0843 222 1234  or visit &lt;a href=&quot;http://www.tfl.gov.uk&quot;&gt;www.tfl.gov.uk&lt;/a&gt;&lt;/p&gt;</td>
+<td></td><td></td><td></td><td></td>
+<td>N</td>
+<td></td>
+<td></td><td></td><td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>CardsAndCoins</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+<td>&lt;p&gt;This page relates to the Elephant &amp;amp; Castle Underground station, operated by London Underground Limited.&lt;/p&gt;
+&lt;p&gt;For details about the National Rail station, please visit this &lt;a href=&quot;http://www.nationalrail.co.uk/stations/eph/details.html&quot;&gt;page&lt;/a&gt;&lt;/p&gt;</td>
+<td>LT</td>
+<td></td>
+<td>933B048A0A284632BDCAEF1B70B26BF8</td>
+</tr>
+<tr>
+<td>GFD</td>
+<td>Greenford</td>
+<td>donohuej</td>
+<td>26/04/2013</td>
+<td>313600</td>
+<td>GREENFORD.</td>
+<td>Oldfield Lane</td>
+<td>Greenford</td>
+<td></td>
+<td></td>
+<td></td>
+<td>UB6 8PX</td>
+<td>-0.3445415183</td>
+<td>51.542318953</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 4</td>
+<td>Applicable Operators: First Great Western</td>
+<td>GW</td>
+<td></td>
+<td>Y</td>
+<td>First Great Western Customer Services</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td></td><td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>None</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=UB6 8PX&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Greenford station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.</td>
+<td>Y</td>
+<td>Ticket office staff provide assistance where possible. See ticket office opening hours.</td>
+<td>N</td>
+<td>N</td>
+<td>Contact taxi operator directly</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td>Oldfield Lane entrance - Drop-off point close by with drop curb and puffin crossing.</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td>12</td>
+<td>Yes</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Front of the station&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html&lt;/p&gt;</td>
+<td>&lt;p&gt;Central Line&lt;/p&gt;</td>
+<td>&lt;p&gt;Interchange in Central London for services to Gatwick, Heathrow, Stansted and London City&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>EFEC0CDB63AC41CD8588BB8626970571</td>
+</tr>
+<tr>
+<td>GUN</td>
+<td>Gunnersbury</td>
+<td>donohuej</td>
+<td>26/04/2013</td>
+<td>558800</td>
+<td>GUNNERSBURY</td>
+<td>Gunnersbury Railway Station</td>
+<td>Chiswick High Road</td>
+<td>Chiswick</td>
+<td>Greater London</td>
+<td></td>
+<td>W4 4AN</td>
+<td>-0.2757834472</td>
+<td>51.4918691216</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket Hall&lt;/p&gt;</td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 3</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>London Overground Customer Service Centre</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Waiting room located on single island platform.</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>None</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=W4 4AN&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Gunnersbury station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td>When booking office is open</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>&lt;p&gt;Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.&lt;/p&gt;</td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket office staff provide assistance where possible. See ticket office opening hours.&lt;/p&gt;</td>
+<td>N</td>
+<td>N</td>
+<td>&lt;p&gt;Contact taxi operator directly&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>&lt;p&gt;It is possible to make a step-free interchange between Northbound and Soutghbound platforms, but not to enter or exit the station step-free.  Customers need to be aware that there is a step between train and platform of up to 200mm for London Underground services.  Boarding ramps are not available at this station.&lt;/p&gt;</td>
+<td>N</td>
+<td></td><td></td>
+<td>&lt;p&gt;Chiswick High Road entrance - Drop-off point close by with drop curb and pelican crossing.&lt;/p&gt;</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td>0</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>District Line</td>
+<td>Interchange at Hammersmith for the Piccadilly Line to Heathrow Terminals 1, 2, 3, 4 and 5, or at West Brompton for direct National Rail services to Gatwick</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>F5050816567E493296BDA5545C782748</td>
+</tr>
+<tr>
+<td>HDN</td>
+<td>Harlesden</td>
+<td>donohuej</td>
+<td>26/04/2013</td>
+<td>152100</td>
+<td>HARLESDEN</td>
+<td>Harlesden Railway Station</td>
+<td>Acton Lane</td>
+<td>Harlesden</td>
+<td>Greater London</td>
+<td></td>
+<td>NW10 7AA</td>
+<td>-0.2582328517</td>
+<td>51.5365728794</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>&lt;p&gt;Forecourt&lt;/p&gt;</td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 3</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>London Overground Customer Service Centre</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>None</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=NW10 7AA&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Harlesden station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.</td>
+<td>Y</td>
+<td>Ticket office staff provide assistance where possible. See ticket office opening hours.</td>
+<td>N</td>
+<td>N</td>
+<td>Contact taxi operator directly</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>5</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>Bakerloo Line</td>
+<td>Interchange at Harrow &amp; Wealdstone for National Rail services to Gatwick</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>BFABE5CBE3874749948AE7081EE1F296</td>
+</tr>
+<tr>
+<td>HRW</td>
+<td>Harrow &amp; Wealdstone</td>
+<td>donohuej</td>
+<td>26/04/2013</td>
+<td>139700</td>
+<td>-</td>
+<td>The Bridge</td>
+<td>High Street</td>
+<td>Harrow</td>
+<td>Greater London</td>
+<td></td>
+<td>HA3 5BP</td>
+<td>-0.3340730185</td>
+<td>51.5916203758</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket Halls&lt;/p&gt;</td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 5</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>Contact the relevant TOC</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Waiting rooms on Platforms 6, 4/5, 2/3 and 1.</td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Male, female and unisex accessible in the Sandridge Close ticket hall - no charge.</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=HA3 5BP&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Harrow &amp; Wealdstone station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>&lt;p&gt;Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.&lt;/p&gt;</td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket office staff provide assistance where possible. See ticket office opening hours.&lt;/p&gt;</td>
+<td>N</td>
+<td>Y</td>
+<td>&lt;p&gt;Contact taxi operator directly&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>&lt;p&gt;Standard key, not RADAR - ask staff for assistance.&lt;/p&gt;</td>
+<td>&lt;p&gt;Customers need to be aware that there is a step between train and platform of up to 300mm for London Underground services.&lt;/p&gt;</td>
+<td>Y</td>
+<td></td><td></td>
+<td>&lt;p&gt;Sandring Close entrance - Drop-off point close by with drop curb but no safe crossing.&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>22</td>
+<td>No</td>
+<td>Y</td>
+<td>12 outside station by car park</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>Bakerloo Line</td>
+<td>Interchange for National Rail services to Gatwick</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>67F6197318184CF6997199A8C1A4ACC6</td>
+</tr>
+<tr>
+<td>HOH</td>
+<td>Harrow-on-the-Hill</td>
+<td>dhanley</td>
+<td>03/01/2014</td>
+<td>59800</td>
+<td>HARROW-HILL UND</td>
+<td>Station Approach</td>
+<td>Harrow</td>
+<td></td>
+<td></td>
+<td></td>
+<td>HA1 1BB</td>
+<td>-0.3359898856</td>
+<td>51.5790671372</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>NotAvailable</td><td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 5</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>Chiltern Railways Customer Services</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Male and female toilets in the ticket hall - no charge.</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=HA1 1BB&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Harrow-on-the-Hill station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td><td></td><td></td>
+<td>&lt;p class=&quot;clear hlt&quot;&gt;London Underground staff are available when trains are running.&lt;/p&gt;</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.</td>
+<td>Y</td>
+<td>Ticket office staff provide assistance where possible. See ticket office opening hours.</td>
+<td>N</td>
+<td>N</td>
+<td>Contact taxi operator directly</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td>College Road bus station entrance - Drop-off point close by with drop curb and pelican crossing.</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td>26</td>
+<td>Yes</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>Metropolitan Line</td>
+<td>Interchange in Central London for services to Gatwick, Stansted and London City.  Interchange at Rayners Lane for the Piccadilly Line to Heathrow Terminals 1, 2, 3, 4 and 5</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>F3869A1495DF4BA4AEA7D55BCA18DB5C</td>
+</tr>
+<tr>
+<td>HHY</td>
+<td>Highbury &amp; Islington</td>
+<td>donohuej</td>
+<td>26/04/2013</td>
+<td>600900</td>
+<td>-</td>
+<td>Holloway Road</td>
+<td>-</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N5 1RA</td>
+<td>-0.1020766012</td>
+<td>51.546739948</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket Hall&lt;/p&gt;</td>
+<td>NotAvailable</td><td>N</td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 2</td>
+<td></td><td></td><td></td>
+<td>N</td>
+<td>Contact the relevant TOC</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>N</td>
+<td>None</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=N5 1RA&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Highbury &amp; Islington station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>For First Capital Connect contact the Special Assistance Helpline on 0800 058 2844 or Text 0800 975 1052.</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>&lt;p&gt;Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.&lt;/p&gt;</td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket office staff provide assistance where possible. See ticket office opening hours.&lt;/p&gt;</td>
+<td>N</td>
+<td>N</td>
+<td>&lt;p&gt;Contact taxi operator directly&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>&lt;p&gt;It is possible to make a step-free interchange between Victoria Line and First Capital Connect platforms going in the same direction (i.e. Northbound to Northbound), but not to enter or exit the station step-free.  Customers need to be aware that there is a step between train and platform of up to 200mm for London Underground services.  Boarding ramps are not available at this station.&lt;/p&gt;</td>
+<td>N</td>
+<td></td><td></td>
+<td>&lt;p&gt;Drop-off point close by with drop curb and pelican crossing.&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>26</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>Victoria Line</td>
+<td>Interchange at Tottenham Hale for National Rail Services to Stansted</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>73C167D5EDDF48CF82CC2FC8F6782ACE</td>
+</tr>
+<tr>
+<td>KNL</td>
+<td>Kensal Green</td>
+<td>donohuej</td>
+<td>26/04/2013</td>
+<td>144700</td>
+<td>KENSAL GREEN</td>
+<td>Kensal Green Railway Station</td>
+<td>College Road</td>
+<td>Kensal Green</td>
+<td>Greater London</td>
+<td></td>
+<td>NW10 5JT</td>
+<td>-0.2238558628</td>
+<td>51.5306617884</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket Hall&lt;/p&gt;</td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 2</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>London Overground Customer Service Centre</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>N</td>
+<td>None</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=NW10 5JT&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Kensal Green station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.</td>
+<td>Y</td>
+<td>Ticket office staff provide assistance where possible. See ticket office opening hours.</td>
+<td>N</td>
+<td>N</td>
+<td>Contact taxi operator directly</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td>Drop-off point close by with drop curb and pelican crossing.</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>14</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>Bakerloo Line</td>
+<td>Interchange at Harrow &amp; Wealdstone for National Rail services to Gatwick</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>7CEE2A3B6FF74690B08816B77760046F</td>
+</tr>
+<tr>
+<td>KTN</td>
+<td>Kentish Town</td>
+<td>donohuej</td>
+<td>26/04/2013</td>
+<td>155300</td>
+<td>KENTISH TOWN</td>
+<td>Kentish Town Road</td>
+<td>-</td>
+<td></td>
+<td></td>
+<td></td>
+<td>NW5 2AA</td>
+<td>-0.1394420761</td>
+<td>51.5500363746</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 2</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>First Capital Connect Customer Relations</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>N</td>
+<td>None</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=NW5 2AA&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Kentish Town station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Staff assistance may be available but arrangements must be pre-booked and First Capital Connect may offer a suitable alternative. Please phone the Helpline on 0800 058 2844.</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.</td>
+<td>Y</td>
+<td>Ticket office staff provide assistance where possible. See ticket office opening hours.</td>
+<td>N</td>
+<td>N</td>
+<td>Contact taxi operator directly</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>0</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>Northern Line</td>
+<td>Interchange at King&#39;s Cross St Pancras for National Rail services to Luton or the Piccadilly Line to Heathrow Terminals 1, 2, 3, 4 and 5</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>BFAECBF4CF58409B81D85CCA3470A6A6</td>
+</tr>
+<tr>
+<td>KNT</td>
+<td>Kenton</td>
+<td>donohuej</td>
+<td>26/04/2013</td>
+<td>139900</td>
+<td>KENTON</td>
+<td>Kenton Railway Station</td>
+<td>Kenton Road</td>
+<td>Harrow</td>
+<td>Greater London</td>
+<td></td>
+<td>HA3 0AZ</td>
+<td>-0.3171373274</td>
+<td>51.5814960199</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket Hall&lt;/p&gt;</td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 4</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>London Overground Customer Service Centre</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>None</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=HA3 0AZ&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Kenton station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.</td>
+<td>Y</td>
+<td>Ticket office staff provide assistance where possible. See ticket office opening hours.</td>
+<td>N</td>
+<td>N</td>
+<td>Contact taxi operator directly</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>5</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>Bakerloo Line</td>
+<td>Interchange at Harrow &amp; Wealdstone for National Rail services to Gatwick</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>65728EF4C8D5422A95B0C4A9B5D67F52</td>
+</tr>
+<tr>
+<td>KWG</td>
+<td>Kew Gardens</td>
+<td>donohuej</td>
+<td>26/04/2013</td>
+<td>559400</td>
+<td>KEW GARDENS</td>
+<td>Kew Gardens Railway Station</td>
+<td>Station Approach</td>
+<td>Richmond</td>
+<td>Greater London</td>
+<td></td>
+<td>TW9 3BZ</td>
+<td>-0.2849616483</td>
+<td>51.4776154969</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket Halls&lt;/p&gt;</td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 3/4</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>London Overground Customer Service Centre</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Male and female toilets on the platform - no charge.</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=TW9 3BZ&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Kew Gardens station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td><td></td><td></td>
+<td>During booking office opening hours</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>&lt;p&gt;Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.&lt;/p&gt;</td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>&lt;p&gt;Contact taxi operator directly&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>&lt;p&gt;There is step free access between the street and all platforms, but be aware that it is not possible to interchange between Northbound and Southbound platforms without a street journey.  Customers need to be aware that there is a step between train and platform of up to 300mm for London Underground services.&lt;/p&gt;</td>
+<td>Y</td>
+<td></td><td></td>
+<td>&lt;p&gt;Drop-off point close by with drop curb but no safe crossing.&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>28</td>
+<td>Yes</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Mini cab office outside the station.</td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>District Line</td>
+<td>Interchange at Hammersmith, or Turnham Green then Acton Town, for the Piccadilly Line to Heathrow Terminals 1, 2, 3, 4 and 5.  Interchange at Earl&#39;s Court for National Rail services to Gatwick from West Brompton.</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>E089F29157534565A64C665126D0D96C</td>
+</tr>
+<tr>
+<td>MOG</td>
+<td>Moorgate</td>
+<td>donohuej</td>
+<td>26/04/2013</td>
+<td>600500</td>
+<td>MOORGATE.</td>
+<td>Moorfields</td>
+<td>-</td>
+<td></td>
+<td></td>
+<td></td>
+<td>EC2Y 9AE</td>
+<td>-0.09024</td>
+<td>51.519563</td>
+<td>LT</td>
+<td>unstaffed</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>NotAvailable</td><td>N</td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 1</td>
+<td></td><td></td><td></td>
+<td>N</td>
+<td>&lt;p&gt;First Capital Connect Customer Relations&lt;/p&gt;</td>
+<td></td><td></td><td></td><td></td>
+<td>N</td>
+<td></td>
+<td></td><td></td><td></td><td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>CardsAndCoins</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>&lt;p&gt;Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards. Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.&lt;/p&gt;</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>&lt;p&gt;Contact taxi operator directly&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td>&lt;p&gt;Moorfields West entrance - Drop-off point close by at same level as pavement&lt;/p&gt;</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html&lt;/p&gt;</td>
+<td>&lt;p&gt;Northern, Metropolitan, Circle, Hammersmith &amp; City Lines&lt;/p&gt;</td>
+<td>&lt;p&gt;Interchange at Farringdon for National Rail services to Luton. Interchange at King&#39;s Cross St Pancras for the Piccadilly Line to Heathrow Terminals 1, 2, 3, 4 and 5&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td>
+        &lt;p&gt;National Rail services no longer run between Moorgate and Farringdon as part of the  Improvement Programme. London Underground trains continue to run normally on this route&lt;/p&gt;
+    </td>
+<td>LT</td>
+<td></td>
+<td>06EB09A1799C46A38E6890869707B77D</td>
+</tr>
+<tr>
+<td>NWB</td>
+<td>North Wembley</td>
+<td>donohuej</td>
+<td>26/04/2013</td>
+<td>142200</td>
+<td>NORTH WEMBLEY</td>
+<td>North Wembley Railway Station</td>
+<td>East Lane</td>
+<td>Wembley</td>
+<td>Greater London</td>
+<td></td>
+<td>HA9 7NT</td>
+<td>-0.3039843835</td>
+<td>51.5626022528</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket Hall&lt;/p&gt;</td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 4</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>London Overground Customer Service Centre</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>None</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=HA9 7NT&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around North Wembley station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.</td>
+<td>Y</td>
+<td>Ticket office staff provide assistance where possible. See ticket office opening hours.</td>
+<td>N</td>
+<td>N</td>
+<td>Contact taxi operator directly</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>4</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>Bakerloo Line</td>
+<td>Interchange at Harrow &amp; Wealdstone for National Rail services to Gatwick</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>9ACE63F296344D838474270202C2DCE1</td>
+</tr>
+<tr>
+<td>QPW</td>
+<td>Queens Park (London)</td>
+<td>donohuej</td>
+<td>25/04/2013</td>
+<td>141900</td>
+<td>QUEENS PARK(LDN)</td>
+<td>Queens Park Railway Station</td>
+<td>Salusbury Road</td>
+<td>West Kilburn</td>
+<td>Greater London</td>
+<td></td>
+<td>NW6 6NL</td>
+<td>-0.2049825011</td>
+<td>51.5339715337</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket Hall&lt;/p&gt;</td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 2</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>&lt;p&gt;London Overground Customer Service Centre&lt;/p&gt;</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;p&gt;&lt;a href=&quot;http://btopenzone.hotspot-directory.com/results.php?txtQuick=NW6 6NL&amp;amp;z=9&amp;amp;radRoaming=1&quot; target=&quot;_blank&quot;&gt;Find WiFi Hotspots around Queens Park (London) station&lt;/a&gt;&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>&lt;p&gt;Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards. Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.&lt;/p&gt;</td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket office staff provide assistance where possible. See ticket office opening hours.&lt;/p&gt;</td>
+<td>N</td>
+<td>N</td>
+<td>&lt;p&gt;Contact taxi operator directly&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>6</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html&lt;/p&gt;</td>
+<td>&lt;p&gt;Bakerloo Line&lt;/p&gt;</td>
+<td>&lt;p&gt;Interchange at Harrow &amp; Wealdstone for National Rail services to Gatwick&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>B3043C15FD204C87AA8823C785F1B5C4</td>
+</tr>
+<tr>
+<td>RIC</td>
+<td>Rickmansworth</td>
+<td>dhanley</td>
+<td>03/01/2014</td>
+<td>68700</td>
+<td>RICKMANSWRTH UND</td>
+<td>Station Approach</td>
+<td>Rickmansworth</td>
+<td></td>
+<td></td>
+<td></td>
+<td>WD3 1QY</td>
+<td>-0.4732729561</td>
+<td>51.6402466027</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>NotAvailable</td><td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 7</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>Chiltern Railways Customer Services</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Male and female toilets on the platform - no charge.</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=WD3 1QY&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Rickmansworth station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>&lt;p&gt;Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards. Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.&lt;/p&gt;</td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket office staff provide assistance where possible. See ticket office opening hours.&lt;/p&gt;</td>
+<td>N</td>
+<td>N</td>
+<td>&lt;p&gt;Contact taxi operator directly&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>&lt;p&gt;There is step free access between the street and Platform 2 for Southbound Metropolitan Line and National Rail services only. Customers need to be aware that there is a step between train and platform of up to 300mm for London Underground services. Boarding ramps are not available at this station.&lt;/p&gt;</td>
+<td>N</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>12</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Mini cab office outside the station.</td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>Metropolitan Line</td>
+<td>Interchange in Central London for services to Gatwick, Heathrow, Stansted and London City</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>410D59B589434089B827CD09B155209C</td>
+</tr>
+<tr>
+<td>SOK</td>
+<td>South Kenton</td>
+<td>donohuej</td>
+<td>25/04/2013</td>
+<td>145300</td>
+<td>SOUTH KENTON</td>
+<td>South Kenton Railway Station</td>
+<td>Windermere Road</td>
+<td>Preston</td>
+<td>Greater London</td>
+<td></td>
+<td>HA9 8RB</td>
+<td>-0.3084627894</td>
+<td>51.570220608</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>&lt;p&gt;Approach Subway&lt;/p&gt;</td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 4</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>&lt;p&gt;London Overground Customer Service Centre&lt;/p&gt;</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;p&gt;&lt;a href=&quot;http://btopenzone.hotspot-directory.com/results.php?txtQuick=HA9 8RB&amp;amp;z=9&amp;amp;radRoaming=1&quot; target=&quot;_blank&quot;&gt;Find WiFi Hotspots around South Kenton station&lt;/a&gt;&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>&lt;p&gt;Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards. Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.&lt;/p&gt;</td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket office staff provide assistance where possible. See ticket office opening hours.&lt;/p&gt;</td>
+<td>N</td>
+<td>N</td>
+<td>&lt;p&gt;Contact taxi operator directly&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td>&lt;p&gt;Drop-off point close by with drop curb but no safe crossing.&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>0</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html&lt;/p&gt;</td>
+<td>&lt;p&gt;Bakerloo Line&lt;/p&gt;</td>
+<td>&lt;p&gt;Interchange at Harrow &amp; Wealdstone for National Rail services to Gatwick&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>2B5442F040204E1DAB12FB4930E765BC</td>
+</tr>
+<tr>
+<td>SRU</td>
+<td>South Ruislip</td>
+<td>iwatson</td>
+<td>02/01/2014</td>
+<td>305700</td>
+<td>SOUTH RUISLIP.</td>
+<td>Station Road</td>
+<td>South Ruislip</td>
+<td></td>
+<td></td>
+<td></td>
+<td>HA4 6TP</td>
+<td>-0.3992477137</td>
+<td>51.5569265569</td>
+<td>LT</td>
+<td>partTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 5</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>&lt;p&gt;We welcome your feedback, suggestions and ideas to help us to make changes to improve your services.&lt;/p&gt;</td>
+<td></td><td></td><td></td>
+<td>http://www.chilternrailways.co.uk/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>08456 005 165</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=HA4 6TP&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around South Ruislip station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>08456 005 165</td>
+<td></td>
+<td>Ticket Office staff will assist wherever possible. Please note that the advertised availability of staff may differ from time to time without notice due to local arrangements or staff sickness. London Underground staff are on site when trains are running.&lt;br /&gt;</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>For taxis from all UK stations visit www.traintaxi.co.uk.</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>There is no flat access at this station.</td>
+<td>N</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>2</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Rail replacement buses depart from the front of the station.</td>
+<td></td>
+<td>At front of station.</td>
+<td>Bus number 114 stops at Victoria Road, a few minutes walk from the station.</td>
+<td>Served by the Central Line.</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>820F4384071040F79EA2525661634F26</td>
+</tr>
+<tr>
+<td>SBP</td>
+<td>Stonebridge Park</td>
+<td>donohuej</td>
+<td>25/04/2013</td>
+<td>145400</td>
+<td>STONEBRIDGE PARK</td>
+<td>Stonebridge Park Railway Station</td>
+<td>North Circular Road</td>
+<td>Stonebridge Park</td>
+<td>Greater London</td>
+<td></td>
+<td>NW10 0RL</td>
+<td>-0.2758280111</td>
+<td>51.5441168147</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket Hall&lt;/p&gt;</td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 3</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>London Overground Customer Service Centre</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>None</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=NW10 0RL&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Stonebridge Park station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.</td>
+<td>Y</td>
+<td>Ticket office staff provide assistance where possible. See ticket office opening hours.</td>
+<td>N</td>
+<td>N</td>
+<td>Contact taxi operator directly</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>8</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>Bakerloo Line</td>
+<td>Interchange at Harrow &amp; Wealdstone for National Rail services to Gatwick</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>9788319C088F484FB7E5DA178A6779CD</td>
+</tr>
+<tr>
+<td>WMB</td>
+<td>Wembley Central</td>
+<td>donohuej</td>
+<td>25/04/2013</td>
+<td>142300</td>
+<td>WEMBLEY CENTRAL</td>
+<td>Wembley Central Railway Station</td>
+<td>High Road</td>
+<td>Wembley</td>
+<td>Greater London</td>
+<td></td>
+<td>HA9 7AJ</td>
+<td>-0.2964185637</td>
+<td>51.5523310827</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket Hall&lt;/p&gt;</td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 4</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>London Overground Customer Service Centre</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>None</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=HA9 7AJ&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Wembley Central station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td><td></td><td></td>
+<td>There is no disabled assistance available at this station.</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>&lt;p&gt;Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards. Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.&lt;/p&gt;</td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket office staff provide assistance where possible. See ticket office opening hours.&lt;/p&gt;</td>
+<td>N</td>
+<td>N</td>
+<td>&lt;p&gt;Contact taxi operator directly&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>&lt;p&gt;Nearest stations with step free access are London Euston and Harrow &amp; Wealdstone.&lt;/p&gt;</td>
+<td>N</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>0</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>Bakerloo Line</td>
+<td>Interchange at Harrow &amp; Wealdstone for National Rail services to Gatwick</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>BBC5B4FF0481466AB3ABF0DE41628B5E</td>
+</tr>
+<tr>
+<td>WBP</td>
+<td>West Brompton</td>
+<td>donohuej</td>
+<td>25/04/2013</td>
+<td>887500</td>
+<td>WEST BROMPTON</td>
+<td>Old Brompton Road</td>
+<td>-</td>
+<td></td>
+<td></td>
+<td></td>
+<td>SW5 9JX</td>
+<td>-0.1954357105</td>
+<td>51.4873327686</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket Hall&lt;/p&gt;</td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 2</td>
+<td></td><td></td><td></td>
+<td>N</td>
+<td>London Overground Customer Service Centre</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;p&gt;&lt;a href=&quot;http://btopenzone.hotspot-directory.com/results.php?txtQuick=SW5 9JX&amp;amp;z=9&amp;amp;radRoaming=1&quot; target=&quot;_blank&quot;&gt;Find WiFi Hotspots around West Brompton station&lt;/a&gt;&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td>No Silverlink based at the station, but staff can be booked to assist</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>&lt;p&gt;Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards. Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.&lt;/p&gt;</td>
+<td>Y</td>
+<td>&lt;p&gt;Ticket office staff provide assistance where possible. See ticket office opening hours.&lt;/p&gt;</td>
+<td>N</td>
+<td>N</td>
+<td>&lt;p&gt;Contact taxi operator directly&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>&lt;p&gt;There is step free access between the street and Platform 2 for Eastbound District Line services, and Platforms 3 and 4 for London Overground services only. It is possible to make a step-free interchange between all of these platforms. Customers need to be aware that there is a step between train and platform of up to 200mm for LUL services. Boarding ramps are not available at this station.&lt;/p&gt;</td>
+<td>N</td>
+<td></td><td></td>
+<td>&lt;p&gt;Drop-off point close by with drop curb and pelican crossing.&lt;/p&gt;</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td>8</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html&lt;/p&gt;</td>
+<td>&lt;p&gt;District Line&lt;/p&gt;</td>
+<td>&lt;p&gt;Interchange for National Rail services to Gatwick. Interchange at Earl&#39;s Court for the Piccadilly Line to Heathrow Terminals 1, 2, 3, 4 and 5&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>3F7ECCA4B1BC4B61A5C1FE39388ECCEA</td>
+</tr>
+<tr>
+<td>WEH</td>
+<td>West Ham</td>
+<td>welsbys</td>
+<td>01/05/2013</td>
+<td>747400</td>
+<td>West Ham</td>
+<td>Manor Road</td>
+<td>-</td>
+<td></td>
+<td></td>
+<td></td>
+<td>E15 3BN</td>
+<td>0.0058754718</td>
+<td>51.5285764835</td>
+<td>LT</td>
+<td>unstaffed</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>NotAvailable</td><td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 3</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>c2c Customer Relations</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>N</td>
+<td>None</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=E15 3BN&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around West Ham station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>&lt;p&gt;Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.&lt;/p&gt;</td>
+<td>N</td>
+<td>&lt;p&gt;Ticket office staff provide assistance where possible. See ticket office opening hours.&lt;/p&gt;</td>
+<td>N</td>
+<td>N</td>
+<td>&lt;p&gt;Contact taxi operator directly&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>&lt;p&gt;Customers need to be aware that there is a step between train and platform of up to 200mm for London Underground services.&lt;/p&gt;</td>
+<td>Y</td>
+<td></td><td></td>
+<td>&lt;p&gt;Drop-off point close by with drop curb but no safe crossing.&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>16</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>District, Central and Jubilee Lines</td>
+<td>Interchange at Canning Town for the DLR to London City.  Interchange at Stratford then Highbury &amp; Islington for National Rail services to Stansted from Tottenham Hale.</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>BDEEF25398524EF0BC44C125263063A1</td>
+</tr>
+<tr>
+<td>WRU</td>
+<td>West Ruislip</td>
+<td>iwatson</td>
+<td>02/01/2014</td>
+<td>305900</td>
+<td>WEST RUISLIP.</td>
+<td>Ickenham Road</td>
+<td>West Ruislip</td>
+<td>Greater London</td>
+<td></td>
+<td></td>
+<td>HA4 7DW</td>
+<td>-0.4377576334</td>
+<td>51.5697562213</td>
+<td>LT</td>
+<td>partTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+<td>&lt;p&gt;Located at entrance to Platform 4.&lt;/p&gt;</td>
+<td>TicketMachine</td><td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketMachine</td><td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 6</td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>&lt;p&gt;We welcome your feedback, suggestions and ideas to help us to make changes to improve your services.&lt;/p&gt;</td>
+<td></td><td></td><td></td>
+<td>http://www.chilternrailways.co.uk/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>08456 005 165</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Coffee kiosk</td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=HA4 7DW&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around West Ruislip station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Kiosk</td>
+<td>N</td>
+<td></td>
+<td>08456 005 165</td>
+<td></td>
+<td>Ticket office staff will assist wherever possible. Please note that the advertised availability of staff may differ from time to time without notice due to local arrangements or staff sickness. London Underground staff are at the station when trains are running.</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>For taxis from all UK stations visit www.traintaxi.co.uk.</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>There is flat access to Platform 4 at this station. There is no flat access to Platform 3.</td>
+<td>N</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>10</td>
+<td>No</td>
+<td>Y</td>
+<td>Free cycle storage for ticket holders is available on Platform 4.</td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Rail replacement buses stop in the main station car park, adjacent to Platform 4.&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Bus services U1 and U10 leave from the front of the station.&lt;/p&gt;</td>
+<td>&lt;p&gt;Served by the Central Line&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>60F601D2DA004F27A7CE8D8E1EB47920</td>
+</tr>
+<tr>
+<td>ZWL</td>
+<td>Whitechapel</td>
+<td>kdaniels</td>
+<td>18/02/2014</td>
+<td>0763</td>
+<td>Whitechapel</td>
+<td>277 Whitechapel Road</td>
+<td>London</td>
+<td></td>
+<td></td>
+<td></td>
+<td>E1 1BY</td>
+<td>-0.059757122</td>
+<td>51.519467</td>
+<td>LT</td>
+<td>unstaffed</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>TicketOffice, TicketMachine</td><td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td><td></td><td></td>
+<td>Y</td>
+<td>To be confirmed by station operator.</td>
+<td></td><td></td><td></td><td></td>
+<td>N</td>
+<td>To be confirmed by station operator.</td>
+<td></td><td></td><td></td><td></td>
+<td></td>
+<td>N</td>
+<td>To be confirmed by station operator.</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>CardsAndCoins</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Customers can connect with London Underground District and Hammersmith and City lines.&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>LT</td>
+<td></td>
+<td>34BF92A1DB414187B1131A16C16E0880</td>
+</tr>
+<tr>
+<td>OLD</td>
+<td>Old Street</td>
+<td>donohuej</td>
+<td>26/04/2013</td>
+<td>600300</td>
+<td>OLD STREET.</td>
+<td>Old Street</td>
+<td>London</td>
+<td></td>
+<td></td>
+<td></td>
+<td>EC1Y 1BE</td>
+<td>-0.0885295811</td>
+<td>51.5258365574</td>
+<td>LT</td>
+<td>fullTime</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>NotAvailable</td><td>N</td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>Zone 1</td>
+<td></td><td></td><td></td>
+<td>N</td>
+<td>First Capital Connect Customer Relations</td>
+<td></td><td></td><td></td>
+<td>https://www.tfl.gov.uk/tfl/contact/lostproperty</td>
+<td>N</td>
+<td></td>
+<td></td><td>0845 330 9882</td><td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Male, female and unisex accessible toilets available - no charge.</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;a href=&#39;http://btopenzone.hotspot-directory.com/results.php?txtQuick=EC1V 9NR&amp;z=9&amp;radRoaming=1&#39; target=&#39;_blank&#39;&gt;Find WiFi Hotspots around Old Street station&lt;/a&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>For First Capital Connect contact 0800 058 2844 or Text 0800 975 1052.</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Accessible ticket machines sell tickets suitable for use on London Underground services, including Travelcards.  Where tickets for National Rail services are not available through an accessible ticket machine, ticket office staff provide assistance where possible.</td>
+<td>Y</td>
+<td>Ticket office staff provide assistance where possible. See ticket office opening hours.</td>
+<td>N</td>
+<td>N</td>
+<td>Contact taxi operator directly</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Standard key, not RADAR - ask staff for assistance.</td>
+<td></td>
+<td>N</td>
+<td></td><td></td>
+<td>City Road (South East Corner) #4 entrance - Drop-off point close by with drop curb and pelican crossing.</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td>36</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Please see TfL&#39;s interactive map for details of bus routes and destinations served: http://www.journeyplanner.org/im/SI-C.html</td>
+<td>Northern Line</td>
+<td>Interchange at Farringdon for National Rail services to Luton.  Interchange at King&#39;s Cross St Pancras for the Piccadilly Line to Heathrow Terminals 1, 2, 3, 4 and 5</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>ZZ</td>
+<td></td>
+<td>7EDFB036B7CE470F928D5225B94F41C7</td>
+</tr>
+</table>

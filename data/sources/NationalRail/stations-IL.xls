@@ -1,0 +1,1120 @@
+<table><tr>
+<td colspan="6"></td>
+<td colspan="6">Address</td>
+<td colspan="3"></td>
+<td colspan="2">Staffing</td>
+<td colspan="5">Information Systems</td>
+<td colspan="20">Fares</td>
+<td>Customer Services</td>
+<td colspan="6">Left Luggage</td>
+<td colspan="7">Lost Property</td>
+<td colspan="31">Station Facilities</td>
+<td colspan="25">Accessibility</td>
+<td colspan="6">Cycle Storage</td>
+<td colspan="9">Getting To and From</td>
+<td colspan="4"></td>
+</tr>
+<tr>
+<td>Crs Code</td>
+<td>Name</td>
+<td>Changed By</td>
+<td>Changed Date</td>
+<td>NLC</td>
+<td>16 Char Name</td>
+<td>Address Line 1</td>
+<td>Address Line 2</td>
+<td>Address Line 3</td>
+<td>Address Line 4</td>
+<td>Address Line 5</td>
+<td>Postcode</td>
+<td>Longitude</td>
+<td>Latitude</td>
+<td>Station Operator</td>
+<td>Staffing Level</td>
+<td>CCTV Available</td>
+<td>Info. avail. from staff</td>
+<td>Opening Note</td>
+<td>CIS</td>
+<td>Help Points</td>
+<td>Help Points Available</td>
+<td>Ticket Office Opening Note</td>
+<td>Ticket Office Available</td>
+<td>Ticket Office Location</td>
+<td>Pre-purchase Collection</td>
+<td>Ticket Machine Available</td>
+<td>Oyster Issued</td>
+<td>Oyster Topup</td>
+<td>Oyster Pickup</td>
+<td>Use Oyster</td>
+<td>Oyster Comments</td>
+<td>Smartcard Issued</td>
+<td>Smartcard Topup</td>
+<td>Smartcard Pickup</td>
+<td>Smartcard Validator</td>
+<td>Smartcard Comments</td>
+<td>Travelcard Zone</td>
+<td>Penalty Fares</td>
+<td>Penalty Fares TOCs</td>
+<td>Penalty Fares URL</td>
+<td>Always show Oyster</td>
+<td>Note</td>
+<td>Primary Tel Country</td>
+<td>Primary Tel Nr.</td>
+<td>Primary Tel Ext.</td>
+<td>Url</td>
+<td>Available</td>
+<td>Operator Name</td>
+<td>Primary Tel Country</td>
+<td>Primary Tel Nr.</td>
+<td>Primary Tel Ext.</td>
+<td>Url</td>
+<td>Opening Note</td>
+<td>Available</td>
+<td>Operator Name</td>
+<td>1st Class Lounge Note</td>
+<td>1st Class Lounge Opening Note</td>
+<td>1st Class Lounge Available</td>
+<td>Seated Area Available</td>
+<td>Seated Area Location</td>
+<td>Waiting Room Opening Note</td>
+<td>Waiting Room Available</td>
+<td>Waiting Room Location</td>
+<td>Trolleys Available</td>
+<td>Refreshments Note</td>
+<td>Refreshments Available</td>
+<td>WC Available</td>
+<td>WC Location</td>
+<td>Baby Change Available</td>
+<td>Baby Change Location</td>
+<td>Showers Available</td>
+<td>Telephones Exist</td>
+<td>Telephones Usage Type</td>
+<td>Wifi Note</td>
+<td>Wifi Available</td>
+<td>Web Kiosk Opening Note</td>
+<td>Web Kiosk Available</td>
+<td>Postbox Available</td>
+<td>Postbox Location</td>
+<td>Tourist Info Available</td>
+<td>Tourist Info Location</td>
+<td>ATM Available</td>
+<td>ATM Location</td>
+<td>Bureau de Change Available</td>
+<td>Shops Note</td>
+<td>Shops Available</td>
+<td>Helpline Note</td>
+<td>Helpline Contact</td>
+<td>Helpline Opening Note</td>
+<td>Staff Help Note</td>
+<td>Staff Help Opening Note</td>
+<td>Staff Help Available</td>
+<td>Induction Loop</td>
+<td>Accessible Ticket Machines Note</td>
+<td>Accessible Ticket Machines Available</td>
+<td>Height Adjusted Counter Note</td>
+<td>Height Adjusted Counter Available</td>
+<td>Train Access Ramp Available</td>
+<td>Accessible Taxis</td>
+<td>Accessible Phones</td>
+<td>Nearest Stations More Facilities Note</td>
+<td>National Key Toilets Available</td>
+<td>National Key Toilets Location</td>
+<td>Step Free Access Note</td>
+<td>Step Free Access Available</td>
+<td>Ticket Gates Note</td>
+<td>Ticket Gates Available</td>
+<td>Impaired Mobility Set Down Note</td>
+<td>Impaired Mobility Set Down Available</td>
+<td>Wheelchairs Opening Note</td>
+<td>Wheelchairs Available</td>
+<td>Spaces</td>
+<td>Sheltered</td>
+<td>Security</td>
+<td>Location</td>
+<td>Note</td>
+<td>Type</td>
+<td>Rail Replacement Note</td>
+<td>Rail Replacement Map</td>
+<td>Taxi Rank</td>
+<td>Onward Travel</td>
+<td>Metro Services</td>
+<td>Airport</td>
+<td>Port</td>
+<td>Car Hire</td>
+<td>Cycle Hire</td>
+<td>Station Alert</td>
+<td>TOCs</td>
+<td>Station Category</td>
+<td>Page Guid</td>
+</tr>
+<tr>
+<td>BDN</td>
+<td>Brading</td>
+<td>KMiller</td>
+<td>29/12/2013</td>
+<td>553000</td>
+<td>BRADING</td>
+<td>Station Road</td>
+<td>Isle of Wight</td>
+<td></td>
+<td></td>
+<td></td>
+<td>PO36 0EB</td>
+<td>-1.1387226486</td>
+<td>50.6783550388</td>
+<td>IL</td>
+<td>unstaffed</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>NotAvailable</td><td>N</td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td></td>
+<td></td><td></td><td></td>
+<td>N</td>
+<td>&lt;p&gt;Mon - Sun 0600 - 2200&lt;/p&gt;
+&lt;p&gt;0845 6000 650&lt;/p&gt;</td>
+<td></td><td></td><td></td><td></td>
+<td>N</td>
+<td></td>
+<td></td><td></td><td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;p&gt;&lt;a href=&quot;http://btopenzone.hotspot-directory.com/results.php?txtQuick=PO36 0EB&amp;amp;z=9&amp;amp;radRoaming=1&quot; target=&quot;_blank&quot;&gt;Find WiFi Hotspots around Brading station&lt;/a&gt;&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>&lt;p&gt;no&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;The nearest station(s) with more facilities than Brading are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Sandown&lt;/li&gt;
+&lt;li&gt;Ryde&lt;/li&gt;
+&lt;/ul&gt;</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td><td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td>0</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Main road bus stops.&lt;/p&gt;
+&lt;p&gt;To Shanklin and Brading - the Wheatsheaf Inn.&lt;/p&gt;
+&lt;p&gt;To Ryde - Bull ring bus stop.&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Information to plan your onward journey is available in a printable format&amp;nbsp;&lt;a href=&quot;http://www.nationalrail.co.uk/posters/BDN.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;SUMMER ONLY. Avaiable from Heritage Centre located in station building.&lt;/p&gt;</td>
+<td></td>
+<td>IL</td>
+<td></td>
+<td>F8949F8DFCA74221B77222C995428D05</td>
+</tr>
+<tr>
+<td>LKE</td>
+<td>Lake</td>
+<td>welsbys</td>
+<td>29/04/2013</td>
+<td>550400</td>
+<td>LAKE</td>
+<td>Lake Station</td>
+<td>Isle of Wight</td>
+<td></td>
+<td></td>
+<td></td>
+<td>PO36 8PJ</td>
+<td>-1.1663495736</td>
+<td>50.6464681751</td>
+<td>IL</td>
+<td>unstaffed</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>NotAvailable</td><td>N</td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td></td>
+<td></td><td></td><td></td>
+<td>N</td>
+<td>&lt;p&gt;Mon - Sun 0600 - 2200&lt;/p&gt;
+&lt;p&gt;0845 6000 650&lt;/p&gt;</td>
+<td></td><td></td><td></td><td></td>
+<td>N</td>
+<td></td>
+<td></td><td></td><td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;p&gt;&lt;a href=&quot;http://btopenzone.hotspot-directory.com/results.php?txtQuick=PO36 8PJ&amp;amp;z=9&amp;amp;radRoaming=1&quot; target=&quot;_blank&quot;&gt;Find WiFi Hotspots around Lake station&lt;/a&gt;&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>&lt;p&gt;no&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>0</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Lake shops bus stops in main road&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Information to plan your onward journey is available in a printable format&amp;nbsp;&lt;a href=&quot;http://www.nationalrail.co.uk/posters/LKE.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>IL</td>
+<td></td>
+<td>442FFAD25FFA4D068B5244B82CD141FD</td>
+</tr>
+<tr>
+<td>RYD</td>
+<td>Ryde Esplanade</td>
+<td>jbird</td>
+<td>26/02/2014</td>
+<td>554200</td>
+<td>RYDE ESPLANADE</td>
+<td>Railway Station</td>
+<td>The Esplanade</td>
+<td>Ryde</td>
+<td></td>
+<td></td>
+<td>PO33 2HE</td>
+<td>-1.1597725074</td>
+<td>50.7328542089</td>
+<td>IL</td>
+<td>unstaffed</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>TicketMachine</td><td>Y</td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td></td>
+<td></td><td></td><td></td>
+<td>N</td>
+<td>&lt;p&gt;Mon - Sun 0600 2200&lt;/p&gt;
+&lt;p&gt;0845 6000 650&lt;/p&gt;</td>
+<td></td><td></td><td></td><td></td>
+<td>N</td>
+<td></td>
+<td></td><td></td><td></td><td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;p&gt;&lt;a href=&quot;http://btopenzone.hotspot-directory.com/results.php?txtQuick=PO33 2HE&amp;amp;z=9&amp;amp;radRoaming=1&quot; target=&quot;_blank&quot;&gt;Find WiFi Hotspots around Ryde Esplanade station&lt;/a&gt;&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>&lt;p&gt;no&lt;/p&gt;</td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>&lt;p&gt;Step free access to station and concourse area - Ramp access required from Platform to trains.&lt;/p&gt;</td>
+<td>N</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>0</td>
+<td>No</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Bus station (located next to Ryde Esplanade railway station).&lt;/p&gt;</td>
+<td></td>
+<td>&lt;p&gt;In front of station. Ryde Taxis - 01983 811111 Jet Cars - 01983 566566&lt;/p&gt;</td>
+<td>&lt;p&gt;Information to plan your onward journey is available in a printable format&amp;nbsp;&lt;a href=&quot;http://www.nationalrail.co.uk/posters/RYD.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>IL</td>
+<td></td>
+<td>089C09B3763B4B9499B95EC2812B9634</td>
+</tr>
+<tr>
+<td>RYP</td>
+<td>Ryde Pier Head</td>
+<td>cplewa</td>
+<td>11/03/2014</td>
+<td>554100</td>
+<td>RYDE PIER HEAD</td>
+<td>Ryde Pier Head</td>
+<td>Isle of Wight</td>
+<td></td>
+<td></td>
+<td></td>
+<td>PO33 2HF</td>
+<td>-1.1601271755</td>
+<td>50.7391699137</td>
+<td>IL</td>
+<td>unstaffed</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>NotAvailable</td><td>Y</td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td></td>
+<td></td><td></td><td></td>
+<td>N</td>
+<td>&lt;p&gt;Mon - Sun 0600 - 2200&lt;/p&gt;
+&lt;p&gt;0845 6000 650&lt;/p&gt;</td>
+<td></td><td></td><td></td><td></td>
+<td>N</td>
+<td></td>
+<td></td><td></td><td></td><td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;p&gt;&lt;a href=&quot;http://btopenzone.hotspot-directory.com/results.php?txtQuick=PO33 2HF&amp;amp;z=9&amp;amp;radRoaming=1&quot; target=&quot;_blank&quot;&gt;Find WiFi Hotspots around Ryde Pier Head station&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&#39;The Cloud Network&#39;&lt;/p&gt;</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>&lt;p&gt;no&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>20</td>
+<td>No</td>
+<td>Y</td>
+<td>Platform. Ferry Terminal Covered. Operated by WightLink Ltd</td>
+<td>&lt;p&gt;Facility operated by Wightlink Ltd&lt;/p&gt;</td>
+<td></td>
+<td>&lt;p&gt;In the event that SWT service is replaced by road transport, a minibus service will operate between Ryde Esplanade and Ryde Pier head.&amp;nbsp; The transport will depart from the station front at Ryde Esplanade and the station car park at Ryde Pier Head.&lt;/p&gt;</td>
+<td></td>
+<td>&lt;p&gt;Ryde Taxis - 01983 811111 Jet Cars - 01983 566566&lt;/p&gt;</td>
+<td>&lt;p&gt;Information to plan your onward journey is available in a printable format&amp;nbsp;&lt;a href=&quot;http://www.nationalrail.co.uk/posters/RYP.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;WightLink FastCat Passenger Service to Portsmouth Harbour&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td>IL</td>
+<td></td>
+<td>02F3686688CD4281BDA606E696DE38AB</td>
+</tr>
+<tr>
+<td>RYR</td>
+<td>Ryde St Johns Road</td>
+<td>KMiller</td>
+<td>01/01/2014</td>
+<td>554300</td>
+<td>RYDE ST JOHNS RD</td>
+<td>Island Line Ltd</td>
+<td>St Johns Rd Station</td>
+<td>Ryde</td>
+<td></td>
+<td></td>
+<td>PO33 2BA</td>
+<td>-1.1565668646</td>
+<td>50.7243505686</td>
+<td>IL</td>
+<td>unstaffed</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>NotAvailable</td><td>N</td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td></td>
+<td></td><td></td><td></td>
+<td>N</td>
+<td>&lt;p&gt;Mon - Sun 0600 - 2200&lt;/p&gt;
+&lt;p&gt;0845 6000 650&lt;/p&gt;</td>
+<td></td><td></td><td></td><td></td>
+<td>N</td>
+<td></td>
+<td></td><td></td><td></td><td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>CardsAndCoins</td>
+<td>&lt;p&gt;&lt;a href=&quot;http://btopenzone.hotspot-directory.com/results.php?txtQuick=PO33 2BA&amp;amp;z=9&amp;amp;radRoaming=1&quot; target=&quot;_blank&quot;&gt;Find WiFi Hotspots around Ryde St Johns Road station&lt;/a&gt;&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>&lt;p&gt;no&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>&lt;p&gt;Ryde Taxis - 01983 811111&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>&lt;p&gt;Step free access to Ryde Bound platform. Passengers wishing to travel towards Shanklin may travel via Ryde Pier Head - there is no additional charge for the journey between Ryde St Johns Road and Ryde Pier Head. Please see conductor at time of travel.&lt;/p&gt;</td>
+<td>N</td>
+<td></td><td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td>20</td>
+<td>No</td>
+<td>Y</td>
+<td>car park</td>
+<td>&lt;p&gt;Cycle Racks in car park&lt;/p&gt;</td>
+<td>Stands</td>
+<td>&lt;p&gt;Station car park&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Information to plan your onward journey is available in a printable format&amp;nbsp;&lt;a href=&quot;http://www.nationalrail.co.uk/posters/RYR.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>IL</td>
+<td></td>
+<td>0788F05DE46A426682B7D0E5EAC96DE8</td>
+</tr>
+<tr>
+<td>SAN</td>
+<td>Sandown</td>
+<td>KMiller</td>
+<td>01/01/2014</td>
+<td>552500</td>
+<td>SANDOWN</td>
+<td>Island Line Ltd</td>
+<td>Station Avenue</td>
+<td>Sandown</td>
+<td>Isle of Wight</td>
+<td></td>
+<td>PO36 9BN</td>
+<td>-1.1623883859</td>
+<td>50.6568539156</td>
+<td>IL</td>
+<td>unstaffed</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>NotAvailable</td><td>N</td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td></td>
+<td></td><td></td><td></td>
+<td>N</td>
+<td>&lt;p&gt;Mon - Sun 0600 - 2200&lt;/p&gt;
+&lt;p&gt;0845 6000 650&lt;/p&gt;</td>
+<td></td><td></td><td></td><td></td>
+<td>N</td>
+<td></td>
+<td></td><td></td><td></td><td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;p&gt;&lt;a href=&quot;http://btopenzone.hotspot-directory.com/results.php?txtQuick=PO36 9BN&amp;amp;z=9&amp;amp;radRoaming=1&quot; target=&quot;_blank&quot;&gt;Find WiFi Hotspots around Sandown station&lt;/a&gt;&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>&lt;p&gt;no&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>&lt;p&gt;Step free access to Shanklin &amp; Ryde bound platform.&lt;/p&gt;</td>
+<td>N</td>
+<td></td><td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td>8</td>
+<td>Yes</td>
+<td>Y</td>
+<td>car park</td>
+<td>&lt;p&gt;Cycle racks are located in the Station car park.&lt;/p&gt;</td>
+<td>Stands</td>
+<td>&lt;p&gt;Bus stops on Broadway at the juction with Station Avenue (near Premier stores).&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Information to plan your onward journey is available in a printable format&amp;nbsp;&lt;a href=&quot;http://www.nationalrail.co.uk/posters/SAN.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>IL</td>
+<td></td>
+<td>E982278813334DBE93ABD156ADC4F312</td>
+</tr>
+<tr>
+<td>SHN</td>
+<td>Shanklin</td>
+<td>KMiller</td>
+<td>01/01/2014</td>
+<td>552900</td>
+<td>SHANKLIN</td>
+<td>Island Line Ltd</td>
+<td>Regent Street</td>
+<td>Shanklin</td>
+<td>Isle of Wight</td>
+<td></td>
+<td>PO37 7AR</td>
+<td>-1.1798356362</td>
+<td>50.6339014094</td>
+<td>IL</td>
+<td>unstaffed</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>NotAvailable</td><td>Y</td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td></td>
+<td></td><td></td><td></td>
+<td>N</td>
+<td>&lt;p&gt;Mon - Sunday 0600 - 2200&lt;/p&gt;
+&lt;p&gt;0845 6000 650&lt;/p&gt;</td>
+<td></td><td></td><td></td><td></td>
+<td>N</td>
+<td></td>
+<td></td><td></td><td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>CardsAndCoins</td>
+<td>&lt;p&gt;&lt;a href=&quot;http://btopenzone.hotspot-directory.com/results.php?txtQuick=PO37 7AR&amp;amp;z=9&amp;amp;radRoaming=1&quot; target=&quot;_blank&quot;&gt;Find WiFi Hotspots around Shanklin station&lt;/a&gt;&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>Y</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td><td></td>
+<td>&lt;p&gt;At front of station&lt;/p&gt;</td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td>16</td>
+<td>Yes</td>
+<td>Y</td>
+<td>car park</td>
+<td>&lt;p&gt;Covered cycle racks are located at the front of the station.&lt;/p&gt;</td>
+<td>Stands</td>
+<td>&lt;p&gt;Front of station&lt;/p&gt;</td>
+<td></td>
+<td>&lt;p&gt;Acabs - 01983 866772&amp;nbsp; Ace Taxis - 01983 868999&lt;/p&gt;</td>
+<td>&lt;p&gt;Information to plan your onward journey is available in a printable format&amp;nbsp;&lt;a href=&quot;http://www.nationalrail.co.uk/posters/SHN.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>IL</td>
+<td></td>
+<td>7D81DDE02CF04449A1EA6E79CEFE839A</td>
+</tr>
+<tr>
+<td>SAB</td>
+<td>Smallbrook Junction</td>
+<td>cplewa</td>
+<td>22/11/2013</td>
+<td>549400</td>
+<td>SMALLBROOK JN</td>
+<td>Smallbrook Station</td>
+<td>Smallbrook</td>
+<td>Isle of Wight</td>
+<td></td>
+<td></td>
+<td>PO33 1AZ</td>
+<td>-1.1550747249</td>
+<td>50.711209809</td>
+<td>IL</td>
+<td>unstaffed</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>NotAvailable</td><td>N</td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>NotAvailable</td><td>N</td>
+<td></td>
+<td></td>
+<td></td><td></td><td></td>
+<td>N</td>
+<td>&lt;p&gt;Mon - Sun 0600 - 2200&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Tel: &amp;nbsp;0845 6000 650&lt;/p&gt;
+&lt;p&gt;Please note that this station is provided for Steam Railway interchange ONLY.&lt;/p&gt;</td>
+<td></td><td></td><td></td><td></td>
+<td>N</td>
+<td></td>
+<td></td><td></td><td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td>CardsAndCoins</td>
+<td>&lt;p&gt;&lt;a href=&quot;http://btopenzone.hotspot-directory.com/results.php?txtQuick=PO33 1AZ&amp;amp;z=9&amp;amp;radRoaming=1&quot; target=&quot;_blank&quot;&gt;Find WiFi Hotspots around Smallbrook Junction station&lt;/a&gt;&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td></td><td></td><td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>&lt;p&gt;no&lt;/p&gt;</td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;The nearest station(s) with more facilities than Smallbrook Junction are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ryde&lt;/li&gt;
+&lt;/ul&gt;</td>
+<td>N</td>
+<td></td>
+<td>&lt;p&gt;Please note that this station is provided for Steam Railway interchange only - there is no outside road access to this station. Alighting from Island Line trains is level but a ramp maybe required for Steam Railway passengers&lt;/p&gt;</td>
+<td>Y</td>
+<td></td><td></td>
+<td></td>
+<td>N</td>
+<td></td>
+<td>N</td>
+<td>0</td>
+<td>No</td>
+<td>N</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;p&gt;Information to plan your onward journey is available in a printable format&amp;nbsp;&lt;a href=&quot;http://www.nationalrail.co.uk/posters/SAB.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>IL</td>
+<td></td>
+<td>96AB74F9054A4FF2A410FB0FA0C700C0</td>
+</tr>
+</table>
