@@ -1,0 +1,1 @@
+{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "app29532998.loos", "name" : "_id_" }, { "v" : 1, "key" : { "geometry" : "2dsphere" }, "ns" : "app29532998.loos", "name" : "geometry_2dsphere", "background" : true, "safe" : null }, { "v" : 1, "key" : { "geohash" : 1 }, "ns" : "app29532998.loos", "name" : "geohash_1", "background" : true, "safe" : null } ] }

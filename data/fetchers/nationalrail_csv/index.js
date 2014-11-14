@@ -49,7 +49,14 @@ function toGeoJSON() {
 
 function noteOrigin(){
     return through(function write(data){
-        data.origin = 'National Rail';
+        data.origin = 'National Rail Enquiries';
+        this.queue(data);
+    });
+}
+
+function addTrust(){
+    return through(function write(data){
+        data.trust = 7;
         this.queue(data);
     });
 }
@@ -89,6 +96,7 @@ module.exports = function items(path) {
         .pipe(filterNoLoo())
         .pipe(useLonLat())
         .pipe(noteOrigin())
+        .pipe(addTrust())
         .pipe(filterUnlocated())
         .pipe(out);
 

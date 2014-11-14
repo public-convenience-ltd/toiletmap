@@ -8,9 +8,9 @@ var booleanify = function(data){
         try {
             if (_.isPlainObject(val)) { return booleanify(val); }
             if (_.isBoolean(val)) { return val; }
-            if (_.indexOf(['true', 'yes', '1'], val.toLowerCase()) !== -1) {
+            if (_.indexOf(['true', 'yes', '1', 'y,'], val.toLowerCase()) !== -1) {
                 return true;
-            } else if (_.indexOf(['false', 'no', '0', 'no charge'], val.toLowerCase()) !== -1) {
+            } else if (_.indexOf(['false', 'no', '0', 'no charge', 'n'], val.toLowerCase()) !== -1) {
                 return false;
             } else {
                 return val;
@@ -183,21 +183,35 @@ var converters = {
         'wc available': function(val) {
             return [{
                 key: 'active',
-                value: !val
+                value: !!val
             }];
         },
         'baby change available': function(val){
             return [{
                 key: 'babyChange',
-                value: val
+                value: !!val
             }];
         },
         'national key toilets available': function(val){
             return [{
                 key: 'radar',
-                value: val
+                value: !!val
+            }];
+        },
+        'address line 1': function(val, props){
+            var addr = [
+                props['address line 1'], 
+                props['address line 2'], 
+                props['address line 3'],
+                props['address line 4'],
+                props['address line 5']
+            ];
+            return [{
+                key: 'streetAddress',
+                value: _.compact(addr).join(', ')
             }];
         }
+
     },
     gbptm: {
         'cost': function(val){
