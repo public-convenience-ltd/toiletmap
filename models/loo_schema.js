@@ -41,7 +41,8 @@ specs.looCore = {
         historicalInterest: {type: String},
         geocoded: {type: Boolean},
         geocoding_method: {type: String},
-        orig: {type: Object }
+        orig: {type: Object},
+        removal_reason: {type: String}
     },
     geohash: String
 };
@@ -65,6 +66,7 @@ schemae.looReportSchema.pre('save', function (next) {
 });
 schemae.looReportSchema.index({geohash: 1});
 schemae.looReportSchema.index({geohash: 1, attribution: 1});
+schemae.looReportSchema.index({'properties.active': 1});
 
 schemae.looSchema = new Schema(
     _.merge(

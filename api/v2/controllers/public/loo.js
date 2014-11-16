@@ -8,7 +8,7 @@ var Loo = require('../../../../models/loo'),
 
 routes.loos = {
     handler: function*(){
-        var loos = yield Loo.find().paginate(this.paginate.options);
+        var loos = yield Loo.find({'properties.active': true}).paginate(this.paginate.options);
         this.status = 200;
         this.body = new LooList(loos.results);
         this.paginate = _.omit(loos, 'results');

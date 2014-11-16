@@ -19,12 +19,14 @@ looSchema.statics.findNear = function(lon, lat, maxDistance, limit) {
                 distanceMultiplier: earth,
                 spherical: true
             }
-        }
+        },
+        { $match: {'properties.active': true } }
     ]);
 };
 
 looSchema.statics.findIn = function(sw, ne, nw, se) {
     return this.find({
+        'properties.active': true,
         geometry: {
             $geoIntersects: {
                 $geometry: {
