@@ -48,6 +48,7 @@ looReportSchema.statics.processReport = function*(data){
     } else {
         // Anon ones get a new report each time
         report = new LooReport(data);
+        report.save = thunk(report.save);
         yield report.save();
     }
 
