@@ -74,10 +74,10 @@ function calculate_credibility(reports){
             completeness = 3;
         }
         if (props > 8) {
-            completeness = 7
+            completeness = 7;
         }
         if (props > 12) {
-            completeness = 9
+            completeness = 9;
         }
         if (props > 15) {
             completeness = 10;
@@ -85,7 +85,7 @@ function calculate_credibility(reports){
         if (props.geocoded) {
             penalties += -8;
         }
-        return sum + ((trust + completeness) - penalties)
+        return sum + ((trust + completeness) - penalties);
     }, 0) / reports.length;
 }
 
@@ -113,13 +113,13 @@ looSchema.methods.regenerate = function*(){
 };
 
 looSchema.statics.fromLooReport = function(report) {
-        var base = _.pick(report.toJSON(), 'geometry', 'properties', 'type'),
-            loo = new Loo(base);
+    var base = _.pick(report.toJSON(), 'geometry', 'properties', 'type'),
+        loo = new Loo(base);
 
-        loo.reports.push(report._id);
-        loo.sources.push(report.origin);
-        loo.attributions.push(report.attribution);
-        return loo;
+    loo.reports.push(report._id);
+    loo.sources.push(report.origin);
+    loo.attributions.push(report.attribution);
+    return loo;
 };
 
 

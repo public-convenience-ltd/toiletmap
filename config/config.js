@@ -55,7 +55,8 @@ var base = {
         offset: 0
     },
     deduplication: {
-        radius: 25
+        radius: 25,
+        anon_attributions: ['Anonymous']
     },
     reports: {
         trust: 8

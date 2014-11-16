@@ -29,18 +29,27 @@ looReportSchema.statics.findLooFor = function*(report){
 };
 
 looReportSchema.statics.processReport = function*(data){
-    var ghash = geohash.encode(data.geometry.coordinates[1], data.geometry.coordinates[0]);
+    var report,
+        ghash = geohash.encode(data.geometry.coordinates[1], data.geometry.coordinates[0]);
     //Strip tags from plain text entries
     _.each(['notes', 'cost'], function(v, i){
         if (data.properties && data.properties[v]) {
             data.properties[v] = data.properties[v].replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>?/gi, '').trim();
         }
     });
-    var report = yield LooReport.findOneAndUpdate(
+
+    // Non anonymous reports can be updated
+    if (_.indexOf(config.deduplication.anon_attributions, data.attribution) === -1) {
+        report = yield LooReport.findOneAndUpdate(
             {geohash: ghash, attribution: data.attribution},
             data,
             {upsert: true}
         ).exec();
+    } else {
+        // Anon ones get a new report each time
+        report = new LooReport(data);
+        yield report.save();
+    }
 
     var loo = yield LooReport.findLooFor(report);
     if (!loo) {
