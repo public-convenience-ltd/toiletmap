@@ -10,7 +10,6 @@ var fs = require('fs'),
     favicon = require('koa-favicon'),
     cors = require('koa-cors'),
     jsonp = require('koa-jsonp'),
-    json = require('koa-json'),
     gzip = require('koa-gzip'),
     helmet = require('koa-helmet'),
     jwt = require('koa-jwt'),
@@ -33,7 +32,6 @@ module.exports = function(app){
     app.use(gzip());
     app.use(jsonp());
     app.use(serializer());
-    app.use(json({ pretty: false, param: 'pretty' }));
     app.use(paginate(config.paginate));
     app.use(session());
     app.use(passport.initialize());
