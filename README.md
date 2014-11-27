@@ -30,9 +30,11 @@ You may wish to populate your instance's database, otherwise queries are awful b
 
     mongorestore -h localhost:27017 -d gbptm ./data/sources/mongodump/27-11-2014/app29532998/
     
-See how that went with (you have [httpie](https://github.com/jakubroztocil/httpie) right?):
+See how that went with:
 
     http localhost:3000/statistics
+    
+*(you do have [httpie](https://github.com/jakubroztocil/httpie) right?)*
     
 Messing Around
 --------------
