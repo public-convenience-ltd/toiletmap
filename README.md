@@ -25,3 +25,11 @@ Obtain a copy of the code and then, in that directory:
     npm install
     npm test
     npm start
+
+You may wish to populate your instance's database, otherwise queries are awful boring. The easiest way to do this is probably to load a snapshot from the live instance. There are some included in data/sources/mongodump - try something like this:
+
+    mongorestore -h localhost:27017 -d gbptm ./data/sources/mongodump/27-11-2014/app29532998/
+    
+See how that went with (you have [httpie](https://github.com/jakubroztocil/httpie) right?):
+
+    http localhost:3000/statistics
