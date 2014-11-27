@@ -65,9 +65,6 @@ var base = {
 
 var platforms = {
     development: {
-        mongo: {
-            url: 'mongodb://localhost:27017/gbptm-dev'
-        },
         auth: {
             local: {
                 username: 'test',
