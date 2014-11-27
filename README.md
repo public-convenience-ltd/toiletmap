@@ -33,3 +33,10 @@ You may wish to populate your instance's database, otherwise queries are awful b
 See how that went with (you have [httpie](https://github.com/jakubroztocil/httpie) right?):
 
     http localhost:3000/statistics
+    
+Messing Around
+--------------
+
+    npm run dev
+    
+is provided for your convenience. It'll start your server with the default debug port enabled and monitor the application files with nodemon, restarting as necessary to save you labor.
