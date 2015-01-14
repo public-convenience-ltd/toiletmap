@@ -31,7 +31,7 @@ module.exports = function(app){
     }
     app.use(favicon()); // Bounce annoying favicon requests with a 404
     if (config.app.readonly) {
-        app.use(readonly)();
+        app.use(readonly());
     }
     app.use(cors());
     app.use(gzip());
