@@ -19,7 +19,8 @@ var fs = require('fs'),
     auth = require('../auth/auth'),
     passport = require('koa-passport'),
     session = require('koa-session'),
-    paginate = require('../lib/koa-paginate');
+    paginate = require('../lib/koa-paginate'),
+    readonly = require('../lib/readonly-mode');
 
 
 module.exports = function(app){
@@ -29,6 +30,9 @@ module.exports = function(app){
         app.use(logger());
     }
     app.use(favicon()); // Bounce annoying favicon requests with a 404
+    if (config.app.readonly) {
+        app.use(readonly)();
+    }
     app.use(cors());
     app.use(gzip());
     app.use(jsonp());
