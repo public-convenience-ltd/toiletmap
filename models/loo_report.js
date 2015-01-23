@@ -52,15 +52,21 @@ looReportSchema.statics.processReport = function*(data){
         yield report.save();
     }
 
-    var loo = yield LooReport.findLooFor(report);
+    var loo = yield report.looificate();
+
+    return [report, loo];  
+};
+
+looReportSchema.methods.looificate = function* (){
+    var loo = yield LooReport.findLooFor(this);
     if (!loo) {
         // Derive a new loo from this report
-        loo = Loo.fromLooReport(report);
+        loo = Loo.fromLooReport(this);
     }
 
     // Ensure that this report is referenced by the loo
-    if (loo.reports.indexOf(report._id) === -1) {
-        loo.reports.push(report._id);
+    if (loo.reports.indexOf(this._id) === -1) {
+        loo.reports.push(this._id);
     }
 
     // Get the loo to regenerate its data
@@ -70,7 +76,7 @@ looReportSchema.statics.processReport = function*(data){
     loo.save = thunk(loo.save);
     yield loo.save();
 
-    return [report, loo];  
+    return loo;
 };
 
 module.exports = LooReport = mongoose.model('LooReport', looReportSchema);

@@ -4,7 +4,7 @@
   "description": "API server for the Great British Public Toilet Map",
   "main": "app.js",
   "engines": {
-    "node": "0.11.13"
+    "node": "0.11.14"
   },
   "scripts": {
     "test": "export NODE_ENV=test && node --harmony  ./node_modules/.bin/_mocha --recursive test/**/*.js -R spec",
@@ -32,6 +32,7 @@
   "homepage": "https://github.com/neontribe/gbptm-api",
   "dependencies": {
     "JSONStream": "^0.9.0",
+    "cliff": "^0.1.10",
     "co": "^3.1.0",
     "co-body": "1.0.0",
     "co-from-stream": "0.0.0",
@@ -87,6 +88,7 @@
     "mocha": "^1.21.4",
     "mongoose-fakery": "^0.1.7",
     "nodemon": "^1.2.1",
+    "progress": "^1.1.8",
     "supertest": "^0.13.0"
   }
 }
