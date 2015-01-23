@@ -75,7 +75,6 @@ co(function*(){
 	}
 	
 	console.log('Errors: ' + errors);
-	process.exit(0);
-})();
+}).then(function(){process.exit(0);});
 
 

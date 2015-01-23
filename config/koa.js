@@ -39,7 +39,7 @@ module.exports = function(app){
     app.use(serializer());
     app.use(json({ pretty: false, param: 'pretty' }));
     app.use(paginate(config.paginate));
-    app.use(session());
+    app.use(session(app));
     app.use(passport.initialize());
     app.use(passport.session());
     

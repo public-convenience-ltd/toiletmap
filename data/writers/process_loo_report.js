@@ -20,7 +20,7 @@ function write(items, collection){
         }
         log.emit('summary', counter + ' items imported');
         log.emit('end');
-    })();
+    }).then();
     return log;
 }
 

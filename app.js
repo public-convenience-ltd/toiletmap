@@ -7,7 +7,7 @@ var config = require('./config/config'),
     koa = require('koa'),
     app = koa();
 
-app.init = co(function *(){
+app.init = co.wrap(function*(){
     koaConfig(app);
     app.server = app.listen(config.app.port);
     if (config.app.env !== 'test') {

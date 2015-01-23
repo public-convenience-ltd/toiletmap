@@ -15,14 +15,13 @@ describe('Loos service', function(){
 
     // Bring up a server before testing
     before(function(done){
-        app.tinit = thunk(app.init);
         co(function *(){
-            yield app.tinit();
+            yield app.init();
             // Add 12 fake loos
             yield _.map(_.range(12), function(){
                 return fakery.makeAndSave('loo');
             });
-        })(done);
+        }).then(done);
     });
     // tear it down after
     after(function(done){
@@ -30,7 +29,7 @@ describe('Loos service', function(){
         co(function *(){
             yield app.server.tclose();
             yield Loo.remove({});
-        })(done);
+        }).then(done);
     });
 
     it('/loos should return an array of loos', function(done){          
