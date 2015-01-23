@@ -32,7 +32,6 @@
   "homepage": "https://github.com/neontribe/gbptm-api",
   "dependencies": {
     "JSONStream": "^0.10.0",
-    "cliff": "^0.1.10",
     "co": "^4.1.0",
     "co-body": "1.0.0",
     "co-from-stream": "0.0.0",
