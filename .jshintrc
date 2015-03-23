@@ -1,8 +1,0 @@
-{
-    "curly": true,
-    "eqeqeq": true,
-    "latedef": true,
-    "newcap": true,
-    "esnext":true,
-    "node": true
-}

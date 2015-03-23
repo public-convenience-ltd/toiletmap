@@ -1,71 +1,70 @@
-var passport = require('koa-passport'),
-    Router = require('koa-router'),
-    DigestStrategy = require('passport-http').DigestStrategy,
-    TwitterStrategy = require('passport-twitter').Strategy,
-    GitHubStrategy = require('passport-github').Strategy,
-    GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
-    OpenStreetMapStrategy = require('passport-openstreetmap').Strategy,
-    FacebookStrategy = require('passport-facebook').Strategy,
-    config = require('../config/config'),
-    jwt = require('koa-jwt'),
-    compose = require('koa-compose'),
-    routes = {},
-    tokenResponse;
+var passport = require('koa-passport')
+var DigestStrategy = require('passport-http').DigestStrategy
+var TwitterStrategy = require('passport-twitter').Strategy
+var GitHubStrategy = require('passport-github').Strategy
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
+var OpenStreetMapStrategy = require('passport-openstreetmap').Strategy
+var FacebookStrategy = require('passport-facebook').Strategy
+var config = require('../config/config')
+var jwt = require('koa-jwt')
+var compose = require('koa-compose')
+var routes = {}
+var tokenResponse
 
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
+passport.serializeUser(function (user, done) {
+  done(null, user)
+})
 
-passport.deserializeUser(function(id, done) {
-  done(null, user);
-});
+passport.deserializeUser(function (id, done) {
+  done(null, id)
+})
 
 /**
  * Middleware to build sign and return a JSON Web Token
  */
-function *tokenResponse(next){
-  var token; 
+function * tokenResponse (next) {
+  var token
   if (this.isAuthenticated()) {
-    token = jwt.sign(this.req.user, config.jwt.secret);
+    token = jwt.sign(this.req.user, config.jwt.secret)
     if (this.session && this.session.redirect) {
-      return this.redirect(this.session.redirect + '?token=' + token);
+      return this.redirect(this.session.redirect + '?token=' + token)
     }
-    this.status = 200;
-    this.body = { token: token };
+    this.status = 200
+    this.body = { token: token }
   } else {
-    this.throw(401);
+    this.throw(401)
   }
 }
 
 /**
  * Middleware to store a redirectURL in the session for later use
  */
-function *storeRedirect(next){
+function * storeRedirect (next) {
   if (this.request.query.redirect) {
-    this.session.redirect = this.request.query.redirect;
+    this.session.redirect = this.request.query.redirect
   }
-  yield next;
+  yield next
 }
 
 // Admin auth if local user and pass were provided
 if (config.auth.local.username && config.auth.local.password) {
   passport.use(new DigestStrategy({ qop: 'auth' },
-    function(username, done) {
+    function (username, done) {
       if (username === config.auth.local.username) {
         // If the correct username is supplied return the user and pass word for verification
-        done(null, {name: config.auth.local.username}, config.auth.local.password);
+        done(null, {name: config.auth.local.username}, config.auth.local.password)
       } else {
-        done(null, false);
+        done(null, false)
       }
     },
-    function(params, done) {
+    function (params, done) {
       // asynchronous validation, for effect...
       process.nextTick(function () {
         // check nonces in params here, if desired
-        return done(null, true);
-      });
+        return done(null, true)
+      })
     }
-  ));
+  ))
 
   routes.admin = {
     handler: compose([
@@ -75,7 +74,7 @@ if (config.auth.local.username && config.auth.local.password) {
     ]),
     path: '/admin',
     method: 'get'
-  };
+  }
 
 }
 
@@ -86,22 +85,22 @@ if (config.auth.github.client_id && config.auth.github.client_secret) {
       clientSecret: config.auth.github.client_secret,
       callbackURL: config.app.baseUrl + config.auth.mount + '/github/callback'
     },
-    function(accessToken, refreshToken, profile, done) {
-      return done(null, {name: profile.displayName});
+    function (accessToken, refreshToken, profile, done) {
+      return done(null, {name: profile.displayName})
     }
-  ));
+  ))
 
   routes.github = {
     handler: compose([
       storeRedirect,
       passport.authenticate('github', {
         session: false,
-        callbackURL:  config.app.baseUrl + config.auth.mount + '/github/callback'
+        callbackURL: config.app.baseUrl + config.auth.mount + '/github/callback'
       })
     ]),
     path: '/github',
     method: 'get'
-  };
+  }
 
   routes.github_callback = {
     handler: compose([
@@ -110,7 +109,7 @@ if (config.auth.github.client_id && config.auth.github.client_secret) {
     ]),
     path: '/github/callback',
     method: 'get'
-  };
+  }
 }
 
 if (config.auth.twitter.consumerKey && config.auth.twitter.consumerSecret) {
@@ -119,21 +118,21 @@ if (config.auth.twitter.consumerKey && config.auth.twitter.consumerSecret) {
       consumerSecret: config.auth.twitter.consumerSecret,
       callbackURL: config.app.baseUrl + config.auth.mount + '/twitter/callback'
     },
-    function(token, tokenSecret, profile, done){
-      return done(null, {name: profile.displayName});
+    function (token, tokenSecret, profile, done) {
+      return done(null, {name: profile.displayName})
     }
-  ));
+  ))
 
   routes.twitter = {
     handler: compose([
       storeRedirect,
       passport.authenticate('twitter', {
-        callbackURL:  config.app.baseUrl + config.auth.mount + '/twitter/callback'
+        callbackURL: config.app.baseUrl + config.auth.mount + '/twitter/callback'
       })
     ]),
     path: '/twitter',
     method: 'get'
-  };
+  }
 
   routes.twitter_callback = {
     handler: compose([
@@ -142,7 +141,7 @@ if (config.auth.twitter.consumerKey && config.auth.twitter.consumerSecret) {
     ]),
     path: '/twitter/callback',
     method: 'get'
-  };
+  }
 }
 
 if (config.auth.osm.consumerKey && config.auth.osm.consumerSecret) {
@@ -151,21 +150,21 @@ if (config.auth.osm.consumerKey && config.auth.osm.consumerSecret) {
       consumerSecret: config.auth.osm.consumerSecret,
       callbackURL: config.app.baseUrl + config.auth.mount + '/openstreetmap/callback'
     },
-    function(token, tokenSecret, profile, done){
-      return done(null, {name: profile.displayName});
+    function (token, tokenSecret, profile, done) {
+      return done(null, {name: profile.displayName})
     }
-  ));
+  ))
 
   routes.openstreetmap = {
     handler: compose([
       storeRedirect,
       passport.authenticate('openstreetmap', {
-        callbackURL:  config.app.baseUrl + config.auth.mount + '/openstreetmap/callback'
+        callbackURL: config.app.baseUrl + config.auth.mount + '/openstreetmap/callback'
       })
     ]),
     path: '/openstreetmap',
     method: 'get'
-  };
+  }
 
   routes.openstreetmap_callback = {
     handler: compose([
@@ -174,7 +173,7 @@ if (config.auth.osm.consumerKey && config.auth.osm.consumerSecret) {
     ]),
     path: '/openstreetmap/callback',
     method: 'get'
-  };
+  }
 }
 
 // Facebook Auth if id and secret were provided
@@ -184,22 +183,22 @@ if (config.auth.facebook.client_id && config.auth.facebook.client_secret) {
       clientSecret: config.auth.facebook.client_secret,
       callbackURL: config.app.baseUrl + config.auth.mount + '/facebook/callback'
     },
-    function(accessToken, refreshToken, profile, done) {
-      return done(null, {name: profile.displayName});
+    function (accessToken, refreshToken, profile, done) {
+      return done(null, {name: profile.displayName})
     }
-  ));
+  ))
 
   routes.facebook = {
     handler: compose([
       storeRedirect,
       passport.authenticate('facebook', {
         session: false,
-        callbackURL:  config.app.baseUrl + config.auth.mount + '/facebook/callback'
+        callbackURL: config.app.baseUrl + config.auth.mount + '/facebook/callback'
       })
     ]),
     path: '/facebook',
     method: 'get'
-  };
+  }
 
   routes.facebook_callback = {
     handler: compose([
@@ -208,7 +207,7 @@ if (config.auth.facebook.client_id && config.auth.facebook.client_secret) {
     ]),
     path: '/facebook/callback',
     method: 'get'
-  };
+  }
 }
 
 // Google Auth if enabled
@@ -218,10 +217,10 @@ if (config.auth.google.consumerKey && config.auth.google.consumerSecret) {
       clientSecret: config.auth.google.consumerSecret,
       callbackURL: config.app.baseUrl + config.auth.mount + '/google/callback'
     },
-    function(accessToken, refreshToken, profile, done) {
-      return done(null, {name: profile.displayName});
+    function (accessToken, refreshToken, profile, done) {
+      return done(null, {name: profile.displayName})
     }
-  ));
+  ))
 
   routes.google = {
     handler: compose([
@@ -232,7 +231,7 @@ if (config.auth.google.consumerKey && config.auth.google.consumerSecret) {
     ]),
     path: '/google',
     method: 'get'
-  };
+  }
 
   routes.google_callback = {
     handler: compose([
@@ -241,7 +240,7 @@ if (config.auth.google.consumerKey && config.auth.google.consumerSecret) {
     ]),
     path: '/google/callback',
     method: 'get'
-  };
+  }
 }
 
-module.exports.routes = routes;
+module.exports.routes = routes

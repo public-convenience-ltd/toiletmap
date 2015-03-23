@@ -1,78 +1,81 @@
-'use strict';
+'use strict'
 
-var fs = require('fs'),
-    path = require('path'),
-    _ = require('lodash'),
-    logger = require('koa-logger'),
-    compose = require('koa-compose'),
-    mount = require('koa-mount'),
-    router = require('koa-router'),
-    favicon = require('koa-favicon'),
-    cors = require('koa-cors'),
-    jsonp = require('koa-jsonp'),
-    json = require('koa-json'),
-    gzip = require('koa-gzip'),
-    helmet = require('koa-helmet'),
-    jwt = require('koa-jwt'),
-    serializer = require('../lib/koa-serializer'),
-    config = require('./config'),
-    auth = require('../auth/auth'),
-    passport = require('koa-passport'),
-    session = require('koa-session'),
-    paginate = require('../lib/koa-paginate'),
-    readonly = require('../lib/readonly-mode');
+var fs = require('fs')
+var path = require('path')
+var _ = require('lodash')
+var logger = require('koa-logger')
+var compose = require('koa-compose')
+var router = require('koa-router')
+var favicon = require('koa-favicon')
+var cors = require('koa-cors')
+var jsonp = require('koa-jsonp')
+var json = require('koa-json')
+var gzip = require('koa-gzip')
+var helmet = require('koa-helmet')
+var jwt = require('koa-jwt')
+var serializer = require('../lib/koa-serializer')
+var config = require('./config')
+var auth = require('../auth/auth')
+var passport = require('koa-passport')
+var session = require('koa-session')
+var paginate = require('../lib/koa-paginate')
+var readonly = require('../lib/readonly-mode')
+var ui = require('../ui/ui.js')
 
+module.exports = function (app) {
+  app.keys = ['seekrit']
+  app.use(helmet.defaults()) // Some basic hardening
+  if (config.app.env !== 'test') {
+    app.use(logger())
+  }
+  app.use(favicon()) // Bounce annoying favicon requests with a 404
+  if (config.app.readonly) {
+    app.use(readonly())
+  }
 
-module.exports = function(app){
-    app.keys = ['seekrit'];
-    app.use(helmet.defaults()); // Some basic hardening
-    if (config.app.env !== 'test') {
-        app.use(logger());
+  app.use(cors())
+  app.use(gzip())
+  app.use(jsonp())
+  app.use(serializer())
+  app.use(json({ pretty: false, param: 'pretty' }))
+  app.use(paginate(config.paginate))
+  app.use(session(app))
+  app.use(passport.initialize())
+  app.use(passport.session())
+
+  ui.init(app, config.ui)
+
+  app.use(router(app))
+
+  // Auth routes for token retrieval
+  _.each(auth.routes, function (route, name) {
+    app[route.method](name, config.auth.mount + route.path, route.handler)
+  })
+
+  // mount all the routes defined in the api/controllers/public
+  fs.readdirSync(path.join(config.app.root, 'api', 'v2', 'controllers', 'public')).forEach(function (file) {
+    var routes = require(path.join(config.app.root, 'api', 'v2', 'controllers', 'public', file))
+    _.each(routes, function (route, name) {
+      app[route.method](name, route.path, route.handler)
+    })
+  })
+  // mount all the routes defined in the api/controllers/private composing each with authorization middleware
+  fs.readdirSync(path.join(config.app.root, 'api', 'v2', 'controllers', 'private')).forEach(function (file) {
+    var routes = require(path.join(config.app.root, 'api', 'v2', 'controllers', 'private', file))
+    _.each(routes, function (route, name) {
+      var protected_handler = compose([
+        jwt({ secret: config.jwt.secret }),
+        route.handler
+      ])
+      app[route.method](name, route.path, protected_handler)
+    })
+  })
+
+  app.use(function * routeNotImplemented (next) {
+    yield next
+    if (this.status) {
+      return // Already handled
     }
-    app.use(favicon()); // Bounce annoying favicon requests with a 404
-    if (config.app.readonly) {
-        app.use(readonly());
-    }
-    app.use(cors());
-    app.use(gzip());
-    app.use(jsonp());
-    app.use(serializer());
-    app.use(json({ pretty: false, param: 'pretty' }));
-    app.use(paginate(config.paginate));
-    app.use(session(app));
-    app.use(passport.initialize());
-    app.use(passport.session());
-    
-    app.use(router(app));
-
-    // Auth routes for token retrieval
-    
-    _.each(auth.routes, function(route, name){
-        app[route.method](name, config.auth.mount + route.path, route.handler);
-    });
-    
-    // mount all the routes defined in the api/controllers/public
-    fs.readdirSync(path.join(config.app.root, 'api', 'v2', 'controllers', 'public')).forEach(function(file){
-        var routes = require(path.join(config.app.root, 'api', 'v2', 'controllers', 'public', file));
-        _.each(routes, function(route, name){
-            app[route.method](name, route.path, route.handler);
-        });
-    });
-    // mount all the routes defined in the api/controllers/private composing each with authorization middleware
-    fs.readdirSync(path.join(config.app.root, 'api', 'v2', 'controllers', 'private')).forEach(function(file){
-        var routes = require(path.join(config.app.root, 'api', 'v2', 'controllers', 'private', file));
-        _.each(routes, function(route, name){
-            var protected_handler = compose([
-                    jwt({ secret: config.jwt.secret }),
-                    route.handler
-                ]);
-            app[route.method](name, route.path, protected_handler);
-        });
-    });
-
-    app.use(function*routeNotImplemented(next){
-        yield next;
-        if (this.status) { return; } // Already handled
-        this.throw(501);
-    });
-};
+    this.throw(501)
+  })
+}

@@ -1,0 +1,67 @@
+{{#contentFor 'bodyclass'}}toilet{{/contentFor}}
+<p><a href="/loos/near/{{loo.geometry.coordinates.[0]}}/{{loo.geometry.coordinates.[1]}}"><span aria-hidden>&#x2190; </span> nearby toilets</a></p>
+{{#unless config.app.readonly}}
+<p><a href="/reports" class="button-shaped">Add a toilet</a></p>
+{{/unless}}
+<h2>
+{{#if loo.properties.name}}
+	{{loo.properties.name}}
+{{else}}
+Toilet
+{{/if}}
+</h2>
+
+<div class="loo-prefs">
+{{#pref_icons loo prefs.loo_preferences}}
+	<h3 class="visually-hidden">Preferences</h3>
+    <img width="50" height="50" src="/images/pref-{{pref}}-{{status}}.png" title="{{pref}} {{status}}"/>
+{{/pref_icons}}
+</div>
+
+<div class="map mini"
+	data-map_ident="{{loo._id}}:1" 
+    data-init="gbptm-mini_map"
+    data-config_zoom="18"
+    data-config_center="{{geo2leaflet loo.geometry.coordinates}}"></div>
+    <p class="go-to-full-map"><a href="/map/{{loo.geometry.coordinates.[0]}}/{{loo.geometry.coordinates.[1]}}?looid={{loo._id}}">See in full-screen map &#x2192;</a></p>
+
+<ul aria-label="toilet information">
+{{#sort_properties loo.properties}}
+	{{loo_property this}}
+{{/sort_properties}}
+</ul>
+<div class="data">
+	<h2>Data <small>(technical info for this toilet)</small></h2>
+	<dl>
+		<dt>Credibility:</dt>
+		<dd>{{rating loo.credibility}}</dd>
+		{{#if loo.geohash}}
+			<dt>Geohash</dt>
+			<dd>{{loo.geohash}}</dd>
+		{{/if}}
+		{{#if loo.properties.geocoded}}
+			<dt>Geocoded by</dt>
+			<dd>{{loo.properties.geocoding_method}}</dd>
+		{{/if}}
+		<dt>Formats</dt>
+		<dd><a href="{{config.api.root}}/loos/{{loo._id}}">JSON</a></dd>
+		{{#if loo.reports}}
+			<dt>Sources</dt>
+			<dd class="sources">
+				{{#each loo.reports}}
+					<a href="{{../config.api.root}}/reports/{{this}}">[{{plusone @index}}]</a>
+				{{/each}}
+			</dd>
+		{{/if}}
+		{{#if loo.attributions}}
+			<dt>Contributors</dt>
+			<dd class="contributors">
+				{{join loo.attributions ', '}}
+			</dd>
+		{{/if}}
+	</dl>
+</div>
+
+{{#unless config.app.readonly}}
+<p><a class="button-shaped" href="/reports?base={{loo._id}}">Edit this toilet</a></p>
+{{/unless}}

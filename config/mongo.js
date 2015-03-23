@@ -1,14 +1,14 @@
-'use strict';
-var mongoose = require('mongoose'),
-    config = require('./config'),
-    paginate = require('mongoose-query-paginate'),
-    thunkify = require('thunkify'),
-    Query = require('mongoose').Query,
-    db;
+'use strict'
+
+var mongoose = require('mongoose')
+var config = require('./config')
+var thunkify = require('thunkify')
+var Query = require('mongoose').Query
+require('mongoose-query-paginate')
 
 // Thunkify the query paginator
-Query.prototype.paginate = thunkify(Query.prototype.paginate);
+Query.prototype.paginate = thunkify(Query.prototype.paginate)
 
-mongoose.connect(config.mongo.url);
+mongoose.connect(config.mongo.url)
 
-module.exports = mongoose.connection;
+module.exports = mongoose.connection

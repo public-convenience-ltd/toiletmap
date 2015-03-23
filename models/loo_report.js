@@ -1,82 +1,80 @@
-'use strict';
+'use strict'
 
-var mongoose = require('mongoose'),
-    config = require('../config/config'),
-    thunk = require('thunkify'),
-    _ = require('lodash'),
-    Loo = require('./loo'),
-    looReportSchema = require('./loo_schema').looReportSchema,
-    geohash = require('geo-hash'),
-    LooReport;
+var mongoose = require('mongoose')
+var config = require('../config/config')
+var thunk = require('thunkify')
+var _ = require('lodash')
+var Loo = require('./loo')
+var looReportSchema = require('./loo_schema').looReportSchema
+var geohash = require('geo-hash')
+var LooReport
 
 /**
  * Find the loo to which this report is attatched, or a nearby loo
  */
-looReportSchema.statics.findLooFor = function*(report){
-    // Do we have a loo which references this report?
-    var loo = yield Loo.findOne({reports: { $in: [report._id] }}).exec();
+looReportSchema.statics.findLooFor = function * (report) {
+  // Do we have a loo which references this report?
+  var loo = yield Loo.findOne({reports: { $in: [report._id] }}).exec()
 
-    if (!loo) {
-        // Nope. How about one which is within x meters (and so is probably the same real loo)
-        loo = yield Loo.findOne({geometry: {
-            $near: {
-                $geometry : report.geometry.toJSON(),
-                $maxDistance : config.deduplication.radius
-            }
-        }}).exec();
+  if (!loo) {
+    // Nope. How about one which is within x meters (and so is probably the same real loo)
+    loo = yield Loo.findOne({geometry: {
+      $near: {
+        $geometry: report.geometry.toJSON(),
+        $maxDistance: config.deduplication.radius
+      }
+    }}).exec()
+  }
+  return loo
+}
+
+looReportSchema.statics.processReport = function * (data) {
+  var report
+  var ghash = geohash.encode(data.geometry.coordinates[1], data.geometry.coordinates[0])
+  // Strip tags from plain text entries
+  _.each(['notes', 'cost'], function (v, i) {
+    if (data.properties && data.properties[v]) {
+      data.properties[v] = data.properties[v].replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>?/gi, '').trim()
     }
-    return loo;
-};
+  })
 
-looReportSchema.statics.processReport = function*(data){
-    var report,
-        ghash = geohash.encode(data.geometry.coordinates[1], data.geometry.coordinates[0]);
-    //Strip tags from plain text entries
-    _.each(['notes', 'cost'], function(v, i){
-        if (data.properties && data.properties[v]) {
-            data.properties[v] = data.properties[v].replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>?/gi, '').trim();
-        }
-    });
+  // Non anonymous reports can be updated
+  if (_.indexOf(config.deduplication.anon_attributions, data.attribution) === -1) {
+    report = yield LooReport.findOneAndUpdate(
+      {geohash: ghash, attribution: data.attribution},
+      data,
+      {upsert: true}
+    ).exec()
+  } else {
+    // Anon ones get a new report each time
+    report = new LooReport(data)
+    report.save = thunk(report.save)
+    yield report.save()
+  }
+  var loo = yield report.looificate()
+  return [report, loo]
+}
 
-    // Non anonymous reports can be updated
-    if (_.indexOf(config.deduplication.anon_attributions, data.attribution) === -1) {
-        report = yield LooReport.findOneAndUpdate(
-            {geohash: ghash, attribution: data.attribution},
-            data,
-            {upsert: true}
-        ).exec();
-    } else {
-        // Anon ones get a new report each time
-        report = new LooReport(data);
-        report.save = thunk(report.save);
-        yield report.save();
-    }
+looReportSchema.methods.looificate = function * () {
+  var loo = yield LooReport.findLooFor(this)
+  if (!loo) {
+    // Derive a new loo from this report
+    loo = Loo.fromLooReport(this)
+  }
 
-    var loo = yield report.looificate();
+  // Ensure that this report is referenced by the loo
+  if (loo.reports.indexOf(this._id) === -1) {
+    loo.reports.push(this._id)
+  }
 
-    return [report, loo];  
-};
+  // Get the loo to regenerate its data
+  yield loo.regenerate()
 
-looReportSchema.methods.looificate = function* (){
-    var loo = yield LooReport.findLooFor(this);
-    if (!loo) {
-        // Derive a new loo from this report
-        loo = Loo.fromLooReport(this);
-    }
+  // Save the result
+  loo.save = thunk(loo.save)
+  yield loo.save()
 
-    // Ensure that this report is referenced by the loo
-    if (loo.reports.indexOf(this._id) === -1) {
-        loo.reports.push(this._id);
-    }
+  return loo
+}
 
-    // Get the loo to regenerate its data
-    yield loo.regenerate();
-
-    // Save the result
-    loo.save = thunk(loo.save);
-    yield loo.save();
-
-    return loo;
-};
-
-module.exports = LooReport = mongoose.model('LooReport', looReportSchema);
+module.exports = LooReport = mongoose.model('LooReport', looReportSchema)

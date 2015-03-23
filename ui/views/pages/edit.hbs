@@ -1,0 +1,142 @@
+{{#contentFor 'bodyclass'}}toilet {{#unless loo}}report-toilet{{/unless}}{{/contentFor}}
+<h2 {{#if loo}}data-map_ident="{{loo._id}}:1"{{/if}}>
+    {{#if loo}}Edit This Toilet{{/if}}
+    {{#unless loo}}Add A Toilet{{/unless}}
+</h2>
+
+{{#unless loo}}
+<div class="map positioning mini"
+    data-init="gbptm-positioning_map"
+    data-config_zoom="18"></div>
+<p class="tip"><strong>Tip:</strong> Align the crosshair with where you believe the toilet to be.</p>
+{{/unless}}
+
+{{#contentFor 'title'}}| Contribute{{/contentFor}}
+{{#unless prefs.nohelp.edit_intro}}
+<div class="intro">
+    <h2>Welcome, Contributor!</h2>
+    <p>Please fill in everything you can about the toilet below.</p>
+    <button type="button" data-init="gbptm-hide_help" data-config_target=".intro" data-config_setpref="nohelp.edit_intro" aria-label="close">&#x2716;</button>
+</div>
+{{/unless}}
+<form method="post" action="{{ config.app.baseURL }}/reports">
+    <input type="hidden" name="geometry.type" value="Point" />
+    <label for="properties.name">Toilet name</label>
+    <input id="properties.name" type="text" name="properties.name" value="{{loo.properties.name}}" />
+    <label for="toilet-type">Who can access?</label>
+    <select name="properties.access">
+        <option value="" {{selected undefined loo.properties.access}}>Unknown</option>
+        {{#options 'access' loo.properties.access}}
+            <option value="{{val}}" {{#if selected}}selected{{/if}}>{{opt}}</option>
+        {{/options}}
+    </select>
+    <label for="toilet-type">Facilities</label>
+    <select name="properties.type">
+        <option value="" {{selected undefined loo.properties.type}}>Unknown</option>
+        {{#options 'type' loo.properties.type}}
+            <option value="{{val}}" {{#if selected}}selected{{/if}}>{{opt}}</option>
+        {{/options}}
+    </select>
+    <label for="toilet-accessibility">Accessible Facilities</label>
+    <select name="properties.accessibleType">
+        <option value="" {{selected undefined loo.properties.accessibleType}}>Unknown</option>
+        {{#options 'type' loo.properties.accessibleType}}
+            <option value="{{val}}" {{#if selected}}selected{{/if}}>{{opt}}</option>
+        {{/options}}
+    </select>
+    <label for="toilet-opening">Opening Hours</label>
+    <select name="properties.opening">
+        <option value="" {{selected undefined loo.properties.opening}}>Unknown</option>
+        {{#options 'opening' loo.properties.opening}}
+            <option value="{{val}}" {{#if selected}}selected{{/if}}>{{opt}}</option>
+        {{/options}}
+    </select>
+    <div class="questionnaire">
+        <div class="questionnaire-header">
+            <span></span>
+            <span id="yes">yes</span>
+            <span id="no">no</span>
+            <span id="unknown">don't know</span>
+        </div>
+        <fieldset class="row">
+            <legend class="visually-hidden">Attended?</legend>
+            <span aria-hidden="true">Attended?</span>
+            <span class="checkbox-cell">
+                <input type="radio" value="true" {{checked true loo.properties.attended}} name="properties.attended" aria-labelledby="yes" />
+            </span>
+            <span class="checkbox-cell">
+                <input type="radio" value="false" {{checked false loo.properties.attended}} name="properties.attended" aria-labelledby="no" />
+            </span>
+            <span class="checkbox-cell">
+                <input type="radio" value="" {{checked undefined loo.properties.attended}} name="properties.attended" aria-labelledby="unknown" />
+            </span>
+        </fieldset>
+        <fieldset class="row">
+            <legend class="visually-hidden">Baby Changing?</legend>
+            <span aria-hidden="true">Baby Changing?</span>
+            <span class="checkbox-cell">
+                <input type="radio" value="true" {{checked true loo.properties.babyChange}} name="properties.babyChange" aria-labelledby="yes" />
+            </span>
+            <span class="checkbox-cell">
+                <input type="radio" value="false" {{checked false loo.properties.babyChange}} name="properties.babyChange" aria-labelledby="no" />
+            </span>
+            <span class="checkbox-cell">
+                <input type="radio" value="" {{checked undefined loo.properties.babyChange}} name="properties.babyChange" aria-labelledby="unknown" />
+            </span>
+        </fieldset>
+        <fieldset class="row">
+            <legend class="visually-hidden">Automatic?</legend>
+            <span aria-hidden="true">Automatic?</span>
+            <span class="checkbox-cell">
+                <input type="radio" value="true" {{checked true loo.properties.automatic}} name="properties.automatic" aria-labelledby="yes" />
+            </span>
+            <span class="checkbox-cell">
+                <input type="radio" value="false" {{checked false loo.properties.automatic}} name="properties.automatic" aria-labelledby="no" />
+            </span>
+            <span class="checkbox-cell">
+                <input type="radio" value="" {{checked undefined loo.properties.automatic}} name="properties.automatic" aria-labelledby="unknown" />
+            </span>
+        </fieldset>
+        <fieldset class="row">
+            <legend class="visually-hidden">Radar Key?</legend>
+            <span aria-hidden="true">Radar Key?</span>
+            <span class="checkbox-cell">
+                <input type="radio" value="true" {{checked true loo.properties.radar}} name="properties.radar" aria-labelledby="yes" />
+            </span>
+            <span class="checkbox-cell">
+                <input type="radio" value="false" {{checked false loo.properties.radar}} name="properties.radar" aria-labelledby="no" />
+            </span>
+            <span class="checkbox-cell">
+                <input type="radio" value="" {{checked undefined loo.properties.radar}} name="properties.radar" aria-labelledby="unknown" />
+            </span>
+        </fieldset>
+    </div>
+    <label for="properties.fee">Fee?</label>
+    <input id="properties.fee" type="text" placeholder="The amount eg. £0.10" name="properties.fee" value="{{loo.properties.fee}}" />
+    <label for="properties.notes">Any notes?</label>
+    <textarea id="properties.fee" type="text" name="properties.notes" aria-describedby="notes-description">{{loo.properties.notes}}</textarea>
+    <div class="data">
+        <h2>Data for this toilet</h2>
+        <div class="coords">
+            <div>
+                <label for="lat">lat:</label>
+                <input id="lat" name="geometry.coordinates.0" value="{{loo.geometry.coordinates.[0]}}" readonly/>
+            </div>
+            <div>
+                <label for="lon">lon:</label>
+                <input id="lon" name="geometry.coordinates.1" value="{{loo.geometry.coordinates.[1]}}" readonly/>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="origin" value="Great British Public Toilet Map"/>
+    <div>
+        {{#if loo}}<button type="submit">Update the toilet</button>{{/if}}
+        {{#if loo}}<a class="button-shaped delete" href="/remove/{{loo._id}}">Remove the toilet</a>{{/if}}
+        {{#unless loo}}<button type="submit">Add the toilet</button>{{/unless}}
+
+    </div>
+</form>
+
+{{#contentFor "gbptm_actions"}}
+    gbptm.bindLonLat(gbptm.$('[name="geometry.coordinates.0"]'), gbptm.$('[name="geometry.coordinates.1"]'));
+{{/contentFor}}

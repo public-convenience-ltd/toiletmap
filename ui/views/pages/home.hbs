@@ -1,0 +1,19 @@
+{{#unless config.app.readonly}}
+<p><a href="/reports" class="button-shaped">Add a toilet</a></p>
+{{/unless}}
+<h2>Nearest Toilets</h2>
+{{#unless prefs.nohelp.list_intro}}
+<div class="intro">
+    <h2 aria-level="3">Hi!</h2>
+    <p>The 5 nearest toilets are listed below. Click <strong>more info</strong> to find out about each toilet's features.</p> 
+    <p>You can <a href="/preferences">set preferences</a> to highlight toilets that meet your specific needs.</p>
+    <button type="button" data-init="gbptm-hide_help" data-config_target=".intro" data-config_setpref="nohelp.list_intro" aria-label="close">&#x2716;</button>
+</div>
+{{/unless}}
+<h2 class="visually-hidden">The Five Nearest Toilets</h2>
+{{>loolist}}
+
+{{#contentFor "gbptm_actions"}}
+    gbptm.locate_and_redirect();
+{{/contentFor}}
+        
