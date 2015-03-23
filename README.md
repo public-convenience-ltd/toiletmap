@@ -6,6 +6,7 @@ API server for the Great British Public Toilet Map
 Obligatory badges
 -----------------
 [![Build Status](https://travis-ci.org/neontribe/gbptm-api.svg?branch=master)](https://travis-ci.org/neontribe/gbptm-api)
+[![Dependency Status](https://david-dm.org/neontribe/gbptm-api.svg)](https://david-dm.org/neontribe/gbptm-api)
 
 Requirements
 ------------
