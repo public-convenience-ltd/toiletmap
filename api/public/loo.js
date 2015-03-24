@@ -1,8 +1,8 @@
 'use strict'
 
-var Loo = require('../../../../models/loo')
-var LooList = require('../../../../models/loo_list')
-var config = require('../../../../config/config')
+var Loo = require('../../models/loo')
+var LooList = require('../../models/loo_list')
+var config = require('../../config/config')
 var _ = require('lodash')
 var routes = {}
 
@@ -61,7 +61,7 @@ routes.loo = {
     switch (this.accepts('html', 'json')) {
       case 'html':
         yield this.renderDefaults('loo', {
-            loo: loo,
+            loo: loo.toJSON(),
             macromap: {
                 center: loo.geometry.coordinates.slice().reverse(),
                 zoom: 17

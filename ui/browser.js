@@ -1,21 +1,6 @@
 var $ = require('jquery')
 var _ = require('lodash')
 var L = require('leaflet')
-
-;(function () {
-  // Shim for Array.map
-  if (!('map' in Array.prototype)) {
-    Array.prototype.map = function (mapper, that) { // eslint-disable-line no-extend-native
-      var other = new Array(this.length)
-      for (var i = 0, n = this.length; i < n; i++) {
-        if (i in this) {
-          other[i] = mapper.call(that, this[i], i, this)
-        }
-      }
-      return other
-    }
-  }
-})()
 var getobject = require('getobject')
 var Handlebars = require('hbsfy/runtime')
 var helpers = require('./helpers.js')(Handlebars)

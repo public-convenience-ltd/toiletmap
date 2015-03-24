@@ -75,7 +75,7 @@ var base = {
       baseURL: process.env.BASE_URL || 'http://localhost:3000',
       version: version,
       cache: {
-        maxage: 0 * 1000
+        maxage: 365 * 24 * 60 * 1000
       }
     }
   }

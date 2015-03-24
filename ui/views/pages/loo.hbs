@@ -1,7 +1,7 @@
 {{#contentFor 'bodyclass'}}toilet{{/contentFor}}
 <p><a href="/loos/near/{{loo.geometry.coordinates.[0]}}/{{loo.geometry.coordinates.[1]}}"><span aria-hidden>&#x2190; </span> nearby toilets</a></p>
 {{#unless config.app.readonly}}
-<p><a href="/reports" class="button-shaped">Add a toilet</a></p>
+<p><a href="/report" class="button-shaped">Add a toilet</a></p>
 {{/unless}}
 <h2>
 {{#if loo.properties.name}}
@@ -63,5 +63,5 @@ Toilet
 </div>
 
 {{#unless config.app.readonly}}
-<p><a class="button-shaped" href="/reports?base={{loo._id}}">Edit this toilet</a></p>
+<p><a class="button-shaped" href="/report?base={{loo._id}}">Edit this toilet</a></p>
 {{/unless}}

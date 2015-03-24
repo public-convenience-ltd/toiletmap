@@ -1,7 +1,7 @@
 'use strict'
 
-var Loo = require('../../../../models/loo')
-var LooReport = require('../../../../models/loo_report')
+var Loo = require('../../models/loo')
+var LooReport = require('../../models/loo_report')
 var _ = require('lodash')
 var routes = {}
 

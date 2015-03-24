@@ -29,12 +29,14 @@
     "jquery": "^1.11.1",
     "jquery.cookie": "^1.4.1",
     "json-csv": "^1.0.5",
-    "jwt-simple": "^0.2.0",
     "koa": "^0.18.1",
     "koa-body": "^1.1.0",
     "koa-compose": "^2.3.0",
     "koa-cors": "0.0.14",
+    "koa-etag": "^2.0.0",
     "koa-favicon": "^1.2.0",
+    "koa-flash": "^0.1.0",
+    "koa-fresh": "0.0.3",
     "koa-gzip": "^0.1.0",
     "koa-hbs": "^0.7.0",
     "koa-helmet": "^0.0.3",
@@ -109,14 +111,16 @@
     "url": "git://github.com/neontribe/gbptm-api.git"
   },
   "scripts": {
-    "build": "browserify -t hbsfy -g uglifyify -r ./ui/browser.js --standalone gbptm -o ./ui/public/gbptm.js && npm run buildcss && npm run shimmy",
+    "build": "browserify -t hbsfy -g uglifyify -r ./ui/browser.js --standalone gbptm -o ./ui/public/gbptm.min.js && npm run buildcss && npm run shimmy",
     "buildcss": "cat ./ui/css/vendor/*.css ./ui/css/*.css > ./ui/public/gbptm.css",
-    "dev": "npm run watchjs & npm run watchcss & nodemon -e js,hbs --debug app.js",
+    "dev": "npm run watchjs & npm run watchcss & export $(cat .env | xargs) && nodemon -e js,hbs -i gbptm.min.js --debug app.js",
     "postinstall": "npm run build",
-    "shimmy": "awk 'FNR==1{print \"\"}1' ./node_modules/es5-shim/es5-shim.min.js ./node_modules/lt-ie-9/lt-ie-9.min.js > ./ui/public/shims/shims.js",
+    "shimmy": "awk 'FNR==1{print \"\"}1' ./node_modules/es5-shim/es5-shim.min.js ./node_modules/lt-ie-9/lt-ie-9.min.js > ./ui/public/shims/shims.min.js",
     "start": "node app.js",
-    "test": "export NODE_ENV=test && node  ./node_modules/.bin/_mocha --recursive test/**/*.js -R spec",
+    "lint": "standard",
+    "test": "export NODE_ENV=test && npm run lint &&  node  ./node_modules/.bin/_mocha --recursive test/**/*.js -R spec",
     "watchcss": "catw ./ui/css/vendor/*.css ./ui/css/*.css -o ./ui/public/gbptm.css -v",
-    "watchjs": "watchify -t hbsfy -r ./ui/browser.js --standalone gbptm --debug --verbose -o ./ui/public/gbptm.js"
+    "watchjs": "watchify -t hbsfy -r ./ui/browser.js --standalone gbptm --debug --verbose -o ./ui/public/gbptm.min.js",
+    "pullconfig": "heroku config:pull --overwrite --interactive --app gbptm-api-stage"
   }
 }

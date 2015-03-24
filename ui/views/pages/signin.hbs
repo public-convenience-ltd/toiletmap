@@ -9,4 +9,7 @@
 <p><a class="button-shaped osm" href="{{config.api.root}}/auth/openstreetmap?redirect={{redirect}}">OpenStreetMap</a></p>
 <p><a class="button-shaped github" href="{{config.api.root}}/auth/github?redirect={{redirect}}">Github</a></p>
 
+{{#if localusers }}
+<p><a class="button-shaped" href="{{config.api.root}}/auth/admin?redirect={{redirect}}">Local User</a></p>
+{{/if}}
 

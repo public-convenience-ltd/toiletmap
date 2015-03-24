@@ -11,20 +11,20 @@ var cors = require('koa-cors')
 var jsonp = require('koa-jsonp')
 var json = require('koa-json')
 var gzip = require('koa-gzip')
+var passport = require('koa-passport')
 var helmet = require('koa-helmet')
-var jwt = require('koa-jwt')
 var serializer = require('../lib/koa-serializer')
 var config = require('./config')
-var auth = require('../auth/auth')
-var passport = require('koa-passport')
 var session = require('koa-session')
 var paginate = require('../lib/koa-paginate')
 var readonly = require('../lib/readonly-mode')
+var auth = require('../auth/auth.js')
 var ui = require('../ui/ui.js')
+var resumer = require('../lib/resumer')
 
 module.exports = function (app) {
   app.keys = ['seekrit']
-  app.use(helmet.defaults()) // Some basic hardening
+  app.use(helmet.defaults({xframe: false, csp: false})) // Some basic hardening
   if (config.app.env !== 'test') {
     app.use(logger())
   }
@@ -42,29 +42,35 @@ module.exports = function (app) {
   app.use(session(app))
   app.use(passport.initialize())
   app.use(passport.session())
-
+  app.use(resumer())
   ui.init(app, config.ui)
-
   app.use(router(app))
 
-  // Auth routes for token retrieval
-  _.each(auth.routes, function (route, name) {
-    app[route.method](name, config.auth.mount + route.path, route.handler)
-  })
-
-  // mount all the routes defined in the api/controllers/public
-  fs.readdirSync(path.join(config.app.root, 'api', 'v2', 'controllers', 'public')).forEach(function (file) {
-    var routes = require(path.join(config.app.root, 'api', 'v2', 'controllers', 'public', file))
+  // mount all the routes defined in the api/public
+  fs.readdirSync(path.join(config.app.root, 'api', 'public')).forEach(function (file) {
+    var routes = require(path.join(config.app.root, 'api', 'public', file))
     _.each(routes, function (route, name) {
       app[route.method](name, route.path, route.handler)
     })
   })
-  // mount all the routes defined in the api/controllers/private composing each with authorization middleware
-  fs.readdirSync(path.join(config.app.root, 'api', 'v2', 'controllers', 'private')).forEach(function (file) {
-    var routes = require(path.join(config.app.root, 'api', 'v2', 'controllers', 'private', file))
+
+  // Auth routes
+  _.each(auth.routes, function (route, name) {
+    app[route.method](name, config.auth.mount + route.path, route.handler)
+  })
+
+  // mount all the routes defined in the api/private composing each with authorization middleware
+  fs.readdirSync(path.join(config.app.root, 'api', 'private')).forEach(function (file) {
+    var routes = require(path.join(config.app.root, 'api', 'private', file))
     _.each(routes, function (route, name) {
       var protected_handler = compose([
-        jwt({ secret: config.jwt.secret }),
+        function * (next) {
+          if (this.isAuthenticated()) {
+            yield next
+          } else {
+            this.redirect('/signin?redirect=' + this.request.url)
+          }
+        },
         route.handler
       ])
       app[route.method](name, route.path, protected_handler)

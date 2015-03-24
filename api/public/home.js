@@ -1,8 +1,8 @@
 'use strict'
 
 var routes = {}
-var config = require('../../../../config/config')
-var Loo = require('../../../../models/loo')
+var config = require('../../config/config')
+var Loo = require('../../models/loo')
 
 routes.home = {
   handler: function * () {

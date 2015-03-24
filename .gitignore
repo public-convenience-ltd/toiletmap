@@ -10,5 +10,7 @@ node_modules/
 *.sublime*
 
 ui/public/gbptm.css
-ui/public/gbptm.js
-ui/public/shims/shims.js
+*.min.js
+
+# Heroku-derived config
+.env

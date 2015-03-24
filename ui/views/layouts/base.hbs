@@ -14,7 +14,7 @@ lang="en-GB"> <![endif]-->
     <link rel="icon" href="/favico.png" type="image/png" />
     <title>The Great British Public Toilet Map {{#block 'title'}}{{/block}}</title>
     <!--[if lt IE 9]>
-        <script src="/shims/shims.js"></script>
+        <script src="/shims/shims.min.js"></script>
     <![endif]-->
 </head>
 <html>
@@ -51,9 +51,8 @@ lang="en-GB"> <![endif]-->
                     ></div>
             </aside>
         </div>
-        <script src="/gbptm.js?version={{config.app.version}}"></script>
+        <script src="/gbptm.min.js?version={{config.app.version}}"></script>
         <script>
-            //var gbptm = require('gbptm');
             gbptm.configure({
                 api: '{{ config.api.root }}',
                 baseURL: '{{ config.app.baseURL }}',

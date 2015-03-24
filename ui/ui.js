@@ -4,6 +4,9 @@ var khbs = require('koa-hbs')
 var koa_static = require('koa-static')
 var helpers = require('./helpers')(khbs.handlebars)
 var _ = require('lodash')
+var fresh = require('koa-fresh')
+var etag = require('koa-etag')
+var flash = require('koa-flash')
 
 function hbs_defaults (config) {
   return function * (next) {
@@ -21,6 +24,9 @@ function hbs_defaults (config) {
 }
 
 module.exports.init = function (app, config) {
+  app.use(fresh())
+  app.use(etag())
+  app.use(flash())
   _.each(helpers, function (helper, name) {
     khbs.registerHelper(name, helper)
   })

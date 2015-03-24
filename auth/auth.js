@@ -6,10 +6,8 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 var OpenStreetMapStrategy = require('passport-openstreetmap').Strategy
 var FacebookStrategy = require('passport-facebook').Strategy
 var config = require('../config/config')
-var jwt = require('koa-jwt')
 var compose = require('koa-compose')
 var routes = {}
-var tokenResponse
 
 passport.serializeUser(function (user, done) {
   done(null, user)
@@ -20,23 +18,6 @@ passport.deserializeUser(function (id, done) {
 })
 
 /**
- * Middleware to build sign and return a JSON Web Token
- */
-function * tokenResponse (next) {
-  var token
-  if (this.isAuthenticated()) {
-    token = jwt.sign(this.req.user, config.jwt.secret)
-    if (this.session && this.session.redirect) {
-      return this.redirect(this.session.redirect + '?token=' + token)
-    }
-    this.status = 200
-    this.body = { token: token }
-  } else {
-    this.throw(401)
-  }
-}
-
-/**
  * Middleware to store a redirectURL in the session for later use
  */
 function * storeRedirect (next) {
@@ -44,6 +25,20 @@ function * storeRedirect (next) {
     this.session.redirect = this.request.query.redirect
   }
   yield next
+}
+
+function * doRedirect (next) {
+  var redir = this.session.redirect
+  if (redir) {
+    this.session.redirect = null
+    this.redirect(redir)
+  } else {
+    this.flash = {
+      type: 'status',
+      msg: "You're logged in!"
+    }
+    this.redirect('/')
+  }
 }
 
 // Admin auth if local user and pass were provided
@@ -69,8 +64,8 @@ if (config.auth.local.username && config.auth.local.password) {
   routes.admin = {
     handler: compose([
       storeRedirect,
-      passport.authenticate('digest', { session: false }),
-      tokenResponse
+      passport.authenticate('digest'),
+      doRedirect
     ]),
     path: '/admin',
     method: 'get'
@@ -94,7 +89,6 @@ if (config.auth.github.client_id && config.auth.github.client_secret) {
     handler: compose([
       storeRedirect,
       passport.authenticate('github', {
-        session: false,
         callbackURL: config.app.baseUrl + config.auth.mount + '/github/callback'
       })
     ]),
@@ -104,8 +98,8 @@ if (config.auth.github.client_id && config.auth.github.client_secret) {
 
   routes.github_callback = {
     handler: compose([
-      passport.authenticate('github', { session: false }),
-      tokenResponse
+      passport.authenticate('github'),
+      doRedirect
     ]),
     path: '/github/callback',
     method: 'get'
@@ -137,7 +131,7 @@ if (config.auth.twitter.consumerKey && config.auth.twitter.consumerSecret) {
   routes.twitter_callback = {
     handler: compose([
       passport.authenticate('twitter'),
-      tokenResponse
+      doRedirect
     ]),
     path: '/twitter/callback',
     method: 'get'
@@ -169,7 +163,7 @@ if (config.auth.osm.consumerKey && config.auth.osm.consumerSecret) {
   routes.openstreetmap_callback = {
     handler: compose([
       passport.authenticate('openstreetmap'),
-      tokenResponse
+      doRedirect
     ]),
     path: '/openstreetmap/callback',
     method: 'get'
@@ -192,7 +186,6 @@ if (config.auth.facebook.client_id && config.auth.facebook.client_secret) {
     handler: compose([
       storeRedirect,
       passport.authenticate('facebook', {
-        session: false,
         callbackURL: config.app.baseUrl + config.auth.mount + '/facebook/callback'
       })
     ]),
@@ -202,8 +195,8 @@ if (config.auth.facebook.client_id && config.auth.facebook.client_secret) {
 
   routes.facebook_callback = {
     handler: compose([
-      passport.authenticate('facebook', { session: false }),
-      tokenResponse
+      passport.authenticate('facebook'),
+      doRedirect
     ]),
     path: '/facebook/callback',
     method: 'get'
@@ -236,7 +229,7 @@ if (config.auth.google.consumerKey && config.auth.google.consumerSecret) {
   routes.google_callback = {
     handler: compose([
       passport.authenticate('google'),
-      tokenResponse
+      doRedirect
     ]),
     path: '/google/callback',
     method: 'get'
