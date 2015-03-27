@@ -1,10 +1,10 @@
 {
-  "name": "gbptm-api",
+  "name": "gbptm",
   "description": "API/UI server for the Great British Public Toilet Map",
   "version": "1.0.0",
   "author": "Rupert Redington",
   "bugs": {
-    "url": "https://github.com/neontribe/gbptm-api/issues"
+    "url": "https://github.com/neontribe/gbptm/issues"
   },
   "dependencies": {
     "JSON2": "^0.1.0",
@@ -74,7 +74,7 @@
     "iojs": "1.6.x",
     "npm": "2.1.x"
   },
-  "homepage": "https://github.com/neontribe/gbptm-api",
+  "homepage": "https://github.com/neontribe/gbptm",
   "keywords": [
     "geoJSON",
     "koa",
@@ -87,7 +87,7 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/neontribe/gbptm-api.git"
+    "url": "git://github.com/neontribe/gbptm.git"
   },
   "scripts": {
     "build": "browserify -t hbsfy -g uglifyify -r ./ui/browser.js --standalone gbptm -o ./ui/public/gbptm.min.js && npm run buildcss && npm run shimmy",
