@@ -955,10 +955,13 @@ body.standalone_map .return:before {
 ------------------------------------------------------ */
 
 .icon-location {
+	display: block;
 	border: 2px solid #222 !important;
+	border-radius: 4px;
 	width: 30px !important;
 	height: 30px !important;
 	background: url(/images/where-i-am.png) no-repeat center center;
+	background-color: white;
 }
 
 .icon-location:before {
