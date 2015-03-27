@@ -12,9 +12,6 @@ var base = {
     baseUrl: process.env.BASE_URL || 'http://localhost:3000',
     readonly: process.env.READONLY || false
   },
-  jwt: {
-    secret: process.env.JWT_SECRET || 'SEEKRIT'
-  },
   auth: {
     mount: '/auth',
     local: {
