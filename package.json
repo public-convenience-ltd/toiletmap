@@ -100,6 +100,6 @@
     "test": "export NODE_ENV=test && npm run lint &&  node  ./node_modules/.bin/_mocha --recursive test/**/*.js -R spec",
     "watchcss": "catw ./ui/css/vendor/*.css ./ui/css/*.css -o ./ui/public/gbptm.css -v",
     "watchjs": "watchify -t hbsfy -r ./ui/browser.js --standalone gbptm --debug --verbose -o ./ui/public/gbptm.min.js",
-    "pullconfig": "heroku config:pull --overwrite --interactive --app gbptm-api-stage"
+    "pullconfig": "heroku config:pull --overwrite --interactive --app gbptm-stage"
   }
 }

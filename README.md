@@ -1,17 +1,17 @@
-gbptm-api
+gbptm
 =========
 
-API server for the Great British Public Toilet Map
+UI/API server for the Great British Public Toilet Map
 
 Obligatory badges
 -----------------
-[![Build Status](https://travis-ci.org/neontribe/gbptm-api.svg?branch=master)](https://travis-ci.org/neontribe/gbptm-api)
-[![Dependency Status](https://david-dm.org/neontribe/gbptm-api.svg)](https://david-dm.org/neontribe/gbptm-api)
+[![Build Status](https://travis-ci.org/neontribe/gbptm.svg?branch=master)](https://travis-ci.org/neontribe/gbptm)
+[![Dependency Status](https://david-dm.org/neontribe/gbptm.svg)](https://david-dm.org/neontribe/gbptm)
 
 Requirements
 ------------
 
-* Node.js 0.11.12 or better ([NVM](https://github.com/creationix/nvm) is useful to manage node versions)
+* iojs 1.6.x or better ([NVM](https://github.com/creationix/nvm) is useful to manage node versions)
 * Mongodb 2.4 or better
 
 (Woefully Incomplete) API Documentation
