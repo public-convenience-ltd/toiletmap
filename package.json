@@ -7,6 +7,7 @@
     "url": "https://github.com/neontribe/gbptm-api/issues"
   },
   "dependencies": {
+    "JSON2": "^0.1.0",
     "browserify": "^9.0.3",
     "catw": "^0.2.0",
     "co": "^4.5.1",
@@ -93,7 +94,7 @@
     "buildcss": "cat ./ui/css/vendor/*.css ./ui/css/*.css > ./ui/public/gbptm.css",
     "dev": "npm run watchjs & npm run watchcss & export $(cat .env | xargs) && nodemon -e js,hbs -i gbptm.min.js --debug app.js",
     "postinstall": "npm run build",
-    "shimmy": "awk 'FNR==1{print \"\"}1' ./node_modules/es5-shim/es5-shim.min.js ./node_modules/lt-ie-9/lt-ie-9.min.js > ./ui/public/shims/shims.min.js",
+    "shimmy": "awk 'FNR==1{print \"\"}1' ./node_modules/es5-shim/es5-shim.min.js ./node_modules/lt-ie-9/lt-ie-9.min.js ./node_modules/JSON2/json2.js > ./ui/public/shims/shims.min.js",
     "start": "node app.js",
     "lint": "standard",
     "test": "export NODE_ENV=test && npm run lint &&  node  ./node_modules/.bin/_mocha --recursive test/**/*.js -R spec",

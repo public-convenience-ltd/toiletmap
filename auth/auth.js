@@ -47,7 +47,7 @@ if (config.auth.local.username && config.auth.local.password) {
     function (username, done) {
       if (username === config.auth.local.username) {
         // If the correct username is supplied return the user and pass word for verification
-        done(null, {name: config.auth.local.username}, config.auth.local.password)
+        done(null, {name: username, userId: 'local_' + username}, config.auth.local.password)
       } else {
         done(null, false)
       }
@@ -81,7 +81,7 @@ if (config.auth.github.client_id && config.auth.github.client_secret) {
       callbackURL: config.app.baseUrl + config.auth.mount + '/github/callback'
     },
     function (accessToken, refreshToken, profile, done) {
-      return done(null, {name: profile.displayName})
+      return done(null, {name: profile.displayName, userId: profile.provider + '_' + profile.id})
     }
   ))
 
@@ -113,7 +113,7 @@ if (config.auth.twitter.consumerKey && config.auth.twitter.consumerSecret) {
       callbackURL: config.app.baseUrl + config.auth.mount + '/twitter/callback'
     },
     function (token, tokenSecret, profile, done) {
-      return done(null, {name: profile.displayName})
+      return done(null, {name: profile.displayName, userId: profile.provider + '_' + profile.id})
     }
   ))
 
@@ -145,7 +145,7 @@ if (config.auth.osm.consumerKey && config.auth.osm.consumerSecret) {
       callbackURL: config.app.baseUrl + config.auth.mount + '/openstreetmap/callback'
     },
     function (token, tokenSecret, profile, done) {
-      return done(null, {name: profile.displayName})
+      return done(null, {name: profile.displayName, userId: profile.provider + '_' + profile.id})
     }
   ))
 
@@ -178,7 +178,7 @@ if (config.auth.facebook.client_id && config.auth.facebook.client_secret) {
       callbackURL: config.app.baseUrl + config.auth.mount + '/facebook/callback'
     },
     function (accessToken, refreshToken, profile, done) {
-      return done(null, {name: profile.displayName})
+      return done(null, {name: profile.displayName, userId: profile.provider + '_' + profile.id})
     }
   ))
 
@@ -211,7 +211,7 @@ if (config.auth.google.consumerKey && config.auth.google.consumerSecret) {
       callbackURL: config.app.baseUrl + config.auth.mount + '/google/callback'
     },
     function (accessToken, refreshToken, profile, done) {
-      return done(null, {name: profile.displayName})
+      return done(null, {name: profile.displayName, userId: profile.provider + '_' + profile.id})
     }
   ))
 

@@ -10,6 +10,7 @@ var routes = {}
 
 function * save (data, user) {
   data.attribution = user.name
+  data.userId = user.userId
   data.trust = config.reports.trust
   data.collectionMethod = 'api'
   var validator = new LooReport(data)
