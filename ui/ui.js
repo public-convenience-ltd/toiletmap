@@ -15,7 +15,8 @@ function hbs_defaults (config) {
         config: config,
         prefs: JSON.parse(this.cookies.get('prefs') || '{}'),
         flash: this.flash,
-        backlink: this.req.headers.referer || config.app.baseURL
+        backlink: this.req.headers.referer || config.app.baseURL,
+        username: this.req.user ? this.req.user.name : false
       })
       yield this.render.apply(this, [tpl, data])
     }

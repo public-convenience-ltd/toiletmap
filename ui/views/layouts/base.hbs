@@ -6,18 +6,18 @@ lang="en-GB"> <![endif]-->
 <!--[if IE 9]>     <html class="ie ie9" dir="ltr" lang="en-GB"> <![endif]-->
 <!--[if gt IE 9]>  <html dir="ltr" lang="en-GB"> <![endif]-->
 <!--[if !IE]><!--> <html dir="ltr" lang="en-GB"> <!--<![endif]-->
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="Description" content="An interactive map of Great Britain's Public Toilets">
-    <link rel="stylesheet" href="/gbptm.css">
-    <link rel="icon" href="/favico.png" type="image/png" />
-    <title>The Great British Public Toilet Map {{#block 'title'}}{{/block}}</title>
-    <!--[if lt IE 9]>
-        <script src="/shims/shims.min.js"></script>
-    <![endif]-->
-</head>
-<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="Description" content="An interactive map of Great Britain's Public Toilets">
+        <link rel="stylesheet" href="/gbptm.css">
+        <link rel="icon" href="/favico.png" type="image/png" />
+        <title>The Great British Public Toilet Map {{#block 'title'}}{{/block}}</title>
+        <!--[if lt IE 9]>
+            <script src="/shims/shims.min.js"></script>
+        <![endif]-->
+    </head>
+
     <body class="{{#block 'bodyclass'}}{{/block}}">
         <div>
             <div class="list-container">
@@ -37,6 +37,9 @@ lang="en-GB"> <![endif]-->
                        <ul>
                            <li><a href="/preferences">my toilet preferences</a></li>
                            <li><a href="/about">about this project</a></li>
+                           {{#if username}}
+                            <li>{{username}} (<a href="/signout">sign out</a>)</li>
+                           {{/if}}
                        </ul>
                     </div>
                 </footer>
