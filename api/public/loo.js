@@ -25,7 +25,7 @@ routes.nearby_loos = {
       switch (this.accepts('html', 'json')) {
         case 'html':
           yield this.renderDefaults('list', {
-            loo: loos,
+            loos: loos,
             macromap: {
               center: [parseFloat(this.params.lat), parseFloat(this.params.lon)],
               zoom: 17
