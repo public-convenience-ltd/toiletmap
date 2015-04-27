@@ -32,11 +32,16 @@ describe('Loos service', function () {
     }).then(done)
   })
 
-  it('/loos should return an array of loos', function (done) {
+  it('/loos/in/:sw/:ne/:nw/:se should return an array of loos', function (done) {
     request
-    .get('/loos')
+    .get('/loos/in/-24.2,44.5/20.3,60.4/-24.2,60.4/20.3,44.5')
+    .set('Accept', 'application/json')
     .expect(200)
-    .expect('Total-Count', '12')
+    .expect(function (res) {
+      if (!(res.body.features.length === 12)) {
+        return 'Not enough Loos'
+      }
+    })
     .end(done)
   })
 })

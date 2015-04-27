@@ -4,7 +4,6 @@ var _ = require('lodash')
 var Schema = require('mongoose').Schema
 var timestamps = require('mongoose-timestamp')
 var geohash = require('geo-hash')
-var stampopts = {}
 var specs = {}
 var schemae = {}
 
@@ -60,7 +59,7 @@ schemae.looReportSchema = new Schema(
     }
   )
 )
-schemae.looReportSchema.plugin(timestamps, stampopts)
+schemae.looReportSchema.plugin(timestamps)
 schemae.looReportSchema.pre('save', function (next) {
   this.geohash = geohash.encode(this.geometry.coordinates[1], this.geometry.coordinates[0])
   next()
@@ -85,7 +84,7 @@ schemae.looSchema.pre('save', function (next) {
   this.geohash = geohash.encode(this.geometry.coordinates[1], this.geometry.coordinates[0])
   next()
 })
-schemae.looSchema.plugin(timestamps, stampopts)
+schemae.looSchema.plugin(timestamps)
 schemae.looSchema.index({geometry: '2dsphere'})
 schemae.looSchema.index({geohash: 1})
 

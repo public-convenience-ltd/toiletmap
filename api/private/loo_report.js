@@ -1,7 +1,6 @@
 var LooReport = require('../../models/loo_report')
 var Loo = require('../../models/loo')
 var config = require('../../config/config')
-var thunk = require('thunkify')
 var compose = require('koa-compose')
 var parse = require('co-body')
 var _ = require('lodash')
@@ -14,7 +13,6 @@ function * save (data, user) {
   data.trust = config.reports.trust
   data.collectionMethod = 'api'
   var validator = new LooReport(data)
-  validator.validate = thunk(validator.validate)
   try {
     yield validator.validate()
   } catch (e) {

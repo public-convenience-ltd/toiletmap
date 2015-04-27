@@ -3,19 +3,7 @@
 var Loo = require('../../models/loo')
 var LooList = require('../../models/loo_list')
 var config = require('../../config/config')
-var _ = require('lodash')
 var routes = {}
-
-routes.loos = {
-  handler: function * () {
-    var loos = yield Loo.find({'properties.active': true}).paginate(this.paginate.options)
-    this.status = 200
-    this.body = new LooList(loos.results)
-    this.paginate = _.omit(loos, 'results')
-  },
-  path: '/loos',
-  method: 'get'
-}
 
 routes.nearby_loos = {
     handler: function * () {

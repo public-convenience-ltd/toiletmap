@@ -2,7 +2,6 @@
 
 var mongoose = require('mongoose')
 var config = require('../config/config')
-var thunk = require('thunkify')
 var _ = require('lodash')
 var Loo = require('./loo')
 var looReportSchema = require('./loo_schema').looReportSchema
@@ -43,12 +42,11 @@ looReportSchema.statics.processReport = function * (data) {
     report = yield LooReport.findOneAndUpdate(
       {geohash: ghash, attribution: data.attribution},
       data,
-      {upsert: true}
+      {upsert: true, new: true}
     ).exec()
   } else {
     // Anon ones get a new report each time
     report = new LooReport(data)
-    report.save = thunk(report.save)
     yield report.save()
   }
   var loo = yield report.looificate()
@@ -71,7 +69,6 @@ looReportSchema.methods.looificate = function * () {
   yield loo.regenerate()
 
   // Save the result
-  loo.save = thunk(loo.save)
   yield loo.save()
 
   return loo

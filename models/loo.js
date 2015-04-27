@@ -3,7 +3,6 @@
 var mongoose = require('mongoose')
 var looSchema = require('./loo_schema').looSchema
 var _ = require('lodash')
-var thunk = require('thunkify')
 var earth = 6731000
 var Loo
 
@@ -85,9 +84,8 @@ function calculate_credibility (reports) {
  * Currently this leaves a loo's location as that of the first report submitted
  */
 looSchema.methods.regenerate = function * () {
-  this.populate = thunk(this.populate)
   // populate the array of report ids with their documents
-  var loo = yield this.populate('reports')
+  var loo = yield this.populate('reports').execPopulate()
   // Make an array of property objects ordered by trustworthiness then by freshness
   var properties = _.pluck(_.sortBy(loo.reports, ['trust', 'updatedAt']), 'properties')
   // Merge them together in that order

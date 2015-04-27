@@ -46,12 +46,6 @@ var base = {
     maxDistance: 50000,
     limit: 5
   },
-  paginate: {
-    perPage: 10,
-    delta: 0,
-    page: 0,
-    offset: 0
-  },
   deduplication: {
     radius: 25,
     anon_attributions: ['Anonymous']
