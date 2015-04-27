@@ -119,6 +119,9 @@ gbptm.multi_loo_map = function (el, opts) {
     collapsed: false,
     placeholder: 'Placename or postcode...'
   }).addTo(map)
+  $(geocoder._container).on('click', '.leaflet-control-geocoder-icon', function (evt) {
+    geocoder._geocode(evt)
+  })
   geocoder.markGeocode = function (result) {
     this._map.setView(result.center)
     return this
