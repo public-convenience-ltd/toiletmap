@@ -11,6 +11,7 @@ var cors = require('koa-cors')
 var jsonp = require('koa-jsonp')
 var json = require('koa-json')
 var gzip = require('koa-gzip')
+var ext = require('koa-ext-mime')
 var passport = require('koa-passport')
 var helmet = require('koa-helmet')
 var config = require('./config')
@@ -40,6 +41,7 @@ module.exports = function (app) {
   app.use(passport.session())
   app.use(resumer())
   ui.init(app, config.ui)
+  app.use(ext())
   app.use(router(app))
 
   // mount all the routes defined in the api/public

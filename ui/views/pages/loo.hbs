@@ -44,12 +44,12 @@ Toilet
 			<dd>{{loo.properties.geocoding_method}}</dd>
 		{{/if}}
 		<dt>Formats</dt>
-		<dd><a href="{{config.api.root}}/loos/{{loo._id}}">JSON</a></dd>
+		<dd><a href="{{config.api.root}}/loos/{{loo._id}}.json">JSON</a></dd>
 		{{#if loo.reports}}
 			<dt>Sources</dt>
 			<dd class="sources">
 				{{#each loo.reports}}
-					<a href="{{../config.api.root}}/reports/{{this}}">[{{plusone @index}}]</a>
+					<a href="{{../config.api.root}}/reports/{{this}}.json">[{{plusone @index}}]</a>
 				{{/each}}
 			</dd>
 		{{/if}}
