@@ -260,7 +260,7 @@ gbptm.positioning_map = function (el, opts) {
     onLocationOutsideMapBounds: $.noop
   }).addTo(map)
   map.on('dragstart', locateControl.stopFollowing)
-  locateControl.locate()
+  locateControl.start()
   L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map)
   gbptm.micromap = map
   return map
