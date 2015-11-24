@@ -1,13 +1,15 @@
 language: node_js
 node_js:
-- 'iojs'
+- iojs
 services:
 - mongodb
 deploy:
   provider: heroku
   api_key:
     secure: PEHwBVlANBR4goE6j5MBNs3xs5XXNnLxYOhgrjaJBhlXCNKOZv2Lx/UTdu4URD51eLhBOO+LXclFdVVp3fDGRRSDQnKsAUwcpFgE8TIBCL3eLRXgfaVYxTLp9DFli7pP69gmgMhJe/6xxlKJMMD2KajSRjRDPOE4FgyFDAU4HdQ=
-  app: 
+  app:
     master: gbptm-ui
     develop: gbptm-stage
-
+notifications:
+  slack:
+    secure: JiuHEMR0Nck9Jd0NcI0m8LAP+KONS0E+eeVsk7kP+TNSyqTRSWlQyodiz+8fzqSZcvnGxGy5HsQPzg4pOIyoC2fgoyrC7AZ3QYx48Pz7RVCNZ6NghPevvacSMF7xv0uP3tJJzWHeyqld7P436QYvsr1dD9FMy0VwBvJlLHfUJ98=
