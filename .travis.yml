@@ -3,6 +3,7 @@ node_js:
 - iojs
 services:
 - mongodb
+sudo: false
 deploy:
   provider: heroku
   api_key:
