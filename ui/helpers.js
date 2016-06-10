@@ -167,7 +167,7 @@ module.exports = function (hbs) {
     sort_properties: function (context, options) {
       return _(_.clone(context))
         .omit(config.loo_properties.blacklist)
-        .pairs()
+        .toPairs()
         .sortBy(function (item) {
           var dex = _.indexOf(config.loo_properties.ordering, item[0])
           return (dex !== -1) ? dex : config.loo_properties.ordering.length + 1
@@ -235,7 +235,7 @@ module.exports = function (hbs) {
         })
         if (_.every(details, Boolean)) {
           status = 'a preferred toilet'
-        } else if (_.contains(details, false)) {
+      } else if (_.includes(details, false)) {
           status = 'not a preferred toilet'
         }
       }

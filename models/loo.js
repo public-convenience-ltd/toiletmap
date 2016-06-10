@@ -87,12 +87,12 @@ looSchema.methods.regenerate = function * () {
   // populate the array of report ids with their documents
   var loo = yield this.populate('reports').execPopulate()
   // Make an array of property objects ordered by trustworthiness then by freshness
-  var properties = _.pluck(_.sortBy(loo.reports, ['trust', 'updatedAt']), 'properties')
+  var properties = _.map(_.sortBy(loo.reports, ['trust', 'updatedAt']), 'properties')
   // Merge them together in that order
   loo.properties = _.merge.apply(_, properties)
   // Record all the sources and attributions
-  loo.sources = _.pluck(loo.reports, 'origin')
-  loo.attributions = _.pluck(loo.reports, 'attribution')
+  loo.sources = _.map(loo.reports, 'origin')
+  loo.attributions = _.map(loo.reports, 'attribution')
 
   // Calculate credibility
   loo.credibility = calculate_credibility(loo.reports)

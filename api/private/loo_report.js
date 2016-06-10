@@ -87,7 +87,7 @@ routes.remove = {
     try {
       yield save(report, this.req.user)
     } catch (e) {
-      this.throw(400, _.pluck(e.errors, 'message').concat(['Provided: ' + JSON.stringify(report, null, '\t')]).join('\n'))
+      this.throw(400, _.map(e.errors, 'message').concat(['Provided: ' + JSON.stringify(report, null, '\t')]).join('\n'))
     }
 
     this.flash = {
