@@ -9,7 +9,7 @@ require('leaflet.markercluster')
 require('leaflet-control-geocoder')
 require('leaflet-loading')
 require('leaflet.locatecontrol')
-require('jQuery-ajaxTransport-XDomainRequest')
+require('jquery-ajax-transport-xdomainrequest')
 L.Icon.Default.imagePath = '/images/'
 
 require('jquery.cookie')
