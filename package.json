@@ -19,8 +19,8 @@
     "getobject": "^0.1.0",
     "handlebars": "^3.0.0",
     "hbsfy": "^2.2.1",
-    "jQuery-ajaxTransport-XDomainRequest": "https://github.com/MoonScript/jQuery-ajaxTransport-XDomainRequest/archive/master.tar.gz",
     "jquery": "^1.11.1",
+    "jquery-ajax-transport-xdomainrequest": "^1.0.4",
     "jquery.cookie": "^1.4.1",
     "koa": "^0.19.1",
     "koa-body": "^1.1.0",
@@ -72,8 +72,8 @@
     "watchify": "^0.10.2"
   },
   "engines": {
-    "iojs": "1.6.x",
-    "npm": "2.1.x"
+    "node": ">=6.2.1",
+    "npm": ">=3.9.3"
   },
   "homepage": "https://github.com/neontribe/gbptm",
   "keywords": [

@@ -1,8 +1,9 @@
 language: node_js
 node_js:
-- iojs
+- 6.2.1
 services:
 - mongodb
+sudo: false
 deploy:
   provider: heroku
   api_key:
@@ -10,6 +11,3 @@ deploy:
   app:
     master: gbptm-ui
     develop: gbptm-stage
-notifications:
-  slack:
-    secure: UwNtYSNmXXWXCv1R+5/mzW6OyT8UV622PfLN0cZETcPdkmcLt5EDErwc5CZxB3oxDs2X2RE/JYu5TfEih3fPysyyUR756U+P82UL9u58mps2QFpGyhWPRCnVc4PuEdr7w4cqHK5UfNUXIz/M3dt+f0AqXknA3rtqmZfBv2s6+4A=
