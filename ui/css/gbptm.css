@@ -290,6 +290,32 @@ input::-moz-focus-inner {
 	background: #55acee;
 }
 
+.tfg {
+	width: 100%;
+	text-align: center;
+	background-color: #1a457a;
+}
+
+.tweet {
+	width: 100%;
+	text-align: center;
+	margin: 0;
+	padding-left: 3.5rem;
+	background: #50abf1 url(/images/twitter.png) left 0.75em center no-repeat;
+	background-size: 1.5rem;
+}
+
+.vote {
+	margin: 0;
+	overflow: auto; /* clearfix */
+}
+
+.vote img {
+	float: left;
+	width: 4rem;
+	margin-right: 0.75em;
+}
+
 .github { background: #e0e0e0; color: #222 !important; }
 .facebook { background: #3b5998; }
 .google { background: #dd4b39; }
