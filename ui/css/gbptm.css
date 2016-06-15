@@ -307,7 +307,6 @@ input::-moz-focus-inner {
 
 .vote {
 	margin: 0;
-	overflow: auto; /* clearfix */
 }
 
 .vote img {
