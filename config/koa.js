@@ -23,7 +23,7 @@ var resumer = require('../lib/resumer')
 
 module.exports = function (app) {
   app.keys = ['seekrit']
-  app.use(helmet.defaults({xframe: false, csp: false})) // Some basic hardening
+  app.use(helmet({frameguard: false, contentSecurityPolicy: false})) // Some basic hardening
   if (config.app.env !== 'test') {
     app.use(logger())
   }
