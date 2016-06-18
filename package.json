@@ -1,7 +1,7 @@
 {
   "name": "gbptm",
   "description": "API/UI server for the Great British Public Toilet Map",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Rupert Redington",
   "bugs": {
     "url": "https://github.com/neontribe/gbptm/issues"
@@ -11,8 +11,8 @@
     "browserify": "^13.0.1",
     "catw": "^1.0.1",
     "co": "^4.5.1",
-    "co-body": "^1.1.0",
-    "co-request": "^0.2.0",
+    "co-body": "^4.2.0",
+    "co-request": "^1.0.0",
     "es5-shim": "^4.1.0",
     "exorcist": "^0.4.0",
     "geo-hash": "0.0.2",
@@ -31,8 +31,8 @@
     "koa-flash": "^1.0.0",
     "koa-fresh": "0.0.3",
     "koa-gzip": "^0.1.0",
-    "koa-hbs": "^0.7.0",
-    "koa-helmet": "^0.0.3",
+    "koa-hbs": "^0.8.1",
+    "koa-helmet": "^1.0.0",
     "koa-json": "^1.1.1",
     "koa-jsonp": "0.1.2",
     "koa-logger": "^1.2.2",
