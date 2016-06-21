@@ -59,7 +59,7 @@ var base = {
     },
     map: {
       center: [51.50109067037534, -0.17943490587640554],
-      zoom: 14
+      zoom: 15
     },
     app: {
       readonly: process.env.READONLY || false,

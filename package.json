@@ -1,7 +1,7 @@
 {
   "name": "gbptm",
   "description": "API/UI server for the Great British Public Toilet Map",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "author": "Rupert Redington",
   "bugs": {
     "url": "https://github.com/neontribe/gbptm/issues"
