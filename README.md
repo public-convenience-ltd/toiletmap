@@ -11,7 +11,7 @@ Obligatory badges
 Requirements
 ------------
 
-* iojs 1.6.x or better ([NVM](https://github.com/creationix/nvm) is useful to manage node versions)
+* node.js 6.2.1 or better ([NVM](https://github.com/creationix/nvm) is useful to manage node versions)
 * Mongodb 2.4 or better
 
 (Woefully Incomplete) API Documentation
@@ -30,16 +30,15 @@ Obtain a copy of the code and then, in that directory:
 You may wish to populate your instance's database, otherwise queries are awful boring. The easiest way to do this is probably to load a snapshot from the live instance. There are some included in data/sources/mongodump - try something like this:
 
     mongorestore -h localhost:27017 -d gbptm ./data/sources/mongodump/27-11-2014/app29532998/
-    
+
 See how that went with:
 
-    http localhost:3000/statistics
-    
-*(you do have [httpie](https://github.com/jakubroztocil/httpie) right?)*
-    
+    http://localhost:3000/statistics
+
+
 Messing Around
 --------------
 
     npm run dev
-    
+
 is provided for your convenience. It'll start your server with the default debug port enabled and monitor the application files with nodemon, restarting as necessary to save you labor.

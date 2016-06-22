@@ -91,7 +91,9 @@ gbptm.makeIdentMap = function () {
 
 gbptm.multi_loo_map = function (el, opts) {
   var map = L.map(el, {
-    zoom: opts.zoom
+    zoom: opts.zoom,
+    minZoom: 12,
+    maxZoom: 18
   })
   map.setView(opts.center, opts.zoom)
 
@@ -102,7 +104,7 @@ gbptm.multi_loo_map = function (el, opts) {
 
   var markers = new L.MarkerClusterGroup({
     showCoverageOnHover: false,
-    disableClusteringAtZoom: 14,
+    disableClusteringAtZoom: 15,
     iconCreateFunction: function (cluster) {
       return new L.DivIcon({ html: '<div class="cluster">' + cluster.getChildCount() + '<span>toilets</span></div>' })
     }
@@ -227,7 +229,7 @@ gbptm.mini_map = function (el, opts) {
     scrollWheelZoom: opts.zoomable || false,
     doubleClickZoom: opts.zoomable || false,
     maxZoom: 18,
-    minZoom: 10
+    minZoom: 12
   })
   map.setView(opts.center, opts.zoom)
   L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map)
