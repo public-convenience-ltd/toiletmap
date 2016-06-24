@@ -3,6 +3,7 @@
 var fs = require('fs')
 var path = require('path')
 var _ = require('lodash')
+var sslify = require('koa-sslify')
 var logger = require('koa-logger')
 var compose = require('koa-compose')
 var router = require('koa-router')
@@ -22,6 +23,13 @@ var resumer = require('../lib/resumer')
 
 module.exports = function (app) {
   app.keys = ['seekrit']
+  if (config.app.enableHttps) {
+      // Force HTTPS on all page
+      app.use(enforceHttps({
+          trustProtoHeader: true
+      }))
+  }
+
   app.use(helmet({frameguard: false, contentSecurityPolicy: false})) // Some basic hardening
   if (config.app.env !== 'test') {
     app.use(logger())
