@@ -97,22 +97,22 @@ var platforms = {
     }
   },
   production: {
+    enableHttps: true,
     ui: {
       app: {
         cache: {
           maxage: 365 * 24 * 60 * 1000
-      },
-      enableHttps: true
+        }
       }
     }
   },
   staging: {
+    enableHttps: true,
     ui: {
       app: {
         cache: {
           maxage: 24 * 60 * 1000
-      },
-      enableHttps: true
+        }
       }
     }
   },
