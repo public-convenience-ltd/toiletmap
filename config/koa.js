@@ -3,7 +3,6 @@
 var fs = require('fs')
 var path = require('path')
 var _ = require('lodash')
-var sslify = require('koa-sslify')
 var logger = require('koa-logger')
 var compose = require('koa-compose')
 var router = require('koa-router')
@@ -25,9 +24,12 @@ module.exports = function (app) {
   app.keys = ['seekrit']
   if (config.app.enableHttps) {
       // Force HTTPS on all page
-      app.use(enforceHttps({
-          trustProtoHeader: true
-      }))
+      app.use(function * (next) {
+          if (this.secure || this.request.header['x-forwarded-proto'] === 'https') {
+              return yield next
+          }
+          this.response.redirect(config.app.baseUrl + this.request.url)
+      })
   }
 
   app.use(helmet({frameguard: false, contentSecurityPolicy: false})) // Some basic hardening
