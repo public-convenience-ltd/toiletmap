@@ -97,7 +97,9 @@ var platforms = {
     }
   },
   production: {
-    enableHttps: true,
+    app: {
+      enableHttps: true
+    },
     ui: {
       app: {
         cache: {
@@ -107,7 +109,9 @@ var platforms = {
     }
   },
   staging: {
-    enableHttps: true,
+    app: {
+      enableHttps: true
+    },
     ui: {
       app: {
         cache: {
