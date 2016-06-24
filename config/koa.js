@@ -22,6 +22,16 @@ var resumer = require('../lib/resumer')
 
 module.exports = function (app) {
   app.keys = ['seekrit']
+  if (config.app.enableHttps) {
+      // Force HTTPS on all page
+      app.use(function * (next) {
+          if (this.secure || this.request.header['x-forwarded-proto'] === 'https') {
+              return yield next
+          }
+          this.response.redirect(config.app.baseUrl + this.request.url)
+      })
+  }
+
   app.use(helmet({frameguard: false, contentSecurityPolicy: false})) // Some basic hardening
   if (config.app.env !== 'test') {
     app.use(logger())

@@ -10,7 +10,8 @@ var base = {
     port: process.env.PORT || 3000,
     env: process.env.NODE_ENV || 'development',
     baseUrl: process.env.BASE_URL || 'http://localhost:3000',
-    readonly: process.env.READONLY || false
+    readonly: process.env.READONLY || false,
+    enableHttps: false
   },
   auth: {
     mount: '/auth',
@@ -96,6 +97,9 @@ var platforms = {
     }
   },
   production: {
+    app: {
+      enableHttps: true
+    },
     ui: {
       app: {
         cache: {
@@ -105,6 +109,9 @@ var platforms = {
     }
   },
   staging: {
+    app: {
+      enableHttps: true
+    },
     ui: {
       app: {
         cache: {
