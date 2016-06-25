@@ -97,8 +97,8 @@ gbptm.multi_loo_map = function (el, opts) {
   })
   map.setView(opts.center, opts.zoom)
 
-  L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: 'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 18
   }).addTo(map)
 
@@ -232,7 +232,7 @@ gbptm.mini_map = function (el, opts) {
     minZoom: 12
   })
   map.setView(opts.center, opts.zoom)
-  L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map)
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map)
   L.marker(opts.center, {
     icon: new L.LooIdentIcon({ident: $(el).data('map_ident').split(':')[1]})
   }).addTo(map)
@@ -263,7 +263,7 @@ gbptm.positioning_map = function (el, opts) {
   }).addTo(map)
   map.on('dragstart', locateControl.stopFollowing)
   locateControl.start()
-  L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map)
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map)
   gbptm.micromap = map
   return map
 }
