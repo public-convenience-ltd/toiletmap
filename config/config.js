@@ -98,7 +98,7 @@ var platforms = {
   },
   production: {
     app: {
-      enableHttps: false
+      enableHttps: true
     },
     ui: {
       app: {
