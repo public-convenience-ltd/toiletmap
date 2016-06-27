@@ -1,5 +1,6 @@
 'use strict'
 
+require('newrelic')
 var config = require('./config/config')
 var koaConfig = require('./config/koa')
 require('./config/mongo')
