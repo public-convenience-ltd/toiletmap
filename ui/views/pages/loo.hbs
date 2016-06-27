@@ -19,7 +19,7 @@ Toilet
 </div>
 
 <div class="map mini"
-	data-map_ident="{{loo._id}}:1" 
+	data-map_ident="{{loo._id}}:1"
     data-init="gbptm-mini_map"
     data-config_zoom="18"
     data-config_center="{{geo2leaflet loo.geometry.coordinates}}"></div>
@@ -49,7 +49,7 @@ Toilet
 			<dt>Sources</dt>
 			<dd class="sources">
 				{{#each loo.reports}}
-					<a href="{{../config.api.root}}/reports/{{this}}.json">[{{plusone @index}}]</a>
+					<a href="{{../config.api.root}}/reports/{{this}}?format=json">[{{plusone @index}}]</a>
 				{{/each}}
 			</dd>
 		{{/if}}
