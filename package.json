@@ -52,7 +52,7 @@
     "mongoose": "^4.5.1",
     "mongoose-timestamp": "^0.5.0",
     "newrelic": "^1.28.1",
-    "object-path": "^0.9.2",
+    "object-path": "^0.10.0",
     "opening_hours": "^3.4.0",
     "passport-facebook": "^2.1.1",
     "passport-github": "^1.1.0",
