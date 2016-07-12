@@ -31,6 +31,7 @@ describe('Loos service', function () {
       yield Loo.remove({})
     }).then(done)
   })
+  
 
   it('/loos/in/:sw/:ne/:nw/:se should return an array of loos', function (done) {
     request
@@ -43,5 +44,18 @@ describe('Loos service', function () {
       }
     })
     .end(done)
-  })
+  });
+
+  it('loos/near/:lon/:lat should return an array of loos', function (done) {
+    request
+    .get('/loos/near/-22.2/52.5')
+    .set('Accept', 'application/json')
+    .expect(200)
+    .expect(function (res) {
+      if (!(res.body.features.length === 0)) {
+        return 'Not enough Loos'
+      }
+    })
+    .end(done)
+  });
 })
