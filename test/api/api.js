@@ -16,7 +16,8 @@ describe('start testing',function(){
   before(function (done) {
     co(function * () {
       yield app.init()
-    }).then(done)
+      done()
+    })
   })
   // tear it down after
   after(function (done) {
@@ -28,7 +29,7 @@ describe('start testing',function(){
 	
 	describe('End points in loo.js', function () {
 		Loo.remove = thunk(Loo.remove)
-		describe('Find in polygon', function () {
+		describe('Find loose within a box (/loos/in)', function () {
 		  // Bring up a server before testing
 		  before(function (done) {
 		    co(function * () {
@@ -48,7 +49,7 @@ describe('start testing',function(){
 		  })
 		  
 
-		  it('/loos/in/:sw/:ne/:nw/:se should return an array of loos', function (done) {
+		  it('/loos/in/:sw/:ne/:nw/:se', function (done) {
 		    request
 		    .get('/loos/in/-24.2,44.5/20.3,60.4/-24.2,60.4/20.3,44.5')
 		    .set('Accept', 'application/json')
@@ -63,7 +64,7 @@ describe('start testing',function(){
 
 		})
 
-		describe('Find in circle', function () {
+		describe('Find loos within radius (/loos/near)', function () {
 		  // Bring up a server before testing
 		  before(function (done) {
 		    co(function * () {
@@ -96,7 +97,7 @@ describe('start testing',function(){
 
 		})
 
-		describe('Find Via ID', function () {
+		describe('Find loos via ID ( /loos/:id/)', function () {
 		  // Bring up a server before testing
 		  var looGlobal = null;
 		  before(function (done) {
@@ -135,32 +136,40 @@ describe('start testing',function(){
 		})
 	});
 
-
-	describe('End points in about.js', function () {
-		describe('/about', function () {
-		  it('/about', function (done) {
-		    request
-		    .get('/about')
-		    .set('Accept', 'text/html')
-		    .expect(200)
-		    .end(done)
-		  });
-
-		
-		})
-	});
-
-	describe('End points in preferences.js', function () {
-		describe('/preferences', function () {
-		  it('/preferences', function (done) {
-		    request
-		    .get('/preferences')
-		    .set('Accept', 'text/html')
-		    .expect(200)
-		    .end(done)
-		  });
+	describe('Simple pages', function () {
+	  it('/about', function (done) {
+	    request
+	    .get('/about')
+	    .set('Accept', 'text/html')
+	    .expect(200)
+	    .end(done)
+	  });
+	  it('/preferences', function (done) {
+	    request
+	    .get('/preferences')
+	    .set('Accept', 'text/html')
+	    .expect(200)
+	    .end(done)
+	  });
 
 		
-		})
 	});
+	describe('Sign in and out', function () {
+	  it('check response from /signin', function (done) {
+	    request
+	    .get('/signin')
+	    .set('Accept', 'text/html')
+	    .expect(200)
+	    .end(done)
+	  })
+	  it('check response from /signout', function (done) {
+	    request
+	    .get('/signout')
+	    .set('Accept', 'text/html')
+	    .expect(302)
+	    .end(done)
+	  });
+	});
+
 });
+
