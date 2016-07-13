@@ -9,6 +9,7 @@ var request = supertest(baseUrl)
 var _ = require('lodash')
 var fakery = require('../fixtures')
 var Loo = require('../../models/loo')
+var mongoose = require('mongoose');
 
 
 
@@ -102,10 +103,10 @@ describe('start testing',function(){
 		  var looGlobal = null;
 		  before(function (done) {
 		    co(function * () {
-		      //yield result = fakery.makeAndSave('looWithID');
 		      yield fakery.makeAndSave('looWithID', function(err, loo) {
 			looGlobal = loo;
 			result = loo;
+			console.log(result);
 			done()
 			return result
 		      });
@@ -137,6 +138,14 @@ describe('start testing',function(){
 	});
 
 	describe('Simple pages', function () {
+	  it('/', function (done) {
+	    request
+	    .get('/')
+	    .set('Accept', 'text/html')
+	    .expect(200)
+	    .end(done)
+	  });
+
 	  it('/about', function (done) {
 	    request
 	    .get('/about')
@@ -170,6 +179,101 @@ describe('start testing',function(){
 	    .end(done)
 	  });
 	});
+
+
+	describe('Statistics', function () {
+	  before(function (done) {
+	    co(function * () {
+		//TODO streamline this
+	      yield _.map(_.range(5), function () {
+ 		result = fakery.makeAndSave('looBox',{properties: { access: 'public', active: false }})
+		return result
+	      })
+	      yield _.map(_.range(5), function () {
+ 		result = fakery.makeAndSave('looBox',{properties: { access: 'public', active: true }})
+		return result
+	      })
+
+	      yield _.map(_.range(5), function () {
+ 		result = fakery.makeAndSave('looBox',{properties: { access: 'public', active: false }})
+		return result
+	      })
+
+	      yield _.map(_.range(5), function () {
+
+ 		result = fakery.makeAndSave('looBox',{reports: [mongoose.Types.ObjectId(),mongoose.Types.ObjectId()], properties: { access: 'public', active: true }})
+		return result
+	      })
+
+
+
+	    }).then(done)
+	  })
+	  after(function (done) {
+	    co(function * () {
+	      yield Loo.remove({})
+	    }).then(done)
+	  })
+	  it('check response code', function (done) {
+	    request
+	    .get('/statistics')
+	    .set('Accept', 'text/html')
+	    .expect(200)
+	    .end(done)
+	  })
+	  it('check Total Toilets recorded', function (done) {
+	    request
+	    .get('/statistics')
+	    .set('Accept', 'text/html')
+	    .expect(function (res) {
+	      if (!(res.body['Total Toilets Recorded'] === 20)) {
+		return 'Total Toilets incorrect'
+	      }
+	    })
+	    .end(done)
+	  })
+	  it('check inactive Toilets recorded', function (done) {
+	    request
+	    .get('/statistics')
+	    .set('Accept', 'text/html')
+	    .expect(function (res) {
+	      if (!(res.body['Inactive/Removed Toilets'] === 10)) {
+		return 'Inactive toilets incorrect'
+	      }
+	    })
+	    .end(done)
+	  })
+
+	  it('Check number of duplicate loos', function (done) {
+	    request
+	    .get('/statistics')
+	    .set('Accept', 'text/html')
+	    .expect(function (res) {
+		console.log(res.body);
+	      if (!(res.body['Loos with more than one report (dedupes + edits)'] === 5)) {
+		return 'number of duplicate loos are wrong'
+	      }
+	    })
+	    .end(done)
+	  })
+
+
+	});
+
+	describe('Report functionality', function () {
+	  it('/reports', function (done) {
+	    request
+	    .get('/reports')
+	    .set('Accept', 'text/html')
+	    .expect(200)
+	    .expect(function (res) {
+		console.log(res.body);
+	    })
+	    .end(done)
+	  })
+	});
+
+
 
 });
 

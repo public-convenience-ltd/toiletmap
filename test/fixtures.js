@@ -1,8 +1,10 @@
 var fakery = require('mongoose-fakery')
 var thunk = require('thunkify')
 var Loo = require('../models/loo')
-var mongoose = require('mongoose');
+var LooReport = require('../models/loo_report')
+var LooList = require('../models/loo_list')
 
+var mongoose = require('mongoose');
 
 //generators
 
@@ -16,7 +18,7 @@ fakery.generator('lonlatBox', function (bounds) {
   return result
 })
 
-//generates random loos within a cirle -- technically not correct, looking for better alternative
+//generates random loos within a circle
 fakery.generator('lonlatCircle', function (bounds) {
   var boundaries = bounds || [0.007,0,0] //[radius,long,lat]
   function randFloat (min, max, precision) {
@@ -26,6 +28,21 @@ fakery.generator('lonlatCircle', function (bounds) {
  result = [randFloat(0,boundaries[0],5)*Math.sin(randFloat(0,6.28,5))+ boundaries[1],randFloat(0,boundaries[0],5)*Math.sin(randFloat(0,6.28,5))+boundaries[2]];
   return result
 })
+
+fakery.generator('statisticGenerator', function (bounds) {
+  function randFloat (min, max, precision) {
+    return parseFloat(Math.min(min + (Math.random() * (max - min)), max).toFixed(precision))
+  }
+
+	returnvalue = randFloat(0,1,0);
+	boolList = ['true','false']
+	
+	console.log(boolList[returnvalue]);
+	return boolList[returnvalue];
+
+		
+})
+
 
 
 
@@ -45,9 +62,18 @@ fakery.fake('looCircle', Loo, {
   }
 })
 
-//var newId = new mongoose.mongo.ObjectID('56cb91bdc3464f14678934ca')
 fakery.fake('looWithID', Loo, {
   geometry: {
+    type: 'Point',
+    coordinates: fakery.g.lonlatCircle()
+  }
+})
+
+
+
+fakery.fake('statisticLoo', Loo, {
+ properties: { access: 'public', active: fakery.g.statisticGenerator(17) },
+ geometry: {
     type: 'Point',
     coordinates: fakery.g.lonlatCircle()
   }
