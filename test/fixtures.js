@@ -69,8 +69,6 @@ fakery.fake('looWithID', Loo, {
   }
 })
 
-
-
 fakery.fake('statisticLoo', Loo, {
  properties: { access: 'public', active: fakery.g.statisticGenerator(17) },
  geometry: {
@@ -78,6 +76,28 @@ fakery.fake('statisticLoo', Loo, {
     coordinates: fakery.g.lonlatCircle()
   }
 })
+
+
+fakery.fake('LooReport',LooReport,{
+
+       attribution: 'Brighton & Hove City Council',
+       geohash: 'gcpc5mrg6yb9',
+       origin: 'http://www.brighton-hove.gov.uk/downloads/bhcc/openData/mapFiles/PublicToiletsKML.kml',
+       trust: 4,
+       properties:{"name":"Aldrington Recreation (Saxon)","access":"public","active":true}, 
+       geometry: {type:'Point',coordinates:fakery.g.lonlatCircle()},
+       type: 'Feature' 
+
+
+
+
+})
+
+
+
+
+
+
 
 
 

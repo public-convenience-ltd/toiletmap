@@ -9,6 +9,9 @@ var request = supertest(baseUrl)
 var _ = require('lodash')
 var fakery = require('../fixtures')
 var Loo = require('../../models/loo')
+var LooReport = require('../../models/loo_report')
+
+
 var mongoose = require('mongoose');
 
 
@@ -199,11 +202,14 @@ describe('start testing',function(){
 		return result
 	      })
 
+	      
+
 	      yield _.map(_.range(5), function () {
 
  		result = fakery.makeAndSave('looBox',{reports: [mongoose.Types.ObjectId(),mongoose.Types.ObjectId()], properties: { access: 'public', active: true }})
 		return result
 	      })
+
 
 
 
@@ -249,7 +255,6 @@ describe('start testing',function(){
 	    .get('/statistics')
 	    .set('Accept', 'text/html')
 	    .expect(function (res) {
-		console.log(res.body);
 	      if (!(res.body['Loos with more than one report (dedupes + edits)'] === 5)) {
 		return 'number of duplicate loos are wrong'
 	      }
@@ -259,15 +264,39 @@ describe('start testing',function(){
 
 
 	});
-
+	debugger
 	describe('Report functionality', function () {
+	  before(function (done) {
+	    co(function * () {
+	      yield fakery.makeAndSave('LooReport', function(err, loo) {
+		if (err){
+			console.log(err)
+		}
+		done()
+		return loo
+	      })
+		
+             })
+          })
+	  after(function (done) {
+	    co(function * () {
+	      yield LooReport.remove({})
+	    }).then(done)
+	  })
+
+
+
+
 	  it('/reports', function (done) {
 	    request
 	    .get('/reports')
 	    .set('Accept', 'text/html')
 	    .expect(200)
 	    .expect(function (res) {
-		console.log(res.body);
+	      if (!(res.body.features.length === 1)) {
+		return 'Not enough Loos'
+	      }
+
 	    })
 	    .end(done)
 	  })
