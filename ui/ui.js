@@ -13,7 +13,7 @@ function hbs_defaults (config) {
     this.renderDefaults = function * (tpl, data) {
       _.merge(data, {
         config: config,
-        prefs: JSON.parse(this.cookies.get('prefs') || '{}'),
+        prefs: JSON.parse(unescape(this.cookies.get('prefs')) || '{}'),
         flash: this.flash,
         backlink: this.req.headers.referer || config.app.baseURL,
         username: this.req.user ? this.req.user.name : false
