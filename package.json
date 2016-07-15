@@ -100,8 +100,9 @@
     "shimmy": "awk 'FNR==1{print \"\"}1' ./node_modules/es5-shim/es5-shim.min.js ./node_modules/lt-ie-9/lt-ie-9.min.js  > ./ui/public/shims/shims.min.js",
     "start": "node app.js",
     "lint": "standard",
-    "test": "export NODE_ENV=test && istanbul cover ./node_modules/.bin/_mocha --report lcovonly --recursive test/**/*.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "test_nocover": "export NODE_ENV=test && node ./node_modules/.bin/_mocha --recursive test/**/*.js",
+    "test": "if [ \"$COVERALLS\" ]; then  npm run test_coveralls; else npm run test_bare; fi;",
+    "test_coveralls": "export NODE_ENV=test && istanbul cover ./node_modules/.bin/_mocha --report lcovonly --recursive test/**/*.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "test_bare": "export NODE_ENV=test && istanbul cover ./node_modules/.bin/_mocha --recursive test/**/*.js",
     "watchcss": "catw ./ui/css/vendor/*.css ./ui/css/*.css -o ./ui/public/gbptm.css -v",
     "watchjs": "watchify -t hbsfy -r ./ui/browser.js --standalone gbptm --debug --verbose -o ./ui/public/gbptm.min.js",
     "pullconfig": "heroku config:pull --overwrite --interactive --app gbptm-stage"
