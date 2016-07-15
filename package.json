@@ -101,7 +101,7 @@
     "start": "node app.js",
     "lint": "standard",
     "test": "if [ \"$COVERALLS\" ]; then  npm run test_coveralls; else npm run test_bare; fi;",
-    "test_coveralls": "export NODE_ENV=test && istanbul cover ./node_modules/.bin/_mocha --report lcovonly --recursive test/**/*.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "test_coveralls": "export NODE_ENV=test && istanbul cover ./node_modules/.bin/_mocha --report text-lcov --recursive test/**/*.js | node ./node_modules/coveralls/bin/coveralls.js",
     "test_bare": "export NODE_ENV=test && istanbul cover ./node_modules/.bin/_mocha --recursive test/**/*.js",
     "watchcss": "catw ./ui/css/vendor/*.css ./ui/css/*.css -o ./ui/public/gbptm.css -v",
     "watchjs": "watchify -t hbsfy -r ./ui/browser.js --standalone gbptm --debug --verbose -o ./ui/public/gbptm.min.js",

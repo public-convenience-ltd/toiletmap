@@ -3,7 +3,7 @@ services:
 - mongodb
 sudo: false
 env:
-- COVERAllS=true
+- COVERALLS=true
 deploy:
   provider: heroku
   api_key:
