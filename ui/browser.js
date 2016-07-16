@@ -12,9 +12,7 @@ require('leaflet.locatecontrol')
 require('jquery-ajax-transport-xdomainrequest')
 L.Icon.Default.imagePath = '/images/'
 
-require('jquery.cookie')
-$.cookie.json = true
-$.cookie.raw = true
+var Cookies = require('js-cookie')
 
 _.each(helpers, function (helper, name) {
   Handlebars.registerHelper(name, helper)
@@ -271,11 +269,11 @@ gbptm.positioning_map = function (el, opts) {
 gbptm.setpref = function (prefpath, val) {
   var prefs = gbptm.prefs()
   getobject.set(prefs, prefpath, val)
-  $.cookie('prefs', prefs, { expires: 365, path: '/' })
+  Cookies.set('prefs', JSON.stringify(prefs), { expires: 365, path: '/' })
 }
 
 gbptm.prefs = function () {
-  return JSON.parse($.cookie('prefs') || '{}')
+  return JSON.parse(Cookies.get('prefs') || '{}')
 }
 
 gbptm.prefbox = function (el, opts) {

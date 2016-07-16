@@ -7,6 +7,7 @@ Obligatory badges
 -----------------
 [![Build Status](https://travis-ci.org/neontribe/gbptm.svg?branch=master)](https://travis-ci.org/neontribe/gbptm)
 [![Dependency Status](https://david-dm.org/neontribe/gbptm.svg)](https://david-dm.org/neontribe/gbptm)
+[![Coverage Status](https://coveralls.io/repos/github/neontribe/gbptm/badge.svg?branch=develop)](https://coveralls.io/github/neontribe/gbptm?branch=develop)
 
 Requirements
 ------------

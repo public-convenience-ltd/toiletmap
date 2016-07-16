@@ -7,12 +7,13 @@ var earth = 6731000
 var Loo
 
 looSchema.statics.findNear = function (lon, lat, maxDistance, limit) {
+  
   return this.aggregate([
     {
       $geoNear: {
         near: [parseFloat(lon), parseFloat(lat)],
         distanceField: 'distance',
-        maxDistance: (parseFloat(maxDistance) / earth),
+	maxDistance: (parseFloat(maxDistance) / earth),
         limit: limit,
         distanceMultiplier: earth,
         spherical: true
