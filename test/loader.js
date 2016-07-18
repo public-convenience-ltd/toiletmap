@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var assert = require('assert');
 var Loo = require('../models/loo')
-var looID = require('./test_data/looID.js').Loos
+var looID = require('./data/looID.js').Loos
 
 var stringConversion = {
 			"looID":looID

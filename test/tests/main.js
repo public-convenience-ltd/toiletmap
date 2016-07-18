@@ -11,9 +11,13 @@ var fakery = require('../fixtures')
 var Loo = require('../../models/loo')
 var LooReport = require('../../models/loo_report')
 var loader = require('../loader.js').dataLoader;
-
-
 var mongoose = require('mongoose');
+
+function importTest(name, path) {
+    describe(name, function () {
+        require(path);
+    });
+}
 
 
 
@@ -150,72 +154,9 @@ describe('start testing',function(){
 
 
 
+	importTest('Simple pages', './simple_pages.js')
 
-
-
-
-
-
-	describe('Simple pages', function () {
-	  it('/', function (done) {
-	    request
-	    .get('/')
-	    .set('Accept', 'text/html')
-	    .expect(200)
-	    .end(done)
-	  });
-
-	  it('/about', function (done) {
-	    request
-	    .get('/about')
-	    .set('Accept', 'text/html')
-	    .expect(200)
-	    .end(done)
-	  });
-	  it('/preferences', function (done) {
-	    request
-	    .get('/preferences')
-	    .set('Accept', 'text/html')
-	    .expect(200)
-	    .end(done)
-	  });
-
-
-
-
-
-
-
-
-
-
-		
-	});
-	describe('Sign in and out', function () {
-	  it('check response from /signin', function (done) {
-	    request
-	    .get('/signin')
-	    .set('Accept', 'text/html')
-	    .expect(200)
-	    .end(done)
-	  })
-	  it('check response from /signout', function (done) {
-	    request
-	    .get('/signout')
-	    .set('Accept', 'text/html')
-	    .expect(302)
-	    .end(done)
-	  });
-	});
-
-
-
-
-
-
-
-
-
+	importTest('Sign in and out', './signin.js')
 
 
 	describe('Statistics', function () {
