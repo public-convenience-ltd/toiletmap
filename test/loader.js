@@ -14,9 +14,4 @@ exports.dataLoader = function(database_name,data,callback){
 	})
 }
 
-exports.dataLoader("gbptm-test","looID",function(result){
-	console.log(result);
-	return result
-});
-
 
