@@ -10,9 +10,11 @@ var _ = require('lodash')
 var fakery = require('../fixtures')
 var Loo = require('../../models/loo')
 var LooReport = require('../../models/loo_report')
+var loader = require('../loader.js').dataLoader;
 
 
 var mongoose = require('mongoose');
+
 
 
 
@@ -31,6 +33,12 @@ describe('start testing',function(){
     }).then(done)
   })
 	
+
+
+
+
+
+	
 	describe('End points in loo.js', function () {
 		Loo.remove = thunk(Loo.remove)
 		describe('Find loose within a box (/loos/in)', function () {
@@ -39,7 +47,6 @@ describe('start testing',function(){
 		    co(function * () {
 		      // Add 12 fake loos
 		      yield _.map(_.range(12), function () {
-			
 			result =  fakery.makeAndSave('looBox');
 			return result
 		      })
@@ -74,6 +81,7 @@ describe('start testing',function(){
 		    co(function * () {
 		      yield _.map(_.range(5), function () {
 			result =  fakery.makeAndSave('looCircle');
+
 			return result
 		      })
 		    }).then(done)
@@ -102,27 +110,25 @@ describe('start testing',function(){
 		})
 
 		describe('Find loos via ID ( /loos/:id/)', function () {
-		  // Bring up a server before testing
-		  var looGlobal = null;
-		  before(function (done) {
-		    co(function * () {
-		      yield fakery.makeAndSave('looWithID', function(err, loo) {
-			looGlobal = loo;
-			result = loo;
-			console.log(result);
-			done()
-			return result
-		      });
-		    })
-		  })
-		  // tear it down after
+
+		var looGlobal = null;
+		before(function (done) {
+			loader("gbptm-test","looID",function(err,result){
+				if(err){console.log(err)};
+				looGlobal = result.ops[0];
+				done();
+				return result
+		
+			});
+		})
+
+		  // tear it dewn after
 		  after(function (done) {
 		    co(function * () {
 		      yield Loo.remove({})
 		    }).then(done)
 		  })
 		  
-
 		  it('/loos/:id', function (done) {
 		    stringID = looGlobal._id.toString();
 		    request
@@ -139,6 +145,16 @@ describe('start testing',function(){
 
 		})
 	});
+
+
+
+
+
+
+
+
+
+
 
 	describe('Simple pages', function () {
 	  it('/', function (done) {
@@ -164,6 +180,15 @@ describe('start testing',function(){
 	    .end(done)
 	  });
 
+
+
+
+
+
+
+
+
+
 		
 	});
 	describe('Sign in and out', function () {
@@ -184,34 +209,33 @@ describe('start testing',function(){
 	});
 
 
+
+
+
+
+
+
+
+
+
 	describe('Statistics', function () {
 	  before(function (done) {
 	    co(function * () {
-		//TODO streamline this
-	      yield _.map(_.range(5), function () {
- 		result = fakery.makeAndSave('looBox',{properties: { access: 'public', active: false }})
-		return result
-	      })
-	      yield _.map(_.range(5), function () {
- 		result = fakery.makeAndSave('looBox',{properties: { access: 'public', active: true }})
-		return result
-	      })
 
-	      yield _.map(_.range(5), function () {
- 		result = fakery.makeAndSave('looBox',{properties: { access: 'public', active: false }})
-		return result
+	       inactiveLoos = _.map(_.range(5), function () {
+ 		return fakery.makeAndSave('looBox',{properties: { access: 'public', active: false }})
+	     	})
+		
+
+	       normalLoos = _.map(_.range(5), function () {
+ 		return fakery.makeAndSave('looBox',{properties: { access: 'public', active: true }})
 	      })
 
-	      
-
-	      yield _.map(_.range(5), function () {
-
- 		result = fakery.makeAndSave('looBox',{reports: [mongoose.Types.ObjectId(),mongoose.Types.ObjectId()], properties: { access: 'public', active: true }})
-		return result
+	      duplicateLoos = _.map(_.range(5), function () {
+ 		return fakery.makeAndSave('looBox',{reports: [mongoose.Types.ObjectId(),mongoose.Types.ObjectId()], properties: { access: 'public', active: true }})
 	      })
 
-
-
+	     yield inactiveLoos.concat(normalLoos).concat(duplicateLoos)
 
 	    }).then(done)
 	  })
@@ -232,7 +256,7 @@ describe('start testing',function(){
 	    .get('/statistics')
 	    .set('Accept', 'text/html')
 	    .expect(function (res) {
-	      if (!(res.body['Total Toilets Recorded'] === 20)) {
+	      if (!(res.body['Total Toilets Recorded'] === 15)) {
 		return 'Total Toilets incorrect'
 	      }
 	    })
@@ -243,7 +267,7 @@ describe('start testing',function(){
 	    .get('/statistics')
 	    .set('Accept', 'text/html')
 	    .expect(function (res) {
-	      if (!(res.body['Inactive/Removed Toilets'] === 10)) {
+	      if (!(res.body['Inactive/Removed Toilets'] === 5)) {
 		return 'Inactive toilets incorrect'
 	      }
 	    })
@@ -264,13 +288,27 @@ describe('start testing',function(){
 
 
 	});
-	debugger
-	describe('Report functionality', function () {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	describe('reports.js', function () {
 	  before(function (done) {
 	    co(function * () {
 	      yield fakery.makeAndSave('LooReport', function(err, loo) {
 		if (err){
-			console.log(err)
+		    console.log(err)
 		}
 		done()
 		return loo
@@ -280,12 +318,10 @@ describe('start testing',function(){
           })
 	  after(function (done) {
 	    co(function * () {
+	
 	      yield LooReport.remove({})
 	    }).then(done)
 	  })
-
-
-
 
 	  it('/reports', function (done) {
 	    request
