@@ -16,3 +16,6 @@ ui/public/gbptm.css
 .env
 # Data Dumps
 data
+
+#istanbul
+coverage/

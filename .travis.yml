@@ -1,9 +1,9 @@
 language: node_js
-node_js:
-- 6.2.1
 services:
 - mongodb
 sudo: false
+env:
+- COVERALLS=true
 deploy:
   provider: heroku
   api_key:

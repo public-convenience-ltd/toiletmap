@@ -24,19 +24,9 @@ lang="en-GB"> <![endif]-->
                 <header role="banner">
                     <h1><a href="/" aria-label="The Great British Public Toilet Map Home Page"><img src="/images/logo.png" alt=""> <span class="visually-hidden">The Great British Public Toilet Map</span></a></h1>
                     {{#block 'promo'}}
-                    <!-- <a class="button-shaped donate" target="_blank" href="http://web.rca.ac.uk/greatbritishpublictoiletmap/">Give a pound to spend a penny!</a> -->
-                    <a class="button-shaped tfg" target="_blank" href="http://www.tech4goodawards.com/peoples-award">Vote People's Award 2016</a>
-                    <div class="vote">
-                        <a href="http://www.tech4goodawards.com/peoples-award">
-                            <img src="/images/tfg2016.png">
-                        </a>
-                        <a href="http://www.tech4goodawards.com/peoples-award">
-                            We've been nominated!<br />Vote or tweet
-                        </a>
-                        <a target="_blank" href="https://twitter.com/gbtoiletmap">#T4Gtoiletmap</a>
-                    </div>
+                        <a class="button-shaped donate" target="_blank" href="http://web.rca.ac.uk/greatbritishpublictoiletmap/">Give a pound to spend a penny!</a>
                     {{/block}}
-                    
+
                 </header>
                 <main id="main" role="main">
                     {{>flash}}
@@ -55,11 +45,11 @@ lang="en-GB"> <![endif]-->
                 </footer>
             </div>
             <aside role="complementary">
-                <div class="map macro" 
-                    data-init="gbptm-multi_loo_map" 
-                    {{#unless loo}}data-crosshairs{{/unless}} 
+                <div class="map macro"
+                    data-init="gbptm-multi_loo_map"
+                    {{#unless loo}}data-crosshairs{{/unless}}
                     {{#each macromap}}
-                        data-config_{{@key}}="{{json this}}" 
+                        data-config_{{@key}}="{{json this}}"
                     {{/each}}
                     ></div>
             </aside>
@@ -69,7 +59,7 @@ lang="en-GB"> <![endif]-->
             gbptm.configure({
                 api: '{{ config.api.root }}',
                 baseURL: '{{ config.app.baseURL }}',
-                map: {{json config.map }} 
+                map: {{json config.map }}
             });
             gbptm.scan();
             {{#block "gbptm_actions"}}{{/block}}

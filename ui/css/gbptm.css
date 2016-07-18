@@ -1,4 +1,4 @@
-/* 
+/*
 line-height = 1.5
 reduced line-height = 1.25
 base font-size = 18px
@@ -256,16 +256,16 @@ button:only-of-type, .button-shaped:only-of-type {
 	width: 100%;
 }
 
-button:hover, button:focus, 
-.button-shaped:hover, .button-shaped:focus, 
+button:hover, button:focus,
+.button-shaped:hover, .button-shaped:focus,
 [type="submit"]:hover, [type="submit"]:focus
 {
 	background: #165016;
 	border-bottom: 0;
 }
 
-button:focus, 
-.button-shaped:focus, 
+button:focus,
+.button-shaped:focus,
 [type="submit"]:focus {
 	outline: thin dotted !important;
 }
@@ -288,31 +288,6 @@ input::-moz-focus-inner {
 .donate {
 	font-size: 0.85em;
 	background: #55acee;
-}
-
-.tfg {
-	width: 100%;
-	text-align: center;
-	background-color: #1a457a;
-}
-
-.tweet {
-	width: 100%;
-	text-align: center;
-	margin: 0;
-	padding-left: 3.5rem;
-	background: #50abf1 url(/images/twitter.png) left 0.75em center no-repeat;
-	background-size: 1.5rem;
-}
-
-.vote {
-	margin: 0;
-}
-
-.vote img {
-	float: left;
-	width: 4rem;
-	margin-right: 0.75em;
 }
 
 .github { background: #e0e0e0; color: #222 !important; }
@@ -457,7 +432,7 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 label input {
-	display: inline-block; 
+	display: inline-block;
 	margin-right: 0.5em;
 	vertical-align: baseline;
 }
@@ -488,11 +463,11 @@ form p {
 }
 
 legend {
-	border: 0; 
-	clip: rect(0 0 0 0); 
-	height: 1px; margin: -1px; 
-	overflow: hidden; 
-	padding: 0; 
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px; margin: -1px;
+	overflow: hidden;
+	padding: 0;
 	position: absolute;
 	width: 1px;
 }
@@ -520,12 +495,12 @@ legend {
 
 .checkboxes [type="checkbox"] {
 	position: absolute;
-	clip: rect(0 0 0 0); 
-	height: 1px; 
+	clip: rect(0 0 0 0);
+	height: 1px;
 	margin: -1px;
-	overflow: hidden; 
-	padding: 0; 
-	position: absolute; 
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
 	width: 1px;
 }
 
@@ -695,7 +670,7 @@ ol li > a:last-child {
     padding-right: 0.25em;
 }
 
-ol li > a:last-child:hover, 
+ol li > a:last-child:hover,
 ol li > a:last-child:focus {
     background: #217821;
     outline: none;
@@ -797,7 +772,7 @@ li[aria-label="a toilet"] .visually-hidden {
 	display: none;
 }
 
-.report-toilet .map.macro:before, 
+.report-toilet .map.macro:before,
 .report-toilet .map.macro:after,
 .report-toilet .map.positioning:before,
 .report-toilet .map.positioning:after {
@@ -1025,7 +1000,7 @@ h2 small {
 	margin-top: 0;
 }
 
-[aria-label="toilet information"] li p, 
+[aria-label="toilet information"] li p,
 [aria-label="toilet information"] li h3 {
 	line-height: 1.1;
 }
@@ -1160,12 +1135,12 @@ h2 + dl {
 ------------------------------------------------------ */
 
 .visually-hidden {
-	clip: rect(0 0 0 0); 
-	height: 1px; 
-	margin: -1px; 
-	overflow: hidden; 
-	padding: 0; 
-	position: absolute; 
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
 	width: 1px;
 }
 
@@ -1189,15 +1164,15 @@ h2 + dl {
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   font-size: 0.85em;  
+   font-size: 0.85em;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-   font-size: 0.85em;  
+   font-size: 0.85em;
 }
 
-:-ms-input-placeholder {  
-   font-size: 0.85em;  
+:-ms-input-placeholder {
+   font-size: 0.85em;
 }
 
 @media all and (max-width: 800px) {
