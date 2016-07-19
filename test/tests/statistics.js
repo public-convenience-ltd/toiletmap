@@ -10,6 +10,7 @@ var fakery = require('../fixtures')
 var Loo = require('../../models/loo')
 var LooReport = require('../../models/loo_report')
 var mongoose = require('mongoose');
+var loader = require('../loader.js').dataLoader;
 
 
 
@@ -17,25 +18,17 @@ var mongoose = require('mongoose');
 
 
   before(function (done) {
-    co(function * () {
+	
+	loader(Loo,"statisticsLoos",function(err,result){
+		if(err){console.log(err)};
+		enteredData = result;
+		done();
+		return result
 
-       inactiveLoos = _.map(_.range(5), function () {
-	return fakery.makeAndSave('looBox',{properties: { access: 'public', active: false }})
-	})
+	});
+
 	
 
-       normalLoos = _.map(_.range(5), function () {
-	return fakery.makeAndSave('looBox',{properties: { access: 'public', active: true }})
-      })
-
-      duplicateLoos = _.map(_.range(5), function () {
-	return fakery.makeAndSave('looBox',{reports: [mongoose.Types.ObjectId(),mongoose.Types.ObjectId()], properties: { access: 'public', active: true }})
-      })
-
-     yield inactiveLoos.concat(normalLoos).concat(duplicateLoos)
-     
-
-    }).then(done)
   })
   after(function (done) {
     co(function * () {
@@ -49,6 +42,9 @@ var mongoose = require('mongoose');
     .get('/statistics')
     .set('Accept', 'text/html')
     .expect(200)
+    .expect(function (res) {
+	console.log(res.body);
+    })
     .end(done)
   })
   it('check Total Toilets recorded', function (done) {
@@ -56,7 +52,7 @@ var mongoose = require('mongoose');
     .get('/statistics')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body['Total Toilets Recorded'] === 15)) {
+      if (!(res.body['Total Toilets Recorded'] === 50)) {
 	return 'Total Toilets incorrect'
       }
     })
@@ -67,7 +63,7 @@ var mongoose = require('mongoose');
     .get('/statistics')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body['Inactive/Removed Toilets'] === 5)) {
+      if (!(res.body['Inactive/Removed Toilets'] === 2)) {
 	return 'Inactive toilets incorrect'
       }
     })

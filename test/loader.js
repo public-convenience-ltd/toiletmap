@@ -5,8 +5,8 @@ var LooReport = require('../models/loo_report')
 
 
 var looID = require('./data/looID.js').Loos
-var looReportsAll = require('./data/looReportsAll').Reports
-var statisticsLoos = require('./data/looReportsAll').Loos
+var looReportsAll = require('./data/looReportsAll.js').Reports
+var statisticsLoos = require('./data/statistics.js').Loos
 
 
 
