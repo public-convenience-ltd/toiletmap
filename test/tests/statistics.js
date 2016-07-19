@@ -33,6 +33,7 @@ var mongoose = require('mongoose');
       })
 
      yield inactiveLoos.concat(normalLoos).concat(duplicateLoos)
+     
 
     }).then(done)
   })
@@ -41,6 +42,7 @@ var mongoose = require('mongoose');
       yield Loo.remove({})
     }).then(done)
   })
+  
 
   it('check response code', function (done) {
     request

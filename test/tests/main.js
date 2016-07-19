@@ -35,7 +35,6 @@ describe('start testing',function(){
     }).then(done)
   })
 	
-
 	importTest('End points in loo.js', './loos.js')
 	importTest('Simple pages', './simple_pages.js')
 	importTest('Sign in and out', './signin.js');

@@ -19,3 +19,4 @@ data
 
 #istanbul
 coverage/
+.coverage.sh

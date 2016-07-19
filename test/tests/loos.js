@@ -14,6 +14,32 @@ var LooReport = require('../../models/loo_report')
 var loader = require('../loader.js').dataLoader;
 var mongoose = require('mongoose');
 
+describe('Loos HTML test', function () {
+  before(function (done) {
+    co(function * () {
+      // Add 12 fake loos
+      yield _.map(_.range(12), function () {
+	result =  fakery.makeAndSave('looBox');
+	return result
+      })
+    }).then(done)
+  })
+  after(function (done) {
+    co(function * () {
+      yield Loo.remove({})
+    }).then(done)
+  })
+  
+
+  it('/loos/in/:sw/:ne/:nw/:se', function (done) {
+    request
+    .get('/loos/in/-24.2,44.5/20.3,60.4/-24.2,60.4/20.3,44.5')
+    .set('Accept', 'text/html')
+    .expect(200)
+    .end(done)
+  });
+
+})
 
 
 
@@ -51,6 +77,8 @@ describe('Find loos within a box (/loos/in)', function () {
 })
 
 
+
+
 describe('Find loos within radius (/loos/near)', function () {
   // Bring up a server before testing
   before(function (done) {
@@ -69,7 +97,7 @@ describe('Find loos within radius (/loos/near)', function () {
     }).then(done)
   })
   
-
+  //TODO test needs fixing, currently a placeholder
   it('/loos/near/:lon/:lat', function (done) {
     request
     .get('/loos/near/0/0')
@@ -90,7 +118,7 @@ describe('Find loos via ID ( /loos/:id/)', function () {
 
 var looGlobal = null;
 before(function (done) {
-	loader("gbptm-test","looID",function(err,result){
+	loader(Loo,"looID",function(err,result){
 		if(err){console.log(err)};
 		looGlobal = result.ops[0];
 		done();
