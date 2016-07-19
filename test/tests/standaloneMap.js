@@ -12,5 +12,22 @@ var LooReport = require('../../models/loo_report')
 var loader = require('../loader.js').dataLoader;
 var mongoose = require('mongoose');
 
+ before(function (done) {
+ 	done();
+ })
+  after(function (done) {
+	done();
+  })
+
+  it('Basic map test', function (done) {
+    request
+    .get('/map/0/0')
+    .set('Accept', 'text/html')
+    .expect(function (res) {
+	//console.log(res);
+    })
+    .end(done)
+  })
+
 
 

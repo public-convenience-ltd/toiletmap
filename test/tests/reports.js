@@ -2,26 +2,47 @@ var config = require('../../config/config');
 var baseUrl = 'http://localhost:' + config.app.port;
 var supertest = require('supertest');
 var request = supertest(baseUrl);
-var fakery = require('../fixtures');
 var co = require('co');
 var LooReport = require('../../models/loo_report')
+var Loo = require('../../models/loo')
 var loader = require('../loader.js').dataLoader;
 var mongoose = require('mongoose');
-
+var async = require('async');
 
  var enteredData;
  before(function (done) {
-	loader(LooReport,"looReportsAll",function(err,result){
-		if(err){console.log(err)};
-		enteredData = result;
-		done();
-		return result
 
+	async.parallel([
+	    function(callback){
+		loader(Loo,"statisticsLoos",function(err,result){
+			if(err){console.log(err)};
+			enteredDataLoos = result;
+			callback(null, result);
+			return result
+
+		});
+	    },
+	    function(callback){
+		loader(LooReport,"looReportsAll",function(err,result){
+			if(err){console.log(err)};
+			enteredData = result;
+			callback(null, result);
+			return result
+
+		});
+	    }
+	],
+	function(err, results) {
+	     done();
 	});
+
+
  })
   after(function (done) {
     co(function * () {
       yield LooReport.remove({})
+      yield Loo.remove({})
+
     }).then(done)
   })
 
@@ -62,6 +83,44 @@ var mongoose = require('mongoose');
     .set('Accept', 'application/json')
     .end(done)
   })
+  it('/report test with loo as base', function (done) {
+    var Id = enteredDataLoos.insertedIds[0]
+    request
+    .get('/report?base='+Id)
+    .expect(200)
+    .set('Accept', 'application/json')
+    .end(done)
+  })
+  it('/report test without loo as base', function (done) {
+    var Id = enteredDataLoos.insertedIds[0]
+    request
+    .get('/report')
+    .expect(200)
+    .set('Accept', 'application/json')
+    .end(done)
+  })
+
+
+  it('try to remove none existant report', function (done) {
+    var newId = new mongoose.mongo.ObjectId().toString()
+    request
+    .get('/remove/' + newId)
+    .expect(404)
+    .set('Accept', 'application/json')
+    .end(done)
+  })
+  it('remove', function (done) {
+    var Id = enteredDataLoos.insertedIds[0]
+    request
+    .get('/remove/' + Id)
+    .expect(200)
+    .set('Accept', 'text/html')
+    .end(done)
+  })
+
+
+  
+
 
 
 

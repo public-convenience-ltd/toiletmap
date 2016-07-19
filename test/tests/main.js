@@ -40,6 +40,8 @@ describe('start testing',function(){
 	importTest('Sign in and out', './signin.js');
 	importTest('Statistics','./statistics.js');
 	importTest('reports.js', './reports.js')
+	importTest('Stand alone map', './standaloneMap.js')
+
 
 
 });
