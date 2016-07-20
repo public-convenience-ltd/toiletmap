@@ -8,7 +8,6 @@ var co = require('co')
 var supertest = require('supertest')
 var request = supertest(baseUrl)
 var _ = require('lodash')
-var fakery = require('../fixtures')
 var Loo = require('../../models/loo')
 var LooReport = require('../../models/loo_report')
 var loader = require('../loader.js').dataLoader;
@@ -16,13 +15,11 @@ var mongoose = require('mongoose');
 
 describe('Find loos within a box (/loos/in)', function () {
   before(function (done) {
-    co(function * () {
-      // Add 12 fake loos
-      yield _.map(_.range(12), function () {
-	result =  fakery.makeAndSave('looBox');
-	return result
-      })
-    }).then(done)
+	loader(Loo,"looBox",function(err,result){
+		if(err){console.log(err)};
+		done();
+		return result
+	});
   })
   after(function (done) {
     co(function * () {
@@ -52,13 +49,11 @@ describe('Find loos within a box (/loos/in)', function () {
 describe('Find loos within radius (/loos/near)', function () {
   // Bring up a server before testing
   before(function (done) {
-    co(function * () {
-      yield _.map(_.range(5), function () {
-	result =  fakery.makeAndSave('looCircle');
-
-	return result
-      })
-    }).then(done)
+	loader(Loo,"looRadius",function(err,result){
+		if(err){console.log(err)};
+		done();
+		return result
+	});
   })
   // tear it down after
   after(function (done) {
@@ -68,18 +63,32 @@ describe('Find loos within radius (/loos/near)', function () {
   })
   
   //TODO test needs fixing, currently a placeholder
-  it('/loos/near/:lon/:lat JSON', function (done) {
+  it('/loos/near/:lon/:lat JSON with default limit', function (done) {
     request
-    .get('/loos/near/0/0')
+    .get('/loos/near/-0.2068223/51.518342/?radius=2000')
     .set('Accept', 'application/json')
     .expect(200)
     .expect(function (res) {
       if (!(res.body.features.length === 5)) {
-	return 'Not enough Loos'
+	return 'Not correct amount of loos'
       }
     })
     .end(done)
   });
+
+  it('/loos/near/:lon/:lat JSON with limit of 500m', function (done) {
+    request
+    .get('/loos/near/-0.2068223/51.518342/?radius=2000&limit=500')
+    .set('Accept', 'application/json')
+    .expect(200)
+    .expect(function (res) {
+      if (!(res.body.features.length === 20)) {
+	return 'Not correct amount of loos'
+      }
+    })
+    .end(done)
+  });
+
 
   it('/loos/near/:lon/:lat HTML', function (done) {
     request

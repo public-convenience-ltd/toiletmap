@@ -8,6 +8,9 @@ it('home html', function (done) {
 	.get('/')
 	.set('Accept', 'text/html')
 	.expect(200)
+	.expect(function(res){
+		console.log(res.body);
+	})
 	.end(done)
 });
 
