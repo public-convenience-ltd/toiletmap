@@ -10,5 +10,16 @@
 
 {{#if localusers }}
 <p><a class="button-shaped" href="{{config.api.root}}/auth/admin?redirect={{redirect}}">Local User</a></p>
+
+<form action="/auth/local" method="post">
+  Username:<br>
+  <input type="text" name="username">
+  <br>
+  Password:<br>
+  <input type="password" name="password">
+  <br><br>
+  <input type="submit" value="Submit">
+</form> 
+
 {{/if}}
 

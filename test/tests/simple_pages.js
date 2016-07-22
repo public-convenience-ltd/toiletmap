@@ -3,14 +3,13 @@ var baseUrl = 'http://localhost:' + config.app.port
 var supertest = require('supertest')
 var request = supertest(baseUrl)
 
+
+//TODO Add more detail
 it('home html', function (done) {
 	request
 	.get('/')
 	.set('Accept', 'text/html')
 	.expect(200)
-	.expect(function(res){
-		console.log(res.body);
-	})
 	.end(done)
 });
 
@@ -22,7 +21,7 @@ it('home json', function (done) {
 	.end(done)
 });
 
-
+//TODO Add more detail
 it('/about', function (done) {
 	request
 	.get('/about')
@@ -30,6 +29,10 @@ it('/about', function (done) {
 	.expect(200)
 	.end(done)
 });
+
+
+//TODO Add more detail
+
 it('/preferences', function (done) {
 	request
 	.get('/preferences')

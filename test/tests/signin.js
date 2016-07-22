@@ -3,6 +3,7 @@ var baseUrl = 'http://localhost:' + config.app.port
 var supertest = require('supertest')
 var request = supertest(baseUrl)
 
+//TODO Add more detail
 
 it('check response from /signin', function (done) {
 	request
@@ -11,6 +12,8 @@ it('check response from /signin', function (done) {
 	.expect(200)
 	.end(done)
 })
+//TODO Add more detail
+
 it('check response from /signout', function (done) {
 	request
 	.get('/signout')

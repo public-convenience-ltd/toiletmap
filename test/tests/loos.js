@@ -65,8 +65,9 @@ describe('Find loos within radius (/loos/near)', function () {
   //TODO test needs fixing, currently a placeholder
   it('/loos/near/:lon/:lat JSON with default limit', function (done) {
     request
-    .get('/loos/near/-0.2068223/51.518342/?radius=2000')
+    .get('/loos/near/-0.2068223/51.518342/')
     .set('Accept', 'application/json')
+    .query({radius:2000})
     .expect(200)
     .expect(function (res) {
       if (!(res.body.features.length === 5)) {
@@ -76,9 +77,9 @@ describe('Find loos within radius (/loos/near)', function () {
     .end(done)
   });
 
-  it('/loos/near/:lon/:lat JSON with limit of 500m', function (done) {
+  it('/loos/near/:lon/:lat JSON with limit of 17', function (done) {
     request
-    .get('/loos/near/-0.2068223/51.518342/?radius=2000&limit=500')
+    .get('/loos/near/-0.2068223/51.518342/?radius=2000&limit=20')
     .set('Accept', 'application/json')
     .expect(200)
     .expect(function (res) {

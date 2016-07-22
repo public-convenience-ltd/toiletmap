@@ -1,5 +1,6 @@
 var passport = require('koa-passport')
 var DigestStrategy = require('passport-http').DigestStrategy
+var LocalStrategy = require('passport-local').Strategy
 var TwitterStrategy = require('passport-twitter').Strategy
 var GitHubStrategy = require('passport-github').Strategy
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
@@ -27,8 +28,12 @@ function * storeRedirect (next) {
   yield next
 }
 
+
+
 function * doRedirect (next) {
   var redir = this.session.redirect
+  console.log("#########")
+  console.log(redir)
   if (redir) {
     this.session.redirect = null
     this.redirect(redir)
@@ -40,6 +45,8 @@ function * doRedirect (next) {
     this.redirect('/')
   }
 }
+
+
 
 // Admin auth if local user and pass were provided
 if (config.auth.local.username && config.auth.local.password) {
@@ -70,6 +77,39 @@ if (config.auth.local.username && config.auth.local.password) {
     path: '/admin',
     method: 'get'
   }
+
+}
+
+
+if (config.auth.local.username && config.auth.local.password) {
+  passport.use(new LocalStrategy(
+    function (username, done) {
+      if (username === config.auth.local.username) {
+        // If the correct username is supplied return the user and pass word for verification
+        done(null, {name: username, userId: 'local_' + username}, config.auth.local.password)
+      } else {
+        done(null, false)
+      }
+    },
+    function (params, done) {
+      // asynchronous validation, for effect...
+      process.nextTick(function () {
+        // check nonces in params here, if desired
+        return done(null, true)
+      })
+    }
+  ))
+
+  routes.admin2 = {
+    handler: compose([
+      storeRedirect,
+      passport.authenticate('local'),
+      doRedirect
+    ]),
+    path: '/local',
+    method: 'get'
+  }
+
 
 }
 
