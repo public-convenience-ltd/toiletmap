@@ -15,11 +15,11 @@ request2 = request2.defaults({jar: true}) //enable cookies
 var agent = superagent.agent();
 var chai = require('chai');
 var expect = chai.expect;
-var j = request2.jar()
+
+//***NB*** Supertest does not play well with the auth requested so for this file I'm mostly using the request module
 
 
 
-var cookieList;
  before(function (done) {
 	async.parallel([
 	    function(callback){
@@ -58,8 +58,7 @@ var cookieList;
 
 
 
-//supertest's auth doesnt deal with digest, so having to use "request" module
-it('basic login with redirect',function(done){
+it('login',function(done){
 
 request2
   .get(baseUrl+'/auth/admin', {
@@ -67,31 +66,150 @@ request2
     'user': config.auth.local.username,
     'pass': config.auth.local.password,
     'sendImmediately': false
-  },
-  jar:j
+  }
 })
  .on('response', function(response) {
-    agent.saveCookies(response)
     expect(response.statusCode).to.equal(200);
     done()
   })
+
+});
+
+it('signout',function(done){
+
+request2
+  .get(baseUrl+'/signout', {
+})
+ .on('response', function(response) {
+    expect(response.statusCode).to.equal(200);
+    done()
+  })
+
+});
+
+it('login with redirect',function(done){
+
+request2
+  .get(baseUrl+'/auth/admin?redirect=/', {
+  'auth': {
+    'user': config.auth.local.username,
+    'pass': config.auth.local.password,
+    'sendImmediately': false
+  }
+})
+ .on('response', function(response) {
+    expect(response.statusCode).to.equal(200);
+    done()
+  })
+
+});
+
+it('login with wrong info',function(done){
+
+request2
+  .get(baseUrl+'/auth/admin?redirect=/', {
+  'auth': {
+    'user': "wibble",
+    'pass': config.auth.local.password,
+    'sendImmediately': false
+  }
+})
+ .on('response', function(response) {
+    expect(response.statusCode).to.equal(401);
+    done()
+  })
+
 });
 
 
-//cookies not working
-it('An attempted removal ',function(done){
-	stringID = enteredDataLoos.ops[0]._id.toString();
-	req = request.post('/remove/'+stringID)
-	.set('Content-Type',"application/json")
-	//agent.attachCookies( req )
-	req.redirects(1);
-	req.expect(200)
-	.expect(function(res){
-		console.log(res)
+
+
+it('removal with genuine loo',function(done){
+var stringID = enteredDataLoos.ops[0]._id.toString()
+
+request2({
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    uri: baseUrl+'/remove/'+stringID,
+    method: 'POST',
+    followAllRedirects: true
+  }, function (err, res, body) {
+	expect(res.statusCode).to.equal(200)
+        done()
+  });
+
+});
+
+
+it('add report with a dataString',function(done){
+	var headers = {
+	    'Content-Type': 'application/x-www-form-urlencoded',
+	    'Accept': 'text/html',
+	};
+
+	var dataString = 'geometry.type=Point&properties.name=no+name&properties.access=public&properties.type=female&properties.accessibleType=female&properties.opening=24/7&properties.attended=true&properties.babyChange=false&properties.automatic=true&properties.radar=&properties.fee=0.10&properties.notes=No+Notes&geometry.coordinates.0=1.292719100000017&geometry.coordinates.1=52.63696673342568&origin=Great+British+Public+Toilet+Map';
+
+	var options = {
+	    url: baseUrl + '/reports',
+	    method: 'POST',
+	    headers: headers,
+	    body: dataString,
+	    followAllRedirects: true
+	};
+
+	request2(options, function(error,response,body){
+		expect(response.statusCode).to.equal(200)
+		expect(body).to.contain('Credibility');
+		expect(body).to.contain('Sources');
+		expect(body).to.contain('Contributors');
+		done()
 	})
-	.end(done)
+
 });
 
+/*
+it('add report with json',function(done){
+	var data =
+	 {'geometry':
+		{'type':'Point',
+	  	 'coordinates':["1.292719100000017","52.63696673342568"]
+		},
+	   'properties':{
+		'name':"Name",
+		'access': "public",
+		'type': "female",
+		'accessibleType': "female",
+		'opening':"24/7",
+		'attended':"true",
+		'babyChange':"false",
+		'automatic': "true",
+		'radar': "",
+		'fee': "0.10",
+		'notes':"No+notes"
+	    },
+	'origin':'Great+British+Public+Toilet+Map'
+	}
+
+	var options = {
+	    url: baseUrl + '/reports',
+	    method: 'POST',
+	    json: data,
+	    followAllRedirects: true
+	};
+
+	request2(options, function(error,response,body){
+		//console.log(error)
+		//console.log(response)
+		expect(response.statusCode).to.equal(200)
+		expect(body).to.contain('Credibility');
+		expect(body).to.contain('Sources');
+		expect(body).to.contain('Contributors');
+		done()
+	})
+
+});
+*/
 
 
 

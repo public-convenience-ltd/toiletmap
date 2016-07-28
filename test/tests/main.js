@@ -42,7 +42,7 @@ describe('start testing',function(){
 	importTest('Stand alone map', './standaloneMap.js')
 
 	//private api
-	importTest('Loo reports private', './looReportsPrivate.js')
+	importTest('Loo reports private and auth', './looReportsPrivate.js')
 
 
 
