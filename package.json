@@ -64,6 +64,7 @@
   },
   "devDependencies": {
     "bluebird": "^3.4.1",
+    "chai": "^3.5.0",
     "coveralls": "^2.11.11",
     "istanbul": "^0.4.4",
     "mocha": "^2.2.1",

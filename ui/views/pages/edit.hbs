@@ -4,12 +4,16 @@
     {{#unless loo}}Add A Toilet{{/unless}}
 </h2>
 
-{{#unless loo}}
-<div class="map positioning mini"
-    data-init="gbptm-positioning_map"
-    data-config_zoom="18"></div>
-<p class="tip"><strong>Tip:</strong> Align the crosshair with where you believe the toilet to be.</p>
-{{/unless}}
+{{#if loo}}
+{{else}}
+	<div class="map positioning mini"
+	    data-init="gbptm-positioning_map"
+	    data-config_zoom="18"></div>
+	<p class="tip"><strong>Tip:</strong> Align the crosshair with where you believe the toilet to be.</p>
+
+{{/if}}
+
+
 
 {{#contentFor 'title'}}| Contribute{{/contentFor}}
 {{#unless prefs.nohelp.edit_intro}}

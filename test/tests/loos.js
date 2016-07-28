@@ -62,7 +62,6 @@ describe('Find loos within radius (/loos/near)', function () {
     }).then(done)
   })
   
-  //TODO test needs fixing, currently a placeholder
   it('/loos/near/:lon/:lat JSON with default limit', function (done) {
     request
     .get('/loos/near/-0.2068223/51.518342/')

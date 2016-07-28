@@ -95,6 +95,32 @@ looSchema.methods.regenerate = function * () {
   loo.sources = _.map(loo.reports, 'origin')
   loo.attributions = _.map(loo.reports, 'attribution')
 
+  //Potential coordinate solutions.
+  var trustedLooReports = _.sortBy(loo.reports, ['trust', 'updatedAt'])
+
+/*
+  //Averages ALL reports	
+  loo.geometry.coordinates[0] = _.meanBy(trustedLooReports, function(report) { return report.geometry.coordinates[0]; });
+  loo.geometry.coordinates[1] = _.meanBy(trustedLooReports, function(report) { return report.geometry.coordinates[1]; });
+*/
+
+  //The most recent most trusted user can just change the co-ordinates.  
+  trustedLooReports = _.sortBy(loo.reports, ['trust', 'updatedAt'])
+  loo.geometry.coordinates[0] = trustedLooReports[0].geometry.coordinates[0];
+  loo.geometry.coordinates[1] = trustedLooReports[0].geometry.coordinates[1];
+/*
+  //Skewed average based on trust	
+  loo.geometry.coordinates[0] = _.meanBy(trustedLooReports, function(report) { return report.geometry.coordinates[0]*report.trust;})/_.sumBy(trustedLooReports,'trust');
+  loo.geometry.coordinates[1] = _.meanBy(trustedLooReports, function(report) { return report.geometry.coordinates[1]*report.trust;})/_.sumBy(trustedLooReports,'trust');
+*/
+
+
+
+
+
+  
+
+
   // Calculate credibility
   loo.credibility = calculate_credibility(loo.reports)
 

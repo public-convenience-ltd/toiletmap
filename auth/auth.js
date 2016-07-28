@@ -32,8 +32,6 @@ function * storeRedirect (next) {
 
 function * doRedirect (next) {
   var redir = this.session.redirect
-  console.log("#########")
-  console.log(redir)
   if (redir) {
     this.session.redirect = null
     this.redirect(redir)
@@ -81,37 +79,8 @@ if (config.auth.local.username && config.auth.local.password) {
 }
 
 
-if (config.auth.local.username && config.auth.local.password) {
-  passport.use(new LocalStrategy(
-    function (username, done) {
-      if (username === config.auth.local.username) {
-        // If the correct username is supplied return the user and pass word for verification
-        done(null, {name: username, userId: 'local_' + username}, config.auth.local.password)
-      } else {
-        done(null, false)
-      }
-    },
-    function (params, done) {
-      // asynchronous validation, for effect...
-      process.nextTick(function () {
-        // check nonces in params here, if desired
-        return done(null, true)
-      })
-    }
-  ))
-
-  routes.admin2 = {
-    handler: compose([
-      storeRedirect,
-      passport.authenticate('local'),
-      doRedirect
-    ]),
-    path: '/local',
-    method: 'get'
-  }
 
 
-}
 
 // GitHub Auth if id and secret were provided
 if (config.auth.github.client_id && config.auth.github.client_secret) {

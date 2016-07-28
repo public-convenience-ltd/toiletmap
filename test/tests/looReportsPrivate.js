@@ -1,6 +1,7 @@
 var config = require('../../config/config');
 var baseUrl = 'http://localhost:' + config.app.port;
 var supertest = require('supertest');
+var superagent = require('superagent');
 var request = supertest(baseUrl);
 var co = require('co');
 var LooReport = require('../../models/loo_report')
@@ -10,14 +11,16 @@ var mongoose = require('mongoose');
 var async = require('async');
 var superagent = require('superagent');
 var request2 = require('request');
+request2 = request2.defaults({jar: true}) //enable cookies
 var agent = superagent.agent();
+var chai = require('chai');
+var expect = chai.expect;
+var j = request2.jar()
 
 
-var improvedHeader;
 
- var enteredData;
+var cookieList;
  before(function (done) {
-
 	async.parallel([
 	    function(callback){
 		loader(Loo,"statisticsLoos",function(err,result){
@@ -44,6 +47,7 @@ var improvedHeader;
 
 
  })
+
   after(function (done) {
     co(function * () {
       yield LooReport.remove({})
@@ -52,34 +56,44 @@ var improvedHeader;
     }).then(done)
   })
 
-var theAccount = {
-	user: 'test',
-	password: 'test'
-}
 
 
-
-//supertest's auth doesnt deal with digest, so having to use "request module"
+//supertest's auth doesnt deal with digest, so having to use "request" module
 it('basic login with redirect',function(done){
-globalDone = done;
-request2.get(baseUrl+'/auth/admin', {
+
+request2
+  .get(baseUrl+'/auth/admin', {
   'auth': {
-    'user': 'test',
-    'pass': 'test',
+    'user': config.auth.local.username,
+    'pass': config.auth.local.password,
     'sendImmediately': false
-  }
+  },
+  jar:j
 })
  .on('response', function(response) {
-    if (response.statusCode === 200){
-    	globalDone();
-    }else{
-    	throw "Expected 200, returned:"+response.statusCode;
-    }
+    agent.saveCookies(response)
+    expect(response.statusCode).to.equal(200);
+    done()
   })
-
-
-
 });
+
+
+//cookies not working
+it('An attempted removal ',function(done){
+	stringID = enteredDataLoos.ops[0]._id.toString();
+	req = request.post('/remove/'+stringID)
+	.set('Content-Type',"application/json")
+	//agent.attachCookies( req )
+	req.redirects(1);
+	req.expect(200)
+	.expect(function(res){
+		console.log(res)
+	})
+	.end(done)
+});
+
+
+
 
 
 
