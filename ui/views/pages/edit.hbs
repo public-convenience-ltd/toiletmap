@@ -1,10 +1,40 @@
-{{#contentFor 'bodyclass'}}toilet {{#unless loo}}report-toilet{{/unless}}{{/contentFor}}
+{{#contentFor 'bodyclass'}}toilet
+
+
+{{#if loo}}
+{{#if edit}}
+	report-toilet
+{{/if}}
+{{else}}
+	report-toilet
+{{/if}}
+
+
+
+
+{{/contentFor}}
 <h2 {{#if loo}}data-map_ident="{{loo._id}}:1"{{/if}}>
     {{#if loo}}Edit This Toilet{{/if}}
     {{#unless loo}}Add A Toilet{{/unless}}
 </h2>
 
+
+
+
+
+
+
+
+
 {{#if loo}}
+	{{#if edit}}
+		<div class="map positioning mini"
+		    data-init="gbptm-positioning_map"
+		    data-config_zoom="18"></div>
+		<p class="tip"><strong>Tip:</strong> Align the crosshair with where you believe the toilet to be.</p>
+
+
+	{{/if}}
 {{else}}
 	<div class="map positioning mini"
 	    data-init="gbptm-positioning_map"

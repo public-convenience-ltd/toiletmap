@@ -50,6 +50,7 @@ looReportSchema.statics.processReport = function * (data) {
     yield report.save()
   }
   var loo = yield report.looificate()
+
   return [report, loo]
 }
 
@@ -67,10 +68,8 @@ looReportSchema.methods.looificate = function * () {
 
   // Get the loo to regenerate its data
   yield loo.regenerate()
-
   // Save the result
   yield loo.save()
-
   return loo
 }
 

@@ -96,34 +96,35 @@ looSchema.methods.regenerate = function * () {
   loo.attributions = _.map(loo.reports, 'attribution')
 
   //Potential coordinate solutions.
-  var trustedLooReports = _.sortBy(loo.reports, ['trust', 'updatedAt'])
+  var recentLooReports = _.remove(_.sortBy(loo.reports, ['updatedAt']),function(report){
+  	if(report.updatedAt != undefined){
+		return report
+	}
+
+  })
+  var geometry = {type:'Point',coordinates:[]}
+
 
 /*
   //Averages ALL reports	
-  loo.geometry.coordinates[0] = _.meanBy(trustedLooReports, function(report) { return report.geometry.coordinates[0]; });
-  loo.geometry.coordinates[1] = _.meanBy(trustedLooReports, function(report) { return report.geometry.coordinates[1]; });
+  geometry.coordinates[0] = _.meanBy(loo.reports, function(report) { return report.geometry.coordinates[0]; });
+  geometry.coordinates[1] = _.meanBy(loo.reports, function(report) { return report.geometry.coordinates[1]; });
 */
 
-  //The most recent most trusted user can just change the co-ordinates.  
-  trustedLooReports = _.sortBy(loo.reports, ['trust', 'updatedAt'])
-  loo.geometry.coordinates[0] = trustedLooReports[0].geometry.coordinates[0];
-  loo.geometry.coordinates[1] = trustedLooReports[0].geometry.coordinates[1];
+  //The most recent user can just change the co-ordinates.  
+  geometry.coordinates[0] =  recentLooReports[recentLooReports.length-1].geometry.coordinates[0];
+  geometry.coordinates[1] =  recentLooReports[recentLooReports.length-1].geometry.coordinates[1];
+
 /*
   //Skewed average based on trust	
-  loo.geometry.coordinates[0] = _.meanBy(trustedLooReports, function(report) { return report.geometry.coordinates[0]*report.trust;})/_.sumBy(trustedLooReports,'trust');
-  loo.geometry.coordinates[1] = _.meanBy(trustedLooReports, function(report) { return report.geometry.coordinates[1]*report.trust;})/_.sumBy(trustedLooReports,'trust');
+  geometry.coordinates[0] = _.meanBy(loo.reports, function(report) { return report.geometry.coordinates[0]*report.trust;})/_.sumBy(trustedLooReports,'trust');
+  geometry.coordinates[1] = _.meanBy(loo.reports, function(report) { return report.geometry.coordinates[1]*report.trust;})/_.sumBy(trustedLooReports,'trust');
 */
 
 
-
-
-
-  
-
-
+  this.geometry = geometry;
   // Calculate credibility
   loo.credibility = calculate_credibility(loo.reports)
-
   return this
 }
 

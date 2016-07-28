@@ -30,7 +30,6 @@ routes.report_form = {
   handler: function * () {
     var loo
     var macromap
-    var edit
 
  
 
@@ -50,7 +49,7 @@ routes.report_form = {
 	
     yield this.renderDefaults('edit', {
       loo: loo,
-      edit:true,
+      edit:"edit",
       macromap: macromap
     })
   },
