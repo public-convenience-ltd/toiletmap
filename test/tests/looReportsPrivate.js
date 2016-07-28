@@ -46,6 +46,11 @@ var expect = chai.expect;
 	});
 
 
+	
+	//just logout to make sure we know the state at the beginning 
+
+
+
  })
 
   after(function (done) {
@@ -56,36 +61,6 @@ var expect = chai.expect;
     }).then(done)
   })
 
-
-
-it('login',function(done){
-
-request2
-  .get(baseUrl+'/auth/admin', {
-  'auth': {
-    'user': config.auth.local.username,
-    'pass': config.auth.local.password,
-    'sendImmediately': false
-  }
-})
- .on('response', function(response) {
-    expect(response.statusCode).to.equal(200);
-    done()
-  })
-
-});
-
-it('signout',function(done){
-
-request2
-  .get(baseUrl+'/signout', {
-})
- .on('response', function(response) {
-    expect(response.statusCode).to.equal(200);
-    done()
-  })
-
-});
 
 it('login with redirect',function(done){
 
@@ -103,25 +78,6 @@ request2
   })
 
 });
-
-it('login with wrong info',function(done){
-
-request2
-  .get(baseUrl+'/auth/admin?redirect=/', {
-  'auth': {
-    'user': "wibble",
-    'pass': config.auth.local.password,
-    'sendImmediately': false
-  }
-})
- .on('response', function(response) {
-    expect(response.statusCode).to.equal(401);
-    done()
-  })
-
-});
-
-
 
 
 it('removal with genuine loo',function(done){
