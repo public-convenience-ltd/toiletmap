@@ -13,14 +13,14 @@ var compress = require('koa-compress')
 var mime_query = require('../lib/koa-mime-query')
 var passport = require('koa-passport')
 var helmet = require('koa-helmet')
-var config = require('./config')
+//var config = require('./config')
 var session = require('koa-session')
 var readonly = require('../lib/readonly-mode')
 var auth = require('../auth/auth.js')
 var ui = require('../ui/ui.js')
 var resumer = require('../lib/resumer')
 
-module.exports = function (app) {
+module.exports = function (app,config) {
   app.keys = ['seekrit']
   if (config.app.enableHttps) {
       // Force HTTPS on all page

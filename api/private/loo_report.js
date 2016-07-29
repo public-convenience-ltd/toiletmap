@@ -8,19 +8,16 @@ var objectPath = require('object-path')
 var routes = {}
 
 function * save (data, user) {
-  data.attribution = user.name //<< it doesnt like this line
+  data.attribution = user.name
   data.userId = user.userId
   data.trust = config.reports.trust
   data.collectionMethod = 'api'
-  console.log(data)
   var validator = new LooReport(data)
 
   try {
-
     yield  validator.validate()
-
   } catch (e) {
-    throw e
+	throw e
   }
   return yield LooReport.processReport(data)
 }

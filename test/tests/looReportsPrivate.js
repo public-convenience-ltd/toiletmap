@@ -93,6 +93,7 @@ request2({
 });
 
 
+
 it('add report with a dataString',function(done){
 	var headers = {
 	    'Content-Type': 'application/x-www-form-urlencoded',
@@ -155,13 +156,75 @@ it('add report with json',function(done){
 
 
 	request2(options, function(error,response,body){
-	//	console.log(error)
-	//	console.log(response)
+		expect(body).to.contain('Created');
 		expect(response.statusCode).to.equal(201)
 		done()
 	})
 
 });
+
+it('add report of neither json or form, should error',function(done){
+    var headers =  {
+      'Content-Type': 'text/html'
+	}
+
+   var data ="wibble";
+	var options = {
+	    url: baseUrl + '/reports',
+	    method: 'POST',
+	    headers:headers,
+	    json: data,
+	    followAllRedirects: true
+	};
+
+
+
+	request2(options, function(error,response,body){
+		expect(response.statusCode).to.equal(404)
+		done()
+	})
+
+});
+//TODO unhappy with the detail in this, but its because the api doesn't return much information when this breaks
+it('add report malformed',function(done){
+    var headers =  {
+      'Content-Type': 'application/json'
+    }
+
+   var data =
+	 {'geometry':"something",
+	   'notproperties':{
+		'name':"Name",
+		'access': "public",
+		'type': "female",
+		'accessibleType': "female",
+		'opening':"24/7",
+		'attended':"true",
+		'babyChange':"false",
+		'automatic': "true",
+		'radar': "",
+		'fee': "0.10",
+		'notes':"No+notes"
+	    },
+	'origin':'Great+British+Public+Toilet+Map'
+	}
+
+	var options = {
+	    url: baseUrl + '/reports',
+	    method: 'POST',
+	    json: data,
+	    followAllRedirects: true
+	};
+
+
+
+	request2(options, function(error,response,body){
+		expect(response.statusCode).to.equal(500)
+		done()
+	})
+
+});
+
 
 
 

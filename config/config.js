@@ -4,6 +4,8 @@ var path = require('path')
 var _ = require('lodash')
 var version = require('../package.json').version
 console.log(process.env.PORT)
+
+
 var base = {
   app: {
     root: path.normalize(__dirname + '/..'),

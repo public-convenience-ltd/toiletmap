@@ -10,6 +10,8 @@ var looReportsAll = require('./data/looReportsAll.js').Reports
 var statisticsLoos = require('./data/statistics.js').Loos
 var looBox = require('./data/looBox.js').Loos
 var looRadius = require('./data/looRadius.js').Loos.features
+var looEmpty = require('./data/looID.js').Loos
+
 
 
 
@@ -20,6 +22,7 @@ var stringConversion = {
 			"statisticsLoos":statisticsLoos,
 			"looBox":looBox,
 			"looRadius":looRadius,
+			"looEmpty":looEmpty
 		       }
 
 
