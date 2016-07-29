@@ -8,13 +8,17 @@ var objectPath = require('object-path')
 var routes = {}
 
 function * save (data, user) {
-  data.attribution = user.name
+  data.attribution = user.name //<< it doesnt like this line
   data.userId = user.userId
   data.trust = config.reports.trust
   data.collectionMethod = 'api'
+  console.log(data)
   var validator = new LooReport(data)
+
   try {
-    yield validator.validate()
+
+    yield  validator.validate()
+
   } catch (e) {
     throw e
   }
@@ -24,7 +28,7 @@ function * save (data, user) {
 function * handleJSON (next) {
   if (this.is('json')) {
     var data = yield parse(this)
-    var results = yield save(data, this.user)
+    var results = yield save(data, this.req.user)
     this.status = 201
     this.set('Location', this.app.url('report', {id: results[0]._id}))
     this.set('Content-Location', this.app.url('loo', {id: results[1]._id}))

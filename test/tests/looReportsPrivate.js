@@ -46,11 +46,6 @@ var expect = chai.expect;
 	});
 
 
-	
-	//just logout to make sure we know the state at the beginning 
-
-
-
  })
 
   after(function (done) {
@@ -124,9 +119,12 @@ it('add report with a dataString',function(done){
 
 });
 
-/*
 it('add report with json',function(done){
-	var data =
+    var headers =  {
+      'Content-Type': 'application/json'
+    }
+
+   var data =
 	 {'geometry':
 		{'type':'Point',
 	  	 'coordinates':["1.292719100000017","52.63696673342568"]
@@ -154,18 +152,16 @@ it('add report with json',function(done){
 	    followAllRedirects: true
 	};
 
+
+
 	request2(options, function(error,response,body){
-		//console.log(error)
-		//console.log(response)
-		expect(response.statusCode).to.equal(200)
-		expect(body).to.contain('Credibility');
-		expect(body).to.contain('Sources');
-		expect(body).to.contain('Contributors');
+	//	console.log(error)
+	//	console.log(response)
+		expect(response.statusCode).to.equal(201)
 		done()
 	})
 
 });
-*/
 
 
 
