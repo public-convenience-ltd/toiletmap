@@ -19,11 +19,6 @@ function importTest(name, path) {
     });
 }
 
-function readonlyify(config){
-	config.app.readonly = true;
-	return config
-}
-
 describe('start testing',function(){
 	describe('standard mode',function(){
 	  before(function (done) {
@@ -60,10 +55,8 @@ describe('start testing',function(){
 
 	//currently doesnt work because read only mode isn't set as true
 	describe('start testing in readonly mode',function(){
-
 	  before(function (done) {
 	    co(function * () {
-	      config.app.readonly = true;
 	      yield app.init(config)
 	      done()
 	    })
