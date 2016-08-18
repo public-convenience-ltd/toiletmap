@@ -23,6 +23,11 @@ looSchema.statics.findNear = function (lon, lat, maxDistance, limit) {
   ])
 }
 
+looSchema.statics.findIds = function () {
+  return this.find({}).select('id')
+}
+
+
 looSchema.statics.findIn = function (sw, ne, nw, se) {
   return this.find({
     'properties.active': true,

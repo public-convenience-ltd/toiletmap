@@ -69,7 +69,7 @@ describe('start testing',function(){
 	      yield app.server.tclose()
 	    }).then(done)
 	  })
-		importTest('basic readonly test', './readonly.js')
+		//importTest('basic readonly test', './readonly.js')
 
 	});
 });

@@ -40,6 +40,27 @@ routes.loos_in = {
   method: 'get'
 }
 
+routes.loos_ids = {
+  handler: function * () {
+    var loos = yield Loo.findIds().exec()
+    this.status = 200
+    this.body = new LooList(loos)
+  },
+  path: '/loos',
+  method: 'get'
+}
+
+routes.loos_updateArea = {
+  handler: function * () {
+    this.body = "hey I'm updating the thing now...not really this is just a test"
+	//note for future me, you need to write a static method on the loo model which will call the api and update the area for a loo
+  },
+  path: '/loos/:id/updateArea',
+  method: 'get'
+}
+
+
+
 routes.loo = {
   handler: function * () {
     var loo = yield Loo.findById(this.params.id).exec()

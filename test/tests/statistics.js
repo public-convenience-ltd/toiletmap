@@ -62,7 +62,7 @@ var async = require('async');
     .get('/statistics')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body['Total Toilets Recorded'] === 50)) {
+      if (!(res.body.numbers['Total Toilets Recorded'] === 50)) {
 	return 'Total Toilets incorrect'
       }
     })
@@ -74,7 +74,7 @@ var async = require('async');
     .get('/statistics')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body['Toilets Active on Map'] === 48)) {
+      if (!(res.body.numbers['Toilets Active on Map'] === 48)) {
 	return 'Active toilets incorrect'
       }
     })
@@ -86,7 +86,7 @@ var async = require('async');
     .get('/statistics')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body['Inactive/Removed Toilets'] === 2)) {
+      if (!(res.body.numbers['Inactive/Removed Toilets'] === 2)) {
 	return 'Inactive toilets incorrect'
       }
     })
@@ -98,7 +98,7 @@ var async = require('async');
     .get('/statistics')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body['Total Loo Reports Recorded'] === 5)) {
+      if (!(res.body.numbers['Total Loo Reports Recorded'] === 5)) {
 	return 'Total loo reports recorded incorrect'
       }
     })
@@ -110,7 +110,7 @@ var async = require('async');
     .get('/statistics')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body['Total Reports via Web UI/API'] === 2)) {
+      if (!(res.body.numbers['Total Reports via Web UI/API'] === 2)) {
 	return 'reports recorded from web UI incorrect'
       }
     })
@@ -122,7 +122,7 @@ var async = require('async');
     .get('/statistics')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body['Reports from Data Collections'] === 3)) {
+      if (!(res.body.numbers['Reports from Data Collections'] === 3)) {
 	return 'reports recorded from data collections incorrect'
       }
     })
@@ -134,7 +134,7 @@ var async = require('async');
     .get('/statistics')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body['Toilet Removal Reports'] === 2)) {
+      if (!(res.body.numbers['Toilet Removal Reports'] === 2)) {
 	return 'number of removal reports incorrect'
       }
     })
@@ -160,12 +160,15 @@ var async = require('async');
     .get('/statistics')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body['Loos with more than one report (dedupes + edits)'] === 5)) {
+      if (!(res.body.numbers['Loos with Multiple Reports'] === 5)) {
 	return 'number of duplicate loos are wrong'
       }
     })
     .end(done)
   })
+
+//TODO
+//Needs extension due to all the new statistics being implemented 
 
 
 

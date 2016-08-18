@@ -50,7 +50,6 @@ looReportSchema.statics.processReport = function * (data) {
     yield report.save()
   }
   var loo = yield report.looificate()
-  console.log("report",report)
   return [report, loo]
 }
 
