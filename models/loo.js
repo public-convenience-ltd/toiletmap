@@ -27,6 +27,11 @@ looSchema.statics.findIds = function () {
   return this.find({}).select('id')
 }
 
+looSchema.statics.updateArea = function (id) {
+  return this.findById(id)
+}
+
+
 
 looSchema.statics.findIn = function (sw, ne, nw, se) {
   return this.find({
