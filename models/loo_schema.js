@@ -41,7 +41,14 @@ specs.looCore = {
     geocoded: {type: Boolean},
     geocoding_method: {type: String},
     orig: {type: Object},
-    removal_reason: {type: String}
+    removal_reason: {type: String},
+	area:{
+		'Unitary Authority': {type:String},
+		'Unitary Authority ward (UTW)': {type:String},
+		'European region': {type:String},
+		'Civil parish/community': {type:String},
+		'UK Parliament constituency': {type:String}
+	}
   },
   geohash: String
 }

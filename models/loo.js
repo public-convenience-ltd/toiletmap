@@ -2,6 +2,8 @@
 
 var mongoose = require('mongoose')
 var looSchema = require('./loo_schema').looSchema
+var request = require('request')
+var rp = require('request-promise');
 var _ = require('lodash')
 var earth = 6731000
 var Loo
@@ -23,12 +25,8 @@ looSchema.statics.findNear = function (lon, lat, maxDistance, limit) {
   ])
 }
 
-looSchema.statics.findIds = function () {
+looSchema.statics.findAllIds = function () {
   return this.find({}).select('id')
-}
-
-looSchema.statics.updateArea = function (id) {
-  return this.findById(id)
 }
 
 
@@ -89,6 +87,25 @@ function calculate_credibility (reports) {
     return sum + ((trust + completeness) - penalties)
   }, 0) / reports.length
 }
+
+
+looSchema.methods.updateArea = function * (){
+	var domain ='http://mapit.mysociety.org/point/4326/'+_this.geometry.coordinates[0]+','+ _this.geometry.coordinates[1] 
+	var area = {}
+	var useableFields = ['Unitary Authority', 'Unitary Authority ward (UTW)','European region','Civil parish/community','UK Parliament constituency'] 
+	var mapit = yield rp(domain)
+	
+	for (var property in mapit) {
+		if(useableFields.indexOf(mapit[property]['type_name']) >=0){
+			area[mapit[property]['type_name']] = area[property]['name']
+		}
+	}
+	yield this.save()
+			
+
+	
+}
+
 
 /**
  * Rebuild a loo's data by recompiling it from all the reports that have been attatched
