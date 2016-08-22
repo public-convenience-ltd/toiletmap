@@ -90,7 +90,7 @@ function calculate_credibility (reports) {
 
 
 looSchema.methods.updateArea = function * (){
-	var domain ='http://mapit.mysociety.org/point/4326/'+_this.geometry.coordinates[0]+','+ _this.geometry.coordinates[1] 
+	var domain ='http://mapit.mysociety.org/point/4326/'+this.geometry.coordinates[0]+','+ this.geometry.coordinates[1] 
 	var area = {}
 	var useableFields = ['Unitary Authority', 'Unitary Authority ward (UTW)','European region','Civil parish/community','UK Parliament constituency'] 
 	var mapit = yield rp(domain)

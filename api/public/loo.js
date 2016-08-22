@@ -55,7 +55,7 @@ routes.loos_updateArea = {
     var loo = yield Loo.findById(this.params.id)
 	var updatedLoo = yield loo.updateArea(function(err,result){console.log(result)})
     this.status = 200
-	this.body = loo;
+	this.body = loo
   },
   path: '/loos/:id/updateArea',
   method: 'get'
