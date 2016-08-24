@@ -42,6 +42,9 @@ var base = {
       consumerSecret: process.env.GOOGLE_CLIENT_SECRET
     }
   },
+  mapit:{
+	apiKey: process.env.MAPIT_KEY
+  },
   mongo: {
     url: process.env.MONGO_URL || process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/gbptm'
   },

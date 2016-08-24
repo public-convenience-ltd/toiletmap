@@ -3,6 +3,7 @@
 var mongoose = require('mongoose')
 var looSchema = require('./loo_schema').looSchema
 var request = require('request')
+var config = require('../config/config')
 var rp = require('request-promise');
 var _ = require('lodash')
 var earth = 6731000
@@ -90,16 +91,25 @@ function calculate_credibility (reports) {
 
 
 looSchema.methods.updateArea = function * (){
-	var domain ='http://mapit.mysociety.org/point/4326/'+this.geometry.coordinates[0]+','+ this.geometry.coordinates[1] 
+	var domain ='http://mapit.mysociety.org/point/4326/'+this.geometry.coordinates[0]+','+ this.geometry.coordinates[1]+'?api_key='+config.mapit.apiKey
+
 	var area = {}
-	var useableFields = ['Unitary Authority', 'Unitary Authority ward (UTW)','European region','Civil parish/community','UK Parliament constituency'] 
-	var mapit = yield rp(domain)
+
+		
+	var options = {
+		url: domain
+	};	
+
+	var mapit = yield rp(options)
 	
-	for (var property in mapit) {
-		if(useableFields.indexOf(mapit[property]['type_name']) >=0){
-			area[mapit[property]['type_name']] = area[property]['name']
-		}
+	//not sure why im getting a string back...need to investigate	
+	var mapitJSON = JSON.parse(mapit)
+	
+	for (var property in mapitJSON) {
+		area[mapitJSON[property]['type_name']] = mapitJSON[property]['name']
+		
 	}
+	this.properties.area = area
 	yield this.save()
 			
 
