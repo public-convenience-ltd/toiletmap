@@ -6,37 +6,23 @@ var _ = require('lodash')
 var routes = {}
 
 
-var queryMaker = function(query,timescale,start,end,area,areaType){
+var queryMaker = function(query,options){
 	var beginDate = new Date();
 	
 
-	//timebased based stuff
-	if (!(timescale === 'Overall' || timescale===undefined)){
-		beginDate = new Date(start);
-		var endDate = new Date(end);
+	if (!(options.timescale === 'Overall' || options.timescale===undefined)){
+		beginDate = new Date(options.start);
+		var endDate = new Date(options.end);
 		query["$and"] = [ { 'createdAt': { '$gte': beginDate }} , { 'createdAt': { '$lte': endDate }}]
 	}
-	
-	//if areaType === 'Any' it makes no different
-
-
-	//this will just give london boroughs if that boroughs thing turns up...
 	//there may be holes...
-	if (area === 'Any' && areaType !== 'Any'){
-		query['properties.area.'+areaType] = {'$exists':true}
+	if (options.area === 'Any' && options.areaType !== 'Any'){
+		query['properties.area.'+options.areaType] = {'$exists':true}
 	}
 
-	if (area !== 'Any' && areaType !== 'Any'){
-		query['properties.area.'+areaType] = area
+	if (options.area !== 'Any' && options.areaType !== 'Any'){
+		query['properties.area.'+options.areaType] = options.area
 	}
-
-
-
-
-		
-
-	
-	console.log(query)
  	return query
 }
 
@@ -58,23 +44,30 @@ var percentify = function(stat,outOf){
 
 
 routes.statistics = {
-  
+	  
 
   handler: function * () {
+	var standardOptions = {
+		timescale:this.query.timescale,
+		start:this.query.beginDate,
+		end:this.query.endDate,
+		area:this.query.area,
+		areaType:this.query.areaType
+	}
+
 
 	//used for percentages
-    var publicLoos = yield Loo.count(queryMaker({"properties.access":"public"},this.query.timescale,this.query.beginDate,this.query.endDate,this.query.area,this.query.areaType)).exec() //done
-    var babyChange = yield Loo.count(queryMaker({"properties.babyChange":"true"},this.query.timescale,this.query.beginDate,this.query.endDate,this.query.area,this.query.areaType)).exec() //done
+    var publicLoos = yield Loo.count(queryMaker({"properties.access":"public"},standardOptions)).exec() //done
+
+    var babyChange = yield Loo.count(queryMaker({"properties.babyChange":"true"},standardOptions)).exec() //done
 	
-	//N.B baby change and therefore probably attended baby changing automatic and radar dont work since they were switched from bool to string and mongoose is being funky..I believe this to be the reason and I'm working on it
-    var activeLoos = yield Loo.count(queryMaker({'properties.active': 'true'},this.query.timescale,this.query.beginDate,this.query.endDate,this.query.area,this.query.areaType)).exec() 
+    var activeLoos = yield Loo.count(queryMaker({'properties.active': 'true'},standardOptions)).exec() 
 
-
-    var loosCount = yield Loo.count(queryMaker({},this.query.timescale,this.query.beginDate,this.query.endDate,this.query.area,this.query.areaType)) //done
-    var looReports = yield LooReport.count(queryMaker({},this.query.timescale,this.query.beginDate,this.query.endDate,this.query.area,this.query.areaType)).exec() //done
-    var uiReports = yield LooReport.count(queryMaker({'collectionMethod': 'api'},this.query.timescale,this.query.beginDate,this.query.endDate,this.query.area,this.query.areaType)).exec() //done
+    var loosCount = yield Loo.count(queryMaker({},standardOptions)).exec() //done
+    var looReports = yield LooReport.count(queryMaker({},standardOptions)).exec() //done
+    var uiReports = yield LooReport.count(queryMaker({'collectionMethod': 'api'},standardOptions)).exec() //done
     var importedReports = looReports - uiReports //done
-    var removals = yield LooReport.count(queryMaker({'properties.removal_reason': {$exists: true}},this.query.timescale,this.query.beginDate,this.query.endDate,this.query.area,this.query.areaType)).exec() //done
+    var removals = yield LooReport.count(queryMaker({'properties.removal_reason': {$exists: true}},standardOptions)).exec() //done
 
 
     var contributors = yield LooReport.aggregate([
@@ -88,8 +81,6 @@ routes.statistics = {
       ]).exec()
     var multi_report_loos = yield Loo.count({'reports.1': {$exists: true}}).exec()
 
-
-	//calculates percentages
 	
     this.status = 200
 	
@@ -168,7 +159,6 @@ routes.statistics = {
 }
 
 module.exports = routes
-
 
 
 
