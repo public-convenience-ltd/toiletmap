@@ -15,7 +15,6 @@ var queryMaker = function(query,options){
 		var endDate = new Date(options.end);
 		query["$and"] = [ { 'createdAt': { '$gte': beginDate }} , { 'createdAt': { '$lte': endDate }}]
 	}
-	//there may be holes...
 	if (options.area === 'Any' && options.areaType !== 'Any'){
 		query['properties.area.'+options.areaType] = {'$exists':true}
 	}
@@ -58,18 +57,18 @@ routes.statistics = {
 
 	//used for percentages
     var publicLoos = yield Loo.count(queryMaker({"properties.access":"public"},standardOptions)).exec() //done
-
     var babyChange = yield Loo.count(queryMaker({"properties.babyChange":"true"},standardOptions)).exec() //done
-	
     var activeLoos = yield Loo.count(queryMaker({'properties.active': 'true'},standardOptions)).exec() 
+    var accessibleLoos = yield Loo.count(queryMaker({'properties.active': 'true'},standardOptions)).exec() 
 
+
+	//standard 
     var loosCount = yield Loo.count(queryMaker({},standardOptions)).exec() //done
     var looReports = yield LooReport.count(queryMaker({},standardOptions)).exec() //done
     var uiReports = yield LooReport.count(queryMaker({'collectionMethod': 'api'},standardOptions)).exec() //done
     var importedReports = looReports - uiReports //done
     var removals = yield LooReport.count(queryMaker({'properties.removal_reason': {$exists: true}},standardOptions)).exec() //done
-
-
+    var multi_report_loos = yield Loo.count(queryMaker({'reports.1': {$exists: true}},standardOptions)).exec()
     var contributors = yield LooReport.aggregate([
       { $match: {'type': 'Feature' } },
         {
@@ -79,7 +78,6 @@ routes.statistics = {
           }
         }
       ]).exec()
-    var multi_report_loos = yield Loo.count({'reports.1': {$exists: true}}).exec()
 
 	
     this.status = 200
@@ -102,8 +100,6 @@ routes.statistics = {
 
 
 				},
-
-
 			'Count reports by Attribution': _.transform(contributors, function (acc, val) {
 			  acc[val._id] = val.reports
 			}, {})

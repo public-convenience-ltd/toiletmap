@@ -34,7 +34,7 @@ routes.loos_in = {
   handler: function * () {
     var loos = yield Loo.findIn(this.params.sw, this.params.ne, this.params.nw, this.params.se).exec()
     this.status = 200
-    this.body = loos
+    this.body = new LooList(loos)
   },
   path: '/loos/in/:sw/:ne/:nw/:se',
   method: 'get'
