@@ -96,8 +96,7 @@ routes.statistics = {
 				'percentages':{
 					"Active Loos": percentify(activeLoos,loosCount),
 					"Public Loos": percentify(publicLoos,loosCount),
-					"Baby Changing": percentify(babyChange,loosCount),
-					"Accessible To All": percentify(accessibleLoos,loosCount)
+					"Baby Changing": percentify(babyChange,loosCount)
 
 
 				},
