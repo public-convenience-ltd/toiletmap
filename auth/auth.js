@@ -1,6 +1,5 @@
 var passport = require('koa-passport')
 var DigestStrategy = require('passport-http').DigestStrategy
-var LocalStrategy = require('passport-local').Strategy
 var TwitterStrategy = require('passport-twitter').Strategy
 var GitHubStrategy = require('passport-github').Strategy
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy

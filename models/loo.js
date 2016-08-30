@@ -92,6 +92,7 @@ function calculate_credibility (reports) {
 
 looSchema.methods.updateArea = function * (){
 	var domain ='http://mapit.mysociety.org/point/4326/'+this.geometry.coordinates[0]+','+ this.geometry.coordinates[1]+'?api_key='+config.mapit.apiKey
+	console.log(domain)
 
 	var area = {}
 
@@ -107,7 +108,6 @@ looSchema.methods.updateArea = function * (){
 	
 	for (var property in mapitJSON) {
 		area[mapitJSON[property]['type_name']] = mapitJSON[property]['name']
-		
 	}
 	this.properties.area = area
 	yield this.save()

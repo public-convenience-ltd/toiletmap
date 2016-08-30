@@ -59,7 +59,7 @@ routes.statistics = {
     var publicLoos = yield Loo.count(queryMaker({"properties.access":"public"},standardOptions)).exec() //done
     var babyChange = yield Loo.count(queryMaker({"properties.babyChange":"true"},standardOptions)).exec() //done
     var activeLoos = yield Loo.count(queryMaker({'properties.active': 'true'},standardOptions)).exec() 
-    var accessibleLoos = yield Loo.count(queryMaker({'properties.active': 'true'},standardOptions)).exec() 
+    var accessibleLoos = yield Loo.count(queryMaker({'$or':[{'properties.accessibleType': 'unisex'},{'properties.accessibleType':'male and female'}]},standardOptions)).exec() 
 
 
 	//standard 
@@ -96,7 +96,8 @@ routes.statistics = {
 				'percentages':{
 					"Active Loos": percentify(activeLoos,loosCount),
 					"Public Loos": percentify(publicLoos,loosCount),
-					"Baby Changing": percentify(babyChange,loosCount)
+					"Baby Changing": percentify(babyChange,loosCount),
+					"Accessible To All": percentify(accessibleLoos,loosCount)
 
 
 				},
