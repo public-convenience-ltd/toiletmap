@@ -31,7 +31,7 @@
     "koa-flash": "^1.0.0",
     "koa-fresh": "0.0.3",
     "koa-hbs": "^0.8.1",
-    "koa-helmet": "^1.0.0",
+    "koa-helmet": "^2.0.0",
     "koa-json": "^1.1.1",
     "koa-logger": "^1.2.2",
     "koa-passport": "^1.1.4",
