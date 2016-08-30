@@ -40,6 +40,29 @@ routes.loos_in = {
   method: 'get'
 }
 
+routes.loos_ids = {
+  handler: function * () {
+    var loos = yield Loo.findAllIds().exec()
+    this.status = 200
+    this.body = new LooList(loos)
+  },
+  path: '/loos',
+  method: 'get'
+}
+
+routes.loos_updateArea = {
+  handler: function * () {
+    var loo = yield Loo.findById(this.params.id)
+	var updatedLoo = yield loo.updateArea(function(err,result){console.log(result)})
+    this.status = 200
+	this.body = loo
+  },
+  path: '/loos/:id/updateArea',
+  method: 'get'
+}
+
+
+
 routes.loo = {
   handler: function * () {
     var loo = yield Loo.findById(this.params.id).exec()

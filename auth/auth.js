@@ -27,6 +27,8 @@ function * storeRedirect (next) {
   yield next
 }
 
+
+
 function * doRedirect (next) {
   var redir = this.session.redirect
   if (redir) {
@@ -40,6 +42,8 @@ function * doRedirect (next) {
     this.redirect('/')
   }
 }
+
+
 
 // Admin auth if local user and pass were provided
 if (config.auth.local.username && config.auth.local.password) {
@@ -72,6 +76,10 @@ if (config.auth.local.username && config.auth.local.password) {
   }
 
 }
+
+
+
+
 
 // GitHub Auth if id and secret were provided
 if (config.auth.github.client_id && config.auth.github.client_secret) {

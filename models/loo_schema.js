@@ -21,12 +21,12 @@ specs.looCore = {
     type: {type: String},
     accessibleType: {type: String},
     disposal: {type: String},
-    babyChange: {type: Boolean},
+    babyChange: {type: String},
     babyChangeLocation: {type: String},
     changingPlace: {type: Boolean},
-    radar: {type: Boolean},
-    attended: {type: Boolean},
-    automatic: {type: Boolean},
+    radar: {type: String},
+    attended: {type: String},
+    automatic: {type: String},
     parking: {type: Boolean},
     fee: {type: String},
     streetAddress: {type: String},
@@ -41,7 +41,14 @@ specs.looCore = {
     geocoded: {type: Boolean},
     geocoding_method: {type: String},
     orig: {type: Object},
-    removal_reason: {type: String}
+    removal_reason: {type: String},
+	area:{
+		'Unitary Authority': {type:String},
+		'Unitary Authority ward (UTW)': {type:String},
+		'European region': {type:String},
+		'Civil parish/community': {type:String},
+		'UK Parliament constituency': {type:String}
+	}
   },
   geohash: String
 }

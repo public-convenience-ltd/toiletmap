@@ -31,6 +31,8 @@ routes.report_form = {
     var loo
     var macromap
 
+ 
+
     if (this.request.query.base) {
       loo = yield Loo.findById(this.request.query.base).exec()
     }
@@ -44,8 +46,10 @@ routes.report_form = {
       macromap.center = loo.geometry.coordinates.slice().reverse()
     }
 
+	
     yield this.renderDefaults('edit', {
       loo: loo,
+      edit:"edit",
       macromap: macromap
     })
   },

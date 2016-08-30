@@ -2,6 +2,9 @@
 
 var mongoose = require('mongoose')
 var looSchema = require('./loo_schema').looSchema
+var request = require('request')
+var config = require('../config/config')
+var rp = require('request-promise');
 var _ = require('lodash')
 var earth = 6731000
 var Loo
@@ -22,6 +25,12 @@ looSchema.statics.findNear = function (lon, lat, maxDistance, limit) {
     { $match: {'properties.active': true } }
   ])
 }
+
+looSchema.statics.findAllIds = function () {
+  return this.find({}).select('id')
+}
+
+
 
 looSchema.statics.findIn = function (sw, ne, nw, se) {
   return this.find({
@@ -80,6 +89,34 @@ function calculate_credibility (reports) {
   }, 0) / reports.length
 }
 
+
+looSchema.methods.updateArea = function * (){
+	var domain ='http://mapit.mysociety.org/point/4326/'+this.geometry.coordinates[0]+','+ this.geometry.coordinates[1]+'?api_key='+config.mapit.apiKey
+	console.log(domain)
+
+	var area = {}
+
+		
+	var options = {
+		url: domain
+	};	
+
+	var mapit = yield rp(options)
+	
+	//not sure why im getting a string back...need to investigate	
+	var mapitJSON = JSON.parse(mapit)
+	
+	for (var property in mapitJSON) {
+		area[mapitJSON[property]['type_name']] = mapitJSON[property]['name']
+	}
+	this.properties.area = area
+	yield this.save()
+			
+
+	
+}
+
+
 /**
  * Rebuild a loo's data by recompiling it from all the reports that have been attatched
  * Currently this leaves a loo's location as that of the first report submitted
@@ -95,9 +132,36 @@ looSchema.methods.regenerate = function * () {
   loo.sources = _.map(loo.reports, 'origin')
   loo.attributions = _.map(loo.reports, 'attribution')
 
+  //Potential coordinate solutions.
+  var recentLooReports = _.remove(_.sortBy(loo.reports, ['updatedAt']),function(report){
+  	if(report.updatedAt != undefined){
+		return report
+	}
+
+  })
+  var geometry = {type:'Point',coordinates:[]}
+
+
+/*
+  //Averages ALL reports	
+  geometry.coordinates[0] = _.meanBy(loo.reports, function(report) { return report.geometry.coordinates[0]; });
+  geometry.coordinates[1] = _.meanBy(loo.reports, function(report) { return report.geometry.coordinates[1]; });
+*/
+
+  //The most recent user can just change the co-ordinates.  
+  geometry.coordinates[0] =  recentLooReports[recentLooReports.length-1].geometry.coordinates[0];
+  geometry.coordinates[1] =  recentLooReports[recentLooReports.length-1].geometry.coordinates[1];
+
+/*
+  //Skewed average based on trust	
+  geometry.coordinates[0] = _.meanBy(loo.reports, function(report) { return report.geometry.coordinates[0]*report.trust;})/_.sumBy(trustedLooReports,'trust');
+  geometry.coordinates[1] = _.meanBy(loo.reports, function(report) { return report.geometry.coordinates[1]*report.trust;})/_.sumBy(trustedLooReports,'trust');
+*/
+
+
+  this.geometry = geometry;
   // Calculate credibility
   loo.credibility = calculate_credibility(loo.reports)
-
   return this
 }
 

@@ -67,10 +67,8 @@ looReportSchema.methods.looificate = function * () {
 
   // Get the loo to regenerate its data
   yield loo.regenerate()
-
   // Save the result
   yield loo.save()
-
   return loo
 }
 

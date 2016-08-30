@@ -47,7 +47,13 @@ lang="en-GB"> <![endif]-->
             <aside role="complementary">
                 <div class="map macro"
                     data-init="gbptm-multi_loo_map"
-                    {{#unless loo}}data-crosshairs{{/unless}}
+		    {{#if loo}}
+			{{#if edit}}
+				data-crosshairs
+			{{/if}}
+		    {{else}}
+			data-crosshairs
+	            {{/if}}
                     {{#each macromap}}
                         data-config_{{@key}}="{{json this}}"
                     {{/each}}
