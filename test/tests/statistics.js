@@ -52,17 +52,17 @@ var async = require('async');
 
   it('check response code', function (done) {
     request
-    .get('/statistics')
+    .get('/statistics?timescale=Overall?timescale=Overall')
     .set('Accept', 'text/html')
     .expect(200)
     .end(done)
   })
   it('check Total Toilets recorded', function (done) {
     request
-    .get('/statistics')
+    .get('/statistics?timescale=Overall')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body.numbers['Total Toilets Recorded'] === 50)) {
+      if (!(res.body.numbers['Total Toilets Added'] === 50)) {
 	return 'Total Toilets incorrect'
       }
     })
@@ -71,10 +71,10 @@ var async = require('async');
 
   it('check active Toilets recorded', function (done) {
     request
-    .get('/statistics')
+    .get('/statistics?timescale=Overall')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body.numbers['Toilets Active on Map'] === 48)) {
+      if (!(res.body.numbers['Active Toilets Added'] === 48)) {
 	return 'Active toilets incorrect'
       }
     })
@@ -83,7 +83,7 @@ var async = require('async');
 
   it('check inactive Toilets recorded', function (done) {
     request
-    .get('/statistics')
+    .get('/statistics?timescale=Overall')
     .set('Accept', 'text/html')
     .expect(function (res) {
       if (!(res.body.numbers['Inactive/Removed Toilets'] === 2)) {
@@ -95,7 +95,7 @@ var async = require('async');
 
   it('total loo reports', function (done) {
     request
-    .get('/statistics')
+    .get('/statistics?timescale=Overall')
     .set('Accept', 'text/html')
     .expect(function (res) {
       if (!(res.body.numbers['Total Loo Reports Recorded'] === 5)) {
@@ -107,7 +107,7 @@ var async = require('async');
 
   it('Reports from Web UI/API', function (done) {
     request
-    .get('/statistics')
+    .get('/statistics?timescale=Overall')
     .set('Accept', 'text/html')
     .expect(function (res) {
       if (!(res.body.numbers['Total Reports via Web UI/API'] === 2)) {
@@ -119,7 +119,7 @@ var async = require('async');
 
   it('Reports from Data Collections', function (done) {
     request
-    .get('/statistics')
+    .get('/statistics?timescale=Overall')
     .set('Accept', 'text/html')
     .expect(function (res) {
       if (!(res.body.numbers['Reports from Data Collections'] === 3)) {
@@ -131,10 +131,10 @@ var async = require('async');
 
   it('Number of removal reports', function (done) {
     request
-    .get('/statistics')
+    .get('/statistics?timescale=Overall')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body.numbers['Toilet Removal Reports'] === 2)) {
+      if (!(res.body.numbers['Removal Reports Submitted'] === 2)) {
 	return 'number of removal reports incorrect'
       }
     })
@@ -143,7 +143,7 @@ var async = require('async');
 
   it('Count reports by Attribution', function (done) {
     request
-    .get('/statistics')
+    .get('/statistics?timescale=Overall')
     .set('Accept', 'text/html')
     .expect(function (res) {
       if (!(res.body['Count reports by Attribution']['Brighton & Hove City Council'] === 5 )) {
@@ -157,7 +157,7 @@ var async = require('async');
 
   it('Check number of duplicate loos', function (done) {
     request
-    .get('/statistics')
+    .get('/statistics?timescale=Overall')
     .set('Accept', 'text/html')
     .expect(function (res) {
       if (!(res.body.numbers['Loos with Multiple Reports'] === 5)) {
