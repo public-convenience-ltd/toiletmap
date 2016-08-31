@@ -48,11 +48,11 @@ var async = require('async');
       yield Loo.remove({})
     }).then(done)
   })
-  
+
 
   it('check response code', function (done) {
     request
-    .get('/statistics?timescale=Overall?timescale=Overall')
+    .get('/statistics?timescale=Overall')
     .set('Accept', 'text/html')
     .expect(200)
     .end(done)
@@ -168,7 +168,4 @@ var async = require('async');
   })
 
 //TODO
-//Needs extension due to all the new statistics being implemented 
-
-
-
+//Needs extension due to all the new statistics being implemented
