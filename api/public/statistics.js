@@ -15,6 +15,21 @@ var queryMaker = function(query,options){
 		var endDate = new Date(options.end);
 		query["$and"] = [ { 'createdAt': { '$gte': beginDate }} , { 'createdAt': { '$lte': endDate }}]
 	}
+
+
+	//nothing neededed
+	//if (options.area === 'All' && options.areaType === 'All'){
+	//}
+	if (options.area !== 'All' && options.areaType === 'All'){
+		query["$or"] =[
+			{'properties.area.District council':options.area},
+			{'properties.area.Unitary Authority':options.area},
+			{'properties.area.Metropolitan district':options.area},
+			{'properties.area.London borough':options.area}
+		]
+	}
+
+
 	if (options.area === 'All' && options.areaType !== 'All'){
 		query['properties.area.'+options.areaType] = {'$exists':true}
 	}
@@ -142,16 +157,18 @@ routes.statistics = {
 			if (areaList.length > 0){
 				areaList = areaList.sort()
 				console.log(areaTypes[i])
+				allList = allList.concat(areaList)
+				console.log(allList)
 				areaList.unshift("All")
 				temp_body.data[areaTypes[i]] = areaList
-				allList = allList.concat(areaList)
+
 
 			}else{
 				temp_body.data[areaTypes[i]] = ['All']
 			}
 
 		}
-
+		allList.unshift("All")
 		temp_body.data['All'] = allList.sort()
 
 		this.body = yield temp_body
