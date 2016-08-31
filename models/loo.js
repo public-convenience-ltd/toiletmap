@@ -106,17 +106,19 @@ looSchema.methods.updateArea = function * (){
 	var mapitJSON = JSON.parse(mapit)
 
 	var acceptableValues = ['District council','Unitary Authority','Metropolitan district','London borough']
-	console.log(mapitJSON)
 
 	for (var property in mapitJSON) {
 		//console.log(mapitJSON[property]['type_name'])
 		//console.log(mapitJSON[property]['name'])
-
 		if (acceptableValues.indexOf(mapitJSON[property]['type_name']) >= 0) {
+			console.log(mapitJSON[property]['type_name'])
 			area[mapitJSON[property]['type_name']] = mapitJSON[property]['name']
+
 		}
 	}
-	console.log(area)
+	if (area==={}){
+		console.log(mapitJSON)
+	}
 	this.properties.area = area
 	yield this.save()
 	

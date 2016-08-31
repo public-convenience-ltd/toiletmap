@@ -156,9 +156,7 @@ routes.statistics = {
 			var areaList = yield Loo.distinct(query)
 			if (areaList.length > 0){
 				areaList = areaList.sort()
-				console.log(areaTypes[i])
 				allList = allList.concat(areaList)
-				console.log(allList)
 				areaList.unshift("All")
 				temp_body.data[areaTypes[i]] = areaList
 
@@ -168,15 +166,63 @@ routes.statistics = {
 			}
 
 		}
+		allList = allList.sort()
+		console.log(allList)
 		allList.unshift("All")
-		temp_body.data['All'] = allList.sort()
+		temp_body.data['All'] = allList
+		
 
 		this.body = yield temp_body
 	}
 	
 	else{
-		this.body = yield {"docs":"documentation for stats goes here"}
-	}
+		this.body = yield {
+							"title": "Welcome to the Documentation for the GBPTM statistics page",
+							"list of acceptable inputs":[
+								{
+									'Input Name':'timescale',
+									"values": "Appropriate values are: Overall, Year, Month, Week, Custom",
+									"use":"Indicates what to set the timescale being searched over is, Overall ignores 'beginDate' and 'endDate' and just returns all results",
+									
+								},
+								{
+									'Input Name':"beginDate",
+									'values':"Date in the form yyyy/mm/dd",
+									'use':'signals the earliest date to search the db from in time based queries',
+									'notes':'must be used in conjunction with a "timescale" and an "endDate"'
+								
+								},
+								{
+									'Input Name':"endDate",
+									'values':"Date in the form yyyy/mm/dd",
+									'use':'signals the latest date to search the db from in time based queries',
+									'notes':'must be used in conjunction with a "timescale" and an "beginDate"'
+								
+								},
+								{
+									'Input Name':'areaType',
+									'values':"current can be: Unitary Authority, Unitary Authority ward (UTW), European region, Civil parish/community,UK Parliament constituency, All. Please notes these may be subject to change in the near future",
+									'use':'indicates the type of area that area will then search for',
+									'notes':'The "All" value will simple mean that areaType and area are ignored when searching for toilets'
+
+								},
+								{
+									'Input Name':'area',
+									'values':'values can be whatever is return in the list of acceptable names of areas in the appropriate "areaType" list. This list is access by setting the areaList property to true',
+									'use':'Only returns loos in the area supplied',
+									'notes':'see "areaList" as to how to get acceptable values'
+								},
+								{
+									'Input Name':'areaList',
+									'value':"true or false",
+									'use':'provides values for area by areaType with values that we have in our db'
+
+								}
+
+							]
+							
+				}
+				}
   }
   ,
   path: '/statistics',
