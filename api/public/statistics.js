@@ -15,11 +15,11 @@ var queryMaker = function(query,options){
 		var endDate = new Date(options.end);
 		query["$and"] = [ { 'createdAt': { '$gte': beginDate }} , { 'createdAt': { '$lte': endDate }}]
 	}
-	if (options.area === 'Any' && options.areaType !== 'Any'){
+	if (options.area === 'All' && options.areaType !== 'All'){
 		query['properties.area.'+options.areaType] = {'$exists':true}
 	}
 
-	if (options.area !== 'Any' && options.areaType !== 'Any'){
+	if (options.area !== 'All' && options.areaType !== 'All'){
 		query['properties.area.'+options.areaType] = options.area
 	}
  	return query
@@ -58,8 +58,11 @@ routes.statistics = {
 	//used for percentages
     var publicLoos = yield Loo.count(queryMaker({"properties.access":"public"},standardOptions)).exec() //done
     var babyChange = yield Loo.count(queryMaker({"properties.babyChange":"true"},standardOptions)).exec() //done
+    var babyChangeUnknown = yield Loo.count(queryMaker({"properties.babyChange":"Not Known"},standardOptions)).exec() //done
     var activeLoos = yield Loo.count(queryMaker({'properties.active': 'true'},standardOptions)).exec() 
     var accessibleLoos = yield Loo.count(queryMaker({'$or':[{'properties.accessibleType': 'unisex'},{'properties.accessibleType':'male and female'}]},standardOptions)).exec() 
+    var accessibleLoosUnknown = yield Loo.count(queryMaker({'$or':[{'properties.accessibleType': null},{'properties.accessibleType':''}]},standardOptions)).exec() 
+
 
 
 	//standard 
@@ -94,10 +97,10 @@ routes.statistics = {
 				'Removal Reports Submitted': removals,
 				'Loos with Multiple Reports': multi_report_loos			},
 				'percentages':{
-					"Active Loos": percentify(activeLoos,loosCount),
-					"Public Loos": percentify(publicLoos,loosCount),
-					"Baby Changing": percentify(babyChange,loosCount),
-					"Accessible To All": percentify(accessibleLoos,loosCount)
+					"Active Loos": [percentify(activeLoos,loosCount),0],
+					"Public Loos": [percentify(publicLoos,loosCount),0],
+					"Baby Changing": [percentify(babyChange,loosCount),percentify(babyChangeUnknown,loosCount)],
+					"Accessible To All": [percentify(accessibleLoos,loosCount),percentify(accessibleLoosUnknown,loosCount)]
 
 
 				},
@@ -117,32 +120,40 @@ routes.statistics = {
 				'Removal Reports Submitted': removals
 				},
 				'percentages':{
-					"Active Loos": percentify(activeLoos,loosCount),
-					"Public Loos": percentify(publicLoos,loosCount)
+					"Active Loos": [percentify(activeLoos,loosCount),0],
+					"Public Loos": [percentify(publicLoos,loosCount),0]
 				}
 		}
 	 }
 
 	else if (this.query.areaList === 'true'){
+		
+		//gets list of area lists
 		var test  = Loo.schema.eachPath(function(path){return path});
 		var areaTypes = Object.keys(test.tree.properties.area)
-		areaTypes.unshift('Any')
+		areaTypes.unshift('All')
 		var temp_body = {'areaTypes':areaTypes,data:{}}
 
+
+		var allList = []
 		for(var i =0;i<areaTypes.length;i++){
 			var query = 'properties.area.' + areaTypes[i]			
 			var areaList = yield Loo.distinct(query)
 			if (areaList.length > 0){
 				areaList = areaList.sort()
-				areaList.unshift("Any")
+				console.log(areaTypes[i])
+				areaList.unshift("All")
 				temp_body.data[areaTypes[i]] = areaList
+				allList = allList.concat(areaList)
 
+			}else{
+				temp_body.data[areaTypes[i]] = ['All']
 			}
 
 		}
-		//
-		temp_body.data['Any'] = ['Any']
-		console.log(temp_body)
+
+		temp_body.data['All'] = allList.sort()
+
 		this.body = yield temp_body
 	}
 	

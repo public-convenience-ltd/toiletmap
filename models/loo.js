@@ -92,7 +92,6 @@ function calculate_credibility (reports) {
 
 looSchema.methods.updateArea = function * (){
 	var domain ='http://mapit.mysociety.org/point/4326/'+this.geometry.coordinates[0]+','+ this.geometry.coordinates[1]+'?api_key='+config.mapit.apiKey
-	console.log(domain)
 
 	var area = {}
 
@@ -105,12 +104,22 @@ looSchema.methods.updateArea = function * (){
 	
 	//not sure why im getting a string back...need to investigate	
 	var mapitJSON = JSON.parse(mapit)
-	
+
+	var acceptableValues = ['District council','Unitary Authority','Metropolitan district','London borough']
+	console.log(mapitJSON)
+
 	for (var property in mapitJSON) {
-		area[mapitJSON[property]['type_name']] = mapitJSON[property]['name']
+		//console.log(mapitJSON[property]['type_name'])
+		//console.log(mapitJSON[property]['name'])
+
+		if (acceptableValues.indexOf(mapitJSON[property]['type_name']) >= 0) {
+			area[mapitJSON[property]['type_name']] = mapitJSON[property]['name']
+		}
 	}
+	console.log(area)
 	this.properties.area = area
 	yield this.save()
+	
 			
 
 	
