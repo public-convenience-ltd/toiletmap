@@ -167,7 +167,6 @@ routes.statistics = {
 
 		}
 		allList = allList.sort()
-		console.log(allList)
 		allList.unshift("All")
 		temp_body.data['All'] = allList
 		
