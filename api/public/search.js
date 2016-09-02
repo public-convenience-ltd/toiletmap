@@ -8,16 +8,36 @@ var routes = {}
 routes.nearby_loos = {
     handler: function * () {
 		var loos = []
+		var property_blacklist = ['area'];
 		if (this.query.searchTerm){
     		loos = yield Loo.find({"properties.name" : new RegExp('.*'+this.query.searchTerm+'.*', "i")}).exec()
-		}else if (this.query.area){
-			loos = yield Loo.find(
-			{"$or":[
-				{'properties.area.District council':this.query.area},
-				{'properties.area.Unitary Authority':this.query.area},
-				{'properties.area.Metropolitan district':this.query.area},
-				{'properties.area.London borough':this.query.area}
-			]})
+		}else{
+			if(Object.keys(this.query).length !== 0){
+				var query = {}
+
+				if(this.query.area){
+					if (this.query.area !=='All'){
+						query["$or"] = [
+							{'properties.area.District council':this.query.area},
+							{'properties.area.Unitary Authority':this.query.area},
+							{'properties.area.Metropolitan district':this.query.area},
+							{'properties.area.London borough':this.query.area}
+						]
+					}
+
+				}
+				
+    			for (var property in this.query) {
+					if (property_blacklist.indexOf(property) < 0){
+						if(this.query['property'] !== 'All'){
+							query['properties.'+property] = this.query[property]
+						}
+					}
+				}
+				
+				console.log(query)
+				loos = yield Loo.find(query).exec()
+			}
 		}
 
     	this.status = 200
