@@ -8,7 +8,8 @@ var routes = {}
 routes.nearby_loos = {
     handler: function * () {
 		var loos = []
-		var property_blacklist = ['area'];
+		var anySynonyms = ["Any","either","All"]
+		var property_blacklist = ['area','notes'];
 		if (this.query.searchTerm){
     		loos = yield Loo.find({"properties.name" : new RegExp('.*'+this.query.searchTerm+'.*', "i")}).exec()
 		}else{
@@ -26,16 +27,31 @@ routes.nearby_loos = {
 					}
 
 				}
-				
+
+				if(this.query.notes){
+					if (this.query.notes !=='either'){
+						if(this.query.notes ==='true'){
+							query['properties.notes'] = {'$exists':true}
+						}else if (this.query.notes ==='false'){
+							query['properties.notes'] = {'$exists':false}
+						}
+					}
+
+				}
+
+
+
+
+
+						
     			for (var property in this.query) {
 					if (property_blacklist.indexOf(property) < 0){
-						if(this.query['property'] !== 'All'){
+						if(anySynonyms.indexOf(this.query[property]) < 0){
 							query['properties.'+property] = this.query[property]
 						}
 					}
 				}
 				
-				console.log(query)
 				loos = yield Loo.find(query).exec()
 			}
 		}

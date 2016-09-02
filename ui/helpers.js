@@ -4,7 +4,7 @@ var Oh = require('opening_hours')
 module.exports = function (hbs) {
   var config = {
     loo_properties: {
-      blacklist: ['orig', 'active', 'name', 'geocoded', 'geocoding_method', 'toObject'],
+      blacklist: ['orig', 'active', 'name', 'geocoded', 'geocoding_method', 'toObject','area'],
       ordering: ['access', 'type', 'accessibleType', 'opening', 'attended', 'babyChange', 'automatic', 'radar', 'fee', 'notes'],
       humanize_properties: {
         type: 'Facilities',

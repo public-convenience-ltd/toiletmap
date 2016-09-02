@@ -3,7 +3,6 @@
 var path = require('path')
 var _ = require('lodash')
 var version = require('../package.json').version
-console.log(process.env.PORT)
 
 
 var base = {
@@ -11,7 +10,7 @@ var base = {
     root: path.normalize(__dirname + '/..'),
     port: process.env.PORT || 3000,
     env: process.env.NODE_ENV || 'development',
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000',
+    baseUrl: process.env.BASE_URL || 'http://localhost:'+ process.env.PORT || 3000,
     readonly: process.env.READONLY || false,
     enableHttps: false
   },
@@ -61,7 +60,7 @@ var base = {
   },
   ui: {
     api: {
-      root: process.env.GBPTM_API_ROOT || 'http://localhost:3000'
+      root: process.env.GBPTM_API_ROOT ||'http://localhost:'+ process.env.PORT || 3000, 
     },
     map: {
       center: [51.50109067037534, -0.17943490587640554],
@@ -69,7 +68,7 @@ var base = {
     },
     app: {
       readonly: process.env.READONLY || false,
-      baseURL: process.env.BASE_URL || 'http://localhost:3000',
+      baseURL: process.env.BASE_URL ||'http://localhost:'+ process.env.PORT || 3000, 
       version: version,
       cache: {
         maxage: 365 * 24 * 60 * 1000
