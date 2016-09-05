@@ -42,12 +42,12 @@ specs.looCore = {
     geocoding_method: {type: String},
     orig: {type: Object},
     removal_reason: {type: String},
-	area:{
-		'Unitary Authority': {type:String},
-		'District council': {type:String},
-		'Metropolitan district': {type:String},
-		'London borough': {type:String}
-	}
+    area: {
+      'Unitary Authority': {type: String},
+      'District council': {type: String},
+      'Metropolitan district': {type: String},
+      'London borough': {type: String}
+    }
   },
   geohash: String
 }

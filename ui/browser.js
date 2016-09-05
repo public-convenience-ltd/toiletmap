@@ -156,8 +156,8 @@ gbptm.multi_loo_map = function (el, opts) {
           icon = new L.LooIcon()
         }
         return new L.Marker(latlng, {
-            icon: icon
-          })
+          icon: icon
+        })
       },
       onEachFeature: function (feature, layer) {
         layer.on('click', function (evt) {

@@ -27,8 +27,6 @@ function * storeRedirect (next) {
   yield next
 }
 
-
-
 function * doRedirect (next) {
   var redir = this.session.redirect
   if (redir) {
@@ -42,8 +40,6 @@ function * doRedirect (next) {
     this.redirect('/')
   }
 }
-
-
 
 // Admin auth if local user and pass were provided
 if (config.auth.local.username && config.auth.local.password) {
@@ -74,20 +70,15 @@ if (config.auth.local.username && config.auth.local.password) {
     path: '/admin',
     method: 'get'
   }
-
 }
-
-
-
-
 
 // GitHub Auth if id and secret were provided
 if (config.auth.github.client_id && config.auth.github.client_secret) {
   passport.use(new GitHubStrategy({
-      clientID: config.auth.github.client_id,
-      clientSecret: config.auth.github.client_secret,
-      callbackURL: config.app.baseUrl + config.auth.mount + '/github/callback'
-    },
+    clientID: config.auth.github.client_id,
+    clientSecret: config.auth.github.client_secret,
+    callbackURL: config.app.baseUrl + config.auth.mount + '/github/callback'
+  },
     function (accessToken, refreshToken, profile, done) {
       return done(null, {name: profile.displayName, userId: profile.provider + '_' + profile.id})
     }
@@ -116,10 +107,10 @@ if (config.auth.github.client_id && config.auth.github.client_secret) {
 
 if (config.auth.twitter.consumerKey && config.auth.twitter.consumerSecret) {
   passport.use(new TwitterStrategy({
-      consumerKey: config.auth.twitter.consumerKey,
-      consumerSecret: config.auth.twitter.consumerSecret,
-      callbackURL: config.app.baseUrl + config.auth.mount + '/twitter/callback'
-    },
+    consumerKey: config.auth.twitter.consumerKey,
+    consumerSecret: config.auth.twitter.consumerSecret,
+    callbackURL: config.app.baseUrl + config.auth.mount + '/twitter/callback'
+  },
     function (token, tokenSecret, profile, done) {
       return done(null, {name: profile.displayName, userId: profile.provider + '_' + profile.id})
     }
@@ -148,10 +139,10 @@ if (config.auth.twitter.consumerKey && config.auth.twitter.consumerSecret) {
 
 if (config.auth.osm.consumerKey && config.auth.osm.consumerSecret) {
   passport.use(new OpenStreetMapStrategy({
-      consumerKey: config.auth.osm.consumerKey,
-      consumerSecret: config.auth.osm.consumerSecret,
-      callbackURL: config.app.baseUrl + config.auth.mount + '/openstreetmap/callback'
-    },
+    consumerKey: config.auth.osm.consumerKey,
+    consumerSecret: config.auth.osm.consumerSecret,
+    callbackURL: config.app.baseUrl + config.auth.mount + '/openstreetmap/callback'
+  },
     function (token, tokenSecret, profile, done) {
       return done(null, {name: profile.displayName, userId: profile.provider + '_' + profile.id})
     }
@@ -181,10 +172,10 @@ if (config.auth.osm.consumerKey && config.auth.osm.consumerSecret) {
 // Facebook Auth if id and secret were provided
 if (config.auth.facebook.client_id && config.auth.facebook.client_secret) {
   passport.use(new FacebookStrategy({
-      clientID: config.auth.facebook.client_id,
-      clientSecret: config.auth.facebook.client_secret,
-      callbackURL: config.app.baseUrl + config.auth.mount + '/facebook/callback'
-    },
+    clientID: config.auth.facebook.client_id,
+    clientSecret: config.auth.facebook.client_secret,
+    callbackURL: config.app.baseUrl + config.auth.mount + '/facebook/callback'
+  },
     function (accessToken, refreshToken, profile, done) {
       return done(null, {name: profile.displayName, userId: profile.provider + '_' + profile.id})
     }
@@ -214,10 +205,10 @@ if (config.auth.facebook.client_id && config.auth.facebook.client_secret) {
 // Google Auth if enabled
 if (config.auth.google.consumerKey && config.auth.google.consumerSecret) {
   passport.use(new GoogleStrategy({
-      clientID: config.auth.google.consumerKey,
-      clientSecret: config.auth.google.consumerSecret,
-      callbackURL: config.app.baseUrl + config.auth.mount + '/google/callback'
-    },
+    clientID: config.auth.google.consumerKey,
+    clientSecret: config.auth.google.consumerSecret,
+    callbackURL: config.app.baseUrl + config.auth.mount + '/google/callback'
+  },
     function (accessToken, refreshToken, profile, done) {
       return done(null, {name: profile.displayName, userId: profile.provider + '_' + profile.id})
     }
