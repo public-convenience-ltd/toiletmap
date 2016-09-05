@@ -8,7 +8,7 @@ var routes = {}
 
 var queryMaker = function(query,options){
 	var beginDate = new Date();
-	
+
 
 	if (!(options.timescale === 'Overall' || options.timescale===undefined)){
 		beginDate = new Date(options.start);
@@ -42,14 +42,14 @@ var queryMaker = function(query,options){
 
 var percentify = function(stat,outOf){
 
-	var result = (stat/outOf * 100).toFixed(2) 
+	var result = (stat/outOf * 100).toFixed(2)
 	if (isNaN(result)){
 		result = 0;
 	}
 	if (!isFinite(result)){
 		result = 100;
 	}
-	
+
 	return parseFloat(result).toFixed(2);
 
 }
@@ -58,7 +58,7 @@ var percentify = function(stat,outOf){
 
 
 routes.statistics = {
-	  
+
 
   handler: function * () {
 	var standardOptions = {
@@ -74,13 +74,13 @@ routes.statistics = {
     var publicLoos = yield Loo.count(queryMaker({"properties.access":"public"},standardOptions)).exec() //done
     var babyChange = yield Loo.count(queryMaker({"properties.babyChange":"true"},standardOptions)).exec() //done
     var babyChangeUnknown = yield Loo.count(queryMaker({"properties.babyChange":"Not Known"},standardOptions)).exec() //done
-    var activeLoos = yield Loo.count(queryMaker({'properties.active': 'true'},standardOptions)).exec() 
-    var accessibleLoos = yield Loo.count(queryMaker({'$or':[{'properties.accessibleType': 'unisex'},{'properties.accessibleType':'male and female'}]},standardOptions)).exec() 
-    var accessibleLoosUnknown = yield Loo.count(queryMaker({'$or':[{'properties.accessibleType': null},{'properties.accessibleType':''}]},standardOptions)).exec() 
+    var activeLoos = yield Loo.count(queryMaker({'properties.active': 'true'},standardOptions)).exec()
+    var accessibleLoos = yield Loo.count(queryMaker({'$or':[{'properties.accessibleType': 'unisex'},{'properties.accessibleType':'male and female'}]},standardOptions)).exec()
+    var accessibleLoosUnknown = yield Loo.count(queryMaker({'$or':[{'properties.accessibleType': null},{'properties.accessibleType':''}]},standardOptions)).exec()
 
 
 
-	//standard 
+	//standard
     var loosCount = yield Loo.count(queryMaker({},standardOptions)).exec() //done
     var looReports = yield LooReport.count(queryMaker({},standardOptions)).exec() //done
     var uiReports = yield LooReport.count(queryMaker({'collectionMethod': 'api'},standardOptions)).exec() //done
@@ -97,9 +97,9 @@ routes.statistics = {
         }
       ]).exec()
 
-	
+
     this.status = 200
-	
+
 	if (this.query.timescale === "Overall"){
 		this.body = yield {
 			'numbers':{
@@ -116,8 +116,6 @@ routes.statistics = {
 					"Public Loos": [percentify(publicLoos,loosCount),0],
 					"Baby Changing": [percentify(babyChange,loosCount),percentify(babyChangeUnknown,loosCount)],
 					"Accessible To All": [percentify(accessibleLoos,loosCount),percentify(accessibleLoosUnknown,loosCount)]
-
-
 				},
 			'Count reports by Attribution': _.transform(contributors, function (acc, val) {
 			  acc[val._id] = val.reports
@@ -142,7 +140,7 @@ routes.statistics = {
 	 }
 
 	else if (this.query.areaList === 'true'){
-		
+
 		//gets list of area lists
 		var test  = Loo.schema.eachPath(function(path){return path});
 		var areaTypes = Object.keys(test.tree.properties.area)
@@ -152,7 +150,7 @@ routes.statistics = {
 
 		var allList = []
 		for(var i =0;i<areaTypes.length;i++){
-			var query = 'properties.area.' + areaTypes[i]			
+			var query = 'properties.area.' + areaTypes[i]
 			var areaList = yield Loo.distinct(query)
 			if (areaList.length > 0){
 				areaList = areaList.sort()
@@ -169,11 +167,11 @@ routes.statistics = {
 		allList = allList.sort()
 		allList.unshift("All")
 		temp_body.data['All'] = allList
-		
+
 
 		this.body = yield temp_body
 	}
-	
+
 	else{
 		this.body = yield {
 							"title": "Welcome to the Documentation for the GBPTM statistics page",
@@ -182,21 +180,21 @@ routes.statistics = {
 									'Input Name':'timescale',
 									"values": "Appropriate values are: Overall, Year, Month, Week, Custom",
 									"use":"Indicates what to set the timescale being searched over is, Overall ignores 'beginDate' and 'endDate' and just returns all results",
-									
+
 								},
 								{
 									'Input Name':"beginDate",
 									'values':"Date in the form yyyy/mm/dd",
 									'use':'signals the earliest date to search the db from in time based queries',
 									'notes':'must be used in conjunction with a "timescale" and an "endDate"'
-								
+
 								},
 								{
 									'Input Name':"endDate",
 									'values':"Date in the form yyyy/mm/dd",
 									'use':'signals the latest date to search the db from in time based queries',
 									'notes':'must be used in conjunction with a "timescale" and an "beginDate"'
-								
+
 								},
 								{
 									'Input Name':'areaType',
@@ -219,7 +217,7 @@ routes.statistics = {
 								}
 
 							]
-							
+
 				}
 				}
   }
@@ -229,20 +227,3 @@ routes.statistics = {
 }
 
 module.exports = routes
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

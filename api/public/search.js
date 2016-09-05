@@ -5,7 +5,7 @@ var LooList = require('../../models/loo_list')
 var config = require('../../config/config')
 var routes = {}
 
-routes.nearby_loos = {
+routes.search = {
     handler: function * () {
 		var loos = []
 		var anySynonyms = ["Any","either","All"]
@@ -39,11 +39,6 @@ routes.nearby_loos = {
 
 				}
 
-
-
-
-
-						
     			for (var property in this.query) {
 					if (property_blacklist.indexOf(property) < 0){
 						if(anySynonyms.indexOf(this.query[property]) < 0){
@@ -51,7 +46,7 @@ routes.nearby_loos = {
 						}
 					}
 				}
-				
+
 				loos = yield Loo.find(query).exec()
 			}
 		}
