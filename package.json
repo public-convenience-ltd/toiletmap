@@ -78,8 +78,8 @@
     "watchify": "^0.10.2"
   },
   "engines": {
-    "node": ">=6.2.1",
-    "npm": ">=3.9.3"
+    "node": ">=6.5.0",
+    "npm": ">=3.10.3"
   },
   "homepage": "https://github.com/neontribe/gbptm",
   "keywords": [
