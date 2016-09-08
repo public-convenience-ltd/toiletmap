@@ -111,7 +111,7 @@ module.exports = function (hbs) {
       return (loo.properties.accessibleType !== 'none') ? true : false
     },
     open: function (loo) {
-      if (_.isUndefined(loo.properties.opening) || _.isNull(loo.properties.opening)) { return null }
+      if (_.isUndefined(loo.properties.opening) || _.isNull(loo.properties.opening) || !loo.properties.opening) { return null }
       return new Oh(loo.properties.opening).getState()
     },
     male: function (loo) {
