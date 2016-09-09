@@ -2,35 +2,35 @@
 
 var mongoose = require('mongoose')
 var looSchema = require('./loo_schema').looSchema
-var request = require('request')
 var config = require('../config/config')
-var rp = require('request-promise');
+var rp = require('request-promise')
 var _ = require('lodash')
 var earth = 6731000
 var Loo
 
 looSchema.statics.findNear = function (lon, lat, maxDistance, limit) {
-  
   return this.aggregate([
     {
       $geoNear: {
         near: [parseFloat(lon), parseFloat(lat)],
         distanceField: 'distance',
-	maxDistance: (parseFloat(maxDistance) / earth),
+        maxDistance: (parseFloat(maxDistance) / earth),
         limit: limit,
         distanceMultiplier: earth,
         spherical: true
       }
     },
-    { $match: {'properties.active': true } }
+    {
+      $match: {
+        'properties.active': true
+      }
+    }
   ])
 }
 
 looSchema.statics.findAllIds = function () {
   return this.find({}).select('id')
 }
-
-
 
 looSchema.statics.findIn = function (sw, ne, nw, se) {
   return this.find({
@@ -56,7 +56,7 @@ looSchema.methods.toGeoJSON = function (app) {
   return this.toJSON()
 }
 
-function calculate_credibility (reports) {
+function calculateCredibility (reports) {
   // score each report out of 20, 10 for trust 10 for completeness
   return _.reduce(reports, function (sum, rep) {
     var completeness = 0
@@ -89,33 +89,36 @@ function calculate_credibility (reports) {
   }, 0) / reports.length
 }
 
+looSchema.methods.updateArea = function * () {
+  var domain = 'http://mapit.mysociety.org/point/4326/' + this.geometry.coordinates[0] + ',' + this.geometry.coordinates[1] + '?api_key=' + config.mapit.apiKey
 
-looSchema.methods.updateArea = function * (){
-	var domain ='http://mapit.mysociety.org/point/4326/'+this.geometry.coordinates[0]+','+ this.geometry.coordinates[1]+'?api_key='+config.mapit.apiKey
-	console.log(domain)
+  var area = {}
 
-	var area = {}
+  var options = {
+    url: domain
+  }
 
-		
-	var options = {
-		url: domain
-	};	
+  var mapit = yield rp(options)
 
-	var mapit = yield rp(options)
-	
-	//not sure why im getting a string back...need to investigate	
-	var mapitJSON = JSON.parse(mapit)
-	
-	for (var property in mapitJSON) {
-		area[mapitJSON[property]['type_name']] = mapitJSON[property]['name']
-	}
-	this.properties.area = area
-	yield this.save()
-			
+    // not sure why im getting a string back...need to investigate
+  var mapitJSON = JSON.parse(mapit)
 
-	
+  var acceptableValues = ['District council', 'Unitary Authority', 'Metropolitan district', 'London borough']
+
+  for (var property in mapitJSON) {
+        // console.log(mapitJSON[property]['type_name'])
+        // console.log(mapitJSON[property]['name'])
+    if (acceptableValues.indexOf(mapitJSON[property]['type_name']) >= 0) {
+      console.log(mapitJSON[property]['type_name'])
+      area[mapitJSON[property]['type_name']] = mapitJSON[property]['name']
+    }
+  }
+  if (area === {}) {
+    console.log(mapitJSON)
+  }
+  this.properties.area = area
+  yield this.save()
 }
-
 
 /**
  * Rebuild a loo's data by recompiling it from all the reports that have been attatched
@@ -132,36 +135,33 @@ looSchema.methods.regenerate = function * () {
   loo.sources = _.map(loo.reports, 'origin')
   loo.attributions = _.map(loo.reports, 'attribution')
 
-  //Potential coordinate solutions.
-  var recentLooReports = _.remove(_.sortBy(loo.reports, ['updatedAt']),function(report){
-  	if(report.updatedAt != undefined){
-		return report
-	}
-
+  // Potential coordinate solutions.
+  var recentLooReports = _.remove(_.sortBy(loo.reports, ['updatedAt']), function (report) {
+    if (report.updatedAt !== undefined) {
+      return report
+    }
   })
-  var geometry = {type:'Point',coordinates:[]}
-
+  var geometry = {type: 'Point', coordinates: []}
 
 /*
-  //Averages ALL reports	
+  //Averages ALL reports
   geometry.coordinates[0] = _.meanBy(loo.reports, function(report) { return report.geometry.coordinates[0]; });
   geometry.coordinates[1] = _.meanBy(loo.reports, function(report) { return report.geometry.coordinates[1]; });
 */
 
-  //The most recent user can just change the co-ordinates.  
-  geometry.coordinates[0] =  recentLooReports[recentLooReports.length-1].geometry.coordinates[0];
-  geometry.coordinates[1] =  recentLooReports[recentLooReports.length-1].geometry.coordinates[1];
+  // The most recent user can just change the co-ordinates.
+  geometry.coordinates[0] = recentLooReports[recentLooReports.length - 1].geometry.coordinates[0]
+  geometry.coordinates[1] = recentLooReports[recentLooReports.length - 1].geometry.coordinates[1]
 
 /*
-  //Skewed average based on trust	
+  //Skewed average based on trust
   geometry.coordinates[0] = _.meanBy(loo.reports, function(report) { return report.geometry.coordinates[0]*report.trust;})/_.sumBy(trustedLooReports,'trust');
   geometry.coordinates[1] = _.meanBy(loo.reports, function(report) { return report.geometry.coordinates[1]*report.trust;})/_.sumBy(trustedLooReports,'trust');
 */
 
-
-  this.geometry = geometry;
+  this.geometry = geometry
   // Calculate credibility
-  loo.credibility = calculate_credibility(loo.reports)
+  loo.credibility = calculateCredibility(loo.reports)
   return this
 }
 

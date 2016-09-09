@@ -1,6 +1,6 @@
 'use strict'
 if (process.env.NODE_ENV === 'production') {
-    require('newrelic')
+  require('newrelic')
 }
 var config = require('./config/config')
 var koaConfig = require('./config/koa')
@@ -11,7 +11,7 @@ var app = koa()
 require('./config/mongo') // don't much like this bare require
 
 app.init = co.wrap(function * (config) {
-  koaConfig(app,config)
+  koaConfig(app, config)
   app.server = app.listen(config.app.port)
 
   if (config.app.env !== 'test') {

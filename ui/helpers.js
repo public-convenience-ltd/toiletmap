@@ -4,7 +4,7 @@ var Oh = require('opening_hours')
 module.exports = function (hbs) {
   var config = {
     loo_properties: {
-      blacklist: ['orig', 'active', 'name', 'geocoded', 'geocoding_method', 'toObject'],
+      blacklist: ['orig', 'active', 'name', 'geocoded', 'geocoding_method', 'toObject', 'area'],
       ordering: ['access', 'type', 'accessibleType', 'opening', 'attended', 'babyChange', 'automatic', 'radar', 'fee', 'notes'],
       humanize_properties: {
         type: 'Facilities',
@@ -104,11 +104,11 @@ module.exports = function (hbs) {
   var checkers = {
     cost: function (loo) {
       if (_.isUndefined(loo.properties.fee) || _.isNull(loo.properties.fee)) { return null }
-      return loo.properties.fee ? false : true
+      return loo.properties.fee
     },
     accessible: function (loo) {
       if (_.isUndefined(loo.properties.accessibleType) || _.isNull(loo.properties.accessibleType)) { return null }
-      return (loo.properties.accessibleType !== 'none') ? true : false
+      return (loo.properties.accessibleType !== 'none')
     },
     open: function (loo) {
       if (_.isUndefined(loo.properties.opening) || _.isNull(loo.properties.opening) || !loo.properties.opening) { return null }
@@ -144,7 +144,7 @@ module.exports = function (hbs) {
     if (_.isBoolean(val)) {
       return val ? trueOutput : falseOutput
     } else {
-      return val ? val : 'Not known'
+      return val || 'Not known'
     }
   }
 
@@ -225,17 +225,17 @@ module.exports = function (hbs) {
       var value = booleanize(val)
       return config.loo_properties.humanize_values[value] || value
     },
-    preferred: function (loo, loo_preferences) {
+    preferred: function (loo, looPreferences) {
       var status = 'a toilet'
       var details
 
-      if (loo_preferences) {
-        details = _.map(loo_preferences, function (val, key) {
+      if (looPreferences) {
+        details = _.map(looPreferences, function (val, key) {
           return checkpref(loo, key, val)
         })
         if (_.every(details, Boolean)) {
           status = 'a preferred toilet'
-      } else if (_.includes(details, false)) {
+        } else if (_.includes(details, false)) {
           status = 'not a preferred toilet'
         }
       }

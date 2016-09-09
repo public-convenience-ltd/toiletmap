@@ -31,25 +31,22 @@ routes.report_form = {
     var loo
     var macromap
 
- 
-
     if (this.request.query.base) {
       loo = yield Loo.findById(this.request.query.base).exec()
     }
 
     macromap = {
       zoom: 18,
-      locate: loo ? false : true
+      locate: !!loo
     }
 
     if (loo) {
       macromap.center = loo.geometry.coordinates.slice().reverse()
     }
 
-	
     yield this.renderDefaults('edit', {
       loo: loo,
-      edit:"edit",
+      edit: 'edit',
       macromap: macromap
     })
   },

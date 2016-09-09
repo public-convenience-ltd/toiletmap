@@ -42,13 +42,12 @@ specs.looCore = {
     geocoding_method: {type: String},
     orig: {type: Object},
     removal_reason: {type: String},
-	area:{
-		'Unitary Authority': {type:String},
-		'Unitary Authority ward (UTW)': {type:String},
-		'European region': {type:String},
-		'Civil parish/community': {type:String},
-		'UK Parliament constituency': {type:String}
-	}
+    area: {
+      'Unitary Authority': {type: String},
+      'District council': {type: String},
+      'Metropolitan district': {type: String},
+      'London borough': {type: String}
+    }
   },
   geohash: String
 }
