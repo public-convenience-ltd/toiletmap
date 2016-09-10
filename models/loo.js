@@ -109,13 +109,10 @@ looSchema.methods.updateArea = function * () {
         // console.log(mapitJSON[property]['type_name'])
         // console.log(mapitJSON[property]['name'])
     if (acceptableValues.indexOf(mapitJSON[property]['type_name']) >= 0) {
-      console.log(mapitJSON[property]['type_name'])
       area[mapitJSON[property]['type_name']] = mapitJSON[property]['name']
     }
   }
-  if (area === {}) {
-    console.log(mapitJSON)
-  }
+
   this.properties.area = area
   // yield this.save()
   return this
