@@ -15,7 +15,8 @@ ui/public/gbptm.css
 # Heroku-derived config
 .env
 # Data Dumps
-data
+/data
 
 #istanbul
 coverage/
+.coverage.sh

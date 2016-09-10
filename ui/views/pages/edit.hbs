@@ -1,15 +1,32 @@
-{{#contentFor 'bodyclass'}}toilet {{#unless loo}}report-toilet{{/unless}}{{/contentFor}}
+<!DOCTYPE html>
+
+{{#contentFor 'bodyclass'}}toilet
+
+
+{{#if loo}}
+{{#if edit}}
+	report-toilet
+{{/if}}
+{{else}}
+	report-toilet
+{{/if}}
+
+
+
+
+{{/contentFor}}
 <h2 {{#if loo}}data-map_ident="{{loo._id}}:1"{{/if}}>
     {{#if loo}}Edit This Toilet{{/if}}
     {{#unless loo}}Add A Toilet{{/unless}}
 </h2>
 
-{{#unless loo}}
 <div class="map positioning mini"
     data-init="gbptm-positioning_map"
-    data-config_zoom="18"></div>
+    {{#each macromap}}
+        data-config_{{@key}}="{{json this}}"
+    {{/each}}
+    ></div>
 <p class="tip"><strong>Tip:</strong> Align the crosshair with where you believe the toilet to be.</p>
-{{/unless}}
 
 {{#contentFor 'title'}}| Contribute{{/contentFor}}
 {{#unless prefs.nohelp.edit_intro}}
@@ -20,6 +37,9 @@
 </div>
 {{/unless}}
 <form method="post" action="{{ config.app.baseURL }}/reports">
+    {{#if loo}}
+        <input type="hidden" name="derivedFrom" value="{{loo._id}}" />
+    {{/if}}
     <input type="hidden" name="geometry.type" value="Point" />
     <label for="properties.name">Toilet name</label>
     <input id="properties.name" type="text" name="properties.name" value="{{loo.properties.name}}" />
@@ -62,52 +82,52 @@
             <legend class="visually-hidden">Attended?</legend>
             <span aria-hidden="true">Attended?</span>
             <span class="checkbox-cell">
-                <input type="radio" value="true" {{checked true loo.properties.attended}} name="properties.attended" aria-labelledby="yes" />
+                <input type="radio" value="true" {{checked "true" loo.properties.attended}} name="properties.attended" aria-labelledby="yes" />
             </span>
             <span class="checkbox-cell">
-                <input type="radio" value="false" {{checked false loo.properties.attended}} name="properties.attended" aria-labelledby="no" />
+                <input type="radio" value="false" {{checked "false" loo.properties.attended}} name="properties.attended" aria-labelledby="no" />
             </span>
             <span class="checkbox-cell">
-                <input type="radio" value="" {{checked undefined loo.properties.attended}} name="properties.attended" aria-labelledby="unknown" />
+                <input type="radio" value="Not Known" {{checked "Not Known" loo.properties.attended}} name="properties.attended" aria-labelledby="unknown" />
             </span>
         </fieldset>
         <fieldset class="row">
             <legend class="visually-hidden">Baby Changing?</legend>
             <span aria-hidden="true">Baby Changing?</span>
             <span class="checkbox-cell">
-                <input type="radio" value="true" {{checked true loo.properties.babyChange}} name="properties.babyChange" aria-labelledby="yes" />
+                <input type="radio" value="true" {{checked "true" loo.properties.babyChange}} name="properties.babyChange" aria-labelledby="yes" />
             </span>
             <span class="checkbox-cell">
-                <input type="radio" value="false" {{checked false loo.properties.babyChange}} name="properties.babyChange" aria-labelledby="no" />
+                <input type="radio" value="false" {{checked "false" loo.properties.babyChange}} name="properties.babyChange" aria-labelledby="no" />
             </span>
             <span class="checkbox-cell">
-                <input type="radio" value="" {{checked undefined loo.properties.babyChange}} name="properties.babyChange" aria-labelledby="unknown" />
+                <input type="radio" value="Not Known" {{checked "Not Known" loo.properties.babyChange}} name="properties.babyChange" aria-labelledby="unknown" />
             </span>
         </fieldset>
         <fieldset class="row">
             <legend class="visually-hidden">Automatic?</legend>
             <span aria-hidden="true">Automatic?</span>
             <span class="checkbox-cell">
-                <input type="radio" value="true" {{checked true loo.properties.automatic}} name="properties.automatic" aria-labelledby="yes" />
+                <input type="radio" value="true" {{checked "true" loo.properties.automatic}} name="properties.automatic" aria-labelledby="yes" />
             </span>
             <span class="checkbox-cell">
-                <input type="radio" value="false" {{checked false loo.properties.automatic}} name="properties.automatic" aria-labelledby="no" />
+                <input type="radio" value="false" {{checked "false" loo.properties.automatic}} name="properties.automatic" aria-labelledby="no" />
             </span>
             <span class="checkbox-cell">
-                <input type="radio" value="" {{checked undefined loo.properties.automatic}} name="properties.automatic" aria-labelledby="unknown" />
+                <input type="radio" value="Not Known" {{checked "Not Known" loo.properties.automatic}} name="properties.automatic" aria-labelledby="unknown" />
             </span>
         </fieldset>
         <fieldset class="row">
             <legend class="visually-hidden">Radar Key?</legend>
             <span aria-hidden="true">Radar Key?</span>
             <span class="checkbox-cell">
-                <input type="radio" value="true" {{checked true loo.properties.radar}} name="properties.radar" aria-labelledby="yes" />
+                <input type="radio" value="true" {{checked "true" loo.properties.radar}} name="properties.radar" aria-labelledby="yes" />
             </span>
             <span class="checkbox-cell">
-                <input type="radio" value="false" {{checked false loo.properties.radar}} name="properties.radar" aria-labelledby="no" />
+                <input type="radio" value="false" {{checked "false" loo.properties.radar}} name="properties.radar" aria-labelledby="no" />
             </span>
             <span class="checkbox-cell">
-                <input type="radio" value="" {{checked undefined loo.properties.radar}} name="properties.radar" aria-labelledby="unknown" />
+                <input type="radio" value="Not Known" {{checked "Not Known" loo.properties.radar}} name="properties.radar" aria-labelledby="unknown" />
             </span>
         </fieldset>
     </div>

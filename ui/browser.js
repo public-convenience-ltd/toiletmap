@@ -156,8 +156,8 @@ gbptm.multi_loo_map = function (el, opts) {
           icon = new L.LooIcon()
         }
         return new L.Marker(latlng, {
-            icon: icon
-          })
+          icon: icon
+        })
       },
       onEachFeature: function (feature, layer) {
         layer.on('click', function (evt) {
@@ -259,8 +259,10 @@ gbptm.positioning_map = function (el, opts) {
     onLocationError: $.noop,
     onLocationOutsideMapBounds: $.noop
   }).addTo(map)
-  map.on('dragstart', locateControl.stopFollowing)
-  locateControl.start()
+  if (opts.locate) {
+    map.on('dragstart', locateControl.stopFollowing)
+    locateControl.start()
+  }
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map)
   gbptm.micromap = map
   return map

@@ -15,7 +15,8 @@ routes.reports = {
 
 routes.report = {
   handler: function * () {
-    var report = yield LooReport.findById(this.params.id).exec()
+    var id = this.params.id.replace('.json', '')
+    var report = yield LooReport.findById(id).exec()
     if (!report) {
       this.throw(404)
     }
@@ -37,7 +38,7 @@ routes.report_form = {
 
     macromap = {
       zoom: 18,
-      locate: loo ? false : true
+      locate: !loo
     }
 
     if (loo) {
@@ -46,6 +47,7 @@ routes.report_form = {
 
     yield this.renderDefaults('edit', {
       loo: loo,
+      edit: 'edit',
       macromap: macromap
     })
   },
