@@ -117,12 +117,13 @@ looSchema.methods.updateArea = function * () {
     console.log(mapitJSON)
   }
   this.properties.area = area
-  yield this.save()
+  // yield this.save()
+  return this
 }
 
 /**
  * Rebuild a loo's data by recompiling it from all the reports that have been attatched
- * Currently this leaves a loo's location as that of the first report submitted
+ * Currently this leaves a loo's location as that of the most recent report submitted
  */
 looSchema.methods.regenerate = function * () {
   // populate the array of report ids with their documents
@@ -160,6 +161,13 @@ looSchema.methods.regenerate = function * () {
 */
 
   this.geometry = geometry
+  // attempt to update administrative geography data
+  try {
+    yield loo.updateArea()
+  } catch (e) {
+    console.log('updateArea failed during regenerate for Loo: ' + loo._id + '\n', e)
+  }
+
   // Calculate credibility
   loo.credibility = calculateCredibility(loo.reports)
   return this

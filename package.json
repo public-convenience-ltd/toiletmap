@@ -99,7 +99,7 @@
   "scripts": {
     "build": "browserify -t hbsfy -g uglifyify -r ./ui/browser.js --standalone gbptm -o ./ui/public/gbptm.min.js && npm run buildcss && npm run shimmy",
     "buildcss": "cat ./ui/css/vendor/*.css ./ui/css/*.css > ./ui/public/gbptm.css",
-    "dev": "npm run watchjs & npm run watchcss & export $(cat .env | xargs) && nodemon -e js,hbs -i gbptm.min.js --debug app.js",
+    "dev": "npm run watchjs & npm run watchcss & export $(cat .env | xargs) && nodemon -e js,hbs -i gbptm.min.js --inspect app.js",
     "postinstall": "npm run build",
     "shimmy": "awk 'FNR==1{print \"\"}1' ./node_modules/es5-shim/es5-shim.min.js ./node_modules/lt-ie-9/lt-ie-9.min.js  > ./ui/public/shims/shims.min.js",
     "start": "node app.js",

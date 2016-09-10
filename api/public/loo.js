@@ -57,6 +57,7 @@ routes.loos_updateArea = {
   handler: function*() {
     var loo = yield Loo.findById(this.params.id)
     var updatedLoo = yield loo.updateArea()
+    yield updatedLoo.save()
     this.status = 200
     this.body = updatedLoo
   },
