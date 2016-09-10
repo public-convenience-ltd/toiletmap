@@ -15,7 +15,8 @@ routes.reports = {
 
 routes.report = {
   handler: function * () {
-    var report = yield LooReport.findById(this.params.id).exec()
+    var id = this.params.id.replace('.json', '')
+    var report = yield LooReport.findById(id).exec()
     if (!report) {
       this.throw(404)
     }
