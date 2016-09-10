@@ -10,26 +10,26 @@ var favicon = require('koa-favicon')
 var cors = require('koa-cors')
 var json = require('koa-json')
 var compress = require('koa-compress')
-var mime_query = require('../lib/koa-mime-query')
+var mimeQuery = require('../lib/koa-mime-query')
 var passport = require('koa-passport')
 var helmet = require('koa-helmet')
-var config = require('./config')
+// var config = require('./config')
 var session = require('koa-session')
 var readonly = require('../lib/readonly-mode')
 var auth = require('../auth/auth.js')
 var ui = require('../ui/ui.js')
 var resumer = require('../lib/resumer')
 
-module.exports = function (app) {
+module.exports = function (app, config) {
   app.keys = ['seekrit']
   if (config.app.enableHttps) {
       // Force HTTPS on all page
-      app.use(function * (next) {
-          if (this.secure || this.request.header['x-forwarded-proto'] === 'https') {
-              return yield next
-          }
-          this.response.redirect(config.app.baseUrl + this.request.url)
-      })
+    app.use(function * (next) {
+      if (this.secure || this.request.header['x-forwarded-proto'] === 'https') {
+        return yield next
+      }
+      this.response.redirect(config.app.baseUrl + this.request.url)
+    })
   }
 
   app.use(helmet({frameguard: false, contentSecurityPolicy: false})) // Some basic hardening
@@ -49,7 +49,7 @@ module.exports = function (app) {
   app.use(passport.session())
   app.use(resumer())
   ui.init(app, config.ui)
-  app.use(mime_query())
+  app.use(mimeQuery())
   app.use(router(app))
 
   // mount all the routes defined in the api/public
@@ -69,7 +69,7 @@ module.exports = function (app) {
   fs.readdirSync(path.join(config.app.root, 'api', 'private')).forEach(function (file) {
     var routes = require(path.join(config.app.root, 'api', 'private', file))
     _.each(routes, function (route, name) {
-      var protected_handler = compose([
+      var protectedHandler = compose([
         function * (next) {
           if (this.isAuthenticated()) {
             yield next
@@ -79,7 +79,7 @@ module.exports = function (app) {
         },
         route.handler
       ])
-      app[route.method](name, route.path, protected_handler)
+      app[route.method](name, route.path, protectedHandler)
     })
   })
 

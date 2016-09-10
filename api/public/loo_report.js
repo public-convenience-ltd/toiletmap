@@ -37,7 +37,7 @@ routes.report_form = {
 
     macromap = {
       zoom: 18,
-      locate: loo ? false : true
+      locate: !loo
     }
 
     if (loo) {
@@ -46,6 +46,7 @@ routes.report_form = {
 
     yield this.renderDefaults('edit', {
       loo: loo,
+      edit: 'edit',
       macromap: macromap
     })
   },

@@ -12,8 +12,16 @@ var LooReport
  * Find the loo to which this report is attatched, or a nearby loo
  */
 looReportSchema.statics.findLooFor = function * (report) {
-  // Do we have a loo which references this report?
-  var loo = yield Loo.findOne({reports: { $in: [report._id] }}).exec()
+  var loo
+  // Is this report derived from an existing loo?
+  if (report.derivedFrom) {
+    loo = yield Loo.findById(report.derivedFrom).exec()
+  }
+
+  if (!loo) {
+    // Do we have a loo which references this report?
+    loo = yield Loo.findOne({reports: { $in: [report._id] }}).exec()
+  }
 
   if (!loo) {
     // Nope. How about one which is within x meters (and so is probably the same real loo)
@@ -67,10 +75,8 @@ looReportSchema.methods.looificate = function * () {
 
   // Get the loo to regenerate its data
   yield loo.regenerate()
-
   // Save the result
   yield loo.save()
-
   return loo
 }
 

@@ -21,12 +21,12 @@ specs.looCore = {
     type: {type: String},
     accessibleType: {type: String},
     disposal: {type: String},
-    babyChange: {type: Boolean},
+    babyChange: {type: String},
     babyChangeLocation: {type: String},
     changingPlace: {type: Boolean},
-    radar: {type: Boolean},
-    attended: {type: Boolean},
-    automatic: {type: Boolean},
+    radar: {type: String},
+    attended: {type: String},
+    automatic: {type: String},
     parking: {type: Boolean},
     fee: {type: String},
     streetAddress: {type: String},
@@ -41,7 +41,13 @@ specs.looCore = {
     geocoded: {type: Boolean},
     geocoding_method: {type: String},
     orig: {type: Object},
-    removal_reason: {type: String}
+    removal_reason: {type: String},
+    area: {
+      'Unitary Authority': {type: String},
+      'District council': {type: String},
+      'Metropolitan district': {type: String},
+      'London borough': {type: String}
+    }
   },
   geohash: String
 }
@@ -55,7 +61,8 @@ schemae.looReportSchema = new Schema(
       attribution: {type: String, required: '"{PATH}" to a person or organisation is required'},
       userId: {type: String, select: false},
       trust: {type: 'Number', default: 5, min: -1, max: 10},
-      collectionMethod: {type: String}
+      collectionMethod: {type: String},
+      derivedFrom: { type: Schema.Types.ObjectId, ref: 'Loo' }
     }
   )
 )
