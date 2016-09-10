@@ -20,32 +20,13 @@
     {{#unless loo}}Add A Toilet{{/unless}}
 </h2>
 
-
-
-
-
-
-
-
-
-{{#if loo}}
-	{{#if edit}}
-		<div class="map positioning mini"
-		    data-init="gbptm-positioning_map"
-		    data-config_zoom="18"></div>
-		<p class="tip"><strong>Tip:</strong> Align the crosshair with where you believe the toilet to be.</p>
-
-
-	{{/if}}
-{{else}}
-	<div class="map positioning mini"
-	    data-init="gbptm-positioning_map"
-	    data-config_zoom="18"></div>
-	<p class="tip"><strong>Tip:</strong> Align the crosshair with where you believe the toilet to be.</p>
-
-{{/if}}
-
-
+<div class="map positioning mini"
+    data-init="gbptm-positioning_map"
+    {{#each macromap}}
+        data-config_{{@key}}="{{json this}}"
+    {{/each}}
+    ></div>
+<p class="tip"><strong>Tip:</strong> Align the crosshair with where you believe the toilet to be.</p>
 
 {{#contentFor 'title'}}| Contribute{{/contentFor}}
 {{#unless prefs.nohelp.edit_intro}}
@@ -56,6 +37,9 @@
 </div>
 {{/unless}}
 <form method="post" action="{{ config.app.baseURL }}/reports">
+    {{#if loo}}
+        <input type="hidden" name="derivedFrom" value="{{loo._id}}" />
+    {{/if}}
     <input type="hidden" name="geometry.type" value="Point" />
     <label for="properties.name">Toilet name</label>
     <input id="properties.name" type="text" name="properties.name" value="{{loo.properties.name}}" />

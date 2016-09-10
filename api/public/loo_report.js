@@ -37,7 +37,7 @@ routes.report_form = {
 
     macromap = {
       zoom: 18,
-      locate: !!loo
+      locate: !loo
     }
 
     if (loo) {

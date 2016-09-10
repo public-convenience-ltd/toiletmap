@@ -61,7 +61,8 @@ schemae.looReportSchema = new Schema(
       attribution: {type: String, required: '"{PATH}" to a person or organisation is required'},
       userId: {type: String, select: false},
       trust: {type: 'Number', default: 5, min: -1, max: 10},
-      collectionMethod: {type: String}
+      collectionMethod: {type: String},
+      derivedFrom: { type: Schema.Types.ObjectId, ref: 'Loo' }
     }
   )
 )
