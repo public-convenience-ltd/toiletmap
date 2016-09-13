@@ -120,6 +120,12 @@ looSchema.methods.updateArea = function * () {
     console.log(e)
   }
 
+  // Copy the area to all the reports which gave rise to this loo
+  yield this.populate('reports').execPopulate()
+  yield _.map(this.reports, function (report) {
+    report.properties.area = area
+    return report.save()
+  })
   // yield this.save()
   return this
 }
