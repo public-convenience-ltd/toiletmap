@@ -117,6 +117,7 @@ routes.statistics = {
       'collectionMethod': 'api'
     }, standardOptions))
             .exec() // done
+
     var importedReports = looReports - uiReports // done
     var removals = yield LooReport.count(queryMaker({
       'properties.removal_reason': {
