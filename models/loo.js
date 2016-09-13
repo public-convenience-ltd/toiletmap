@@ -28,8 +28,9 @@ looSchema.statics.findNear = function (lon, lat, maxDistance, limit) {
   ])
 }
 
-looSchema.statics.findAllIds = function () {
-  return this.find({}).select('id')
+looSchema.statics.findIds = function (query) {
+  var q = query || {}
+  return this.find(q).select('id')
 }
 
 looSchema.statics.findIn = function (sw, ne, nw, se) {

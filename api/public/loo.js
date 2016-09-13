@@ -44,7 +44,11 @@ routes.loos_in = {
 
 routes.loos_ids = {
   handler: function*() {
-    var loos = yield Loo.findAllIds()
+    var q = {}
+    if (this.query.missing) {
+      q[this.query.missing] = { $exists: false }
+    }
+    var loos = yield Loo.findIds(q)
             .exec()
     this.status = 200
     this.body = new LooList(loos)
