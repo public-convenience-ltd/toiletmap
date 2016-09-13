@@ -99,22 +99,27 @@ looSchema.methods.updateArea = function * () {
     url: domain
   }
 
-  var mapit = yield rp(options)
+  try {
+    var mapit = yield rp(options)
 
     // not sure why im getting a string back...need to investigate
-  var mapitJSON = JSON.parse(mapit)
+    var mapitJSON = JSON.parse(mapit)
 
-  var acceptableValues = ['District council', 'Unitary Authority', 'Metropolitan district', 'London borough']
+    var acceptableValues = ['District council', 'Unitary Authority', 'Metropolitan district', 'London borough']
 
-  for (var property in mapitJSON) {
-        // console.log(mapitJSON[property]['type_name'])
-        // console.log(mapitJSON[property]['name'])
-    if (acceptableValues.indexOf(mapitJSON[property]['type_name']) >= 0) {
-      area[mapitJSON[property]['type_name']] = mapitJSON[property]['name']
+    for (var property in mapitJSON) {
+      // console.log(mapitJSON[property]['type_name'])
+      // console.log(mapitJSON[property]['name'])
+      if (acceptableValues.indexOf(mapitJSON[property]['type_name']) >= 0) {
+        area[mapitJSON[property]['type_name']] = mapitJSON[property]['name']
+      }
     }
+
+    this.properties.area = area
+  } catch (e) {
+    console.log(e)
   }
 
-  this.properties.area = area
   // yield this.save()
   return this
 }
