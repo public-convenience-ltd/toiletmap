@@ -40,17 +40,17 @@ after(function (done) {
 
 it('check response code', function (done) {
   request
-    .get('/statistics?timescale=Overall')
+    .get('/statistics/counters')
     .set('Accept', 'text/html')
     .expect(200)
     .end(done)
 })
 it('check Total Toilets recorded', function (done) {
   request
-    .get('/statistics?timescale=Overall')
+    .get('/statistics/counters')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body.numbers['Total Toilets Added'] === 50)) {
+      if (!(res.body['Total Toilets Added'] === 50)) {
         return 'Total Toilets incorrect'
       }
     })
@@ -59,10 +59,10 @@ it('check Total Toilets recorded', function (done) {
 
 it('check active Toilets recorded', function (done) {
   request
-    .get('/statistics?timescale=Overall')
+    .get('/statistics/counters')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body.numbers['Active Toilets Added'] === 48)) {
+      if (!(res.body['Active Toilets Added'] === 48)) {
         return 'Active toilets incorrect'
       }
     })
@@ -71,10 +71,10 @@ it('check active Toilets recorded', function (done) {
 
 it('check inactive Toilets recorded', function (done) {
   request
-    .get('/statistics?timescale=Overall')
+    .get('/statistics/counters')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body.numbers['Inactive/Removed Toilets'] === 2)) {
+      if (!(res.body['Inactive/Removed Toilets'] === 2)) {
         return 'Inactive toilets incorrect'
       }
     })
@@ -83,10 +83,10 @@ it('check inactive Toilets recorded', function (done) {
 
 it('total loo reports', function (done) {
   request
-    .get('/statistics?timescale=Overall')
+    .get('/statistics/counters')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body.numbers['Total Loo Reports Recorded'] === 5)) {
+      if (!(res.body['Total Loo Reports Recorded'] === 5)) {
         return 'Total loo reports recorded incorrect'
       }
     })
@@ -95,10 +95,10 @@ it('total loo reports', function (done) {
 
 it('Reports from Web UI/API', function (done) {
   request
-    .get('/statistics?timescale=Overall')
+    .get('/statistics/counters')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body.numbers['Total Reports via Web UI/API'] === 2)) {
+      if (!(res.body['Total Reports via Web UI/API'] === 2)) {
         return 'reports recorded from web UI incorrect'
       }
     })
@@ -107,10 +107,10 @@ it('Reports from Web UI/API', function (done) {
 
 it('Reports from Data Collections', function (done) {
   request
-    .get('/statistics?timescale=Overall')
+    .get('/statistics/counters')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body.numbers['Reports from Data Collections'] === 3)) {
+      if (!(res.body['Reports from Data Collections'] === 3)) {
         return 'reports recorded from data collections incorrect'
       }
     })
@@ -119,10 +119,10 @@ it('Reports from Data Collections', function (done) {
 
 it('Number of removal reports', function (done) {
   request
-    .get('/statistics?timescale=Overall')
+    .get('/statistics/counters')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body.numbers['Removal Reports Submitted'] === 2)) {
+      if (!(res.body['Removal Reports Submitted'] === 2)) {
         return 'number of removal reports incorrect'
       }
     })
@@ -131,10 +131,10 @@ it('Number of removal reports', function (done) {
 
 it('Count reports by Attribution', function (done) {
   request
-    .get('/statistics?timescale=Overall')
+    .get('/statistics/contributors')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body['Count reports by Attribution']['Brighton & Hove City Council'] === 5)) {
+      if (!(res.body['Brighton & Hove City Council'] === 5)) {
         return 'count reports by attribution incorrect'
       }
     })
@@ -143,10 +143,10 @@ it('Count reports by Attribution', function (done) {
 
 it('Check number of duplicate loos', function (done) {
   request
-    .get('/statistics?timescale=Overall')
+    .get('/statistics/counters')
     .set('Accept', 'text/html')
     .expect(function (res) {
-      if (!(res.body.numbers['Loos with Multiple Reports'] === 5)) {
+      if (!(res.body['Loos with Multiple Reports'] === 5)) {
         return 'number of duplicate loos are wrong'
       }
     })

@@ -3,260 +3,180 @@
 var Loo = require('../../models/loo')
 var LooReport = require('../../models/loo_report')
 var _ = require('lodash')
+var moment = require('moment')
 var routes = {}
 
-var queryMaker = function (query, options) {
-  var beginDate = new Date()
-
-  if (!(options.timescale === 'Overall' || options.timescale === undefined)) {
-    beginDate = new Date(options.start)
-    var endDate = new Date(options.end)
-    query['$and'] = [{
-      'createdAt': {
-        '$gte': beginDate
-      }
-    }, {
-      'createdAt': {
-        '$lte': endDate
-      }
-    }]
-  }
-
-    // nothing neededed
-    // if (options.area === 'All' && options.areaType === 'All'){
-    // }
-  if (options.area !== 'All' && options.areaType === 'All') {
-    query['$or'] = [{
-      'properties.area.District council': options.area
-    }, {
-      'properties.area.Unitary Authority': options.area
-    }, {
-      'properties.area.Metropolitan district': options.area
-    }, {
-      'properties.area.London borough': options.area
-    }]
-  }
-
-  if (options.area === 'All' && options.areaType !== 'All') {
-    query['properties.area.' + options.areaType] = {
-      '$exists': true
+var scopeQuery = function (query, options) {
+  var start = options.start ? moment(options.start) : moment('2009-01-01')
+  var end = options.end ? moment(options.end) : moment()
+  var area = options.area || 'All'
+  var areaType = options.areaType || 'All'
+  query['$and'] = [{
+    'createdAt': {
+      '$gte': start.toDate()
     }
+  }, {
+    'createdAt': {
+      '$lte': end.toDate()
+    }
+  }]
+
+  if (areaType !== 'All') {
+    query.$and.push({'properties.area.type': areaType})
   }
 
-  if (options.area !== 'All' && options.areaType !== 'All') {
-    query['properties.area.' + options.areaType] = options.area
+  if (area !== 'All') {
+    query.$and.push({'properties.area.name': area})
   }
+
   return query
 }
 
-var percentify = function (stat, outOf) {
-  var result = (stat / outOf * 100)
-        .toFixed(2)
-  if (isNaN(result)) {
-    result = 0
-  }
-  if (!isFinite(result)) {
-    result = 100
-  }
-
-  return parseFloat(result)
-        .toFixed(2)
-}
-
-routes.statistics = {
+routes.counters = {
 
   handler: function*() {
-    var standardOptions = {
-      timescale: this.query.timescale,
-      start: this.query.beginDate,
-      end: this.query.endDate,
-      area: this.query.area,
-      areaType: this.query.areaType
+    var counts = yield {
+      activeLoos: Loo.count(scopeQuery({'properties.active': 'true'}, this.query)).exec(),
+      loosCount: Loo.count(scopeQuery({}, this.query)).exec(),
+      looReports: LooReport.count(scopeQuery({}, this.query)).exec(),
+      uiReports: LooReport.count(scopeQuery({'collectionMethod': 'api'}, this.query)).exec(),
+      removals: LooReport.count(scopeQuery({'properties.removal_reason': { $exists: true }}, this.query)).exec(),
+      multiReportLoos: Loo.count(scopeQuery({'reports.1': { $exists: true }}, this.query)).exec()
     }
-
-        // used for percentages
-    var publicLoos = yield Loo.count(queryMaker({
-      'properties.access': 'public'
-    }, standardOptions))
-            .exec() // done
-    var babyChange = yield Loo.count(queryMaker({
-      'properties.babyChange': 'true'
-    }, standardOptions))
-            .exec() // done
-    var babyChangeUnknown = yield Loo.count(queryMaker({
-      'properties.babyChange': 'Not Known'
-    }, standardOptions))
-            .exec() // done
-    var activeLoos = yield Loo.count(queryMaker({
-      'properties.active': 'true'
-    }, standardOptions))
-            .exec()
-    var accessibleLoos = yield Loo.count(queryMaker({
-      '$or': [{
-        'properties.accessibleType': 'unisex'
-      }, {
-        'properties.accessibleType': 'male and female'
-      }]
-    }, standardOptions))
-            .exec()
-    var accessibleLoosUnknown = yield Loo.count(queryMaker({
-      '$or': [{
-        'properties.accessibleType': null
-      }, {
-        'properties.accessibleType': ''
-      }]
-    }, standardOptions))
-            .exec()
-
-        // standard
-    var loosCount = yield Loo.count(queryMaker({}, standardOptions))
-            .exec() // done
-    var looReports = yield LooReport.count(queryMaker({}, standardOptions))
-            .exec() // done
-    var uiReports = yield LooReport.count(queryMaker({
-      'collectionMethod': 'api'
-    }, standardOptions))
-            .exec() // done
-
-    var importedReports = looReports - uiReports // done
-    var removals = yield LooReport.count(queryMaker({
-      'properties.removal_reason': {
-        $exists: true
-      }
-    }, standardOptions))
-            .exec() // done
-    var multiReportLoos = yield Loo.count(queryMaker({
-      'reports.1': {
-        $exists: true
-      }
-    }, standardOptions))
-            .exec()
-    var contributors = yield LooReport.aggregate([{
-      $match: {
-        'type': 'Feature'
-      }
-    }, {
-      $group: {
-        _id: '$attribution',
-        reports: {
-          $sum: 1
-        }
-      }
-    }])
-            .exec()
+    counts.importedReports = counts.looReports - counts.uiReports
+    counts.inactiveLoos = counts.loosCount - counts.activeLoos
 
     this.status = 200
 
-    if (this.query.timescale === 'Overall') {
-      this.body = yield {
-        'numbers': {
-          'Total Toilets Added': loosCount,
-          'Active Toilets Added': activeLoos,
-          'Inactive/Removed Toilets': loosCount - activeLoos,
-          'Total Loo Reports Recorded': looReports,
-          'Total Reports via Web UI/API': uiReports,
-          'Reports from Data Collections': importedReports,
-          'Removal Reports Submitted': removals,
-          'Loos with Multiple Reports': multiReportLoos
-        },
-        'percentages': {
-          'Active Loos': [percentify(activeLoos, loosCount), 0],
-          'Public Loos': [percentify(publicLoos, loosCount), 0],
-          'Baby Changing': [percentify(babyChange, loosCount), percentify(babyChangeUnknown, loosCount)],
-          'Accessible To All': [percentify(accessibleLoos, loosCount), percentify(accessibleLoosUnknown, loosCount)]
-        },
-        'Count reports by Attribution': _.transform(contributors, function (acc, val) {
-          acc[val._id] = val.reports
-        }, {})
-      }
-    } else if (this.query.timescale !== 'Overall' && this.query.timescale !== undefined) {
-      this.body = yield {
-        'numbers': {
-          'Total Toilets Added': loosCount,
-          'Total Loo Reports Recorded': looReports,
-          'Total Reports via Web UI/API': uiReports,
-          'Reports from Data Collections': importedReports,
-          'Removal Reports Submitted': removals
-        },
-        'percentages': {
-          'Active Loos': [percentify(activeLoos, loosCount), 0],
-          'Public Loos': [percentify(publicLoos, loosCount), 0]
-        }
-      }
-    } else if (this.query.areaList === 'true') {
-            // gets list of area lists
-      var test = Loo.schema.eachPath(function (path) {
-        return path
-      })
-      var areaTypes = Object.keys(test.tree.properties.area)
-      areaTypes.unshift('All')
-      var tempBody = {
-        'areaTypes': areaTypes,
-        data: {}
-      }
-
-      var allList = []
-      for (var i = 0; i < areaTypes.length; i++) {
-        var query = 'properties.area.' + areaTypes[i]
-        var areaList = yield Loo.distinct(query)
-        if (areaList.length > 0) {
-          areaList = areaList.sort()
-          allList = allList.concat(areaList)
-          areaList.unshift('All')
-          tempBody.data[areaTypes[i]] = areaList
-        } else {
-          tempBody.data[areaTypes[i]] = ['All']
-        }
-      }
-      allList = allList.sort()
-      allList.unshift('All')
-      tempBody.data['All'] = allList
-
-      this.body = yield tempBody
-    } else {
-      this.body = yield {
-        'title': 'Welcome to the Documentation for the GBPTM statistics page',
-        'list of acceptable inputs': [{
-          'Input Name': 'timescale',
-          'values': 'Appropriate values are: Overall, Year, Month, Week, Custom',
-          'use': "Indicates what to set the timescale being searched over is, Overall ignores 'beginDate' and 'endDate' and just returns all results"
-
-        }, {
-          'Input Name': 'beginDate',
-          'values': 'Date in the form yyyy/mm/dd',
-          'use': 'signals the earliest date to search the db from in time based queries',
-          'notes': 'must be used in conjunction with a "timescale" and an "endDate"'
-
-        }, {
-          'Input Name': 'endDate',
-          'values': 'Date in the form yyyy/mm/dd',
-          'use': 'signals the latest date to search the db from in time based queries',
-          'notes': 'must be used in conjunction with a "timescale" and an "beginDate"'
-
-        }, {
-          'Input Name': 'areaType',
-          'values': 'current can be: Unitary Authority, Unitary Authority ward (UTW), European region, Civil parish/community,UK Parliament constituency, All. Please notes these may be subject to change in the near future',
-          'use': 'indicates the type of area that area will then search for',
-          'notes': 'The "All" value will simple mean that areaType and area are ignored when searching for toilets'
-
-        }, {
-          'Input Name': 'area',
-          'values': 'values can be whatever is return in the list of acceptable names of areas in the appropriate "areaType" list. This list is access by setting the areaList property to true',
-          'use': 'Only returns loos in the area supplied',
-          'notes': 'see "areaList" as to how to get acceptable values'
-        }, {
-          'Input Name': 'areaList',
-          'value': 'true or false',
-          'use': 'provides values for area by areaType with values that we have in our db'
-
-        }
-
-                ]
-
-      }
+    this.body = yield {
+      'Total Toilets Added': counts.loosCount,
+      'Active Toilets Added': counts.activeLoos,
+      'Inactive/Removed Toilets': counts.inactiveLoos,
+      'Total Loo Reports Recorded': counts.looReports,
+      'Total Reports via Web UI/API': counts.uiReports,
+      'Reports from Data Collections': counts.importedReports,
+      'Removal Reports Submitted': counts.removals,
+      'Loos with Multiple Reports': counts.multiReportLoos
     }
   },
-  path: '/statistics',
+  path: '/statistics/counters',
+  method: 'get'
+}
+
+routes.proportions = {
+
+  handler: function*() {
+    // used for percentages
+    var data = yield {
+      publicLoos: Loo.count(scopeQuery({'properties.access': 'public'}, this.query)).exec(),
+      unknownAccessLoos: Loo.count(scopeQuery({'properties.access': 'none'}, this.query)).exec(),
+      babyChange: Loo.count(scopeQuery({'properties.babyChange': 'true'}, this.query)).exec(),
+      babyChangeUnknown: Loo.count(scopeQuery({'properties.babyChange': 'Not Known'}, this.query)).exec(),
+      activeLoos: Loo.count(scopeQuery({'properties.active': 'true'}, this.query)).exec(),
+      accessibleLoos: Loo.count(scopeQuery({
+        '$or': [
+           {'properties.accessibleType': 'unisex'},
+           {'properties.accessibleType': 'male and female'}
+        ]
+      }, this.query)).exec(),
+      accessibleLoosUnknown: Loo.count(scopeQuery({
+        '$or': [
+           {'properties.accessibleType': null},
+           {'properties.accessibleType': ''}]
+      }, this.query)).exec(),
+      loosCount: Loo.count(scopeQuery({}, this.query)).exec()
+    }
+
+    this.status = 200
+
+    this.body = yield {
+      'Active Loos': [data.activeLoos, data.loosCount - data.activeLoos, 0],
+      'Public Loos': [data.publicLoos, data.loosCount - (data.publicLoos + data.unknownAccessLoos), data.unknownAccessLoos],
+      'Baby Changing': [data.babyChange, data.loosCount - (data.babyChange + data.babyChangeUnknown), data.babyChangeUnknown],
+      'Accessible Loos': [data.accessibleLoos, data.loosCount - (data.accessibleLoos + data.accessibleLoosUnknown), data.accessibleLoosUnknown]
+    }
+  },
+  path: '/statistics/proportions',
+  method: 'get'
+}
+
+routes.contributors = {
+
+  handler: function*() {
+    var scope = scopeQuery({}, this.query)
+    scope.$and.push({type: 'Feature'})
+    var contributors = yield LooReport.aggregate([
+      {
+        $match: scope
+      },
+      {
+        $group: {
+          _id: '$attribution',
+          reports: {
+            $sum: 1
+          }
+        }
+      }]).exec()
+
+    this.status = 200
+    this.body = yield _.transform(contributors, function (acc, val) {
+      acc[val._id] = val.reports
+    }, {})
+  },
+  path: '/statistics/contributors',
+  method: 'get'
+}
+
+routes.areas = {
+
+  handler: function*() {
+    var scope = scopeQuery({}, this.query)
+    scope.$and.push({type: 'Feature'})
+    var areas = yield Loo.aggregate([
+      {
+        $match: scope
+      },
+      {
+        $project: {
+          'areaType': {
+            $cond: ['$properties.area.type', '$properties.area.type', 'Unknown Type']
+          },
+          'areaName': {
+            $cond: ['$properties.area.name', '$properties.area.name', 'Unknown Area']
+          },
+          'active': {
+            $cond: [ '$properties.active', 1, 0 ]
+          },
+          'babyChange': {
+            $cond: [{ $eq: ['$properties.babyChange', 'true'] }, 1, 0]
+          }
+        }
+      },
+      {
+        $group: {
+          _id: '$areaName',
+          'looCount': {
+            $sum: 1
+          },
+          'activeLooCount': {
+            $sum: '$active'
+          },
+          'babyChangeCount': {
+            $sum: '$babyChange'
+          }
+        }
+      },
+      {
+        $sort: {
+          _id: 1
+        }
+      }
+    ]).exec()
+
+    this.status = 200
+    this.body = areas
+  },
+  path: '/statistics/areas',
   method: 'get'
 }
 

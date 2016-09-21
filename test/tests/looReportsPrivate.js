@@ -12,6 +12,19 @@ request2 = request2.defaults({
 }) // enable cookies
 var chai = require('chai')
 var expect = chai.expect
+var nock = require('nock')
+
+nock('http://mapit.mysociety.org')
+    .get(function (uri) {
+      return uri.indexOf('point') >= 0
+    })
+    .thrice()
+    .reply(200, {
+      '2391': {
+        'name': 'Norwich City Council',
+        'type_name': 'District council'
+      }
+    })
 
 //* **NB*** Supertest does not play well with the auth requested so for this file I'm mostly using the request module
 var enteredDataLoos
