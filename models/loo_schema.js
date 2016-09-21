@@ -3,6 +3,7 @@
 var _ = require('lodash')
 var Schema = require('mongoose').Schema
 var timestamps = require('mongoose-timestamp')
+var mongoosePaginate = require('mongoose-paginate')
 var geohash = require('geo-hash')
 var specs = {}
 var schemae = {}
@@ -92,5 +93,6 @@ schemae.looSchema.pre('save', function (next) {
 schemae.looSchema.plugin(timestamps)
 schemae.looSchema.index({geometry: '2dsphere'})
 schemae.looSchema.index({geohash: 1})
+schemae.looSchema.plugin(mongoosePaginate)
 
 module.exports = schemae

@@ -127,4 +127,57 @@ routes.contributors = {
   method: 'get'
 }
 
+routes.areas = {
+
+  handler: function*() {
+    var scope = scopeQuery({}, this.query)
+    scope.$and.push({type: 'Feature'})
+    var areas = yield Loo.aggregate([
+      {
+        $match: scope
+      },
+      {
+        $project: {
+          'areaType': {
+            $cond: ['$properties.area.type', '$properties.area.type', 'Unknown Type']
+          },
+          'areaName': {
+            $cond: ['$properties.area.name', '$properties.area.name', 'Unknown Area']
+          },
+          'active': {
+            $cond: [ '$properties.active', 1, 0 ]
+          },
+          'babyChange': {
+            $cond: [{ $eq: ['$properties.babyChange', 'true'] }, 1, 0]
+          }
+        }
+      },
+      {
+        $group: {
+          _id: '$areaName',
+          'looCount': {
+            $sum: 1
+          },
+          'activeLooCount': {
+            $sum: '$active'
+          },
+          'babyChangeCount': {
+            $sum: '$babyChange'
+          }
+        }
+      },
+      {
+        $sort: {
+          _id: 1
+        }
+      }
+    ]).exec()
+
+    this.status = 200
+    this.body = areas
+  },
+  path: '/statistics/areas',
+  method: 'get'
+}
+
 module.exports = routes
