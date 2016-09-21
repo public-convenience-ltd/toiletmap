@@ -93,7 +93,10 @@ function calculateCredibility (reports) {
 looSchema.methods.updateArea = function * () {
   var domain = 'http://mapit.mysociety.org/point/4326/' + this.geometry.coordinates[0] + ',' + this.geometry.coordinates[1] + '?api_key=' + config.mapit.apiKey
 
-  var area = {}
+  var area = {
+    type: null,
+    name: null
+  }
 
   var options = {
     url: domain
@@ -108,24 +111,31 @@ looSchema.methods.updateArea = function * () {
     var acceptableValues = ['District council', 'Unitary Authority', 'Metropolitan district', 'London borough']
 
     for (var property in mapitJSON) {
-      // console.log(mapitJSON[property]['type_name'])
-      // console.log(mapitJSON[property]['name'])
       if (acceptableValues.indexOf(mapitJSON[property]['type_name']) >= 0) {
-        area[mapitJSON[property]['type_name']] = mapitJSON[property]['name']
+        area.type = mapitJSON[property]['type_name']
+        area.name = mapitJSON[property]['name']
       }
     }
-
-    this.properties.area = area
   } catch (e) {
     console.log(e)
   }
-
-  // Copy the area to all the reports which gave rise to this loo
-  yield this.populate('reports').execPopulate()
-  yield _.map(this.reports, function (report) {
-    report.properties.area = area
-    return report.save()
-  })
+  if (area.name && area.type) {
+    this.properties.area = area
+    // Copy the area to all the reports which gave rise to this loo
+    yield this.populate('reports').execPopulate()
+    yield _.map(this.reports, function (report) {
+      report.properties.area = area
+      return report.save()
+    })
+  } else {
+    delete this.properties.area
+    // delete the area to all the reports which gave rise to this loo
+    yield this.populate('reports').execPopulate()
+    yield _.map(this.reports, function (report) {
+      delete report.properties.area
+      return report.save()
+    })
+  }
   // yield this.save()
   return this
 }

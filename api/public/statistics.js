@@ -21,27 +21,14 @@ var scopeQuery = function (query, options) {
     }
   }]
 
-  if (area !== 'All' && areaType === 'All') {
-    query['$or'] = [{
-      'properties.area.District council': area
-    }, {
-      'properties.area.Unitary Authority': area
-    }, {
-      'properties.area.Metropolitan district': area
-    }, {
-      'properties.area.London borough': area
-    }]
+  if (areaType !== 'All') {
+    query.$and.push({'properties.area.type': areaType})
   }
 
-  if (area === 'All' && areaType !== 'All') {
-    query['properties.area.' + areaType] = {
-      '$exists': true
-    }
+  if (area !== 'All') {
+    query.$and.push({'properties.area.name': area})
   }
 
-  if (area !== 'All' && areaType !== 'All') {
-    query['properties.area.' + areaType] = area
-  }
   return query
 }
 
