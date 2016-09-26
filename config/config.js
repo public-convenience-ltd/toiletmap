@@ -60,7 +60,7 @@ var base = {
   },
   ui: {
     api: {
-      root: process.env.GBPTM_API_ROOT || 'http://localhost:' + process.env.PORT || 3000
+      root: process.env.GBPTM_API_ROOT || 'http://localhost:' + process.env.PORT || 3003
     },
     map: {
       center: [51.50109067037534, -0.17943490587640554],
@@ -68,7 +68,7 @@ var base = {
     },
     app: {
       readonly: process.env.READONLY || false,
-      baseURL: process.env.BASE_URL || 'http://localhost:' + process.env.PORT || 3000,
+      baseURL: process.env.BASE_URL || 'http://localhost:' + process.env.PORT || 3003,
       version: version,
       cache: {
         maxage: 365 * 24 * 60 * 1000

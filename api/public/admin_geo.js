@@ -13,6 +13,9 @@ routes.admin_geo = {
         $match: { 'properties.area': { $exists: true } }
       },
       {
+        $unwind: '$properties.area'
+      },
+      {
         $group: {
           _id: '$properties.area.type',
           areaNames: {

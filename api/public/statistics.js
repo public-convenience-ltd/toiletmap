@@ -137,6 +137,9 @@ routes.areas = {
         $match: scope
       },
       {
+        $unwind: '$properties.area'
+      },
+      {
         $project: {
           'areaType': {
             $cond: ['$properties.area.type', '$properties.area.type', 'Unknown Type']

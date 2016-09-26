@@ -43,10 +43,10 @@ specs.looCore = {
     geocoding_method: {type: String},
     orig: {type: Object},
     removal_reason: {type: String},
-    area: {
+    area: [{
       type: {type: String},
       name: {type: String}
-    }
+    }]
   },
   geohash: String
 }

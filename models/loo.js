@@ -93,10 +93,7 @@ function calculateCredibility (reports) {
 looSchema.methods.updateArea = function * () {
   var domain = 'http://mapit.mysociety.org/point/4326/' + this.geometry.coordinates[0] + ',' + this.geometry.coordinates[1] + '?api_key=' + config.mapit.apiKey
 
-  var area = {
-    type: null,
-    name: null
-  }
+  var area = []
 
   var options = {
     url: domain
@@ -112,14 +109,16 @@ looSchema.methods.updateArea = function * () {
 
     for (var property in mapitJSON) {
       if (acceptableValues.indexOf(mapitJSON[property]['type_name']) >= 0) {
-        area.type = mapitJSON[property]['type_name']
-        area.name = mapitJSON[property]['name']
+        area.push({
+          type: mapitJSON[property]['type_name'],
+          name: mapitJSON[property]['name']
+        })
       }
     }
   } catch (e) {
     console.log(e)
   }
-  if (area.name && area.type) {
+  if (area.length) {
     this.properties.area = area
     // Copy the area to all the reports which gave rise to this loo
     yield this.populate('reports').execPopulate()

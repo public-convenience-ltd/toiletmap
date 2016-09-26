@@ -15,19 +15,43 @@ routes.search = {
     delete params.limit
     delete params.page
 
-    if (params.searchTerm) {
+    if (params.text) {
       query.$or = [
-          {'properties.name': new RegExp('.*' + this.query.searchTerm + '.*', 'i')},
-          {'properties.notes': new RegExp('.*' + this.query.searchTerm + '.*', 'i')}
+          {'properties.name': new RegExp('.*' + this.query.text + '.*', 'i')},
+          {'properties.notes': new RegExp('.*' + this.query.text + '.*', 'i')}
       ]
     }
-    delete params.searchTerm
+    delete params.text
 
+    // Handle text searches
+    _.each(params, function (val, name) {
+      query.$and = query.$and || []
+      if (/^text_/.test(name)) {
+        query.$and.push({
+          ['properties.' + name.replace('text_', '')]: new RegExp('.*' + val + '.*', 'i')
+        })
+        delete params[name]
+      }
+    })
+
+    // Handle queries for missing fields
+    _.each(params, function (val, name) {
+      query.$and = query.$and || []
+      if (/^emptylist_/.test(name)) {
+        query.$and.push({
+          ['properties.' + name.replace('emptylist_', '')]: { '$size': 0 }
+        })
+        delete params[name]
+      }
+    })
+
+    // Handle all remaining params
     _.each(params, function (val, name) {
       query.$and = query.$and || []
       query.$and.push({
-        ['properties.' + name]: val
+        ['properties.' + name.replace('_', '.')]: val
       })
+      delete params[name]
     })
 
     loos = yield Loo.paginate(query, {page: page, limit: limit})
