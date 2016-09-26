@@ -1,7 +1,7 @@
 /* global describe, before, after */
 var config = require('../../config/config')
 var app = require('../../app')
-var thunk = require('thunkify')
+var Promise = require('bluebird')
 var co = require('co')
 
 function importTest (name, path) {
@@ -20,7 +20,7 @@ describe('start testing', function () {
     })
       // tear it down after
     after(function (done) {
-      app.server.tclose = thunk(app.server.close)
+      app.server.tclose = Promise.promisify(app.server.close, {context: app.server})
       co(function * () {
         yield app.server.tclose()
       }).then(done)
@@ -52,10 +52,9 @@ describe('start testing', function () {
     })
       // tear it down after
     after(function (done) {
-      app.server.tclose = thunk(app.server.close)
       co(function * () {
         config.app.readonly =
-          yield app.server.tclose()
+          yield Promise.promisify(app.server.close, {context: app.server})
       }).then(done)
     })
         // importTest('basic readonly test', './readonly.js')

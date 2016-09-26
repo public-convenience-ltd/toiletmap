@@ -11,7 +11,6 @@
     "catw": "^1.0.1",
     "co": "^4.5.1",
     "co-body": "^4.2.0",
-    "co-request": "^1.0.0",
     "es5-shim": "^4.1.0",
     "exorcist": "^0.4.0",
     "geo-hash": "0.0.2",
@@ -22,7 +21,6 @@
     "jquery-ajax-transport-xdomainrequest": "^1.0.4",
     "js-cookie": "^2.1.2",
     "koa": "^1.2.0",
-    "koa-body": "^1.1.0",
     "koa-compose": "^2.3.0",
     "koa-compress": "^1.0.9",
     "koa-cors": "^0.0.16",
@@ -37,7 +35,6 @@
     "koa-passport": "^1.1.4",
     "koa-router": "^4.2.0",
     "koa-session": "^3.3.1",
-    "koa-sslify": "^1.0.1",
     "koa-static": "^2.0.0",
     "leaflet": "^0.7.3",
     "leaflet-control-geocoder": "^1.1.0",
@@ -62,7 +59,6 @@
     "passport-openstreetmap": "^0.1.2",
     "passport-twitter": "^1.0.4",
     "request-promise": "^4.1.1",
-    "thunkify": "^2.1.2",
     "uglifyify": "^3.0.2"
   },
   "devDependencies": {
@@ -72,11 +68,9 @@
     "coveralls": "^2.11.11",
     "istanbul": "^0.4.4",
     "mocha": "^3.0.1",
-    "mongoose-fakery": "^0.1.7",
     "nock": "^8.0.0",
     "nodemon": "^1.10.0",
     "standard": "^8.0.0",
-    "superagent": "^2.2.0",
     "supertest": "^2.0.0",
     "watchify": "^0.10.2"
   },
