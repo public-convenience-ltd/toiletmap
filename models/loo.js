@@ -1,6 +1,7 @@
 'use strict'
 
 var mongoose = require('mongoose')
+var gju = require('geojson-utils')
 var looSchema = require('./loo_schema').looSchema
 var config = require('../config/config')
 var rp = require('request-promise')
@@ -33,24 +34,44 @@ looSchema.statics.findIds = function (query) {
   return this.find(q).select('id')
 }
 
+// NB this method returns a radius search calculated from the bounding coordinates
+// as such the resultset may contain points outside the bbox.
 looSchema.statics.findIn = function (sw, ne, nw, se) {
-  return this.find({
-    'properties.active': true,
-    geometry: {
-      $geoIntersects: {
-        $geometry: {
-          type: 'Polygon',
-          coordinates: [[
-            _.map(sw.split(','), parseFloat),
-            _.map(nw.split(','), parseFloat),
-            _.map(ne.split(','), parseFloat),
-            _.map(se.split(','), parseFloat),
-            _.map(sw.split(','), parseFloat)
-          ]]
-        }
+  var bbox = {
+    type: 'Polygon',
+    coordinates: [[
+      _.map(sw.split(','), parseFloat),
+      _.map(nw.split(','), parseFloat),
+      _.map(ne.split(','), parseFloat),
+      _.map(se.split(','), parseFloat),
+      _.map(sw.split(','), parseFloat)
+    ]]
+  }
+  var swp = {
+    type: 'Point',
+    coordinates: bbox.coordinates[0][0]
+  }
+  var centre = gju.rectangleCentroid(bbox)
+  var maxDistance = gju.pointDistance(centre, swp)
+  return this.aggregate([
+    {
+      $geoNear: {
+        near: centre.coordinates,
+        distanceField: 'distance',
+        maxDistance: (parseFloat(maxDistance) / earth),
+        distanceMultiplier: earth,
+        spherical: true
       }
+    },
+    {
+      $match: {
+        'properties.active': true
+      }
+    },
+    {
+      $sort: { 'distance': 1 }
     }
-  })
+  ])
 }
 
 looSchema.methods.toGeoJSON = function (app) {

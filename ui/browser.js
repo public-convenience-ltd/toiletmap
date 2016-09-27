@@ -117,21 +117,23 @@ gbptm.multi_loo_map = function (el, opts) {
       }
     }),
     collapsed: false,
-    placeholder: 'Placename or postcode...'
-  }).addTo(map)
+    placeholder: 'Placename or postcode...',
+    defaultMarkGeocode: false
+  })
+  .on('markgeocode', function (e) {
+    this._map.setView(e.geocode.center)
+  })
+  .addTo(map)
+
   $(geocoder._container).on('click', '.leaflet-control-geocoder-icon', function (evt) {
     geocoder._geocode(evt)
   })
-  geocoder.markGeocode = function (result) {
-    this._map.setView(result.center)
-    return this
-  }
 
   L.Control.loading({separate: true}).addTo(map)
 
   var locateControl = L.control.locate({
     drawCircle: true,
-    follow: true,
+    setView: 'untilPan',
     keepCurrentZoomLevel: true,
     icon: 'icon-location',
     iconLoading: 'icon-location',
@@ -139,7 +141,6 @@ gbptm.multi_loo_map = function (el, opts) {
     onLocationError: $.noop,
     onLocationOutsideMapBounds: $.noop
   }).addTo(map)
-  map.on('dragstart', locateControl._stopFollowing, locateControl)
 
   if (opts.locate) {
     locateControl.start()
@@ -253,14 +254,13 @@ gbptm.positioning_map = function (el, opts) {
   map.setView(opts.center, opts.zoom)
   var locateControl = L.control.locate({
     drawCircle: false,
-    follow: true,
+    setView: 'untilPan',
     keepCurrentZoomLevel: true,
     showPopup: false,
     onLocationError: $.noop,
     onLocationOutsideMapBounds: $.noop
   }).addTo(map)
   if (opts.locate) {
-    map.on('dragstart', locateControl.stopFollowing)
     locateControl.start()
   }
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map)
