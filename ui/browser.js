@@ -139,7 +139,7 @@ gbptm.multi_loo_map = function (el, opts) {
     onLocationError: $.noop,
     onLocationOutsideMapBounds: $.noop
   }).addTo(map)
-  map.on('dragstart', locateControl._stopFollowing, locateControl)
+  // map.on('dragstart', locateControl._stopFollowing, locateControl)
 
   if (opts.locate) {
     locateControl.start()
@@ -260,7 +260,7 @@ gbptm.positioning_map = function (el, opts) {
     onLocationOutsideMapBounds: $.noop
   }).addTo(map)
   if (opts.locate) {
-    map.on('dragstart', locateControl.stopFollowing)
+    // map.on('dragstart', locateControl.stopFollowing)
     locateControl.start()
   }
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map)
