@@ -57,6 +57,7 @@
     "passport-github": "^1.1.0",
     "passport-google-oauth": "^1.0.0",
     "passport-http": "^0.3.0",
+    "passport-http-bearer": "^1.0.1",
     "passport-openstreetmap": "^0.1.2",
     "passport-twitter": "^1.0.4",
     "request": "^2.75.0",
