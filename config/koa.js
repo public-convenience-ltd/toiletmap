@@ -47,7 +47,7 @@ module.exports = function (app, config) {
   app.use(session(app))
   app.use(passport.initialize())
   app.use(passport.session())
-  app.use(resumer())
+  app.use(resumer({ exclude_paths: '/admin/ingest' }))
   ui.init(app, config.ui)
   app.use(mimeQuery())
   app.use(router(app))
@@ -57,6 +57,25 @@ module.exports = function (app, config) {
     var routes = require(path.join(config.app.root, 'api', 'public', file))
     _.each(routes, function (route, name) {
       app[route.method](name, route.path, route.handler)
+    })
+  })
+
+  // mount all the routes defined in the api/admin composing each with bearer authorization middleware
+  fs.readdirSync(path.join(config.app.root, 'api', 'admin')).forEach(function (file) {
+    var routes = require(path.join(config.app.root, 'api', 'admin', file))
+    _.each(routes, function (route, name) {
+      var protectedHandler = compose([
+        passport.authenticate('bearer', {session: false}),
+        function * (next) {
+          if (this.isAuthenticated()) {
+            yield next
+          } else {
+            this.status = 401
+          }
+        },
+        route.handler
+      ])
+      app[route.method](name, route.path, protectedHandler)
     })
   })
 

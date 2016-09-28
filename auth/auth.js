@@ -1,5 +1,6 @@
 var passport = require('koa-passport')
 var DigestStrategy = require('passport-http').DigestStrategy
+var BearerStrategy = require('passport-http-bearer').Strategy
 var TwitterStrategy = require('passport-twitter').Strategy
 var GitHubStrategy = require('passport-github').Strategy
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
@@ -233,6 +234,18 @@ if (config.auth.google.consumerKey && config.auth.google.consumerSecret) {
     path: '/google/callback',
     method: 'get'
   }
+}
+
+if (config.auth.bearer.token && config.auth.bearer.info) {
+  passport.use(new BearerStrategy(
+    function (token, done) {
+      if (token !== config.auth.bearer.token) {
+        return done(null, false)
+      }
+      var info = JSON.parse(config.auth.bearer.info)
+      return done(null, info.user, info.scope)
+    }
+  ))
 }
 
 module.exports.routes = routes
