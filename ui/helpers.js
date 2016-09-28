@@ -112,7 +112,11 @@ module.exports = function (hbs) {
     },
     open: function (loo) {
       if (_.isUndefined(loo.properties.opening) || _.isNull(loo.properties.opening) || !loo.properties.opening) { return null }
-      return new Oh(loo.properties.opening).getState()
+      try {
+        return new Oh(loo.properties.opening).getState()
+      } catch (e) {
+        return null
+      }
     },
     male: function (loo) {
       if (_.isUndefined(loo.properties.type) || _.isNull(loo.properties.type)) { return null }
