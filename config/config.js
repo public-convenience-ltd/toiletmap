@@ -39,6 +39,10 @@ var base = {
     google: {
       consumerKey: process.env.GOOGLE_CLIENT_ID,
       consumerSecret: process.env.GOOGLE_CLIENT_SECRET
+    },
+    bearer: {
+      token: process.env.BEARER_TOKEN,
+      info: process.env.BEARER_INFO
     }
   },
   mapit: {
