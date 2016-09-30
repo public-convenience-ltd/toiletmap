@@ -11,6 +11,7 @@ var scopeQuery = function (query, options) {
   var end = options.end ? moment(options.end) : moment()
   var area = options.area || 'All'
   var areaType = options.areaType || 'All'
+  var includeInactive = options.includeInactive || false
   query['$and'] = [{
     'createdAt': {
       '$gte': start.toDate()
@@ -20,6 +21,10 @@ var scopeQuery = function (query, options) {
       '$lte': end.toDate()
     }
   }]
+
+  if (!includeInactive) {
+    query.$and.push({'properties.active': true})
+  }
 
   if (areaType !== 'All') {
     query.$and.push({'properties.area.type': areaType})
@@ -35,13 +40,14 @@ var scopeQuery = function (query, options) {
 routes.counters = {
 
   handler: function*() {
+    var qWithInactive = _.merge({includeInactive: true}, this.query)
     var counts = yield {
-      activeLoos: Loo.count(scopeQuery({'properties.active': 'true'}, this.query)).exec(),
-      loosCount: Loo.count(scopeQuery({}, this.query)).exec(),
-      looReports: LooReport.count(scopeQuery({}, this.query)).exec(),
-      uiReports: LooReport.count(scopeQuery({'collectionMethod': 'api'}, this.query)).exec(),
-      removals: LooReport.count(scopeQuery({'properties.removal_reason': { $exists: true }}, this.query)).exec(),
-      multiReportLoos: Loo.count(scopeQuery({'reports.1': { $exists: true }}, this.query)).exec()
+      activeLoos: Loo.count(scopeQuery({}, this.query)).exec(),
+      loosCount: Loo.count(scopeQuery({}, qWithInactive)).exec(),
+      looReports: LooReport.count(scopeQuery({}, qWithInactive)).exec(),
+      uiReports: LooReport.count(scopeQuery({'collectionMethod': 'api'}, qWithInactive)).exec(),
+      removals: LooReport.count(scopeQuery({'properties.removal_reason': { $exists: true }}, qWithInactive)).exec(),
+      multiReportLoos: Loo.count(scopeQuery({'reports.1': { $exists: true }}, qWithInactive)).exec()
     }
     counts.importedReports = counts.looReports - counts.uiReports
     counts.inactiveLoos = counts.loosCount - counts.activeLoos
@@ -72,28 +78,24 @@ routes.proportions = {
       unknownAccessLoos: Loo.count(scopeQuery({'properties.access': 'none'}, this.query)).exec(),
       babyChange: Loo.count(scopeQuery({'properties.babyChange': 'true'}, this.query)).exec(),
       babyChangeUnknown: Loo.count(scopeQuery({'properties.babyChange': 'Not Known'}, this.query)).exec(),
-      activeLoos: Loo.count(scopeQuery({'properties.active': 'true'}, this.query)).exec(),
-      accessibleLoos: Loo.count(scopeQuery({
-        '$or': [
-           {'properties.accessibleType': 'unisex'},
-           {'properties.accessibleType': 'male and female'}
-        ]
+      activeLoos: Loo.count(scopeQuery({}, this.query)).exec(),
+      inaccessibleLoos: Loo.count(scopeQuery({
+        'properties.accessibleType': 'none'
       }, this.query)).exec(),
       accessibleLoosUnknown: Loo.count(scopeQuery({
-        '$or': [
-           {'properties.accessibleType': null},
-           {'properties.accessibleType': ''}]
+        'properties.accessibleType': {$exists: false}
       }, this.query)).exec(),
-      loosCount: Loo.count(scopeQuery({}, this.query)).exec()
+      loosCount: Loo.count(scopeQuery({}, this.query)).exec(),
+      inactiveLoos: Loo.count(scopeQuery({}, _.merge({includeInactive: true}, this.query)))
     }
 
     this.status = 200
 
     this.body = yield {
-      'Active Loos': [data.activeLoos, data.loosCount - data.activeLoos, 0],
+      'Active Loos': [data.activeLoos, data.inactiveLoos - data.activeLoos, 0],
       'Public Loos': [data.publicLoos, data.loosCount - (data.publicLoos + data.unknownAccessLoos), data.unknownAccessLoos],
       'Baby Changing': [data.babyChange, data.loosCount - (data.babyChange + data.babyChangeUnknown), data.babyChangeUnknown],
-      'Accessible Loos': [data.accessibleLoos, data.loosCount - (data.accessibleLoos + data.accessibleLoosUnknown), data.accessibleLoosUnknown]
+      'Accessible Loos': [data.loosCount - (data.inaccessibleLoos + data.accessibleLoosUnknown), data.inaccessibleLoos, data.accessibleLoosUnknown]
     }
   },
   path: '/statistics/proportions',
@@ -130,8 +132,7 @@ routes.contributors = {
 routes.areas = {
 
   handler: function*() {
-    var scope = scopeQuery({}, this.query)
-    scope.$and.push({type: 'Feature'})
+    var scope = scopeQuery({}, _.merge({includeInactive: true}, this.query))
     var areas = yield Loo.aggregate([
       {
         $match: scope
@@ -151,7 +152,14 @@ routes.areas = {
             $cond: [ '$properties.active', 1, 0 ]
           },
           'babyChange': {
-            $cond: [{ $eq: ['$properties.babyChange', 'true'] }, 1, 0]
+            $cond: [
+              {
+                $and: [
+                  { $eq: ['$properties.babyChange', 'true'] },
+                  { $eq: ['$properties.active', true] }
+                ]
+              },
+              1, 0]
           }
         }
       },
