@@ -60,10 +60,11 @@ routes.loos_ids = {
 routes.loos_updateArea = {
   handler: function*() {
     var loo = yield Loo.findById(this.params.id)
-    var updatedLoo = yield loo.updateArea()
-    yield updatedLoo.save()
+    // var updatedLoo = yield loo.updateArea()
+    var regen = yield loo.regenerate()
+    yield regen.save()
     this.status = 200
-    this.body = updatedLoo
+    this.body = regen
   },
   path: '/loos/:id/updateArea',
   method: 'get'

@@ -168,12 +168,14 @@ looSchema.methods.regenerate = function * () {
   // populate the array of report ids with their documents
   var loo = yield this.populate('reports').execPopulate()
   // Make an array of property objects ordered by trustworthiness then by freshness
-  var properties = _.map(_.sortBy(loo.reports, ['trust', 'updatedAt']), 'properties')
+  var properties = _.map(_.sortBy(loo.reports, ['trust', 'updatedAt']), function (report) {
+    return report.properties.toJSON()
+  })
   // Merge them together in that order
   loo.properties = _.merge.apply(_, properties)
   // Record all the sources and attributions
-  loo.sources = _.map(loo.reports, 'origin')
-  loo.attributions = _.map(loo.reports, 'attribution')
+  loo.sources = _.uniq(_.map(loo.reports, 'origin'))
+  loo.attributions = _.uniq(_.map(loo.reports, 'attribution'))
 
   // Potential coordinate solutions.
   var recentLooReports = _.remove(_.sortBy(loo.reports, ['updatedAt']), function (report) {
