@@ -29,7 +29,7 @@
     "koa-favicon": "^1.2.0",
     "koa-flash": "^1.0.0",
     "koa-fresh": "0.0.3",
-    "koa-hbs": "^0.8.1",
+    "koa-hbs": "^0.9.0",
     "koa-helmet": "^1.0.0",
     "koa-json": "^1.1.1",
     "koa-logger": "^1.2.2",
