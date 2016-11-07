@@ -151,6 +151,20 @@ routes.areas = {
           'active': {
             $cond: [ '$properties.active', 1, 0 ]
           },
+          'public': {
+            $cond: [
+              {
+                $eq: ['$properties.access', 'public']
+              },
+              1, 0]
+          },
+          'permissive': {
+            $cond: [
+              {
+                $eq: ['$properties.access', 'permissive']
+              },
+              1, 0]
+          },
           'babyChange': {
             $cond: [
               {
@@ -171,6 +185,12 @@ routes.areas = {
           },
           'activeLooCount': {
             $sum: '$active'
+          },
+          'publicLooCount': {
+            $sum: '$public'
+          },
+          'permissiveLooCount': {
+            $sum: '$permissive'
           },
           'babyChangeCount': {
             $sum: '$babyChange'
