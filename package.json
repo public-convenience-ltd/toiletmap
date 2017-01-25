@@ -75,7 +75,7 @@
     "nodemon": "^1.10.0",
     "standard": "^8.2.0",
     "supertest": "^2.0.0",
-    "watchify": "^0.10.2"
+    "watchify": "^3.9.0"
   },
   "engines": {
     "node": ">=6.5.0",
