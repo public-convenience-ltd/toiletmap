@@ -7,7 +7,7 @@
     "url": "https://github.com/neontribe/gbptm/issues"
   },
   "dependencies": {
-    "browserify": "^13.1.0",
+    "browserify": "^14.1.0",
     "catw": "^1.0.1",
     "co": "^4.5.1",
     "co-body": "^4.2.0",
