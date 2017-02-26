@@ -36,7 +36,7 @@
     "koa-passport": "^1.1.4",
     "koa-router": "^4.2.0",
     "koa-session": "^3.3.1",
-    "koa-static": "^2.0.0",
+    "koa-static": "^3.0.0",
     "leaflet": "^0.7.3",
     "leaflet-control-geocoder": "^1.1.0",
     "leaflet-knn": "^0.1.0",
