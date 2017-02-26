@@ -26,7 +26,7 @@
     "koa-compress": "^1.0.9",
     "koa-cors": "^0.0.16",
     "koa-etag": "^2.0.0",
-    "koa-favicon": "^1.2.0",
+    "koa-favicon": "^2.0.0",
     "koa-flash": "^1.0.0",
     "koa-fresh": "0.0.3",
     "koa-hbs": "^0.8.1",
