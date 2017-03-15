@@ -22,7 +22,7 @@
     "jquery-ajax-transport-xdomainrequest": "^1.0.4",
     "js-cookie": "^2.1.2",
     "koa": "^1.2.0",
-    "koa-compose": "^2.3.0",
+    "koa-compose": "^3.2.1",
     "koa-compress": "^1.0.9",
     "koa-cors": "^0.0.16",
     "koa-etag": "^2.0.0",
