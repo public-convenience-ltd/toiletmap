@@ -50,7 +50,7 @@
     "mongoose": "^4.5.9",
     "mongoose-paginate": "^5.0.2",
     "mongoose-timestamp": "^0.6.0",
-    "newrelic": "^1.28.3",
+    "newrelic": "^1.38.1",
     "object-path": "^0.11.1",
     "opening_hours": "^3.4.0",
     "passport-facebook": "^2.1.1",
