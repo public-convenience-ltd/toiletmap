@@ -65,7 +65,7 @@
     "uglifyify": "^3.0.2"
   },
   "devDependencies": {
-    "async": "^2.0.1",
+    "async": "^2.2.0",
     "bluebird": "^3.4.1",
     "chai": "^3.5.0",
     "coveralls": "^2.11.11",
