@@ -20,7 +20,7 @@
     "hbsfy": "^2.7.0",
     "jquery": "1.12.4",
     "jquery-ajax-transport-xdomainrequest": "^1.0.4",
-    "js-cookie": "^2.1.2",
+    "js-cookie": "^2.1.4",
     "koa": "^1.2.0",
     "koa-compose": "^2.3.0",
     "koa-compress": "^1.0.9",
