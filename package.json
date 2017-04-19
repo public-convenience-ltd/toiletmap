@@ -18,7 +18,7 @@
     "getobject": "^0.1.0",
     "handlebars": "^4.0.5",
     "hbsfy": "^2.7.0",
-    "jquery": "1.12.4",
+    "jquery": "3.1.0",
     "jquery-ajax-transport-xdomainrequest": "^1.0.4",
     "js-cookie": "^2.1.2",
     "koa": "^1.2.0",
