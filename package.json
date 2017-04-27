@@ -68,7 +68,7 @@
     "async": "^2.0.1",
     "bluebird": "^3.4.1",
     "chai": "^3.5.0",
-    "coveralls": "^2.11.11",
+    "coveralls": "^2.13.1",
     "istanbul": "^0.4.4",
     "mocha": "^3.0.1",
     "nock": "^8.0.0",
