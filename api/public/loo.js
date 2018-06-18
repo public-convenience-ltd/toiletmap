@@ -11,21 +11,8 @@ routes.nearby_loos = {
     var limit = this.query.limit || config.query_defaults.limit
     var loos = yield Loo.findNear(this.params.lon, this.params.lat, maxDistance, limit)
             .exec()
-    switch (this.accepts('html', 'json')) {
-      case 'html':
-        yield this.renderDefaults('list', {
-          loos: loos,
-          macromap: {
-            center: [parseFloat(this.params.lat), parseFloat(this.params.lon)],
-            zoom: 17
-          }
-        })
-        break
-      case 'json':
-        this.status = 200
-        this.body = new LooList(loos)
-        break
-    }
+    this.status = 200
+    this.body = new LooList(loos) 
   },
   path: '/loos/near/:lon/:lat',
   method: 'get'
@@ -77,22 +64,9 @@ routes.loo = {
     if (!loo) {
       return
     }
-    switch (this.accepts('html', 'json')) {
-      case 'html':
-        yield this.renderDefaults('loo', {
-          loo: loo.toJSON(),
-          macromap: {
-            center: loo.geometry.coordinates.slice()
-                            .reverse(),
-            zoom: 17
-          }
-        })
-        break
-      case 'json':
-        this.status = 200
-        this.body = loo
-        break
-    }
+
+    this.status = 200
+    this.body = loo
   },
   path: '/loos/:id',
   method: 'get'

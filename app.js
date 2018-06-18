@@ -1,7 +1,4 @@
 'use strict'
-if (process.env.NODE_ENV === 'production') {
-  require('newrelic')
-}
 var config = require('./config/config')
 var koaConfig = require('./config/koa')
 require('./config/mongo')

@@ -79,35 +79,3 @@ it('Test for non-existant Id', function (done) {
     .set('Accept', 'application/json')
     .end(done)
 })
-it('/report test with loo as base', function (done) {
-  var Id = enteredDataLoos.insertedIds[0]
-  request
-    .get('/report?base=' + Id)
-    .expect(200)
-    .set('Accept', 'application/json')
-    .end(done)
-})
-it('/report test without loo as base', function (done) {
-  request
-    .get('/report')
-    .expect(200)
-    .set('Accept', 'application/json')
-    .end(done)
-})
-
-it('try to remove none existant report', function (done) {
-  var newId = new mongoose.mongo.ObjectId().toString()
-  request
-    .get('/remove/' + newId)
-    .expect(404)
-    .set('Accept', 'application/json')
-    .end(done)
-})
-it('remove', function (done) {
-  var Id = enteredDataLoos.insertedIds[0]
-  request
-    .get('/remove/' + Id)
-    .expect(200)
-    .set('Accept', 'text/html')
-    .end(done)
-})

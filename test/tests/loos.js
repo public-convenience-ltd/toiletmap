@@ -79,14 +79,6 @@ describe('Find loos within radius (/loos/near)', function () {
     })
     .end(done)
   })
-
-  it('/loos/near/:lon/:lat HTML', function (done) {
-    request
-    .get('/loos/near/0/0')
-    .set('Accept', 'text/html')
-    .expect(200)
-    .end(done)
-  })
 })
 
 describe('Find loos via ID ( /loos/:id/)', function () {
@@ -112,32 +104,6 @@ describe('Find loos via ID ( /loos/:id/)', function () {
     .get('/loos/' + looGlobal._id.toString())
     .set('Accept', 'application/json')
     .expect(200)
-    .expect(function (res) {
-      if (!(res.body)) {
-        return 'Not enough Loos'
-      }
-    })
-    .end(done)
-  })
-
-  it('/loos/:id HTML', function (done) {
-    request
-    .get('/loos/' + looGlobal._id.toString())
-    .set('Accept', 'text/html')
-    .expect(200)
-    .expect(function (res) {
-      if (!(res.body)) {
-        return 'Not enough Loos'
-      }
-    })
-    .end(done)
-  })
-
-  it('/loos/:id With none valid ID', function (done) {
-    request
-    .get('/loos/' + new mongoose.mongo.ObjectId())
-    .set('Accept', 'text/html')
-    .expect(404)
     .expect(function (res) {
       if (!(res.body)) {
         return 'Not enough Loos'

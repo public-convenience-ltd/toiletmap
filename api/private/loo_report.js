@@ -1,10 +1,8 @@
 var LooReport = require('../../models/loo_report')
 var Loo = require('../../models/loo')
 var config = require('../../config/config')
-var compose = require('koa-compose')
 var parse = require('co-body')
 var _ = require('lodash')
-var objectPath = require('object-path')
 var routes = {}
 
 function* save (data, user) {
@@ -38,46 +36,8 @@ function* handleJSON (next) {
   }
 }
 
-function* resumeBody (ctx) {
-  if (ctx.state.resume) {
-    return ctx.state.resume
-  } else {
-    return yield parse(ctx)
-  }
-}
-
-function* handleForm (next) {
-  if (this.is('urlencoded') || this.state.resume) {
-    var raw = yield resumeBody(this)
-    var data = _.transform(raw, function (result, val, key) {
-      var ka = _.map(key.split('.'), function (v) {
-        var parsed = parseInt(v, 10)
-        return isNaN(parsed) ? v : parsed
-      })
-                    // Filter out empty form values
-      if (val !== '') {
-        objectPath.set(result, ka, val)
-      }
-    }, {
-      geometry: {
-        coordinates: []
-      }
-    }) // NB. Ugly template is here to coerce the coordinates array
-    var results = yield save(data, this.req.user)
-    this.flash = {
-      type: 'status',
-      msg: "Thanks! We've updated this toilet with the information you supplied."
-    }
-    this.redirect(this.app.url('loo', {
-      id: results[1]._id
-    }))
-  } else {
-    yield next
-  }
-}
-
 routes.submit_report = {
-  handler: compose([handleJSON, handleForm]),
+  handler: handleJSON,
   path: '/reports',
   method: 'post'
 }

@@ -20,26 +20,6 @@ var base = {
       username: process.env.LOCAL_USERNAME,
       password: process.env.LOCAL_PASSWORD
     },
-    github: {
-      client_id: process.env.GITHUB_CLIENT_ID,
-      client_secret: process.env.GITHUB_CLIENT_SECRET
-    },
-    twitter: {
-      consumerKey: process.env.TWITTER_CLIENT_ID,
-      consumerSecret: process.env.TWITTER_CLIENT_SECRET
-    },
-    osm: {
-      consumerKey: process.env.OSM_CLIENT_ID,
-      consumerSecret: process.env.OSM_CLIENT_SECRET
-    },
-    facebook: {
-      client_id: process.env.FACEBOOK_CLIENT_ID,
-      client_secret: process.env.FACEBOOK_CLIENT_SECRET
-    },
-    google: {
-      consumerKey: process.env.GOOGLE_CLIENT_ID,
-      consumerSecret: process.env.GOOGLE_CLIENT_SECRET
-    },
     bearer: {
       token: process.env.BEARER_TOKEN,
       info: process.env.BEARER_INFO
@@ -61,23 +41,6 @@ var base = {
   },
   reports: {
     trust: 8
-  },
-  ui: {
-    api: {
-      root: process.env.GBPTM_API_ROOT || 'http://localhost:' + process.env.PORT || 3003
-    },
-    map: {
-      center: [51.50109067037534, -0.17943490587640554],
-      zoom: 15
-    },
-    app: {
-      readonly: process.env.READONLY || false,
-      baseURL: process.env.BASE_URL || 'http://localhost:' + process.env.PORT || 3003,
-      version: version,
-      cache: {
-        maxage: 365 * 24 * 60 * 1000
-      }
-    }
   }
 }
 
@@ -108,25 +71,11 @@ var platforms = {
     app: {
       enableHttps: true
     },
-    ui: {
-      app: {
-        cache: {
-          maxage: 365 * 24 * 60 * 1000
-        }
-      }
-    }
   },
   staging: {
     app: {
       enableHttps: true
     },
-    ui: {
-      app: {
-        cache: {
-          maxage: 24 * 60 * 1000
-        }
-      }
-    }
   },
   importer: {}
 }
