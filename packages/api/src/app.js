@@ -5,6 +5,7 @@ const compression = require('compression');
 require('./config/mongo'); // don't much like this bare require
 
 const app = express();
+
 app.use(helmet());
 app.use(compression());
 

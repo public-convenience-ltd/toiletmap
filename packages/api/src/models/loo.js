@@ -1,12 +1,10 @@
-'use strict';
-
-var mongoose = require('mongoose');
-var gju = require('geojson-utils');
-var looSchema = require('./loo_schema').looSchema;
-var config = require('../config/config');
-var rp = require('request-promise');
-var _ = require('lodash');
-var earth = 6731000;
+const mongoose = require('mongoose');
+const gju = require('geojson-utils');
+const looSchema = require('./loo_schema').looSchema;
+const config = require('../config/config');
+const rp = require('request-promise');
+const _ = require('lodash');
+const earth = 6731000;
 var Loo;
 
 looSchema.statics.findNear = function(lon, lat, maxDistance, limit) {
@@ -137,7 +135,6 @@ looSchema.methods.updateArea = function*() {
   try {
     var mapit = yield rp(options);
 
-    // not sure why im getting a string back...need to investigate
     var mapitJSON = JSON.parse(mapit);
 
     var acceptableValues = [
@@ -176,7 +173,6 @@ looSchema.methods.updateArea = function*() {
       return report.save();
     });
   }
-  // yield this.save()
   return this;
 };
 

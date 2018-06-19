@@ -12,28 +12,18 @@
     "express": "^4.16.3",
     "geo-hash": "0.0.2",
     "geojson-utils": "1.1.0",
-    "getobject": "0.1.0",
     "helmet": "^3.12.1",
     "i18next-client": "1.11.4",
-    "js-cookie": "2.2.0",
     "lodash": "4.17.10",
     "moment": "2.22.2",
     "mongoose": "5.1.5",
     "mongoose-paginate": "5.0.3",
     "mongoose-timestamp": "0.6.0",
-    "object-path": "0.11.4",
     "opening_hours": "3.5.0",
     "request": "2.87.0",
     "request-promise": "4.2.2"
   },
   "devDependencies": {
-    "async": "2.6.1",
-    "chai": "4.1.2",
-    "istanbul": "0.4.5",
-    "mocha": "3.5.3",
-    "nock": "9.3.3",
-    "nodemon": "1.17.5",
-    "standard": "^8.2.0",
     "supertest": "3.1.0",
     "jest": "23.1.0"
   },
@@ -43,9 +33,6 @@
   },
   "homepage": "https://github.com/neontribe/gbptm",
   "keywords": [
-    "geoJSON",
-    "koa",
-    "mongodb",
     "public",
     "toilet",
     "uk"
@@ -57,9 +44,8 @@
     "url": "git://github.com/neontribe/gbptm.git"
   },
   "scripts": {
-    "dev": "nodemon -e js --inspect app.js",
+    "dev": "node src/app.js",
     "start": "node src/app.js",
-    "lint": "standard",
     "test": "NODE_ENV=test jest --forceExit",
     "pullconfig": "heroku config:pull --overwrite --interactive --app gbptm-stage"
   }

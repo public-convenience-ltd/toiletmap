@@ -1,11 +1,9 @@
-'use strict';
-
-var mongoose = require('mongoose');
-var config = require('../config/config');
-var _ = require('lodash');
-var Loo = require('./loo');
-var looReportSchema = require('./loo_schema').looReportSchema;
-var geohash = require('geo-hash');
+const mongoose = require('mongoose');
+const config = require('../config/config');
+const _ = require('lodash');
+const Loo = require('./loo');
+const looReportSchema = require('./loo_schema').looReportSchema;
+const geohash = require('geo-hash');
 var LooReport;
 
 /**

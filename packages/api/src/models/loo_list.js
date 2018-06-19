@@ -1,5 +1,3 @@
-'use strict';
-
 function LooList(loos) {
   this.type = 'FeatureCollection';
   this.features = loos || [];

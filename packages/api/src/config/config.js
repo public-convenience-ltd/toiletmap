@@ -1,18 +1,13 @@
 'use strict';
 
-var path = require('path');
 var _ = require('lodash');
 
 var base = {
   app: {
-    root: path.normalize(path.join(__dirname, '/..')),
     port: process.env.PORT || 3003,
     env: process.env.NODE_ENV || 'development',
-    baseUrl:
-      process.env.BASE_URL || 'http://localhost:' + process.env.PORT || 3003,
   },
   auth: {
-    mount: '/auth',
     local: {
       username: process.env.LOCAL_USERNAME,
       password: process.env.LOCAL_PASSWORD,

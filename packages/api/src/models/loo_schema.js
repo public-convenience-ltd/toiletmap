@@ -1,12 +1,10 @@
-'use strict';
-
-var _ = require('lodash');
-var Schema = require('mongoose').Schema;
-var timestamps = require('mongoose-timestamp');
-var mongoosePaginate = require('mongoose-paginate');
-var geohash = require('geo-hash');
-var specs = {};
-var schemae = {};
+const _ = require('lodash');
+const Schema = require('mongoose').Schema;
+const timestamps = require('mongoose-timestamp');
+const mongoosePaginate = require('mongoose-paginate');
+const geohash = require('geo-hash');
+const specs = {};
+const schemae = {};
 
 specs.looCore = {
   type: { type: String, default: 'Feature' },
