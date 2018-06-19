@@ -1,16 +1,8 @@
 import querystring from 'querystring';
-// import OH from 'opening_hours';
+import OH from 'opening_hours';
 import Cookies from 'js-cookie';
 
 import config, { PREFERENCES_KEY, AUTH_KEY } from './config';
-
-const OH = function() {
-  return {
-    getState: function() {
-      return true;
-    },
-  };
-};
 
 var api = {};
 
