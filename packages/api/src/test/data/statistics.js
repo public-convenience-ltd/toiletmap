@@ -1,11 +1,9 @@
-var mongoose = require('mongoose');
-
-exports.Loos = [
+module.exports = [
   {
-    _id: new mongoose.mongo.ObjectId('54c234852ec4abe957b83cfb'),
+    _id: '54c234852ec4abe957b83cfb',
     geohash: 'gcqfydnh3k89',
     credibility: 10,
-    reports: [new mongoose.mongo.ObjectId('54653e03115902773aab0598')],
+    reports: ['54653e03115902773aab0598'],
     attributions: ['National Rail Enquiries'],
     sources: ['National Rail Enquiries'],
     properties: {
@@ -25,10 +23,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c2348c2ec4abe957b83e85'),
+    _id: '54c2348c2ec4abe957b83e85',
     geohash: 'gcpusdt0u2rc',
     credibility: 8,
-    reports: [new mongoose.mongo.ObjectId('545b5e39115902773aa9078b')],
+    reports: ['545b5e39115902773aa9078b'],
     attributions: ['Gaillyk'],
     sources: ['Great British Public Toilet Map'],
     properties: {
@@ -45,10 +43,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235052ec4abe957b85240'),
+    _id: '54c235052ec4abe957b85240',
     geohash: 'gcpuuj6pup3s',
     credibility: 9,
-    reports: [new mongoose.mongo.ObjectId('54149fef115902773aa8f0ae')],
+    reports: ['54149fef115902773aa8f0ae'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -76,10 +74,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c2350d2ec4abe957b8535a'),
+    _id: '54c2350d2ec4abe957b8535a',
     geohash: 'gcpkepgb8eb5',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149f7e115902773aa8ef56')],
+    reports: ['54149f7e115902773aa8ef56'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -98,10 +96,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c2350d2ec4abe957b8535b'),
+    _id: '54c2350d2ec4abe957b8535b',
     geohash: 'gcpkdwe0hd9k',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149f7e115902773aa8ef55')],
+    reports: ['54149f7e115902773aa8ef55'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -122,10 +120,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c234852ec4abe957b83cf8'),
+    _id: '54c234852ec4abe957b83cf8',
     geohash: 'gcqd7fy2sr3y',
     credibility: 10,
-    reports: [new mongoose.mongo.ObjectId('54653e05115902773aab059b')],
+    reports: ['54653e05115902773aab059b'],
     attributions: ['National Rail Enquiries'],
     sources: ['National Rail Enquiries'],
     properties: {
@@ -142,7 +140,7 @@ exports.Loos = [
         'onward travel':
           '<p>Information to plan your onward journey is available in a printable format',
         'taxi rank':
-          '<p>Selly Oak (SLY) Station Elite 0121 415 5000 Castle 0121 472 2222 BBs 0121 693 3333</p>',
+          '<p>Selly Oak (SLY Station Elite 0121 415 5000 Castle 0121 472 2222 BBs 0121 693 3333</p>',
         'rail replacement note':
           '<p>In the event of engineering the bus/coach will collect from: Front of station building in turnaround area.</p>',
         type: 'Stands, Lockers',
@@ -155,7 +153,7 @@ exports.Loos = [
         'impaired mobility set down available': 'Y',
         'step free access available': 'Y',
         'step free access note':
-          '<p>Level access to Booking Hall and platform 1 (trains to Birmingham). Also step-free side gate direct to platform 1. Footbridge with 34 steps up and down to platform 2. Alternative step-free entrance to platform 2 via 1:10 gradient ramp. Step-free route between platforms is via street (380m).</p>',
+          '<p>Level access to Booking Hall and platform 1 (trains to Birmingham. Also step-free side gate direct to platform 1. Footbridge with 34 steps up and down to platform 2. Alternative step-free entrance to platform 2 via 1:10 gradient ramp. Step-free route between platforms is via street (380m.</p>',
         'national key toilets available': 'Y',
         'accessible phones': '<p>Public telephones are not accessible</p>',
         'accessible taxis': '<p>Accessible taxis are not available</p>',
@@ -209,7 +207,7 @@ exports.Loos = [
         'ticket machine available': 'Y',
         'pre-purchase collection': 'TicketMachine',
         'ticket office location':
-          '<p>Two Ticket Vending Machines are located at Selly Oak, one in the Booking Hall and&nbsp;one on the Birmingham platform (platform one).</p>',
+          '<p>Two Ticket Vending Machines are located at Selly Oak, one in the Booking Hall and&nbsp;one on the Birmingham platform (platform one.</p>',
         'ticket office available': 'Y',
         'ticket office opening note': 'None',
         'help points available': 'Y',
@@ -246,10 +244,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c234852ec4abe957b83d12'),
+    _id: '54c234852ec4abe957b83d12',
     geohash: 'u10yfqtghnne',
     credibility: 10,
-    reports: [new mongoose.mongo.ObjectId('54653df7115902773aab057e')],
+    reports: ['54653df7115902773aab057e'],
     attributions: ['National Rail Enquiries'],
     sources: ['National Rail Enquiries'],
     properties: {
@@ -360,10 +358,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c2348a2ec4abe957b83df7'),
+    _id: '54c2348a2ec4abe957b83df7',
     geohash: 'gcx6jy5nnfpv',
     credibility: 15,
-    reports: [new mongoose.mongo.ObjectId('54635680115902773aab0480')],
+    reports: ['54635680115902773aab0480'],
     attributions: ['Chris Brown'],
     sources: ['Great British Public Toilet Map'],
     properties: {
@@ -387,13 +385,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235022ec4abe957b85206'),
+    _id: '54c235022ec4abe957b85206',
     geohash: 'gcpvj6xf5hwz',
     credibility: 11,
-    reports: [
-      new mongoose.mongo.ObjectId('5414a013115902773aa8f129'),
-      new mongoose.mongo.ObjectId('5746fccdd0e3fbe3bd5e3381'),
-    ],
+    reports: ['5414a013115902773aa8f129', '5746fccdd0e3fbe3bd5e3381'],
     attributions: ['JimDim7', 'JimDim7'],
     sources: [
       'Great British Public Toilet Map',
@@ -416,13 +411,10 @@ exports.Loos = [
     __v: 1,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235022ec4abe957b85207'),
+    _id: '54c235022ec4abe957b85207',
     geohash: 'gcpvj0v1jgqx',
     credibility: 6,
-    reports: [
-      new mongoose.mongo.ObjectId('5414a00f115902773aa8f11c'),
-      new mongoose.mongo.ObjectId('5414a00f115902773aa8f11b'),
-    ],
+    reports: ['5414a00f115902773aa8f11c', '5414a00f115902773aa8f11b'],
     attributions: ['Open Street Map', 'Open Street Map'],
     sources: ['http://overpass-api.de', 'http://overpass-api.de'],
     properties: {
@@ -445,10 +437,10 @@ exports.Loos = [
     __v: 1,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235022ec4abe957b85208'),
+    _id: '54c235022ec4abe957b85208',
     geohash: 'gcpvj1u4yv07',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('5414a00f115902773aa8f11a')],
+    reports: ['5414a00f115902773aa8f11a'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -467,10 +459,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235022ec4abe957b85209'),
+    _id: '54c235022ec4abe957b85209',
     geohash: 'gcpuvrc4nh4q',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('5414a00e115902773aa8f117')],
+    reports: ['5414a00e115902773aa8f117'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -489,13 +481,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235022ec4abe957b8520b'),
+    _id: '54c235022ec4abe957b8520b',
     geohash: 'gcpvh8xeb6kt',
     credibility: 6,
-    reports: [
-      new mongoose.mongo.ObjectId('5414a00a115902773aa8f10a'),
-      new mongoose.mongo.ObjectId('5414a00a115902773aa8f109'),
-    ],
+    reports: ['5414a00a115902773aa8f10a', '5414a00a115902773aa8f109'],
     attributions: ['Open Street Map', 'Open Street Map'],
     sources: ['http://overpass-api.de', 'http://overpass-api.de'],
     properties: {
@@ -514,10 +503,10 @@ exports.Loos = [
     __v: 1,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235022ec4abe957b8520c'),
+    _id: '54c235022ec4abe957b8520c',
     geohash: 'gcpvhqj654x5',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('5414a009115902773aa8f108')],
+    reports: ['5414a009115902773aa8f108'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -537,10 +526,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b8520d'),
+    _id: '54c235032ec4abe957b8520d',
     geohash: 'gcpv5ghj6ct7',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('5414a007115902773aa8f101')],
+    reports: ['5414a007115902773aa8f101'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -559,10 +548,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b8520e'),
+    _id: '54c235032ec4abe957b8520e',
     geohash: 'gcpv5frr4ryh',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('5414a007115902773aa8f100')],
+    reports: ['5414a007115902773aa8f100'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -584,10 +573,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b8520f'),
+    _id: '54c235032ec4abe957b8520f',
     geohash: 'gcpvh25vbrzv',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('5414a006115902773aa8f0fd')],
+    reports: ['5414a006115902773aa8f0fd'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -606,10 +595,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b85210'),
+    _id: '54c235032ec4abe957b85210',
     geohash: 'gcpv5dnwpgbu',
     credibility: 9,
-    reports: [new mongoose.mongo.ObjectId('5414a005115902773aa8f0fa')],
+    reports: ['5414a005115902773aa8f0fa'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -637,13 +626,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b85211'),
+    _id: '54c235032ec4abe957b85211',
     geohash: 'gcpv5dpx6rg3',
     credibility: 11,
-    reports: [
-      new mongoose.mongo.ObjectId('5414a005115902773aa8f0f9'),
-      new mongoose.mongo.ObjectId('56a0bf74d0e3fbe3bd5e3197'),
-    ],
+    reports: ['5414a005115902773aa8f0f9', '56a0bf74d0e3fbe3bd5e3197'],
     attributions: ['Laurence Parmenter', 'Laurence Parmenter'],
     sources: [
       'Great British Public Toilet Map',
@@ -668,10 +654,10 @@ exports.Loos = [
     __v: 1,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b85212'),
+    _id: '54c235032ec4abe957b85212',
     geohash: 'gcpv569khen0',
     credibility: 8,
-    reports: [new mongoose.mongo.ObjectId('5414a004115902773aa8f0f6')],
+    reports: ['5414a004115902773aa8f0f6'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -695,10 +681,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b85213'),
+    _id: '54c235032ec4abe957b85213',
     geohash: 'gcpuzwnzstuw',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('5414a003115902773aa8f0f2')],
+    reports: ['5414a003115902773aa8f0f2'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -717,13 +703,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b85214'),
+    _id: '54c235032ec4abe957b85214',
     geohash: 'gcpuzgf3cmsn',
     credibility: 18,
-    reports: [
-      new mongoose.mongo.ObjectId('5414a002115902773aa8f0ee'),
-      new mongoose.mongo.ObjectId('5752643dd0e3fbe3bd5e355e'),
-    ],
+    reports: ['5414a002115902773aa8f0ee', '5752643dd0e3fbe3bd5e355e'],
     attributions: ['Anthony Williams', 'Anthony Williams'],
     sources: [
       'Great British Public Toilet Map',
@@ -758,10 +741,10 @@ exports.Loos = [
     __v: 1,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b85215'),
+    _id: '54c235032ec4abe957b85215',
     geohash: 'gcpuz702jrpc',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('5414a001115902773aa8f0ed')],
+    reports: ['5414a001115902773aa8f0ed'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -782,10 +765,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b85216'),
+    _id: '54c235032ec4abe957b85216',
     geohash: 'gcpuz4uxce3j',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('5414a001115902773aa8f0ec')],
+    reports: ['5414a001115902773aa8f0ec'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -804,10 +787,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b85217'),
+    _id: '54c235032ec4abe957b85217',
     geohash: 'gcpuz517n8m7',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('5414a001115902773aa8f0eb')],
+    reports: ['5414a001115902773aa8f0eb'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -826,10 +809,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b85218'),
+    _id: '54c235032ec4abe957b85218',
     geohash: 'gcpuzb0r7j66',
     credibility: 9,
-    reports: [new mongoose.mongo.ObjectId('5414a001115902773aa8f0ea')],
+    reports: ['5414a001115902773aa8f0ea'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -856,10 +839,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b85219'),
+    _id: '54c235032ec4abe957b85219',
     geohash: 'gcpuz8qezywv',
     credibility: 9,
-    reports: [new mongoose.mongo.ObjectId('5414a000115902773aa8f0e9')],
+    reports: ['5414a000115902773aa8f0e9'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -888,10 +871,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b8521a'),
+    _id: '54c235032ec4abe957b8521a',
     geohash: 'gcpuxx1ue8en',
     credibility: 9,
-    reports: [new mongoose.mongo.ObjectId('5414a000115902773aa8f0e8')],
+    reports: ['5414a000115902773aa8f0e8'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -917,10 +900,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b8521b'),
+    _id: '54c235032ec4abe957b8521b',
     geohash: 'gcpuz4s6ejsd',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('5414a000115902773aa8f0e7')],
+    reports: ['5414a000115902773aa8f0e7'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -939,10 +922,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b8521c'),
+    _id: '54c235032ec4abe957b8521c',
     geohash: 'gcpuz4sk08ud',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149fff115902773aa8f0e6')],
+    reports: ['54149fff115902773aa8f0e6'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -961,10 +944,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b8521d'),
+    _id: '54c235032ec4abe957b8521d',
     geohash: 'gcpuz4tyxydy',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149fff115902773aa8f0e5')],
+    reports: ['54149fff115902773aa8f0e5'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -983,10 +966,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b8521e'),
+    _id: '54c235032ec4abe957b8521e',
     geohash: 'gcpuz4t6dgff',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149fff115902773aa8f0e4')],
+    reports: ['54149fff115902773aa8f0e4'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1005,10 +988,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b8521f'),
+    _id: '54c235032ec4abe957b8521f',
     geohash: 'gcpuz4vbj30h',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149fff115902773aa8f0e3')],
+    reports: ['54149fff115902773aa8f0e3'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1027,10 +1010,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b85220'),
+    _id: '54c235032ec4abe957b85220',
     geohash: 'gcpuz4st9ckn',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149ffe115902773aa8f0e2')],
+    reports: ['54149ffe115902773aa8f0e2'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1051,10 +1034,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b85221'),
+    _id: '54c235032ec4abe957b85221',
     geohash: 'gcpuz4v8u8jx',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149ffe115902773aa8f0e1')],
+    reports: ['54149ffe115902773aa8f0e1'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1073,10 +1056,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b85222'),
+    _id: '54c235032ec4abe957b85222',
     geohash: 'gcpuz4tf5q1j',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149ffe115902773aa8f0e0')],
+    reports: ['54149ffe115902773aa8f0e0'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1095,10 +1078,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b85223'),
+    _id: '54c235032ec4abe957b85223',
     geohash: 'gcpuz4m07p1w',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149ffd115902773aa8f0df')],
+    reports: ['54149ffd115902773aa8f0df'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1118,10 +1101,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235032ec4abe957b85224'),
+    _id: '54c235032ec4abe957b85224',
     geohash: 'gcpuz4kc68ke',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149ffd115902773aa8f0de')],
+    reports: ['54149ffd115902773aa8f0de'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1140,10 +1123,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235042ec4abe957b85225'),
+    _id: '54c235042ec4abe957b85225',
     geohash: 'gcpuz4w363gz',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149ffd115902773aa8f0dd')],
+    reports: ['54149ffd115902773aa8f0dd'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1162,10 +1145,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235042ec4abe957b85226'),
+    _id: '54c235042ec4abe957b85226',
     geohash: 'gcpuz4gb3hz4',
     credibility: 9,
-    reports: [new mongoose.mongo.ObjectId('54149ffc115902773aa8f0dc')],
+    reports: ['54149ffc115902773aa8f0dc'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1191,10 +1174,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235042ec4abe957b85227'),
+    _id: '54c235042ec4abe957b85227',
     geohash: 'gcpuvvm83yzn',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149ffc115902773aa8f0da')],
+    reports: ['54149ffc115902773aa8f0da'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1216,10 +1199,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235042ec4abe957b85228'),
+    _id: '54c235042ec4abe957b85228',
     geohash: 'gcpuy6q4s7yx',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149ffb115902773aa8f0d7')],
+    reports: ['54149ffb115902773aa8f0d7'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1240,10 +1223,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235042ec4abe957b85229'),
+    _id: '54c235042ec4abe957b85229',
     geohash: 'gcpuvdtk8g7t',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149ffa115902773aa8f0d4')],
+    reports: ['54149ffa115902773aa8f0d4'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1262,10 +1245,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235042ec4abe957b8522a'),
+    _id: '54c235042ec4abe957b8522a',
     geohash: 'gcpux457d7jw',
     credibility: 8,
-    reports: [new mongoose.mongo.ObjectId('54149ffa115902773aa8f0d3')],
+    reports: ['54149ffa115902773aa8f0d3'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1289,10 +1272,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235042ec4abe957b8522b'),
+    _id: '54c235042ec4abe957b8522b',
     geohash: 'gcpuwfmdtdz6',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149ffa115902773aa8f0d2')],
+    reports: ['54149ffa115902773aa8f0d2'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1311,10 +1294,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235042ec4abe957b8522c'),
+    _id: '54c235042ec4abe957b8522c',
     geohash: 'gcpurt1630mv',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149ff9115902773aa8f0d1')],
+    reports: ['54149ff9115902773aa8f0d1'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1333,10 +1316,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235042ec4abe957b8522d'),
+    _id: '54c235042ec4abe957b8522d',
     geohash: 'gcpuwu30de89',
     credibility: 9,
-    reports: [new mongoose.mongo.ObjectId('54149ff9115902773aa8f0d0')],
+    reports: ['54149ff9115902773aa8f0d0'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1362,10 +1345,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235042ec4abe957b8522e'),
+    _id: '54c235042ec4abe957b8522e',
     geohash: 'gcpuwext7fjj',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149ff9115902773aa8f0cf')],
+    reports: ['54149ff9115902773aa8f0cf'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1384,10 +1367,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235042ec4abe957b8522f'),
+    _id: '54c235042ec4abe957b8522f',
     geohash: 'gcpuws6w6mtw',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149ff8115902773aa8f0ce')],
+    reports: ['54149ff8115902773aa8f0ce'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
@@ -1406,10 +1389,10 @@ exports.Loos = [
     __v: 0,
   },
   {
-    _id: new mongoose.mongo.ObjectId('54c235042ec4abe957b85230'),
+    _id: '54c235042ec4abe957b85230',
     geohash: 'gcpuwsejzuzk',
     credibility: 6,
-    reports: [new mongoose.mongo.ObjectId('54149ff8115902773aa8f0cd')],
+    reports: ['54149ff8115902773aa8f0cd'],
     attributions: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {

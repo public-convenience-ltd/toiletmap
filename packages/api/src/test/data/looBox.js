@@ -1,10 +1,8 @@
-var mongoose = require('mongoose');
-
-exports.Loos = [
+module.exports = [
   {
     __v: 0,
     geohash: 'gcwh6f3gh2gw',
-    _id: new mongoose.mongo.ObjectId('578f414af078f8c90b3ff70a'),
+    _id: '578f414af078f8c90b3ff70a',
     reports: [],
     attributions: [],
     sources: [],
@@ -21,7 +19,7 @@ exports.Loos = [
   {
     __v: 0,
     geohash: 'u19ph9zvxy27',
-    _id: new mongoose.mongo.ObjectId('578f414af078f8c90b3ff70b'),
+    _id: '578f414af078f8c90b3ff70b',
     reports: [],
     attributions: [],
     sources: [],
@@ -38,7 +36,7 @@ exports.Loos = [
   {
     __v: 0,
     geohash: 'gcv3vffmv7th',
-    _id: new mongoose.mongo.ObjectId('578f414af078f8c90b3ff70c'),
+    _id: '578f414af078f8c90b3ff70c',
     reports: [],
     attributions: [],
     sources: [],
@@ -55,7 +53,7 @@ exports.Loos = [
   {
     __v: 0,
     geohash: 'gcnxy44z6wqv',
-    _id: new mongoose.mongo.ObjectId('578f414af078f8c90b3ff70d'),
+    _id: '578f414af078f8c90b3ff70d',
     reports: [],
     attributions: [],
     sources: [],
@@ -72,7 +70,7 @@ exports.Loos = [
   {
     __v: 0,
     geohash: 'gfsbyps8ucjp',
-    _id: new mongoose.mongo.ObjectId('578f414af078f8c90b3ff70e'),
+    _id: '578f414af078f8c90b3ff70e',
     reports: [],
     attributions: [],
     sources: [],
@@ -89,7 +87,7 @@ exports.Loos = [
   {
     __v: 0,
     geohash: 'gcxpecv938t9',
-    _id: new mongoose.mongo.ObjectId('578f414af078f8c90b3ff70f'),
+    _id: '578f414af078f8c90b3ff70f',
     reports: [],
     attributions: [],
     sources: [],
@@ -106,7 +104,7 @@ exports.Loos = [
   {
     __v: 0,
     geohash: 'gfwz3kg0rcyq',
-    _id: new mongoose.mongo.ObjectId('578f414af078f8c90b3ff710'),
+    _id: '578f414af078f8c90b3ff710',
     reports: [],
     attributions: [],
     sources: [],
@@ -123,7 +121,7 @@ exports.Loos = [
   {
     __v: 0,
     geohash: 'u409kjbhv8my',
-    _id: new mongoose.mongo.ObjectId('578f414af078f8c90b3ff711'),
+    _id: '578f414af078f8c90b3ff711',
     reports: [],
     attributions: [],
     sources: [],
@@ -140,7 +138,7 @@ exports.Loos = [
   {
     __v: 0,
     geohash: 'gcrgnhwqqkqz',
-    _id: new mongoose.mongo.ObjectId('578f414af078f8c90b3ff712'),
+    _id: '578f414af078f8c90b3ff712',
     reports: [],
     attributions: [],
     sources: [],
@@ -157,7 +155,7 @@ exports.Loos = [
   {
     __v: 0,
     geohash: 'gczy2vrnnj4p',
-    _id: new mongoose.mongo.ObjectId('578f414af078f8c90b3ff713'),
+    _id: '578f414af078f8c90b3ff713',
     reports: [],
     attributions: [],
     sources: [],
@@ -174,7 +172,7 @@ exports.Loos = [
   {
     __v: 0,
     geohash: 'gc79y7zur89r',
-    _id: new mongoose.mongo.ObjectId('578f414af078f8c90b3ff714'),
+    _id: '578f414af078f8c90b3ff714',
     reports: [],
     attributions: [],
     sources: [],
@@ -191,7 +189,7 @@ exports.Loos = [
   {
     __v: 0,
     geohash: 'gfs3r2ddn69b',
-    _id: new mongoose.mongo.ObjectId('578f414af078f8c90b3ff715'),
+    _id: '578f414af078f8c90b3ff715',
     reports: [],
     attributions: [],
     sources: [],

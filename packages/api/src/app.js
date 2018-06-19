@@ -1,4 +1,3 @@
-'use strict';
 const config = require('./config/config');
 const express = require('express');
 const helmet = require('helmet');
@@ -10,31 +9,31 @@ app.use(helmet());
 app.use(compression());
 
 // Add public routes for loos
-const looRoutes = require('./api/public/loo');
+const looRoutes = require('./routes/public/loo');
 looRoutes.forEach(route => {
   app[route.method](route.path, route.handler);
 });
 
 // Add public routes for reports
-const reportRoutes = require('./api/public/report');
+const reportRoutes = require('./routes/public/report');
 reportRoutes.forEach(route => {
   app[route.method](route.path, route.handler);
 });
 
 // Add public routes for search
-const searchRoutes = require('./api/public/search');
+const searchRoutes = require('./routes/public/search');
 searchRoutes.forEach(route => {
   app[route.method](route.path, route.handler);
 });
 
 // Add public routes for statistics
-const statsRoutes = require('./api/public/statistics');
+const statsRoutes = require('./routes/public/statistics');
 statsRoutes.forEach(route => {
   app[route.method](route.path, route.handler);
 });
 
 // Add public routes for areas
-const areasRoutes = require('./api/public/areas');
+const areasRoutes = require('./routes/public/areas');
 areasRoutes.forEach(route => {
   app[route.method](route.path, route.handler);
 });

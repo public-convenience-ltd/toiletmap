@@ -10,8 +10,6 @@ var base = {
     env: process.env.NODE_ENV || 'development',
     baseUrl:
       process.env.BASE_URL || 'http://localhost:' + process.env.PORT || 3003,
-    readonly: process.env.READONLY || false,
-    enableHttps: false,
   },
   auth: {
     mount: '/auth',
@@ -70,16 +68,8 @@ var platforms = {
       },
     },
   },
-  production: {
-    app: {
-      enableHttps: true,
-    },
-  },
-  staging: {
-    app: {
-      enableHttps: true,
-    },
-  },
+  production: {},
+  staging: {},
   importer: {},
 };
 

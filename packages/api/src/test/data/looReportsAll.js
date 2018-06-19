@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-exports.Reports = [
+module.exports = [
   {
     _id: new mongoose.mongo.ObjectId(),
     __v: 0,
