@@ -1,13 +1,11 @@
-'use strict';
+const Loo = require('../../models/loo');
+const _ = require('lodash');
+const routes = [];
 
-var Loo = require('../../models/loo');
-var routes = {};
-var _ = require('lodash');
-
-routes.admin_geo = {
-  handler: function*() {
+routes.push({
+  handler: async (req, res) => {
     // gets list of area lists
-    var data = yield Loo.aggregate([
+    const data = await Loo.aggregate([
       {
         $match: { 'properties.area': { $exists: true } },
       },
@@ -23,7 +21,7 @@ routes.admin_geo = {
         },
       },
     ]);
-    var body = _.reduce(
+    const result = _.reduce(
       data,
       function(acc, d) {
         acc[d._id] = d.areaNames;
@@ -31,11 +29,10 @@ routes.admin_geo = {
       },
       {}
     );
-    this.status = 200;
-    this.body = yield body;
+    res.status(200).json(result);
   },
   path: '/admin_geo/areas',
   method: 'get',
-};
+});
 
 module.exports = routes;

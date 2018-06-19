@@ -1,12 +1,10 @@
-'use strict';
+const Loo = require('../../models/loo');
+const LooReport = require('../../models/loo_report');
+const _ = require('lodash');
+const moment = require('moment');
+const routes = [];
 
-var Loo = require('../../models/loo');
-var LooReport = require('../../models/loo_report');
-var _ = require('lodash');
-var moment = require('moment');
-var routes = {};
-
-var scopeQuery = function(query, options) {
+function scopeQuery(query, options) {
   var start = options.start ? moment(options.start) : moment('2009-01-01');
   var end = options.end ? moment(options.end) : moment();
   var area = options.area || 'All';
@@ -38,117 +36,126 @@ var scopeQuery = function(query, options) {
   }
 
   return query;
-};
+}
 
-routes.counters = {
-  handler: function*() {
-    var qWithInactive = _.merge({ includeInactive: true }, this.query);
-    var counts = yield {
-      activeLoos: Loo.count(scopeQuery({}, this.query)).exec(),
-      loosCount: Loo.count(scopeQuery({}, qWithInactive)).exec(),
-      looReports: LooReport.count(scopeQuery({}, qWithInactive)).exec(),
-      uiReports: LooReport.count(
+routes.push({
+  handler: async (req, res) => {
+    const qWithInactive = _.merge({ includeInactive: true }, req.query);
+    const [
+      activeLoos,
+      loosCount,
+      looReports,
+      uiReports,
+      removals,
+      multiReportLoos,
+    ] = await Promise.all([
+      Loo.count(scopeQuery({}, req.query)).exec(),
+      Loo.count(scopeQuery({}, qWithInactive)).exec(),
+      LooReport.count(scopeQuery({}, qWithInactive)).exec(),
+      LooReport.count(
         scopeQuery({ collectionMethod: 'api' }, qWithInactive)
       ).exec(),
-      removals: LooReport.count(
+      LooReport.count(
         scopeQuery(
           { 'properties.removal_reason': { $exists: true } },
           qWithInactive
         )
       ).exec(),
-      multiReportLoos: Loo.count(
+      Loo.count(
         scopeQuery({ 'reports.1': { $exists: true } }, qWithInactive)
       ).exec(),
-    };
-    counts.importedReports = counts.looReports - counts.uiReports;
-    counts.inactiveLoos = counts.loosCount - counts.activeLoos;
+    ]);
+    const importedReports = looReports - uiReports;
+    const inactiveLoos = loosCount - activeLoos;
 
-    this.status = 200;
-
-    this.body = yield {
-      'Total Toilets Added': counts.loosCount,
-      'Active Toilets Added': counts.activeLoos,
-      'Inactive/Removed Toilets': counts.inactiveLoos,
-      'Total Loo Reports Recorded': counts.looReports,
-      'Total Reports via Web UI/API': counts.uiReports,
-      'Reports from Data Collections': counts.importedReports,
-      'Removal Reports Submitted': counts.removals,
-      'Loos with Multiple Reports': counts.multiReportLoos,
-    };
+    res.status(200).json({
+      'Total Toilets Added': loosCount,
+      'Active Toilets Added': activeLoos,
+      'Inactive/Removed Toilets': inactiveLoos,
+      'Total Loo Reports Recorded': looReports,
+      'Total Reports via Web UI/API': uiReports,
+      'Reports from Data Collections': importedReports,
+      'Removal Reports Submitted': removals,
+      'Loos with Multiple Reports': multiReportLoos,
+    });
   },
   path: '/statistics/counters',
   method: 'get',
-};
+});
 
-routes.proportions = {
-  handler: function*() {
+routes.push({
+  handler: async (req, res) => {
     // used for percentages
-    var data = yield {
-      publicLoos: Loo.count(
-        scopeQuery({ 'properties.access': 'public' }, this.query)
+    const [
+      publicLoos,
+      unknownAccessLoos,
+      babyChange,
+      babyChangeUnknown,
+      activeLoos,
+      inaccessibleLoos,
+      accessibleLoosUnknown,
+      loosCount,
+      inactiveLoos,
+    ] = await Promise.all([
+      Loo.count(
+        scopeQuery({ 'properties.access': 'public' }, req.query)
       ).exec(),
-      unknownAccessLoos: Loo.count(
-        scopeQuery({ 'properties.access': 'none' }, this.query)
+      Loo.count(scopeQuery({ 'properties.access': 'none' }, req.query)).exec(),
+      Loo.count(
+        scopeQuery({ 'properties.babyChange': 'true' }, req.query)
       ).exec(),
-      babyChange: Loo.count(
-        scopeQuery({ 'properties.babyChange': 'true' }, this.query)
+      Loo.count(
+        scopeQuery({ 'properties.babyChange': 'Not Known' }, req.query)
       ).exec(),
-      babyChangeUnknown: Loo.count(
-        scopeQuery({ 'properties.babyChange': 'Not Known' }, this.query)
-      ).exec(),
-      activeLoos: Loo.count(scopeQuery({}, this.query)).exec(),
-      inaccessibleLoos: Loo.count(
+      Loo.count(scopeQuery({}, req.query)).exec(),
+      Loo.count(
         scopeQuery(
           {
             'properties.accessibleType': 'none',
           },
-          this.query
+          req.query
         )
       ).exec(),
-      accessibleLoosUnknown: Loo.count(
+      Loo.count(
         scopeQuery(
           {
             'properties.accessibleType': { $exists: false },
           },
-          this.query
+          req.query
         )
       ).exec(),
-      loosCount: Loo.count(scopeQuery({}, this.query)).exec(),
-      inactiveLoos: Loo.count(
-        scopeQuery({}, _.merge({ includeInactive: true }, this.query))
-      ),
-    };
+      Loo.count(scopeQuery({}, req.query)).exec(),
+      Loo.count(scopeQuery({}, _.merge({ includeInactive: true }, req.query))),
+    ]);
 
-    this.status = 200;
-
-    this.body = yield {
-      'Active Loos': [data.activeLoos, data.inactiveLoos - data.activeLoos, 0],
+    res.status(200).json({
+      'Active Loos': [activeLoos, inactiveLoos - activeLoos, 0],
       'Public Loos': [
-        data.publicLoos,
-        data.loosCount - (data.publicLoos + data.unknownAccessLoos),
-        data.unknownAccessLoos,
+        publicLoos,
+        loosCount - (publicLoos + unknownAccessLoos),
+        unknownAccessLoos,
       ],
       'Baby Changing': [
-        data.babyChange,
-        data.loosCount - (data.babyChange + data.babyChangeUnknown),
-        data.babyChangeUnknown,
+        babyChange,
+        loosCount - (babyChange + babyChangeUnknown),
+        babyChangeUnknown,
       ],
       'Accessible Loos': [
-        data.loosCount - (data.inaccessibleLoos + data.accessibleLoosUnknown),
-        data.inaccessibleLoos,
-        data.accessibleLoosUnknown,
+        loosCount - (inaccessibleLoos + accessibleLoosUnknown),
+        inaccessibleLoos,
+        accessibleLoosUnknown,
       ],
-    };
+    });
   },
   path: '/statistics/proportions',
   method: 'get',
-};
+});
 
-routes.contributors = {
-  handler: function*() {
-    var scope = scopeQuery({}, this.query);
+routes.push({
+  handler: async (req, res) => {
+    const scope = scopeQuery({}, req.query);
     scope.$and.push({ type: 'Feature' });
-    var contributors = yield LooReport.aggregate([
+    const contributors = await LooReport.aggregate([
       {
         $match: scope,
       },
@@ -162,23 +169,24 @@ routes.contributors = {
       },
     ]).exec();
 
-    this.status = 200;
-    this.body = yield _.transform(
-      contributors,
-      function(acc, val) {
-        acc[val._id] = val.reports;
-      },
-      {}
+    res.status(200).json(
+      _.transform(
+        contributors,
+        function(acc, val) {
+          acc[val._id] = val.reports;
+        },
+        {}
+      )
     );
   },
   path: '/statistics/contributors',
   method: 'get',
-};
+});
 
-routes.areas = {
-  handler: function*() {
-    var scope = scopeQuery({}, _.merge({ includeInactive: true }, this.query));
-    var areas = yield Loo.aggregate([
+routes.push({
+  handler: async (req, res) => {
+    const scope = scopeQuery({}, _.merge({ includeInactive: true }, req.query));
+    const areas = await Loo.aggregate([
       {
         $match: scope,
       },
@@ -263,11 +271,10 @@ routes.areas = {
       },
     ]).exec();
 
-    this.status = 200;
-    this.body = areas;
+    res.status(200).json(areas);
   },
   path: '/statistics/areas',
   method: 'get',
-};
+});
 
 module.exports = routes;

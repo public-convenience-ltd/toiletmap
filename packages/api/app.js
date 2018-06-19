@@ -1,26 +1,50 @@
 'use strict';
-var config = require('./config/config');
-var koaConfig = require('./config/koa');
-require('./config/mongo');
-var co = require('co');
-var koa = require('koa');
-var app = koa();
+const config = require('./config/config');
+const express = require('express');
+const helmet = require('helmet');
+const compression = require('compression');
 require('./config/mongo'); // don't much like this bare require
 
-/* eslint-disable-next-line require-yield */
-app.init = co.wrap(function*(config) {
-  koaConfig(app, config);
-  app.server = app.listen(config.app.port);
+const app = express();
+app.use(helmet());
+app.use(compression());
 
-  if (config.app.env !== 'test') {
-    /* eslint-disable-next-line no-console */
-    console.log('gbptm-api server listening on port ' + config.app.port);
-  }
+// Add public routes for loos
+const looRoutes = require('./api/public/loo');
+looRoutes.forEach(route => {
+  app[route.method](route.path, route.handler);
+});
+
+// Add public routes for reports
+const reportRoutes = require('./api/public/report');
+reportRoutes.forEach(route => {
+  app[route.method](route.path, route.handler);
+});
+
+// Add public routes for search
+const searchRoutes = require('./api/public/search');
+searchRoutes.forEach(route => {
+  app[route.method](route.path, route.handler);
+});
+
+// Add public routes for statistics
+const statsRoutes = require('./api/public/statistics');
+statsRoutes.forEach(route => {
+  app[route.method](route.path, route.handler);
+});
+
+// Add public routes for areas
+const areasRoutes = require('./api/public/areas');
+areasRoutes.forEach(route => {
+  app[route.method](route.path, route.handler);
 });
 
 // auto-init if this app is not being initialised by another module
 if (!module.parent) {
-  app.init(config);
+  app.listen(config.app.port, () =>
+    /* eslint-disable-next-line no-console */
+    console.log(`Listening on port ${config.app.port}`)
+  );
 }
 
 module.exports = app;

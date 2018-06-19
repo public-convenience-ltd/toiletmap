@@ -1,24 +1,21 @@
-'use strict';
+const Loo = require('../../models/loo');
+const _ = require('lodash');
+const routes = [];
 
-var Loo = require('../../models/loo');
-var _ = require('lodash');
-var routes = {};
-
-routes.search = {
-  handler: function*() {
-    var params = Object.assign({}, this.query);
-    var loos = [];
-    var query = {};
+routes.push({
+  handler: async (req, res) => {
+    const params = Object.assign({}, req.query);
+    const query = {};
     // Strip out the pagination we use
-    var limit = params.limit || 10;
-    var page = params.page || 1;
+    const limit = params.limit || 10;
+    const page = params.page || 1;
     delete params.limit;
     delete params.page;
 
     if (params.text) {
       query.$or = [
-        { 'properties.name': new RegExp('.*' + this.query.text + '.*', 'i') },
-        { 'properties.notes': new RegExp('.*' + this.query.text + '.*', 'i') },
+        { 'properties.name': new RegExp('.*' + req.query.text + '.*', 'i') },
+        { 'properties.notes': new RegExp('.*' + req.query.text + '.*', 'i') },
       ];
     }
     delete params.text;
@@ -57,13 +54,12 @@ routes.search = {
       delete params[name];
     });
 
-    loos = yield Loo.paginate(query, { page: page, limit: limit });
+    const loos = await Loo.paginate(query, { page: page, limit: limit });
 
-    this.status = 200;
-    this.body = loos;
+    res.status(200).json(loos);
   },
   path: '/search',
   method: 'get',
-};
+});
 
 module.exports = routes;

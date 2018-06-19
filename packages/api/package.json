@@ -10,9 +10,12 @@
   "dependencies": {
     "co": "4.6.0",
     "co-body": "4.2.0",
+    "compression": "^1.7.2",
+    "express": "^4.16.3",
     "geo-hash": "0.0.2",
     "geojson-utils": "1.1.0",
     "getobject": "0.1.0",
+    "helmet": "^3.12.1",
     "i18next-client": "1.11.4",
     "js-cookie": "2.2.0",
     "koa": "^1.2.0",
