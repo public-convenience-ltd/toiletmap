@@ -2,7 +2,6 @@
   "name": "@neontribe/gbptm-ui",
   "version": "2.0.0",
   "private": true,
-  "homepage": "./",
   "devDependencies": {
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
@@ -40,7 +39,6 @@
     "prebuild": "./node_modules/.bin/eslint ./src && stylelint ./src/**/*.css",
     "build": "npm run prebuild && react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
     "build-android": "npm run build; rm -r www/*; cp -r build/* www; phonegap build android",
     "build-ios": "npm run build; rm -r www/*; cp -r build/* www; phonegap build ios"
   },
