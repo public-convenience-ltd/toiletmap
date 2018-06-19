@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="200"
+   height="200"
+   id="svg3087"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="pref-male.svg"
+   inkscape:export-filename="/home/heydon/gbptm-ui/public/images/pref-baby.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs3089" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="249.28571"
+     inkscape:cy="149.28571"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1316"
+     inkscape:window-height="744"
+     inkscape:window-x="50"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3092">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-852.36218)">
+    <path
+       style="fill:#ffffff"
+       d="m 143.08697,977.71465 c -3.5296,-0.9762 -5.0831,-1.83873 -7.76557,-4.31133 -4.29206,-3.95624 -5.29066,-6.34631 -5.29066,-12.66248 0,-4.33771 0.24151,-5.79722 1.28185,-7.74679 1.5803,-2.96132 6.05619,-7.16399 8.98945,-8.44066 2.97265,-1.2938 10.36215,-1.24538 13.36589,0.0876 3.05458,1.3555 7.35646,5.41204 8.85828,8.35304 1.71539,3.35926 2.07242,9.41219 0.78399,13.2913 -1.26148,3.79796 -5.37259,8.45332 -8.95009,10.13498 -3.00253,1.41132 -8.54793,2.04803 -11.27314,1.29431 z"
+       id="path3247"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3249"
+       width="67.878784"
+       height="43.636364"
+       x="56.063503"
+       y="933.73224"
+       ry="17.777779" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect4019"
+       width="19.39394"
+       height="60.606064"
+       x="104.54836"
+       y="909.48981"
+       ry="9.69697" />
+    <rect
+       ry="9.69697"
+       y="740.07092"
+       x="522.95593"
+       height="60.606064"
+       width="19.39394"
+       id="rect4021"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       transform="matrix(0.8660254,0.5,-0.5,0.8660254,0,0)" />
+    <rect
+       transform="matrix(0.5,0.8660254,-0.8660254,0.5,0,0)"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect4023"
+       width="19.39394"
+       height="60.606064"
+       x="824.23444"
+       y="374.48734"
+       ry="9.69697" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect4025"
+       width="160"
+       height="13.737374"
+       x="22.285719"
+       y="987.06561"
+       ry="6.8686872" />
+  </g>
+</svg>

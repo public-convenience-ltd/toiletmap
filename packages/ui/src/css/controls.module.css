@@ -1,0 +1,113 @@
+@value colors: './colors.css';
+@value colorButton, colorButtonActive, colorButtonFeatured, colorButtonFeaturedActive, colorButtonCaution, colorButtonCautionActive from colors;
+
+.btn {
+	display: block;
+	width: 100%;
+	padding: 0.75rem 1rem;
+	border: 0;
+	border-radius: 0.5rem;
+	color: #fff !important;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+	background-color: colorButton;
+	cursor: pointer;
+}
+
+.btn:hover,
+.btn:focus {
+	color: #fff;
+	background-color: colorButtonActive;
+}
+
+.btnSmall {
+	composes: btn;
+	font-size: 0.85rem;
+}
+
+.btnFeatured {
+	composes: btn;
+	background-color: colorButtonFeatured;
+}
+
+.btnFeatured:hover,
+.btnFeatured:focus {
+	background-color: colorButtonFeaturedActive;
+}
+
+.btnCaution {
+	composes: btn;
+	background-color: colorButtonCaution;
+}
+
+.btnCaution:hover,
+.btnCaution:focus {
+	background-color: colorButtonCautionActive;
+}
+
+.btnStack > .btn + .btn {
+	margin-top: 0.5rem;
+}
+
+/* Fields */
+
+.text {
+	width: 100%;
+	padding: 0.5rem;
+	margin-bottom: 0.5rem;
+	border: 2px solid #222;
+	background-color: #fff;
+}
+
+.text[readonly] {
+	background-color: #eaeaea;
+	cursor: not-allowed;
+}
+
+.dropdown {
+	composes: text;
+}
+
+/* Social */
+
+.facebook {
+	composes: btn;
+	background-color: #3b5998;
+}
+
+.facebook:hover,
+.facebook:focus {
+	background-color: #2e4c8b; /* 5% darker */
+}
+
+.twitter {
+	composes: btn;
+	background-color: #55acee;
+}
+
+.twitter:hover,
+.twitter:focus {
+	background-color: #489fe1; /* 5% darker */
+}
+
+.osm {
+	composes: btn;
+	background-color: #34cb99;
+}
+
+.osm:hover,
+.osm:focus {
+	background-color: #27be8c; /* 5% darker */
+}
+
+.github {
+	composes: btn;
+	color: #222 !important;
+	background-color: #e0e0e0;
+}
+
+.github:hover,
+.github:focus {
+	background-color: #d3d3d3; /* 5% darker */
+}

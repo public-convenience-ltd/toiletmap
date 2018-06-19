@@ -1,0 +1,65 @@
+.appContainer {
+	height: 100vh;
+	display: flex;
+	align-items: stretch;
+}
+
+.mainContainer {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	min-width: 320px;
+	max-width: 350px;
+	color: #1a1a1a;
+}
+
+@media only screen
+	and (max-device-width: 750px)
+	and (orientation: portrait) {
+
+	.mainContainer {
+		max-width: none;
+	}
+}
+
+.main {
+	height: 100%;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	background-color: #fff;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	padding: 0 0.75rem;
+	background-color: #fff;
+	overflow: auto;
+}
+
+.content > div {
+	display: flex;
+	flex-direction: column;
+	flex: 1 0 auto;
+	padding-bottom: 0.75rem;
+}
+
+.mapContainer {
+	display: flex;
+	flex: 1;
+	background-color: #fff;
+}
+
+.controls {
+	display: flex;
+}
+
+.controls > * {
+	margin-bottom: 1rem;
+}
+
+.controls > * ~ * {
+	margin-left: 0.25rem;
+}
