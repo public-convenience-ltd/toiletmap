@@ -8,35 +8,9 @@ const app = express();
 app.use(helmet());
 app.use(compression());
 
-// Add public routes for loos
-const looRoutes = require('./routes/public/loo');
-looRoutes.forEach(route => {
-  app[route.method](route.path, route.handler);
-});
-
-// Add public routes for reports
-const reportRoutes = require('./routes/public/report');
-reportRoutes.forEach(route => {
-  app[route.method](route.path, route.handler);
-});
-
-// Add public routes for search
-const searchRoutes = require('./routes/public/search');
-searchRoutes.forEach(route => {
-  app[route.method](route.path, route.handler);
-});
-
-// Add public routes for statistics
-const statsRoutes = require('./routes/public/statistics');
-statsRoutes.forEach(route => {
-  app[route.method](route.path, route.handler);
-});
-
-// Add public routes for areas
-const areasRoutes = require('./routes/public/areas');
-areasRoutes.forEach(route => {
-  app[route.method](route.path, route.handler);
-});
+// Add public API routes
+const publicRoutes = require('./routes/public');
+app.use('/api', publicRoutes);
 
 // auto-init if this app is not being initialised by another module
 if (!module.parent) {

@@ -4,15 +4,15 @@ const Loo = require('../models/loo');
 const mongoose = require('mongoose');
 const looRadius = require('./data/looRadius.js');
 
-describe('loo routes (public)', () => {
-  describe('loos/near/:lon/:lat', () => {
+describe('api loo routes (public)', () => {
+  describe('/api/loos/near/:lon/:lat', () => {
     beforeAll(async () => {
       await Loo.collection.insertMany(looRadius);
     });
 
     it('should return a limit of 5 loos for -0.2068223/51.518342', async () => {
       const response = await request(app).get(
-        '/loos/near/-0.2068223/51.518342/'
+        '/api/loos/near/-0.2068223/51.518342/'
       );
       expect(response.statusCode).toBe(200);
       expect(response.body.features.length).toBe(5);
@@ -20,7 +20,7 @@ describe('loo routes (public)', () => {
 
     it('should return 20 loos for -0.2068223/51.518342', async () => {
       const response = await request(app).get(
-        '/loos/near/-0.2068223/51.518342/?limit=20'
+        '/api/loos/near/-0.2068223/51.518342/?limit=20'
       );
       expect(response.statusCode).toBe(200);
       expect(response.body.features.length).toBe(20);
@@ -28,7 +28,7 @@ describe('loo routes (public)', () => {
 
     it('should return 0 loos for 51.518342/-0.2068223', async () => {
       const response = await request(app).get(
-        '/loos/near/51.518342/-0.2068223'
+        '/api/loos/near/51.518342/-0.2068223'
       );
       expect(response.statusCode).toBe(200);
       expect(response.body.features.length).toBe(0);
@@ -44,14 +44,14 @@ describe('loo routes (public)', () => {
     });
   });
 
-  // describe('loos/in/:sw/:ne/:nw/:se', () => {
+  // describe('/api/loos/in/:sw/:ne/:nw/:se', () => {
   //   beforeAll(async () => {
   //     await Loo.collection.insertMany(looRadius);
   //   });
 
   //   it('should return 12 loos', async () => {
   //     const response = await request(app).get(
-  //       '/loos/in/-24.2,44.5/20.3,60.4/-24.2,60.4/20.3,44.5'
+  //       '/api/loos/in/-24.2,44.5/20.3,60.4/-24.2,60.4/20.3,44.5'
   //     );
   //     expect(response.statusCode).toBe(200);
   //     expect(response.body.features.length).toBe(12);
