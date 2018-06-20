@@ -45,8 +45,9 @@ describe('api loo routes (public)', () => {
   });
 
   // describe('/api/loos/in/:sw/:ne/:nw/:se', () => {
+  //   const looBox = require('./data/looBox.js');
   //   beforeAll(async () => {
-  //     await Loo.collection.insertMany(looRadius);
+  //     await Loo.collection.insertMany(looBox);
   //   });
 
   //   it('should return 12 loos', async () => {
