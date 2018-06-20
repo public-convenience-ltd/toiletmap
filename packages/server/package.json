@@ -1,0 +1,13 @@
+{
+  "name": "@neontribe/gbptm-server",
+  "private": true,
+  "version": "2.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
