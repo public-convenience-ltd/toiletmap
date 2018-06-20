@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "CI=true lerna run test -- --forceExit",
+    "test": "CI=true lerna run test --",
     "commitmsg": "commitlint -e",
     "precommit": "lint-staged",
     "reinstall": "lerna clean --yes && rm yarn.lock && yarn install",

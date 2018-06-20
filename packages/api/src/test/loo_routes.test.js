@@ -34,37 +34,31 @@ describe('api loo routes (public)', () => {
       expect(response.body.features.length).toBe(0);
     });
 
-    /**
-     * OH GOD WHAT DO WE HAVE TO DO HERE TO MAKE IT STOP?
-     */
     afterAll(async () => {
       await Loo.remove({}).exec();
-      await Loo.db.close();
-      await mongoose.connection.close();
     });
   });
 
-  // describe('/api/loos/in/:sw/:ne/:nw/:se', () => {
-  //   const looBox = require('./data/looBox.js');
-  //   beforeAll(async () => {
-  //     await Loo.collection.insertMany(looBox);
-  //   });
+  describe('/api/loos/in/:sw/:ne/:nw/:se', () => {
+    const looBox = require('./data/looBox.js');
+    beforeAll(async () => {
+      await Loo.collection.insertMany(looBox);
+    });
 
-  //   it('should return 12 loos', async () => {
-  //     const response = await request(app).get(
-  //       '/api/loos/in/-24.2,44.5/20.3,60.4/-24.2,60.4/20.3,44.5'
-  //     );
-  //     expect(response.statusCode).toBe(200);
-  //     expect(response.body.features.length).toBe(12);
-  //   });
+    it('should return 12 loos', async () => {
+      const response = await request(app).get(
+        '/api/loos/in/-24.2,44.5/20.3,60.4/-24.2,60.4/20.3,44.5'
+      );
+      expect(response.statusCode).toBe(200);
+      expect(response.body.features.length).toBe(12);
+    });
 
-  //   /**
-  //    * OH GOD WHAT DO WE HAVE TO DO HERE TO MAKE IT STOP?
-  //    */
-  //   afterAll(async () => {
-  //     await Loo.remove({}).exec();
-  //     await Loo.db.close();
-  //     await mongoose.connection.close();
-  //   });
-  // });
+    afterAll(async () => {
+      await Loo.remove({}).exec();
+    });
+  });
+
+  afterAll(async () => {
+    await mongoose.connection.close();
+  });
 });

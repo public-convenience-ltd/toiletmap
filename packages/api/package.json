@@ -43,10 +43,13 @@
     "type": "git",
     "url": "git://github.com/neontribe/gbptm.git"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "scripts": {
     "dev": "node src/app.js",
     "start": "node src/app.js",
-    "test": "NODE_ENV=test jest --forceExit",
+    "test": "NODE_ENV=test jest",
     "pullconfig": "heroku config:pull --overwrite --interactive --app gbptm-stage"
   }
 }
