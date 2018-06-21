@@ -6,9 +6,9 @@ export default {
   viewport: {
     mobile: 567,
   },
-  apiEndpoint: 'https://gbptm-stage.herokuapp.com',
-  reportEndpoint: 'https://gbptm-stage.herokuapp.com/reports',
-  signoutEndpoint: 'https://gbptm-stage.herokuapp.com/signout',
+  apiEndpoint: '/api',
+  reportEndpoint: '/api/reports',
+  signoutEndpoint: '/api/signout',
   nearest: {
     limit: 5,
     radius: 5000, // meters
