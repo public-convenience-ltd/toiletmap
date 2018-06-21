@@ -1,13 +1,14 @@
 {
-  "name": "siphon",
-  "version": "0.1.0",
+  "name": "@neontribe/gbptm-siphon",
+  "version": "2.0.0",
   "description": "Flexibly and efficiently process loo reports to yield loos",
+  "private": true,
   "main": "src/index.js",
   "license": "MIT",
   "dependencies": {
-    "geolib": "^2.0.24",
-    "lodash": "^4.17.10",
-    "uuid": "^3.2.1"
+    "geolib": "2.0.24",
+    "lodash": "4.17.10",
+    "uuid": "3.2.1"
   },
   "scripts": {
     "start": "node src/generateDataSet.js",
