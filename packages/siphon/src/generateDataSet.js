@@ -109,13 +109,18 @@ for (let value of locations) {
   used.add(value.value);
 
   const cautiousBounds = geo.getCoordBounds(value.x, value.y, DEDUPE_RADIUS);
-  const inBounds = twodeetree.findInRange(
-    tree,
-    cautiousBounds.min.lng,
-    cautiousBounds.min.lat,
-    cautiousBounds.max.lng,
-    cautiousBounds.max.lat
-  );
+  let inBounds = [];
+  for (let nonWrappingBounds of geo.removeBoundWrapAround(cautiousBounds)) {
+    inBounds = inBounds.concat(
+      twodeetree.findInRange(
+        tree,
+        nonWrappingBounds.min.lng,
+        nonWrappingBounds.min.lat,
+        nonWrappingBounds.max.lng,
+        nonWrappingBounds.max.lat
+      )
+    );
+  }
 
   const thisGeo = {
     uid: value.value,
