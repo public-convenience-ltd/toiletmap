@@ -36,8 +36,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "prebuild": "./node_modules/.bin/eslint ./src && stylelint ./src/**/*.css",
-    "build": "npm run prebuild && react-scripts build",
+    "prebuild": "eslint ./src && stylelint ./src/**/*.css",
+    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
     "test": "SKIP_PREFLIGHT_CHECK=true react-scripts test --env=jsdom",
     "build-android": "npm run build; rm -r www/*; cp -r build/* www; phonegap build android",
     "build-ios": "npm run build; rm -r www/*; cp -r build/* www; phonegap build ios"

@@ -12,7 +12,13 @@
     "publish": "lerna publish --conventional-commits",
     "lint": "eslint .",
     "prettify": "prettier --single-quote --trailing-comma es5 --write \"./**/*.{js,json}\"",
-    "load:devData": "mongorestore --noIndexRestore --drop --nsFrom 'app29532998.*' --nsTo 'gbptm.*' --gzip --archive=./data/devData.tar.gz"
+    "load:devData": "mongorestore --noIndexRestore --drop --nsFrom 'app29532998.*' --nsTo 'gbptm.*' --gzip --archive=./data/devData.tar.gz",
+    "build:ui": "lerna run build --scope=@neontribe/gbptm-ui",
+    "build:docker": "docker build --network=host -t neontribe/gbptm .",
+    "build": "yarn build:ui && yarn build:docker",
+    "pullconfig": "heroku config:get -s MONGODB_URI --app gbptm-stage >> .env",
+    "deploy:push": "heroku container:push web --app gbptm-unity",
+    "deploy:release": "heroku container:release web --app gbptm-unity"
   },
   "repository": {
     "type": "git",

@@ -85,7 +85,7 @@ button {
 
 body {
 	margin: 0;
-	font-family: 'Cabin';
+	font-family: Cabin, sans-serif;
 	background-color: colorBackground;
 }
 
@@ -94,5 +94,5 @@ input,
 optgroup,
 select,
 textarea {
-	font-family: 'Cabin';
+	font-family: Cabin, sans-serif;
 }
