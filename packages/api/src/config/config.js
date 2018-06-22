@@ -4,7 +4,7 @@ var _ = require('lodash');
 
 var base = {
   app: {
-    port: process.env.PORT || 3003,
+    port: process.env.PORT || 8080,
     env: process.env.NODE_ENV || 'development',
   },
   auth: {
@@ -22,6 +22,7 @@ var base = {
   },
   mongo: {
     url:
+      process.env.MONGODB_URI ||
       process.env.MONGO_URL ||
       process.env.MONGOHQ_URL ||
       process.env.MONGOLAB_URI ||
