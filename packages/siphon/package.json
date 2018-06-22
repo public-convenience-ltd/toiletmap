@@ -12,6 +12,10 @@
   },
   "scripts": {
     "start": "node src/generateDataSet.js",
-    "fetch-reports": "bin/getreports.sh"
+    "fetch-reports": "bin/getreports.sh",
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }

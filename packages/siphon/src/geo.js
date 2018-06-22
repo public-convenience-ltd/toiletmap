@@ -112,7 +112,7 @@ exports.removeBoundWrapAround = function(bounds) {
     highBounds.max = { ...bounds.max };
     highBounds.max.lng = 180;
 
-    return [...lowBounds, ...highBounds];
+    return [lowBounds, highBounds];
   }
 
   return [bounds];
