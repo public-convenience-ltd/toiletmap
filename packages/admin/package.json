@@ -27,7 +27,7 @@
     "react-router": "3.2.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
     "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build"
   },
   "eslintConfig": {
