@@ -7,7 +7,7 @@
     "enzyme-adapter-react-16": "1.1.1",
     "react-scripts": "next",
     "react-test-renderer": "16.4.1",
-    "stylelint": "9.2.1",
+    "stylelint": "9.3.0",
     "stylelint-config-standard": "18.2.0"
   },
   "dependencies": {
@@ -22,7 +22,7 @@
     "lodash": "4.17.10",
     "normalize.css": "8.0.0",
     "opening_hours": "3.5.0",
-    "prop-types": "15.6.1",
+    "prop-types": "15.6.2",
     "react": "16.4.1",
     "react-addons-update": "15.6.2",
     "react-dom": "16.4.1",
