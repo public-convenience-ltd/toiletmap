@@ -14,6 +14,12 @@ app.use(compression());
 const publicRoutes = require('./routes/public');
 app.use('/api', publicRoutes);
 
+// Serve the built admin UI from /admin
+app.use('/admin', express.static(path.join(__dirname, 'www-admin')));
+app.get('/admin/*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'www-admin', 'index.html'));
+});
+
 // Serve the built UI from the root
 app.use(express.static(path.join(__dirname, 'www')));
 app.get('/*', function(req, res) {
@@ -22,10 +28,10 @@ app.get('/*', function(req, res) {
 
 // auto-init if this app is not being initialised by another module
 if (!module.parent) {
-  app.listen(config.app.port, () =>
+  app.listen(config.app.port, () => {
     /* eslint-disable-next-line no-console */
-    console.log(`Listening on port ${config.app.port}`)
-  );
+    console.log(`Listening on port ${config.app.port}`);
+  });
 }
 
 module.exports = app;

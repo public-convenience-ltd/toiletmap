@@ -2,6 +2,7 @@
   "name": "@neontribe/gbptm-ui",
   "version": "2.0.0",
   "private": true,
+  "proxy": "https://gbptm-unity.herokuapp.com",
   "devDependencies": {
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
