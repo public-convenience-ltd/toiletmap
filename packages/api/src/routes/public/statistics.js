@@ -171,7 +171,7 @@ router.get('/contributors', async (req, res) => {
   );
 });
 
-router.get('/statistics/areas', async (req, res) => {
+router.get('/areas', async (req, res) => {
   const scope = scopeQuery({}, _.merge({ includeInactive: true }, req.query));
   const areas = await Loo.aggregate([
     {
