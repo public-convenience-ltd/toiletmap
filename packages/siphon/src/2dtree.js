@@ -2,7 +2,7 @@
  * Build a 2D tree from a list of elements.
  */
 exports.buildTree = function(elements) {
-  return buildTree(elements.map(ele => new Node2D(ele.x, ele.y, ele.value)));
+  return buildTree(elements.map(ele => new Node2D(ele)));
 };
 
 /**
@@ -37,7 +37,7 @@ exports.findInRange = function(root, minX, minY, maxX, maxY, oddDepth = true) {
   const oMin = oddDepth ? minY : minX;
   const oMax = oddDepth ? maxY : maxX;
   if (oPos >= oMin && oPos <= oMax) {
-    inRange.push({ x: root.x, y: root.y, value: root.value });
+    inRange.push(root.getElement());
   }
 
   return inRange;
@@ -49,13 +49,21 @@ exports.findInRange = function(root, minX, minY, maxX, maxY, oddDepth = true) {
  * A 2D Tree can be represented as an array if this gets slow.
  */
 class Node2D {
-  constructor(x, y, value, left = null, right = null) {
-    this.x = x;
-    this.y = y;
-    this.value = value;
+  constructor(element, left = null, right = null) {
+    this.x = element.x;
+    this.y = element.y;
+    this.value = element.value;
 
     this.left = left;
     this.right = right;
+  }
+
+  getElement() {
+    return {
+      x: this.x,
+      y: this.y,
+      value: this.value,
+    };
   }
 }
 
@@ -109,6 +117,6 @@ function buildTree(nodes, oddDepth = true) {
  * Naively find the median by sorting, in O(n log n).
  */
 function slowMedian(list) {
-  list.sort();
+  list.sort((a, b) => a - b); // sort as numbers, not strings
   return list[Math.floor(list.length / 2)];
 }
