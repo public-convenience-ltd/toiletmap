@@ -8,6 +8,7 @@ describe('api loo routes (public)', () => {
   describe('/api/loos/near/:lon/:lat', () => {
     beforeAll(async () => {
       await Loo.collection.insertMany(looRadius);
+      await Loo.ensureIndexes();
     });
 
     it('should return a limit of 5 loos for -0.2068223/51.518342', async () => {
@@ -43,6 +44,7 @@ describe('api loo routes (public)', () => {
     const looBox = require('./data/looBox.js');
     beforeAll(async () => {
       await Loo.collection.insertMany(looBox);
+      await Loo.ensureIndexes();
     });
 
     it('should return 12 loos', async () => {
