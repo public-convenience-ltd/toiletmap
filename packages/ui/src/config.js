@@ -1,6 +1,6 @@
 export const PREFERENCES_KEY = 'preferences';
-export const AUTH_KEY = 'koasess';
 export const PENDING_REPORT_KEY = 'pending_loo_report';
+export const PENDING_REMOVE_KEY = 'pending_loo_removal';
 
 export default {
   viewport: {
@@ -8,7 +8,7 @@ export default {
   },
   apiEndpoint: '/api',
   reportEndpoint: '/api/reports',
-  signoutEndpoint: '/api/signout',
+  removeEndpoint: '/api/remove',
   nearest: {
     limit: 5,
     radius: 5000, // meters
@@ -16,5 +16,5 @@ export default {
   initialZoom: 16,
   minZoom: 12,
   maxZoom: 18,
-  allowAddEditLoo: false,
+  allowAddEditLoo: true,
 };

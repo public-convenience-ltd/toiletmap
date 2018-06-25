@@ -1,24 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { browserHistory, Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 
-import AddEditLooMap from '../map/AddEditLooMap';
-import DismissableBox from '../DismissableBox';
-import Notification from '../Notification';
+import history from '../history';
 
-import { actionReportRequest } from '../../redux/modules/loos';
+import AddEditLooMap from '../components/map/AddEditLooMap';
+import DismissableBox from '../components/DismissableBox';
+import Notification from '../components/Notification';
 
-import config from '../../config';
+import { actionReportRequest } from '../redux/modules/loos';
 
-import styles from '../css/edit-loo-page.module.css';
-import layout from '../css/layout.module.css';
-import helpers from '../../css/helpers.module.css';
-import headings from '../../css/headings.module.css';
-import controls from '../../css/controls.module.css';
+import config from '../config';
+
+import styles from './css/edit-loo-page.module.css';
+import layout from '../components/css/layout.module.css';
+import helpers from '../css/helpers.module.css';
+import headings from '../css/headings.module.css';
+import controls from '../css/controls.module.css';
 
 class AddEditPage extends Component {
   questionnaireMap = [
@@ -165,6 +167,7 @@ class AddEditPage extends Component {
     var loo = Object.assign({}, this.state.loo);
 
     loo.geometry = {
+      type: 'Point',
       coordinates: [this.props.map.center.lng, this.props.map.center.lat],
     };
 
@@ -198,15 +201,13 @@ class AddEditPage extends Component {
 
     return (
       <div>
-        {this.props.app.canGoBack && (
-          <div>
-            <div className={layout.controls}>
-              <button onClick={browserHistory.goBack} className={controls.btn}>
-                Back
-              </button>
-            </div>
+        <div>
+          <div className={layout.controls}>
+            <button onClick={history.goBack} className={controls.btn}>
+              Back
+            </button>
           </div>
-        )}
+        </div>
 
         <h2 className={headings.large}>Add This Loo</h2>
 

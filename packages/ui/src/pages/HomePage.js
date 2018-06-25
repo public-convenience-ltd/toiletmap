@@ -2,27 +2,27 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 
-import LooMap from '../map/LooMap';
-import DismissableBox from '../DismissableBox';
-import LooListItem from '../LooListItem';
-import Notification from '../Notification';
+import LooMap from '../components/map/LooMap';
+import DismissableBox from '../components/DismissableBox';
+import LooListItem from '../components/LooListItem';
+import Notification from '../components/Notification';
 
-import styles from '../css/home-page.module.css';
-import toiletMap from '../css/loo-map.module.css';
-import layout from '../css/layout.module.css';
-import headings from '../../css/headings.module.css';
-import controls from '../../css/controls.module.css';
+import styles from './css/home-page.module.css';
+import toiletMap from '../components/css/loo-map.module.css';
+import layout from '../components/css/layout.module.css';
+import headings from '../css/headings.module.css';
+import controls from '../css/controls.module.css';
 
-import { actionFindNearbyRequest } from '../../redux/modules/loos';
-import { actionHighlight } from '../../redux/modules/loo-map-nearest';
-import { actionSignoutRequest } from '../../redux/modules/auth';
-import { actionToggleViewMode } from '../../redux/modules/app';
+import { actionFindNearbyRequest } from '../redux/modules/loos';
+import { actionHighlight } from '../redux/modules/loo-map-nearest';
+import { actionToggleViewMode } from '../redux/modules/app';
+import { actions, LOGOUT, LOGIN } from '../redux/modules/auth';
 
-import config from '../../config';
+import config from '../config';
 
 export class HomePage extends Component {
   constructor(props) {
@@ -130,13 +130,18 @@ export class HomePage extends Component {
     return (
       <div className={styles.container}>
         {/* Logged in message */}
-        {this.props.auth.authenticated && (
+        {this.props.isAuthenticated && (
           <Notification>
             <p>
-              Logged in.{' '}
-              <a role="button" href onClick={this.props.actionSignoutRequest}>
-                Signout
-              </a>
+              Logged in. <button onClick={this.props.doLogout}>Log out</button>
+            </p>
+          </Notification>
+        )}
+        {/* Logged out message */}
+        {!this.props.isAuthenticated && (
+          <Notification>
+            <p>
+              Logged out. <button onClick={this.props.doLogin}>Log in</button>
             </p>
           </Notification>
         )}
@@ -182,15 +187,16 @@ HomePage.propTypes = {
 var mapStateToProps = state => ({
   geolocation: state.geolocation,
   loos: state.loos.nearby,
-  auth: state.auth,
   app: state.app,
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 var mapDispatchToProps = {
   actionFindNearbyRequest,
   actionHighlight,
-  actionSignoutRequest,
   actionToggleViewMode,
+  doLogout: actions[LOGOUT],
+  doLogin: actions[LOGIN],
 };
 
 export default connect(

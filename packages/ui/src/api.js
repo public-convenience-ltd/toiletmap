@@ -1,91 +1,67 @@
 import querystring from 'querystring';
 import OH from 'opening_hours';
-import Cookies from 'js-cookie';
 
-import config, { PREFERENCES_KEY, AUTH_KEY } from './config';
+import config, { PREFERENCES_KEY } from './config';
 
-var api = {};
+const api = {};
 
-api.isAuthenticated = function() {
-  return new Promise((resolve, reject) => {
-    if (window.cordova) {
-      // `window.cordova` is available before `window.cookieEmperor` so we poll until
-      // we can have access
-      var poller = setInterval(() => {
-        if (window.cookieEmperor) {
-          clearInterval(poller);
-
-          window.cookieEmperor.getCookie(
-            config.apiEndpoint,
-            AUTH_KEY,
-            data => {
-              resolve(!!data.cookieValue);
-            },
-            () => {
-              resolve(false);
-            }
-          );
-        }
-      }, 250);
-    } else {
-      resolve(!!Cookies.get(AUTH_KEY));
-    }
-  });
-};
-
-api.signout = function() {
-  return new Promise((resolve, reject) => {
-    fetch(config.signoutEndpoint).then(() => {
-      if (window.cookieEmperor) {
-        window.cookieEmperor.clearAll(resolve);
-      } else {
-        Cookies.remove(AUTH_KEY);
-      }
-
-      resolve();
-    });
-  });
-};
-
-api.findLoos = function(lng, lat, { limit, radius } = config.nearest) {
+api.findLoos = async function(lng, lat, { limit, radius } = config.nearest) {
   // Todo: Fix the api to avoid this hard limit
-  var qs = querystring.stringify({ limit: 1000, radius });
-  var url = `${config.apiEndpoint}/loos/near/${lng}/${lat}?${qs}`;
-
-  return fetch(url, {
-    headers: new Headers({
+  const qs = querystring.stringify({ limit: 1000, radius });
+  const url = `${config.apiEndpoint}/loos/near/${lng}/${lat}?${qs}`;
+  const res = await fetch(url, {
+    headers: {
       Accept: 'application/json',
-    }),
-  })
-    .then(response => response.json())
-    .then(geojson => geojson.features)
-    .catch(err => console.log(err)); // Todo: handle this!
+    },
+  });
+  const geojson = await res.json();
+  return geojson.features;
 };
 
-api.findLooById = function(id) {
-  var endpoint = `${config.apiEndpoint}/loos/${id}`;
-
-  return fetch(endpoint, {
-    headers: new Headers({
+api.findLooById = async function(id) {
+  const url = `${config.apiEndpoint}/loos/${id}`;
+  const res = await fetch(url, {
+    headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json',
-    }),
-  })
-    .then(response => response.json())
-    .catch(err => console.log(err)); // Todo: handle this!
+    },
+  });
+  return await res.json();
 };
 
-api.reportLoo = function(loo) {
+api.reportLoo = async function(loo, token) {
   // Todo: Handle HTTP 401
-  return fetch(config.reportEndpoint, {
-    headers: new Headers({
+  const res = await fetch(config.reportEndpoint, {
+    headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-    }),
-    mode: 'no-cors', // opaque
+      Authorization: `Bearer ${token}`,
+    },
     method: 'POST',
     body: JSON.stringify(loo),
-  }).catch(err => console.log(err)); // Todo: handle this!
+  });
+  if (res.status !== 201) {
+    throw new Error(res.statusText);
+  }
+  return await res.json();
+};
+
+api.removeLoo = async function(looId, reason, token) {
+  // Todo: Handle HTTP 401
+  const res = await fetch(`${config.removeEndpoint}/${looId}`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      removal_reason: reason,
+    }),
+  });
+  if (res.status !== 200) {
+    throw new Error(res.statusText);
+  }
+  return res.status;
 };
 
 api.getSettings = function(namespace) {

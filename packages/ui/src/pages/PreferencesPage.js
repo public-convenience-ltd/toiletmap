@@ -1,28 +1,27 @@
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 
 /* Note this approach will be deprecated in the future */
 import update from 'react-addons-update';
 
-import DismissableBox from '../DismissableBox';
-import Notification from '../Notification';
+import DismissableBox from '../components/DismissableBox';
+import Notification from '../components/Notification';
 
-import styles from '../css/preferences-page.module.css';
-import layout from '../css/layout.module.css';
-import helpers from '../../css/helpers.module.css';
-import headings from '../../css/headings.module.css';
-import controls from '../../css/controls.module.css';
+import styles from './css/preferences-page.module.css';
+import layout from '../components/css/layout.module.css';
+import helpers from '../css/helpers.module.css';
+import headings from '../css/headings.module.css';
+import controls from '../css/controls.module.css';
 
-import api from '../../api';
-import { PREFERENCES_KEY } from '../../config';
+import api from '../api';
+import { PREFERENCES_KEY } from '../config';
 
-import accessibleIcon from '../../images/pref-accessible.svg';
-import freeIcon from '../../images/pref-cost.svg';
-import openIcon from '../../images/pref-open.svg';
-import maleIcon from '../../images/pref-male.svg';
-import femaleIcon from '../../images/pref-female.svg';
-import babychangingIcon from '../../images/pref-babychanging.svg';
+import accessibleIcon from '../images/pref-accessible.svg';
+import freeIcon from '../images/pref-cost.svg';
+import openIcon from '../images/pref-open.svg';
+import maleIcon from '../images/pref-male.svg';
+import femaleIcon from '../images/pref-female.svg';
+import babychangingIcon from '../images/pref-babychanging.svg';
 
 class PreferencesPage extends Component {
   constructor(props) {
@@ -111,7 +110,7 @@ class PreferencesPage extends Component {
         <div>
           <div className={layout.controls}>
             {this.props.app.canGoBack && (
-              <button onClick={browserHistory.goBack} className={controls.btn}>
+              <button onClick={() => alert('fix me')} className={controls.btn}>
                 Back
               </button>
             )}

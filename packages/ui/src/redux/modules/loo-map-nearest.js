@@ -30,21 +30,24 @@ export const actionHighlight = loo => ({
 
 const ACTION_HANDLERS = {
   [ZOOM]: function(state, action) {
-    return Object.assign({}, state, {
+    return {
+      ...state,
       zoom: action.payload.zoom,
-    });
+    };
   },
 
   [UPDATE_CENTER]: function(state, action) {
-    return Object.assign({}, state, {
+    return {
+      ...state,
       center: action.payload.center,
-    });
+    };
   },
 
   [HIGHLIGHT]: function(state, action) {
-    return Object.assign({}, state, {
+    return {
+      ...state,
       highlight: action.payload.loo,
-    });
+    };
   },
 };
 
@@ -52,6 +55,5 @@ const ACTION_HANDLERS = {
 
 export default function looMapNearestReducer(state = {}, action) {
   const handler = ACTION_HANDLERS[action.type];
-
   return handler ? handler(state, action) : state;
 }

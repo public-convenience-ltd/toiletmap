@@ -19,6 +19,6 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "jest": "23.1.0"
+    "jest": "23.2.0"
   }
 }

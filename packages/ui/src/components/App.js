@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { actionGetGeolocationRequest } from '../redux/modules/geolocation';
-import { actionProcessPendingReports } from '../redux/modules/loos';
-import { actionNavigate } from '../redux/modules/app';
-import { actionGetStatusRequest } from '../redux/modules/auth';
 
 import styles from './css/app.module.css';
 
@@ -23,18 +21,6 @@ class App extends Component {
       } else {
         this.props.actionGetGeolocationRequest();
       }
-    }
-
-    // Process any pending loo reports
-    this.props.actionProcessPendingReports();
-
-    // Determine the logged in state
-    this.props.actionGetStatusRequest();
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.location !== this.props.location) {
-      this.props.actionNavigate();
     }
   }
 
@@ -67,12 +53,11 @@ var mapStateToProps = state => ({
 
 var mapDispatchToProps = {
   actionGetGeolocationRequest,
-  actionNavigate,
-  actionProcessPendingReports,
-  actionGetStatusRequest,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(App)
+);

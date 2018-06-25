@@ -1,7 +1,6 @@
 export const UPDATE_CENTER = 'LOO_MAP_ADD_EDIT/UPDATE_CENTER';
 
 // Actions
-
 export const actionUpdateCenter = center => ({
   type: UPDATE_CENTER,
   payload: {
@@ -14,9 +13,10 @@ export const actionUpdateCenter = center => ({
 
 const ACTION_HANDLERS = {
   [UPDATE_CENTER]: function(state, action) {
-    return Object.assign({}, state, {
+    return {
+      ...state,
       center: action.payload.center,
-    });
+    };
   },
 };
 
@@ -24,6 +24,5 @@ const ACTION_HANDLERS = {
 
 export default function looMapAddEditReducer(state = {}, action) {
   const handler = ACTION_HANDLERS[action.type];
-
   return handler ? handler(state, action) : state;
 }
