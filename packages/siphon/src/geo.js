@@ -28,8 +28,10 @@ exports.getCoordBounds = function(lng, lat, metresRadius) {
     minLat = -90;
     maxLat = 90;
   } else {
-    minLat = wrapAroundLat(lat - latDispl);
-    maxLat = wrapAroundLat(lat + latDispl);
+    // if both are 90, we want the min to be larger to show the ambiguity
+    // between -180 and 180 through wrap-around
+    minLat = wrapAroundLat(lat - latDispl, true);
+    maxLat = wrapAroundLat(lat + latDispl, false);
   }
 
   // work out the closest angle we get to the poles, the biggest longitude
@@ -55,8 +57,10 @@ exports.getCoordBounds = function(lng, lat, metresRadius) {
       minLng = -180;
       maxLng = 180;
     } else {
-      minLng = wrapAroundLng(lng - lngDispl);
-      maxLng = wrapAroundLng(lng + lngDispl);
+      // if both are 180, we want the min to be larger to show the ambiguity
+      // between -180 and 180 through wrap-around
+      minLng = wrapAroundLng(lng - lngDispl, true);
+      maxLng = wrapAroundLng(lng + lngDispl, false);
     }
   }
 
@@ -139,9 +143,10 @@ exports.removeBoundWrapAround = function(bounds) {
  * - Longitudes at -180 - x to 180 - x
  * to preserve -180 <= longitude <= 180
  */
-function wrapAroundLng(deg) {
-  // we don't need to wrap around there, both -180 and 180 are acceptable
-  if (deg === 180) return deg;
+function wrapAroundLng(deg, unambigPos) {
+  // we don't need to wrap around there, both -180 and 180 are acceptable;
+  // argument breaks the tie
+  if (deg === 180) return unambigPos ? deg : -deg;
 
   return ((deg + 180) % 360) - 180;
 }
@@ -152,9 +157,10 @@ function wrapAroundLng(deg) {
  * - Latitudes at -90 - y to 90 - y
  * to preserve -90 <= latidude <= 90
  */
-function wrapAroundLat(deg) {
-  // we don't need to wrap around there, both -90 and 90 are acceptable
-  if (deg === 90) return deg;
+function wrapAroundLat(deg, unambigPos) {
+  // we don't need to wrap around there, both -90 and 90 are acceptable;
+  // argument breaks the tie
+  if (deg === 90) return unambigPos ? deg : -deg;
 
   return ((deg + 90) % 180) - 90;
 }

@@ -59,6 +59,38 @@ describe('getCoordBounds', () => {
     expect(bounds.max.lng).toBeCloseTo(-179.99964273922447, 7);
   });
 
+  it('should produce a correct bounding box even if the radius is 0, to show ambiguity', () => {
+    const somewhereBounds = geo.getCoordBounds(1, 51, 0);
+    expect(somewhereBounds.min.lng).toBe(1);
+    expect(somewhereBounds.max.lng).toBe(1);
+    expect(somewhereBounds.min.lat).toBe(51);
+    expect(somewhereBounds.max.lat).toBe(51);
+
+    // at boundary of the latitude, this should include both the negatively and
+    // positively signed variant of the angle
+    const latBounds = geo.getCoordBounds(10, 90, 0);
+    expect(latBounds.min.lng).toBe(-180);
+    expect(latBounds.max.lng).toBe(180);
+    expect(latBounds.min.lat).toBe(90); // note that min should be more than max to show wrap-around
+    expect(latBounds.max.lat).toBe(-90);
+
+    // at boundary of the longitude, this should include both the negatively and
+    // positively signed variant of the angle
+    const longBounds = geo.getCoordBounds(180, 51, 0);
+    expect(longBounds.min.lng).toBe(180);
+    expect(longBounds.max.lng).toBe(-180);
+    expect(longBounds.min.lat).toBe(51);
+    expect(longBounds.max.lat).toBe(51);
+
+    // at boundary of both, the latitude should represnent both signs and every
+    // longitude should be represented
+    const bothBounds = geo.getCoordBounds(180, 90, 0);
+    expect(bothBounds.min.lng).toBe(-180);
+    expect(bothBounds.max.lng).toBe(180);
+    expect(bothBounds.min.lat).toBe(90);
+    expect(bothBounds.max.lat).toBe(-90);
+  });
+
   it('should have coordinates that span the entire Earth if the radius is large enough', () => {
     expect(geo.getCoordBounds(0, 51, 10070000)).toEqual({
       min: {
