@@ -83,17 +83,25 @@ exports.getCoordBounds = function(lng, lat, metresRadius) {
  */
 exports.removeBoundWrapAround = function(bounds) {
   if (bounds.min.lat > bounds.max.lat) {
-    // deep clone
-    const lowBounds = { ...bounds };
-    lowBounds.min = { ...bounds.min };
-    lowBounds.max = { ...bounds.max };
-    lowBounds.min.lat = -90;
+    // deep clone; this occurs four times in this function and should probably
+    // be pulled out to a new data type or util method if repeated again
+    const lowBounds = {
+      ...bounds,
+      min: {
+        ...bounds.min,
+        lat: -90,
+      },
+      max: { ...bounds.max },
+    };
 
-    // deep clone
-    const highBounds = { ...bounds };
-    highBounds.min = { ...bounds.min };
-    highBounds.max = { ...bounds.max };
-    highBounds.max.lat = 90;
+    const highBounds = {
+      ...bounds,
+      min: { ...bounds.min },
+      max: {
+        ...bounds.max,
+        lat: 90,
+      },
+    };
 
     // recursively call, we haven't checked longitude yet
     return [
@@ -101,16 +109,23 @@ exports.removeBoundWrapAround = function(bounds) {
       ...exports.removeBoundWrapAround(highBounds),
     ];
   } else if (bounds.min.lng > bounds.max.lng) {
-    // deep clone
-    const lowBounds = { ...bounds };
-    lowBounds.min = { ...bounds.min };
-    lowBounds.max = { ...bounds.max };
-    lowBounds.min.lng = -180;
+    const lowBounds = {
+      ...bounds,
+      min: {
+        ...bounds.min,
+        lng: -180,
+      },
+      max: { ...bounds.max },
+    };
 
-    const highBounds = { ...bounds };
-    highBounds.min = { ...bounds.min };
-    highBounds.max = { ...bounds.max };
-    highBounds.max.lng = 180;
+    const highBounds = {
+      ...bounds,
+      min: { ...bounds.min },
+      max: {
+        ...bounds.max,
+        lng: 180,
+      },
+    };
 
     return [lowBounds, highBounds];
   }
