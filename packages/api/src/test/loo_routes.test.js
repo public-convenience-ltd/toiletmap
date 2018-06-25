@@ -4,6 +4,10 @@ const Loo = require('../models/loo');
 const mongoose = require('mongoose');
 const looRadius = require('./data/looRadius.js');
 
+beforeAll(async () => {
+  await Loo.ensureIndexes();
+});
+
 describe('api loo routes (public)', () => {
   describe('/api/loos/near/:lon/:lat', () => {
     beforeAll(async () => {
