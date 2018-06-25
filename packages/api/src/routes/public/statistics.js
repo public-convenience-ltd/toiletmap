@@ -3,23 +3,25 @@ const router = express.Router();
 const Loo = require('../../models/loo');
 const LooReport = require('../../models/loo_report');
 const _ = require('lodash');
-const moment = require('moment');
+const { DateTime } = require('luxon');
 
 function scopeQuery(query, options) {
-  var start = options.start ? moment(options.start) : moment('2009-01-01');
-  var end = options.end ? moment(options.end) : moment();
+  var start = options.start
+    ? DateTime.fromISO(options.start)
+    : DateTime.fromISO('2009-01-01');
+  var end = options.end ? DateTime.fromISO(options.end) : DateTime.local();
   var area = options.area || 'All';
   var areaType = options.areaType || 'All';
   var includeInactive = options.includeInactive || false;
   query['$and'] = [
     {
       createdAt: {
-        $gte: start.toDate(),
+        $gte: start.toJSDate(),
       },
     },
     {
       createdAt: {
-        $lte: end.toDate(),
+        $lte: end.toJSDate(),
       },
     },
   ];
@@ -169,7 +171,7 @@ router.get('/contributors', async (req, res) => {
   );
 });
 
-router.get('/statistics/areas', async (req, res) => {
+router.get('/areas', async (req, res) => {
   const scope = scopeQuery({}, _.merge({ includeInactive: true }, req.query));
   const areas = await Loo.aggregate([
     {

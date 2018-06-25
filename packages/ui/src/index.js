@@ -17,6 +17,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 
+import registerServiceWorker from './registerServiceWorker';
 import config from './config';
 
 // Global CSS
@@ -132,3 +133,4 @@ if (typeof document !== 'undefined') {
     document.getElementById('root')
   );
 }
+registerServiceWorker();

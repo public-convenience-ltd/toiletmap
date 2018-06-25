@@ -2,12 +2,13 @@
   "name": "@neontribe/gbptm-ui",
   "version": "2.0.0",
   "private": true,
+  "proxy": "https://gbptm-unity.herokuapp.com",
   "devDependencies": {
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
     "react-scripts": "next",
     "react-test-renderer": "16.4.1",
-    "stylelint": "9.2.1",
+    "stylelint": "9.3.0",
     "stylelint-config-standard": "18.2.0"
   },
   "dependencies": {
@@ -22,7 +23,7 @@
     "lodash": "4.17.10",
     "normalize.css": "8.0.0",
     "opening_hours": "3.5.0",
-    "prop-types": "15.6.1",
+    "prop-types": "15.6.2",
     "react": "16.4.1",
     "react-addons-update": "15.6.2",
     "react-dom": "16.4.1",
@@ -35,9 +36,9 @@
     "redux-saga": "0.16.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "prebuild": "./node_modules/.bin/eslint ./src && stylelint ./src/**/*.css",
-    "build": "npm run prebuild && react-scripts build",
+    "start": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
+    "prebuild": "eslint ./src && stylelint ./src/**/*.css",
+    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
     "test": "SKIP_PREFLIGHT_CHECK=true react-scripts test --env=jsdom",
     "build-android": "npm run build; rm -r www/*; cp -r build/* www; phonegap build android",
     "build-ios": "npm run build; rm -r www/*; cp -r build/* www; phonegap build ios"

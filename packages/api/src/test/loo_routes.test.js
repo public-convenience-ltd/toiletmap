@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../app');
+const app = require('../index');
 const Loo = require('../models/loo');
 const mongoose = require('mongoose');
 const looRadius = require('./data/looRadius.js');

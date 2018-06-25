@@ -63,7 +63,7 @@ api.findLoos = function(lng, lat, { limit, radius } = config.nearest) {
 };
 
 api.findLooById = function(id) {
-  var endpoint = `${config.apiEndpoint}/loos/${id}?format=json`;
+  var endpoint = `${config.apiEndpoint}/loos/${id}`;
 
   return fetch(endpoint, {
     headers: new Headers({
