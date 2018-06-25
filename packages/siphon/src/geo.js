@@ -29,7 +29,7 @@ exports.getCoordBounds = function(lng, lat, metresRadius) {
     maxLat = 90;
   } else {
     // if both are 90, we want the min to be larger to show the ambiguity
-    // between -180 and 180 through wrap-around
+    // between -180 and 180 through wrap-around, hence boolean argument
     minLat = wrapAroundLat(lat - latDispl, true);
     maxLat = wrapAroundLat(lat + latDispl, false);
   }
@@ -52,16 +52,10 @@ exports.getCoordBounds = function(lng, lat, metresRadius) {
     // longitundinal displacement
     const lngDispl = (metresRadius / circumAt) * 180;
 
-    if (lngDispl >= 180) {
-      // the radius is significant enough to cover the entire side of the Earth horizontally
-      minLng = -180;
-      maxLng = 180;
-    } else {
-      // if both are 180, we want the min to be larger to show the ambiguity
-      // between -180 and 180 through wrap-around
-      minLng = wrapAroundLng(lng - lngDispl, true);
-      maxLng = wrapAroundLng(lng + lngDispl, false);
-    }
+    // if both are 180, we want the min to be larger to show the ambiguity
+    // between -180 and 180 through wrap-around, hence boolean argument
+    minLng = wrapAroundLng(lng - lngDispl, true);
+    maxLng = wrapAroundLng(lng + lngDispl, false);
   }
 
   return {
