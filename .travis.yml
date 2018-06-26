@@ -6,6 +6,6 @@ env:
   secure: "jfOtHkrSvaugoDv5uJK6z7OAOpR9eHZKNaO95WxEObfd0akOcSgRLDpd5S9HxMxUu8yG2efr99WXh8JUjLtkjnGor6KlPb00C1SbqdaqwPRlJSNVM+rdH3JyHspoud+CnGH1GvAcK+p4M5SN8H6m0Nb6ht+kDWiJaBBo/YQy3fY="
 deploy:
   provider: script
-  script: yarn build && yarn deploy:push && yarn deploy:release
+  script: yarn build:ui && yarn build:admin && yarn docker:build && yarn deploy:push && yarn deploy:release
   on:
     branch: unity
