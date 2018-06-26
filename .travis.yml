@@ -4,7 +4,7 @@ services:
 - docker
 sudo: required
 env:
-  secure: "jfOtHkrSvaugoDv5uJK6z7OAOpR9eHZKNaO95WxEObfd0akOcSgRLDpd5S9HxMxUu8yG2efr99WXh8JUjLtkjnGor6KlPb00C1SbqdaqwPRlJSNVM+rdH3JyHspoud+CnGH1GvAcK+p4M5SN8H6m0Nb6ht+kDWiJaBBo/YQy3fY="
+  secure: "D2odYxhrbyd4s6jm4MLBkoY/ELXFNLASayQ8hKZfRaqyBmMeisDKEuBrpkbvndOqrplDZ/jKG7nuA4I3qKsdWh5rMmN78VnOpjW75JqxwcqkaUVzQP4qimZm4ZiVDPWbJn6rQr//HMMZLaLROtVHEsZOHQGCgAgB1mZk8+p+vls="
 before_deploy:
 - heroku container:login
 deploy:
