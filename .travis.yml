@@ -2,7 +2,10 @@ language: node_js
 services:
 - mongodb
 sudo: false
+env:
+  secure: "jfOtHkrSvaugoDv5uJK6z7OAOpR9eHZKNaO95WxEObfd0akOcSgRLDpd5S9HxMxUu8yG2efr99WXh8JUjLtkjnGor6KlPb00C1SbqdaqwPRlJSNVM+rdH3JyHspoud+CnGH1GvAcK+p4M5SN8H6m0Nb6ht+kDWiJaBBo/YQy3fY="
 deploy:
-  provider: heroku
-  api_key:
-    secure: PEHwBVlANBR4goE6j5MBNs3xs5XXNnLxYOhgrjaJBhlXCNKOZv2Lx/UTdu4URD51eLhBOO+LXclFdVVp3fDGRRSDQnKsAUwcpFgE8TIBCL3eLRXgfaVYxTLp9DFli7pP69gmgMhJe/6xxlKJMMD2KajSRjRDPOE4FgyFDAU4HdQ=
+  provider: script
+  script: yarn build && yarn deploy:push && yarn deploy:release
+  on:
+    branch: unity
