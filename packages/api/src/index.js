@@ -7,6 +7,10 @@ require('./config/mongo'); // don't much like this bare require
 
 const app = express();
 
+// we can make some nicer assumptions about security if query values are only
+// ever strings, not arrays or objects
+app.set('query parser', 'simple');
+
 app.use(helmet());
 app.use(compression());
 
