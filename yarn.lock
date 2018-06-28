@@ -1285,6 +1285,16 @@
     lodash.pick "4.4.0"
     meow "^5.0.0"
 
+"@commitlint/config-angular-type-enum@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/config-angular-type-enum/-/config-angular-type-enum-7.0.0.tgz#69702ba80a56a3d8bab3cc32898e496045d13323"
+
+"@commitlint/config-angular@7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@commitlint/config-angular/-/config-angular-7.0.1.tgz#559db668855076fe7e845a71ed490eacb7314903"
+  dependencies:
+    "@commitlint/config-angular-type-enum" "^7.0.0"
+
 "@commitlint/ensure@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@commitlint/ensure/-/ensure-7.0.0.tgz#3d5210bb988416844926895a782a55815731779d"
@@ -4993,10 +5003,6 @@ geo-hash@0.0.2:
   resolved "https://registry.yarnpkg.com/geo-hash/-/geo-hash-0.0.2.tgz#b43a81770c998f69da3b8d69a4106a4a8eb1e147"
   dependencies:
     sortable-hash "0.0.0"
-
-geojson-utils@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/geojson-utils/-/geojson-utils-1.1.0.tgz#e8ffb4c81c0a75b3e306f5187265d6f23040f50b"
 
 geolib@2.0.24:
   version "2.0.24"

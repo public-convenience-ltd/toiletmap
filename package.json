@@ -53,5 +53,8 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@commitlint/config-angular": "7.0.1"
+  }
 }
