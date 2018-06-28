@@ -14,13 +14,9 @@ app.set('query parser', 'simple');
 app.use(helmet());
 app.use(compression());
 
-// Add public API routes
-const publicRoutes = require('./routes/public');
-app.use('/api', publicRoutes);
-
-// Add protected routes
-const privateRoutes = require('./routes/private/loo_report');
-app.use('/api', privateRoutes);
+// Add API routes
+const routes = require('./routes');
+app.use('/api', routes);
 
 // Serve the built admin UI from /admin
 app.use('/admin', express.static(path.join(__dirname, 'www-admin')));

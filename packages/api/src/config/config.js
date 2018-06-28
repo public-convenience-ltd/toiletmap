@@ -7,18 +7,18 @@ var base = {
     port: process.env.PORT || 8080,
     env: process.env.NODE_ENV || 'development',
   },
-  auth: {
-    local: {
-      username: process.env.LOCAL_USERNAME,
-      password: process.env.LOCAL_PASSWORD,
-    },
-    bearer: {
-      token: process.env.BEARER_TOKEN,
-      info: process.env.BEARER_INFO,
-    },
+  auth0: {
+    userinfoUrl: 'https://gbptm.eu.auth0.com/userinfo',
   },
   mapit: {
-    apiKey: process.env.MAPIT_KEY,
+    apiKey: process.env.MAPIT_API_KEY,
+    endpoint: 'http://mapit.mysociety.org/point/4326/',
+    areaTypes: [
+      'District council',
+      'Unitary Authority',
+      'Metropolitan district',
+      'London borough',
+    ],
   },
   mongo: {
     url:
@@ -38,6 +38,7 @@ var base = {
   },
   reports: {
     trust: 8,
+    anonContributor: 'GBPTM Contributor',
   },
 };
 

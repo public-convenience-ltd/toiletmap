@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Loo = require('../../models/loo');
-const LooReport = require('../../models/loo_report');
+const Loo = require('../models/loo');
+const LooReport = require('../models/loo_report');
 const _ = require('lodash');
 const { DateTime } = require('luxon');
 

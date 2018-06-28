@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Loo = require('../../models/loo');
+const Loo = require('../models/loo');
 const _ = require('lodash');
 
 router.get('/', async (req, res) => {

@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const Loo = require('../../models/loo');
-const LooList = require('../../models/loo_list');
-const config = require('../../config/config');
+const Loo = require('../models/loo');
+const LooList = require('../models/loo_list');
+const config = require('../config/config');
 
 /**
  * Get loos near lon/lat
@@ -17,19 +17,6 @@ router.get('/near/:lon/:lat', async (req, res) => {
     parseFloat(req.params.lat),
     maxDistance,
     limit
-  ).exec();
-  res.status(200).json(new LooList(loos));
-});
-
-/**
- * GET loos in bounding box
- */
-router.get('/in/:sw/:ne/:nw/:se', async (req, res) => {
-  const loos = await Loo.findIn(
-    req.params.sw.split(',').map(parseFloat),
-    req.params.ne.split(',').map(parseFloat),
-    req.params.nw.split(',').map(parseFloat),
-    req.params.se.split(',').map(parseFloat)
   ).exec();
   res.status(200).json(new LooList(loos));
 });

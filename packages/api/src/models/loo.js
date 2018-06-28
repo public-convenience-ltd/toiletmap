@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
-const gju = require('geojson-utils');
 const looSchema = require('./loo_schema').looSchema;
-//const config = require('../config/config');
 const _ = require('lodash');
 const earth = 6731000;
 var Loo;
@@ -29,40 +27,6 @@ looSchema.statics.findNear = function(lon, lat, maxDistance, limit) {
 looSchema.statics.findIds = function(query) {
   var q = query || {};
   return this.find(q).select('id');
-};
-
-// NB this method returns a radius search calculated from the bounding coordinates
-// as such the resultset may contain points outside the bbox.
-looSchema.statics.findIn = function(sw, ne, nw, se) {
-  var bbox = {
-    type: 'Polygon',
-    coordinates: [[sw, nw, ne, se, sw]],
-  };
-  var swp = {
-    type: 'Point',
-    coordinates: bbox.coordinates[0][0],
-  };
-  var centre = gju.rectangleCentroid(bbox);
-  var maxDistance = gju.pointDistance(centre, swp);
-  return this.aggregate([
-    {
-      $geoNear: {
-        near: centre.coordinates,
-        distanceField: 'distance',
-        maxDistance: maxDistance / earth,
-        distanceMultiplier: earth,
-        spherical: true,
-      },
-    },
-    {
-      $match: {
-        'properties.active': true,
-      },
-    },
-    {
-      $sort: { distance: 1 },
-    },
-  ]);
 };
 
 looSchema.methods.toGeoJSON = function() {
@@ -107,66 +71,6 @@ function calculateCredibility(reports) {
     ) / reports.length
   );
 }
-
-// TODO Reconsider this
-// looSchema.methods.updateArea = function * () {
-//   var domain =
-//     'http://mapit.mysociety.org/point/4326/' +
-//     this.geometry.coordinates[0] +
-//     ',' +
-//     this.geometry.coordinates[1] +
-//     '?api_key=' +
-//     config.mapit.apiKey;
-
-//   var area = [];
-
-//   var options = {
-//     url: domain,
-//   };
-
-//   try {
-//     var mapit = yield rp(options);
-
-//     var mapitJSON = JSON.parse(mapit);
-
-//     var acceptableValues = [
-//       'District council',
-//       'Unitary Authority',
-//       'Metropolitan district',
-//       'London borough',
-//     ];
-
-//     for (var property in mapitJSON) {
-//       if (acceptableValues.indexOf(mapitJSON[property]['type_name']) >= 0) {
-//         area.push({
-//           type: mapitJSON[property]['type_name'],
-//           name: mapitJSON[property]['name'],
-//         });
-//       }
-//     }
-//   } catch (e) {
-//     /* eslint-disable-next-line no-console */
-//     console.log(e);
-//   }
-//   if (area.length) {
-//     this.properties.area = area;
-//     // Copy the area to all the reports which gave rise to this loo
-//     yield this.populate('reports').execPopulate();
-//     yield _.map(this.reports, function(report) {
-//       report.properties.area = area;
-//       return report.save();
-//     });
-//   } else {
-//     delete this.properties.area;
-//     // delete the area to all the reports which gave rise to this loo
-//     yield this.populate('reports').execPopulate();
-//     yield _.map(this.reports, function(report) {
-//       delete report.properties.area;
-//       return report.save();
-//     });
-//   }
-//   return this;
-// };
 
 /**
  * Rebuild a loo's data by recompiling it from all the reports that have been attatched
@@ -216,19 +120,6 @@ looSchema.methods.regenerate = async function() {
   geometry.coordinates[0] = _.meanBy(loo.reports, function(report) { return report.geometry.coordinates[0]*report.trust;})/_.sumBy(trustedLooReports,'trust');
   geometry.coordinates[1] = _.meanBy(loo.reports, function(report) { return report.geometry.coordinates[1]*report.trust;})/_.sumBy(trustedLooReports,'trust');
 */
-
-  this.geometry = geometry;
-  // attempt to update administrative geography data
-  // TODO reinstate admin areas
-  // try {
-  //   await loo.updateArea();
-  // } catch (e) {
-  //   /* eslint-disable-next-line no-console */
-  //   console.log(
-  //     'updateArea failed during regenerate for Loo: ' + loo._id + '\n',
-  //     e
-  //   );
-  // }
 
   // Calculate credibility
   loo.credibility = calculateCredibility(loo.reports);
