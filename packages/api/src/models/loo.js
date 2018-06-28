@@ -10,9 +10,9 @@ looSchema.statics.findNear = function(lon, lat, maxDistance, limit) {
   return this.aggregate([
     {
       $geoNear: {
-        near: [parseFloat(lon), parseFloat(lat)],
+        near: [lon, lat],
         distanceField: 'distance',
-        maxDistance: parseFloat(maxDistance) / earth,
+        maxDistance: maxDistance / earth,
         limit: limit,
         distanceMultiplier: earth,
         spherical: true,
@@ -36,15 +36,7 @@ looSchema.statics.findIds = function(query) {
 looSchema.statics.findIn = function(sw, ne, nw, se) {
   var bbox = {
     type: 'Polygon',
-    coordinates: [
-      [
-        _.map(sw.split(','), parseFloat),
-        _.map(nw.split(','), parseFloat),
-        _.map(ne.split(','), parseFloat),
-        _.map(se.split(','), parseFloat),
-        _.map(sw.split(','), parseFloat),
-      ],
-    ],
+    coordinates: [[sw, nw, ne, se, sw]],
   };
   var swp = {
     type: 'Point',
@@ -57,7 +49,7 @@ looSchema.statics.findIn = function(sw, ne, nw, se) {
       $geoNear: {
         near: centre.coordinates,
         distanceField: 'distance',
-        maxDistance: parseFloat(maxDistance) / earth,
+        maxDistance: maxDistance / earth,
         distanceMultiplier: earth,
         spherical: true,
       },

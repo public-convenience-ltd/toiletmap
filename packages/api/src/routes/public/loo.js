@@ -9,11 +9,12 @@ const config = require('../../config/config');
  * Accepts `radius` in meters in query
  */
 router.get('/near/:lon/:lat', async (req, res) => {
-  const maxDistance = req.query.radius || config.query_defaults.maxDistance;
-  const limit = req.query.limit || config.query_defaults.limit;
+  const maxDistance =
+    parseFloat(req.query.radius) || config.query_defaults.maxDistance;
+  const limit = parseFloat(req.query.limit) || config.query_defaults.limit;
   const loos = await Loo.findNear(
-    req.params.lon,
-    req.params.lat,
+    parseFloat(req.params.lon),
+    parseFloat(req.params.lat),
     maxDistance,
     limit
   ).exec();
@@ -25,10 +26,10 @@ router.get('/near/:lon/:lat', async (req, res) => {
  */
 router.get('/in/:sw/:ne/:nw/:se', async (req, res) => {
   const loos = await Loo.findIn(
-    req.params.sw,
-    req.params.ne,
-    req.params.nw,
-    req.params.se
+    req.params.sw.split(',').map(parseFloat),
+    req.params.ne.split(',').map(parseFloat),
+    req.params.nw.split(',').map(parseFloat),
+    req.params.se.split(',').map(parseFloat)
   ).exec();
   res.status(200).json(new LooList(loos));
 });

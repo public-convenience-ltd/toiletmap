@@ -99,4 +99,10 @@ schemae.looSchema.index({ geometry: '2dsphere' });
 schemae.looSchema.index({ geohash: 1 });
 schemae.looSchema.plugin(mongoosePaginate);
 
+// add text index for search API endpoint
+schemae.looSchema.index(
+  { 'properties.name': 'text', 'properties.notes': 'text' },
+  { default_language: 'none' }
+);
+
 module.exports = schemae;
