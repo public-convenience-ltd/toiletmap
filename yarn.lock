@@ -7978,9 +7978,9 @@ mongoose-timestamp@0.6.0:
   dependencies:
     defaults "^1.0.3"
 
-mongoose@5.1.6:
-  version "5.1.6"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.1.6.tgz#af92762c1e0317c897435594e83d6a5952873a0e"
+mongoose@5.1.7:
+  version "5.1.7"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.1.7.tgz#b13463278cc455b3e19031b96cde9c2010095f6c"
   dependencies:
     async "2.6.1"
     bson "~1.0.5"
