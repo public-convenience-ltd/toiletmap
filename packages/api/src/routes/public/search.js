@@ -7,8 +7,8 @@ router.get('/', async (req, res) => {
   const params = Object.assign({}, req.query);
   const query = {};
   // Strip out the pagination we use
-  const limit = params.limit || 10;
-  const page = params.page || 1;
+  const limit = parseInt(params.limit) || 10;
+  const page = parseInt(params.page) || 1;
   delete params.limit;
   delete params.page;
 
