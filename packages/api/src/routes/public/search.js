@@ -13,26 +13,12 @@ router.get('/', async (req, res) => {
   delete params.page;
 
   if (params.text) {
-    query.$or = [
-      { 'properties.name': new RegExp('.*' + req.query.text + '.*', 'i') },
-      { 'properties.notes': new RegExp('.*' + req.query.text + '.*', 'i') },
-    ];
+    query.$or = [{ $text: { $search: req.query.text } }];
   }
   delete params.text;
 
-  // Handle text searches
-  _.each(params, function(val, name) {
-    query.$and = query.$and || [];
-    if (/^text_/.test(name)) {
-      query.$and.push({
-        ['properties.' + name.replace('text_', '')]: new RegExp(
-          '.*' + val + '.*',
-          'i'
-        ),
-      });
-      delete params[name];
-    }
-  });
+  // Arbitrary text searches have been removed until a way is found that is not
+  // prone to ReDoS attacks or indexing every possible property by text
 
   // Handle queries for missing fields
   _.each(params, function(val, name) {
