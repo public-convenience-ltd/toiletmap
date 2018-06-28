@@ -7,8 +7,6 @@ export default {
     mobile: 567,
   },
   apiEndpoint: '/api',
-  reportEndpoint: '/api/reports',
-  removeEndpoint: '/api/remove',
   nearest: {
     limit: 5,
     radius: 5000, // meters

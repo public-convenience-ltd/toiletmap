@@ -43,25 +43,6 @@ describe('api loo routes (public)', () => {
     });
   });
 
-  describe('/api/loos/in/:sw/:ne/:nw/:se', () => {
-    const looBox = require('./data/looBox.js');
-    beforeAll(async () => {
-      await Loo.collection.insertMany(looBox);
-    });
-
-    it('should return 12 loos', async () => {
-      const response = await request(app).get(
-        '/api/loos/in/-24.2,44.5/20.3,60.4/-24.2,60.4/20.3,44.5'
-      );
-      expect(response.statusCode).toBe(200);
-      expect(response.body.features.length).toBe(12);
-    });
-
-    afterAll(async () => {
-      await Loo.remove({}).exec();
-    });
-  });
-
   afterAll(async () => {
     await mongoose.connection.close();
   });

@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const loos = require('./loo');
-const reports = require('./report');
+const loos = require('./loos');
+const reports = require('./reports');
 const areas = require('./areas');
 const search = require('./search');
 const statistics = require('./statistics');

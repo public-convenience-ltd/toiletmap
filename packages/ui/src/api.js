@@ -30,13 +30,14 @@ api.findLooById = async function(id) {
 
 api.reportLoo = async function(loo, token) {
   // Todo: Handle HTTP 401
-  const res = await fetch(config.reportEndpoint, {
+  const url = `${config.apiEndpoint}/reports`;
+  const res = await fetch(url, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    method: 'POST',
+    method: 'post',
     body: JSON.stringify(loo),
   });
   if (res.status !== 201) {
@@ -47,13 +48,14 @@ api.reportLoo = async function(loo, token) {
 
 api.removeLoo = async function(looId, reason, token) {
   // Todo: Handle HTTP 401
-  const res = await fetch(`${config.removeEndpoint}/${looId}`, {
+  const url = `${config.apiEndpoint}/reports/${looId}`;
+  const res = await fetch(url, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    method: 'POST',
+    method: 'delete',
     body: JSON.stringify({
       removal_reason: reason,
     }),
