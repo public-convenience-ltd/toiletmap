@@ -4,7 +4,7 @@ services:
 - docker
 sudo: required
 env:
-  secure: "D2odYxhrbyd4s6jm4MLBkoY/ELXFNLASayQ8hKZfRaqyBmMeisDKEuBrpkbvndOqrplDZ/jKG7nuA4I3qKsdWh5rMmN78VnOpjW75JqxwcqkaUVzQP4qimZm4ZiVDPWbJn6rQr//HMMZLaLROtVHEsZOHQGCgAgB1mZk8+p+vls="
+  secure: D2odYxhrbyd4s6jm4MLBkoY/ELXFNLASayQ8hKZfRaqyBmMeisDKEuBrpkbvndOqrplDZ/jKG7nuA4I3qKsdWh5rMmN78VnOpjW75JqxwcqkaUVzQP4qimZm4ZiVDPWbJn6rQr//HMMZLaLROtVHEsZOHQGCgAgB1mZk8+p+vls=
 before_deploy:
 - curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
 - heroku container:login
@@ -14,3 +14,7 @@ deploy:
   script: yarn build && yarn deploy:push && yarn deploy:release
   on:
     branch: unity
+notifications:
+  slack:
+    secure: c9QDhIrjlEkqXRra9UnQsQNQ1XttY+wHmbVGwxNHqZFp8bsEaDNOZBJ/PDNkXTkCbuVi4zvtzMif7C8tW7Di7AbY948Xch+3UZAVNpEeBS3L6coeTFWatlzVVPegZXvq+ryIycL/oNwmeHT7ZvbrDbw+JGLp1ci9okjky8W+jkI=
+    on_pull_requests: false
