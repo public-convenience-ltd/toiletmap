@@ -34,18 +34,20 @@ const ACTION_HANDLERS = {
   [GET_GEOLOCATION_SUCCESS]: function(state, action) {
     var { longitude, latitude } = action.payload.position.coords;
 
-    return Object.assign({}, state, {
+    return {
+      ...state,
       position: {
         lng: longitude,
         lat: latitude,
       },
-    });
+    };
   },
 
   [GET_GEOLOCATION_ERROR]: function(state, action) {
-    return Object.assign({}, state, {
+    return {
+      ...state,
       error: action.payload.error,
-    });
+    };
   },
 };
 
@@ -53,6 +55,5 @@ const ACTION_HANDLERS = {
 
 export default function geolocationReducer(state = {}, action) {
   const handler = ACTION_HANDLERS[action.type];
-
   return handler ? handler(state, action) : state;
 }

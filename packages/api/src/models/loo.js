@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const gju = require('geojson-utils');
 const looSchema = require('./loo_schema').looSchema;
-const config = require('../config/config');
-const rp = require('request-promise');
+//const config = require('../config/config');
 const _ = require('lodash');
 const earth = 6731000;
 var Loo;
@@ -117,72 +116,73 @@ function calculateCredibility(reports) {
   );
 }
 
-looSchema.methods.updateArea = function*() {
-  var domain =
-    'http://mapit.mysociety.org/point/4326/' +
-    this.geometry.coordinates[0] +
-    ',' +
-    this.geometry.coordinates[1] +
-    '?api_key=' +
-    config.mapit.apiKey;
+// TODO Reconsider this
+// looSchema.methods.updateArea = function * () {
+//   var domain =
+//     'http://mapit.mysociety.org/point/4326/' +
+//     this.geometry.coordinates[0] +
+//     ',' +
+//     this.geometry.coordinates[1] +
+//     '?api_key=' +
+//     config.mapit.apiKey;
 
-  var area = [];
+//   var area = [];
 
-  var options = {
-    url: domain,
-  };
+//   var options = {
+//     url: domain,
+//   };
 
-  try {
-    var mapit = yield rp(options);
+//   try {
+//     var mapit = yield rp(options);
 
-    var mapitJSON = JSON.parse(mapit);
+//     var mapitJSON = JSON.parse(mapit);
 
-    var acceptableValues = [
-      'District council',
-      'Unitary Authority',
-      'Metropolitan district',
-      'London borough',
-    ];
+//     var acceptableValues = [
+//       'District council',
+//       'Unitary Authority',
+//       'Metropolitan district',
+//       'London borough',
+//     ];
 
-    for (var property in mapitJSON) {
-      if (acceptableValues.indexOf(mapitJSON[property]['type_name']) >= 0) {
-        area.push({
-          type: mapitJSON[property]['type_name'],
-          name: mapitJSON[property]['name'],
-        });
-      }
-    }
-  } catch (e) {
-    /* eslint-disable-next-line no-console */
-    console.log(e);
-  }
-  if (area.length) {
-    this.properties.area = area;
-    // Copy the area to all the reports which gave rise to this loo
-    yield this.populate('reports').execPopulate();
-    yield _.map(this.reports, function(report) {
-      report.properties.area = area;
-      return report.save();
-    });
-  } else {
-    delete this.properties.area;
-    // delete the area to all the reports which gave rise to this loo
-    yield this.populate('reports').execPopulate();
-    yield _.map(this.reports, function(report) {
-      delete report.properties.area;
-      return report.save();
-    });
-  }
-  return this;
-};
+//     for (var property in mapitJSON) {
+//       if (acceptableValues.indexOf(mapitJSON[property]['type_name']) >= 0) {
+//         area.push({
+//           type: mapitJSON[property]['type_name'],
+//           name: mapitJSON[property]['name'],
+//         });
+//       }
+//     }
+//   } catch (e) {
+//     /* eslint-disable-next-line no-console */
+//     console.log(e);
+//   }
+//   if (area.length) {
+//     this.properties.area = area;
+//     // Copy the area to all the reports which gave rise to this loo
+//     yield this.populate('reports').execPopulate();
+//     yield _.map(this.reports, function(report) {
+//       report.properties.area = area;
+//       return report.save();
+//     });
+//   } else {
+//     delete this.properties.area;
+//     // delete the area to all the reports which gave rise to this loo
+//     yield this.populate('reports').execPopulate();
+//     yield _.map(this.reports, function(report) {
+//       delete report.properties.area;
+//       return report.save();
+//     });
+//   }
+//   return this;
+// };
 
 /**
  * Rebuild a loo's data by recompiling it from all the reports that have been attatched
  * Currently this leaves a loo's location as that of the most recent report submitted
  */
-looSchema.methods.regenerate = function*() {
+looSchema.methods.regenerate = async function() {
   // populate the array of report ids with their documents
-  var loo = yield this.populate('reports').execPopulate();
+  const loo = await this.populate('reports').execPopulate();
   // Make an array of property objects ordered by trustworthiness then by freshness
   var properties = _.map(
     _.sortBy(loo.reports, ['trust', 'updatedAt']),
@@ -227,15 +227,16 @@ looSchema.methods.regenerate = function*() {
 
   this.geometry = geometry;
   // attempt to update administrative geography data
-  try {
-    yield loo.updateArea();
-  } catch (e) {
-    /* eslint-disable-next-line no-console */
-    console.log(
-      'updateArea failed during regenerate for Loo: ' + loo._id + '\n',
-      e
-    );
-  }
+  // TODO reinstate admin areas
+  // try {
+  //   await loo.updateArea();
+  // } catch (e) {
+  //   /* eslint-disable-next-line no-console */
+  //   console.log(
+  //     'updateArea failed during regenerate for Loo: ' + loo._id + '\n',
+  //     e
+  //   );
+  // }
 
   // Calculate credibility
   loo.credibility = calculateCredibility(loo.reports);

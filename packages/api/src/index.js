@@ -14,6 +14,10 @@ app.use(compression());
 const publicRoutes = require('./routes/public');
 app.use('/api', publicRoutes);
 
+// Add protected routes
+const privateRoutes = require('./routes/private/loo_report');
+app.use('/api', privateRoutes);
+
 // Serve the built admin UI from /admin
 app.use('/admin', express.static(path.join(__dirname, 'www-admin')));
 app.get('/admin/*', function(req, res) {
