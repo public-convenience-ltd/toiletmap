@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import L from 'leaflet';
 import path from 'path';
@@ -159,7 +159,9 @@ export class LooMap extends Component {
   }
 
   onMarkerClick(loo) {
-    this.props.router.push('/loos/' + loo._id);
+    if (this.props.activeMarkers) {
+      this.props.history.push('/loos/' + loo._id);
+    }
   }
 
   render() {
@@ -343,6 +345,8 @@ LooMap.propTypes = {
   highlight: PropTypes.shape({
     _id: PropTypes.string,
   }),
+
+  activeMarkers: PropTypes.bool,
 };
 
 LooMap.defaultProps = {
@@ -365,6 +369,7 @@ LooMap.defaultProps = {
   onZoom: Function.prototype,
   onInitialised: Function.prototype,
   onUpdateCenter: Function.prototype,
+  activeMarkers: true,
 };
 
 export default withRouter(LooMap);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import LooMap from './map/LooMap';
 import PreferenceIndicators from './PreferenceIndicators';
@@ -30,6 +30,7 @@ class LooListItem extends Component {
           preventDragging={true}
           loos={[loo]}
           initialPosition={coords}
+          activeMarkers={false}
         />
 
         <div className={styles.link}>

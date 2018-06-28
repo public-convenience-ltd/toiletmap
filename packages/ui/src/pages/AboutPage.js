@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import styles from '../css/about-page.module.css';
-import headings from '../../css/headings.module.css';
+import styles from './css/about-page.module.css';
+import headings from '../css/headings.module.css';
 
-import rcaLogo from '../../images/rca_logo.jpg';
+import rcaLogo from '../images/rca_logo.jpg';
 
 class AboutPage extends Component {
   render() {

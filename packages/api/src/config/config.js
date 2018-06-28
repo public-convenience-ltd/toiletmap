@@ -34,7 +34,7 @@ var base = {
   },
   deduplication: {
     radius: 25,
-    anon_attributions: ['Anonymous'],
+    anon_attributions: ['Anonymous', 'GBPTM Contributor'],
   },
   reports: {
     trust: 8,

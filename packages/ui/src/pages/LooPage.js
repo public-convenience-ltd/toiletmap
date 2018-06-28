@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import { browserHistory, Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 
-import PreferenceIndicators from '../PreferenceIndicators';
-import SingleLooMap from '../map/SingleLooMap';
+import PreferenceIndicators from '../components/PreferenceIndicators';
+import SingleLooMap from '../components/map/SingleLooMap';
 
-import styles from '../css/loo-page.module.css';
-import layout from '../css/layout.module.css';
-import helpers from '../../css/helpers.module.css';
-import headings from '../../css/headings.module.css';
-import controls from '../../css/controls.module.css';
+import styles from './css/loo-page.module.css';
+import layout from '../components/css/layout.module.css';
+import helpers from '../css/helpers.module.css';
+import headings from '../css/headings.module.css';
+import controls from '../css/controls.module.css';
 
-import api from '../../api';
-import config from '../../config';
+import api from '../api';
+import config from '../config';
 
 class LooPage extends Component {
   // Provides a mapping between loo properies and the values we want to display
@@ -84,7 +84,7 @@ class LooPage extends Component {
     };
   }
 
-  // Wrapper to `api.humaize` which allows mappings between loo property values and the
+  // Wrapper to `api.humanize` which allows mappings between loo property values and the
   // text we want to display
   humanize(val) {
     if (this.humanizedValues[val]) {
@@ -105,7 +105,7 @@ class LooPage extends Component {
             <div className={layout.controls}>
               {this.props.app.canGoBack && (
                 <button
-                  onClick={browserHistory.goBack}
+                  onClick={() => alert('fix me')}
                   className={controls.btn}
                 >
                   Back
@@ -121,7 +121,7 @@ class LooPage extends Component {
           </div>
         )}
 
-        <h2 className={headings.large}>Toilet</h2>
+        <h2 className={headings.large}>{loo.properties.name || 'Toilet'}</h2>
 
         <div className={styles.preferenceIndicators}>
           <PreferenceIndicators loo={loo} iconSize={2.5} />

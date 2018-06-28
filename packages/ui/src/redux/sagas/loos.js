@@ -1,8 +1,8 @@
 import { all, takeLatest, call, put } from 'redux-saga/effects';
-import { push as navigate } from 'react-router-redux';
+import history from '../../history';
 
 import api from '../../api';
-import { PENDING_REPORT_KEY } from '../../config';
+import { PENDING_REPORT_KEY, PENDING_REMOVE_KEY } from '../../config';
 
 import {
   FIND_NEARBY_REQUEST,
@@ -10,65 +10,92 @@ import {
   FIND_BY_ID_REQUEST,
   FIND_BY_ID_SUCCESS,
   REPORT_REQUEST,
+  REMOVE_REQUEST,
+  REMOVE_SUCCESS,
   REPORT_SUCCESS,
-  REPORT_PROCESS_PENDING,
   actions,
 } from '../modules/loos';
 
-function* findNearbyLoosSaga(action) {
-  var { lng, lat, radius } = action.payload;
-  var loos = yield call(api.findLoos, lng, lat, radius);
-  yield put(actions[FIND_NEARBY_SUCCESS](loos));
-}
+import { LOGGED_IN } from '../modules/auth';
 
-function* findLooByIdSaga(action) {
-  var loo = yield call(api.findLooById, action.payload.id);
-  yield put(actions[FIND_BY_ID_SUCCESS](loo));
-}
-
-function* report(loo) {
-  // Re-direct the user to the authentication screen, if they're not
-  // already logged in
-  var authenticated = yield api.isAuthenticated();
-
-  if (!authenticated) {
-    yield put(navigate('/signin'));
-  } else {
-    // Todo: Catch HTTP 401 and navigate to '/signin'
-    yield call(api.reportLoo, loo);
-    yield put(actions[REPORT_SUCCESS](loo));
+export default function makeLoosSaga(auth) {
+  function* findNearbyLoosSaga(action) {
+    var { lng, lat, radius } = action.payload;
+    var loos = yield call(api.findLoos, lng, lat, radius);
+    yield put(actions[FIND_NEARBY_SUCCESS](loos));
   }
-}
-
-function* reportRequest(action) {
-  var loo = action.payload.loo;
-
-  // Store loo in localStorage so, if neccessary, we can perform
-  // authentication and pick it up again once we've been re-directed
-  // back to our application
-  localStorage.setItem(PENDING_REPORT_KEY, JSON.stringify(loo));
-
-  yield call(report, loo);
-}
-
-function* processPending() {
-  var loo = JSON.parse(localStorage.getItem(PENDING_REPORT_KEY));
-  var authenticated = yield api.isAuthenticated();
-
-  if (loo && authenticated) {
-    yield call(api.reportLoo, loo);
-    yield put(actions[REPORT_SUCCESS](loo));
-
-    // Remove pending loo report
-    localStorage.removeItem(PENDING_REPORT_KEY);
+  function* findLooByIdSaga(action) {
+    var loo = yield call(api.findLooById, action.payload.id);
+    yield put(actions[FIND_BY_ID_SUCCESS](loo));
   }
-}
 
-export default function* loosSaga() {
-  yield all([
-    takeLatest(FIND_NEARBY_REQUEST, findNearbyLoosSaga),
-    takeLatest(FIND_BY_ID_REQUEST, findLooByIdSaga),
-    takeLatest(REPORT_REQUEST, reportRequest),
-    takeLatest(REPORT_PROCESS_PENDING, processPending),
-  ]);
+  function* report(loo) {
+    // Todo: Catch HTTP 401 and navigate to '/login'
+    const ids = yield call(api.reportLoo, loo, auth.getAccessToken());
+    // maybe we should navigate as a result of the success action
+    yield put(actions[REPORT_SUCCESS](ids));
+    return yield call(history.push, `/loos/${ids.loo}`);
+  }
+
+  function* reportRequest(action) {
+    const loo = action.payload.loo;
+    // Re-direct the user to the authentication screen, if they're not
+    // already logged in
+    if (!auth.isAuthenticated()) {
+      // Store loo in localStorage so, if neccessary, we can perform
+      // authentication and pick it up again once we've been re-directed
+      // back to our application
+      localStorage.setItem(PENDING_REPORT_KEY, JSON.stringify(loo));
+      return yield call(history.push, '/login');
+    }
+    yield call(report, loo);
+  }
+
+  function* remove(id, reason) {
+    // Todo: Catch HTTP 401 and navigate to '/login'
+    const result = yield call(api.removeLoo, id, reason, auth.getAccessToken());
+    // maybe we should navigate as a result of the success action
+    yield put(actions[REMOVE_SUCCESS](result));
+    return yield call(history.push, `/`);
+  }
+
+  function* removeRequest(action) {
+    const { looId, reason } = action.payload;
+    // Re-direct the user to the authentication screen, if they're not
+    // already logged in
+    if (!auth.isAuthenticated()) {
+      // Store loo in localStorage so, if neccessary, we can perform
+      // authentication and pick it up again once we've been re-directed
+      // back to our application
+      localStorage.setItem(PENDING_REMOVE_KEY, JSON.stringify(action.payload));
+      return yield call(history.push, '/login');
+    }
+    yield call(remove, looId, reason);
+  }
+
+  /**
+   * Called on login to pick up any pending reports
+   */
+  function* processPending() {
+    const loo = JSON.parse(localStorage.getItem(PENDING_REPORT_KEY));
+    if (loo) {
+      localStorage.removeItem(PENDING_REPORT_KEY);
+      yield call(report, loo);
+    }
+    const remove = JSON.parse(localStorage.getItem(PENDING_REMOVE_KEY));
+    if (remove) {
+      localStorage.removeItem(PENDING_REMOVE_KEY);
+      yield call(report, loo);
+    }
+  }
+
+  return function* loosSaga() {
+    yield all([
+      takeLatest(FIND_NEARBY_REQUEST, findNearbyLoosSaga),
+      takeLatest(FIND_BY_ID_REQUEST, findLooByIdSaga),
+      takeLatest(REPORT_REQUEST, reportRequest),
+      takeLatest(REMOVE_REQUEST, removeRequest),
+      takeLatest(LOGGED_IN, processPending),
+    ]);
+  };
 }

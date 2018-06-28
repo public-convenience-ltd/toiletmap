@@ -1,76 +1,40 @@
-export const AUTH_REQUEST = 'AUTH/REQUEST';
-export const GET_STATUS_REQUEST = 'AUTH/GET_STATUS/REQUEST';
-export const GET_STATUS_SUCCESS = 'AUTH/GET_STATUS/SUCCESS';
-export const SIGNOUT_REQUEST = 'AUTH/SIGNOUT/REQUEST';
-export const SIGNOUT_SUCCESS = 'AUTH/SIGNOUT/SUCCESS';
+import Auth from '../../Auth';
 
-// Actions
+export const LOGIN = 'AUTH/DO/LOGIN';
+export const LOGOUT = 'AUTH/DO/LOGOUT';
+export const LOGGED_IN = 'AUTH/LOGIN/OK';
 
-export const actionAuthRequest = service => ({
-  type: AUTH_REQUEST,
-  payload: {
-    // 'facebook'|'twitter'|'openstreetmap'|'github'
-    service,
-  },
+export const login = () => ({
+  type: LOGIN,
 });
 
-export const actionGetStatusRequest = () => ({
-  type: GET_STATUS_REQUEST,
+export const logout = () => ({
+  type: LOGOUT,
 });
 
-export const actionGetStatusSuccess = authenticated => ({
-  type: GET_STATUS_SUCCESS,
-  payload: {
-    authenticated,
-  },
-});
-
-export const actionSignoutRequest = () => ({
-  type: SIGNOUT_REQUEST,
-});
-
-export const actionSignoutSuccess = () => ({
-  type: SIGNOUT_SUCCESS,
+export const loggedIn = status => ({
+  type: LOGGED_IN,
+  payload: status,
 });
 
 export const actions = {
-  [AUTH_REQUEST]: actionAuthRequest,
-  [GET_STATUS_REQUEST]: actionGetStatusRequest,
-  [GET_STATUS_SUCCESS]: actionGetStatusSuccess,
-  [SIGNOUT_REQUEST]: actionSignoutRequest,
-  [SIGNOUT_SUCCESS]: actionGetStatusSuccess,
+  [LOGIN]: login,
+  [LOGOUT]: logout,
+  [LOGGED_IN]: loggedIn,
 };
 
-// Action Handlers
-
-const ACTION_HANDLERS = {
-  [AUTH_REQUEST]: function(state, action) {
-    return Object.assign({}, state, {
-      service: action.payload.service,
-    });
-  },
-
-  [GET_STATUS_SUCCESS]: function(state, action) {
-    return Object.assign({}, state, {
-      authenticated: action.payload.authenticated,
-    });
-  },
-
-  [SIGNOUT_SUCCESS]: function(state, action) {
-    return Object.assign({}, state, {
-      authenticated: false,
-    });
-  },
+const HANDLERS = {
+  [LOGGED_IN]: (state, action) => ({
+    ...state,
+    isAuthenticated: action.payload,
+  }),
 };
 
-// Reducer
-
-var initialState = {
-  authenticated: false,
+const initialState = {
+  isAuthenticated: new Auth().isAuthenticated(),
 };
 
 export default function authReducer(state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type];
-
+  const handler = HANDLERS[action.type];
   return handler ? handler(state, action) : state;
 }

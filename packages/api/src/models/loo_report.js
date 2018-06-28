@@ -9,21 +9,21 @@ var LooReport;
 /**
  * Find the loo to which this report is attatched, or a nearby loo
  */
-looReportSchema.statics.findLooFor = function*(report) {
+looReportSchema.statics.findLooFor = async function(report) {
   var loo;
   // Is this report derived from an existing loo?
   if (report.derivedFrom) {
-    loo = yield Loo.findById(report.derivedFrom).exec();
+    loo = await Loo.findById(report.derivedFrom).exec();
   }
 
   if (!loo) {
     // Do we have a loo which references this report?
-    loo = yield Loo.findOne({ reports: { $in: [report._id] } }).exec();
+    loo = await Loo.findOne({ reports: { $in: [report._id] } }).exec();
   }
 
   if (!loo) {
     // Nope. How about one which is within x meters (and so is probably the same real loo)
-    loo = yield Loo.findOne({
+    loo = await Loo.findOne({
       geometry: {
         $near: {
           $geometry: report.geometry.toJSON(),
@@ -35,7 +35,7 @@ looReportSchema.statics.findLooFor = function*(report) {
   return loo;
 };
 
-looReportSchema.statics.processReport = function*(data) {
+looReportSchema.statics.processReport = async function(data) {
   var report;
   var ghash = geohash.encode(
     data.geometry.coordinates[1],
@@ -54,22 +54,22 @@ looReportSchema.statics.processReport = function*(data) {
   if (
     _.indexOf(config.deduplication.anon_attributions, data.attribution) === -1
   ) {
-    report = yield LooReport.findOneAndUpdate(
+    report = await LooReport.findOneAndUpdate(
       { geohash: ghash, attribution: data.attribution },
-      data,
+      _.omit(data, '_id'), //don't overwite the _id
       { upsert: true, new: true }
     ).exec();
   } else {
     // Anon ones get a new report each time
     report = new LooReport(data);
-    yield report.save();
+    await report.save();
   }
-  var loo = yield report.looificate();
+  var loo = await report.looificate();
   return [report, loo];
 };
 
-looReportSchema.methods.looificate = function*() {
-  var loo = yield LooReport.findLooFor(this);
+looReportSchema.methods.looificate = async function() {
+  var loo = await LooReport.findLooFor(this);
   if (!loo) {
     // Derive a new loo from this report
     loo = Loo.fromLooReport(this);
@@ -81,9 +81,9 @@ looReportSchema.methods.looificate = function*() {
   }
 
   // Get the loo to regenerate its data
-  yield loo.regenerate();
+  await loo.regenerate();
   // Save the result
-  yield loo.save();
+  await loo.save();
   return loo;
 };
 

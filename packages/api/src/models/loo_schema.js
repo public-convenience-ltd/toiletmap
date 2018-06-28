@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const Schema = require('mongoose').Schema;
-const timestamps = require('mongoose-timestamp');
 const mongoosePaginate = require('mongoose-paginate');
 const geohash = require('geo-hash');
 const specs = {};
@@ -66,9 +65,9 @@ schemae.looReportSchema = new Schema(
     trust: { type: 'Number', default: 5, min: -1, max: 10 },
     collectionMethod: { type: String },
     derivedFrom: { type: Schema.Types.ObjectId, ref: 'Loo' },
-  })
+  }),
+  { timestamps: true }
 );
-schemae.looReportSchema.plugin(timestamps);
 schemae.looReportSchema.pre('save', function(next) {
   this.geohash = geohash.encode(
     this.geometry.coordinates[1],
@@ -86,7 +85,8 @@ schemae.looSchema = new Schema(
     attributions: [String],
     reports: [{ type: Schema.Types.ObjectId, ref: 'LooReport' }],
     credibility: { type: Number },
-  })
+  }),
+  { timestamps: true }
 );
 schemae.looSchema.pre('save', function(next) {
   this.geohash = geohash.encode(
@@ -95,7 +95,6 @@ schemae.looSchema.pre('save', function(next) {
   );
   next();
 });
-schemae.looSchema.plugin(timestamps);
 schemae.looSchema.index({ geometry: '2dsphere' });
 schemae.looSchema.index({ geohash: 1 });
 schemae.looSchema.plugin(mongoosePaginate);
