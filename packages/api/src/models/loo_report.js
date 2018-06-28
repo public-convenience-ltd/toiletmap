@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 const config = require('../config/config');
-const _ = require('lodash');
 const Loo = require('./loo');
 const looReportSchema = require('./loo_schema').looReportSchema;
-const geohash = require('geo-hash');
 var LooReport;
 
 /**
@@ -36,13 +34,9 @@ looReportSchema.statics.findLooFor = async function(report) {
 };
 
 looReportSchema.statics.processReport = async function(data) {
-  var report;
-  var ghash = geohash.encode(
-    data.geometry.coordinates[1],
-    data.geometry.coordinates[0]
-  );
   // Strip tags from plain text entries
-  _.each(['notes', 'cost'], function(v) {
+  // this is a bit basic...
+  ['notes', 'cost'].forEach(function(v) {
     if (data.properties && data.properties[v]) {
       data.properties[v] = data.properties[v]
         .replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>?/gi, '')
@@ -50,20 +44,8 @@ looReportSchema.statics.processReport = async function(data) {
     }
   });
 
-  // Non anonymous reports can be updated
-  if (
-    _.indexOf(config.deduplication.anon_attributions, data.attribution) === -1
-  ) {
-    report = await LooReport.findOneAndUpdate(
-      { geohash: ghash, attribution: data.attribution },
-      _.omit(data, '_id'), //don't overwite the _id
-      { upsert: true, new: true }
-    ).exec();
-  } else {
-    // Anon ones get a new report each time
-    report = new LooReport(data);
-    await report.save();
-  }
+  const report = new LooReport(data);
+  await report.save();
   var loo = await report.looificate();
   return [report, loo];
 };
