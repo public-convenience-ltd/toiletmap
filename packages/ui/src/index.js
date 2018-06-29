@@ -1,3 +1,6 @@
+// Polyfills
+import 'core-js/fn/array/includes';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route } from 'react-router-dom';
