@@ -10,7 +10,7 @@ import config from '../../config';
 import {
   actionZoom,
   actionUpdateCenter,
-} from '../../redux/modules/loo-map-nearest';
+} from '../../redux/modules/mapControls';
 
 import { actionFindNearbyRequest } from '../../redux/modules/loos';
 
@@ -74,7 +74,7 @@ NearestLooMap.propTypes = {
 
 var mapStateToProps = state => ({
   geolocation: state.geolocation,
-  map: state.mapNearest,
+  map: state.mapControls,
   loos: state.loos.nearby,
 });
 

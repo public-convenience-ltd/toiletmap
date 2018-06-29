@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 
-import LooMap from '../components/map/LooMap';
+import NearestLooMap from '../components/map/NearestLooMap';
 import DismissableBox from '../components/DismissableBox';
 import LooListItem from '../components/LooListItem';
 import Notification from '../components/Notification';
@@ -18,7 +18,7 @@ import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
 import { actionFindNearbyRequest } from '../redux/modules/loos';
-import { actionHighlight } from '../redux/modules/loo-map-nearest';
+import { actionHighlight } from '../redux/modules/mapControls';
 import { actionToggleViewMode } from '../redux/modules/app';
 import { actions, LOGOUT, LOGIN } from '../redux/modules/auth';
 
@@ -93,18 +93,7 @@ export class HomePage extends Component {
           {!loos && (
             <div className={toiletMap.loading}>Fetching toilets&hellip;</div>
           )}
-
-          <LooMap
-            loos={loos}
-            initialZoom={14}
-            showLocation={true}
-            showSearchControl={true}
-            showLocateControl={true}
-            showCenter={true}
-            showFullscreenControl={true}
-            shouldCluster={true}
-            initialPosition={this.props.geolocation.position}
-          />
+          <NearestLooMap />
         </div>
       </div>
     );

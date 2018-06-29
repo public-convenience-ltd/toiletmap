@@ -1,6 +1,6 @@
-export const ZOOM = 'LOO_MAP_NEAREST/ZOOM';
-export const UPDATE_CENTER = 'LOO_MAP_NEAREST/UPDATE_CENTER';
-export const HIGHLIGHT = 'LOO_MAP_NEAREST/HIGHLIGHT';
+export const ZOOM = 'MAP_CONTROLS/ZOOM';
+export const UPDATE_CENTER = 'MAP_CONTROLS/UPDATE_CENTER';
+export const HIGHLIGHT = 'MAP_CONTROLS/HIGHLIGHT';
 
 // Actions
 
@@ -14,7 +14,6 @@ export const actionZoom = zoom => ({
 export const actionUpdateCenter = center => ({
   type: UPDATE_CENTER,
   payload: {
-    // { lat, lng }
     center,
   },
 });
@@ -51,9 +50,7 @@ const ACTION_HANDLERS = {
   },
 };
 
-// Reducer
-
-export default function looMapNearestReducer(state = {}, action) {
+export default function mapControlsReducer(state = {}, action) {
   const handler = ACTION_HANDLERS[action.type];
   return handler ? handler(state, action) : state;
 }

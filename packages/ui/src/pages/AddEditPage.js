@@ -141,7 +141,12 @@ class AddEditPage extends Component {
 
     // Deep extend loo state to ensure we get all properties (since we can't guarantee
     // that `this.props.loo` will include them all)
-    state.loo = _.merge({}, state.loo, this.props.loo);
+    // TODO: omit data which we don't want to include in the report
+    state.loo = _.merge(
+      {},
+      state.loo,
+      _.omit(this.props.loo, 'createdAt', 'updatedAt', '_id', '_v')
+    );
 
     // Set initial internal state
     this.state = state;
@@ -448,7 +453,7 @@ AddEditPage.propTypes = {
 
 var mapStateToProps = state => ({
   app: state.app,
-  map: state.mapAddEdit,
+  map: state.mapControls,
   geolocation: state.geolocation,
 });
 
