@@ -209,7 +209,11 @@ class AddEditPage extends Component {
           </div>
         </div>
 
-        <h2 className={headings.large}>Add This Loo</h2>
+        {this.props.loo ? (
+          <h2 className={headings.large}>Edit This Loo</h2>
+        ) : (
+          <h2 className={headings.large}>Add This Loo</h2>
+        )}
 
         <MediaQuery maxWidth={config.viewport.mobile}>
           {this.renderMobileMap()}
