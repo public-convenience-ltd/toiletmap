@@ -36,7 +36,7 @@
     "redux-saga": "0.16.0"
   },
   "scripts": {
-    "start": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
+    "dev": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
     "prebuild": "eslint ./src && stylelint ./src/**/*.css",
     "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
     "test": "SKIP_PREFLIGHT_CHECK=true react-scripts test --env=jsdom",
