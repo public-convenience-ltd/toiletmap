@@ -36,8 +36,7 @@ import SingleLooProvider from './components/SingleLooProvider';
 import appReducer from './redux/modules/app';
 import geolocationReducer from './redux/modules/geolocation';
 import loosReducer from './redux/modules/loos';
-import looMapNearestReducer from './redux/modules/loo-map-nearest';
-import looMapAddEditReducer from './redux/modules/loo-map-add-edit';
+import mapControlsReducer from './redux/modules/mapControls';
 import authReducer from './redux/modules/auth';
 
 // Redux sagas
@@ -54,8 +53,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   geolocation: geolocationReducer,
   loos: loosReducer,
-  mapNearest: looMapNearestReducer,
-  mapAddEdit: looMapAddEditReducer,
+  mapControls: mapControlsReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

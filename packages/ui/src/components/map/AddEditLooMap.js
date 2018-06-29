@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 
 import LooMap from './LooMap';
 
-import { actionUpdateCenter } from '../../redux/modules/loo-map-add-edit';
+import {
+  actionZoom,
+  actionUpdateCenter,
+} from '../../redux/modules/mapControls';
 
 import styles from '../css/edit-loo-map.module.css';
 
@@ -58,7 +61,9 @@ class AddEditLooMap extends Component {
         {...mapProps}
         loos={loo ? [loo] : []}
         onUpdateCenter={this.props.actionUpdateCenter}
+        onZoom={this.props.actionZoom}
         initialPosition={center}
+        initialZoom={this.props.map.zoom}
         showCrosshair={true}
       />
     );
@@ -76,12 +81,13 @@ AddEditLooMap.defaultProps = {
 
 var mapStateToProps = state => ({
   geolocation: state.geolocation,
-  map: state.mapAddEdit,
+  map: state.mapControls,
   loo: state.loos.byId,
 });
 
 var mapDispatchToProps = {
   actionUpdateCenter,
+  actionZoom,
 };
 
 export default connect(
