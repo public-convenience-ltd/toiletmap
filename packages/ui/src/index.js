@@ -1,5 +1,6 @@
 // Polyfills
 import 'core-js/fn/array/includes';
+import 'core-js/fn/string/repeat';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
