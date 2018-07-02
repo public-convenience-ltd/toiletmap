@@ -2,10 +2,6 @@
 	padding: 0.75rem;
 }
 
-.donate {
-	composes: btnSmall btnFeatured from '../../css/controls.module.css';
-}
-
 .logoWrapper {
 	display: flex;
 	align-items: flex-start;

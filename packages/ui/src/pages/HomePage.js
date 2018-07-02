@@ -126,14 +126,6 @@ export class HomePage extends Component {
             </p>
           </Notification>
         )}
-        {/* Logged out message */}
-        {!this.props.isAuthenticated && (
-          <Notification>
-            <p>
-              Logged out. <button onClick={this.props.doLogin}>Log in</button>
-            </p>
-          </Notification>
-        )}
 
         <div className={layout.controls}>
           {config.allowAddEditLoo && (

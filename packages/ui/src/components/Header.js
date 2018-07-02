@@ -18,14 +18,6 @@ class Header extends Component {
             The Great British <span>Public Toilet Map</span>
           </span>
         </Link>
-        <a
-          href="http://web.rca.ac.uk/greatbritishpublictoiletmap"
-          className={styles.donate}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Give a pound to spend a penny!
-        </a>
       </header>
     );
   }
