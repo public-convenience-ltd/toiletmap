@@ -1,4 +1,5 @@
 import querystring from 'querystring';
+import _ from 'lodash';
 import OH from 'opening_hours';
 
 import config, { PREFERENCES_KEY } from './config';
@@ -28,7 +29,38 @@ api.findLooById = async function(id) {
   return await res.json();
 };
 
+const submissibleProperties = [
+  'access',
+  'accesibleType',
+  'active',
+  'attended',
+  'babyChange',
+  'fee',
+  'name',
+  'notes',
+  'opening',
+  'radar',
+  'type',
+];
+/**
+ * Remove non-user editable fields from a loo report before submission
+ * also remove empty values
+ * @param {Object} loo
+ */
+function minimizeLooReport(loo) {
+  let properties = _.pickBy(loo.properties, (v, k) => {
+    return submissibleProperties.includes(k) && !['', undefined].includes(v);
+  });
+  const report = {
+    type: loo.type,
+    geometry: loo.geometry,
+    properties: properties,
+  };
+  return report;
+}
+
 api.reportLoo = async function(loo, token) {
+  const report = minimizeLooReport(loo);
   // Todo: Handle HTTP 401
   const url = `${config.apiEndpoint}/reports`;
   const res = await fetch(url, {
@@ -38,7 +70,7 @@ api.reportLoo = async function(loo, token) {
       Authorization: `Bearer ${token}`,
     },
     method: 'post',
-    body: JSON.stringify(loo),
+    body: JSON.stringify(report),
   });
   if (res.status !== 201) {
     throw new Error(res.statusText);
