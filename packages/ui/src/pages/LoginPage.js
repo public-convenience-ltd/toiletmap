@@ -29,7 +29,7 @@ class LoginPage extends Component {
         <p>
           We'll only store the name you give us against the data you contribute.
         </p>
-        <p>Login aor sign up to let us know you're real.</p>
+        <p>Login or sign up to let us know you're real.</p>
 
         <div className={controls.btnStack}>
           <button onClick={this.props.doLogin}>Log In/Sign Up</button>
