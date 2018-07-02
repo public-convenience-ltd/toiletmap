@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 
+import { definitions } from '@neontribe/opening-hours';
+
 import PageLayout from '../components/PageLayout';
 import AddEditLooMap from '../components/map/AddEditLooMap';
 import DismissableBox from '../components/DismissableBox';
@@ -42,32 +44,7 @@ class AddEditPage extends Component {
   ];
 
   optionsMap = {
-    opening: [
-      {
-        name: '24/7',
-        value: '24/7',
-      },
-      {
-        name: 'Business hours, Mon-Sun',
-        value: '09:00-17:00',
-      },
-      {
-        name: 'Business hours, Mon-Fri',
-        value: 'Mo-Fr 09:00-17:00',
-      },
-      {
-        name: 'Evening only',
-        value: '17:00-00:00',
-      },
-      {
-        name: 'Daylight hours only',
-        value: '09:00-18:00',
-      },
-      {
-        name: 'Other',
-        value: '',
-      },
-    ],
+    opening: definitions,
     type: [
       {
         name: 'Female',
@@ -310,7 +287,7 @@ class AddEditPage extends Component {
             <option value="">Unknown</option>
             {this.optionsMap.opening.map((option, index) => (
               <option key={index} value={option.value}>
-                {option.name}
+                {option.title}
               </option>
             ))}
           </select>
