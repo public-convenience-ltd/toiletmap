@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 
 import LooMap from './LooMap';
 
-import config from '../../config';
-
 import {
   actionZoom,
   actionUpdateCenter,
@@ -17,16 +15,8 @@ import { actionFindNearbyRequest } from '../../redux/modules/loos';
 import styles from '../css/loo-map.module.css';
 
 class NearestLooMap extends Component {
-  componentDidMount() {
-    // Return map to last stored position or default to user location
-    var position = this.props.map.center || this.props.geolocation.position;
-
-    this.props.actionFindNearbyRequest(
-      position.lng,
-      position.lat,
-      config.nearest.radius
-    );
-
+  constructor(props) {
+    super(props);
     this.onMove = this.onMove.bind(this);
   }
 

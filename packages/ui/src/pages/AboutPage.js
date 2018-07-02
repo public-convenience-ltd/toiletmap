@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 
+import PageLayout from '../components/PageLayout';
+import NearestLooMap from '../components/map/NearestLooMap';
+
 import styles from './css/about-page.module.css';
 import headings from '../css/headings.module.css';
 
 import rcaLogo from '../images/rca_logo.jpg';
 
 class AboutPage extends Component {
-  render() {
+  renderMain() {
     return (
       <div>
         <h2 className={headings.large}>About this project</h2>
@@ -149,6 +152,14 @@ class AboutPage extends Component {
         </p>
       </div>
     );
+  }
+
+  renderMap() {
+    return <NearestLooMap />;
+  }
+
+  render() {
+    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
   }
 }
 

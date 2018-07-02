@@ -8,6 +8,7 @@ import _ from 'lodash';
 
 import history from '../history';
 
+import PageLayout from '../components/PageLayout';
 import AddEditLooMap from '../components/map/AddEditLooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
@@ -141,12 +142,7 @@ class AddEditPage extends Component {
 
     // Deep extend loo state to ensure we get all properties (since we can't guarantee
     // that `this.props.loo` will include them all)
-    // TODO: omit data which we don't want to include in the report
-    state.loo = _.merge(
-      {},
-      state.loo,
-      _.omit(this.props.loo, 'createdAt', 'updatedAt', '_id', '_v')
-    );
+    state.loo = _.merge({}, state.loo, this.props.loo);
 
     // Set initial internal state
     this.state = state;
@@ -191,7 +187,7 @@ class AddEditPage extends Component {
     );
   }
 
-  render() {
+  renderMain() {
     var loo = this.state.loo;
 
     // Default center coordinates to the user's location:
@@ -446,6 +442,14 @@ class AddEditPage extends Component {
         </div>
       </div>
     );
+  }
+
+  renderMap() {
+    return <AddEditLooMap />;
+  }
+
+  render() {
+    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
   }
 }
 

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 
+import PageLayout from '../components/PageLayout';
 import PreferenceIndicators from '../components/PreferenceIndicators';
 import SingleLooMap from '../components/map/SingleLooMap';
 
@@ -94,7 +95,7 @@ class LooPage extends Component {
     return api.humanize(val);
   }
 
-  render() {
+  renderMain() {
     var loo = this.props.loo;
     var properties = this.getPropertyNames();
 
@@ -221,6 +222,14 @@ class LooPage extends Component {
         </div>
       </div>
     );
+  }
+
+  renderMap() {
+    return <SingleLooMap loo={this.props.loo} />;
+  }
+
+  render() {
+    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
   }
 }
 

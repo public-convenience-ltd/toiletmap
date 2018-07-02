@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 
 import { actions, REMOVE_REQUEST } from '../redux/modules/loos';
 
+import PageLayout from '../components/PageLayout';
+import SingleLooMap from '../components/map/SingleLooMap';
+
 import layout from '../components/css/layout.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
@@ -29,7 +32,7 @@ class RemovePage extends Component {
     this.props.doRemove(this.props.loo._id, this.state.reason);
   };
 
-  render() {
+  renderMain() {
     return (
       <div>
         <div>
@@ -63,6 +66,14 @@ class RemovePage extends Component {
         </button>
       </div>
     );
+  }
+
+  renderMap() {
+    return <SingleLooMap loo={this.props.loo} />;
+  }
+
+  render() {
+    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
   }
 }
 
