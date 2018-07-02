@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-import history from '../history';
 import { connect } from 'react-redux';
 
 import { actions, REMOVE_REQUEST } from '../redux/modules/loos';
@@ -37,7 +35,10 @@ class RemovePage extends Component {
       <div>
         <div>
           <div className={layout.controls}>
-            <button onClick={history.goBack} className={controls.btn}>
+            <button
+              onClick={this.props.history.goBack}
+              className={controls.btn}
+            >
               Back
             </button>
           </div>

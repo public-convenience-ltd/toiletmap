@@ -78,10 +78,10 @@ if (typeof document !== 'undefined') {
           <Route
             path="/loos/:id"
             exact
-            render={({ match }) => {
+            render={({ match, history }) => {
               return (
                 <SingleLooProvider params={match.params}>
-                  <LooPage />
+                  <LooPage history={history} />
                 </SingleLooProvider>
               );
             }}
@@ -95,20 +95,20 @@ if (typeof document !== 'undefined') {
           <Route exact path="/report" component={AddEditPage} />
           <Route
             path="/loos/:id/edit"
-            render={({ match }) => {
+            render={({ match, history }) => {
               return (
                 <SingleLooProvider params={match.params}>
-                  <AddEditPage />
+                  <AddEditPage history={history} />
                 </SingleLooProvider>
               );
             }}
           />
           <Route
             path="/loos/:id/remove"
-            render={({ match }) => {
+            render={({ match, history }) => {
               return (
                 <SingleLooProvider params={match.params}>
-                  <RemovePage />
+                  <RemovePage history={history} />
                 </SingleLooProvider>
               );
             }}

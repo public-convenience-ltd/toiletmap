@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 
-import history from '../history';
-
 import PageLayout from '../components/PageLayout';
 import AddEditLooMap from '../components/map/AddEditLooMap';
 import DismissableBox from '../components/DismissableBox';
@@ -204,7 +202,10 @@ class AddEditPage extends Component {
       <div>
         <div>
           <div className={layout.controls}>
-            <button onClick={history.goBack} className={controls.btn}>
+            <button
+              onClick={this.props.history.goBack}
+              className={controls.btn}
+            >
               Back
             </button>
           </div>

@@ -101,26 +101,21 @@ class LooPage extends Component {
 
     return (
       <div>
-        {(this.props.app.canGoBack || config.allowAddEditLoo) && (
-          <div>
-            <div className={layout.controls}>
-              {this.props.app.canGoBack && (
-                <button
-                  onClick={() => alert('fix me')}
-                  className={controls.btn}
-                >
-                  Back
-                </button>
-              )}
-
-              {config.allowAddEditLoo && (
-                <Link to={`/loos/${loo._id}/edit`} className={controls.btn}>
-                  Edit toilet
-                </Link>
-              )}
-            </div>
+        <div>
+          <div className={layout.controls}>
+            <button
+              onClick={this.props.history.goBack}
+              className={controls.btn}
+            >
+              Back
+            </button>
+            {config.allowAddEditLoo && (
+              <Link to={`/loos/${loo._id}/edit`} className={controls.btn}>
+                Edit toilet
+              </Link>
+            )}
           </div>
-        )}
+        </div>
 
         <h2 className={headings.large}>{loo.properties.name || 'Toilet'}</h2>
 

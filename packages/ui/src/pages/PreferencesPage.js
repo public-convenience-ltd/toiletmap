@@ -111,11 +111,12 @@ class PreferencesPage extends Component {
       <div>
         <div>
           <div className={layout.controls}>
-            {this.props.app.canGoBack && (
-              <button onClick={() => alert('fix me')} className={controls.btn}>
-                Back
-              </button>
-            )}
+            <button
+              onClick={this.props.history.goBack}
+              className={controls.btn}
+            >
+              Back
+            </button>
           </div>
         </div>
 
