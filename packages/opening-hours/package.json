@@ -1,6 +1,6 @@
 {
   "name": "@neontribe/opening-hours",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "A lightweight provider for checking gbptm opening hours strings",
   "main": "index.js",
   "license": "MIT",

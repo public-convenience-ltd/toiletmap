@@ -1,6 +1,6 @@
 {
   "name": "@neontribe/gbptm-ui",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "proxy": "http://localhost:8080",
   "devDependencies": {
@@ -12,7 +12,7 @@
     "stylelint-config-standard": "18.2.0"
   },
   "dependencies": {
-    "@neontribe/opening-hours": "1.0.0",
+    "@neontribe/opening-hours": "2.1.0",
     "auth0-js": "9.6.1",
     "core-js": "2.5.7",
     "js-cookie": "2.2.0",
