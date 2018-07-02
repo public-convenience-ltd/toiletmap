@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 
+import PageLayout from '../components/PageLayout';
 import NearestLooMap from '../components/map/NearestLooMap';
 import DismissableBox from '../components/DismissableBox';
 import LooListItem from '../components/LooListItem';
@@ -20,7 +21,7 @@ import controls from '../css/controls.module.css';
 import { actionFindNearbyRequest } from '../redux/modules/loos';
 import { actionHighlight } from '../redux/modules/mapControls';
 import { actionToggleViewMode } from '../redux/modules/app';
-import { actions, LOGOUT, LOGIN } from '../redux/modules/auth';
+import { actionLogin, actionLogout } from '../redux/modules/auth';
 
 import config from '../config';
 
@@ -113,7 +114,7 @@ export class HomePage extends Component {
     );
   }
 
-  render() {
+  renderMain() {
     var mode = this.props.app.viewMode;
 
     return (
@@ -159,6 +160,14 @@ export class HomePage extends Component {
       </div>
     );
   }
+
+  renderMap() {
+    return <NearestLooMap />;
+  }
+
+  render() {
+    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
+  }
 }
 
 HomePage.propTypes = {
@@ -176,8 +185,8 @@ var mapDispatchToProps = {
   actionFindNearbyRequest,
   actionHighlight,
   actionToggleViewMode,
-  doLogout: actions[LOGOUT],
-  doLogin: actions[LOGIN],
+  doLogout: actionLogout,
+  doLogin: actionLogin,
 };
 
 export default connect(

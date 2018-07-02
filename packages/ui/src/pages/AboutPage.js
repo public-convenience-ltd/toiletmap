@@ -1,14 +1,29 @@
 import React, { Component } from 'react';
 
+import PageLayout from '../components/PageLayout';
+import NearestLooMap from '../components/map/NearestLooMap';
+
 import styles from './css/about-page.module.css';
 import headings from '../css/headings.module.css';
+import layout from '../components/css/layout.module.css';
+import controls from '../css/controls.module.css';
 
 import rcaLogo from '../images/rca_logo.jpg';
 
 class AboutPage extends Component {
-  render() {
+  renderMain() {
     return (
       <div>
+        <div>
+          <div className={layout.controls}>
+            <button
+              onClick={this.props.history.goBack}
+              className={controls.btn}
+            >
+              Back
+            </button>
+          </div>
+        </div>
         <h2 className={headings.large}>About this project</h2>
 
         <p>
@@ -149,6 +164,14 @@ class AboutPage extends Component {
         </p>
       </div>
     );
+  }
+
+  renderMap() {
+    return <NearestLooMap />;
+  }
+
+  render() {
+    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
   }
 }
 

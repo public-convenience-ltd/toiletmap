@@ -15,12 +15,6 @@ import registerServiceWorker from './registerServiceWorker';
 import './css/global';
 
 import App from './components/App';
-import PageLayout from './components/PageLayout';
-
-import NearestLooMap from './components/map/NearestLooMap';
-import SingleLooMap from './components/map/SingleLooMap';
-import AddEditLooMap from './components/map/AddEditLooMap';
-
 import AuthCallback from './pages/AuthCallback';
 import LooPage from './pages/LooPage';
 import RemovePage from './pages/RemovePage';
@@ -78,83 +72,43 @@ if (typeof document !== 'undefined') {
     <Provider store={store}>
       <Router history={history} forceRefresh={false}>
         <App>
-          <Route
-            exact
-            path="/"
-            render={() => {
-              return <PageLayout main={<HomePage />} map={<NearestLooMap />} />;
-            }}
-          />
-          <Route
-            exact
-            path="/preferences"
-            render={() => {
-              return (
-                <PageLayout
-                  main={<PreferencesPage />}
-                  map={<NearestLooMap />}
-                />
-              );
-            }}
-          />
-          <Route
-            exact
-            path="/about"
-            render={() => {
-              return (
-                <PageLayout main={<AboutPage />} map={<NearestLooMap />} />
-              );
-            }}
-          />
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/preferences" component={PreferencesPage} />
+          <Route exact path="/about" component={AboutPage} />
           <Route
             path="/loos/:id"
             exact
-            render={({ match }) => {
+            render={({ match, history }) => {
               return (
                 <SingleLooProvider params={match.params}>
-                  <PageLayout main={<LooPage />} map={<SingleLooMap />} />
+                  <LooPage history={history} />
                 </SingleLooProvider>
               );
             }}
           />
-          <Route
-            path="/login"
-            render={() => {
-              return (
-                <PageLayout main={<LoginPage />} map={<NearestLooMap />} />
-              );
-            }}
-          />
+          <Route path="/login" component={LoginPage} />
           <Route
             exact
             path="/callback"
             render={props => <AuthCallback auth={auth} {...props} />}
           />
-          <Route
-            exact
-            path="/report"
-            render={() => {
-              return (
-                <PageLayout main={<AddEditPage />} map={<AddEditLooMap />} />
-              );
-            }}
-          />
+          <Route exact path="/report" component={AddEditPage} />
           <Route
             path="/loos/:id/edit"
-            render={({ match }) => {
+            render={({ match, history }) => {
               return (
                 <SingleLooProvider params={match.params}>
-                  <PageLayout main={<AddEditPage />} map={<AddEditLooMap />} />
+                  <AddEditPage history={history} />
                 </SingleLooProvider>
               );
             }}
           />
           <Route
             path="/loos/:id/remove"
-            render={({ match }) => {
+            render={({ match, history }) => {
               return (
                 <SingleLooProvider params={match.params}>
-                  <PageLayout main={<RemovePage />} map={<SingleLooMap />} />
+                  <RemovePage history={history} />
                 </SingleLooProvider>
               );
             }}

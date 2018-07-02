@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-import history from '../history';
 import { connect } from 'react-redux';
 
 import { actions, REMOVE_REQUEST } from '../redux/modules/loos';
+
+import PageLayout from '../components/PageLayout';
+import SingleLooMap from '../components/map/SingleLooMap';
 
 import layout from '../components/css/layout.module.css';
 import headings from '../css/headings.module.css';
@@ -29,12 +30,15 @@ class RemovePage extends Component {
     this.props.doRemove(this.props.loo._id, this.state.reason);
   };
 
-  render() {
+  renderMain() {
     return (
       <div>
         <div>
           <div className={layout.controls}>
-            <button onClick={history.goBack} className={controls.btn}>
+            <button
+              onClick={this.props.history.goBack}
+              className={controls.btn}
+            >
               Back
             </button>
           </div>
@@ -63,6 +67,14 @@ class RemovePage extends Component {
         </button>
       </div>
     );
+  }
+
+  renderMap() {
+    return <SingleLooMap loo={this.props.loo} />;
+  }
+
+  render() {
+    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
   }
 }
 

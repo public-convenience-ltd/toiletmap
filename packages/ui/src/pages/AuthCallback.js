@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { actions, LOGGED_IN } from '../redux/modules/auth';
+import { actionLoggedIn } from '../redux/modules/auth';
 
 import PageLayout from '../components/PageLayout';
 import Notification from '../components/Notification';
@@ -48,7 +48,7 @@ class Callback extends Component {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = {
-  loggedIn: actions[LOGGED_IN],
+  loggedIn: actionLoggedIn,
 };
 
 export default connect(

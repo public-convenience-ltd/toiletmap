@@ -4,24 +4,18 @@ export const LOGIN = 'AUTH/DO/LOGIN';
 export const LOGOUT = 'AUTH/DO/LOGOUT';
 export const LOGGED_IN = 'AUTH/LOGIN/OK';
 
-export const login = () => ({
+export const actionLogin = () => ({
   type: LOGIN,
 });
 
-export const logout = () => ({
+export const actionLogout = () => ({
   type: LOGOUT,
 });
 
-export const loggedIn = status => ({
+export const actionLoggedIn = status => ({
   type: LOGGED_IN,
   payload: status,
 });
-
-export const actions = {
-  [LOGIN]: login,
-  [LOGOUT]: logout,
-  [LOGGED_IN]: loggedIn,
-};
 
 const HANDLERS = {
   [LOGGED_IN]: (state, action) => ({

@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import history from '../history';
 import { connect } from 'react-redux';
 
-import { actions, LOGIN } from '../redux/modules/auth';
+import { actionLogin } from '../redux/modules/auth';
+
+import PageLayout from '../components/PageLayout';
+import NearestLooMap from '../components/map/NearestLooMap';
 
 import layout from '../components/css/layout.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
 class LoginPage extends Component {
-  render() {
+  renderMain() {
     return (
       <div>
         <div>
@@ -34,6 +37,14 @@ class LoginPage extends Component {
       </div>
     );
   }
+
+  renderMap() {
+    return <NearestLooMap />;
+  }
+
+  render() {
+    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
+  }
 }
 
 var mapStateToProps = state => ({
@@ -41,7 +52,7 @@ var mapStateToProps = state => ({
 });
 
 var mapDispatchToProps = {
-  doLogin: actions[LOGIN],
+  doLogin: actionLogin,
 };
 
 export default connect(

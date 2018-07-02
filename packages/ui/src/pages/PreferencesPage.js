@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 /* Note this approach will be deprecated in the future */
 import update from 'react-addons-update';
 
+import PageLayout from '../components/PageLayout';
+import NearestLooMap from '../components/map/NearestLooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
 
@@ -104,16 +106,17 @@ class PreferencesPage extends Component {
     });
   }
 
-  render() {
+  renderMain() {
     return (
       <div>
         <div>
           <div className={layout.controls}>
-            {this.props.app.canGoBack && (
-              <button onClick={() => alert('fix me')} className={controls.btn}>
-                Back
-              </button>
-            )}
+            <button
+              onClick={this.props.history.goBack}
+              className={controls.btn}
+            >
+              Back
+            </button>
           </div>
         </div>
 
@@ -161,6 +164,14 @@ class PreferencesPage extends Component {
         </button>
       </div>
     );
+  }
+
+  renderMap() {
+    return <NearestLooMap />;
+  }
+
+  render() {
+    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
   }
 }
 
