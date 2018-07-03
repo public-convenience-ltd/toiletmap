@@ -147,14 +147,27 @@ class AddEditPage extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.save = this.save.bind(this);
+
+    // Keep track of defaults so we only submit new information
+    this.originalData = _.cloneDeep(this.state.loo);
+    this.userProvided = {};
   }
 
   handleChange(event) {
-    // `Object.assign` to avoid state mutation
-    var loo = Object.assign({}, this.state.loo);
+    // Avoid state mutation
+    var loo = _.cloneDeep(this.state.loo);
 
     // Sets nested loo property value
     _.set(loo, event.target.name, event.target.value);
+
+    // Is the value now different to what it was on form creation?
+    if (event.target.value === _.get(this.originalData, event.target.name)) {
+      // It isn't, so we won't submit it
+      _.unset(this.userProvided, event.target.name);
+    } else {
+      // It is, let's submit it
+      _.set(this.userProvided, event.target.name, event.target.value);
+    }
 
     this.setState({
       loo,
@@ -162,8 +175,8 @@ class AddEditPage extends Component {
   }
 
   save() {
-    // `Object.assign` to avoid state mutation
-    var loo = Object.assign({}, this.state.loo);
+    // Avoid mutation
+    var loo = _.cloneDeep(this.userProvided);
 
     loo.geometry = {
       type: 'Point',
