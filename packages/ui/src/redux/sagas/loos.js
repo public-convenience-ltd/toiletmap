@@ -6,14 +6,13 @@ import { PENDING_REPORT_KEY, PENDING_REMOVE_KEY } from '../../config';
 
 import {
   FIND_NEARBY_REQUEST,
-  FIND_NEARBY_SUCCESS,
   FIND_BY_ID_REQUEST,
-  FIND_BY_ID_SUCCESS,
   REPORT_REQUEST,
   REMOVE_REQUEST,
-  REMOVE_SUCCESS,
-  REPORT_SUCCESS,
-  actions,
+  actionFindNearbySuccess,
+  actionFindByIdSuccess,
+  actionReportSuccess,
+  actionRemoveSuccess,
 } from '../modules/loos';
 
 import { LOGGED_IN } from '../modules/auth';
@@ -22,22 +21,23 @@ export default function makeLoosSaga(auth) {
   function* findNearbyLoosSaga(action) {
     var { lng, lat, radius } = action.payload;
     var loos = yield call(api.findLoos, lng, lat, radius);
-    yield put(actions[FIND_NEARBY_SUCCESS](loos));
+    yield put(actionFindNearbySuccess(loos));
   }
   function* findLooByIdSaga(action) {
     var loo = yield call(api.findLooById, action.payload.id);
-    yield put(actions[FIND_BY_ID_SUCCESS](loo));
+    yield put(actionFindByIdSuccess(loo));
   }
 
   function* report(loo) {
     // Todo: Catch HTTP 401 and navigate to '/login'
     const ids = yield call(api.reportLoo, loo, auth.getAccessToken());
     // maybe we should navigate as a result of the success action
-    yield put(actions[REPORT_SUCCESS](ids));
+    yield put(actionReportSuccess(ids));
     return yield call(history.push, `/loos/${ids.loo}`);
   }
 
   function* reportRequest(action) {
+    // TODO: when a report has an existing loo dispatch `actionUncacheById`
     const loo = action.payload.loo;
     // Re-direct the user to the authentication screen, if they're not
     // already logged in
@@ -55,7 +55,7 @@ export default function makeLoosSaga(auth) {
     // Todo: Catch HTTP 401 and navigate to '/login'
     const result = yield call(api.removeLoo, id, reason, auth.getAccessToken());
     // maybe we should navigate as a result of the success action
-    yield put(actions[REMOVE_SUCCESS](result));
+    yield put(actionRemoveSuccess(result));
     return yield call(history.push, `/`);
   }
 

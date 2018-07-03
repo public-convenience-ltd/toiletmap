@@ -9,11 +9,15 @@ import _ from 'lodash';
 import { definitions } from '@neontribe/opening-hours';
 
 import PageLayout from '../components/PageLayout';
+import Loading from '../components/Loading';
 import AddEditLooMap from '../components/map/AddEditLooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
 
-import { actionReportRequest } from '../redux/modules/loos';
+import {
+  actionReportRequest,
+  actionFindByIdRequest,
+} from '../redux/modules/loos';
 
 import config from '../config';
 
@@ -124,6 +128,13 @@ class AddEditPage extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.save = this.save.bind(this);
+  }
+
+  componentDidMount() {
+    // If our url contains a loo id and we don't have the data, ask for it
+    if (this.props.match.params.id && !this.props.loo) {
+      this.props.actionFindByIdRequest(this.props.match.params.id);
+    }
   }
 
   handleChange(event) {
@@ -423,10 +434,18 @@ class AddEditPage extends Component {
   }
 
   renderMap() {
-    return <AddEditLooMap />;
+    return <AddEditLooMap loo={this.props.loo} />;
   }
 
   render() {
+    if (this.props.match.params.id && !this.props.loo) {
+      return (
+        <PageLayout
+          main={<Loading message={'Fetching Loo Data'} />}
+          map={<Loading message={'Fetching Loo Data'} />}
+        />
+      );
+    }
     return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
   }
 }
@@ -437,14 +456,16 @@ AddEditPage.propTypes = {
   loo: PropTypes.object,
 };
 
-var mapStateToProps = state => ({
+var mapStateToProps = (state, ownProps) => ({
   app: state.app,
   map: state.mapControls,
   geolocation: state.geolocation,
+  loo: state.loos.byId[ownProps.match.params.id] || null,
 });
 
 var mapDispatchToProps = {
   actionReportRequest,
+  actionFindByIdRequest,
 };
 
 export default connect(
