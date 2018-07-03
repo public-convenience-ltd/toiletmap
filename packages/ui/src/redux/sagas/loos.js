@@ -39,6 +39,8 @@ export default function makeLoosSaga(auth) {
 
   function* reportRequest(action) {
     const loo = action.payload.loo;
+    const from = action.payload.from;
+
     // Re-direct the user to the authentication screen, if they're not
     // already logged in
     if (!auth.isAuthenticated()) {
@@ -48,7 +50,7 @@ export default function makeLoosSaga(auth) {
       localStorage.setItem(PENDING_REPORT_KEY, JSON.stringify(loo));
       return yield call(history.push, '/login');
     }
-    yield call(report, loo);
+    yield call(report, loo, from);
   }
 
   function* remove(id, reason) {

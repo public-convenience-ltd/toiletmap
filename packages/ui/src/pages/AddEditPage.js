@@ -142,15 +142,15 @@ class AddEditPage extends Component {
     // that `this.props.loo` will include them all)
     state.loo = _.merge({}, state.loo, this.props.loo);
 
+    // Keep track of defaults so we only submit new information
+    state.originalData = _.cloneDeep(state.loo);
+    state.originalCenter = this.getCenter();
+
     // Set initial internal state
     this.state = state;
 
     this.handleChange = this.handleChange.bind(this);
     this.save = this.save.bind(this);
-
-    // Keep track of defaults so we only submit new information
-    this.originalData = _.cloneDeep(this.state.loo);
-    this.userProvided = {};
   }
 
   handleChange(event) {
@@ -160,30 +160,72 @@ class AddEditPage extends Component {
     // Sets nested loo property value
     _.set(loo, event.target.name, event.target.value);
 
-    // Is the value now different to what it was on form creation?
-    if (event.target.value === _.get(this.originalData, event.target.name)) {
-      // It isn't, so we won't submit it
-      _.unset(this.userProvided, event.target.name);
-    } else {
-      // It is, let's submit it
-      _.set(this.userProvided, event.target.name, event.target.value);
-    }
-
     this.setState({
       loo,
     });
   }
 
-  save() {
-    // Avoid mutation
-    var loo = _.cloneDeep(this.userProvided);
+  isDerived() {
+    // Presenve of this.props.loo indicates that we are editing
+    // Conditional expression converts truthy/falsey to boolean
+    return this.props.loo ? true : false;
+  }
 
-    loo.geometry = {
+  getNovelInput() {
+    const before = _.cloneDeep(this.state.originalData);
+    const now = _.cloneDeep(this.state.loo);
+
+    // Add geometry
+    before.geometry = {
       type: 'Point',
-      coordinates: [this.props.map.center.lng, this.props.map.center.lat],
+      coordinates: [
+        this.state.originalCenter.lng,
+        this.state.originalCenter.lat,
+      ],
+    };
+    now.geometry = {
+      type: 'Point',
+      coordinates: [this.getCenter().lng, this.getCenter().lat],
     };
 
-    this.props.actionReportRequest(loo);
+    // Keep only new or changed data, by comparing to the form's initial state
+    const changes = onlyChanges(before, now);
+
+    if (!this.isDerived()) {
+      // If we're a new loo, we always want geometry, regardless of whether it
+      // has changed since the start of the form
+      changes.geometry = now.geometry;
+    }
+
+    return changes;
+  }
+
+  getCenter() {
+    // Preferably, use the maps center coordinates:
+    // these will default to the loo position if a loo has been provided
+    if (this.props.map.center) {
+      return this.props.map.center;
+    }
+
+    // Else default center coordinates to the user's location:
+    // this will be the case when a loo has not been provided to edit
+    // e.g. the user has directly navigated to /report
+    return this.props.geolocation.position;
+  }
+
+  save() {
+    const changes = this.getNovelInput();
+
+    // Only submit if we've got something to tell
+    if (!_.isEmpty(changes)) {
+      // Always associate geometry with a report, even if unchanged
+      changes.geometry = {
+        type: 'Point',
+        coordinates: [this.getCenter().lng, this.getCenter().lat],
+      };
+
+      this.props.actionReportRequest(changes);
+    }
   }
 
   renderMobileMap() {
@@ -199,17 +241,8 @@ class AddEditPage extends Component {
   }
 
   renderMain() {
-    var loo = this.state.loo;
-
-    // Default center coordinates to the user's location:
-    // this will be the case when a loo has not been provided to edit
-    var center = this.props.geolocation.position;
-
-    // Preferably, use the maps center coordinates:
-    // these will default to the loo position if a loo has been provided
-    if (this.props.map.center) {
-      center = this.props.map.center;
-    }
+    const loo = this.state.loo;
+    const center = this.getCenter();
 
     return (
       <div>
@@ -224,7 +257,7 @@ class AddEditPage extends Component {
           </div>
         </div>
 
-        {this.props.loo ? (
+        {this.isDerived() ? (
           <h2 className={headings.large}>Update This Loo</h2>
         ) : (
           <h2 className={headings.large}>Add This Loo</h2>
@@ -429,7 +462,7 @@ class AddEditPage extends Component {
         </div>
 
         <div className={controls.btnStack}>
-          {this.props.loo ? (
+          {this.isDerived() ? (
             <input
               type="submit"
               className={controls.btn}
@@ -445,7 +478,7 @@ class AddEditPage extends Component {
             />
           )}
 
-          {this.props.loo && (
+          {this.isDerived() && (
             <Link
               to={`/loos/${this.props.loo._id}/remove`}
               className={controls.btnCaution}
@@ -472,6 +505,27 @@ AddEditPage.propTypes = {
   // The absence of a loo results in the form being in 'add' mode.
   loo: PropTypes.object,
 };
+
+/**
+ * Only keep fields in loo that are different to their corresponding field in
+ * from.
+ *
+ * This is used to only submit novel or differing information in reports.
+ */
+function onlyChanges(loo, from) {
+  return _.transform(loo, (acc, value, key) => {
+    if (_.isObject(value)) {
+      // Deeply compare
+      const nestedChanges = onlyChanges(value, from[key]);
+      if (!_.isEmpty(nestedChanges)) {
+        acc[key] = nestedChanges;
+      }
+    } else if (value !== from[key]) {
+      // Only keep a value in loo if it is changed
+      acc[key] = value;
+    }
+  });
+}
 
 var mapStateToProps = state => ({
   app: state.app,

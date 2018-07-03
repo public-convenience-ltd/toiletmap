@@ -40,7 +40,7 @@ export const actionFindByIdSuccess = loo => ({
   },
 });
 
-export const actionReportRequest = loo => ({
+export const actionReportRequest = (loo, from) => ({
   type: REPORT_REQUEST,
   payload: {
     loo,
