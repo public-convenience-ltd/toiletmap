@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { actions, REMOVE_REQUEST } from '../redux/modules/loos';
+import {
+  actionRemoveRequest,
+  actionFindByIdRequest,
+} from '../redux/modules/loos';
 
 import PageLayout from '../components/PageLayout';
+import Loading from '../components/Loading';
 import SingleLooMap from '../components/map/SingleLooMap';
 
 import layout from '../components/css/layout.module.css';
@@ -19,6 +23,12 @@ class RemovePage extends Component {
     };
   }
 
+  componentDidMount() {
+    if (!this.props.loo) {
+      this.props.actionFindByIdRequest(this.props.match.params.id);
+    }
+  }
+
   updateReason = evt => {
     let reason = evt.currentTarget.value;
     this.setState(() => ({
@@ -27,7 +37,7 @@ class RemovePage extends Component {
   };
 
   doSubmit = () => {
-    this.props.doRemove(this.props.loo._id, this.state.reason);
+    this.props.actionRemoveRequest(this.props.loo._id, this.state.reason);
   };
 
   renderMain() {
@@ -74,6 +84,14 @@ class RemovePage extends Component {
   }
 
   render() {
+    if (!this.props.loo) {
+      return (
+        <PageLayout
+          main={<Loading message={'Fetching Loo Data'} />}
+          map={<Loading message={'Fetching Loo Data'} />}
+        />
+      );
+    }
     return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
   }
 }
@@ -82,12 +100,14 @@ RemovePage.propTypes = {
   loo: PropTypes.object.isRequired,
 };
 
-var mapStateToProps = state => ({
+var mapStateToProps = (state, ownProps) => ({
   app: state.app,
+  loo: state.loos.byId[ownProps.match.params.id] || null,
 });
 
 var mapDispatchToProps = {
-  doRemove: actions[REMOVE_REQUEST],
+  actionRemoveRequest,
+  actionFindByIdRequest,
 };
 
 export default connect(

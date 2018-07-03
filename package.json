@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "7.0.0",
+    "@commitlint/config-angular": "7.0.1",
     "eslint": "4.19.1",
     "eslint-plugin-react": "7.10.0",
     "husky": "0.14.3",
@@ -53,8 +54,5 @@
   },
   "workspaces": [
     "packages/*"
-  ],
-  "dependencies": {
-    "@commitlint/config-angular": "7.0.1"
-  }
+  ]
 }

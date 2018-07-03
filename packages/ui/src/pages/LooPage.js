@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 
+import { actionFindByIdRequest } from '../redux/modules/loos';
+
 import PageLayout from '../components/PageLayout';
+import Loading from '../components/Loading';
 import PreferenceIndicators from '../components/PreferenceIndicators';
 import SingleLooMap from '../components/map/SingleLooMap';
 
@@ -55,10 +58,10 @@ class LooPage extends Component {
     'toObject',
   ];
 
-  constructor(props) {
-    super(props);
-
-    this.renderRating = this.renderRating.bind(this);
+  componentDidMount() {
+    if (!this.props.loo) {
+      this.props.actionFindByIdRequest(this.props.match.params.id);
+    }
   }
 
   getPropertyNames() {
@@ -224,15 +227,26 @@ class LooPage extends Component {
   }
 
   render() {
+    if (!this.props.loo) {
+      return (
+        <PageLayout
+          main={<Loading message={'Fetching Loo Data'} />}
+          map={<Loading message={'Fetching Loo Data'} />}
+        />
+      );
+    }
     return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
   }
 }
 
-var mapStateToProps = state => ({
+var mapStateToProps = (state, ownProps) => ({
   app: state.app,
+  loo: state.loos.byId[ownProps.match.params.id] || null,
 });
 
-var mapDispatchToProps = {};
+var mapDispatchToProps = {
+  actionFindByIdRequest,
+};
 
 export default connect(
   mapStateToProps,

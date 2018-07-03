@@ -11,6 +11,19 @@ const app = express();
 // ever strings, not arrays or objects
 app.set('query parser', 'simple');
 
+// Redirect to https in production
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV === 'production') {
+    if (req.headers['x-forwarded-proto'] != 'https') {
+      res.redirect(301, 'https://' + req.hostname + req.originalUrl);
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
 app.use(helmet());
 app.use(compression());
 

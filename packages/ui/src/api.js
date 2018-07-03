@@ -1,5 +1,5 @@
 import querystring from 'querystring';
-import OH from 'opening_hours';
+import { isOpen } from '@neontribe/opening-hours';
 
 import config, { PREFERENCES_KEY } from './config';
 
@@ -129,7 +129,7 @@ api.checkPreferences = function(loo) {
 
       case 'open':
         if (value !== '') {
-          result[name] = new OH(value).getState();
+          result[name] = isOpen(value);
         }
         break;
 

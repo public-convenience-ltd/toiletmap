@@ -24,8 +24,6 @@ import AddEditPage from './pages/AddEditPage';
 import LoginPage from './pages/LoginPage';
 import PreferencesPage from './pages/PreferencesPage';
 
-import SingleLooProvider from './components/SingleLooProvider';
-
 // Redux reducers
 import appReducer from './redux/modules/app';
 import geolocationReducer from './redux/modules/geolocation';
@@ -75,17 +73,7 @@ if (typeof document !== 'undefined') {
           <Route exact path="/" component={HomePage} />
           <Route exact path="/preferences" component={PreferencesPage} />
           <Route exact path="/about" component={AboutPage} />
-          <Route
-            path="/loos/:id"
-            exact
-            render={({ match, history }) => {
-              return (
-                <SingleLooProvider params={match.params}>
-                  <LooPage history={history} />
-                </SingleLooProvider>
-              );
-            }}
-          />
+          <Route path="/loos/:id" exact component={LooPage} />
           <Route path="/login" component={LoginPage} />
           <Route
             exact
@@ -93,26 +81,8 @@ if (typeof document !== 'undefined') {
             render={props => <AuthCallback auth={auth} {...props} />}
           />
           <Route exact path="/report" component={AddEditPage} />
-          <Route
-            path="/loos/:id/edit"
-            render={({ match, history }) => {
-              return (
-                <SingleLooProvider params={match.params}>
-                  <AddEditPage history={history} />
-                </SingleLooProvider>
-              );
-            }}
-          />
-          <Route
-            path="/loos/:id/remove"
-            render={({ match, history }) => {
-              return (
-                <SingleLooProvider params={match.params}>
-                  <RemovePage history={history} />
-                </SingleLooProvider>
-              );
-            }}
-          />
+          <Route path="/loos/:id/edit" component={AddEditPage} />
+          <Route path="/loos/:id/remove" component={RemovePage} />
         </App>
       </Router>
     </Provider>,

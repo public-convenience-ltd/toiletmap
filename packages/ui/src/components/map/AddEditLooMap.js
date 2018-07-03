@@ -82,7 +82,6 @@ AddEditLooMap.defaultProps = {
 var mapStateToProps = state => ({
   geolocation: state.geolocation,
   map: state.mapControls,
-  loo: state.loos.byId,
 });
 
 var mapDispatchToProps = {
