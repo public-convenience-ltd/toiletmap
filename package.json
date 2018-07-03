@@ -9,7 +9,7 @@
     "commitmsg": "commitlint -e",
     "precommit": "lint-staged",
     "reinstall": "lerna clean --yes && rm yarn.lock && yarn install",
-    "publish": "lerna publish --conventional-commits --exact",
+    "release": "lerna publish --conventional-commits --exact",
     "lint": "eslint .",
     "prettify": "prettier --single-quote --trailing-comma es5 --write \"./**/*.{js,json}\"",
     "load:devData": "mongorestore --noIndexRestore --drop --nsFrom 'app29532998.*' --nsTo 'gbptm.*' --gzip --archive=./data/devData.tar.gz",
