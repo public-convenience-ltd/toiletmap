@@ -48,10 +48,11 @@ export const actionUncacheById = id => ({
   payload: id,
 });
 
-export const actionReportRequest = loo => ({
+export const actionReportRequest = (loo, from) => ({
   type: REPORT_REQUEST,
   payload: {
     loo,
+    from,
   },
 });
 

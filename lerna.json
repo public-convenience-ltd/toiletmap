@@ -5,8 +5,6 @@
   ],
   "version": "2.2.0",
   "npmClient": "yarn",
-  "npmClientArgs": [
-    "--no-optional"
-  ],
+  "npmClientArgs": ["--no-optional"],
   "useWorkspaces": true
 }

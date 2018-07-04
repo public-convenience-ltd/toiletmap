@@ -1,5 +1,4 @@
 import querystring from 'querystring';
-import _ from 'lodash';
 import { isOpen } from '@neontribe/opening-hours';
 
 import config, { PREFERENCES_KEY } from './config';
@@ -29,38 +28,7 @@ api.findLooById = async function(id) {
   return await res.json();
 };
 
-const submissibleProperties = [
-  'access',
-  'accesibleType',
-  'active',
-  'attended',
-  'babyChange',
-  'fee',
-  'name',
-  'notes',
-  'opening',
-  'radar',
-  'type',
-];
-/**
- * Remove non-user editable fields from a loo report before submission
- * also remove empty values
- * @param {Object} loo
- */
-function minimizeLooReport(loo) {
-  let properties = _.pickBy(loo.properties, (v, k) => {
-    return submissibleProperties.includes(k) && !['', undefined].includes(v);
-  });
-  const report = {
-    type: loo.type,
-    geometry: loo.geometry,
-    properties: properties,
-  };
-  return report;
-}
-
-api.reportLoo = async function(loo, token) {
-  const report = minimizeLooReport(loo);
+api.reportLoo = async function(report, token) {
   // Todo: Handle HTTP 401
   const url = `${config.apiEndpoint}/reports`;
   const res = await fetch(url, {
