@@ -9,14 +9,13 @@ const config = require('../config/config');
  * Accepts `radius` in meters in query
  */
 router.get('/near/:lon/:lat', async (req, res) => {
-  const maxDistance =
-    parseFloat(req.query.radius) || config.query_defaults.maxDistance;
-  const limit = parseFloat(req.query.limit) || config.query_defaults.limit;
+  const wantedRadius =
+    parseFloat(req.query.radius) || config.query_defaults.defaultRadius;
+  const allowedRadius = Math.min(wantedRadius, config.query_defaults.maxRadius);
   const loos = await Loo.findNear(
     parseFloat(req.params.lon),
     parseFloat(req.params.lat),
-    maxDistance,
-    limit
+    allowedRadius
   ).exec();
   res.status(200).json(new LooList(loos));
 });

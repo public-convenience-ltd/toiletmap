@@ -29,8 +29,8 @@ var base = {
       'mongodb://localhost:27017/gbptm',
   },
   query_defaults: {
-    maxDistance: 50000,
-    limit: 5,
+    defaultRadius: 5000,
+    maxRadius: 50000,
   },
   deduplication: {
     radius: 25,

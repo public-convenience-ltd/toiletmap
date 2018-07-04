@@ -3,7 +3,7 @@ const looSchema = require('./loo_schema').looSchema;
 const _ = require('lodash');
 var Loo;
 
-looSchema.statics.findNear = function(lon, lat, maxDistance, limit) {
+looSchema.statics.findNear = function(lon, lat, radius) {
   return this.aggregate([
     {
       $geoNear: {
@@ -12,8 +12,7 @@ looSchema.statics.findNear = function(lon, lat, maxDistance, limit) {
           coordinates: [lon, lat],
         },
         distanceField: 'distance',
-        maxDistance: maxDistance,
-        limit: limit,
+        maxDistance: radius,
         spherical: true,
       },
     },

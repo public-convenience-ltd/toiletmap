@@ -144,12 +144,8 @@ export class LooMap extends Component {
     var map = this.leafletElement;
     var center = map.getCenter();
 
-    // Calculate radius
-    var mapBoundNorthEast = map.getBounds().getNorthEast();
-    var radius = mapBoundNorthEast.distanceTo(map.getCenter());
-
     this.props.onUpdateCenter(center);
-    this.props.onMove(center.lng, center.lat, radius);
+    this.props.onMove(center.lng, center.lat);
   }
 
   onZoom(event) {
