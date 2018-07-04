@@ -1,19 +1,20 @@
 const mongoose = require('mongoose');
 const looSchema = require('./loo_schema').looSchema;
 const _ = require('lodash');
-const earth = 6731000;
 var Loo;
 
-looSchema.statics.findNear = function(lon, lat, maxDistance, limit) {
+looSchema.statics.findNear = function(lon, lat, radius) {
   return this.aggregate([
     {
       $geoNear: {
-        near: [lon, lat],
+        near: {
+          type: 'Point',
+          coordinates: [lon, lat],
+        },
         distanceField: 'distance',
-        maxDistance: maxDistance / earth,
-        limit: limit,
-        distanceMultiplier: earth,
+        maxDistance: radius,
         spherical: true,
+        limit: 2 ** 62, // infeasibly large number
       },
     },
     {

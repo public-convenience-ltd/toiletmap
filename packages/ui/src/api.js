@@ -5,9 +5,8 @@ import config, { PREFERENCES_KEY } from './config';
 
 const api = {};
 
-api.findLoos = async function(lng, lat, { limit, radius } = config.nearest) {
-  // Todo: Fix the api to avoid this hard limit
-  const qs = querystring.stringify({ limit: 1000, radius });
+api.findLoos = async function(lng, lat, radius) {
+  const qs = querystring.stringify({ radius });
   const url = `${config.apiEndpoint}/loos/near/${lng}/${lat}?${qs}`;
   const res = await fetch(url, {
     headers: {

@@ -9,10 +9,11 @@ import {
   actionZoom,
   actionUpdateCenter,
 } from '../../redux/modules/mapControls';
-
 import { actionFindNearbyRequest } from '../../redux/modules/loos';
 
 import styles from '../css/loo-map.module.css';
+
+import config from '../../config';
 
 class NearestLooMap extends Component {
   constructor(props) {
@@ -20,9 +21,9 @@ class NearestLooMap extends Component {
     this.onMove = this.onMove.bind(this);
   }
 
-  onMove(lng, lat, radius) {
+  onMove(lng, lat) {
     this.props.actionUpdateCenter({ lat, lng });
-    this.props.actionFindNearbyRequest(lng, lat, radius);
+    this.props.actionFindNearbyRequest(lng, lat, config.nearestRadius);
   }
 
   render() {

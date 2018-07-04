@@ -39,7 +39,7 @@ export class HomePage extends Component {
       this.props.actionFindNearbyRequest(
         position.lng,
         position.lat,
-        config.nearest.radius
+        config.nearestRadius
       );
     }
   }
@@ -65,7 +65,7 @@ export class HomePage extends Component {
     if (loos && !loos.length) {
       return (
         <Notification>
-          <p>No nearby loos found.</p>
+          <p>No loos found within {config.nearestRadius / 1000}km.</p>
         </Notification>
       );
     }
@@ -75,7 +75,7 @@ export class HomePage extends Component {
         <h2 className={headings.large}>Nearest Toilets</h2>
         <ul className={styles.looList}>
           {loos &&
-            loos.slice(0, config.nearest.limit).map((loo, i) => (
+            loos.slice(0, config.nearestListLimit).map((loo, i) => (
               <li key={i} className={styles.looListItem}>
                 <LooListItem
                   loo={loo}
@@ -108,7 +108,7 @@ export class HomePage extends Component {
   renderWelcome() {
     var content = `
             <p>The ${
-              config.nearest.limit
+              config.nearestListLimit
             } nearest toilets are listed below. Click more info to find out about
             each toilet's features.</p><p>You can set preferences to highlight toilets that meet your specific
             needs.</p>

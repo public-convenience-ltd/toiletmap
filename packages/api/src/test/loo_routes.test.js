@@ -14,23 +14,23 @@ describe('api loo routes (public)', () => {
       await Loo.collection.insertMany(looRadius);
     });
 
-    it('should return a limit of 5 loos for -0.2068223/51.518342', async () => {
+    it('should return 20 loos for -0.2068223/51.518342, default radius', async () => {
       const response = await request(app).get(
         '/api/loos/near/-0.2068223/51.518342/'
-      );
-      expect(response.statusCode).toBe(200);
-      expect(response.body.features.length).toBe(5);
-    });
-
-    it('should return 20 loos for -0.2068223/51.518342', async () => {
-      const response = await request(app).get(
-        '/api/loos/near/-0.2068223/51.518342/?limit=20'
       );
       expect(response.statusCode).toBe(200);
       expect(response.body.features.length).toBe(20);
     });
 
-    it('should return 0 loos for 51.518342/-0.2068223', async () => {
+    it('should return 8 loos for -0.2068223/51.518342, 1km radius', async () => {
+      const response = await request(app).get(
+        '/api/loos/near/-0.2068223/51.518342/?radius=1000'
+      );
+      expect(response.statusCode).toBe(200);
+      expect(response.body.features.length).toBe(8);
+    });
+
+    it('should return 0 loos for 51.518342/-0.2068223, default radius', async () => {
       const response = await request(app).get(
         '/api/loos/near/51.518342/-0.2068223'
       );
