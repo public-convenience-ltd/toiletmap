@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import config from '../config';
+
 /* Note this approach will be deprecated in the future */
 import update from 'react-addons-update';
 
@@ -111,12 +113,14 @@ class PreferencesPage extends Component {
       <div>
         <div>
           <div className={layout.controls}>
-            <button
-              onClick={this.props.history.goBack}
-              className={controls.btn}
-            >
-              Back
-            </button>
+            {config.showBackButtons && (
+              <button
+                onClick={this.props.history.goBack}
+                className={controls.btn}
+              >
+                Back
+              </button>
+            )}
           </div>
         </div>
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import history from '../history';
 import { connect } from 'react-redux';
+
+import config from '../config';
 
 import { actionLogin } from '../redux/modules/auth';
 
@@ -17,9 +18,14 @@ class LoginPage extends Component {
       <div>
         <div>
           <div className={layout.controls}>
-            <button onClick={history.goBack} className={controls.btn}>
-              Back
-            </button>
+            {config.showBackButtons && (
+              <button
+                onClick={this.props.history.goBack}
+                className={controls.btn}
+              >
+                Back
+              </button>
+            )}
           </div>
         </div>
 
@@ -27,12 +33,15 @@ class LoginPage extends Component {
 
         <p>Before you can contribute data we'll need to know who to thank.</p>
         <p>
-          We'll only store the name you give us against the data you contribute.
+          We'll only store the first part of the email address you give us
+          against the data you contribute.
         </p>
         <p>Login or sign up to let us know you're real.</p>
 
         <div className={controls.btnStack}>
-          <button onClick={this.props.doLogin}>Log In/Sign Up</button>
+          <button onClick={this.props.doLogin} className={controls.btn}>
+            Log In/Sign Up
+          </button>
         </div>
       </div>
     );

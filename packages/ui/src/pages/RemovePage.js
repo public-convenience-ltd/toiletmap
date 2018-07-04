@@ -7,6 +7,8 @@ import {
   actionFindByIdRequest,
 } from '../redux/modules/loos';
 
+import config from '../config';
+
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
 import SingleLooMap from '../components/map/SingleLooMap';
@@ -45,12 +47,14 @@ class RemovePage extends Component {
       <div>
         <div>
           <div className={layout.controls}>
-            <button
-              onClick={this.props.history.goBack}
-              className={controls.btn}
-            >
-              Back
-            </button>
+            {config.showBackButtons && (
+              <button
+                onClick={this.props.history.goBack}
+                className={controls.btn}
+              >
+                Back
+              </button>
+            )}
           </div>
         </div>
 

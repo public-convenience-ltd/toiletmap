@@ -188,12 +188,14 @@ class AddEditPage extends Component {
       <div>
         <div>
           <div className={layout.controls}>
-            <button
-              onClick={this.props.history.goBack}
-              className={controls.btn}
-            >
-              Back
-            </button>
+            {config.showBackButtons && (
+              <button
+                onClick={this.props.history.goBack}
+                className={controls.btn}
+              >
+                Back
+              </button>
+            )}
           </div>
         </div>
 

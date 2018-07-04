@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import config from '../config';
+
 import PageLayout from '../components/PageLayout';
 import NearestLooMap from '../components/map/NearestLooMap';
 
@@ -16,12 +18,14 @@ class AboutPage extends Component {
       <div>
         <div>
           <div className={layout.controls}>
-            <button
-              onClick={this.props.history.goBack}
-              className={controls.btn}
-            >
-              Back
-            </button>
+            {config.showBackButtons && (
+              <button
+                onClick={this.props.history.goBack}
+                className={controls.btn}
+              >
+                Back
+              </button>
+            )}
           </div>
         </div>
         <h2 className={headings.large}>About this project</h2>
