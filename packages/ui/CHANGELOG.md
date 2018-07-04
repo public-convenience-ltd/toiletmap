@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/neontribe/gbptm/compare/v2.1.0...v2.2.0) (2018-07-03)
+
+
+### Bug Fixes
+
+* boost loo distance z-index ([9b4a133](https://github.com/neontribe/gbptm/commit/9b4a133))
+* improve geocoder styling ([ebf1971](https://github.com/neontribe/gbptm/commit/ebf1971))
+
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/neontribe/gbptm/compare/v0.0.5...v2.1.0) (2018-07-02)
 
