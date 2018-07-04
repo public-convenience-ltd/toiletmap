@@ -180,7 +180,7 @@ export class LooMap extends Component {
       looList.forEach(loo => {
         // Determine whether to highlight the current loo instance
         var highlight =
-          this.props.highlight && loo._id === this.props.highlight._id;
+          this.props.highlight && loo._id === this.props.highlight;
 
         var position = {
           lat: loo.geometry.coordinates[1],
@@ -245,7 +245,7 @@ export class LooMap extends Component {
           looList.map((loo, index) => {
             // Determine whether to highlight the current loo instance
             var highlight =
-              this.props.highlight && loo._id === this.props.highlight._id;
+              this.props.highlight && loo._id === this.props.highlight;
 
             return (
               <Marker
@@ -337,10 +337,8 @@ LooMap.propTypes = {
   // Called on `onMove` and `onInitialised`
   onUpdateCenter: PropTypes.func,
 
-  // Loo instance to highlight
-  highlight: PropTypes.shape({
-    _id: PropTypes.string,
-  }),
+  // Loo id to highlight
+  highlight: PropTypes.string,
 
   activeMarkers: PropTypes.bool,
 };

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
@@ -11,7 +10,7 @@ import config from '../config';
 
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
-import SingleLooMap from '../components/map/SingleLooMap';
+import LooMap from '../components/map/LooMap';
 
 import layout from '../components/css/layout.module.css';
 import headings from '../css/headings.module.css';
@@ -84,7 +83,17 @@ class RemovePage extends Component {
   }
 
   renderMap() {
-    return <SingleLooMap loo={this.props.loo} />;
+    var coords = {
+      lat: this.props.loo.geometry.coordinates[1],
+      lng: this.props.loo.geometry.coordinates[0],
+    };
+    return (
+      <LooMap
+        loos={[this.props.loo]}
+        initialPosition={coords}
+        highlight={this.props.loo._id}
+      />
+    );
   }
 
   render() {
@@ -99,10 +108,6 @@ class RemovePage extends Component {
     return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
   }
 }
-
-RemovePage.propTypes = {
-  loo: PropTypes.object.isRequired,
-};
 
 var mapStateToProps = (state, ownProps) => ({
   app: state.app,

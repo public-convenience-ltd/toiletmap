@@ -79,28 +79,12 @@ export class HomePage extends Component {
               <li key={i} className={styles.looListItem}>
                 <LooListItem
                   loo={loo}
-                  onHoverStart={_.partial(this.props.actionHighlight, loo)}
+                  onHoverStart={_.partial(this.props.actionHighlight, loo._id)}
                   onHoverEnd={_.partial(this.props.actionHighlight, undefined)}
                 />
               </li>
             ))}
         </ul>
-      </div>
-    );
-  }
-
-  // Rendered as a tab on mobile devices
-  renderMobileMap() {
-    var loos = this.props.loos;
-
-    return (
-      <div className={styles.mobileMap}>
-        <div className={toiletMap.map}>
-          {!loos && (
-            <div className={toiletMap.loading}>Fetching toilets&hellip;</div>
-          )}
-          <NearestLooMap />
-        </div>
       </div>
     );
   }
@@ -156,7 +140,11 @@ export class HomePage extends Component {
         >
           {mode === 'list' && this.renderWelcome()}
           {mode === 'list' && this.renderList()}
-          {mode === 'map' && this.renderMobileMap()}
+          {mode === 'map' && (
+            <div className={styles.mobileMap}>
+              <div className={toiletMap.map}>{this.renderMap()}</div>
+            </div>
+          )}
         </MediaQuery>
         <MediaQuery minWidth={config.viewport.mobile}>
           {this.renderWelcome()}
