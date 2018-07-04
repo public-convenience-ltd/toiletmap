@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 
-import { definitions } from '@neontribe/opening-hours';
-
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
 import AddEditLooMap from '../components/map/AddEditLooMap';
@@ -47,53 +45,7 @@ class AddEditPage extends Component {
     },
   ];
 
-  optionsMap = {
-    opening: definitions,
-    type: [
-      {
-        name: 'Female',
-        value: 'female',
-      },
-      {
-        name: 'Male',
-        value: 'male',
-      },
-      {
-        name: 'Female and Male',
-        value: 'female and male',
-      },
-      {
-        name: 'Unisex',
-        value: 'unisex',
-      },
-      {
-        name: 'Male Urinal',
-        value: 'male urinal',
-      },
-      {
-        name: 'Children Only',
-        value: 'children only',
-      },
-      {
-        name: 'None',
-        value: 'none',
-      },
-    ],
-    access: [
-      {
-        name: 'Public',
-        value: 'public',
-      },
-      {
-        name: 'Non-customers permitted',
-        value: 'permissive',
-      },
-      {
-        name: 'Customers only',
-        value: 'customers only',
-      },
-    ],
-  };
+  optionsMap = config.looProps;
 
   constructor(props) {
     super(props);
@@ -298,7 +250,7 @@ class AddEditPage extends Component {
             <option value="">Unknown</option>
             {this.optionsMap.opening.map((option, index) => (
               <option key={index} value={option.value}>
-                {option.title}
+                {option.name}
               </option>
             ))}
           </select>

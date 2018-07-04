@@ -13,6 +13,7 @@ import {
   actionFindByIdSuccess,
   actionReportSuccess,
   actionRemoveSuccess,
+  actionUncacheById,
 } from '../modules/loos';
 
 import { LOGGED_IN } from '../modules/auth';
@@ -33,6 +34,7 @@ export default function makeLoosSaga(auth) {
     const ids = yield call(api.reportLoo, loo, auth.getAccessToken());
     // maybe we should navigate as a result of the success action
     yield put(actionReportSuccess(ids));
+    yield put(actionUncacheById(ids.loo));
     return yield call(history.push, `/loos/${ids.loo}`);
   }
 

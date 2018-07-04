@@ -90,7 +90,22 @@ class LooPage extends Component {
 
   // Wrapper to `api.humanize` which allows mappings between loo property values and the
   // text we want to display
-  humanize(val) {
+  humanizePropertyName(val) {
+    if (this.humanizedValues[val]) {
+      return this.humanizedValues[val];
+    }
+
+    return api.humanize(val);
+  }
+
+  humanizePropertyValue(val, property) {
+    if (config.looProps[property]) {
+      let override = config.looProps[property].find(s => s.value === val);
+      if (override) {
+        return override.name;
+      }
+    }
+
     if (this.humanizedValues[val]) {
       return this.humanizedValues[val];
     }
@@ -137,13 +152,15 @@ class LooPage extends Component {
 
         <ul className={styles.properties}>
           {properties.map(name => {
-            var val = this.humanize(loo.properties[name]);
+            var val = this.humanizePropertyValue(loo.properties[name], name);
 
             // Filter out useless/unset data
             if (val !== 'Not known' && val !== '') {
               return (
                 <li className={styles.property} key={name}>
-                  <h3 className={styles.propertyName}>{this.humanize(name)}</h3>
+                  <h3 className={styles.propertyName}>
+                    {this.humanizePropertyName(name)}
+                  </h3>
                   <p className={styles.propertyValue}>{val}</p>
                 </li>
               );
