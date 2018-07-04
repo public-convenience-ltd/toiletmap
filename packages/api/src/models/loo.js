@@ -14,6 +14,7 @@ looSchema.statics.findNear = function(lon, lat, radius) {
         distanceField: 'distance',
         maxDistance: radius,
         spherical: true,
+        limit: 2 ** 62, // infeasibly large number
       },
     },
     {
