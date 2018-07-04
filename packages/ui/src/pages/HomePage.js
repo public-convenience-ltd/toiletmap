@@ -44,6 +44,11 @@ export class HomePage extends Component {
     }
   }
 
+  componentWillUnmount() {
+    // Clear any marker highlighting when navigating away
+    this.props.actionHighlight(null);
+  }
+
   renderList() {
     var loos = this.props.loos;
 
