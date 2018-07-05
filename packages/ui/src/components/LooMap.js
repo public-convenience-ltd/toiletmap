@@ -217,7 +217,10 @@ export class LooMap extends Component {
         zoomControl={!this.props.preventZoom && this.props.showZoomControls}
         scrollWheelZoom={!this.props.preventZoom}
         dragging={!this.props.preventDragging}
-        className={this.props.className}
+        className={
+          this.props.className +
+          (this.props.showCrosshair ? ' ' + styles.crosshaired : '')
+        }
         onMove={this.onMove}
         onZoomend={this.onZoom}
         minZoom={this.props.minZoom}
