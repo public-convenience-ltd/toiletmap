@@ -26,14 +26,8 @@ import { actionLogin, actionLogout } from '../redux/modules/auth';
 import config from '../config';
 
 export class HomePage extends Component {
-  constructor(props) {
-    super(props);
-
+  componentDidMount() {
     var position = this.props.geolocation.position;
-
-    this.renderList = this.renderList.bind(this);
-    this.renderMobileMap = this.renderMobileMap.bind(this);
-    this.renderWelcome = this.renderWelcome.bind(this);
 
     if (!this.props.loos) {
       this.props.actionFindNearbyRequest(
