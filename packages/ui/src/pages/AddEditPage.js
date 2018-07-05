@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
-import NearestLooMap from '../components/map/NearestLooMap';
+import NearestLooMap from '../components/NearestLooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
 

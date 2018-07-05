@@ -7,7 +7,7 @@ import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 
 import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/map/NearestLooMap';
+import NearestLooMap from '../components/NearestLooMap';
 import DismissableBox from '../components/DismissableBox';
 import LooListItem from '../components/LooListItem';
 import Notification from '../components/Notification';

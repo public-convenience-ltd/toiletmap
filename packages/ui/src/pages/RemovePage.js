@@ -10,7 +10,7 @@ import config from '../config';
 
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
-import LooMap from '../components/map/LooMap';
+import LooMap from '../components/LooMap';
 
 import layout from '../components/css/layout.module.css';
 import headings from '../css/headings.module.css';

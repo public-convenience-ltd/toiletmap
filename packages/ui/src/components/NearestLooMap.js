@@ -3,16 +3,13 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import config from '../../config';
+import config from '../config';
 import LooMap from './LooMap';
 
-import {
-  actionZoom,
-  actionUpdateCenter,
-} from '../../redux/modules/mapControls';
-import { actionFindNearbyRequest } from '../../redux/modules/loos';
+import { actionZoom, actionUpdateCenter } from '../redux/modules/mapControls';
+import { actionFindNearbyRequest } from '../redux/modules/loos';
 
-import styles from '../css/loo-map.module.css';
+import styles from './css/loo-map.module.css';
 
 class NearestLooMap extends Component {
   constructor(props) {

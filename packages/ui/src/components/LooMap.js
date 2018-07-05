@@ -17,17 +17,17 @@ import 'leaflet-loading';
 // https://github.com/perliedman/leaflet-control-geocoder/issues/150
 import 'leaflet-control-geocoder/src';
 
-import config from '../../config.js';
+import config from '../config.js';
 
-import styles from '../css/loo-map.module.css';
+import styles from './css/loo-map.module.css';
 
-import markerIcon from '../../images/marker-icon.png';
-import markerIconRetina from '../../images/marker-icon-2x.png';
-import markerIconHighlight from '../../images/marker-icon-highlight.png';
-import markerIconRetinaHighlight from '../../images/marker-icon-highlight-2x.png';
-import markerCircle from '../../images/map-icons/circle.svg';
+import markerIcon from '../images/marker-icon.png';
+import markerIconRetina from '../images/marker-icon-2x.png';
+import markerIconHighlight from '../images/marker-icon-highlight.png';
+import markerIconRetinaHighlight from '../images/marker-icon-highlight-2x.png';
+import markerCircle from '../images/map-icons/circle.svg';
 
-L.Icon.Default.imagePath = path.resolve('../../images');
+L.Icon.Default.imagePath = path.resolve('../images');
 
 export class GeolocationMapControl extends MapControl {
   componentWillMount() {

@@ -10,7 +10,7 @@ import { actionHighlight } from '../redux/modules/mapControls';
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
 import PreferenceIndicators from '../components/PreferenceIndicators';
-import NearestLooMap from '../components/map/NearestLooMap';
+import NearestLooMap from '../components/NearestLooMap';
 
 import styles from './css/loo-page.module.css';
 import layout from '../components/css/layout.module.css';

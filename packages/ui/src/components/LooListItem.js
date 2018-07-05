@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
 
-import LooMap from './map/LooMap';
+import LooMap from './LooMap';
 import PreferenceIndicators from './PreferenceIndicators';
 
 import styles from './css/loo-list-item.module.css';
