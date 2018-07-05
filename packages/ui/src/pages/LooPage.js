@@ -146,6 +146,19 @@ class LooPage extends Component {
                 Back
               </button>
             )}
+
+            <a
+              href={
+                'https://maps.apple.com/?saddr=here&daddr=' +
+                [loo.geometry.coordinates[1], loo.geometry.coordinates[0]]
+              }
+              className={controls.btn}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Get Directions
+            </a>
+
             {config.allowAddEditLoo && (
               <Link to={`/loos/${loo._id}/edit`} className={controls.btn}>
                 Edit toilet
