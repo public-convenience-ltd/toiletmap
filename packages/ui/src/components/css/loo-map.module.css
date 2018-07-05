@@ -10,7 +10,7 @@
 	min-height: 100px;
 }
 
-.crosshaired::before {
+.map.with-crosshair::before {
   content: '\0020';
   position: absolute;
   top: 50%;
@@ -24,7 +24,7 @@
   z-index: 1002;
 }
 
-.crosshaired::after {
+.map.with-crosshair::after {
   content: '\0020';
   position: absolute;
   top: 50%;

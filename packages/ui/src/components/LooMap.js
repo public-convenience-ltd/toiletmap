@@ -208,6 +208,11 @@ export class LooMap extends Component {
       this.leafletElement.addLayer(this.state.clusterLayer);
     }
 
+    var className = this.props.className;
+    if (this.props.showCrosshair) {
+      className += ` ${styles['with-crosshair']}`;
+    }
+
     // `minZoom` and `maxZoom` needed on `Map` Component for clustering and `TileLayer` for `react-leaflet`
     return (
       <Map
@@ -217,10 +222,7 @@ export class LooMap extends Component {
         zoomControl={!this.props.preventZoom && this.props.showZoomControls}
         scrollWheelZoom={!this.props.preventZoom}
         dragging={!this.props.preventDragging}
-        className={
-          this.props.className +
-          (this.props.showCrosshair ? ' ' + styles.crosshaired : '')
-        }
+        className={className}
         onMove={this.onMove}
         onZoomend={this.onZoom}
         minZoom={this.props.minZoom}
