@@ -129,7 +129,7 @@ class AddEditPage extends Component {
     };
 
     // Keep only new or changed data, by comparing to the form's initial state
-    const changes = onlyChanges(before, now);
+    const changes = onlyChanges(now, before);
 
     if (!this.isDerived()) {
       // If we're a new loo, we always want geometry, regardless of whether it
@@ -157,15 +157,22 @@ class AddEditPage extends Component {
     const changes = this.getNovelInput();
 
     // Only submit if we've got something to tell
-    if (!_.isEmpty(changes)) {
-      // Always associate geometry with a report, even if unchanged
-      changes.geometry = {
-        type: 'Point',
-        coordinates: [this.getCenter().lng, this.getCenter().lat],
-      };
-
-      this.props.actionReportRequest(changes);
+    if (_.isEmpty(changes)) {
+      return;
     }
+
+    // Always associate geometry with a report, even if unchanged
+    changes.geometry = {
+      type: 'Point',
+      coordinates: [this.getCenter().lng, this.getCenter().lat],
+    };
+
+    // Show that this report is a derivation of a previous loo
+    if (this.isDerived()) {
+      changes.derivedFrom = this.props.loo._id;
+    }
+
+    this.props.actionReportRequest(changes);
   }
 
   renderMobileMap() {
