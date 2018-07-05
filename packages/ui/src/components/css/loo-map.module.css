@@ -10,6 +10,34 @@
 	min-height: 100px;
 }
 
+.map.with-crosshair::before {
+  content: '\0020';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  height: 40px;
+  width: 3px;
+  margin-top: -20px;
+  margin-left: -1px;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1002;
+}
+
+.map.with-crosshair::after {
+  content: '\0020';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  height: 3px;
+  width: 40px;
+  margin-top: -1px;
+  margin-left: -20px;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1002;
+}
+
 .markerHighlighted {
 	position: relative;
 	animation: bounce .5s infinite alternate;
