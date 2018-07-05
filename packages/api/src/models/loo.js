@@ -116,6 +116,8 @@ looSchema.methods.regenerate = async function() {
   geometry.coordinates[1] =
     recentLooReports[recentLooReports.length - 1].geometry.coordinates[1];
 
+  loo.geometry = geometry;
+
   /*
   //Skewed average based on trust
   geometry.coordinates[0] = _.meanBy(loo.reports, function(report) { return report.geometry.coordinates[0]*report.trust;})/_.sumBy(trustedLooReports,'trust');
