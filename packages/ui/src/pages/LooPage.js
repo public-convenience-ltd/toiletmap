@@ -5,11 +5,13 @@ import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 
 import { actionFindByIdRequest } from '../redux/modules/loos';
+import { actionHighlight } from '../redux/modules/mapControls';
 
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
 import PreferenceIndicators from '../components/PreferenceIndicators';
-import SingleLooMap from '../components/map/SingleLooMap';
+import NearestLooMap from '../components/NearestLooMap';
+
 import styles from './css/loo-page.module.css';
 import layout from '../components/css/layout.module.css';
 import helpers from '../css/helpers.module.css';
@@ -61,6 +63,22 @@ class LooPage extends Component {
     if (!this.props.loo) {
       this.props.actionFindByIdRequest(this.props.match.params.id);
     }
+    this.props.actionHighlight(this.props.match.params.id);
+  }
+
+  componentDidUpdate(prevProps) {
+    // Support navigation _between_ loo pages
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      if (!this.props.loo) {
+        this.props.actionFindByIdRequest(this.props.match.params.id);
+      }
+      this.props.actionHighlight(this.props.match.params.id);
+    }
+  }
+
+  componentWillUnmount() {
+    // Clear any marker highlighting when navigating away
+    this.props.actionHighlight(null);
   }
 
   getPropertyNames() {
@@ -156,12 +174,7 @@ class LooPage extends Component {
         </div>
 
         <MediaQuery maxWidth={config.viewport.mobile}>
-          <SingleLooMap
-            loo={loo}
-            looMapProps={{
-              className: styles.map,
-            }}
-          />
+          <div className={styles.mobileMap}>{this.renderMap()}</div>
         </MediaQuery>
 
         <ul className={styles.properties}>
@@ -254,7 +267,19 @@ class LooPage extends Component {
   }
 
   renderMap() {
-    return <SingleLooMap loo={this.props.loo} />;
+    return (
+      <NearestLooMap
+        loo={this.props.loo}
+        mapProps={{
+          showLocation: false,
+          showSearchControl: false,
+          showLocateControl: false,
+          showCenter: false,
+          preventDragging: true,
+          minZoom: config.initialZoom,
+        }}
+      />
+    );
   }
 
   render() {
@@ -277,6 +302,7 @@ var mapStateToProps = (state, ownProps) => ({
 
 var mapDispatchToProps = {
   actionFindByIdRequest,
+  actionHighlight,
 };
 
 export default connect(

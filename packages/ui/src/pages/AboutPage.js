@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import config from '../config';
 
 import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/map/NearestLooMap';
+import NearestLooMap from '../components/NearestLooMap';
 
 import styles from './css/about-page.module.css';
 import headings from '../css/headings.module.css';

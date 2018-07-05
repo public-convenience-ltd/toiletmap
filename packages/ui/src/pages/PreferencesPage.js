@@ -7,7 +7,7 @@ import config from '../config';
 import update from 'react-addons-update';
 
 import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/map/NearestLooMap';
+import NearestLooMap from '../components/NearestLooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
 

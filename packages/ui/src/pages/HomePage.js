@@ -7,7 +7,7 @@ import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 
 import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/map/NearestLooMap';
+import NearestLooMap from '../components/NearestLooMap';
 import DismissableBox from '../components/DismissableBox';
 import LooListItem from '../components/LooListItem';
 import Notification from '../components/Notification';
@@ -26,14 +26,8 @@ import { actionLogin, actionLogout } from '../redux/modules/auth';
 import config from '../config';
 
 export class HomePage extends Component {
-  constructor(props) {
-    super(props);
-
+  componentDidMount() {
     var position = this.props.geolocation.position;
-
-    this.renderList = this.renderList.bind(this);
-    this.renderMobileMap = this.renderMobileMap.bind(this);
-    this.renderWelcome = this.renderWelcome.bind(this);
 
     if (!this.props.loos) {
       this.props.actionFindNearbyRequest(
@@ -79,28 +73,12 @@ export class HomePage extends Component {
               <li key={i} className={styles.looListItem}>
                 <LooListItem
                   loo={loo}
-                  onHoverStart={_.partial(this.props.actionHighlight, loo)}
+                  onHoverStart={_.partial(this.props.actionHighlight, loo._id)}
                   onHoverEnd={_.partial(this.props.actionHighlight, undefined)}
                 />
               </li>
             ))}
         </ul>
-      </div>
-    );
-  }
-
-  // Rendered as a tab on mobile devices
-  renderMobileMap() {
-    var loos = this.props.loos;
-
-    return (
-      <div className={styles.mobileMap}>
-        <div className={toiletMap.map}>
-          {!loos && (
-            <div className={toiletMap.loading}>Fetching toilets&hellip;</div>
-          )}
-          <NearestLooMap />
-        </div>
       </div>
     );
   }
@@ -156,7 +134,11 @@ export class HomePage extends Component {
         >
           {mode === 'list' && this.renderWelcome()}
           {mode === 'list' && this.renderList()}
-          {mode === 'map' && this.renderMobileMap()}
+          {mode === 'map' && (
+            <div className={styles.mobileMap}>
+              <div className={toiletMap.map}>{this.renderMap()}</div>
+            </div>
+          )}
         </MediaQuery>
         <MediaQuery minWidth={config.viewport.mobile}>
           {this.renderWelcome()}

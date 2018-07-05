@@ -6,7 +6,7 @@ import config from '../config';
 import { actionLogin } from '../redux/modules/auth';
 
 import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/map/NearestLooMap';
+import NearestLooMap from '../components/NearestLooMap';
 
 import layout from '../components/css/layout.module.css';
 import headings from '../css/headings.module.css';

@@ -3,22 +3,25 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
+import config from '../config';
 import LooMap from './LooMap';
 
-import {
-  actionZoom,
-  actionUpdateCenter,
-} from '../../redux/modules/mapControls';
-import { actionFindNearbyRequest } from '../../redux/modules/loos';
+import { actionZoom, actionUpdateCenter } from '../redux/modules/mapControls';
+import { actionFindNearbyRequest } from '../redux/modules/loos';
 
-import styles from '../css/loo-map.module.css';
-
-import config from '../../config';
+import styles from './css/loo-map.module.css';
 
 class NearestLooMap extends Component {
   constructor(props) {
     super(props);
     this.onMove = this.onMove.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.loo) {
+      let [lng, lat] = this.props.loo.geometry.coordinates;
+      this.props.actionFindNearbyRequest(lng, lat, config.nearestRadius);
+    }
   }
 
   onMove(lng, lat) {
@@ -28,9 +31,18 @@ class NearestLooMap extends Component {
 
   render() {
     var loos = this.props.loos;
+    var loo = this.props.loo;
+    var looCentre;
+    if (loo) {
+      looCentre = {
+        lat: loo.geometry.coordinates[1],
+        lng: loo.geometry.coordinates[0],
+      };
+    }
 
     // Return map to last stored position or default to user location
-    var position = this.props.map.center || this.props.geolocation.position;
+    var position =
+      looCentre || this.props.map.center || this.props.geolocation.position;
 
     return (
       <div className={styles.map}>
@@ -52,6 +64,7 @@ class NearestLooMap extends Component {
           initialZoom={this.props.map.zoom}
           initialPosition={position}
           highlight={this.props.map.highlight}
+          {...this.props.mapProps}
         />
       </div>
     );
@@ -61,6 +74,10 @@ class NearestLooMap extends Component {
 NearestLooMap.propTypes = {
   // An array of loo instances to be represented as map markers
   loos: PropTypes.array,
+  // A loo to focus
+  loo: PropTypes.object,
+  // props to spread (last) over the LooMap instance
+  mapProps: PropTypes.object,
 };
 
 var mapStateToProps = state => ({

@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
-import AddEditLooMap from '../components/map/AddEditLooMap';
+import NearestLooMap from '../components/NearestLooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
 
@@ -16,6 +16,8 @@ import {
   actionReportRequest,
   actionFindByIdRequest,
 } from '../redux/modules/loos';
+
+import { actionHighlight } from '../redux/modules/mapControls';
 
 import config from '../config';
 
@@ -88,9 +90,17 @@ class AddEditPage extends Component {
 
   componentDidMount() {
     // If our url contains a loo id and we don't have the data, ask for it
-    if (this.props.match.params.id && !this.props.loo) {
-      this.props.actionFindByIdRequest(this.props.match.params.id);
+    if (this.props.match.params.id) {
+      if (!this.props.loo) {
+        this.props.actionFindByIdRequest(this.props.match.params.id);
+      }
+      this.props.actionHighlight(this.props.match.params.id);
     }
+  }
+
+  componentWillUnmount() {
+    // Clear any marker highlighting when navigating away
+    this.props.actionHighlight(null);
   }
 
   handleChange(event) {
@@ -168,18 +178,6 @@ class AddEditPage extends Component {
     }
   }
 
-  renderMobileMap() {
-    return (
-      <div className={styles.mobileMap}>
-        <AddEditLooMap
-          looMapProps={{
-            showSearchControl: false,
-          }}
-        />
-      </div>
-    );
-  }
-
   renderMain() {
     const loo = this.state.loo;
     const center = this.getCenter();
@@ -206,7 +204,7 @@ class AddEditPage extends Component {
         )}
 
         <MediaQuery maxWidth={config.viewport.mobile}>
-          {this.renderMobileMap()}
+          <div className={styles.mobileMap}>{this.renderMap()}</div>
         </MediaQuery>
 
         <Notification>
@@ -434,7 +432,21 @@ class AddEditPage extends Component {
   }
 
   renderMap() {
-    return <AddEditLooMap loo={this.props.loo} />;
+    return (
+      <NearestLooMap
+        loo={this.props.loo}
+        highlight
+        mapProps={{
+          showLocation: false,
+          showSearchControl: false,
+          showLocateControl: false,
+          showCenter: false,
+          preventDragging: false,
+          minZoom: config.initialZoom,
+          showCrosshair: true,
+        }}
+      />
+    );
   }
 
   render() {
@@ -487,6 +499,7 @@ var mapStateToProps = (state, ownProps) => ({
 var mapDispatchToProps = {
   actionReportRequest,
   actionFindByIdRequest,
+  actionHighlight,
 };
 
 export default connect(

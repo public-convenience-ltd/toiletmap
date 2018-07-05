@@ -1,8 +1,6 @@
-.map {
-	position: relative;
+.mobileMap {
 	display: flex;
-	flex: 1;
-	min-height: 150px;
+	height: 200px;
 	margin-bottom: 1rem;
 }
 

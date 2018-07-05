@@ -18,11 +18,9 @@ export const actionUpdateCenter = center => ({
   },
 });
 
-export const actionHighlight = loo => ({
+export const actionHighlight = id => ({
   type: HIGHLIGHT,
-  payload: {
-    loo,
-  },
+  payload: id,
 });
 
 // Action Handlers
@@ -45,7 +43,7 @@ const ACTION_HANDLERS = {
   [HIGHLIGHT]: function(state, action) {
     return {
       ...state,
-      highlight: action.payload.loo,
+      highlight: action.payload,
     };
   },
 };
