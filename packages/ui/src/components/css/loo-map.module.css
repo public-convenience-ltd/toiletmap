@@ -21,7 +21,6 @@
   margin-top: -20px;
   margin-left: -1px;
   background: rgba(0, 0, 0, 0.8);
-  z-index: 1002;
 }
 
 .map.with-crosshair::after {
@@ -35,7 +34,6 @@
   margin-top: -1px;
   margin-left: -20px;
   background: rgba(0, 0, 0, 0.8);
-  z-index: 1002;
 }
 
 .markerHighlighted {

@@ -211,6 +211,7 @@ export class LooMap extends Component {
     var className = this.props.className;
     if (this.props.showCrosshair) {
       className += ` ${styles['with-crosshair']}`;
+      className += ' map--zindexfix';
     }
 
     // `minZoom` and `maxZoom` needed on `Map` Component for clustering and `TileLayer` for `react-leaflet`

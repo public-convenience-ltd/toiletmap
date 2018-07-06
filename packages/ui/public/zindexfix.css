@@ -1,0 +1,7 @@
+.map--zindexfix::before {
+  z-index: 1002;
+}
+
+.map--zindexfix::after {
+  z-index: 1002;
+}
