@@ -41,7 +41,9 @@ class LooListItem extends Component {
           <span className={styles.linkText}>More info</span>
         </div>
 
-        <div className={styles.distance}>{Math.round(loo.distance)}m</div>
+        <div className={styles.distance + ' distance--zindexfix'}>
+          {Math.round(loo.distance)}m
+        </div>
       </Link>
     );
   }

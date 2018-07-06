@@ -61,7 +61,6 @@
 	color: #fff;
 	font-size: 1rem;
 	background-color: rgba(0, 0, 0, 0.8);
-	z-index: 10000;
 }
 
 .center {
@@ -71,11 +70,6 @@
 :global(.leaflet-div-icon) {
 	border: 0 !important;
 	background: none !important;
-}
-
-/* This is preventing the appearance of markers rendering twice (glitching) after zooming */
-:global(.leaflet-div-icon) {
-	z-index: 1000 !important;
 }
 
 /* Cluster markers */

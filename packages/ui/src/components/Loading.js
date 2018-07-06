@@ -5,7 +5,11 @@ import styles from './css/loo-map.module.css';
 
 export default props => {
   if (props.fullScreen) {
-    return <div className={styles.loading}>{props.message}</div>;
+    return (
+      <div className={styles.loading + ' loading--zindexfix'}>
+        {props.message}
+      </div>
+    );
   }
   return (
     <Notification>
