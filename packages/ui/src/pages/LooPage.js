@@ -122,10 +122,8 @@ class LooPage extends Component {
 
   humanizePropertyValue(val, property) {
     if (config.looProps.humanAlready.includes(property)) {
-      if (!(property === 'fee' && val === 'false')) {
-        // This was entered by a human, leave it as is
-        return val;
-      }
+      // This was entered by a human, leave it as is
+      return val;
     }
 
     if (config.looProps[property]) {
