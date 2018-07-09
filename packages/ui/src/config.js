@@ -17,7 +17,13 @@ export default {
   allowAddEditLoo: true,
   showBackButtons: false,
   looProps: {
-    humanAlready: ['notes', 'fee', 'removal_reason'],
+    canHumanize: [
+      'accessibleType',
+      'attended',
+      'babyChange',
+      'automatic',
+      'radar',
+    ],
     definitions: {
       opening: definitions,
       type: [

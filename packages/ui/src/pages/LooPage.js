@@ -121,20 +121,23 @@ class LooPage extends Component {
   }
 
   humanizePropertyValue(val, property) {
-    if (config.looProps.humanAlready.includes(property)) {
-      // This was entered by a human, leave it as is
-      return val;
-    }
-
-    if (config.looProps[property]) {
+    if (config.looProps.definitions[property]) {
       // We may a human readable definition of this property value
-      let override = config.looProps[property].find(s => s.value === val);
+      let override = config.looProps.definitions[property].find(
+        s => s.value === val
+      );
       if (override) {
         return override.name;
       }
     }
 
-    return api.humanize(val);
+    if (config.looProps.canHumanize.includes(property)) {
+      // We can humanize this kind of property to make it mroe human-readable
+      return api.humanize(val);
+    }
+
+    // This was likely entered as human-readable, leave it be
+    return val;
   }
 
   renderMain() {
