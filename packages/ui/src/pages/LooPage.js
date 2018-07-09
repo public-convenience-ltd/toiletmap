@@ -82,16 +82,21 @@ class LooPage extends Component {
   }
 
   getPropertyNames() {
-    // Apply a sort to match the property order of `this.propertiesSort`
-    var sorted = _.intersection(
-      this.propertiesSort,
-      Object.keys(this.props.loo.properties)
-    );
+    // All property names in our loo object
+    var names = Object.keys(this.props.loo.properties);
 
-    // Omit proprties found in the blacklist
-    return sorted.filter(property => {
-      return !this.propertiesBlacklist.includes(property);
-    });
+    // Pick out contained properties of known order, we'll put them at the front
+    var knownOrder = _.intersection(this.propertiesSort, names);
+
+    // Pick out all other properties that are not blacklisted, we'll put them after
+    var unknownOrder = _.difference(
+      names,
+      knownOrder,
+      this.propertiesBlacklist
+    );
+    unknownOrder.sort();
+
+    return knownOrder.concat(unknownOrder);
   }
 
   // Returns HTML representing the loo credibility score
