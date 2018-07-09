@@ -22,8 +22,8 @@ import api from '../api';
 import config from '../config';
 
 class LooPage extends Component {
-  // Provides a mapping between loo properies and the values we want to display
-  humanizedValues = {
+  // Provides a mapping between loo property names and the values we want to display
+  humanizedPropNames = {
     type: 'Facilities',
     accessibleType: 'Accessible facilities',
     babyChange: 'Baby Changing',
@@ -108,23 +108,27 @@ class LooPage extends Component {
   // Wrapper to `api.humanize` which allows mappings between loo property values and the
   // text we want to display
   humanizePropertyName(val) {
-    if (this.humanizedValues[val]) {
-      return this.humanizedValues[val];
+    if (this.humanizedPropNames[val]) {
+      return this.humanizedPropNames[val];
     }
 
     return api.humanize(val);
   }
 
   humanizePropertyValue(val, property) {
+    if (config.looProps.humanAlready.includes(property)) {
+      if (!(property === 'fee' && val === 'false')) {
+        // This was entered by a human, leave it as is
+        return val;
+      }
+    }
+
     if (config.looProps[property]) {
+      // We may a human readable definition of this property value
       let override = config.looProps[property].find(s => s.value === val);
       if (override) {
         return override.name;
       }
-    }
-
-    if (this.humanizedValues[val]) {
-      return this.humanizedValues[val];
     }
 
     return api.humanize(val);

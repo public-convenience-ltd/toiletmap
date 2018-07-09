@@ -47,7 +47,7 @@ class AddEditPage extends Component {
     },
   ];
 
-  optionsMap = config.looProps;
+  optionsMap = config.looProps.definitions;
 
   constructor(props) {
     super(props);
