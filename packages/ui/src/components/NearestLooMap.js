@@ -20,6 +20,7 @@ class NearestLooMap extends Component {
   componentDidMount() {
     if (this.props.loo) {
       let [lng, lat] = this.props.loo.geometry.coordinates;
+      this.props.actionUpdateCenter({ lat, lng });
       this.props.actionFindNearbyRequest(lng, lat, config.nearestRadius);
     }
   }
