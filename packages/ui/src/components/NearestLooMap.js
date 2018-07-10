@@ -52,6 +52,8 @@ class NearestLooMap extends Component {
 
         <LooMap
           loos={loos}
+          countFrom={this.props.numberNearest ? 1 : null}
+          countLimit={5}
           shouldCluster={true}
           showAttribution={true}
           showLocation={true}
@@ -78,6 +80,8 @@ NearestLooMap.propTypes = {
   loo: PropTypes.object,
   // props to spread (last) over the LooMap instance
   mapProps: PropTypes.object,
+  // Whether to show an index on the nearest five loos
+  numberNearest: PropTypes.boolean,
 };
 
 var mapStateToProps = state => ({
