@@ -81,7 +81,7 @@ NearestLooMap.propTypes = {
   // props to spread (last) over the LooMap instance
   mapProps: PropTypes.object,
   // Whether to show an index on the nearest five loos
-  numberNearest: PropTypes.boolean,
+  numberNearest: PropTypes.bool,
 };
 
 var mapStateToProps = state => ({

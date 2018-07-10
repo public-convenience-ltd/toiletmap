@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import L from 'leaflet';
-import path from 'path';
 
 import { Map, TileLayer, MapControl, Marker } from 'react-leaflet';
 
@@ -413,6 +412,7 @@ LooMap.defaultProps = {
   showAttribution: false,
   showCenter: false,
   showCrosshair: false,
+  countLimit: 10,
   onMove: Function.prototype,
   onZoom: Function.prototype,
   onInitialised: Function.prototype,
