@@ -131,8 +131,12 @@ class LooPage extends Component {
       }
     }
 
-    if (config.looProps.canHumanize.includes(property)) {
-      // We can humanize this kind of property to make it mroe human-readable
+    // Second condition is for an irregularity in our dataset; do this until we normalise better
+    if (
+      config.looProps.canHumanize.includes(property) ||
+      (property === 'fee' && val === 'false')
+    ) {
+      // We can humanize this kind of property to make it more human-readable
       return api.humanize(val);
     }
 
