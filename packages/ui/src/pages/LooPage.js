@@ -22,8 +22,8 @@ import api from '../api';
 import config from '../config';
 
 class LooPage extends Component {
-  // Provides a mapping between loo properies and the values we want to display
-  humanizedValues = {
+  // Provides a mapping between loo property names and the values we want to display
+  humanizedPropNames = {
     type: 'Facilities',
     accessibleType: 'Accessible facilities',
     babyChange: 'Baby Changing',
@@ -82,16 +82,21 @@ class LooPage extends Component {
   }
 
   getPropertyNames() {
-    // Apply a sort to match the property order of `this.propertiesSort`
-    var sorted = _.intersection(
-      this.propertiesSort,
-      Object.keys(this.props.loo.properties)
-    );
+    // All property names in our loo object
+    var names = Object.keys(this.props.loo.properties);
 
-    // Omit proprties found in the blacklist
-    return sorted.filter(property => {
-      return !this.propertiesBlacklist.includes(property);
-    });
+    // Pick out contained properties of known order, we'll put them at the front
+    var knownOrder = _.intersection(this.propertiesSort, names);
+
+    // Pick out all other properties that are not blacklisted, we'll put them after
+    var unknownOrder = _.difference(
+      names,
+      knownOrder,
+      this.propertiesBlacklist
+    );
+    unknownOrder.sort();
+
+    return knownOrder.concat(unknownOrder);
   }
 
   // Returns HTML representing the loo credibility score
@@ -108,26 +113,35 @@ class LooPage extends Component {
   // Wrapper to `api.humanize` which allows mappings between loo property values and the
   // text we want to display
   humanizePropertyName(val) {
-    if (this.humanizedValues[val]) {
-      return this.humanizedValues[val];
+    if (this.humanizedPropNames[val]) {
+      return this.humanizedPropNames[val];
     }
 
     return api.humanize(val);
   }
 
   humanizePropertyValue(val, property) {
-    if (config.looProps[property]) {
-      let override = config.looProps[property].find(s => s.value === val);
+    if (config.looProps.definitions[property]) {
+      // We may a human readable definition of this property value
+      let override = config.looProps.definitions[property].find(
+        s => s.value === val
+      );
       if (override) {
         return override.name;
       }
     }
 
-    if (this.humanizedValues[val]) {
-      return this.humanizedValues[val];
+    // Second condition is for an irregularity in our dataset; do this until we normalise better
+    if (
+      config.looProps.canHumanize.includes(property) ||
+      (property === 'fee' && val === 'false')
+    ) {
+      // We can humanize this kind of property to make it more human-readable
+      return api.humanize(val);
     }
 
-    return api.humanize(val);
+    // This was likely entered as human-readable, leave it be
+    return val;
   }
 
   renderMain() {
