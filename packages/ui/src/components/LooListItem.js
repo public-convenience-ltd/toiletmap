@@ -25,6 +25,7 @@ class LooListItem extends Component {
         onMouseOut={this.props.onHoverEnd}
       >
         <LooMap
+          countFrom={this.props.index}
           showZoomControls={false}
           preventZoom={true}
           preventDragging={true}
@@ -51,6 +52,7 @@ class LooListItem extends Component {
 
 LooListItem.propTypes = {
   loo: PropTypes.object.isRequired,
+  index: PropTypes.number, // a number to show by the loo
   onHoverStart: PropTypes.func,
   onHoverEnd: PropTypes.func,
 };

@@ -20,6 +20,7 @@ class NearestLooMap extends Component {
   componentDidMount() {
     if (this.props.loo) {
       let [lng, lat] = this.props.loo.geometry.coordinates;
+      this.props.actionUpdateCenter({ lat, lng });
       this.props.actionFindNearbyRequest(lng, lat, config.nearestRadius);
     }
   }
@@ -52,6 +53,8 @@ class NearestLooMap extends Component {
 
         <LooMap
           loos={loos}
+          countFrom={this.props.numberNearest ? 1 : null}
+          countLimit={5}
           shouldCluster={true}
           showAttribution={true}
           showLocation={true}
@@ -78,6 +81,8 @@ NearestLooMap.propTypes = {
   loo: PropTypes.object,
   // props to spread (last) over the LooMap instance
   mapProps: PropTypes.object,
+  // Whether to show an index on the nearest five loos
+  numberNearest: PropTypes.bool,
 };
 
 var mapStateToProps = state => ({

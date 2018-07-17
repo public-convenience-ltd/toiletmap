@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import L from 'leaflet';
-import path from 'path';
 
 import { Map, TileLayer, MapControl, Marker } from 'react-leaflet';
 
@@ -27,7 +26,30 @@ import markerIconHighlight from '../images/marker-icon-highlight.png';
 import markerIconRetinaHighlight from '../images/marker-icon-highlight-2x.png';
 import markerCircle from '../images/map-icons/circle.svg';
 
-L.Icon.Default.imagePath = path.resolve('../images');
+L.LooIcon = L.Icon.extend({
+  createIcon: function() {
+    var img = this._createImg(this._getIconUrl('icon'));
+
+    // do we need to be complex to show an index, or are we just a dumb image
+    if (!this.options.index) {
+      this._setIconStyles(img, 'icon');
+      return img;
+    }
+
+    // make an index label
+    var index = document.createElement('div');
+    index.setAttribute('class', styles.index);
+    index.innerHTML = this.options.index;
+
+    // group the index label and image under a div element
+    var grouper = document.createElement('div');
+    grouper.appendChild(img);
+    grouper.appendChild(index);
+    this._setIconStyles(grouper, 'icon');
+
+    return grouper;
+  },
+});
 
 export class GeolocationMapControl extends MapControl {
   componentWillMount() {
@@ -177,7 +199,7 @@ export class LooMap extends Component {
     if (this.props.shouldCluster && this.state.clusterLayer) {
       this.state.clusterLayer.clearLayers();
 
-      looList.forEach(loo => {
+      looList.forEach((loo, index) => {
         // Determine whether to highlight the current loo instance
         var highlight =
           this.props.highlight && loo._id === this.props.highlight;
@@ -187,16 +209,25 @@ export class LooMap extends Component {
           lng: loo.geometry.coordinates[0],
         };
 
+        // Consider adding an index to the loo
+        var count = null;
+        if (this.props.countFrom !== null && index < this.props.countLimit) {
+          count = this.props.countFrom + index;
+        }
+
+        var icon = new L.LooIcon({
+          iconSize: [25, 41],
+          iconAnchor: [12.5, 41],
+          iconUrl: highlight ? markerIconHighlight : markerIcon,
+          iconRetinaUrl: highlight
+            ? markerIconRetinaHighlight
+            : markerIconRetina,
+          className: highlight && styles.markerHighlighted,
+          index: count,
+        });
+
         var marker = L.marker(position, {
-          icon: L.icon({
-            iconSize: [25, 41],
-            iconAnchor: [12.5, 41],
-            iconUrl: highlight ? markerIconHighlight : markerIcon,
-            iconRetinaUrl: highlight
-              ? markerIconRetinaHighlight
-              : markerIconRetina,
-            className: highlight && styles.markerHighlighted,
-          }),
+          icon: icon,
         });
 
         // Individual marker click handler
@@ -253,6 +284,15 @@ export class LooMap extends Component {
             var highlight =
               this.props.highlight && loo._id === this.props.highlight;
 
+            // Consider adding an index to the loo
+            var count = null;
+            if (
+              this.props.countFrom !== null &&
+              index < this.props.countLimit
+            ) {
+              count = this.props.countFrom + index;
+            }
+
             return (
               <Marker
                 key={index}
@@ -260,14 +300,17 @@ export class LooMap extends Component {
                   loo.geometry.coordinates[1],
                   loo.geometry.coordinates[0],
                 ]}
-                icon={L.icon({
-                  iconSize: [25, 41],
-                  iconAnchor: [12.5, 41],
-                  iconUrl: highlight ? markerIconHighlight : markerIcon,
-                  iconRetinaUrl: highlight
-                    ? markerIconRetinaHighlight
-                    : markerIconRetina,
-                })}
+                icon={
+                  new L.LooIcon({
+                    iconSize: [25, 41],
+                    iconAnchor: [12.5, 41],
+                    iconUrl: highlight ? markerIconHighlight : markerIcon,
+                    iconRetinaUrl: highlight
+                      ? markerIconRetinaHighlight
+                      : markerIconRetina,
+                    index: count,
+                  })
+                }
                 onClick={_.partial(this.onMarkerClick, loo)}
               />
             );
@@ -319,6 +362,10 @@ LooMap.propTypes = {
   showFullscreenControl: PropTypes.bool,
   showAttribution: PropTypes.bool,
 
+  // Label loo markers with icons from a starting number, for a limited number of loos
+  countFrom: PropTypes.number,
+  countLimit: PropTypes.number,
+
   // Note this also has a dependency on `preventZoom`
   showZoomControls: PropTypes.bool,
 
@@ -365,6 +412,7 @@ LooMap.defaultProps = {
   showAttribution: false,
   showCenter: false,
   showCrosshair: false,
+  countLimit: 10,
   onMove: Function.prototype,
   onZoom: Function.prototype,
   onInitialised: Function.prototype,

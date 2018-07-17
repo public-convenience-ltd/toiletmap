@@ -75,6 +75,7 @@ export class HomePage extends Component {
                   loo={loo}
                   onHoverStart={_.partial(this.props.actionHighlight, loo._id)}
                   onHoverEnd={_.partial(this.props.actionHighlight, undefined)}
+                  index={i + 1}
                 />
               </li>
             ))}
@@ -149,7 +150,7 @@ export class HomePage extends Component {
   }
 
   renderMap() {
-    return <NearestLooMap />;
+    return <NearestLooMap numberNearest={true} />;
   }
 
   render() {
