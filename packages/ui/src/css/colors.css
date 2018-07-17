@@ -4,11 +4,13 @@
 @value colorBackground: #1a1a1a;
 @value colorHighlight: #fff5c5;
 @value colorSelected: #d1e567;
+@value colorDisabled: #808080;
 
 @value colorLink: colorPrimary;
 @value colorLinkActive: #165016;
 
 @value colorButton: colorPrimary;
+@value colorButtonDisabled: colorDisabled;
 @value colorButtonActive: #146b14;
 @value colorButtonFeatured: #55acee;
 @value colorButtonFeaturedActive: #489fe1;
