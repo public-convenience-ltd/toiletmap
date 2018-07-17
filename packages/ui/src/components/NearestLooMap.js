@@ -14,7 +14,6 @@ import styles from './css/loo-map.module.css';
 class NearestLooMap extends Component {
   constructor(props) {
     super(props);
-    this.looMap = React.createRef();
     this.onMove = this.onMove.bind(this);
   }
 
@@ -23,15 +22,15 @@ class NearestLooMap extends Component {
       let [lng, lat] = this.props.loo.geometry.coordinates;
       this.props.actionFindNearbyRequest(lng, lat, config.nearestRadius);
 
-      if (this.looMap.current) {
-        this.looMap.current.refs.map.leafletElement.fire('dataloading');
+      if (this.looMap) {
+        this.looMap.refs.map.leafletElement.fire('dataloading');
       }
     }
   }
 
   componentDidUpdate(prevProps) {
-    if (this.looMap.current && this.props.loos !== prevProps.loos) {
-      this.looMap.current.refs.map.leafletElement.fire('dataload');
+    if (this.looMap && this.props.loos !== prevProps.loos) {
+      this.looMap.refs.map.leafletElement.fire('dataload');
     }
   }
 
@@ -39,8 +38,8 @@ class NearestLooMap extends Component {
     this.props.actionUpdateCenter({ lat, lng });
     this.props.actionFindNearbyRequest(lng, lat, config.nearestRadius);
 
-    if (this.looMap.current) {
-      this.looMap.current.refs.map.leafletElement.fire('dataloading');
+    if (this.looMap) {
+      this.looMap.refs.map.leafletElement.fire('dataloading');
     }
   }
 
@@ -66,7 +65,7 @@ class NearestLooMap extends Component {
         )}
 
         <LooMap
-          wrappedComponentRef={this.looMap}
+          wrappedComponentRef={it => (this.looMap = it)}
           loos={loos}
           shouldCluster={true}
           showAttribution={true}
