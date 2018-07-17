@@ -166,11 +166,6 @@ class AddEditPage extends Component {
   save() {
     const changes = this.getNovelInput();
 
-    // Only submit if we've got something to tell
-    if (_.isEmpty(changes)) {
-      return;
-    }
-
     // Always associate geometry with a report, even if unchanged
     changes.geometry = {
       type: 'Point',
@@ -415,6 +410,7 @@ class AddEditPage extends Component {
               className={controls.btn}
               onClick={this.save}
               value="Update the toilet"
+              disabled={_.isEmpty(this.getNovelInput())}
             />
           ) : (
             <input
