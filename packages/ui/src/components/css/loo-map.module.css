@@ -36,6 +36,21 @@
   background: rgba(0, 0, 0, 0.8);
 }
 
+.index {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  padding-top: 1px;
+  height: 100%;
+  width: 100%;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
 .markerHighlighted {
 	position: relative;
 	animation: bounce .5s infinite alternate;
