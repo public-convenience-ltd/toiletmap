@@ -43,11 +43,13 @@ export class HomePage extends Component {
     this.props.actionHighlight(null);
   }
 
-  renderList() {
+  renderList(mobile) {
     var loos = this.props.loos;
 
-    // Loading
-    if (!loos) {
+    // Loading - either this is the first query of the user or they are on a
+    // mobile and so can't rely on the map's loading spinner to know the loos
+    // they see are outdated
+    if (!loos || (this.props.nearbyLoading && mobile)) {
       return (
         <Notification>
           <p>Fetching toilets&hellip;</p>
@@ -133,7 +135,7 @@ export class HomePage extends Component {
           className={styles.mobileContent}
         >
           {mode === 'list' && this.renderWelcome()}
-          {mode === 'list' && this.renderList()}
+          {mode === 'list' && this.renderList(true)}
           {mode === 'map' && (
             <div className={styles.mobileMap}>
               <div className={toiletMap.map}>{this.renderMap()}</div>
@@ -142,7 +144,7 @@ export class HomePage extends Component {
         </MediaQuery>
         <MediaQuery minWidth={config.viewport.mobile}>
           {this.renderWelcome()}
-          {this.renderList()}
+          {this.renderList(false)}
         </MediaQuery>
       </div>
     );
@@ -166,6 +168,7 @@ var mapStateToProps = state => ({
   loos: state.loos.nearby,
   app: state.app,
   isAuthenticated: state.auth.isAuthenticated,
+  loadingNearby: state.loos.loadingNearby,
 });
 
 var mapDispatchToProps = {

@@ -9,6 +9,7 @@ import {
   FIND_BY_ID_REQUEST,
   REPORT_REQUEST,
   REMOVE_REQUEST,
+  actionFindNearbyStart,
   actionFindNearbySuccess,
   actionFindByIdSuccess,
   actionReportSuccess,
@@ -20,6 +21,7 @@ import { LOGGED_IN } from '../modules/auth';
 
 export default function makeLoosSaga(auth) {
   function* findNearbyLoosSaga(action) {
+    yield put(actionFindNearbyStart());
     var { lng, lat, radius } = action.payload;
     var loos = yield call(api.findLoos, lng, lat, radius);
     yield put(actionFindNearbySuccess(loos));
