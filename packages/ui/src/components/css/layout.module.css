@@ -14,8 +14,7 @@
 }
 
 @media only screen
-	and (max-device-width: 750px)
-	and (orientation: portrait) {
+	and (max-width: 750px) {
 
 	.mainContainer {
 		max-width: none;
