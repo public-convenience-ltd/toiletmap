@@ -300,8 +300,8 @@ class LooPage extends Component {
     if (!this.props.loo) {
       return (
         <PageLayout
-          main={<Loading message={'Fetching Loo Data'} />}
-          map={<Loading message={'Fetching Loo Data'} />}
+          main={<Loading message={'Fetching Toilet Data'} />}
+          map={<Loading message={'Fetching Toilet Data'} />}
         />
       );
     }

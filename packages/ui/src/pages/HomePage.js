@@ -59,7 +59,7 @@ export class HomePage extends Component {
     if (loos && !loos.length) {
       return (
         <Notification>
-          <p>No loos found within {config.nearestRadius / 1000}km.</p>
+          <p>No toilets found within {config.nearestRadius / 1000}km.</p>
         </Notification>
       );
     }
