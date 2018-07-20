@@ -55,7 +55,6 @@ class NearestLooMap extends Component {
           loos={loos}
           countFrom={this.props.numberNearest ? 1 : null}
           countLimit={5}
-          shouldCluster={true}
           showAttribution={true}
           showLocation={true}
           showSearchControl={true}

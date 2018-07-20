@@ -134,32 +134,30 @@ export class LooMap extends Component {
       var map = (this.leafletElement = this.refs.map.leafletElement);
       var center = map.getCenter();
 
-      if (this.props.shouldCluster) {
-        // Create a marker cluster layer which will be reset each time this
-        // component receives props
-        var clusterLayer = L.markerClusterGroup({
-          showCoverageOnHover: false,
-          disableClusteringAtZoom: 15,
-          iconCreateFunction: cluster => {
-            var count = cluster.getChildCount();
+      // Create a marker cluster layer which will be reset each time this
+      // component receives props
+      var clusterLayer = L.markerClusterGroup({
+        showCoverageOnHover: false,
+        disableClusteringAtZoom: 15,
+        iconCreateFunction: cluster => {
+          var count = cluster.getChildCount();
 
-            return L.divIcon({
-              html: `<div class=${styles.cluster}>
-                                <span class=${styles.count}>${count}</span>
-                                toilets
-                            </div>`,
-            });
-          },
-        });
+          return L.divIcon({
+            html: `<div class=${styles.cluster}>
+                              <span class=${styles.count}>${count}</span>
+                              toilets
+                          </div>`,
+          });
+        },
+      });
 
-        this.setState({
-          clusterLayer,
-        });
-      }
-
-      this.props.onInitialised(map);
-      this.props.onUpdateCenter(center);
+      this.setState({
+        clusterLayer,
+      });
     }
+
+    this.props.onInitialised(map);
+    this.props.onUpdateCenter(center);
   }
 
   onMove(event) {
@@ -196,7 +194,7 @@ export class LooMap extends Component {
     // Cluster
     // Manually adds markers by directly calling the Leaflet API instead of using the `react-leaflet`
     // `Marker` component
-    if (this.props.shouldCluster && this.state.clusterLayer) {
+    if (this.state.clusterLayer) {
       this.state.clusterLayer.clearLayers();
 
       looList.forEach((loo, index) => {
@@ -277,45 +275,6 @@ export class LooMap extends Component {
         {this.props.showLocateControl && <LocateMapControl />}
         {this.props.showFullscreenControl && <FullscreenMapControl />}
 
-        {/* Render individual Marker Components if we're not clustering */}
-        {!this.props.shouldCluster &&
-          looList.map((loo, index) => {
-            // Determine whether to highlight the current loo instance
-            var highlight =
-              this.props.highlight && loo._id === this.props.highlight;
-
-            // Consider adding an index to the loo
-            var count = null;
-            if (
-              this.props.countFrom !== null &&
-              index < this.props.countLimit
-            ) {
-              count = this.props.countFrom + index;
-            }
-
-            return (
-              <Marker
-                key={index}
-                position={[
-                  loo.geometry.coordinates[1],
-                  loo.geometry.coordinates[0],
-                ]}
-                icon={
-                  new L.LooIcon({
-                    iconSize: [25, 41],
-                    iconAnchor: [12.5, 41],
-                    iconUrl: highlight ? markerIconHighlight : markerIcon,
-                    iconRetinaUrl: highlight
-                      ? markerIconRetinaHighlight
-                      : markerIconRetina,
-                    index: count,
-                  })
-                }
-                onClick={_.partial(this.onMarkerClick, loo)}
-              />
-            );
-          })}
-
         {this.props.showCenter &&
           center && (
             <Marker
@@ -348,9 +307,6 @@ LooMap.propTypes = {
       lng: PropTypes.number,
     }),
   ]).isRequired,
-
-  // Allows markers to form clusters using the 'leaflet.markercluster' plugin
-  shouldCluster: PropTypes.bool,
 
   initialZoom: PropTypes.number,
   minZoom: PropTypes.number,
@@ -399,7 +355,6 @@ LooMap.propTypes = {
 LooMap.defaultProps = {
   loos: [],
   className: styles.map,
-  shouldCluster: false,
   initialZoom: config.initialZoom,
   minZoom: config.minZoom,
   maxZoom: config.maxZoom,
