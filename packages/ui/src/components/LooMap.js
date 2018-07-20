@@ -28,24 +28,24 @@ import markerCircle from '../images/map-icons/circle.svg';
 
 L.LooIcon = L.Icon.extend({
   createIcon: function() {
-    var img = this._createImg(this._getIconUrl('icon'));
-
     // do we need to be complex to show an index, or are we just a dumb image
     if (!this.options.index) {
+      var img = this._createImg(this._getIconUrl('icon'));
       this._setIconStyles(img, 'icon');
       return img;
     }
+
+    // make the parent with the image
+    var grouper = document.createElement('div');
+    grouper.style.background = `url('${this._getIconUrl('icon')}')`;
+    grouper.style.backgroundSize = '100% 100%';
+    this._setIconStyles(grouper, 'icon');
 
     // make an index label
     var index = document.createElement('div');
     index.setAttribute('class', styles.index);
     index.innerHTML = this.options.index;
-
-    // group the index label and image under a div element
-    var grouper = document.createElement('div');
-    grouper.appendChild(img);
     grouper.appendChild(index);
-    this._setIconStyles(grouper, 'icon');
 
     return grouper;
   },
