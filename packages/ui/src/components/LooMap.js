@@ -238,7 +238,7 @@ export class LooMap extends Component {
       // Can a loo's marker (not including icon) be left untouched?
       if (
         loosThen.hasOwnProperty(id) &&
-        loosThen[id].geohash === loosNow[id].geohash
+        _.isEqual(loosThen[id].geometry, loosNow[id].geometry)
       ) {
         // Yes, we don't need to update these; same loo in the same place
         delete loosThen[id];

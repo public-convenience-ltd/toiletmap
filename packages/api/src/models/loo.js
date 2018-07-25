@@ -22,6 +22,19 @@ looSchema.statics.findNear = function(lon, lat, radius) {
         'properties.active': true,
       },
     },
+    {
+      $project: {
+        geometry: 1,
+        distance: 1,
+        properties: {
+          fee: 1,
+          accessibleType: 1,
+          opening: 1,
+          type: 1,
+          babyChange: 1,
+        },
+      },
+    },
   ]);
 };
 
