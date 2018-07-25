@@ -6,7 +6,6 @@ import {
   LooMap,
   GeolocationMapControl,
   LocateMapControl,
-  FullscreenMapControl,
 } from '../components/map/LooMap';
 
 import loos from './fixtures/loos.json';
@@ -38,13 +37,11 @@ describe('LooMap', () => {
           {...defaultProps}
           showSearchControl={true}
           showLocateControl={true}
-          showFullscreenControl={true}
         />
       );
 
       expect(component.find(GeolocationMapControl).length).toBe(1);
       expect(component.find(LocateMapControl).length).toBe(1);
-      expect(component.find(FullscreenMapControl).length).toBe(1);
     });
 
     it('hide', () => {
@@ -53,13 +50,11 @@ describe('LooMap', () => {
           {...defaultProps}
           showSearchControl={false}
           showLocateControl={false}
-          showFullscreenControl={false}
         />
       );
 
       expect(component.find(GeolocationMapControl).length).toBe(0);
       expect(component.find(LocateMapControl).length).toBe(0);
-      expect(component.find(FullscreenMapControl).length).toBe(0);
     });
   });
 });

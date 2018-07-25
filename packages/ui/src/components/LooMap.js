@@ -9,7 +9,6 @@ import { Map, TileLayer, MapControl, Marker } from 'react-leaflet';
 
 import 'leaflet.markercluster';
 import 'leaflet.locatecontrol';
-import 'leaflet.fullscreen';
 import 'leaflet-loading';
 
 // Import source file instead of by module name to avoid Webpack warning
@@ -113,16 +112,6 @@ export class LocateMapControl extends MapControl {
       showPopup: false,
       onLocationError: Function.prototype,
       onLocationOutsideMapBounds: Function.prototype,
-    });
-
-    this.leafletElement = control;
-  }
-}
-
-export class FullscreenMapControl extends MapControl {
-  componentWillMount() {
-    var control = L.control.fullscreen({
-      forceSeparateButton: true,
     });
 
     this.leafletElement = control;
@@ -363,7 +352,6 @@ export class LooMap extends Component {
 
         {this.props.showSearchControl && <GeolocationMapControl />}
         {this.props.showLocateControl && <LocateMapControl />}
-        {this.props.showFullscreenControl && <FullscreenMapControl />}
 
         {this.props.showCenter &&
           center && (
@@ -405,7 +393,6 @@ LooMap.propTypes = {
   preventDragging: PropTypes.bool,
   showSearchControl: PropTypes.bool,
   showLocateControl: PropTypes.bool,
-  showFullscreenControl: PropTypes.bool,
   showAttribution: PropTypes.bool,
 
   // Label loo markers with icons from a starting number, for a limited number of loos
@@ -452,7 +439,6 @@ LooMap.defaultProps = {
   preventDragging: false,
   showSearchControl: false,
   showLocateControl: false,
-  showFullscreenControl: false,
   showZoomControls: true,
   showAttribution: false,
   showCenter: false,
