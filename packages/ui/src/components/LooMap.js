@@ -27,6 +27,32 @@ import markerIconRetinaHighlight from '../images/marker-icon-highlight-2x.png';
 import markerCircle from '../images/map-icons/circle.svg';
 
 L.LooIcon = L.Icon.extend({
+  options: {
+    iconSize: [25, 41],
+    iconAnchor: [12.5, 41],
+    highlight: false,
+  },
+
+  initialize: function(options) {
+    if (options.highlight) {
+      // Add highlight properties
+      this.options = {
+        ...this.options,
+        iconUrl: markerIconHighlight,
+        iconRetinaUrl: markerIconRetinaHighlight,
+        className: styles.markerHighlighted,
+      };
+    } else {
+      this.options = {
+        ...this.options,
+        iconUrl: markerIcon,
+        iconRetinaUrl: markerIconRetina,
+      };
+    }
+
+    L.Util.setOptions(this, options);
+  },
+
   createIcon: function() {
     // do we need to be complex to show an index, or are we just a dumb image
     if (!this.options.index) {
@@ -134,32 +160,34 @@ export class LooMap extends Component {
       var map = (this.leafletElement = this.refs.map.leafletElement);
       var center = map.getCenter();
 
-      if (this.props.shouldCluster) {
-        // Create a marker cluster layer which will be reset each time this
-        // component receives props
-        var clusterLayer = L.markerClusterGroup({
-          showCoverageOnHover: false,
-          disableClusteringAtZoom: 15,
-          iconCreateFunction: cluster => {
-            var count = cluster.getChildCount();
+      // Create a marker cluster layer which will be reset each time this
+      // component receives props
+      var clusterLayer = L.markerClusterGroup({
+        showCoverageOnHover: false,
+        disableClusteringAtZoom: 15,
+        iconCreateFunction: cluster => {
+          var count = cluster.getChildCount();
 
-            return L.divIcon({
-              html: `<div class=${styles.cluster}>
-                                <span class=${styles.count}>${count}</span>
-                                toilets
-                            </div>`,
-            });
-          },
-        });
+          return L.divIcon({
+            html: `<div class=${styles.cluster}>
+                              <span class=${styles.count}>${count}</span>
+                              toilets
+                          </div>`,
+          });
+        },
+      });
 
-        this.setState({
-          clusterLayer,
-        });
-      }
+      this.leafletElement.addLayer(clusterLayer);
 
-      this.props.onInitialised(map);
-      this.props.onUpdateCenter(center);
+      // Set state and, afterwards, add loo markers
+      this.setState({
+        clusterLayer,
+        markers: {},
+      });
     }
+
+    this.props.onInitialised(map);
+    this.props.onUpdateCenter(center);
   }
 
   onMove(event) {
@@ -182,61 +210,121 @@ export class LooMap extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    // New cluster layer, we probably remounted
+    if (prevState.clusterLayer !== this.state.clusterLayer) {
+      // We need to re-add everything
+      this.addRemoveMarkers(_.keyBy(this.props.loos, '_id'), {});
+      return;
+    }
+
+    // Otherwise, we only care if markers and their icons could've changed
+    if (
+      prevProps.loos === this.props.loos &&
+      prevProps.highlight === this.props.highlight &&
+      prevProps.countLimit === this.props.countLimit &&
+      prevProps.countFrom === this.props.countFrom
+    ) {
+      return;
+    }
+
+    let loosThen = _.keyBy(prevProps.loos, '_id');
+    let loosNow = _.keyBy(this.props.loos, '_id');
+
+    // Remove elements that have unchanged location from both, effectively
+    // diff'ing; this will leave us with markers to remove in loosThen and
+    // markers to add in loosNow
+    for (let id of Object.keys(loosNow)) {
+      // Can a loo's marker (not including icon) be left untouched?
+      if (
+        loosThen.hasOwnProperty(id) &&
+        loosThen[id].geohash === loosNow[id].geohash
+      ) {
+        // Yes, we don't need to update these; same loo in the same place
+        delete loosThen[id];
+        delete loosNow[id];
+      }
+    }
+
+    // Update the markers as appropriate
+    this.addRemoveMarkers(loosNow, loosThen);
+  }
+
+  addRemoveMarkers(loosToAdd, loosToRemove) {
+    // Assumes loosToAdd and loosToRemove have already been checked for duplicates
+    const markers = { ...this.state.markers };
+
+    // Remove markers in bulk
+    const markersToRemove = [];
+    for (const id of Object.keys(loosToRemove)) {
+      markersToRemove.push(markers[id]);
+      delete markers[id];
+    }
+    this.state.clusterLayer.removeLayers(markersToRemove);
+
+    // Add markers in bulk
+    const markersToAdd = [];
+    for (let [id, loo] of Object.entries(loosToAdd)) {
+      // Determine whether to highlight the current loo instance
+      var highlight = this.props.highlight && loo._id === this.props.highlight;
+
+      var position = {
+        lat: loo.geometry.coordinates[1],
+        lng: loo.geometry.coordinates[0],
+      };
+
+      var icon = new L.LooIcon({ highlight });
+      var marker = L.marker(position, { icon }); // We'll work out numbering below
+
+      // Individual marker click handler
+      marker.on('click', _.partial(this.onMarkerClick, loo));
+      markersToAdd.push(marker);
+      markers[id] = marker;
+    }
+    this.state.clusterLayer.addLayers(markersToAdd);
+
+    // Update icons to reflect appropriate number and highlight status
+    for (let i = 0; i < this.props.loos.length; i++) {
+      const loo = this.props.loos[i];
+
+      let index = undefined;
+      if (this.props.countLimit && i < this.props.countLimit) {
+        index = this.props.countFrom + i;
+      }
+
+      let highlight = false;
+      if (this.props.highlight && loo._id === this.props.highlight) {
+        highlight = true;
+      }
+
+      // Do we need to change the icon based on properties then and now?
+      const iconOptionsNow = markers[loo._id].options.icon.options;
+      if (
+        iconOptionsNow.index !== index ||
+        iconOptionsNow.highlight !== highlight
+      ) {
+        markers[loo._id].setIcon(
+          new L.LooIcon({
+            highlight,
+            index,
+          })
+        );
+      }
+    }
+
+    // Cache markers for each loo
+    this.setState({
+      ...this.state,
+      markers,
+    });
+  }
+
   render() {
     // Center point for the map view
     var center = this.props.initialPosition;
 
     if (this.leafletElement) {
       center = this.leafletElement.getCenter();
-    }
-
-    // Clone `loos` to avoid props mutation
-    var looList = this.props.loos.slice(0);
-
-    // Cluster
-    // Manually adds markers by directly calling the Leaflet API instead of using the `react-leaflet`
-    // `Marker` component
-    if (this.props.shouldCluster && this.state.clusterLayer) {
-      this.state.clusterLayer.clearLayers();
-
-      looList.forEach((loo, index) => {
-        // Determine whether to highlight the current loo instance
-        var highlight =
-          this.props.highlight && loo._id === this.props.highlight;
-
-        var position = {
-          lat: loo.geometry.coordinates[1],
-          lng: loo.geometry.coordinates[0],
-        };
-
-        // Consider adding an index to the loo
-        var count = null;
-        if (this.props.countFrom !== null && index < this.props.countLimit) {
-          count = this.props.countFrom + index;
-        }
-
-        var icon = new L.LooIcon({
-          iconSize: [25, 41],
-          iconAnchor: [12.5, 41],
-          iconUrl: highlight ? markerIconHighlight : markerIcon,
-          iconRetinaUrl: highlight
-            ? markerIconRetinaHighlight
-            : markerIconRetina,
-          className: highlight && styles.markerHighlighted,
-          index: count,
-        });
-
-        var marker = L.marker(position, {
-          icon: icon,
-        });
-
-        // Individual marker click handler
-        marker.on('click', _.partial(this.onMarkerClick, loo));
-
-        this.state.clusterLayer.addLayer(marker);
-      });
-
-      this.leafletElement.addLayer(this.state.clusterLayer);
     }
 
     var className = this.props.className;
@@ -277,45 +365,6 @@ export class LooMap extends Component {
         {this.props.showLocateControl && <LocateMapControl />}
         {this.props.showFullscreenControl && <FullscreenMapControl />}
 
-        {/* Render individual Marker Components if we're not clustering */}
-        {!this.props.shouldCluster &&
-          looList.map((loo, index) => {
-            // Determine whether to highlight the current loo instance
-            var highlight =
-              this.props.highlight && loo._id === this.props.highlight;
-
-            // Consider adding an index to the loo
-            var count = null;
-            if (
-              this.props.countFrom !== null &&
-              index < this.props.countLimit
-            ) {
-              count = this.props.countFrom + index;
-            }
-
-            return (
-              <Marker
-                key={index}
-                position={[
-                  loo.geometry.coordinates[1],
-                  loo.geometry.coordinates[0],
-                ]}
-                icon={
-                  new L.LooIcon({
-                    iconSize: [25, 41],
-                    iconAnchor: [12.5, 41],
-                    iconUrl: highlight ? markerIconHighlight : markerIcon,
-                    iconRetinaUrl: highlight
-                      ? markerIconRetinaHighlight
-                      : markerIconRetina,
-                    index: count,
-                  })
-                }
-                onClick={_.partial(this.onMarkerClick, loo)}
-              />
-            );
-          })}
-
         {this.props.showCenter &&
           center && (
             <Marker
@@ -334,7 +383,7 @@ export class LooMap extends Component {
 }
 
 LooMap.propTypes = {
-  // An array of loo instances to be represented as map markers
+  // An array of loo instances to be represented as map markers, assumed to be from closest to furthest away
   loos: PropTypes.array.isRequired,
 
   // Optional CSS class name to override the map element styles
@@ -348,9 +397,6 @@ LooMap.propTypes = {
       lng: PropTypes.number,
     }),
   ]).isRequired,
-
-  // Allows markers to form clusters using the 'leaflet.markercluster' plugin
-  shouldCluster: PropTypes.bool,
 
   initialZoom: PropTypes.number,
   minZoom: PropTypes.number,
@@ -399,7 +445,6 @@ LooMap.propTypes = {
 LooMap.defaultProps = {
   loos: [],
   className: styles.map,
-  shouldCluster: false,
   initialZoom: config.initialZoom,
   minZoom: config.minZoom,
   maxZoom: config.maxZoom,
