@@ -22,12 +22,26 @@ class NearestLooMap extends Component {
       let [lng, lat] = this.props.loo.geometry.coordinates;
       this.props.actionUpdateCenter({ lat, lng });
       this.props.actionFindNearbyRequest(lng, lat, config.nearestRadius);
+
+      if (this.looMap) {
+        this.looMap.refs.map.leafletElement.fire('dataloading');
+      }
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.looMap && this.props.loos !== prevProps.loos) {
+      this.looMap.refs.map.leafletElement.fire('dataload');
     }
   }
 
   onMove(lng, lat) {
     this.props.actionUpdateCenter({ lat, lng });
     this.props.actionFindNearbyRequest(lng, lat, config.nearestRadius);
+
+    if (this.looMap) {
+      this.looMap.refs.map.leafletElement.fire('dataloading');
+    }
   }
 
   render() {
@@ -52,6 +66,7 @@ class NearestLooMap extends Component {
         )}
 
         <LooMap
+          wrappedComponentRef={it => (this.looMap = it)}
           loos={loos}
           countFrom={this.props.numberNearest ? 1 : null}
           countLimit={5}

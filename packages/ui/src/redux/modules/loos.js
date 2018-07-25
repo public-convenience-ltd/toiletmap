@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 export const FIND_NEARBY_REQUEST = 'LOOS/FIND_NEARBY/REQUEST';
+export const FIND_NEARBY_START = 'LOOS/FIND_NEARBY/START';
 export const FIND_NEARBY_SUCCESS = 'LOOS/FIND_NEARBY/SUCCESS';
 export const FIND_BY_ID_REQUEST = 'LOOS/FIND_BY_ID_REQUEST/SUCCESS';
 export const FIND_BY_ID_SUCCESS = 'LOOS/FIND_BY_ID_SUCCESS/SUCCESS';
@@ -20,6 +21,10 @@ export const actionFindNearbyRequest = (lng, lat, radius) => ({
     lat,
     radius,
   },
+});
+
+export const actionFindNearbyStart = () => ({
+  type: FIND_NEARBY_START,
 });
 
 export const actionFindNearbySuccess = loos => ({
@@ -89,10 +94,18 @@ const ACTION_HANDLERS = {
     };
   },
 
+  [FIND_NEARBY_START]: function(state, action) {
+    return {
+      ...state,
+      loadingNearby: true,
+    };
+  },
+
   [FIND_NEARBY_SUCCESS]: function(state, action) {
     return {
       ...state,
       nearby: action.payload.loos || [],
+      loadingNearby: false,
     };
   },
 
@@ -108,6 +121,7 @@ const ACTION_HANDLERS = {
 
 const initialState = {
   byId: {},
+  loadingNearby: false,
 };
 
 // Reducer
