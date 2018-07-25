@@ -200,9 +200,9 @@ class AddEditPage extends Component {
         </div>
 
         {this.isDerived() ? (
-          <h2 className={headings.large}>Update This Loo</h2>
+          <h2 className={headings.large}>Update This Toilet</h2>
         ) : (
-          <h2 className={headings.large}>Add This Loo</h2>
+          <h2 className={headings.large}>Add This Toilet</h2>
         )}
 
         <MediaQuery maxWidth={config.viewport.mobile}>
@@ -210,17 +210,17 @@ class AddEditPage extends Component {
         </MediaQuery>
 
         <Notification>
-          <p>Align the crosshair with where you believe the loo to be.</p>
+          <p>Align the crosshair with where you believe the toilet to be.</p>
         </Notification>
 
         <DismissableBox
           persistKey="edit-welcome"
           title="Welcome Contributor!"
-          content="Please fill in everything you can about the loo below."
+          content="Please fill in everything you can about the toilet below."
         />
 
         <label>
-          Loo name
+          Toilet name
           <input
             name="properties.name"
             type="text"
@@ -377,7 +377,7 @@ class AddEditPage extends Component {
           />
         </label>
 
-        <h3 className={headings.regular}>Data for this loo</h3>
+        <h3 className={headings.regular}>Data for this toilet</h3>
 
         <div className={styles.data}>
           <label>
@@ -456,8 +456,8 @@ class AddEditPage extends Component {
     if (this.props.match.params.id && !this.props.loo) {
       return (
         <PageLayout
-          main={<Loading message={'Fetching Loo Data'} />}
-          map={<Loading message={'Fetching Loo Data'} />}
+          main={<Loading message={'Fetching Toilet Data'} />}
+          map={<Loading message={'Fetching Toilet Data'} />}
         />
       );
     }
