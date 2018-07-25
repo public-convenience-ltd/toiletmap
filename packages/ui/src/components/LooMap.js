@@ -235,11 +235,12 @@ export class LooMap extends Component {
     // diff'ing; this will leave us with markers to remove in loosThen and
     // markers to add in loosNow
     for (let id of Object.keys(loosNow)) {
+      // Can a loo's marker (not including icon) be left untouched?
       if (
         loosThen.hasOwnProperty(id) &&
-        _.isEqual(loosThen[id].geometry, loosNow[id].geometry)
+        loosThen[id].geohash === loosNow[id].geohash
       ) {
-        // We don't need to update these
+        // Yes, we don't need to update these; same loo in the same place
         delete loosThen[id];
         delete loosNow[id];
       }
