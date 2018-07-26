@@ -26,6 +26,7 @@ class LooListItem extends Component {
       >
         <LooMap
           countFrom={this.props.index}
+          countLimit={1}
           showZoomControls={false}
           preventZoom={true}
           preventDragging={true}

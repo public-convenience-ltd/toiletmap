@@ -171,7 +171,7 @@ class AboutPage extends Component {
   }
 
   renderMap() {
-    return <NearestLooMap />;
+    return <NearestLooMap numberNearest />;
   }
 
   render() {

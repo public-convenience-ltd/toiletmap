@@ -277,7 +277,7 @@ export class LooMap extends Component {
       const loo = this.props.loos[i];
 
       let index = undefined;
-      if (this.props.countLimit && i < this.props.countLimit) {
+      if (i < this.props.countLimit) {
         index = this.props.countFrom + i;
       }
 
@@ -395,7 +395,7 @@ LooMap.propTypes = {
   showLocateControl: PropTypes.bool,
   showAttribution: PropTypes.bool,
 
-  // Label loo markers with icons from a starting number, for a limited number of loos
+  // Label loo markers from a starting number, for a limited number of loos
   countFrom: PropTypes.number,
   countLimit: PropTypes.number,
 
@@ -443,7 +443,8 @@ LooMap.defaultProps = {
   showAttribution: false,
   showCenter: false,
   showCrosshair: false,
-  countLimit: 10,
+  countLimit: 0,
+  countFrom: 1,
   onMove: Function.prototype,
   onZoom: Function.prototype,
   onInitialised: Function.prototype,

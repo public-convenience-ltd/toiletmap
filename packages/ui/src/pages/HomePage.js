@@ -152,7 +152,7 @@ export class HomePage extends Component {
   }
 
   renderMap() {
-    return <NearestLooMap numberNearest={true} />;
+    return <NearestLooMap numberNearest />;
   }
 
   render() {
