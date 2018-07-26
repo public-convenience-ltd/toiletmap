@@ -74,7 +74,6 @@ class NearestLooMap extends Component {
           showLocation={true}
           showSearchControl={true}
           showLocateControl={true}
-          showFullscreenControl={true}
           showCenter={true}
           onZoom={this.props.actionZoom}
           onMove={this.onMove}
