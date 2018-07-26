@@ -289,8 +289,6 @@ class LooPage extends Component {
           showSearchControl: false,
           showLocateControl: false,
           showCenter: false,
-          preventDragging: true,
-          minZoom: config.initialZoom,
           countLimit: null,
         }}
       />

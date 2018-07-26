@@ -92,6 +92,13 @@ class RemovePage extends Component {
         loos={[this.props.loo]}
         initialPosition={coords}
         highlight={this.props.loo._id}
+        showLocation={false}
+        showSearchControl={false}
+        showLocateControl={false}
+        showCenter={false}
+        preventDragging={true}
+        preventZoom={true}
+        minZoom={config.editMinZoom}
       />
     );
   }
