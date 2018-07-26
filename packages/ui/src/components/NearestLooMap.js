@@ -68,8 +68,7 @@ class NearestLooMap extends Component {
         <LooMap
           wrappedComponentRef={it => (this.looMap = it)}
           loos={loos}
-          countFrom={this.props.numberNearest ? 1 : null}
-          countLimit={5}
+          countLimit={this.props.numberNearest ? 5 : 0}
           showAttribution={true}
           showLocation={true}
           showSearchControl={true}
