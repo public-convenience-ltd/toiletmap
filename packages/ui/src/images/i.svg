@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg id="svg2" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
- <metadata id="metadata7">
-  <rdf:RDF>
-   <cc:Work rdf:about="">
-    <dc:format>image/svg+xml</dc:format>
-    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:title/>
-   </cc:Work>
-  </rdf:RDF>
- </metadata>
- <g id="layer1" transform="translate(0,-652.36218)">
-  <path id="path2987" d="M200,0c-110.46,0-200,89.543-200,200s89.543,200,200,200,200-89.54,200-200-89.54-200-200-200zm-25.72,80h51.44v51.44h-51.44v-51.44zm0,77.16h51.44v162.84h-51.44v-162.84z" transform="translate(0,652.36218)" stroke-miterlimit="4" stroke-width="0" fill="#000"/>
- </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><path d="M200 0C89.54 0 0 89.543 0 200s89.543 200 200 200 200-89.54 200-200S310.46 0 200 0zm-25.72 80h51.44v51.44h-51.44V80zm0 77.16h51.44V320h-51.44V157.16z"/></svg>
