@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@neontribe/opening-hours": "2.1.0",
-    "auth0-js": "9.6.1",
+    "auth0-js": "9.7.3",
     "core-js": "2.5.7",
     "js-cookie": "2.2.0",
     "leaflet": "1.3.1",
