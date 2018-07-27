@@ -16,6 +16,7 @@ export default {
   initialZoom: 16,
   minZoom: 12,
   maxZoom: 18,
+  editMinZoom: 16,
   allowAddEditLoo: true,
   showBackButtons: false,
   looProps: {

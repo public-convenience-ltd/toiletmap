@@ -445,7 +445,7 @@ class AddEditPage extends Component {
           showLocateControl: false,
           showCenter: false,
           preventDragging: false,
-          minZoom: config.initialZoom,
+          minZoom: config.editMinZoom,
           showCrosshair: true,
         }}
       />
