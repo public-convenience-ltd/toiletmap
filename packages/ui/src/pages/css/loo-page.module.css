@@ -35,6 +35,10 @@
 	line-height: 1;
 }
 
+.propertyValue {
+  white-space: pre-line;
+}
+
 .dataTable {
 	table-layout: fixed;
 	width: 100%;

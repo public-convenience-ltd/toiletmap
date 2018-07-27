@@ -2,6 +2,7 @@
 import 'core-js/fn/array/find';
 import 'core-js/fn/array/includes';
 import 'core-js/fn/string/repeat';
+import 'core-js/fn/object/entries';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
