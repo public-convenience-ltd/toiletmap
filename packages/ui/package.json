@@ -29,7 +29,7 @@
     "react-dom": "16.4.1",
     "react-leaflet": "2.0.0",
     "react-redux": "5.0.7",
-    "react-responsive": "4.1.0",
+    "react-responsive": "5.0.0",
     "react-router-dom": "4.3.1",
     "redux": "4.0.0",
     "redux-saga": "0.16.0"

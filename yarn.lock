@@ -7635,9 +7635,9 @@ markdown-table@^1.1.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/markdown-table/-/markdown-table-1.1.2.tgz#c78db948fa879903a41bce522e3b96f801c63786"
 
-matchmediaquery@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/matchmediaquery/-/matchmediaquery-0.2.1.tgz#223c7005793de03e47ce92b13285a72c44ada2cf"
+matchmediaquery@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/matchmediaquery/-/matchmediaquery-0.3.0.tgz#6f672bcdbc44de16825c6917fbcdcfb9b82607b1"
   dependencies:
     css-mediaquery "^0.1.2"
 
@@ -9547,12 +9547,12 @@ react-redux@5.0.7:
     loose-envify "^1.1.0"
     prop-types "^15.6.0"
 
-react-responsive@4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/react-responsive/-/react-responsive-4.1.0.tgz#01d129a35729c8f0373e79871cc8d5ecf6e22765"
+react-responsive@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-responsive/-/react-responsive-5.0.0.tgz#b6e559b2ce8c4d82b0d47a7a78a74645b977e4af"
   dependencies:
     hyphenate-style-name "^1.0.0"
-    matchmediaquery "^0.2.1"
+    matchmediaquery "^0.3.0"
     prop-types "^15.6.1"
 
 react-router-dom@4.3.1:
