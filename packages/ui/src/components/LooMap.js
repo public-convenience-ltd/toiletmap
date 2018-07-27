@@ -5,8 +5,6 @@ import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import L from 'leaflet';
 
-import { Map, TileLayer, MapControl, Marker } from 'react-leaflet';
-
 import 'leaflet.markercluster';
 import 'leaflet.locatecontrol';
 import 'leaflet-loading';
@@ -14,6 +12,10 @@ import 'leaflet-loading';
 // Import source file instead of by module name to avoid Webpack warning
 // https://github.com/perliedman/leaflet-control-geocoder/issues/150
 import 'leaflet-control-geocoder/src';
+
+import { Map, TileLayer, Marker } from 'react-leaflet';
+import GeolocationMapControl from './GeolocationMapControl.js';
+import LocateMapControl from './LocateMapControl.js';
 
 import config from '../config.js';
 
@@ -75,48 +77,6 @@ L.LooIcon = L.Icon.extend({
     return grouper;
   },
 });
-
-export class GeolocationMapControl extends MapControl {
-  componentWillMount() {
-    var control = L.Control.geocoder({
-      // eslint-disable-next-line new-cap
-      geocoder: new L.Control.Geocoder.nominatim({
-        geocodingQueryParams: {
-          // Experimental and currently not working
-          // http://wiki.openstreetmap.org/wiki/Nominatim#Parameters
-          countrycodes: 'gb',
-        },
-      }),
-      collapsed: true,
-      placeholder: 'Placename or postcode...',
-    });
-
-    control.markGeocode = function(result) {
-      this._map.setView(result.geocode.center);
-
-      return this;
-    };
-
-    this.leafletElement = control;
-  }
-}
-
-export class LocateMapControl extends MapControl {
-  componentWillMount() {
-    var control = L.control.locate({
-      drawCircle: true,
-      follow: true,
-      keepCurrentZoomLevel: true,
-      icon: styles.locate,
-      iconLoading: styles.locate,
-      showPopup: false,
-      onLocationError: Function.prototype,
-      onLocationOutsideMapBounds: Function.prototype,
-    });
-
-    this.leafletElement = control;
-  }
-}
 
 export class LooMap extends Component {
   constructor(props) {
