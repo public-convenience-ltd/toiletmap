@@ -8,6 +8,18 @@ import PreferenceIndicators from './PreferenceIndicators';
 
 import styles from './css/loo-list-item.module.css';
 
+function round(value, precision) {
+  var multiplier = Math.pow(10, precision || 0);
+  return Math.round(value * multiplier) / multiplier;
+}
+
+function humanizeDistance(meters) {
+  if (meters < 1000) {
+    return `${round(meters, 0)}m`;
+  }
+  return `${round(meters / 1000, 1)}km`;
+}
+
 class LooListItem extends Component {
   render() {
     var loo = this.props.loo;
@@ -44,7 +56,7 @@ class LooListItem extends Component {
         </div>
 
         <div className={styles.distance + ' distance--zindexfix'}>
-          {Math.round(loo.distance)}m
+          {humanizeDistance(loo.distance)}
         </div>
       </Link>
     );
