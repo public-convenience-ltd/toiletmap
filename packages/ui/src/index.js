@@ -10,6 +10,9 @@ import { Router, Route } from 'react-router-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
+import Analytics from 'react-router-ga';
+
+import config from './config';
 
 import registerServiceWorker from './registerServiceWorker';
 
@@ -71,21 +74,23 @@ if (typeof document !== 'undefined') {
   ReactDOM.render(
     <Provider store={store}>
       <Router history={history} forceRefresh={false}>
-        <App>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/preferences" component={PreferencesPage} />
-          <Route exact path="/about" component={AboutPage} />
-          <Route path="/loos/:id" exact component={LooPage} />
-          <Route path="/login" component={LoginPage} />
-          <Route
-            exact
-            path="/callback"
-            render={props => <AuthCallback auth={auth} {...props} />}
-          />
-          <Route exact path="/report" component={AddEditPage} />
-          <Route path="/loos/:id/edit" component={AddEditPage} />
-          <Route path="/loos/:id/remove" component={RemovePage} />
-        </App>
+        <Analytics id={config.analyticsId}>
+          <App>
+            <Route exact path="/" component={HomePage} />
+            <Route exact path="/preferences" component={PreferencesPage} />
+            <Route exact path="/about" component={AboutPage} />
+            <Route path="/loos/:id" exact component={LooPage} />
+            <Route path="/login" component={LoginPage} />
+            <Route
+              exact
+              path="/callback"
+              render={props => <AuthCallback auth={auth} {...props} />}
+            />
+            <Route exact path="/report" component={AddEditPage} />
+            <Route path="/loos/:id/edit" component={AddEditPage} />
+            <Route path="/loos/:id/remove" component={RemovePage} />
+          </App>
+        </Analytics>
       </Router>
     </Provider>,
     document.getElementById('root')

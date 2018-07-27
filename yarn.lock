@@ -9557,6 +9557,10 @@ react-router-dom@4.3.1:
     react-router "^4.3.1"
     warning "^4.0.1"
 
+react-router-ga@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-router-ga/-/react-router-ga-1.0.0.tgz#2a394d2e721847340007b51af4de00b39478ccfd"
+
 react-router@3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/react-router/-/react-router-3.2.1.tgz#b9a3279962bdfbe684c8bd0482b81ef288f0f244"
