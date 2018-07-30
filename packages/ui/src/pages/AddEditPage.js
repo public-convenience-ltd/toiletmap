@@ -443,10 +443,8 @@ class AddEditPage extends Component {
           showLocation: false,
           showSearchControl: false,
           showLocateControl: false,
-          showCenter: false,
           preventDragging: false,
           minZoom: config.editMinZoom,
-          showCrosshair: true,
         }}
       />
     );
