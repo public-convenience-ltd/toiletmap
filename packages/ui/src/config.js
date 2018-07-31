@@ -10,7 +10,7 @@ export default {
   },
   apiEndpoint: '/api',
   analyticsId:
-    process.env === 'production' ? 'UA-52513593-1' : 'UA-111111111-1',
+    process.env.NODE_ENV === 'production' ? 'UA-52513593-1' : 'UA-111111111-1',
   nearestRadius: 50000, // meters
   nearestListLimit: 5,
   initialZoom: 16,
