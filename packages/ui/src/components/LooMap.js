@@ -13,7 +13,7 @@ import 'leaflet-loading';
 // https://github.com/perliedman/leaflet-control-geocoder/issues/150
 import 'leaflet-control-geocoder/src';
 
-import { Map, TileLayer, Marker } from 'react-leaflet';
+import { Map, TileLayer } from 'react-leaflet';
 import GeolocationMapControl from './GeolocationMapControl.js';
 import LocateMapControl from './LocateMapControl.js';
 
@@ -25,7 +25,6 @@ import markerIcon from '../images/marker-icon.png';
 import markerIconRetina from '../images/marker-icon-2x.png';
 import markerIconHighlight from '../images/marker-icon-highlight.png';
 import markerIconRetinaHighlight from '../images/marker-icon-highlight-2x.png';
-import markerCircle from '../images/map-icons/circle.svg';
 
 L.LooIcon = L.Icon.extend({
   options: {
@@ -277,7 +276,7 @@ export class LooMap extends Component {
     }
 
     var className = this.props.className;
-    if (this.props.showCrosshair) {
+    if (this.props.showCenter) {
       className += ` ${styles['with-crosshair']}`;
       className += ' map--zindexfix';
     }
@@ -286,7 +285,7 @@ export class LooMap extends Component {
     return (
       <Map
         ref="map"
-        center={this.props.initialPosition}
+        center={center}
         zoom={this.props.initialZoom}
         zoomControl={!this.props.preventZoom && this.props.showZoomControls}
         scrollWheelZoom={!this.props.preventZoom}
@@ -312,19 +311,6 @@ export class LooMap extends Component {
 
         {this.props.showSearchControl && <GeolocationMapControl />}
         {this.props.showLocateControl && <LocateMapControl />}
-
-        {this.props.showCenter &&
-          center && (
-            <Marker
-              position={center}
-              icon={L.icon({
-                iconSize: [16, 16],
-                iconAnchor: [8, 8],
-                iconUrl: markerCircle,
-                className: styles.center,
-              })}
-            />
-          )}
       </Map>
     );
   }
@@ -362,7 +348,7 @@ LooMap.propTypes = {
   // Note this also has a dependency on `preventZoom`
   showZoomControls: PropTypes.bool,
 
-  // Draws a circle to indicate the center of the map
+  // Draws a crosshair to indicate the center of the map
   showCenter: PropTypes.bool,
 
   // Callback fn called with the new `lat`, `lng` and `radius` values.
@@ -376,9 +362,6 @@ LooMap.propTypes = {
   // Callback fn called with a reference to the leaflet element.
   // Fired once the component has mounted
   onInitialised: PropTypes.func,
-
-  // Shows a crosshair at the center of the map
-  showCrosshair: PropTypes.bool,
 
   // Called on `onMove` and `onInitialised`
   onUpdateCenter: PropTypes.func,
@@ -402,7 +385,6 @@ LooMap.defaultProps = {
   showZoomControls: true,
   showAttribution: false,
   showCenter: false,
-  showCrosshair: false,
   countLimit: 0,
   countFrom: 1,
   onMove: Function.prototype,
