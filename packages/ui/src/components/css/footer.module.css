@@ -1,0 +1,39 @@
+@value colors: '../../css/colors.css';
+@value colorLinkActive, colorBackground from colors;
+
+.footer {
+	color: #fff;
+	background-color: colorBackground;
+}
+
+.footerList {
+	display: table;
+	width: 100%;
+}
+
+.footerListItem {
+	display: table-cell;
+}
+
+.footerItemText {
+	padding-bottom: 1px;
+	border-bottom: 1px solid currentColor;
+}
+
+.footerItem {
+	display: block;
+	padding: 0.75rem;
+	color: #fff;
+	text-decoration: none;
+	text-align: center;
+	font-weight: bold;
+}
+
+.footerItem:visited {
+	color: #fff;
+}
+
+.footerItem:hover {
+	color: #fff;
+	background-color: colorLinkActive;
+}

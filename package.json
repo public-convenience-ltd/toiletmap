@@ -1,114 +1,58 @@
 {
   "name": "gbptm",
-  "description": "API/UI server for the Great British Public Toilet Map",
-  "version": "1.3.0",
-  "author": "Rupert Redington",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "CI=true lerna run test --parallel --ignore=@neontribe/gbptm-ui",
+    "commitmsg": "commitlint -e",
+    "precommit": "lint-staged",
+    "reinstall": "lerna clean --yes && rm yarn.lock && yarn install",
+    "release": "lerna publish --conventional-commits --exact -m \"build: release %s\"",
+    "lint": "eslint .",
+    "prettify": "prettier --single-quote --trailing-comma es5 --write \"./**/*.{js,json}\"",
+    "load:devData": "mongorestore --noIndexRestore --drop --nsFrom 'app29532998.*' --nsTo 'gbptm.*' --gzip --archive=./data/devData.tar.gz",
+    "build:ui": "lerna run build --scope=@neontribe/gbptm-ui",
+    "build:admin": "lerna run build --scope=@neontribe/gbptm-admin",
+    "docker:build": "docker build --network=host -t neontribe/gbptm .",
+    "docker:run": "docker run --network=host --env-file .env -d neontribe/gbptm",
+    "build": "yarn build:ui && yarn build:admin && yarn docker:build",
+    "pullconfig": "heroku config:get -s MONGODB_URI --app gbptm-stage >> .env",
+    "deploy:push": "heroku container:push web",
+    "deploy:release": "heroku container:release web"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neontribe/gbptm.git"
+  },
+  "author": "",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/neontribe/gbptm/issues"
   },
-  "dependencies": {
-    "browserify": "^13.1.0",
-    "catw": "^1.0.1",
-    "co": "^4.5.1",
-    "co-body": "^4.2.0",
-    "es5-shim": "^4.1.0",
-    "exorcist": "^0.4.0",
-    "geo-hash": "0.0.2",
-    "geojson-utils": "^1.1.0",
-    "getobject": "^0.1.0",
-    "handlebars": "^4.0.5",
-    "hbsfy": "^2.7.0",
-    "jquery": "1.12.4",
-    "jquery-ajax-transport-xdomainrequest": "^1.0.4",
-    "js-cookie": "^2.1.2",
-    "koa": "^1.2.0",
-    "koa-compose": "^2.3.0",
-    "koa-compress": "^1.0.9",
-    "koa-cors": "^0.0.16",
-    "koa-etag": "^2.0.0",
-    "koa-favicon": "^1.2.0",
-    "koa-flash": "^1.0.0",
-    "koa-fresh": "0.0.3",
-    "koa-hbs": "^0.8.1",
-    "koa-helmet": "^1.0.0",
-    "koa-json": "^1.1.1",
-    "koa-logger": "^1.2.2",
-    "koa-passport": "^1.1.4",
-    "koa-router": "^4.2.0",
-    "koa-session": "^3.3.1",
-    "koa-static": "^2.0.0",
-    "leaflet": "^0.7.3",
-    "leaflet-control-geocoder": "^1.1.0",
-    "leaflet-knn": "^0.1.0",
-    "leaflet-loading": "^0.1.15",
-    "leaflet.locatecontrol": "0.53.0",
-    "leaflet.markercluster": "^0.5.0",
-    "lodash": "^4.14.0",
-    "lt-ie-9": "^0.1.0",
-    "mime": "^1.3.4",
-    "moment": "^2.15.0",
-    "mongoose": "^4.5.9",
-    "mongoose-paginate": "^5.0.2",
-    "mongoose-timestamp": "^0.6.0",
-    "newrelic": "^1.28.3",
-    "object-path": "^0.11.1",
-    "opening_hours": "^3.4.0",
-    "passport-facebook": "^2.1.1",
-    "passport-github": "^1.1.0",
-    "passport-google-oauth": "^1.0.0",
-    "passport-http": "^0.3.0",
-    "passport-http-bearer": "^1.0.1",
-    "passport-openstreetmap": "^0.1.2",
-    "passport-twitter": "^1.0.4",
-    "request": "^2.75.0",
-    "request-promise": "^4.1.1",
-    "uglifyify": "^3.0.2"
+  "homepage": "https://github.com/neontribe/gbptm#readme",
+  "lint-staged": {
+    "*.{js,json}": [
+      "prettier --single-quote --trailing-comma es5 --write",
+      "git add"
+    ],
+    "*.js": [
+      "eslint",
+      "git add"
+    ]
   },
   "devDependencies": {
-    "async": "^2.0.1",
-    "bluebird": "^3.4.1",
-    "chai": "^3.5.0",
-    "coveralls": "^2.11.11",
-    "istanbul": "^0.4.4",
-    "mocha": "^3.0.1",
-    "nock": "^8.0.0",
-    "nodemon": "^1.10.0",
-    "standard": "^8.2.0",
-    "supertest": "^2.0.0",
-    "watchify": "^0.10.2"
+    "@commitlint/cli": "7.0.0",
+    "@commitlint/config-angular": "7.0.1",
+    "eslint": "4.19.1",
+    "eslint-plugin-react": "7.10.0",
+    "husky": "0.14.3",
+    "lerna": "2.11.0",
+    "lint-staged": "7.2.0",
+    "prettier": "1.13.7"
   },
-  "engines": {
-    "node": ">=6.5.0",
-    "npm": ">=3.10.3"
-  },
-  "homepage": "https://github.com/neontribe/gbptm",
-  "keywords": [
-    "geoJSON",
-    "koa",
-    "mongodb",
-    "public",
-    "toilet",
-    "uk"
-  ],
-  "license": "MIT",
-  "main": "app.js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/neontribe/gbptm.git"
-  },
-  "scripts": {
-    "build": "browserify -t hbsfy -g uglifyify -r ./ui/browser.js --standalone gbptm -o ./ui/public/gbptm.min.js && npm run buildcss && npm run shimmy",
-    "buildcss": "cat ./ui/css/vendor/*.css ./ui/css/*.css > ./ui/public/gbptm.css",
-    "dev": "npm run watchjs & npm run watchcss & export $(cat .env | xargs) && nodemon -e js,hbs -i gbptm.min.js --inspect app.js",
-    "postinstall": "npm run build",
-    "shimmy": "awk 'FNR==1{print \"\"}1' ./node_modules/es5-shim/es5-shim.min.js ./node_modules/lt-ie-9/lt-ie-9.min.js  > ./ui/public/shims/shims.min.js",
-    "start": "node app.js",
-    "lint": "standard",
-    "test": "if [ \"$COVERALLS\" ]; then  npm run test_coveralls; else npm run test_bare; fi;",
-    "test_coveralls": "export NODE_ENV=test && istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- --recursive test/tests/main.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "test_bare": "export NODE_ENV=test && istanbul cover ./node_modules/.bin/_mocha --recursive test/tests/main.js",
-    "watchcss": "catw ./ui/css/vendor/*.css ./ui/css/*.css -o ./ui/public/gbptm.css -v",
-    "watchjs": "watchify -t hbsfy -r ./ui/browser.js --standalone gbptm --debug --verbose -o ./ui/public/gbptm.min.js",
-    "pullconfig": "heroku config:pull --overwrite --interactive --app gbptm-stage"
-  }
+  "workspaces": [
+    "packages/*"
+  ]
 }

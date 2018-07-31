@@ -5,18 +5,15 @@ lib-cov
 *.log
 
 npm-debug.log
-node_modules/
+node_modules
 
 *.sublime*
-
-ui/public/gbptm.css
-*.min.js
 
 # Heroku-derived config
 .env
 # Data Dumps
-/data
+packages/api/data
 
-#istanbul
-coverage/
-.coverage.sh
+build
+coverage
+
