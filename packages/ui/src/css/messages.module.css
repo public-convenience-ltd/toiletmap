@@ -1,9 +1,9 @@
 .message {
-	padding: 0.5rem;
-	margin-bottom: 1rem;
-	text-align: center;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
 .message p:last-child {
-	margin-bottom: 0;
+  margin-bottom: 0;
 }
