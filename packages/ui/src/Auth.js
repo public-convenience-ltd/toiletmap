@@ -5,12 +5,9 @@ export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: 'gbptm.eu.auth0.com',
     clientID: 'sUts4RKy04JcyZ2IVFgMAC0rhPARCQYg',
-    redirectUri:
-      process.env.NODE_ENV === 'production'
-        ? 'https://gbptm-unity.herokuapp.com/callback'
-        : 'http://localhost:3000/callback',
+    redirectUri: `${window.location.origin}/callback`,
     responseType: 'token id_token',
-    audience: 'https://gbptm-unity.herokuapp.com/api',
+    audience: 'https://www.toiletmap.org.uk/api',
     scope: 'openid profile report:loo',
   });
 

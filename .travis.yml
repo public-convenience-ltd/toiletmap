@@ -3,19 +3,27 @@ services:
 - mongodb
 - docker
 sudo: required
-group: edge
 env:
   secure: D2odYxhrbyd4s6jm4MLBkoY/ELXFNLASayQ8hKZfRaqyBmMeisDKEuBrpkbvndOqrplDZ/jKG7nuA4I3qKsdWh5rMmN78VnOpjW75JqxwcqkaUVzQP4qimZm4ZiVDPWbJn6rQr//HMMZLaLROtVHEsZOHQGCgAgB1mZk8+p+vls=
 before_deploy:
 - curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
 - heroku container:login
 deploy:
+# Deploy branch unity to unity env
+- provider: script
   skip_cleanup: true
-  provider: script
-  script: yarn build && yarn deploy:push && yarn deploy:release
+  script: yarn build && yarn deploy:push --app gbptm-unity && yarn deploy:release --app gbptm-unity
   on:
     branch: unity
-notifications:
-  slack:
-    secure: c9QDhIrjlEkqXRra9UnQsQNQ1XttY+wHmbVGwxNHqZFp8bsEaDNOZBJ/PDNkXTkCbuVi4zvtzMif7C8tW7Di7AbY948Xch+3UZAVNpEeBS3L6coeTFWatlzVVPegZXvq+ryIycL/oNwmeHT7ZvbrDbw+JGLp1ci9okjky8W+jkI=
-    on_pull_requests: false
+# Deploy branch develop to gbptm-stage env
+- provider: script
+  skip_cleanup: true
+  script: yarn build && yarn deploy:push --app gbptm-stage && yarn deploy:release --app gbptm-stage
+  on:
+    branch: develop
+# Deploy branch master to gbptm env
+- provider: script
+  skip_cleanup: true
+  script: yarn build && yarn deploy:push --app gbptm && yarn deploy:release --app gbptm
+  on:
+    branch: master

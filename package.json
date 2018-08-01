@@ -19,8 +19,8 @@
     "docker:run": "docker run --network=host --env-file .env -d neontribe/gbptm",
     "build": "yarn build:ui && yarn build:admin && yarn docker:build",
     "pullconfig": "heroku config:get -s MONGODB_URI --app gbptm-stage >> .env",
-    "deploy:push": "heroku container:push web --app gbptm-unity",
-    "deploy:release": "heroku container:release web --app gbptm-unity"
+    "deploy:push": "heroku container:push web",
+    "deploy:release": "heroku container:release web"
   },
   "repository": {
     "type": "git",

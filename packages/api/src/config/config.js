@@ -21,12 +21,7 @@ var base = {
     ],
   },
   mongo: {
-    url:
-      process.env.MONGODB_URI ||
-      process.env.MONGO_URL ||
-      process.env.MONGOHQ_URL ||
-      process.env.MONGOLAB_URI ||
-      'mongodb://localhost:27017/gbptm',
+    url: process.env.MONGODB_URI || 'mongodb://localhost:27017/gbptm',
   },
   query_defaults: {
     defaultRadius: 5000,
