@@ -3,30 +3,16 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import config from '../config';
 import LooMap from './LooMap';
 
 import { actionZoom, actionUpdateCenter } from '../redux/modules/mapControls';
-import { actionFindNearbyRequest } from '../redux/modules/loos';
 
 import styles from './css/loo-map.module.css';
 
 class NearestLooMap extends Component {
   constructor(props) {
     super(props);
-    this.onMove = this.onMove.bind(this);
-  }
-
-  componentDidMount() {
-    if (this.props.loo) {
-      let [lng, lat] = this.props.loo.geometry.coordinates;
-      this.props.actionUpdateCenter({ lat, lng });
-      this.props.actionFindNearbyRequest(lng, lat, config.nearestRadius);
-
-      if (this.looMap) {
-        this.looMap.refs.map.leafletElement.fire('dataloading');
-      }
-    }
+    this.onUpdateCenter = this.onUpdateCenter.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -35,9 +21,8 @@ class NearestLooMap extends Component {
     }
   }
 
-  onMove(lng, lat) {
+  onUpdateCenter({ lng, lat }) {
     this.props.actionUpdateCenter({ lat, lng });
-    this.props.actionFindNearbyRequest(lng, lat, config.nearestRadius);
 
     if (this.looMap) {
       this.looMap.refs.map.leafletElement.fire('dataloading');
@@ -75,7 +60,7 @@ class NearestLooMap extends Component {
           showLocateControl={true}
           showCenter={true}
           onZoom={this.props.actionZoom}
-          onMove={this.onMove}
+          onUpdateCenter={this.onUpdateCenter}
           initialZoom={this.props.map.zoom}
           initialPosition={position}
           highlight={this.props.map.highlight}
@@ -106,7 +91,6 @@ var mapStateToProps = state => ({
 var mapDispatchToProps = {
   actionZoom,
   actionUpdateCenter,
-  actionFindNearbyRequest,
 };
 
 export default connect(

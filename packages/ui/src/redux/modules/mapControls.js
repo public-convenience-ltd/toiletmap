@@ -1,5 +1,6 @@
 export const ZOOM = 'MAP_CONTROLS/ZOOM';
 export const UPDATE_CENTER = 'MAP_CONTROLS/UPDATE_CENTER';
+export const UPDATE_CENTER_FINISH = 'MAP_CONTROLS/UPDATE_CENTER_FINISH';
 export const HIGHLIGHT = 'MAP_CONTROLS/HIGHLIGHT';
 
 // Actions
@@ -13,6 +14,13 @@ export const actionZoom = zoom => ({
 
 export const actionUpdateCenter = center => ({
   type: UPDATE_CENTER,
+  payload: {
+    center,
+  },
+});
+
+export const actionUpdateCenterFinish = center => ({
+  type: UPDATE_CENTER_FINISH,
   payload: {
     center,
   },
@@ -33,7 +41,7 @@ const ACTION_HANDLERS = {
     };
   },
 
-  [UPDATE_CENTER]: function(state, action) {
+  [UPDATE_CENTER_FINISH]: function(state, action) {
     return {
       ...state,
       center: action.payload.center,
