@@ -15,18 +15,26 @@ class NearestLooMap extends Component {
     this.onUpdateCenter = this.onUpdateCenter.bind(this);
   }
 
+  componentDidMount() {
+    // Only do if leaflet map element is ready and we're loading
+    if (this.looMap && this.props.loadingNearby) {
+      this.looMap.refs.map.leafletElement.fire('dataloading');
+    }
+  }
+
   componentDidUpdate(prevProps) {
-    if (this.looMap && this.props.loos !== prevProps.loos) {
-      this.looMap.refs.map.leafletElement.fire('dataload');
+    // Only do if leaflet map element is ready and we've started loading or loaded
+    if (this.looMap && this.props.loadingNearby !== prevProps.loadingNearby) {
+      if (this.props.loadingNearby) {
+        this.looMap.refs.map.leafletElement.fire('dataloading');
+      } else {
+        this.looMap.refs.map.leafletElement.fire('dataload');
+      }
     }
   }
 
   onUpdateCenter({ lng, lat }) {
     this.props.actionUpdateCenter({ lat, lng });
-
-    if (this.looMap) {
-      this.looMap.refs.map.leafletElement.fire('dataloading');
-    }
   }
 
   render() {
@@ -86,6 +94,7 @@ var mapStateToProps = state => ({
   geolocation: state.geolocation,
   map: state.mapControls,
   loos: state.loos.nearby,
+  loadingNearby: state.loos.loadingNearby,
 });
 
 var mapDispatchToProps = {
