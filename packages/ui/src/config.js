@@ -8,7 +8,10 @@ export default {
   viewport: {
     mobile: 567,
   },
-  apiEndpoint: '/api',
+  apiEndpoint:
+    process.env.NODE_ENV === 'production'
+      ? '/api'
+      : process.env.REACT_APP_GBPTM_API || '/api',
   analyticsId:
     process.env.NODE_ENV === 'production' ? 'UA-52513593-1' : 'UA-111111111-1',
   nearestRadius: 50000, // meters
