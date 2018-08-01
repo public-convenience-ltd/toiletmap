@@ -18,7 +18,7 @@ const checkJwt = jwt({
   }),
 
   // Validate the audience and the issuer.
-  audience: 'https://gbptm-unity.herokuapp.com/api',
+  audience: 'https://www.toiletmap.org.uk/api',
   issuer: 'https://gbptm.eu.auth0.com/',
   algorithms: ['RS256'],
 });
