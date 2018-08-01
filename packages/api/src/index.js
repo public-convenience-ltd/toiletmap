@@ -2,6 +2,7 @@ const config = require('./config/config');
 const express = require('express');
 const helmet = require('helmet');
 const compression = require('compression');
+const cors = require('cors');
 const path = require('path');
 require('./config/mongo'); // don't much like this bare require
 
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 
 app.use(helmet());
 app.use(compression());
+app.use(cors());
 
 // Add API routes
 const routes = require('./routes');
