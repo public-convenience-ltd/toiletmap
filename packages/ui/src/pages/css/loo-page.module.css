@@ -1,38 +1,38 @@
 .mobileMap {
-	display: flex;
-	height: 200px;
-	margin-bottom: 1rem;
+  display: flex;
+  height: 200px;
+  margin-bottom: 1rem;
 }
 
 .controls {
-	display: flex;
-	margin-bottom: 1rem;
+  display: flex;
+  margin-bottom: 1rem;
 }
 
 .controls > * ~ * {
-	margin-left: 0.25rem;
+  margin-left: 0.25rem;
 }
 
 .properties {
-	list-style: none;
-	margin-bottom: 1rem;
+  list-style: none;
+  margin-bottom: 1rem;
 }
 
 .property {
-	display: flex;
-	justify-content: space-between;
-	flex-wrap: wrap;
-	padding: 0.75rem 0;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0.75rem 0;
 }
 
 .property + .property {
-	border-top: 2px dashed #222;
+  border-top: 2px dashed #222;
 }
 
 .properyName,
 .propertyValue {
-	margin: 0;
-	line-height: 1;
+  margin: 0;
+  line-height: 1;
 }
 
 .propertyValue {
@@ -40,42 +40,42 @@
 }
 
 .dataTable {
-	table-layout: fixed;
-	width: 100%;
-	margin-bottom: 1rem;
+  table-layout: fixed;
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 .dataTable tr {
-	vertical-align: top;
+  vertical-align: top;
 }
 
 .dataTable th {
-	text-align: left;
+  text-align: left;
 }
 
 .dataTable td {
-	text-align: left;
+  text-align: left;
 }
 
 .data {
-	padding: 1rem;
-	border: 2px solid #222;
+  padding: 1rem;
+  border: 2px solid #222;
 }
 
 .dataTitle {
-	composes: large from '../../css/headings.module.css';
-	padding-bottom: 1rem;
-	border-bottom: 2px solid #222;
-	text-align: center;
+  composes: large from '../../css/headings.module.css';
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #222;
+  text-align: center;
 }
 
 .dataSubTitle {
-	display: block;
-	color: #666;
-	font-weight: normal;
-	font-size: 1rem;
+  display: block;
+  color: #666;
+  font-weight: normal;
+  font-size: 1rem;
 }
 
 .preferenceIndicators {
-	margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }

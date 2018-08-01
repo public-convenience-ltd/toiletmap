@@ -1,8 +1,8 @@
 .wrapper {
-	height: 100vh;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: #fff;
-	background-color: #1a1a1a;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background-color: #1a1a1a;
 }
