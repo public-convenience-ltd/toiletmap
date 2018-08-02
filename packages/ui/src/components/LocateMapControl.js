@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import 'leaflet.locatecontrol';
 import { MapControl, withLeaflet } from 'react-leaflet';
 
 import styles from './css/loo-map.module.css';

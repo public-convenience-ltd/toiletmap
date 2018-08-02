@@ -6,12 +6,7 @@ import _ from 'lodash';
 import L from 'leaflet';
 
 import 'leaflet.markercluster';
-import 'leaflet.locatecontrol';
 import 'leaflet-loading';
-
-// Import source file instead of by module name to avoid Webpack warning
-// https://github.com/perliedman/leaflet-control-geocoder/issues/150
-import 'leaflet-control-geocoder/src';
 
 import { Map, TileLayer } from 'react-leaflet';
 import GeolocationMapControl from './GeolocationMapControl.js';
