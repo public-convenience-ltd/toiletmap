@@ -3,45 +3,38 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import config from '../config';
 import LooMap from './LooMap';
 
 import { actionZoom, actionUpdateCenter } from '../redux/modules/mapControls';
-import { actionFindNearbyRequest } from '../redux/modules/loos';
 
 import styles from './css/loo-map.module.css';
 
 class NearestLooMap extends Component {
   constructor(props) {
     super(props);
-    this.onMove = this.onMove.bind(this);
+    this.onUpdateCenter = this.onUpdateCenter.bind(this);
   }
 
   componentDidMount() {
-    if (this.props.loo) {
-      let [lng, lat] = this.props.loo.geometry.coordinates;
-      this.props.actionUpdateCenter({ lat, lng });
-      this.props.actionFindNearbyRequest(lng, lat, config.nearestRadius);
-
-      if (this.looMap) {
-        this.looMap.refs.map.leafletElement.fire('dataloading');
-      }
+    // Only do if leaflet map element is ready and we're loading
+    if (this.looMap && this.props.loadingNearby) {
+      this.looMap.refs.map.leafletElement.fire('dataloading');
     }
   }
 
   componentDidUpdate(prevProps) {
-    if (this.looMap && this.props.loos !== prevProps.loos) {
-      this.looMap.refs.map.leafletElement.fire('dataload');
+    // Only do if leaflet map element is ready and we've started loading or loaded
+    if (this.looMap && this.props.loadingNearby !== prevProps.loadingNearby) {
+      if (this.props.loadingNearby) {
+        this.looMap.refs.map.leafletElement.fire('dataloading');
+      } else {
+        this.looMap.refs.map.leafletElement.fire('dataload');
+      }
     }
   }
 
-  onMove(lng, lat) {
+  onUpdateCenter({ lng, lat }) {
     this.props.actionUpdateCenter({ lat, lng });
-    this.props.actionFindNearbyRequest(lng, lat, config.nearestRadius);
-
-    if (this.looMap) {
-      this.looMap.refs.map.leafletElement.fire('dataloading');
-    }
   }
 
   render() {
@@ -75,7 +68,7 @@ class NearestLooMap extends Component {
           showLocateControl={true}
           showCenter={true}
           onZoom={this.props.actionZoom}
-          onMove={this.onMove}
+          onUpdateCenter={this.onUpdateCenter}
           initialZoom={this.props.map.zoom}
           initialPosition={position}
           highlight={this.props.map.highlight}
@@ -101,12 +94,12 @@ var mapStateToProps = state => ({
   geolocation: state.geolocation,
   map: state.mapControls,
   loos: state.loos.nearby,
+  loadingNearby: state.loos.loadingNearby,
 });
 
 var mapDispatchToProps = {
   actionZoom,
   actionUpdateCenter,
-  actionFindNearbyRequest,
 };
 
 export default connect(

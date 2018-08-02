@@ -40,6 +40,7 @@ import authReducer from './redux/modules/auth';
 import geolocationSaga from './redux/sagas/geolocation';
 import makeLoosSaga from './redux/sagas/loos';
 import makeAuthSaga from './redux/sagas/auth';
+import mapControlsSaga from './redux/sagas/mapControls';
 
 import history from './history';
 import Auth from './Auth';
@@ -67,6 +68,7 @@ const store = middleware(createStore)(rootReducer, initialState, devTools);
 sagaMiddleware.run(makeAuthSaga(auth));
 sagaMiddleware.run(geolocationSaga);
 sagaMiddleware.run(makeLoosSaga(auth));
+sagaMiddleware.run(mapControlsSaga);
 
 // Create an enhanced history that syncs navigation events with the store
 

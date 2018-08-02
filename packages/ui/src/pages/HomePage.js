@@ -18,8 +18,10 @@ import layout from '../components/css/layout.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
-import { actionFindNearbyRequest } from '../redux/modules/loos';
-import { actionHighlight } from '../redux/modules/mapControls';
+import {
+  actionHighlight,
+  actionUpdateCenter,
+} from '../redux/modules/mapControls';
 import { actionToggleViewMode } from '../redux/modules/app';
 import { actionLogin, actionLogout } from '../redux/modules/auth';
 
@@ -30,11 +32,7 @@ export class HomePage extends Component {
     var position = this.props.geolocation.position;
 
     if (!this.props.loos) {
-      this.props.actionFindNearbyRequest(
-        position.lng,
-        position.lat,
-        config.nearestRadius
-      );
+      this.props.actionUpdateCenter(position);
     }
   }
 
@@ -49,7 +47,7 @@ export class HomePage extends Component {
     // Loading - either this is the first query of the user or they are on a
     // mobile and so can't rely on the map's loading spinner to know the loos
     // they see are outdated
-    if (!loos || (this.props.nearbyLoading && mobile)) {
+    if (!loos || (this.props.loadingNearby && mobile)) {
       return (
         <Notification>
           <p>Fetching toilets&hellip;</p>
@@ -173,8 +171,8 @@ var mapStateToProps = state => ({
 });
 
 var mapDispatchToProps = {
-  actionFindNearbyRequest,
   actionHighlight,
+  actionUpdateCenter,
   actionToggleViewMode,
   doLogout: actionLogout,
   doLogin: actionLogin,
