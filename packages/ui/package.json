@@ -7,9 +7,7 @@
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
     "react-scripts": "next",
-    "react-test-renderer": "16.4.1",
-    "stylelint": "9.4.0",
-    "stylelint-config-standard": "18.2.0"
+    "react-test-renderer": "16.4.1"
   },
   "dependencies": {
     "@neontribe/opening-hours": "2.1.0",
@@ -37,11 +35,8 @@
   },
   "scripts": {
     "dev": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
-    "prebuild": "eslint ./src && stylelint ./src/**/*.css",
     "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
-    "test": "SKIP_PREFLIGHT_CHECK=true react-scripts test --env=jsdom",
-    "build-android": "npm run build; rm -r www/*; cp -r build/* www; phonegap build android",
-    "build-ios": "npm run build; rm -r www/*; cp -r build/* www; phonegap build ios"
+    "test": "SKIP_PREFLIGHT_CHECK=true react-scripts test --env=jsdom"
   },
   "eslintConfig": {
     "extends": "react-app"

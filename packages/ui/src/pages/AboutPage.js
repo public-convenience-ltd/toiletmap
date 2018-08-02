@@ -5,12 +5,10 @@ import config from '../config';
 import PageLayout from '../components/PageLayout';
 import NearestLooMap from '../components/NearestLooMap';
 
-import styles from './css/about-page.module.css';
+import lists from '../css/lists.module.css';
 import headings from '../css/headings.module.css';
 import layout from '../components/css/layout.module.css';
 import controls from '../css/controls.module.css';
-
-import rcaLogo from '../images/rca_logo.jpg';
 
 class AboutPage extends Component {
   renderMain() {
@@ -28,100 +26,115 @@ class AboutPage extends Component {
             )}
           </div>
         </div>
-        <h2 className={headings.large}>About this project</h2>
-
+        <h2 id="about" className={headings.regular}>
+          About the map
+        </h2>
         <p>
-          <strong>Email:</strong>{' '}
-          <a href="mailto:toiletmap@rca.ac.uk">toiletmap@rca.ac.uk</a>
-        </p>
-        <p>
-          <strong>Twitter:</strong>{' '}
-          <a href="https://twitter.com/GBToiletMap">@GBToiletMap</a>{' '}
+          The Great British Public Toilet Map is the UK's largest database of
+          publicly-accessible toilets, with over 11000 facilities.
         </p>
 
         <p>
-          The Great British Public Toilet Map was created by{' '}
-          <a href="http://www.rca.ac.uk/research-innovation/helen-hamlyn-centre">
-            The Helen Hamlyn Centre for Design
+          It is run by{' '}
+          <a
+            href="https://publicconvenience.org"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Public Convenience
+          </a>, a joint venture between researchers Dr Jo-Anne Bichard and Gail
+          Ramster (who created the map at the{' '}
+          <a
+            href="http://www.rca.ac.uk/research-innovation/helen-hamlyn-centre"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            RCA Helen Hamlyn Centre for Design
+          </a>) and software development company{' '}
+          <a
+            href="https://neontribe.co.uk"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Neontribe
           </a>{' '}
-          at the Royal College of Art. It was designed and built by{' '}
-          <a href="http://www.neontribe.co.uk">Neontribe</a>. It is funded by
-          the
-          <a href="http://www.nominettrust.org.uk">Nominet Trust</a>. It began
-          as part of the TACT3 research project, funded by the New Dynamics of
-          Ageing programme.
+          (who designed and built it).
+        </p>
+
+        <h2 id="contributing" className={headings.regular}>
+          Thinking about adding a toilet?
+        </h2>
+
+        <p>
+          A publicly-accessible toilet means any toilet that the public all
+          allowed to access without needing to be a customer.
         </p>
 
         <p>
-          We are looking for sponsorship. Please contact Gail at{' '}
-          <a href="mailto:gail.ramster@network.rca.ac.uk">
-            gail.ramster@network.rca.ac.uk
+          Public toilets:
+          <ul className={lists.inset}>
+            <li>Council-run toilets and other public toilet blocks</li>
+            <li>
+              Toilets in train stations, bus stations, service/petrol stations,
+              tube stations, ferry terminals, airports and other transport
+              networks
+            </li>
+            <li>Shopping centre toilets</li>
+          </ul>
+        </p>
+
+        <p>
+          Other publicly-accessible toilets:
+          <ul className={lists.inset}>
+            <li>
+              Toilets in public buildings, such as town halls, libraries,
+              hospitals, museums and leisure centres
+            </li>
+            <li>
+              Toilets in other businesses where the business agrees that the
+              public can use their toilets without having to buy anything. These
+              are often part of Community Toilet Schemes (run by councils) and
+              can include shops, cafes, supermarkets, restaurants, hotels and
+              pubs
+            </li>
+          </ul>
+        </p>
+
+        <p>
+          <strong>
+            We try not to show toilets where you need to ask permission to use
+            it
+          </strong>, such as those that are for customers-only. The exception is
+          platform-side toilets at stations. These are only accessible to
+          ticket-holders but we feel it is useful information to include.
+        </p>
+
+        <p>
+          Anyone can go on the website and{' '}
+          <strong>add, edit or remove toilets</strong>. We also use open data
+          including from the{' '}
+          <a
+            href="https://www.openstreetmap.org"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            OpenStreetMap
           </a>{' '}
-          if you would like to find out more.
-        </p>
-
-        <h3 className={headings.regular}>What is it?</h3>
-
-        <p>
-          The map shows toilets that the public can use. This includes those in
-          shops, cafes etc if they choose to let non-customers use their loo,
-          such as those in Community Toilet Schemes. We try not to include those
-          that are for customer use only.
+          project and request information from councils, private companies and
+          organisations.
         </p>
 
         <p>
-          The data comes from councils, businesses, the{' '}
-          <a href="http://www.openstreetmap.org">OpenStreetMap</a> project and
-          YOU! The data will be available for others to use under an open
-          licence.
+          <strong>
+            If you have any problems updating the toilets, or wish to send us
+            toilet details or comments, please contact{' '}
+            <a href="mailto:gbtoiletmap@gmail.com">gbtoiletmap@gmail.com</a>.
+          </strong>
         </p>
 
-        <p>Please help by adding and editing toilets.</p>
-
-        <h3>Info for councils</h3>
-        <p>
-          The Local Government Association manage a scheme to help councils to
-          publish ‘open data’ about public toilets, planning applications and
-          licensing of premises. Councils are paid £7000 if they publish all
-          three datasets as part of Local Open Data Incentive Scheme.
-        </p>
-
-        <p>
-          <a href="http://incentive.opendata.esd.org.uk">
-            incentive.opendata.esd.org.uk
-          </a>
-        </p>
-
-        <p>
-          <strong>Info for organisations and businesses</strong>
-        </p>
-
-        <p>
-          If you have lots of toilets that you would like displayed on the map,
-          please contact{' '}
-          <a href="mailto:toiletmap@rca.ac.uk">toiletmap@rca.ac.uk</a>.
-        </p>
-
-        <h3 className={headings.regular}>Find out more&hellip;</h3>
-
-        <p>
-          Please email the toilet map with your questions, comments and
-          feedback.
-        </p>
-        <p>More information about public toilets can be found at:</p>
-        <p>
-          <a href="http://gailknight.wordpress.com/further-reading">
-            http://gailknight.wordpress.com/further-reading/
-          </a>
-        </p>
-        <p>
-          <a href="http://www.hhc.rca.ac.uk/CMS/files/Toilet_LoRes.pdf">
-            Publicly Accessible Toilets: An Inclusive Design Guide
-          </a>{' '}
-          (pdf)
-        </p>
-
-        <h3 className={headings.regular}>Privacy policy</h3>
+        <h2 id="privacy" className={headings.regular}>
+          Privacy Policy
+        </h2>
 
         <p>
           Cookies on RCA web sites are used to gather anonymous data such as
@@ -158,12 +171,6 @@ class AboutPage extends Component {
           please visit:<br />
           <a href="http://www.rca.ac.uk/contact-us/about-this-website/privacy-cookies">
             Privacy and Cookies
-          </a>
-        </p>
-
-        <p>
-          <a href="http://www.rca.ac.uk" className={styles.rcaImage}>
-            <img src={rcaLogo} alt="The Royal College Of Art" />
           </a>
         </p>
       </div>

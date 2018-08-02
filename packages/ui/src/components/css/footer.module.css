@@ -2,38 +2,38 @@
 @value colorLinkActive, colorBackground from colors;
 
 .footer {
-	color: #fff;
-	background-color: colorBackground;
+  color: #fff;
+  background-color: colorBackground;
 }
 
 .footerList {
-	display: table;
-	width: 100%;
+  display: table;
+  width: 100%;
 }
 
 .footerListItem {
-	display: table-cell;
+  display: table-cell;
 }
 
 .footerItemText {
-	padding-bottom: 1px;
-	border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  border-bottom: 1px solid currentColor;
 }
 
 .footerItem {
-	display: block;
-	padding: 0.75rem;
-	color: #fff;
-	text-decoration: none;
-	text-align: center;
-	font-weight: bold;
+  display: block;
+  padding: 0.75rem;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  font-weight: bold;
 }
 
 .footerItem:visited {
-	color: #fff;
+  color: #fff;
 }
 
 .footerItem:hover {
-	color: #fff;
-	background-color: colorLinkActive;
+  color: #fff;
+  background-color: colorLinkActive;
 }

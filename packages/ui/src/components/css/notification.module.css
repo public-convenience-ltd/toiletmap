@@ -2,6 +2,6 @@
 @value colorHighlight from colors;
 
 .notification {
-	composes: message from '../../css/messages.module.css';
-	background-color: colorHighlight;
+  composes: message from '../../css/messages.module.css';
+  background-color: colorHighlight;
 }

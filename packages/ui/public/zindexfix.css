@@ -11,11 +11,11 @@
 }
 
 .distance--zindexfix {
-	z-index: 1055;
+  z-index: 1055;
 }
 
 /* This is preventing the appearance of markers rendering twice (glitching) after zooming */
 .leaflet-div-icon {
-	z-index: 1000 !important;
+  z-index: 1000 !important;
 }
 
