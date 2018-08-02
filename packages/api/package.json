@@ -8,21 +8,21 @@
     "url": "https://github.com/neontribe/gbptm/issues"
   },
   "dependencies": {
-    "compression": "1.7.2",
+    "compression": "1.7.3",
     "cors": "2.8.4",
     "express": "4.16.3",
     "express-jwt": "5.3.1",
     "express-jwt-authz": "1.0.0",
     "geo-hash": "0.0.2",
-    "helmet": "3.12.1",
+    "helmet": "3.13.0",
     "jwks-rsa": "1.3.0",
     "lodash": "4.17.10",
-    "luxon": "1.3.1",
-    "mongoose": "5.1.7",
+    "luxon": "1.3.3",
+    "mongoose": "5.2.6",
     "mongoose-paginate": "5.0.3",
     "mongoose-timestamp": "0.6.0",
     "newrelic": "^4.7.0",
-    "node-fetch": "2.1.2"
+    "node-fetch": "2.2.0"
   },
   "devDependencies": {
     "jest": "23.2.0",

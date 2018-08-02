@@ -7,7 +7,7 @@
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
     "react-scripts": "next",
-    "react-test-renderer": "16.4.1"
+    "react-test-renderer": "16.4.2"
   },
   "dependencies": {
     "@neontribe/opening-hours": "2.1.0",
@@ -22,9 +22,9 @@
     "lodash": "4.17.10",
     "normalize.css": "8.0.0",
     "prop-types": "15.6.2",
-    "react": "16.4.1",
+    "react": "16.4.2",
     "react-addons-update": "15.6.2",
-    "react-dom": "16.4.1",
+    "react-dom": "16.4.2",
     "react-leaflet": "2.0.0",
     "react-redux": "5.0.7",
     "react-responsive": "5.0.0",
