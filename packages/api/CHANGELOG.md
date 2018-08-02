@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/neontribe/gbptm/compare/v2.2.0...v2.3.0) (2018-08-02)
+
+
+### Bug Fixes
+
+* bug where geometry was not regenerated ([5c62ea5](https://github.com/neontribe/gbptm/commit/5c62ea5))
+* bypass mongo's mandatory geonear limit ([3d5af8c](https://github.com/neontribe/gbptm/commit/3d5af8c))
+* correct tests in light of near endpoint changes ([9916d96](https://github.com/neontribe/gbptm/commit/9916d96))
+* remove quantity and prefer fixed distance limit for nearby loos ([0be93ae](https://github.com/neontribe/gbptm/commit/0be93ae))
+* use metres instead of our incorrect angles in geo queries ([298fa95](https://github.com/neontribe/gbptm/commit/298fa95))
+
+
+### Features
+
+* connect to cross-app auth ([c23efac](https://github.com/neontribe/gbptm/commit/c23efac))
+* enable cors requests ([049b9b8](https://github.com/neontribe/gbptm/commit/049b9b8))
+
+
+### Performance Improvements
+
+* reduce Loo properties sent to front-end in near requests ([d4a694c](https://github.com/neontribe/gbptm/commit/d4a694c))
+
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/neontribe/gbptm/compare/v2.1.0...v2.2.0) (2018-07-03)
 

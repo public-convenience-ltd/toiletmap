@@ -3,6 +3,88 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/neontribe/gbptm/compare/v2.2.0...v2.3.0) (2018-08-02)
+
+
+### Bug Fixes
+
+* add array.prototype.find polyfill for IE support ([0946da1](https://github.com/neontribe/gbptm/commit/0946da1))
+* add viewBox attr to svg's ([9d78354](https://github.com/neontribe/gbptm/commit/9d78354))
+* arbitrate analytics key correctly ([290a0a5](https://github.com/neontribe/gbptm/commit/290a0a5))
+* avoid overlapping IE11 sidebar text ([5e7130c](https://github.com/neontribe/gbptm/commit/5e7130c))
+* be less specific about what a small viewport is ([b71f8e0](https://github.com/neontribe/gbptm/commit/b71f8e0))
+* change diffing and derivation citing ([9160351](https://github.com/neontribe/gbptm/commit/9160351))
+* clear pin highlight when navigating away from the homepage ([08c333a](https://github.com/neontribe/gbptm/commit/08c333a)), closes [#221](https://github.com/neontribe/gbptm/issues/221)
+* correct bad merge ([cbd80b8](https://github.com/neontribe/gbptm/commit/cbd80b8))
+* disable submit button instead of doing nothing with no changes ([3068811](https://github.com/neontribe/gbptm/commit/3068811))
+* display crosshair on add/edit ([02c4644](https://github.com/neontribe/gbptm/commit/02c4644))
+* don't humanize already human-readable values ([b83ee98](https://github.com/neontribe/gbptm/commit/b83ee98))
+* don't pander to an edge case in our data ([78564c1](https://github.com/neontribe/gbptm/commit/78564c1))
+* fetch loos whenever NearestLooMap needs & key loo list items right ([923b44a](https://github.com/neontribe/gbptm/commit/923b44a))
+* fill remaining viewport with map ([674fae7](https://github.com/neontribe/gbptm/commit/674fae7))
+* handle sidebar overflow on FF ([0208264](https://github.com/neontribe/gbptm/commit/0208264))
+* horrific fix for horrific z-index bug ([9181c05](https://github.com/neontribe/gbptm/commit/9181c05))
+* humanize access values ([9eba606](https://github.com/neontribe/gbptm/commit/9eba606)), closes [#219](https://github.com/neontribe/gbptm/issues/219)
+* humanize distances ([0c4a3aa](https://github.com/neontribe/gbptm/commit/0c4a3aa)), closes [#280](https://github.com/neontribe/gbptm/issues/280)
+* include all non-blacklisted properties ([f4e1acb](https://github.com/neontribe/gbptm/commit/f4e1acb))
+* include object.entries polyfill for IE ([c200f01](https://github.com/neontribe/gbptm/commit/c200f01))
+* indentation style in CSS so we can build ([e00d4eb](https://github.com/neontribe/gbptm/commit/e00d4eb))
+* number loos on only the Home and About page ([ad0f25e](https://github.com/neontribe/gbptm/commit/ad0f25e))
+* opt-in to humanize instead of opt-out, with the right properties ([6d1dd1d](https://github.com/neontribe/gbptm/commit/6d1dd1d))
+* pander to an edge case in our data ([821f187](https://github.com/neontribe/gbptm/commit/821f187))
+* point PWAs to the right route ([3dfd4d4](https://github.com/neontribe/gbptm/commit/3dfd4d4))
+* prioritise mobile user QOL by starting from their current loc ([58a9726](https://github.com/neontribe/gbptm/commit/58a9726))
+* remove buggy fullscreen feature ([c565340](https://github.com/neontribe/gbptm/commit/c565340))
+* remove quantity and prefer fixed distance limit for nearby loos ([0be93ae](https://github.com/neontribe/gbptm/commit/0be93ae))
+* show back button in PWA ([36b2777](https://github.com/neontribe/gbptm/commit/36b2777))
+* show newlines in loo property values ([5aa44d2](https://github.com/neontribe/gbptm/commit/5aa44d2))
+* stable per-loo key in list ([ec2ac7e](https://github.com/neontribe/gbptm/commit/ec2ac7e))
+* styling of numbered markers on displays marked by leaflet as retina ([01c89db](https://github.com/neontribe/gbptm/commit/01c89db))
+* styling of PWA icons and niceties ([3b72064](https://github.com/neontribe/gbptm/commit/3b72064))
+* temporary fix for z-indexes in staging ([4215a00](https://github.com/neontribe/gbptm/commit/4215a00))
+* tidy up unnecessary bindings ([b288edb](https://github.com/neontribe/gbptm/commit/b288edb))
+* update center when we jump between loos ([15228f5](https://github.com/neontribe/gbptm/commit/15228f5))
+* use config to show/hide back nav ([3277b5d](https://github.com/neontribe/gbptm/commit/3277b5d)), closes [#230](https://github.com/neontribe/gbptm/issues/230)
+* use loadingNearby state to show loading indicator ([38bde0a](https://github.com/neontribe/gbptm/commit/38bde0a))
+* use refs in accordance to withRouter's docs ([20e5caf](https://github.com/neontribe/gbptm/commit/20e5caf))
+* use word toilet instead of loo in text ([90f4dc8](https://github.com/neontribe/gbptm/commit/90f4dc8))
+* we don't fetch geohash for now, don't use it for comparisons ([7ee9a0f](https://github.com/neontribe/gbptm/commit/7ee9a0f))
+
+
+### Features
+
+* add a visible loading indicator for mobile users ([31443ac](https://github.com/neontribe/gbptm/commit/31443ac))
+* add analytics for page views ([a88f806](https://github.com/neontribe/gbptm/commit/a88f806)), closes [#290](https://github.com/neontribe/gbptm/issues/290)
+* add example.env file ([05f7225](https://github.com/neontribe/gbptm/commit/05f7225))
+* apply disabled button styles ([df9032d](https://github.com/neontribe/gbptm/commit/df9032d))
+* apply loo number styling ([0c5c2e6](https://github.com/neontribe/gbptm/commit/0c5c2e6))
+* bg image for auth0 login widget ([29816e2](https://github.com/neontribe/gbptm/commit/29816e2))
+* connect to cross-app auth ([fd74bc9](https://github.com/neontribe/gbptm/commit/fd74bc9))
+* connect to cross-app auth ([c23efac](https://github.com/neontribe/gbptm/commit/c23efac))
+* crudely number nearest loos on map ([0ff80c7](https://github.com/neontribe/gbptm/commit/0ff80c7))
+* enable cors requests ([049b9b8](https://github.com/neontribe/gbptm/commit/049b9b8))
+* link to directions on loo page ([46a0491](https://github.com/neontribe/gbptm/commit/46a0491))
+* prefer walking directions ([cfaf3d4](https://github.com/neontribe/gbptm/commit/cfaf3d4))
+* publish a circular logo ([4c32752](https://github.com/neontribe/gbptm/commit/4c32752))
+* replace center marker circle with crosshair ([a136572](https://github.com/neontribe/gbptm/commit/a136572))
+* scope panning and zooming abilities in a friendly & consistent way ([f6c5ff0](https://github.com/neontribe/gbptm/commit/f6c5ff0))
+* show loading indicator when talking to the loo api ([8ff8b5f](https://github.com/neontribe/gbptm/commit/8ff8b5f))
+* show loo numbers in list and small fixes ([b995d1a](https://github.com/neontribe/gbptm/commit/b995d1a))
+* show nearest loos everywhere ([f65a809](https://github.com/neontribe/gbptm/commit/f65a809)), closes [#228](https://github.com/neontribe/gbptm/issues/228) [#237](https://github.com/neontribe/gbptm/issues/237)
+* update about page ([1cbafc6](https://github.com/neontribe/gbptm/commit/1cbafc6))
+
+
+### Performance Improvements
+
+* check geohashes for equality instead of deep checking geometry ([4d9d215](https://github.com/neontribe/gbptm/commit/4d9d215))
+* only remove and add the markers we need to ([b2ac95f](https://github.com/neontribe/gbptm/commit/b2ac95f))
+* only submit novel data in loo reports ([1c7cdf0](https://github.com/neontribe/gbptm/commit/1c7cdf0))
+* optimise svgs ([bb58355](https://github.com/neontribe/gbptm/commit/bb58355)), closes [#254](https://github.com/neontribe/gbptm/issues/254)
+
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/neontribe/gbptm/compare/v2.1.0...v2.2.0) (2018-07-03)
 
