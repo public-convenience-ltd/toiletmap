@@ -13,6 +13,19 @@
   color: #1a1a1a;
 }
 
+.bandedSection {
+  background-color: #2e781b36;
+  margin-left: -12px;
+  margin-right: -12px;
+  padding-bottom: 12px;
+}
+
+.bandedSectionText {
+  background-color: transparent;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
 @media only screen
   and (max-width: 750px) {
   .mainContainer {
@@ -41,7 +54,6 @@
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  padding-bottom: 0.75rem;
 }
 
 .mapContainer {

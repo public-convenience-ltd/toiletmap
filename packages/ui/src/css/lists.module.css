@@ -1,3 +1,11 @@
 .inset {
   margin-left: 1rem;
+  margin-bottom: 1rem;
+  list-style-type: disc;
+  list-style-position: inside;
+  text-indent: -1.5em;
+}
+
+.items {
+  margin-top: 10px;
 }
