@@ -61,6 +61,63 @@ class AboutPage extends Component {
           (who designed and built it).
         </p>
 
+        <h2 id="use-our-loos" className={headings.regular}>
+          Use Our Loos
+        </h2>
+
+        <p>
+          We all need toilets. When you need to go, you need to go. At home or
+          in an office this isn’t a problem. However, out and about, are you
+          sure there’s somewhere to go when the need arises?
+        </p>
+
+        <p>
+          Across the UK, more than one in every three public toilets have been
+          closed over the last two decades. Some councils are already without a
+          single free-to-use public convenience.
+        </p>
+
+        <p>
+          <strong>Use Our Loos</strong> is the first national community toilet
+          scheme, created by the British Toilet Association, Domestos and the
+          Great British Public Toilet Map, with the ambition to unlock the loos
+          that are hidden in high street cafes, restaurants, coffee shops and
+          bars and open them up to the community.
+        </p>
+
+        <p>
+          As more public loos are closed, we’re asking that more loos are made
+          public.
+        </p>
+
+        <p>
+          We’re inviting businesses to sign up and welcome everyone, customers
+          and non-customers, to use their loos. In return, we’re providing them
+          with free Domestos product, directing people to their venues and
+          driving local fame so they will benefit from increased customers and a
+          stronger connection to their community.
+        </p>
+
+        <p>
+          We’re inviting the public to use our map to discover loos near them
+          and to help us improve the service by adding new locations or flagging
+          loos that have closed.
+        </p>
+
+        <h3 className={headings.small}>The war on poor sanitation</h3>
+
+        <p>
+          Domestos is proud to support the Great British Public Toilet Map.  Use
+          Our Loos marks the latest step in Domestos’ mission is to win the war
+          on poor sanitation. Worldwide, an estimated 2.5 billion people lack
+          access to proper sanitation while around 1 billion don’t have
+          sanitation facilities at all. Partnering with UNICEF, Domestos will
+          help 25 million people around the world enjoy improved access to
+          clean, safe, accessible toilets by 2020. People in the UK can further
+          support the mission by buying the Domestos bottle marked with the
+          UNICEF logo.
+        </p>
+
         <h2 id="contributing" className={headings.regular}>
           Thinking about adding a toilet?
         </h2>
@@ -70,35 +127,30 @@ class AboutPage extends Component {
           allowed to access without needing to be a customer.
         </p>
 
-        <p>
-          Public toilets:
-          <ul className={lists.inset}>
-            <li>Council-run toilets and other public toilet blocks</li>
-            <li>
-              Toilets in train stations, bus stations, service/petrol stations,
-              tube stations, ferry terminals, airports and other transport
-              networks
-            </li>
-            <li>Shopping centre toilets</li>
-          </ul>
-        </p>
+        <h3 className={headings.small}>Public toilets</h3>
+        <ul className={lists.inset}>
+          <li>Council-run toilets and other public toilet blocks</li>
+          <li>
+            Toilets in train stations, bus stations, service/petrol stations,
+            tube stations, ferry terminals, airports and other transport
+            networks
+          </li>
+          <li>Shopping centre toilets</li>
+        </ul>
 
-        <p>
-          Other publicly-accessible toilets:
-          <ul className={lists.inset}>
-            <li>
-              Toilets in public buildings, such as town halls, libraries,
-              hospitals, museums and leisure centres
-            </li>
-            <li>
-              Toilets in other businesses where the business agrees that the
-              public can use their toilets without having to buy anything. These
-              are often part of Community Toilet Schemes (run by councils) and
-              can include shops, cafes, supermarkets, restaurants, hotels and
-              pubs
-            </li>
-          </ul>
-        </p>
+        <h3 className={headings.small}>Other publicly-accessible toilets</h3>
+        <ul className={lists.inset}>
+          <li>
+            Toilets in public buildings, such as town halls, libraries,
+            hospitals, museums and leisure centres
+          </li>
+          <li>
+            Toilets in other businesses where the business agrees that the
+            public can use their toilets without having to buy anything. These
+            are often part of Community Toilet Schemes (run by councils) and can
+            include shops, cafes, supermarkets, restaurants, hotels and pubs
+          </li>
+        </ul>
 
         <p>
           <strong>
