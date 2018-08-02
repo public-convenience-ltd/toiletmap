@@ -21,6 +21,7 @@
     "mongoose": "5.1.7",
     "mongoose-paginate": "5.0.3",
     "mongoose-timestamp": "0.6.0",
+    "newrelic": "^4.7.0",
     "node-fetch": "2.1.2"
   },
   "devDependencies": {
@@ -47,7 +48,7 @@
     "testEnvironment": "node"
   },
   "scripts": {
-    "dev": "node src/index.js",
+    "dev": "NEW_RELIC_ENABLED=false NEW_RELIC_NO_CONFIG_FILE=true node src/index.js",
     "start": "node src/index.js",
     "test": "NODE_ENV=test jest"
   }
