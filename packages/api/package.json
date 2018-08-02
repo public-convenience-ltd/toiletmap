@@ -50,6 +50,6 @@
   "scripts": {
     "dev": "NEW_RELIC_ENABLED=false NEW_RELIC_NO_CONFIG_FILE=true node src/index.js",
     "start": "node src/index.js",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test NEW_RELIC_ENABLED=false NEW_RELIC_NO_CONFIG_FILE=true jest"
   }
 }
