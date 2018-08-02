@@ -1,6 +1,6 @@
 {
   "name": "@neontribe/gbptm-ui",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "private": true,
   "proxy": "https://localhost:8080",
   "devDependencies": {
@@ -10,7 +10,7 @@
     "react-test-renderer": "16.4.2"
   },
   "dependencies": {
-    "@neontribe/opening-hours": "2.1.0",
+    "@neontribe/opening-hours": "2.4.0",
     "auth0-js": "9.7.3",
     "core-js": "2.5.7",
     "js-cookie": "2.2.0",
