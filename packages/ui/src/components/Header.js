@@ -4,7 +4,7 @@ import { HashLink } from 'react-router-hash-link';
 
 import styles from './css/header.module.css';
 import logo from '../images/logo.svg';
-import domestos_logo from '../images/domestos_logo.png';
+import domestos_logo from '../images/domestos_logo2.png';
 
 class Header extends Component {
   render() {
