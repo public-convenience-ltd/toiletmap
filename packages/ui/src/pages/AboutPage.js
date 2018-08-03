@@ -42,7 +42,8 @@ class AboutPage extends Component {
             rel="noopener noreferrer"
           >
             Public Convenience
-          </a>, a joint venture between researchers Dr Jo-Anne Bichard and Gail
+          </a>
+          , a joint venture between researchers Dr Jo-Anne Bichard and Gail
           Ramster (who created the map at the{' '}
           <a
             href="http://www.rca.ac.uk/research-innovation/helen-hamlyn-centre"
@@ -50,7 +51,8 @@ class AboutPage extends Component {
             rel="noopener noreferrer"
           >
             RCA Helen Hamlyn Centre for Design
-          </a>) and software development company{' '}
+          </a>
+          ) and software development company{' '}
           <a
             href="https://neontribe.co.uk"
             target="_blank"
@@ -82,9 +84,24 @@ class AboutPage extends Component {
 
               <p>
                 <strong>Use Our Loos</strong> is the first national community
-                toilet scheme, created by the British Toilet Association,
-                Domestos and the Great British Public Toilet Map, with the
-                ambition to unlock the loos that are hidden in high street
+                toilet scheme, created by the{' '}
+                <a
+                  href="http://www.btaloos.co.uk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  British Toilet Association
+                </a>
+                ,{' '}
+                <a
+                  href="http://www.domestos.co.uk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Domestos
+                </a>{' '}
+                and the <strong>Great British Public Toilet Map</strong>, with
+                the ambition to unlock the loos that are hidden in high street
                 cafes, restaurants, coffee shops and bars and open them up to
                 the community.
               </p>
@@ -164,7 +181,8 @@ class AboutPage extends Component {
           <strong>
             We try not to show toilets where you need to ask permission to use
             it
-          </strong>, such as those that are for customers-only. The exception is
+          </strong>
+          , such as those that are for customers-only. The exception is
           platform-side toilets at stations. These are only accessible to
           ticket-holders but we feel it is useful information to include.
         </p>
@@ -230,7 +248,8 @@ class AboutPage extends Component {
 
               <p>
                 For further details about the RCA’s policy on privacy and
-                cookies, please visit:<br />
+                cookies, please visit:
+                <br />
                 <a href="http://www.rca.ac.uk/contact-us/about-this-website/privacy-cookies">
                   Privacy and Cookies
                 </a>
