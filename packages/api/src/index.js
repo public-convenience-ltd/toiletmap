@@ -16,7 +16,9 @@ app.set('query parser', 'simple');
 // Redirect to https in production
 app.use((req, res, next) => {
   if (process.env.NODE_ENV === 'production') {
-    if (req.headers['x-forwarded-proto'] != 'https') {
+    if (req.hostname !== 'www.toiletmap.org.uk') {
+      res.redirect(301, 'https://www.toiletmap.org.uk' + req.originalUrl);
+    } else if (req.headers['x-forwarded-proto'] != 'https') {
       res.redirect(301, 'https://' + req.hostname + req.originalUrl);
     } else {
       next();
