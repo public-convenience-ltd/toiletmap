@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.5.0"></a>
+# [2.5.0](https://github.com/neontribe/gbptm/compare/v2.4.0...v2.5.0) (2018-08-06)
+
+
+### Features
+
+* redirect all traffic to www.toiletmap.org.uk ([ef90d29](https://github.com/neontribe/gbptm/commit/ef90d29))
+
+
+
+
 <a name="2.4.0"></a>
 # [2.4.0](https://github.com/neontribe/gbptm/compare/v2.3.0...v2.4.0) (2018-08-02)
 
