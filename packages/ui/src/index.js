@@ -28,6 +28,7 @@ import AboutPage from './pages/AboutPage';
 import AddEditPage from './pages/AddEditPage';
 import LoginPage from './pages/LoginPage';
 import PreferencesPage from './pages/PreferencesPage';
+import ThanksPage from './pages/ThanksPage';
 
 // Redux reducers
 import appReducer from './redux/modules/app';
@@ -91,6 +92,7 @@ if (typeof document !== 'undefined') {
             <Route exact path="/report" component={AddEditPage} />
             <Route path="/loos/:id/edit" component={AddEditPage} />
             <Route path="/loos/:id/remove" component={RemovePage} />
+            <Route path="/thanks" component={ThanksPage} />
           </App>
         </Analytics>
       </Router>
