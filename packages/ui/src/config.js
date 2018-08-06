@@ -22,6 +22,11 @@ export default {
   editMinZoom: 16,
   allowAddEditLoo: true,
   showBackButtons: false,
+  fallbackLocation: {
+    // Trafalgar Square. Because.
+    lat: 51.507351,
+    lng: -0.127758,
+  },
   looProps: {
     canHumanize: [
       'accessibleType',

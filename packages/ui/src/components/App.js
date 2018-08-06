@@ -8,7 +8,7 @@ import styles from './css/app.module.css';
 
 class App extends Component {
   componentDidMount() {
-    if (!this.props.geolocation.location) {
+    if (!this.props.geolocation.location || !this.props.geolocation.error) {
       // Cordova environment expects us to wait for `deviceready`. If the geolocation
       // request is fired too early we get an ugly message.
       // http://stackoverflow.com/questions/28891339/fix-cordova-geolocation-ask-for-location-message
@@ -25,17 +25,7 @@ class App extends Component {
   }
 
   render() {
-    // Geolocation error
-    if (this.props.geolocation.error) {
-      return (
-        <div className={styles.wrapper}>
-          <p>{this.props.geolocation.error}</p>
-        </div>
-      );
-    }
-
-    // Fetching toilet data
-    if (!this.props.geolocation.position) {
+    if (!this.props.map.center) {
       return (
         <div className={styles.wrapper}>
           <p>Fetching toilets&hellip;</p>
@@ -49,6 +39,7 @@ class App extends Component {
 
 var mapStateToProps = state => ({
   geolocation: state.geolocation,
+  map: state.mapControls,
 });
 
 var mapDispatchToProps = {
