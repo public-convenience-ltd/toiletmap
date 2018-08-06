@@ -7257,9 +7257,9 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-leaflet-control-geocoder@1.5.8:
-  version "1.5.8"
-  resolved "https://registry.yarnpkg.com/leaflet-control-geocoder/-/leaflet-control-geocoder-1.5.8.tgz#c52dfbb9be5f6388d683346acb49bf017fd5b6a8"
+leaflet-control-geocoder@1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/leaflet-control-geocoder/-/leaflet-control-geocoder-1.6.0.tgz#d42dd715bcf16943b94f944ebbf4e95f17c6626c"
 
 leaflet-loading@0.1.24:
   version "0.1.24"
