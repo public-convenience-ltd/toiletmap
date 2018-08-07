@@ -92,7 +92,7 @@ if (typeof document !== 'undefined') {
             <Route exact path="/report" component={AddEditPage} />
             <Route path="/loos/:id/edit" component={AddEditPage} />
             <Route path="/loos/:id/remove" component={RemovePage} />
-            <Route path="/thanks" component={ThanksPage} />
+            <Route path="/loos/:id/thanks" component={ThanksPage} />
           </App>
         </Analytics>
       </Router>
