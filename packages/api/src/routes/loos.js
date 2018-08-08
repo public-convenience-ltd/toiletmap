@@ -21,14 +21,10 @@ router.get('/near/:lon/:lat', async (req, res) => {
 });
 
 /**
- * GET an array of loo ids
+ * GET an array of points
  */
 router.get('/', async (req, res) => {
-  const q = {};
-  if (req.query.missing) {
-    q[req.query.missing] = { $exists: false };
-  }
-  const loos = await Loo.findIds(q).exec();
+  const loos = await Loo.find({}, 'type geometry').exec();
   res.status(200).json(new LooList(loos));
 });
 
