@@ -81,7 +81,7 @@ class ThanksPage extends Component {
           rel="noopener noreferrer"
           href={constructCampaignLink(loo, name)}
         >
-          Join <strong>Use Our Loos</strong>
+          Join the <strong>Use Our Loos</strong> campaign
         </a>
       </div>
     );

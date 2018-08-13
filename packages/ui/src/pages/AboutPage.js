@@ -125,6 +125,27 @@ class AboutPage extends Component {
                 them and to help us improve the service by adding new locations
                 or flagging loos that have closed.
               </p>
+
+              <p>
+                To join the Use Our Loos campaign please contact{' '}
+                <a
+                  href="mailto:useourloos@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  useourloos@gmail.com
+                </a>
+              </p>
+              <p>
+                You can also register your interest{' '}
+                <a
+                  href="https://goo.gl/forms/JRw6J7yoDe46YIB23"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  here.
+                </a>
+              </p>
             </div>
           </div>
         </div>
