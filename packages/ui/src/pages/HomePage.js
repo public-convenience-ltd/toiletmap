@@ -29,10 +29,10 @@ import config from '../config';
 
 export class HomePage extends Component {
   componentDidMount() {
-    var position = this.props.geolocation.position;
+    var center = this.props.mapControls.center;
 
     if (!this.props.loos) {
-      this.props.actionUpdateCenter(position);
+      this.props.actionUpdateCenter(center);
     }
   }
 
@@ -59,7 +59,10 @@ export class HomePage extends Component {
     if (loos && !loos.length) {
       return (
         <Notification>
-          <p>No toilets found within {config.nearestRadius / 1000}km.</p>
+          <p>
+            No toilets found within {config.nearestRadius / 1000}
+            km.
+          </p>
         </Notification>
       );
     }
@@ -164,6 +167,7 @@ HomePage.propTypes = {
 
 var mapStateToProps = state => ({
   geolocation: state.geolocation,
+  mapControls: state.mapControls,
   loos: state.loos.nearby,
   app: state.app,
   isAuthenticated: state.auth.isAuthenticated,

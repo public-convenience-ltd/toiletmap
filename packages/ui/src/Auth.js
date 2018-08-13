@@ -17,6 +17,7 @@ export default class Auth {
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
     this.getAccessToken = this.getAccessToken.bind(this);
+    this.fetchProfile = this.fetchProfile.bind(this);
   }
 
   handleAuthentication() {
@@ -50,12 +51,34 @@ export default class Auth {
     return accessToken;
   }
 
+  fetchProfile() {
+    return new Promise((resolve, reject) => {
+      let accessToken = this.getAccessToken();
+      this.auth0.client.userInfo(accessToken, (err, profile) => {
+        if (profile) {
+          localStorage.setItem('name', profile.name);
+          resolve(profile);
+        } else if (err) {
+          reject(err);
+        }
+      });
+    });
+  }
+
+  getProfile() {
+    return {
+      name: localStorage.getItem('name'),
+    };
+  }
+
   login() {
     this.auth0.authorize();
   }
 
   logout() {
-    // Clear Access Token and ID Token from local storage
+    // Clear Access Token and ID Token from local storage also the cached email
+    localStorage.removeItem('name');
+    localStorage.removeItem('access_token');
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
