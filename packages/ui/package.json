@@ -2,7 +2,7 @@
   "name": "@neontribe/gbptm-ui",
   "version": "2.5.0",
   "private": true,
-  "proxy": "https://localhost:8080",
+  "proxy": "http://localhost:8080",
   "devDependencies": {
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
