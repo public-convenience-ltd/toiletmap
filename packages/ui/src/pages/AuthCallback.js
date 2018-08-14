@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { actionLoggedIn } from '../redux/modules/auth';
+import { actionLoggedIn, actionSetName } from '../redux/modules/auth';
 
 import PageLayout from '../components/PageLayout';
 import Notification from '../components/Notification';
@@ -12,11 +12,13 @@ class Callback extends Component {
   async componentDidMount() {
     if (/access_token|id_token|error/.test(this.props.location.hash)) {
       await this.props.auth.handleAuthentication();
+      await this.props.auth.fetchProfile();
     }
 
     if (this.props.auth.isAuthenticated()) {
       // dispatch a login action
       this.props.loggedIn(true);
+      this.props.setName(this.props.auth.getProfile().name);
       this.props.history.push('/');
     } else {
       this.props.history.push('/login');
@@ -49,6 +51,7 @@ const mapStateToProps = state => ({});
 
 const mapDispatchToProps = {
   loggedIn: actionLoggedIn,
+  setName: actionSetName,
 };
 
 export default connect(
