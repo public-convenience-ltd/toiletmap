@@ -1,0 +1,12 @@
+{
+  "name": "@neontribe/gbptm-migrate",
+  "version": "2.5.0",
+  "description": "A tool for migrating legacy Toilet Map databases to our new schemas",
+  "dependencies": {
+    "@neontribe/gbptm-api": "2.5.0"
+  },
+  "scripts": {
+    "export-new-reports": "node ./bin/export-new-reports.js > ./data/new-reports.json",
+    "summarise-report-values": "node ./bin/summarise-report-values.js < ./data/new-reports.json > ./data/report-values.md"
+  }
+}
