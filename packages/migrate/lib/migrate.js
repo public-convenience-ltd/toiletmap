@@ -1,18 +1,35 @@
 const { Report } = require('./models');
 
 /**
+ * Gets any useful textual information from a string or undefined if there is
+ * none.
+ */
+function ignoreEmpty(string) {
+  if (string === undefined) {
+    return undefined;
+  }
+
+  if (string.trim().length === 0) {
+    // only whitespace, we shouldn't populate the field
+    return undefined;
+  }
+
+  return string.trim();
+}
+
+/**
  * Convert a legacy report to the new report schema.
  */
 exports.toNewReport = function toNewReport(legacy) {
   return new Report({
     diff: {
       geometry: legacy.geometry,
-      name: legacy.properties.name,
+      name: ignoreEmpty(legacy.properties.name),
       active: legacy.properties.active,
-      access: legacy.properties.access,
-      opening: legacy.properties.opening,
-      type: legacy.properties.type,
-      accessibleType: legacy.properties.accessibleType,
+      access: ignoreEmpty(legacy.properties.access),
+      opening: ignoreEmpty(legacy.properties.opening),
+      type: ignoreEmpty(legacy.properties.type),
+      accessibleType: ignoreEmpty(legacy.properties.accessibleType),
       disposal: legacy.properties.disposal,
       babyChange: legacy.properties.babyChange,
       babyChangeLocation: legacy.properties.babyChangeLocation,
@@ -22,20 +39,20 @@ exports.toNewReport = function toNewReport(legacy) {
       attended: legacy.properties.attended,
       automatic: legacy.properties.automatic,
       parking: legacy.properties.parking,
-      fee: legacy.properties.fee,
+      fee: ignoreEmpty(legacy.properties.fee),
       streetAddress: legacy.properties.streetAddress,
       postcode: legacy.properties.postcode,
       operator: legacy.properties.operator,
       reportEmail: legacy.properties.reportEmail,
       reportPhone: legacy.properties.reportPhone,
-      notes: legacy.properties.notes,
+      notes: ignoreEmpty(legacy.properties.notes),
       infoUrl: legacy.properties.infoUrl,
       architecturalInterest: legacy.properties.architecturalInterest,
       historicalInterest: legacy.properties.historicalInterest,
       geocoded: legacy.properties.geocoded,
       geocoding_method: legacy.properties.geocoding_method,
       orig: legacy.properties.orig,
-      removal_reason: legacy.properties.removal_reason,
+      removal_reason: ignoreEmpty(legacy.properties.removal_reason),
       area: legacy.properties.area,
     },
   });
