@@ -1,6 +1,6 @@
 # GBPTM
 
-A suite of modules for [Public Convenience Ltd](https://www.publicconvenience.org/)'s *[Great British Public Toilet Map](https://wwww.toiletmap.org.uk)*
+A suite of modules for [Public Convenience Ltd](https://www.publicconvenience.org/)'s *[Great British Public Toilet Map](https://www.toiletmap.org.uk)*
 
 ## Getting Started
 
