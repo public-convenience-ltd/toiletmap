@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = require('mongoose').Schema;
 
-// our APIs old report model
+// our APIs old models
+const LegacyLoo = require('@neontribe/gbptm-api/src/models/loo');
 const LegacyReport = require('@neontribe/gbptm-api/src/models/loo_report');
 
 /**
@@ -60,7 +61,10 @@ function getCoreSchema() {
 exports.Report = mongoose.model(
   'Report',
   new Schema({
+    previous: { type: Schema.Types.ObjectId, ref: 'Report' },
+    next: { type: Schema.Types.ObjectId, ref: 'Report' },
     diff: getCoreSchema(),
   })
 );
+exports.LegacyLoo = LegacyLoo;
 exports.LegacyReport = LegacyReport;

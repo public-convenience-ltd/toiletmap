@@ -59,10 +59,21 @@ exports.toNewReport = function toNewReport(legacy) {
 };
 
 /**
- * Convert a list of legacy reports to a list of new reports. This is its own
- * function as, in the future, a new report will not always be solely created
- * from the data of one legacy report.
+ * Convert a list of legacy reports to a list of new reports, chaining them
+ * together into a linked list in the process.
  */
 exports.toNewReports = function toNewReports(legacies) {
-  return legacies.map(exports.toNewReport);
+  let newReps = legacies.map(exports.toNewReport);
+
+  for (let i = 0; i < newReps.length; i++) {
+    if (i - 1 >= 0) {
+      newReps[i].previous = newReps[i - 1]._id;
+    }
+
+    if (i + 1 < newReps.length) {
+      newReps[i].next = newReps[i + 1]._id;
+    }
+  }
+
+  return newReps;
 };
