@@ -37,6 +37,7 @@ function getCoreSchema() {
       {
         type: { type: String },
         name: { type: String },
+        _id: false,
       },
     ],
   };
@@ -44,11 +45,14 @@ function getCoreSchema() {
 
 exports.Report = mongoose.model(
   'Report',
-  new Schema({
-    previous: { type: Schema.Types.ObjectId, ref: 'Report' },
-    next: { type: Schema.Types.ObjectId, ref: 'Report' },
-    diff: getCoreSchema(),
-  })
+  new Schema(
+    {
+      previous: { type: Schema.Types.ObjectId, ref: 'Report' },
+      next: { type: Schema.Types.ObjectId, ref: 'Report' },
+      diff: getCoreSchema(),
+    },
+    { minimize: false }
+  )
 );
 exports.LegacyLoo = LegacyLoo;
 exports.LegacyReport = LegacyReport;
