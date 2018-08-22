@@ -5,6 +5,10 @@ const Schema = require('mongoose').Schema;
 const LegacyLoo = require('@neontribe/gbptm-api/src/models/loo');
 const LegacyReport = require('@neontribe/gbptm-api/src/models/loo_report');
 
+function ofLength(n) {
+  return [list => list.length == n, `{PATH} must be of length ${n}`];
+}
+
 /**
  * The core schema of a loo and loo report. This is as a function because:
  * - It will give a new object instance each time, protecting against mutation
@@ -16,9 +20,14 @@ function getCoreSchema() {
     geometry: {
       type: {
         type: String,
-        required: '"{PATH}" should be "Point" and is required',
+        enum: ['Point'],
+        required: true,
       },
-      coordinates: [{ type: 'Number' }],
+      coordinates: {
+        type: [Number],
+        required: true,
+        validate: ofLength(2),
+      },
     },
     name: { type: String, trim: true, minlength: 1 },
     active: { type: Boolean, default: true },
@@ -43,16 +52,15 @@ function getCoreSchema() {
   };
 }
 
-exports.Report = mongoose.model(
-  'Report',
-  new Schema(
-    {
-      previous: { type: Schema.Types.ObjectId, ref: 'Report' },
-      next: { type: Schema.Types.ObjectId, ref: 'Report' },
-      diff: getCoreSchema(),
-    },
-    { minimize: false }
-  )
+const ReportSchema = new Schema(
+  {
+    previous: { type: Schema.Types.ObjectId, ref: 'Report' },
+    next: { type: Schema.Types.ObjectId, ref: 'Report' },
+    diff: getCoreSchema(),
+  },
+  { minimize: false }
 );
+
+exports.Report = mongoose.model('Report', ReportSchema);
 exports.LegacyLoo = LegacyLoo;
 exports.LegacyReport = LegacyReport;
