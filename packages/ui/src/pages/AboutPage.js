@@ -155,7 +155,7 @@ class AboutPage extends Component {
         </h2>
 
         <p>
-          A publicly-accessible toilet means any toilet that the public all
+          A publicly-accessible toilet means any toilet that the public are
           allowed to access without needing to be a customer.
         </p>
 
