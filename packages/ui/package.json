@@ -1,6 +1,6 @@
 {
   "name": "@neontribe/gbptm-ui",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "private": true,
   "proxy": "https://localhost:8080",
   "devDependencies": {

@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.6.0"></a>
+# [2.6.0](https://github.com/neontribe/gbptm/compare/v2.5.0...v2.6.0) (2018-08-24)
+
+
+### Bug Fixes
+
+* clearly invite business owners ([a910cc2](https://github.com/neontribe/gbptm/commit/a910cc2))
+* clearly invite business owners ([16f9c48](https://github.com/neontribe/gbptm/commit/16f9c48))
+* issue 316 typo ([6676a83](https://github.com/neontribe/gbptm/commit/6676a83))
+* issue 316 typo ([0e1abb4](https://github.com/neontribe/gbptm/commit/0e1abb4))
+* no search box on toilet add page ([c9092e7](https://github.com/neontribe/gbptm/commit/c9092e7))
+* shrink header on small viewports ([c8be0a6](https://github.com/neontribe/gbptm/commit/c8be0a6))
+* use mapControls rather than geolocation ([89849f8](https://github.com/neontribe/gbptm/commit/89849f8)), closes [#301](https://github.com/neontribe/gbptm/issues/301)
+
+
+### Features
+
+* add points to full loolist ([a18d445](https://github.com/neontribe/gbptm/commit/a18d445))
+* allow linking to locations ([ffa235f](https://github.com/neontribe/gbptm/commit/ffa235f))
+* join use our loos ([fec82f2](https://github.com/neontribe/gbptm/commit/fec82f2))
+* say thank you nicely ([69f47a7](https://github.com/neontribe/gbptm/commit/69f47a7))
+* say thank you nicely ([067648e](https://github.com/neontribe/gbptm/commit/067648e))
+* thanks page 101 ([759d9b4](https://github.com/neontribe/gbptm/commit/759d9b4))
+
+
+
+
 <a name="2.5.0"></a>
 # [2.5.0](https://github.com/neontribe/gbptm/compare/v2.4.0...v2.5.0) (2018-08-06)
 

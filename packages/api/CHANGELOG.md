@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.6.0"></a>
+# [2.6.0](https://github.com/neontribe/gbptm/compare/v2.5.0...v2.6.0) (2018-08-24)
+
+
+### Features
+
+* add points to full loolist ([a18d445](https://github.com/neontribe/gbptm/commit/a18d445))
+
+
+
+
 <a name="2.5.0"></a>
 # [2.5.0](https://github.com/neontribe/gbptm/compare/v2.4.0...v2.5.0) (2018-08-06)
 
