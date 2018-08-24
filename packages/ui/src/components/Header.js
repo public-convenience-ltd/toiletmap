@@ -4,7 +4,7 @@ import { HashLink } from 'react-router-hash-link';
 
 import styles from './css/header.module.css';
 import logo from '../images/logo.svg';
-import domestos_logo from '../images/domestos_logo3.png';
+import domestosLogo from '../images/domestos_logo3.png';
 
 class Header extends Component {
   render() {
@@ -27,11 +27,7 @@ class Header extends Component {
           scroll={el => el.scrollIntoView(true)}
         >
           <span className={styles.sponsorTitle}>proudly sponsored by</span>
-          <img
-            src={domestos_logo}
-            alt="Domestos"
-            className={styles.sponsorLogo}
-          />
+          <img src={domestosLogo} alt="Domestos" className={styles.logo} />
         </HashLink>
       </header>
     );

@@ -1,16 +1,21 @@
 .appContainer {
-  height: 100vh;
+  height: 100%;
   display: flex;
   align-items: stretch;
 }
 
 .mainContainer {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
+  width: 100%;
   min-width: 320px;
   max-width: 350px;
   color: #1a1a1a;
+}
+
+@media only screen and (max-width: 750px) {
+  .mainContainer {
+    min-width: none;
+    max-width: none;
+  }
 }
 
 .bandedSection {
@@ -26,18 +31,11 @@
   padding-right: 12px;
 }
 
-@media only screen
-  and (max-width: 750px) {
-  .mainContainer {
-    max-width: none;
-  }
-}
-
 .main {
-  max-height: 100%;
+  height: 100%;
   display: flex;
-  flex: 1;
   flex-direction: column;
+  flex: 1;
   background-color: #fff;
 }
 
