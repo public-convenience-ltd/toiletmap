@@ -21,7 +21,7 @@
     "mongoose": "5.2.6",
     "mongoose-paginate": "5.0.3",
     "mongoose-timestamp": "0.6.0",
-    "newrelic": "^4.7.0",
+    "newrelic": "4.8.0",
     "node-fetch": "2.2.0"
   },
   "devDependencies": {

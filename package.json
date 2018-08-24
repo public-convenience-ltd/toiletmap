@@ -33,18 +33,14 @@
   },
   "homepage": "https://github.com/neontribe/gbptm#readme",
   "lint-staged": {
-    "*.{js,json}": [
-      "prettier --single-quote --trailing-comma es5 --write",
-      "git add"
-    ],
-    "*.js": [
-      "eslint",
-      "git add"
-    ],
-    "*.css": [
-      "stylelint",
-      "git add"
-    ]
+    "linters": {
+      "*.{js,json}": ["prettier --single-quote --trailing-comma es5 --write","git add"],
+      "*.js": [
+        "eslint",
+        "git add"
+      ],
+      "*.css": "stylelint"
+    }
   },
   "devDependencies": {
     "@commitlint/cli": "7.0.0",
