@@ -15,7 +15,7 @@
     "core-js": "2.5.7",
     "js-cookie": "2.2.0",
     "leaflet": "1.3.1",
-    "leaflet-control-geocoder": "1.6.0",
+    "leaflet-control-geocoder": "github:perliedman/leaflet-control-geocoder#f75cac4",
     "leaflet-loading": "0.1.24",
     "leaflet.locatecontrol": "0.62.0",
     "leaflet.markercluster": "1.3.0",
