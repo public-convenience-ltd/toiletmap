@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import settings from '../lib/settings';
 import _ from 'lodash';
-import { withRouter } from 'react-router';
 import queryString from 'query-string';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -12,6 +11,8 @@ import GridList from '@material-ui/core/GridList';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import LooTile from './LooTile';
+
+import { navigate } from '@reach/router';
 
 const styles = {
   gridRoot: {
@@ -36,7 +37,7 @@ class Search extends Component {
 
     this.state = {
       searching: false,
-      searchParams: Object.assign({}, defaults, props.location.query),
+      searchParams: Object.assign({}, defaults, props.location.state.query),
       areas: [],
     };
 
@@ -49,7 +50,7 @@ class Search extends Component {
   }
 
   doSearch(query) {
-    var q = query || this.props.location.query;
+    var q = query || this.props.location.state.query;
     if (!_.isEmpty(q)) {
       this.setState({ searching: true });
       fetch(settings.getItem('apiUrl') + '/search?' + queryString.stringify(q))
@@ -87,15 +88,20 @@ class Search extends Component {
   }
 
   UNSAFE_componentWillReceiveProps(props) {
-    if (!_.isEqual(props.location.query, this.props.location.query)) {
-      this.doSearch(props.location.query);
+    if (
+      !_.isEqual(props.location.state.query, this.props.location.state.query)
+    ) {
+      this.doSearch(props.location.state.query);
     }
   }
 
   submit() {
-    this.props.router.push({
-      pathname: this.props.location.pathname,
-      query: this.state.searchParams,
+    navigate(this.props.location.pathname, {
+      state: {
+        query: {
+          text: this.state.searchParams.text,
+        },
+      },
     });
   }
 
@@ -119,9 +125,10 @@ class Search extends Component {
     var searchParams = Object.assign({}, this.state.searchParams);
     searchParams.page = (parseInt(searchParams.page, 10) + inc).toString();
     this.setState({ searchParams });
-    this.props.router.push({
-      pathname: this.props.location.pathname,
-      query: searchParams,
+    navigate(this.props.location.pathname, {
+      state: {
+        query: searchParams,
+      },
     });
   }
 
@@ -247,4 +254,4 @@ class Search extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(Search));
+export default withStyles(styles)(Search);

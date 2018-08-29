@@ -11,27 +11,19 @@ import Search from './components/Search';
 
 import './css/index.css';
 
-import {
-  Router,
-  Route,
-  IndexRoute,
-  IndexRedirect,
-  hashHistory,
-} from 'react-router';
+import { Router } from '@reach/router';
 
 ReactDOM.render(
-  <Router history={hashHistory}>
-    <Route path="/" component={AppLayout}>
-      <IndexRedirect to="search" />
-      <Route path="home" component={Home} />
-      <Route path="search" component={Search} />
-      <Route path="statistics" component={Statistics}>
-        <IndexRoute component={HeadlineStats} />
-        <Route path="areas" component={AreaComparisonStats} />
-      </Route>
-
+  <Router>
+    <AppLayout path="/">
+      <Home path="home" />
+      <Search default path="search" />
+      <Statistics path="statistics">
+        <HeadlineStats default />
+        <AreaComparisonStats path="areas" />
+      </Statistics>
       {/* <Route path="tools" component={Tools}/> */}
-    </Route>
+    </AppLayout>
   </Router>,
   document.getElementById('root')
 );
