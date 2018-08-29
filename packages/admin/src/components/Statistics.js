@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { navigate } from '@reach/router';
+import { navigate, Location } from '@reach/router';
 import _ from 'lodash';
 import settings from '../lib/settings';
 import moment from 'moment';
@@ -59,17 +59,21 @@ class Statistics extends Component {
   render() {
     return this.state.loadedInitialData ? (
       <div>
-        <QueryScoper
-          start={this.props.location.state.start}
-          end={this.props.location.state.end}
-          minDate={this.state.minDate}
-          maxDate={this.state.maxDate}
-          areaType={this.props.location.state.areaType}
-          areaTypeList={this.state.areaTypeList}
-          area={this.props.location.state.area}
-          areaData={this.props.location.areaData}
-          onChange={this.updateQuery}
-        />
+        <Location>
+          {({ location }) => (
+            <QueryScoper
+              start={location.state && location.state.start}
+              end={location.state && location.state.end}
+              minDate={this.state.minDate}
+              maxDate={this.state.maxDate}
+              areaType={location.state && location.state.areaType}
+              areaTypeList={location.state && this.state.areaTypeList}
+              area={location.state && location.state.area}
+              areaData={location.areaData}
+              onChange={this.updateQuery}
+            />
+          )}
+        </Location>
         {this.props.children}
       </div>
     ) : (

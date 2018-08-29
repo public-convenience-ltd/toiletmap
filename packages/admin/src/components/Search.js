@@ -37,7 +37,10 @@ class Search extends Component {
 
     this.state = {
       searching: false,
-      searchParams: Object.assign({}, defaults, props.location.state.query),
+      searchParams: {
+        ...defaults,
+        ...(props.location.state && props.location.state.query),
+      },
       areas: [],
     };
 
@@ -50,7 +53,8 @@ class Search extends Component {
   }
 
   doSearch(query) {
-    var q = query || this.props.location.state.query;
+    var q =
+      query || (this.props.location.state && this.props.location.state.query);
     if (!_.isEmpty(q)) {
       this.setState({ searching: true });
       fetch(settings.getItem('apiUrl') + '/search?' + queryString.stringify(q))
