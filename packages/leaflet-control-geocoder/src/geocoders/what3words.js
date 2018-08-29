@@ -53,7 +53,7 @@ export default {
           var results = [],
             latLng,
             latLngBounds;
-          if (data.status.status == 200) {
+          if (data.status.status === 200) {
             latLng = L.latLng(data.geometry['lat'], data.geometry['lng']);
             latLngBounds = L.latLngBounds(latLng, latLng);
             results[0] = {

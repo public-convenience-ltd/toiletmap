@@ -328,6 +328,8 @@ export default {
             this._geocode();
           }
           break;
+        default:
+          break;
       }
     },
     _change: function() {

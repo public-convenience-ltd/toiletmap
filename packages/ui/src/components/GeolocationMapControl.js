@@ -1,7 +1,5 @@
 import L from 'leaflet';
 import { MapControl, withLeaflet } from 'react-leaflet';
-// Import source file instead of by module name to avoid Webpack warning
-// https://github.com/perliedman/leaflet-control-geocoder/issues/150
 import '@neontribe/leaflet-control-geocoder/src';
 
 class GeolocationMapControl extends MapControl {
