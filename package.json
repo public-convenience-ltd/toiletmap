@@ -12,6 +12,7 @@
     "release": "lerna publish --conventional-commits --exact -m \"build: release %s\"",
     "lint": "eslint . && stylelint ./**/*.css",
     "prettify": "prettier --single-quote --trailing-comma es5 --write \"./**/*.{js,json}\"",
+    "postinstall": "lerna run build --scope=@neontribe/leaflet-control-geocoder",
     "load:devData": "mongorestore --noIndexRestore --drop --nsFrom 'app29532998.*' --nsTo 'gbptm.*' --gzip --archive=./data/devData.tar.gz",
     "build:ui": "lerna run build --scope=@neontribe/gbptm-ui",
     "build:admin": "lerna run build --scope=@neontribe/gbptm-admin",
