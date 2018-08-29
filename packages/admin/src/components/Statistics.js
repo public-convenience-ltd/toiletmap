@@ -60,19 +60,21 @@ class Statistics extends Component {
     return this.state.loadedInitialData ? (
       <div>
         <Location>
-          {({ location }) => (
-            <QueryScoper
-              start={location.state && location.state.start}
-              end={location.state && location.state.end}
-              minDate={this.state.minDate}
-              maxDate={this.state.maxDate}
-              areaType={location.state && location.state.areaType}
-              areaTypeList={location.state && this.state.areaTypeList}
-              area={location.state && location.state.area}
-              areaData={location.areaData}
-              onChange={this.updateQuery}
-            />
-          )}
+          {({ location }) =>
+            location.state && (
+              <QueryScoper
+                start={location.state.start}
+                end={location.state.end}
+                minDate={this.state.minDate}
+                maxDate={this.state.maxDate}
+                areaType={location.state.areaType}
+                areaTypeList={this.state.areaTypeList}
+                area={location.state.area}
+                areaData={location.state.areaData}
+                onChange={this.updateQuery}
+              />
+            )
+          }
         </Location>
         {this.props.children}
       </div>

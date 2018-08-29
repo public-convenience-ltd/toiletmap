@@ -173,17 +173,18 @@ class HeadlineStats extends Component {
         <GridList cols={2} cellHeight={200} padding={1}>
           <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
             <Location>
-              {({ location }) => (
-                <ListSubheader component="div">
-                  <h2>Headline Counts</h2>
-                  {`${moment(location.state && location.state.start).format(
-                    'ddd, MMM Do YYYY'
-                  )} to ${moment(location.state && location.state.end).format(
-                    'ddd, MMM Do YYYY'
-                  )} in ${(location.state && location.state.area) ||
-                    (location.state && location.state.areaType)}`}
-                </ListSubheader>
-              )}
+              {({ location }) =>
+                location.state && (
+                  <ListSubheader component="div">
+                    <h2>Headline Counts</h2>
+                    {`${moment(location.state.start).format(
+                      'ddd, MMM Do YYYY'
+                    )} to ${moment(location.state.end).format(
+                      'ddd, MMM Do YYYY'
+                    )} in ${location.state.area || location.state.areaType}`}
+                  </ListSubheader>
+                )
+              }
             </Location>
           </GridListTile>
           <GridListTile rows={2} cols={1}>
