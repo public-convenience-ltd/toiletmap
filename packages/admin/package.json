@@ -3,7 +3,7 @@
   "version": "2.4.0",
   "private": true,
   "homepage": "/admin",
-  "proxy": "https://gbptm-unity.herokuapp.com",
+  "proxy": "https://localhost:8080",
   "devDependencies": {
     "react-scripts": "next"
   },
@@ -27,7 +27,7 @@
     "react-leaflet": "1.9.1"
   },
   "scripts": {
-    "start": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
+    "dev": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
     "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build"
   },
   "eslintConfig": {
