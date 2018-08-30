@@ -7,7 +7,6 @@ import Statistics from './components/Statistics';
 import HeadlineStats from './components/stats/HeadlineStats';
 import AreaComparisonStats from './components/stats/AreaComparisonStats';
 import Search from './components/Search';
-//import Tools from './components/Tools';
 
 import './css/index.css';
 
@@ -22,7 +21,6 @@ ReactDOM.render(
         <HeadlineStats default />
         <AreaComparisonStats path="areas" />
       </Statistics>
-      {/* <Route path="tools" component={Tools}/> */}
     </AppLayout>
   </Router>,
   document.getElementById('root')

@@ -4,8 +4,6 @@ import settings from '../../lib/settings';
 import queryString from 'query-string';
 import { Link } from '@reach/router';
 
-//import RefreshIndicator from 'material-ui/RefreshIndicator';
-
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
