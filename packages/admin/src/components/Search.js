@@ -39,11 +39,11 @@ class Search extends Component {
     };
 
     const parsedQuery = queryString.parse(this.props.location.search);
-
     this.state = {
       searching: false,
       searchParams: {
         ...defaults,
+        // Apply values from query string.
         ...parsedQuery,
       },
       areas: [],
@@ -52,13 +52,22 @@ class Search extends Component {
     this.submit = this.submit.bind(this);
     this.doSearch = this.doSearch.bind(this);
     this.fetchAreaData = this.fetchAreaData.bind(this);
-    this.updateParam = this.updateParam.bind(this);
-    this.updateField = this.updateField.bind(this);
-    this.updateSearchParamsFromQuery = this.updateSearchParamsFromQuery.bind(
-      this
-    );
+    this.updateSearchParam = this.updateSearchParam.bind(this);
+    this.updateSearchField = this.updateSearchField.bind(this);
+    this.updateSearchParams = this.updateSearchParams.bind(this);
   }
 
+  componentDidMount() {
+    this.doSearch(this.state.searchParams);
+    this.fetchAreaData();
+  }
+
+  /**
+   *
+   * Performs a search given the provided query object and attaches results to state.
+   *
+   * @param {*} q
+   */
   async doSearch(q) {
     if (!_.isEmpty(q)) {
       this.setState({ searching: true });
@@ -70,8 +79,10 @@ class Search extends Component {
     }
   }
 
+  /**
+   * Retreives a flattened list of Areas and Area Types and attaches to state.
+   */
   async fetchAreaData() {
-    //gets list of areas and area Types to use in the area dropdowns
     const searchUrl = settings.getItem('apiUrl') + '/admin_geo/areas';
     const response = await fetch(searchUrl);
     const result = await response.json();
@@ -83,43 +94,64 @@ class Search extends Component {
     });
   }
 
-  componentDidMount() {
-    this.doSearch(this.state.searchParams);
-    this.fetchAreaData();
-  }
-
+  /**
+   * Navigates to updated query string and submits a search to the API.
+   *
+   * Omits any empty search paramaters from the search.
+   */
   async submit() {
     const omitEmpty = _.pickBy(this.state.searchParams);
+
+    // If everything is empty, ensure that we at least specify the `text` param.
+    if (_.isEmpty(omitEmpty)) {
+      omitEmpty.text = '';
+    }
+
     const query = queryString.stringify(omitEmpty);
-
     await navigate(`/search?${query}`);
-
-    // Update the search state now we have navigated.
-    this.updateSearchParamsFromQuery();
-
     this.doSearch(omitEmpty);
   }
 
-  updateSearchParamsFromQuery() {
-    const parsedQuery = queryString.parse(this.props.location.search);
-    this.setState({
-      ...this.state,
-      searchParams: {
-        ...parsedQuery,
-      },
-    });
+  /**
+   *
+   * Helper to update specific fields with value of event.
+   *
+   * @param {*} key
+   * @param {*} evt
+   */
+  updateSearchField(key, evt) {
+    this.updateSearchParam(key, evt.target.value);
   }
 
-  updateField(key, evt) {
-    this.updateParam(key, evt.target.value);
-  }
-
-  updateParam(key, val) {
+  /**
+   *
+   * Update an individual entry in the search state.
+   *
+   * @param {*} key
+   * @param {*} val
+   */
+  updateSearchParam(key, val) {
     var searchParams = {
       ...this.state.searchParams,
       [key]: val,
     };
 
+    this.setState({
+      searchParams,
+    });
+  }
+
+  /**
+   *
+   * Update multiple entries in the search state.
+   *
+   * @param {*} paramUpdate
+   */
+  updateSearchParams(paramUpdate = {}) {
+    const searchParams = {
+      ...this.state.searchParams,
+      ...paramUpdate,
+    };
     this.setState({
       searchParams,
     });
@@ -137,12 +169,12 @@ class Search extends Component {
               helperText="eg: tescos"
               name="text"
               value={this.state.searchParams.text}
-              onChange={_.partial(this.updateField, 'text')}
+              onChange={_.partial(this.updateSearchField, 'text')}
             />
 
             <Select
               value={this.state.searchParams.area_name || ''}
-              onChange={_.partial(this.updateField, 'area_name')}
+              onChange={_.partial(this.updateSearchField, 'area_name')}
               input={<Input name="area_name" id="area-helper" />}
               displayEmpty
             >
