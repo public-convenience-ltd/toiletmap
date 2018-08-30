@@ -141,9 +141,7 @@ class AreaComparisonStats extends Component {
                   );
                 })}
                 <TableCell key={'c_listLink_' + index}>
-                  <Link to="/search" state={{ query: { area_name: row._id } }}>
-                    view loos
-                  </Link>
+                  <Link to={`/search?area_name=${row._id}`}>view loos</Link>
                 </TableCell>
               </TableRow>
             ))}
