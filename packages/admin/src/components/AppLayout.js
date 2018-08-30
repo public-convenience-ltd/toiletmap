@@ -18,7 +18,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import StatsIcon from '@material-ui/icons/Assessment';
 import SearchIcon from '@material-ui/icons/Search';
-//import ToolsIcon from '@material-ui/icons/Build';
+
 import { Link } from '@reach/router';
 
 const styles = {

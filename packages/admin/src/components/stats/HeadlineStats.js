@@ -5,8 +5,6 @@ import settings from '../../lib/settings';
 import queryString from 'query-string';
 import moment from 'moment';
 
-//import RefreshIndicator from 'material-ui/RefreshIndicator';
-
 import Counter from './Counter';
 import CrowdIcon from '@material-ui/icons/GroupAdd';
 import LooIcon from '@material-ui/icons/Wc';
