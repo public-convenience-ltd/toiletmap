@@ -93,6 +93,7 @@ class Search extends Component {
 
   UNSAFE_componentWillReceiveProps(props) {
     if (
+      !this.props.location.state ||
       !_.isEqual(props.location.state.query, this.props.location.state.query)
     ) {
       this.doSearch(props.location.state.query);
