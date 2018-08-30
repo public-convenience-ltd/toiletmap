@@ -19,7 +19,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import StatsIcon from '@material-ui/icons/Assessment';
 import SearchIcon from '@material-ui/icons/Search';
 //import ToolsIcon from '@material-ui/icons/Build';
-import { Link, withRouter } from 'react-router';
+import { Link } from '@reach/router';
 
 const styles = {
   root: {
@@ -87,10 +87,8 @@ class AppLayout extends Component {
               <List>
                 <ListItem button>
                   <Link
-                    to={{
-                      pathname: '/statistics',
-                      query: this.state.defaultStatScope,
-                    }}
+                    to="statistics"
+                    state={{ ...this.state.defaultStatScope }}
                   >
                     <ListItemIcon>
                       <StatsIcon />
@@ -100,10 +98,8 @@ class AppLayout extends Component {
                 </ListItem>
                 <ListItem button>
                   <Link
-                    to={{
-                      pathname: '/statistics/areas',
-                      query: this.state.defaultStatScope,
-                    }}
+                    to="/statistics/areas"
+                    state={{ ...this.state.defaultStatScope }}
                   >
                     <ListItemIcon>
                       <StatsIcon />
@@ -112,7 +108,7 @@ class AppLayout extends Component {
                   </Link>
                 </ListItem>
                 <ListItem button>
-                  <Link to={'/search'}>
+                  <Link to="/search">
                     <ListItemIcon>
                       <SearchIcon />
                     </ListItemIcon>
@@ -138,4 +134,4 @@ class AppLayout extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(AppLayout));
+export default withStyles(styles)(AppLayout);

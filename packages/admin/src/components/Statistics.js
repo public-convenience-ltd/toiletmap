@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import { navigate, Location } from '@reach/router';
 import _ from 'lodash';
 import settings from '../lib/settings';
 import moment from 'moment';
-import { withRouter } from 'react-router';
 
 import QueryScoper from './stats/QueryScoper';
 
@@ -49,26 +49,33 @@ class Statistics extends Component {
   }
 
   updateQuery(query) {
-    this.props.router.push({
-      pathname: this.props.location.pathname,
-      query,
+    navigate(this.props.location.pathname, {
+      state: {
+        query: query,
+      },
     });
   }
 
   render() {
     return this.state.loadedInitialData ? (
       <div>
-        <QueryScoper
-          start={this.props.location.query.start}
-          end={this.props.location.query.end}
-          minDate={this.state.minDate}
-          maxDate={this.state.maxDate}
-          areaType={this.props.location.query.areaType}
-          areaTypeList={this.state.areaTypeList}
-          area={this.props.location.query.area}
-          areaData={this.state.areaData}
-          onChange={this.updateQuery}
-        />
+        <Location>
+          {({ location }) =>
+            location.state && (
+              <QueryScoper
+                start={location.state.start}
+                end={location.state.end}
+                minDate={this.state.minDate}
+                maxDate={this.state.maxDate}
+                areaType={location.state.areaType}
+                areaTypeList={this.state.areaTypeList}
+                area={location.state.area}
+                areaData={location.state.areaData}
+                onChange={this.updateQuery}
+              />
+            )
+          }
+        </Location>
         {this.props.children}
       </div>
     ) : (
@@ -77,4 +84,4 @@ class Statistics extends Component {
   }
 }
 
-export default withRouter(Statistics);
+export default Statistics;
