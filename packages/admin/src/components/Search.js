@@ -54,7 +54,6 @@ class Search extends Component {
     this.fetchAreaData = this.fetchAreaData.bind(this);
     this.updateSearchParam = this.updateSearchParam.bind(this);
     this.updateSearchField = this.updateSearchField.bind(this);
-    this.updateSearchParams = this.updateSearchParams.bind(this);
   }
 
   componentDidMount() {
@@ -136,22 +135,6 @@ class Search extends Component {
       [key]: val,
     };
 
-    this.setState({
-      searchParams,
-    });
-  }
-
-  /**
-   *
-   * Update multiple entries in the search state.
-   *
-   * @param {*} paramUpdate
-   */
-  updateSearchParams(paramUpdate = {}) {
-    const searchParams = {
-      ...this.state.searchParams,
-      ...paramUpdate,
-    };
     this.setState({
       searchParams,
     });
