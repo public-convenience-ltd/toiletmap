@@ -185,7 +185,6 @@ class Search extends Component {
    * @param {*} evt
    */
   updateSearchField(key, evt) {
-    console.log(key, evt);
     this.updateSearchParam(key, evt.target.value);
   }
 
