@@ -44,6 +44,7 @@ class Search extends Component {
 
     var defaults = {
       text: '',
+      area_name: '',
       order: 'desc',
     };
 
@@ -179,10 +180,11 @@ class Search extends Component {
                 value={this.state.searchParams.area_name}
                 onChange={_.partial(this.updateSearchField, 'area_name')}
                 input={<Input name="area_name" id="area_name-helper" />}
+                displayEmpty
               >
-                <MenuItem value="" />
+                <MenuItem value="">All</MenuItem>
                 {this.state.areas.map((item, i) => (
-                  <MenuItem value={item} key={i + 1}>
+                  <MenuItem value={item} key={i}>
                     {item}
                   </MenuItem>
                 ))}
