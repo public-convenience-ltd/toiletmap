@@ -8,10 +8,12 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import GridList from '@material-ui/core/GridList';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import RaisedButton from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
+import SearchIcon from '@material-ui/icons/Search';
 import MenuItem from '@material-ui/core/MenuItem';
 import LooTile from './LooTile';
 
@@ -28,6 +30,12 @@ const styles = {
     width: '100%',
     height: 500,
   },
+  card: {
+    margin: '1em',
+  },
+  input: {
+    minWidth: '10em',
+  },
 };
 
 class Search extends Component {
@@ -36,6 +44,7 @@ class Search extends Component {
 
     var defaults = {
       text: '',
+      order: 'desc',
     };
 
     const parsedQuery = queryString.parse(this.props.location.search);
@@ -70,11 +79,17 @@ class Search extends Component {
   async doSearch(q) {
     if (!_.isEmpty(q)) {
       this.setState({ searching: true });
-      const res = await fetch(
-        settings.getItem('apiUrl') + '/search?' + queryString.stringify(q)
-      );
-      const results = await res.json();
-      this.setState({ results, searching: false });
+      try {
+        const res = await fetch(
+          settings.getItem('apiUrl') + '/search?' + queryString.stringify(q)
+        );
+        const results = await res.json();
+        this.setState({ results });
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.setState({ searching: false });
+      }
     }
   }
 
@@ -144,54 +159,109 @@ class Search extends Component {
     const { classes } = this.props;
     return (
       <div>
-        <Card>
+        <Card className={classes.card}>
           <CardContent>
-            <TextField
-              id="text"
-              label="Search in all text fields"
-              helperText="eg: tescos"
-              name="text"
-              value={this.state.searchParams.text}
-              onChange={_.partial(this.updateSearchField, 'text')}
-            />
+            <FormControl className={classes.formControl}>
+              <TextField
+                id="text"
+                label="Search in all text fields"
+                helperText="eg: tescos"
+                name="text"
+                value={this.state.searchParams.text}
+                onChange={_.partial(this.updateSearchField, 'text')}
+              />
+            </FormControl>
 
-            <Select
-              value={this.state.searchParams.area_name || ''}
-              onChange={_.partial(this.updateSearchField, 'area_name')}
-              input={<Input name="area_name" id="area-helper" />}
-              displayEmpty
-            >
-              <MenuItem value="">All</MenuItem>
-              {this.state.areas.map((item, i) => (
-                <MenuItem value={item} key={i}>
-                  {item}
+            <FormControl className={classes.formControl}>
+              <Select
+                id="area_name"
+                className={classes.input}
+                value={this.state.searchParams.area_name}
+                onChange={_.partial(this.updateSearchField, 'area_name')}
+                input={<Input name="area_name" id="area_name-helper" />}
+              >
+                <MenuItem value="" />
+                {this.state.areas.map((item, i) => (
+                  <MenuItem value={item} key={i + 1}>
+                    {item}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="order">Search Order</InputLabel>
+              <Select
+                id="order"
+                className={classes.input}
+                value={this.state.searchParams.order}
+                onChange={_.partial(this.updateSearchField, 'order')}
+                input={<Input name="order" id="order-helper" />}
+              >
+                <MenuItem value={'desc'} key={0}>
+                  Descending
                 </MenuItem>
-              ))}
-            </Select>
+                <MenuItem value={'asc'} key={1}>
+                  Ascending
+                </MenuItem>
+              </Select>
+            </FormControl>
 
-            <Toolbar>
-              <Button
+            <FormControl className={classes.formControl}>
+              <TextField
+                id="from_date"
+                label="From"
+                type="date"
+                defaultValue=""
+                value={this.state.searchParams.from_date}
+                onChange={_.partial(this.updateSearchField, 'from_date')}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <TextField
+                id="to_date"
+                label="To"
+                type="date"
+                defaultValue=""
+                value={this.state.searchParams.to_date}
+                onChange={_.partial(this.updateSearchField, 'to_date')}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <RaisedButton
                 variant="contained"
                 color="primary"
+                className={classes.button}
                 onClick={this.submit}
                 disabled={this.state.searching}
               >
+                <SearchIcon className={classes.rightIcon} />
                 Search
-              </Button>
-            </Toolbar>
+              </RaisedButton>
+            </FormControl>
           </CardContent>
         </Card>
 
-        {this.state.results &&
-          this.state.results.docs && (
-            <div className={classes.gridRoot}>
-              <GridList className={classes.gridList} cellHeight={180}>
-                {this.state.results.docs.map(l => {
-                  return <LooTile key={l._id} loo={l} />;
-                })}
-              </GridList>
-            </div>
-          )}
+        <Card className={classes.card}>
+          <CardContent>
+            {this.state.results &&
+              this.state.results.docs && (
+                <div className={classes.gridRoot}>
+                  <GridList className={classes.gridList} cellHeight={180}>
+                    {this.state.results.docs.map(l => {
+                      return <LooTile key={l._id} loo={l} />;
+                    })}
+                  </GridList>
+                </div>
+              )}
+          </CardContent>
+        </Card>
       </div>
     );
   }

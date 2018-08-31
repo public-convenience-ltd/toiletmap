@@ -12,10 +12,27 @@ router.get('/', async (req, res) => {
   delete params.limit;
   delete params.page;
 
+  const order = params.order || 'desc';
+  const to_date = params.to_date || null;
+
   if (params.text) {
     query.$or = [{ $text: { $search: req.query.text } }];
   }
+
+  // from_date is the precondition for using the to_date.
+  if (params.from_date) {
+    query.updatedAt = {
+      $gte: req.query.from_date,
+    };
+    if (to_date) {
+      query.updatedAt.$lte = to_date;
+    }
+  }
+
   delete params.text;
+  delete params.to_date;
+  delete params.order;
+  delete params.from_date;
 
   // Arbitrary text searches have been removed until a way is found that is not
   // prone to ReDoS attacks or indexing every possible property by text
@@ -40,8 +57,13 @@ router.get('/', async (req, res) => {
     delete params[name];
   });
 
-  const loos = await Loo.paginate(query, { page: page, limit: limit });
-
+  const loos = await Loo.paginate(query, {
+    page: page,
+    limit: limit,
+    sort: {
+      updatedAt: order,
+    },
+  });
   res.status(200).json(loos);
 });
 
