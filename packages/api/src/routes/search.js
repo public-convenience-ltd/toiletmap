@@ -13,26 +13,25 @@ router.get('/', async (req, res) => {
   delete params.page;
 
   const order = params.order || 'desc';
-  const to_date = params.to_date || null;
 
   if (params.text) {
-    query.$or = [{ $text: { $search: req.query.text } }];
+    query.$or = [{ $text: { $search: params.text } }];
   }
 
   // Note: from_date is the precondition for using the to_date.
   if (params.from_date) {
     query.updatedAt = {
-      $gte: req.query.from_date,
+      $gte: params.from_date,
     };
-    if (to_date) {
-      query.updatedAt.$lte = to_date;
+    if (params.to_date) {
+      query.updatedAt.$lte = params.to_date;
     }
   }
 
   // Delete handled keys.
   delete params.text;
-  delete params.to_date;
   delete params.order;
+  delete params.to_date;
   delete params.from_date;
 
   // Arbitrary text searches have been removed until a way is found that is not
