@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
     query.$or = [{ $text: { $search: req.query.text } }];
   }
 
-  // from_date is the precondition for using the to_date.
+  // Note: from_date is the precondition for using the to_date.
   if (params.from_date) {
     query.updatedAt = {
       $gte: req.query.from_date,
@@ -29,6 +29,7 @@ router.get('/', async (req, res) => {
     }
   }
 
+  // Delete handled keys.
   delete params.text;
   delete params.to_date;
   delete params.order;
