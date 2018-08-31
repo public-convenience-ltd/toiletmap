@@ -17,6 +17,14 @@ router.get('/', async (req, res) => {
   }
   delete params.text;
 
+  if (params.attributions) {
+    query.$and = [];
+    query.$and.push({
+      attributions: { $all: [params.attributions] },
+    });
+  }
+  delete params.attributions;
+
   // Arbitrary text searches have been removed until a way is found that is not
   // prone to ReDoS attacks or indexing every possible property by text
 
