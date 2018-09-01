@@ -255,7 +255,7 @@ class Search extends Component {
             >
               <MenuItem value="">All</MenuItem>
               {this.state.areas.map((item, i) => (
-                <MenuItem value={item} key={i}>
+                <MenuItem value={item} key={item}>
                   {item}
                 </MenuItem>
               ))}
