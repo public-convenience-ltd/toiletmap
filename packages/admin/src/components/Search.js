@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import settings from '../lib/settings';
 import _ from 'lodash';
+import deburr from 'lodash/deburr';
 import queryString from 'query-string';
+import Downshift from 'downshift';
 
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -13,9 +15,14 @@ import FormControl from '@material-ui/core/FormControl';
 import RaisedButton from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
+import Paper from '@material-ui/core/Paper';
 import SearchIcon from '@material-ui/icons/Search';
 import MenuItem from '@material-ui/core/MenuItem';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
 import LooTile from './LooTile';
+
+import RemoveCircle from '@material-ui/icons/RemoveCircle';
 
 import { navigate } from '@reach/router';
 
@@ -37,6 +44,48 @@ const styles = {
     minWidth: '10em',
   },
 };
+
+function renderInput(inputProps) {
+  const { InputProps, classes, ref, ...other } = inputProps;
+
+  return (
+    <TextField
+      InputProps={{
+        inputRef: ref,
+        classes: {
+          root: classes.inputRoot,
+        },
+        ...InputProps,
+      }}
+      {...other}
+    />
+  );
+}
+
+function renderSuggestion({
+  suggestion,
+  index,
+  itemProps,
+  highlightedIndex,
+  selectedItem,
+}) {
+  const isHighlighted = highlightedIndex === index;
+  const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
+
+  return (
+    <MenuItem
+      {...itemProps}
+      key={suggestion.label}
+      selected={isHighlighted}
+      component="div"
+      style={{
+        fontWeight: isSelected ? 500 : 400,
+      }}
+    >
+      {suggestion.label}
+    </MenuItem>
+  );
+}
 
 class Search extends Component {
   constructor(props) {
@@ -62,12 +111,15 @@ class Search extends Component {
     this.submit = this.submit.bind(this);
     this.doSearch = this.doSearch.bind(this);
     this.fetchAreaData = this.fetchAreaData.bind(this);
+    this.fetchContributorData = this.fetchContributorData.bind(this);
     this.updateSearchParam = this.updateSearchParam.bind(this);
     this.updateSearchField = this.updateSearchField.bind(this);
+    this.getContributorSuggestions = this.getContributorSuggestions.bind(this);
   }
 
   componentDidMount() {
     this.doSearch(this.state.searchParams);
+    this.fetchContributorData();
     this.fetchAreaData();
   }
 
@@ -106,6 +158,19 @@ class Search extends Component {
 
     this.setState({
       areas: result.All,
+    });
+  }
+
+  /**
+   * Fetches a list of contributors and attaches to state.
+   */
+  async fetchContributorData() {
+    const searchUrl = settings.getItem('apiUrl') + '/statistics/contributors';
+    const response = await fetch(searchUrl);
+    const result = await response.json();
+    const contributors = Object.keys(result).map(x => ({ label: x }));
+    this.setState({
+      contributors: contributors,
     });
   }
 
@@ -156,6 +221,32 @@ class Search extends Component {
     });
   }
 
+  /**
+   *
+   * Returns an array of contributor suggestions based upon an input string.
+   *
+   * @param {*} value
+   */
+  getContributorSuggestions(value) {
+    const inputValue = deburr(value.trim()).toLowerCase();
+    const inputLength = inputValue.length;
+    let count = 0;
+
+    return inputLength === 0
+      ? []
+      : this.state.contributors.filter(suggestion => {
+          const keep =
+            count < 5 &&
+            suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
+
+          if (keep) {
+            count += 1;
+          }
+
+          return keep;
+        });
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -184,7 +275,7 @@ class Search extends Component {
               >
                 <MenuItem value="">All</MenuItem>
                 {this.state.areas.map((item, i) => (
-                  <MenuItem value={item} key={i}>
+                  <MenuItem value={item} key={item}>
                     {item}
                   </MenuItem>
                 ))}
@@ -209,6 +300,58 @@ class Search extends Component {
               </Select>
             </FormControl>
 
+            <FormControl>
+              <Downshift
+                id="attribution-search"
+                onChange={_.partial(this.updateSearchParam, 'attributions')}
+              >
+                {({
+                  getInputProps,
+                  getItemProps,
+                  isOpen,
+                  inputValue,
+                  selectedItem,
+                  highlightedIndex,
+                  clearSelection,
+                }) => (
+                  <div className={classes.container}>
+                    {renderInput({
+                      fullWidth: true,
+                      classes,
+                      InputProps: getInputProps({
+                        placeholder: 'Search contributor submissions.',
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="Toggle password visibility"
+                              onClick={clearSelection}
+                            >
+                              <RemoveCircle />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }),
+                    })}
+                    {isOpen ? (
+                      <Paper className={classes.paper} square>
+                        {this.getContributorSuggestions(inputValue).map(
+                          (suggestion, index) =>
+                            renderSuggestion({
+                              suggestion,
+                              index,
+                              itemProps: getItemProps({
+                                item: suggestion.label,
+                              }),
+                              highlightedIndex,
+                              selectedItem,
+                            })
+                        )}
+                      </Paper>
+                    ) : null}
+                  </div>
+                )}
+              </Downshift>
+            </FormControl>
             <FormControl className={classes.formControl}>
               <TextField
                 id="from_date"
