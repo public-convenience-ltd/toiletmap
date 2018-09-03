@@ -54,7 +54,7 @@ router.get('/:id', async (req, res) => {
     res.status(200).json(populatedReportsLoo);
     return;
   }
-  console.log(loo);
+
   res.status(200).json(loo);
 });
 
