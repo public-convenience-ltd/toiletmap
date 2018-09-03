@@ -44,10 +44,17 @@ router.get('/:id/updateArea', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
   const loo = await Loo.findById(req.params.id).exec();
+
   if (!loo) {
     return res.status(404).end();
   }
 
+  if (req.query.populateReports) {
+    const populatedReportsLoo = await loo.populate('reports').execPopulate();
+    res.status(200).json(populatedReportsLoo);
+    return;
+  }
+  console.log(loo);
   res.status(200).json(loo);
 });
 

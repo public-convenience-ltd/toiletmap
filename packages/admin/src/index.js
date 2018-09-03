@@ -7,6 +7,7 @@ import Statistics from './components/Statistics';
 import HeadlineStats from './components/stats/HeadlineStats';
 import AreaComparisonStats from './components/stats/AreaComparisonStats';
 import Search from './components/Search';
+import LooView from './components/LooView';
 
 import './css/index.css';
 
@@ -17,6 +18,7 @@ ReactDOM.render(
     <AppLayout path="/">
       <Home path="/" />
       <Search path="search" />
+      <LooView path="loos/:looId" />
       <Statistics path="statistics">
         <HeadlineStats default />
         <AreaComparisonStats path="areas" />

@@ -28,18 +28,18 @@ router.get('/', async (req, res) => {
     }
   }
 
-  // Delete handled keys.
-  delete params.text;
-  delete params.order;
-  delete params.to_date;
-  delete params.from_date;
-
   if (params.attributions) {
     query.$and = [];
     query.$and.push({
       attributions: { $all: [params.attributions] },
     });
   }
+
+  // Delete handled keys.
+  delete params.text;
+  delete params.order;
+  delete params.to_date;
+  delete params.from_date;
   delete params.attributions;
 
   // Arbitrary text searches have been removed until a way is found that is not
