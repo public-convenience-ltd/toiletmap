@@ -4,7 +4,6 @@ import _ from 'lodash';
 import deburr from 'lodash/deburr';
 import queryString from 'query-string';
 import Downshift from 'downshift';
-
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -20,11 +19,11 @@ import SearchIcon from '@material-ui/icons/Search';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
 import LooTile from './LooTile';
-
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
-
-import { navigate } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 
 const styles = {
   gridRoot: {
@@ -153,9 +152,7 @@ class Search extends Component {
     const searchUrl = settings.getItem('apiUrl') + '/admin_geo/areas';
     const response = await fetch(searchUrl);
     const result = await response.json();
-
     result.All = _.uniq(_.flatten(_.values(result))).sort();
-
     this.setState({
       areas: result.All,
     });
@@ -188,7 +185,7 @@ class Search extends Component {
     }
 
     const query = queryString.stringify(omitEmpty);
-    await navigate(`/search?${query}`);
+    await navigate(`search?${query}`);
     this.doSearch(omitEmpty);
   }
 
@@ -400,7 +397,16 @@ class Search extends Component {
                 <div className={classes.gridRoot}>
                   <GridList className={classes.gridList} cellHeight={180}>
                     {this.state.results.docs.map(l => {
-                      return <LooTile key={l._id} loo={l} />;
+                      return (
+                        <GridListTile key={l._id} style={{ width: '33.3%' }}>
+                          <LooTile loo={l} />
+                          <Link to={`../loos/${l._id}`}>
+                            <GridListTileBar
+                              title={l.properties.name || 'Unnamed'}
+                            />
+                          </Link>
+                        </GridListTile>
+                      );
                     })}
                   </GridList>
                 </div>
