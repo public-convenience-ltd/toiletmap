@@ -3,8 +3,10 @@ import settings from '../lib/settings';
 import _ from 'lodash';
 import deburr from 'lodash/deburr';
 import queryString from 'query-string';
+import classNames from 'classnames';
 import Downshift from 'downshift';
 import { withStyles } from '@material-ui/core/styles';
+
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
@@ -14,6 +16,7 @@ import FormControl from '@material-ui/core/FormControl';
 import RaisedButton from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
+import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import SearchIcon from '@material-ui/icons/Search';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -21,11 +24,16 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Typography from '@material-ui/core/Typography';
 import LooTile from './LooTile';
-import RemoveCircle from '@material-ui/icons/RemoveCircle';
+import CloseOutlined from '@material-ui/icons/CloseOutlined';
 import { Link, navigate } from '@reach/router';
 
-const styles = {
+const styles = theme => ({
   gridRoot: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -42,7 +50,29 @@ const styles = {
   input: {
     minWidth: '10em',
   },
-};
+  buttons: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+  searchForm: {
+    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 3,
+    padding: theme.spacing.unit * 2,
+    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
+      marginTop: theme.spacing.unit * 6,
+      marginBottom: theme.spacing.unit * 6,
+      padding: theme.spacing.unit * 3,
+    },
+  },
+  button: {
+    marginTop: theme.spacing.unit * 3,
+    marginLeft: theme.spacing.unit,
+  },
+});
 
 function renderInput(inputProps) {
   const { InputProps, classes, ref, ...other } = inputProps;
@@ -90,17 +120,20 @@ class Search extends Component {
   constructor(props) {
     super(props);
 
-    var defaults = {
+    this.searchDefaults = {
       text: '',
-      area_name: '',
       order: 'desc',
+      to_date: '',
+      from_date: '',
+      attributions: '',
+      area_name: '',
     };
 
     const parsedQuery = queryString.parse(this.props.location.search);
     this.state = {
       searching: false,
       searchParams: {
-        ...defaults,
+        ...this.searchDefaults,
         // Apply values from query string.
         ...parsedQuery,
       },
@@ -113,7 +146,7 @@ class Search extends Component {
     this.fetchContributorData = this.fetchContributorData.bind(this);
     this.updateSearchParam = this.updateSearchParam.bind(this);
     this.updateSearchField = this.updateSearchField.bind(this);
-    this.getContributorSuggestions = this.getContributorSuggestions.bind(this);
+    this.getSuggestions = this.getSuggestions.bind(this);
   }
 
   componentDidMount() {
@@ -122,18 +155,35 @@ class Search extends Component {
     this.fetchAreaData();
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.search !== this.props.location.search) {
+      const parsedQuery = queryString.parse(this.props.location.search);
+      this.setState(
+        {
+          searchParams: {
+            ...this.searchDefaults,
+            ...parsedQuery,
+          },
+        },
+        this.doSearch.bind(this)
+      );
+    }
+  }
+
   /**
    *
    * Performs a search given the provided query object and attaches results to state.
    *
    * @param {*} q
    */
-  async doSearch(q) {
+  async doSearch(q = this.state.searchParams) {
     if (!_.isEmpty(q)) {
       this.setState({ searching: true });
       try {
         const res = await fetch(
-          settings.getItem('apiUrl') + '/search?' + queryString.stringify(q)
+          settings.getItem('apiUrl') +
+            '/search?' +
+            queryString.stringify(_.pickBy(q))
         );
         const results = await res.json();
         this.setState({ results });
@@ -152,7 +202,7 @@ class Search extends Component {
     const searchUrl = settings.getItem('apiUrl') + '/admin_geo/areas';
     const response = await fetch(searchUrl);
     const result = await response.json();
-    result.All = _.uniq(_.flatten(_.values(result))).sort();
+    result.All = _.uniq(_.flatten(_.values(result))).map(x => ({ label: x }));
     this.setState({
       areas: result.All,
     });
@@ -186,7 +236,7 @@ class Search extends Component {
 
     const query = queryString.stringify(omitEmpty);
     await navigate(`search?${query}`);
-    this.doSearch(omitEmpty);
+    this.doSearch();
   }
 
   /**
@@ -219,19 +269,35 @@ class Search extends Component {
   }
 
   /**
+   * Determines whether the user has conducted an advanced search.
+   */
+  get advancedSearch() {
+    const advancedParams = [
+      'area_name',
+      'attributions',
+      'from_date',
+      'to_date',
+    ];
+    return advancedParams.some(
+      advancedParam => this.state.searchParams[advancedParam]
+    );
+  }
+
+  /**
    *
-   * Returns an array of contributor suggestions based upon an input string.
+   * Returns an array of suggestions based upon an input string and provided array.
    *
+   * @param {*} data
    * @param {*} value
    */
-  getContributorSuggestions(value) {
+  getSuggestions(data, value) {
     const inputValue = deburr(value.trim()).toLowerCase();
     const inputLength = inputValue.length;
     let count = 0;
 
     return inputLength === 0
       ? []
-      : this.state.contributors.filter(suggestion => {
+      : data.filter(suggestion => {
           const keep =
             count < 5 &&
             suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
@@ -248,147 +314,223 @@ class Search extends Component {
     const { classes } = this.props;
     return (
       <div>
-        <Card className={classes.card}>
-          <CardContent>
-            <FormControl className={classes.formControl}>
-              <TextField
-                id="text"
-                label="Search in all text fields"
-                helperText="eg: tescos"
-                name="text"
-                value={this.state.searchParams.text}
-                onChange={_.partial(this.updateSearchField, 'text')}
-              />
-            </FormControl>
+        <Paper className={classNames(classes.paper, classes.searchForm)}>
+          <Grid container spacing={24}>
+            <Grid item xs={12} sm={7} md={9}>
+              <FormControl className={classes.formControl} fullWidth>
+                <TextField
+                  id="text"
+                  label="Search in all text fields"
+                  name="text"
+                  value={this.state.searchParams.text}
+                  onChange={_.partial(this.updateSearchField, 'text')}
+                />
+              </FormControl>
+            </Grid>
 
-            <FormControl className={classes.formControl}>
-              <Select
-                id="area_name"
-                className={classes.input}
-                value={this.state.searchParams.area_name}
-                onChange={_.partial(this.updateSearchField, 'area_name')}
-                input={<Input name="area_name" id="area_name-helper" />}
-                displayEmpty
-              >
-                <MenuItem value="">All</MenuItem>
-                {this.state.areas.map((item, i) => (
-                  <MenuItem value={item} key={item}>
-                    {item}
+            <Grid item xs={12} sm={5} md={3}>
+              <FormControl className={classes.formControl} fullWidth>
+                <InputLabel htmlFor="order">Search Order</InputLabel>
+                <Select
+                  id="order"
+                  className={classes.input}
+                  value={this.state.searchParams.order}
+                  onChange={_.partial(this.updateSearchField, 'order')}
+                  input={<Input name="order" id="order-helper" />}
+                >
+                  <MenuItem value={'desc'} key={0}>
+                    Newest First
                   </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+                  <MenuItem value={'asc'} key={1}>
+                    Oldest First
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <ExpansionPanel defaultExpanded={this.advancedSearch}>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.heading}>
+                    Advanced Options
+                  </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Grid container spacing={24}>
+                    <Grid item xs={12} sm={6}>
+                      <FormControl fullWidth>
+                        <Downshift
+                          id="area_name-search"
+                          onChange={_.partial(
+                            this.updateSearchParam,
+                            'area_name'
+                          )}
+                          selectedItem={this.state.searchParams.area_name}
+                        >
+                          {({
+                            getInputProps,
+                            getItemProps,
+                            isOpen,
+                            inputValue,
+                            selectedItem,
+                            highlightedIndex,
+                            clearSelection,
+                          }) => (
+                            <div className={classes.container}>
+                              {renderInput({
+                                fullWidth: true,
+                                classes,
+                                InputProps: getInputProps({
+                                  placeholder: 'Search Areas',
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <IconButton
+                                        aria-label="Clear area input box"
+                                        onClick={clearSelection}
+                                      >
+                                        <CloseOutlined />
+                                      </IconButton>
+                                    </InputAdornment>
+                                  ),
+                                }),
+                              })}
+                              {isOpen ? (
+                                <Paper className={classes.paper} square>
+                                  {this.getSuggestions(
+                                    this.state.areas,
+                                    inputValue
+                                  ).map((suggestion, index) =>
+                                    renderSuggestion({
+                                      suggestion,
+                                      index,
+                                      itemProps: getItemProps({
+                                        item: suggestion.label,
+                                      }),
+                                      highlightedIndex,
+                                      selectedItem,
+                                    })
+                                  )}
+                                </Paper>
+                              ) : null}
+                            </div>
+                          )}
+                        </Downshift>
+                      </FormControl>
+                    </Grid>
 
-            <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="order">Search Order</InputLabel>
-              <Select
-                id="order"
-                className={classes.input}
-                value={this.state.searchParams.order}
-                onChange={_.partial(this.updateSearchField, 'order')}
-                input={<Input name="order" id="order-helper" />}
-              >
-                <MenuItem value={'desc'} key={0}>
-                  Descending
-                </MenuItem>
-                <MenuItem value={'asc'} key={1}>
-                  Ascending
-                </MenuItem>
-              </Select>
-            </FormControl>
+                    <Grid item xs={12} sm={6}>
+                      <FormControl fullWidth>
+                        <Downshift
+                          id="attribution-search"
+                          onChange={_.partial(
+                            this.updateSearchParam,
+                            'attributions'
+                          )}
+                          selectedItem={this.state.searchParams.attributions}
+                        >
+                          {({
+                            getInputProps,
+                            getItemProps,
+                            isOpen,
+                            inputValue,
+                            selectedItem,
+                            highlightedIndex,
+                            clearSelection,
+                          }) => (
+                            <div className={classes.container}>
+                              {renderInput({
+                                fullWidth: true,
+                                classes,
+                                InputProps: getInputProps({
+                                  placeholder: 'Search Contributors',
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <IconButton
+                                        aria-label="Clear contributor input box"
+                                        onClick={clearSelection}
+                                      >
+                                        <CloseOutlined />
+                                      </IconButton>
+                                    </InputAdornment>
+                                  ),
+                                }),
+                              })}
+                              {isOpen ? (
+                                <Paper className={classes.paper} square>
+                                  {this.getSuggestions(
+                                    this.state.contributors,
+                                    inputValue
+                                  ).map((suggestion, index) =>
+                                    renderSuggestion({
+                                      suggestion,
+                                      index,
+                                      itemProps: getItemProps({
+                                        item: suggestion.label,
+                                      }),
+                                      highlightedIndex,
+                                      selectedItem,
+                                    })
+                                  )}
+                                </Paper>
+                              ) : null}
+                            </div>
+                          )}
+                        </Downshift>
+                      </FormControl>
+                    </Grid>
 
-            <FormControl>
-              <Downshift
-                id="attribution-search"
-                onChange={_.partial(this.updateSearchParam, 'attributions')}
-              >
-                {({
-                  getInputProps,
-                  getItemProps,
-                  isOpen,
-                  inputValue,
-                  selectedItem,
-                  highlightedIndex,
-                  clearSelection,
-                }) => (
-                  <div className={classes.container}>
-                    {renderInput({
-                      fullWidth: true,
-                      classes,
-                      InputProps: getInputProps({
-                        placeholder: 'Search contributor submissions.',
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="Toggle password visibility"
-                              onClick={clearSelection}
-                            >
-                              <RemoveCircle />
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }),
-                    })}
-                    {isOpen ? (
-                      <Paper className={classes.paper} square>
-                        {this.getContributorSuggestions(inputValue).map(
-                          (suggestion, index) =>
-                            renderSuggestion({
-                              suggestion,
-                              index,
-                              itemProps: getItemProps({
-                                item: suggestion.label,
-                              }),
-                              highlightedIndex,
-                              selectedItem,
-                            })
-                        )}
-                      </Paper>
-                    ) : null}
-                  </div>
-                )}
-              </Downshift>
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <TextField
-                id="from_date"
-                label="From"
-                type="date"
-                defaultValue=""
-                value={this.state.searchParams.from_date}
-                onChange={_.partial(this.updateSearchField, 'from_date')}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <TextField
-                id="to_date"
-                label="To"
-                type="date"
-                defaultValue=""
-                value={this.state.searchParams.to_date}
-                onChange={_.partial(this.updateSearchField, 'to_date')}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <RaisedButton
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                onClick={this.submit}
-                disabled={this.state.searching}
-              >
-                <SearchIcon className={classes.rightIcon} />
-                Search
-              </RaisedButton>
-            </FormControl>
-          </CardContent>
-        </Card>
+                    <Grid item xs={12} sm={6}>
+                      <FormControl className={classes.formControl} fullWidth>
+                        <TextField
+                          id="from_date"
+                          label="Updated After"
+                          type="date"
+                          value={this.state.searchParams.from_date}
+                          onChange={_.partial(
+                            this.updateSearchField,
+                            'from_date'
+                          )}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        />
+                      </FormControl>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <FormControl className={classes.formControl} fullWidth>
+                        <TextField
+                          id="to_date"
+                          label="Updated Before"
+                          type="date"
+                          value={this.state.searchParams.to_date}
+                          onChange={_.partial(
+                            this.updateSearchField,
+                            'to_date'
+                          )}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        />
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            </Grid>
+          </Grid>
+          <div className={classes.buttons}>
+            <RaisedButton
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={this.submit}
+              disabled={this.state.searching}
+            >
+              <SearchIcon className={classes.rightIcon} />
+              Search
+            </RaisedButton>
+          </div>
+        </Paper>
 
         <Card className={classes.card}>
           <CardContent>
