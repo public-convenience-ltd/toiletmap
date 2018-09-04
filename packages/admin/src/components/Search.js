@@ -92,7 +92,6 @@ class Search extends Component {
 
     var defaults = {
       text: '',
-      area_name: '',
       order: 'desc',
     };
 
@@ -267,6 +266,7 @@ class Search extends Component {
               <Downshift
                 id="area_name-search"
                 onChange={_.partial(this.updateSearchParam, 'area_name')}
+                defaultSelectedItem={this.state.searchParams.area_name}
               >
                 {({
                   getInputProps,
@@ -338,6 +338,7 @@ class Search extends Component {
               <Downshift
                 id="attribution-search"
                 onChange={_.partial(this.updateSearchParam, 'attributions')}
+                defaultSelectedItem={this.state.searchParams.attributions}
               >
                 {({
                   getInputProps,
