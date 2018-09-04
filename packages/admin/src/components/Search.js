@@ -237,7 +237,7 @@ class Search extends Component {
 
     const query = queryString.stringify(omitEmpty);
     await navigate(`search?${query}`);
-    this.doSearch(omitEmpty);
+    this.doSearch();
   }
 
   /**
