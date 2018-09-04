@@ -176,8 +176,7 @@ class Search extends Component {
    *
    * @param {*} q
    */
-  async doSearch(q) {
-    q = q || this.state.searchParams;
+  async doSearch(q = this.state.searchParams) {
     if (!_.isEmpty(q)) {
       this.setState({ searching: true });
       try {
@@ -279,8 +278,9 @@ class Search extends Component {
       'from_date',
       'to_date',
     ];
-    const currentParams = this.state.searchParams;
-    return advancedParams.some(advancedParam => currentParams[advancedParam]);
+    return advancedParams.some(
+      advancedParam => this.state.searchParams[advancedParam]
+    );
   }
 
   /**
