@@ -123,6 +123,10 @@ class Search extends Component {
     this.searchDefaults = {
       text: '',
       order: 'desc',
+      to_date: '',
+      from_date: '',
+      attributions: '',
+      area_name: '',
     };
 
     const parsedQuery = queryString.parse(this.props.location.search);
@@ -178,7 +182,9 @@ class Search extends Component {
       this.setState({ searching: true });
       try {
         const res = await fetch(
-          settings.getItem('apiUrl') + '/search?' + queryString.stringify(q)
+          settings.getItem('apiUrl') +
+            '/search?' +
+            queryString.stringify(_.pickBy(q))
         );
         const results = await res.json();
         this.setState({ results });
@@ -273,10 +279,8 @@ class Search extends Component {
       'from_date',
       'to_date',
     ];
-    const currentParams = Object.keys(this.state.searchParams);
-    return advancedParams.some(advancedParam =>
-      currentParams.includes(advancedParam)
-    );
+    const currentParams = this.state.searchParams;
+    return advancedParams.some(advancedParam => !!currentParams[advancedParam]);
   }
 
   /**
@@ -360,9 +364,7 @@ class Search extends Component {
                             this.updateSearchParam,
                             'area_name'
                           )}
-                          defaultSelectedItem={
-                            this.state.searchParams.area_name
-                          }
+                          selectedItem={this.state.searchParams.area_name}
                         >
                           {({
                             getInputProps,
@@ -423,9 +425,7 @@ class Search extends Component {
                             this.updateSearchParam,
                             'attributions'
                           )}
-                          defaultSelectedItem={
-                            this.state.searchParams.attributions
-                          }
+                          selectedItem={this.state.searchParams.attributions}
                         >
                           {({
                             getInputProps,
