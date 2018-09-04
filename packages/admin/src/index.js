@@ -16,7 +16,7 @@ import { Router } from '@reach/router';
 ReactDOM.render(
   <Router>
     <AppLayout path="/admin">
-      <Home default path="/" />
+      <Home default path="home" />
       <Search path="search" />
       <LooView path="loos/:looId" />
       <Statistics path="statistics">

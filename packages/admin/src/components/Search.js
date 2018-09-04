@@ -185,7 +185,7 @@ class Search extends Component {
     }
 
     const query = queryString.stringify(omitEmpty);
-    await navigate(`/search?${query}`);
+    await navigate(`search?${query}`);
     this.doSearch(omitEmpty);
   }
 
@@ -400,7 +400,7 @@ class Search extends Component {
                       return (
                         <GridListTile key={l._id} style={{ width: '33.3%' }}>
                           <LooTile loo={l} />
-                          <Link to={`/loos/${l._id}`}>
+                          <Link to={`../loos/${l._id}`}>
                             <GridListTileBar
                               title={l.properties.name || 'Unnamed'}
                             />

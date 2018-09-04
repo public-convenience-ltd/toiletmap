@@ -18,7 +18,7 @@ const styles = theme => ({
   },
 });
 
-function SimpleTable(props) {
+function LooTable(props) {
   const { classes, data } = props;
 
   return (
@@ -47,9 +47,9 @@ function SimpleTable(props) {
   );
 }
 
-SimpleTable.propTypes = {
+LooTable.propTypes = {
   classes: PropTypes.object.isRequired,
   data: PropTypes.array.isRequired,
 };
 
-export default withStyles(styles)(SimpleTable);
+export default withStyles(styles)(LooTable);

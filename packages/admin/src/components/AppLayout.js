@@ -98,7 +98,7 @@ class AppLayout extends Component {
                 </ListItem>
                 <ListItem button>
                   <Link
-                    to="/statistics/areas"
+                    to="statistics/areas"
                     state={{ ...this.state.defaultStatScope }}
                   >
                     <ListItemIcon>
@@ -108,7 +108,7 @@ class AppLayout extends Component {
                   </Link>
                 </ListItem>
                 <ListItem button>
-                  <Link to="/search">
+                  <Link to="search">
                     <ListItemIcon>
                       <SearchIcon />
                     </ListItemIcon>
