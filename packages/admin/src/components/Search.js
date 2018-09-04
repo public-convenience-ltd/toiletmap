@@ -113,7 +113,7 @@ class Search extends Component {
     this.fetchContributorData = this.fetchContributorData.bind(this);
     this.updateSearchParam = this.updateSearchParam.bind(this);
     this.updateSearchField = this.updateSearchField.bind(this);
-    this.getContributorSuggestions = this.getContributorSuggestions.bind(this);
+    this.getSuggestions = this.getSuggestions.bind(this);
   }
 
   componentDidMount() {
@@ -152,7 +152,9 @@ class Search extends Component {
     const searchUrl = settings.getItem('apiUrl') + '/admin_geo/areas';
     const response = await fetch(searchUrl);
     const result = await response.json();
-    result.All = _.uniq(_.flatten(_.values(result))).sort();
+    result.All = _.uniq(_.flatten(_.values(result)))
+      .sort()
+      .map(x => ({ label: x }));
     this.setState({
       areas: result.All,
     });
@@ -220,18 +222,19 @@ class Search extends Component {
 
   /**
    *
-   * Returns an array of contributor suggestions based upon an input string.
+   * Returns an array of suggestions based upon an input string and provided array.
    *
+   * @param {*} data
    * @param {*} value
    */
-  getContributorSuggestions(value) {
+  getSuggestions(data, value) {
     const inputValue = deburr(value.trim()).toLowerCase();
     const inputLength = inputValue.length;
     let count = 0;
 
     return inputLength === 0
       ? []
-      : this.state.contributors.filter(suggestion => {
+      : data.filter(suggestion => {
           const keep =
             count < 5 &&
             suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
@@ -260,23 +263,57 @@ class Search extends Component {
                 onChange={_.partial(this.updateSearchField, 'text')}
               />
             </FormControl>
-
-            <FormControl className={classes.formControl}>
-              <Select
-                id="area_name"
-                className={classes.input}
-                value={this.state.searchParams.area_name}
-                onChange={_.partial(this.updateSearchField, 'area_name')}
-                input={<Input name="area_name" id="area_name-helper" />}
-                displayEmpty
+            <FormControl>
+              <Downshift
+                id="area_name-search"
+                onChange={_.partial(this.updateSearchParam, 'area_name')}
               >
-                <MenuItem value="">All</MenuItem>
-                {this.state.areas.map((item, i) => (
-                  <MenuItem value={item} key={item}>
-                    {item}
-                  </MenuItem>
-                ))}
-              </Select>
+                {({
+                  getInputProps,
+                  getItemProps,
+                  isOpen,
+                  inputValue,
+                  selectedItem,
+                  highlightedIndex,
+                  clearSelection,
+                }) => (
+                  <div className={classes.container}>
+                    {renderInput({
+                      fullWidth: true,
+                      classes,
+                      InputProps: getInputProps({
+                        placeholder: 'Search Areas',
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="Clear area input box"
+                              onClick={clearSelection}
+                            >
+                              <RemoveCircle />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }),
+                    })}
+                    {isOpen ? (
+                      <Paper className={classes.paper} square>
+                        {this.getSuggestions(this.state.areas, inputValue).map(
+                          (suggestion, index) =>
+                            renderSuggestion({
+                              suggestion,
+                              index,
+                              itemProps: getItemProps({
+                                item: suggestion.label,
+                              }),
+                              highlightedIndex,
+                              selectedItem,
+                            })
+                        )}
+                      </Paper>
+                    ) : null}
+                  </div>
+                )}
+              </Downshift>
             </FormControl>
 
             <FormControl className={classes.formControl}>
@@ -289,10 +326,10 @@ class Search extends Component {
                 input={<Input name="order" id="order-helper" />}
               >
                 <MenuItem value={'desc'} key={0}>
-                  Descending
+                  Newest First
                 </MenuItem>
                 <MenuItem value={'asc'} key={1}>
-                  Ascending
+                  Oldest First
                 </MenuItem>
               </Select>
             </FormControl>
@@ -316,11 +353,11 @@ class Search extends Component {
                       fullWidth: true,
                       classes,
                       InputProps: getInputProps({
-                        placeholder: 'Search contributor submissions.',
+                        placeholder: 'Search Contributors',
                         endAdornment: (
                           <InputAdornment position="end">
                             <IconButton
-                              aria-label="Toggle password visibility"
+                              aria-label="Clear contributor input box"
                               onClick={clearSelection}
                             >
                               <RemoveCircle />
@@ -331,17 +368,19 @@ class Search extends Component {
                     })}
                     {isOpen ? (
                       <Paper className={classes.paper} square>
-                        {this.getContributorSuggestions(inputValue).map(
-                          (suggestion, index) =>
-                            renderSuggestion({
-                              suggestion,
-                              index,
-                              itemProps: getItemProps({
-                                item: suggestion.label,
-                              }),
-                              highlightedIndex,
-                              selectedItem,
-                            })
+                        {this.getSuggestions(
+                          this.state.contributors,
+                          inputValue
+                        ).map((suggestion, index) =>
+                          renderSuggestion({
+                            suggestion,
+                            index,
+                            itemProps: getItemProps({
+                              item: suggestion.label,
+                            }),
+                            highlightedIndex,
+                            selectedItem,
+                          })
                         )}
                       </Paper>
                     ) : null}
@@ -352,7 +391,7 @@ class Search extends Component {
             <FormControl className={classes.formControl}>
               <TextField
                 id="from_date"
-                label="From"
+                label="Updated After"
                 type="date"
                 defaultValue=""
                 value={this.state.searchParams.from_date}
@@ -365,7 +404,7 @@ class Search extends Component {
             <FormControl className={classes.formControl}>
               <TextField
                 id="to_date"
-                label="To"
+                label="Updated Before"
                 type="date"
                 defaultValue=""
                 value={this.state.searchParams.to_date}
