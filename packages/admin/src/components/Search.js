@@ -280,7 +280,7 @@ class Search extends Component {
       'to_date',
     ];
     const currentParams = this.state.searchParams;
-    return advancedParams.some(advancedParam => !!currentParams[advancedParam]);
+    return advancedParams.some(advancedParam => currentParams[advancedParam]);
   }
 
   /**
