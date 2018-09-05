@@ -3,6 +3,7 @@ import settings from '../lib/settings';
 import _ from 'lodash';
 import queryString from 'query-string';
 import classNames from 'classnames';
+import { createStyled } from '../lib/utils.js';
 import { withStyles } from '@material-ui/core/styles';
 
 import TextField from '@material-ui/core/TextField';
@@ -12,7 +13,6 @@ import RaisedButton from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import SearchIcon from '@material-ui/icons/Search';
 import MenuItem from '@material-ui/core/MenuItem';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -20,16 +20,15 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+import TableFooter from '@material-ui/core/TableFooter';
+import TablePagination from '@material-ui/core/TablePagination';
 
-import LooTile from './LooTile';
+import LooTable from './LooTable';
 import SearchAutocomplete from './SearchAutocomplete';
 
-import { Link, navigate } from '@reach/router';
+import { navigate } from '@reach/router';
 
 const styles = theme => ({
   gridRoot: {
@@ -72,6 +71,80 @@ const styles = theme => ({
   },
 });
 
+const Styled = createStyled({
+  textList: {
+    whiteSpace: 'pre-line',
+  },
+});
+
+const renderTableRows = props => {
+  const { data } = props;
+  return (
+    <>
+      {data.docs.map(loo => {
+        const { attributions } = loo;
+        const { name, type, opening } = loo.properties;
+        return (
+          <TableRow key={loo._id}>
+            <TableCell>{name}</TableCell>
+            <TableCell>
+              {loo.properties.area.map(val => {
+                return (
+                  <React.Fragment key={val._id}>
+                    {val.name} / {val.type}
+                  </React.Fragment>
+                );
+              })}
+            </TableCell>
+            <TableCell>{type}</TableCell>
+            <Styled>
+              {({ classes }) => (
+                <TableCell className={classes.textList}>
+                  {attributions.join('\n')}
+                </TableCell>
+              )}
+            </Styled>
+            <TableCell>{loo.updatedAt}</TableCell>
+            <TableCell>{opening}</TableCell>
+          </TableRow>
+        );
+      })}
+    </>
+  );
+};
+
+const renderTableCol = () => {
+  return (
+    <TableRow>
+      <TableCell>Name</TableCell>
+      <TableCell>Area</TableCell>
+      <TableCell>Type</TableCell>
+      <TableCell>Attributions</TableCell>
+      <TableCell>Date Updated</TableCell>
+      <TableCell>Opening</TableCell>
+    </TableRow>
+  );
+};
+
+const renderTableFooter = props => {
+  const { data, rowsPerPage, page, handleChangePage } = props;
+  return (
+    <TableFooter>
+      <TableRow>
+        <TablePagination
+          colSpan={3}
+          count={data.pages || data.docs.count}
+          rowsPerPage={rowsPerPage}
+          page={parseInt(page, 10)}
+          onChangePage={handleChangePage}
+          // onChangeRowsPerPage={this.handleChangeRowsPerPage}
+          // ActionsComponent={TablePaginationActionsWrapped}
+        />
+      </TableRow>
+    </TableFooter>
+  );
+};
+
 class Search extends Component {
   constructor(props) {
     super(props);
@@ -83,6 +156,8 @@ class Search extends Component {
       from_date: '',
       attributions: '',
       area_name: '',
+      page: 0,
+      limit: 5,
     };
 
     const parsedQuery = queryString.parse(this.props.location.search);
@@ -103,6 +178,7 @@ class Search extends Component {
     this.fetchContributorData = this.fetchContributorData.bind(this);
     this.updateSearchParam = this.updateSearchParam.bind(this);
     this.updateSearchField = this.updateSearchField.bind(this);
+    this.handleChangePage = this.handleChangePage.bind(this);
   }
 
   componentDidMount() {
@@ -149,6 +225,20 @@ class Search extends Component {
         this.setState({ searching: false });
       }
     }
+  }
+
+  async handleChangePage(event, page) {
+    await this.setState(prevState => ({
+      searchParams: {
+        ...prevState.searchParams,
+        page: page,
+      },
+    }));
+    const query = {
+      ...this.state.searchParams,
+      page: page + 1,
+    };
+    this.doSearch(query);
   }
 
   /**
@@ -243,7 +333,7 @@ class Search extends Component {
     const { classes } = this.props;
     return (
       <div>
-        <Paper className={classNames(classes.paper, classes.searchForm)}>
+        <div className={classNames(classes.paper, classes.searchForm)}>
           <Grid container spacing={24}>
             <Grid item xs={12} sm={7} md={9}>
               <FormControl className={classes.formControl} fullWidth>
@@ -369,31 +459,20 @@ class Search extends Component {
               Search
             </RaisedButton>
           </div>
-        </Paper>
+        </div>
 
-        <Card className={classes.card}>
-          <CardContent>
-            {this.state.results &&
-              this.state.results.docs && (
-                <div className={classes.gridRoot}>
-                  <GridList className={classes.gridList} cellHeight={180}>
-                    {this.state.results.docs.map(l => {
-                      return (
-                        <GridListTile key={l._id} style={{ width: '33.3%' }}>
-                          <LooTile loo={l} />
-                          <Link to={`../loos/${l._id}`}>
-                            <GridListTileBar
-                              title={l.properties.name || 'Unnamed'}
-                            />
-                          </Link>
-                        </GridListTile>
-                      );
-                    })}
-                  </GridList>
-                </div>
-              )}
-          </CardContent>
-        </Card>
+        {this.state.results &&
+          this.state.results.docs && (
+            <LooTable
+              data={this.state.results}
+              rowRender={renderTableRows}
+              colRender={renderTableCol}
+              footerRender={renderTableFooter}
+              page={this.state.searchParams.page}
+              rowsPerPage={this.state.searchParams.limit}
+              handleChangePage={this.handleChangePage}
+            />
+          )}
       </div>
     );
   }

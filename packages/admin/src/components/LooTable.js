@@ -1,12 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 
 const styles = theme => ({
   root: {
@@ -18,38 +15,75 @@ const styles = theme => ({
   },
 });
 
-function LooTable(props) {
-  const { classes, data } = props;
+class LooTable extends Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Property</TableCell>
-            <TableCell>Value</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map(n => {
-            return (
-              <TableRow key={n[0]}>
-                <TableCell component="th" scope="row">
-                  {n[0]}
-                </TableCell>
-                <TableCell>{JSON.stringify(n[1])}</TableCell>
-              </TableRow>
-            );
+    this.state = {
+      page: this.props.page,
+      rowsPerPage: this.props.rowsPerPage,
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    const { page: prevPage, rowsPerPage: prevRowsPerPage } = prevProps;
+    const { page, rowsPerPage } = this.props;
+    if (prevPage !== page) {
+      this.setState({ page: page });
+    } else if (prevRowsPerPage !== rowsPerPage) {
+      this.setState({ rowsPerPage });
+    }
+  }
+
+  render() {
+    const {
+      classes,
+      data,
+      colRender,
+      rowRender,
+      footerRender,
+      handleChangePage,
+    } = this.props;
+    const { page, rowsPerPage } = this.state;
+    return (
+      <div className={classes.root}>
+        <Table className={classes.table}>
+          <TableHead>{colRender()}</TableHead>
+          <TableBody>
+            {rowRender({
+              data,
+            })}
+          </TableBody>
+          {footerRender({
+            data,
+            rowsPerPage,
+            page,
+            handleChangePage,
           })}
-        </TableBody>
-      </Table>
-    </Paper>
-  );
+        </Table>
+      </div>
+    );
+  }
 }
 
 LooTable.propTypes = {
   classes: PropTypes.object.isRequired,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.shape({
+    docs: PropTypes.array.isRequired,
+  }),
+  rowRender: PropTypes.func.isRequired,
+  colRender: PropTypes.func.isRequired,
+};
+
+LooTable.defaultProps = {
+  footerRender() {
+    return null;
+  },
+  handleChangePage(event, page) {
+    this.setState({ page });
+  },
+  rowsPerPage: 10,
+  page: 0,
 };
 
 export default withStyles(styles)(LooTable);

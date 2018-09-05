@@ -9,6 +9,8 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -43,6 +45,26 @@ const styles = theme => ({
     width: '100%',
   },
 });
+
+const TableRowRender = loo => {
+  return (
+    <TableRow key={loo[0]}>
+      <TableCell component="th" scope="row">
+        {loo[0]}
+      </TableCell>
+      <TableCell>{JSON.stringify(loo[1])}</TableCell>
+    </TableRow>
+  );
+};
+
+const TableColRender = () => {
+  return (
+    <TableRow>
+      <TableCell>Property</TableCell>
+      <TableCell>Value</TableCell>
+    </TableRow>
+  );
+};
 
 class LooView extends Component {
   constructor(props) {
@@ -129,7 +151,11 @@ class LooView extends Component {
                 Data attached to this loo.
               </Typography>
             </Grid>
-            <LooTable data={Object.entries(loo.properties)} />
+            <LooTable
+              data={Object.entries(loo.properties)}
+              rowRender={TableRowRender}
+              colRender={TableColRender}
+            />
           </Grid>
 
           <Grid container item sm={12}>
@@ -159,7 +185,11 @@ class LooView extends Component {
                     </ExpansionPanelSummary>
 
                     <ExpansionPanelDetails>
-                      <LooTable data={Object.entries(value.properties)} />
+                      <LooTable
+                        data={Object.entries(value.properties)}
+                        rowRender={TableRowRender}
+                        colRender={TableColRender}
+                      />
                     </ExpansionPanelDetails>
                   </ExpansionPanel>
                 );
