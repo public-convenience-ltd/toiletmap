@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import settings from '../lib/settings';
 import _ from 'lodash';
-import deburr from 'lodash/deburr';
 import queryString from 'query-string';
 import classNames from 'classnames';
-import Downshift from 'downshift';
 import { withStyles } from '@material-ui/core/styles';
 
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
-import GridList from '@material-ui/core/GridList';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import RaisedButton from '@material-ui/core/Button';
@@ -20,17 +15,20 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import SearchIcon from '@material-ui/icons/Search';
 import MenuItem from '@material-ui/core/MenuItem';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
+
 import LooTile from './LooTile';
-import CloseOutlined from '@material-ui/icons/CloseOutlined';
+import SearchAutocomplete from './SearchAutocomplete';
+
 import { Link, navigate } from '@reach/router';
 
 const styles = theme => ({
@@ -74,48 +72,6 @@ const styles = theme => ({
   },
 });
 
-function renderInput(inputProps) {
-  const { InputProps, classes, ref, ...other } = inputProps;
-
-  return (
-    <TextField
-      InputProps={{
-        inputRef: ref,
-        classes: {
-          root: classes.inputRoot,
-        },
-        ...InputProps,
-      }}
-      {...other}
-    />
-  );
-}
-
-function renderSuggestion({
-  suggestion,
-  index,
-  itemProps,
-  highlightedIndex,
-  selectedItem,
-}) {
-  const isHighlighted = highlightedIndex === index;
-  const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
-
-  return (
-    <MenuItem
-      {...itemProps}
-      key={suggestion.label}
-      selected={isHighlighted}
-      component="div"
-      style={{
-        fontWeight: isSelected ? 500 : 400,
-      }}
-    >
-      {suggestion.label}
-    </MenuItem>
-  );
-}
-
 class Search extends Component {
   constructor(props) {
     super(props);
@@ -138,6 +94,7 @@ class Search extends Component {
         ...parsedQuery,
       },
       areas: [],
+      contributors: [],
     };
 
     this.submit = this.submit.bind(this);
@@ -146,7 +103,6 @@ class Search extends Component {
     this.fetchContributorData = this.fetchContributorData.bind(this);
     this.updateSearchParam = this.updateSearchParam.bind(this);
     this.updateSearchField = this.updateSearchField.bind(this);
-    this.getSuggestions = this.getSuggestions.bind(this);
   }
 
   componentDidMount() {
@@ -283,33 +239,6 @@ class Search extends Component {
     );
   }
 
-  /**
-   *
-   * Returns an array of suggestions based upon an input string and provided array.
-   *
-   * @param {*} data
-   * @param {*} value
-   */
-  getSuggestions(data, value) {
-    const inputValue = deburr(value.trim()).toLowerCase();
-    const inputLength = inputValue.length;
-    let count = 0;
-
-    return inputLength === 0
-      ? []
-      : data.filter(suggestion => {
-          const keep =
-            count < 5 &&
-            suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
-
-          if (keep) {
-            count += 1;
-          }
-
-          return keep;
-        });
-  }
-
   render() {
     const { classes } = this.props;
     return (
@@ -358,123 +287,33 @@ class Search extends Component {
                   <Grid container spacing={24}>
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
-                        <Downshift
+                        <SearchAutocomplete
                           id="area_name-search"
                           onChange={_.partial(
                             this.updateSearchParam,
                             'area_name'
                           )}
                           selectedItem={this.state.searchParams.area_name}
-                        >
-                          {({
-                            getInputProps,
-                            getItemProps,
-                            isOpen,
-                            inputValue,
-                            selectedItem,
-                            highlightedIndex,
-                            clearSelection,
-                          }) => (
-                            <div className={classes.container}>
-                              {renderInput({
-                                fullWidth: true,
-                                classes,
-                                InputProps: getInputProps({
-                                  placeholder: 'Search Areas',
-                                  endAdornment: (
-                                    <InputAdornment position="end">
-                                      <IconButton
-                                        aria-label="Clear area input box"
-                                        onClick={clearSelection}
-                                      >
-                                        <CloseOutlined />
-                                      </IconButton>
-                                    </InputAdornment>
-                                  ),
-                                }),
-                              })}
-                              {isOpen ? (
-                                <Paper className={classes.paper} square>
-                                  {this.getSuggestions(
-                                    this.state.areas,
-                                    inputValue
-                                  ).map((suggestion, index) =>
-                                    renderSuggestion({
-                                      suggestion,
-                                      index,
-                                      itemProps: getItemProps({
-                                        item: suggestion.label,
-                                      }),
-                                      highlightedIndex,
-                                      selectedItem,
-                                    })
-                                  )}
-                                </Paper>
-                              ) : null}
-                            </div>
-                          )}
-                        </Downshift>
+                          suggestions={this.state.areas}
+                          placeholderText="Search Areas"
+                          ariaLabel="Clear area input box"
+                        />
                       </FormControl>
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
-                        <Downshift
+                        <SearchAutocomplete
                           id="attribution-search"
                           onChange={_.partial(
                             this.updateSearchParam,
                             'attributions'
                           )}
                           selectedItem={this.state.searchParams.attributions}
-                        >
-                          {({
-                            getInputProps,
-                            getItemProps,
-                            isOpen,
-                            inputValue,
-                            selectedItem,
-                            highlightedIndex,
-                            clearSelection,
-                          }) => (
-                            <div className={classes.container}>
-                              {renderInput({
-                                fullWidth: true,
-                                classes,
-                                InputProps: getInputProps({
-                                  placeholder: 'Search Contributors',
-                                  endAdornment: (
-                                    <InputAdornment position="end">
-                                      <IconButton
-                                        aria-label="Clear contributor input box"
-                                        onClick={clearSelection}
-                                      >
-                                        <CloseOutlined />
-                                      </IconButton>
-                                    </InputAdornment>
-                                  ),
-                                }),
-                              })}
-                              {isOpen ? (
-                                <Paper className={classes.paper} square>
-                                  {this.getSuggestions(
-                                    this.state.contributors,
-                                    inputValue
-                                  ).map((suggestion, index) =>
-                                    renderSuggestion({
-                                      suggestion,
-                                      index,
-                                      itemProps: getItemProps({
-                                        item: suggestion.label,
-                                      }),
-                                      highlightedIndex,
-                                      selectedItem,
-                                    })
-                                  )}
-                                </Paper>
-                              ) : null}
-                            </div>
-                          )}
-                        </Downshift>
+                          suggestions={this.state.contributors}
+                          placeholderText="Search Contributors"
+                          ariaLabel="Clear contributor input box"
+                        />
                       </FormControl>
                     </Grid>
 
