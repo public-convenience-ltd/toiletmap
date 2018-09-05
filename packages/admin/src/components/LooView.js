@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import settings from '../lib/settings';
 import classNames from 'classnames';
 import LooTile from './LooTile';
-import LooTable from './LooTable';
+import { LooTable } from './LooTable';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';

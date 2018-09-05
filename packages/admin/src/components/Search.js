@@ -22,10 +22,9 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 
-import LooTable from './LooTable';
+import { LooTable, TablePaginationActionsWrapped } from './LooTable';
 import SearchAutocomplete from './SearchAutocomplete';
 
 import { navigate } from '@reach/router';
@@ -127,21 +126,25 @@ const renderTableCol = () => {
 };
 
 const renderTableFooter = props => {
-  const { data, rowsPerPage, page, handleChangePage } = props;
+  const {
+    data,
+    rowsPerPage,
+    page,
+    handleChangePage,
+    handleChangeRowsPerPage,
+  } = props;
   return (
-    <TableFooter>
-      <TableRow>
-        <TablePagination
-          colSpan={3}
-          count={data.pages || data.docs.count}
-          rowsPerPage={rowsPerPage}
-          page={parseInt(page, 10)}
-          onChangePage={handleChangePage}
-          // onChangeRowsPerPage={this.handleChangeRowsPerPage}
-          // ActionsComponent={TablePaginationActionsWrapped}
-        />
-      </TableRow>
-    </TableFooter>
+    <TableRow>
+      <TablePagination
+        colSpan={6}
+        count={data.total || data.docs.count}
+        rowsPerPage={rowsPerPage}
+        page={parseInt(page, 10)}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+        ActionsComponent={TablePaginationActionsWrapped}
+      />
+    </TableRow>
   );
 };
 
@@ -156,7 +159,7 @@ class Search extends Component {
       from_date: '',
       attributions: '',
       area_name: '',
-      page: 0,
+      page: '0',
       limit: 5,
     };
 
@@ -172,13 +175,15 @@ class Search extends Component {
       contributors: [],
     };
 
-    this.submit = this.submit.bind(this);
+    this.submitSearch = this.submitSearch.bind(this);
     this.doSearch = this.doSearch.bind(this);
     this.fetchAreaData = this.fetchAreaData.bind(this);
     this.fetchContributorData = this.fetchContributorData.bind(this);
     this.updateSearchParam = this.updateSearchParam.bind(this);
     this.updateSearchField = this.updateSearchField.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
+    this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
+    this.getQueryString = this.getQueryString.bind(this);
   }
 
   componentDidMount() {
@@ -197,7 +202,10 @@ class Search extends Component {
             ...parsedQuery,
           },
         },
-        this.doSearch.bind(this)
+        this.doSearch.bind(this, {
+          ...this.state.searchParams,
+          page: this.state.searchParams.page + 1,
+        })
       );
     }
   }
@@ -234,11 +242,17 @@ class Search extends Component {
         page: page,
       },
     }));
-    const query = {
-      ...this.state.searchParams,
-      page: page + 1,
-    };
-    this.doSearch(query);
+    this.submitSearch();
+  }
+
+  async handleChangeRowsPerPage(event) {
+    await this.setState(prevState => ({
+      searchParams: {
+        ...prevState.searchParams,
+        limit: event.target.value,
+      },
+    }));
+    this.submitSearch();
   }
 
   /**
@@ -267,12 +281,7 @@ class Search extends Component {
     });
   }
 
-  /**
-   * Navigates to updated query string and submits a search to the API.
-   *
-   * Omits any empty search paramaters from the search.
-   */
-  async submit() {
+  getQueryString() {
     const omitEmpty = _.pickBy(this.state.searchParams);
 
     // If everything is empty, ensure that we at least specify the `text` param.
@@ -281,8 +290,17 @@ class Search extends Component {
     }
 
     const query = queryString.stringify(omitEmpty);
+    return query;
+  }
+
+  /**
+   * Navigates to updated query string and submits a search to the API.
+   *
+   * Omits any empty search parameters from the search.
+   */
+  async submitSearch() {
+    const query = this.getQueryString();
     await navigate(`search?${query}`);
-    this.doSearch();
   }
 
   /**
@@ -452,7 +470,7 @@ class Search extends Component {
               variant="contained"
               color="primary"
               className={classes.button}
-              onClick={this.submit}
+              onClick={this.submitSearch}
               disabled={this.state.searching}
             >
               <SearchIcon className={classes.rightIcon} />
@@ -469,8 +487,9 @@ class Search extends Component {
               colRender={renderTableCol}
               footerRender={renderTableFooter}
               page={this.state.searchParams.page}
-              rowsPerPage={this.state.searchParams.limit}
+              rowsPerPage={parseInt(this.state.searchParams.limit)}
               handleChangePage={this.handleChangePage}
+              handleChangeRowsPerPage={this.handleChangeRowsPerPage}
             />
           )}
       </div>
