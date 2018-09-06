@@ -23,7 +23,8 @@ import queryString from 'query-string';
 import React, { Component } from 'react';
 import settings from '../lib/settings';
 import { createStyled } from '../lib/utils.js';
-import { LooTable, TablePaginationActionsWrapped } from './LooTable';
+import LooTable from './table/LooTable';
+import LooTablePaginationActions from './table/LooTablePaginationActions';
 import SearchAutocomplete from './SearchAutocomplete';
 
 const styles = theme => ({
@@ -143,7 +144,7 @@ const renderTableFooter = props => {
         page={parseInt(page, 10)}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
-        ActionsComponent={TablePaginationActionsWrapped}
+        ActionsComponent={LooTablePaginationActions}
       />
     </TableRow>
   );
@@ -165,16 +166,24 @@ class Search extends Component {
     };
 
     const parsedQuery = queryString.parse(this.props.location.search);
+    const pageCheck = parseInt(parsedQuery.page)
+      ? parsedQuery.page
+      : this.searchDefaults.page;
     this.state = {
       searching: false,
       searchParams: {
         ...this.searchDefaults,
         // Apply values from query string.
         ...parsedQuery,
+        // Apply checked page value.
+        page: pageCheck,
       },
       areas: [],
       contributors: [],
     };
+
+    // Submit new search with potentially modified search state.
+    this.submitSearch();
 
     this.submitSearch = this.submitSearch.bind(this);
     this.doSearch = this.doSearch.bind(this);
@@ -184,15 +193,23 @@ class Search extends Component {
     this.updateSearchField = this.updateSearchField.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
-    this.getQueryString = this.getQueryString.bind(this);
   }
 
+  /**
+   * Fetches essential data upon loading the search route.
+   */
   componentDidMount() {
     this.doSearch(this.state.searchParams);
     this.fetchContributorData();
     this.fetchAreaData();
   }
 
+  /**
+   *
+   * Ensures that, if the search query changes the state is updated and a new search executed.
+   *
+   * @param {*} prevProps
+   */
   componentDidUpdate(prevProps) {
     if (prevProps.location.search !== this.props.location.search) {
       const parsedQuery = queryString.parse(this.props.location.search);
@@ -203,11 +220,33 @@ class Search extends Component {
             ...parsedQuery,
           },
         },
-        this.doSearch.bind(this, {
-          ...this.state.searchParams,
-        })
+        this.doSearch.bind(this)
       );
     }
+  }
+
+  /**
+   * Getter for the search query string - strips empty fields.
+   */
+  get queryString() {
+    const omitEmpty = _.pickBy(this.state.searchParams);
+
+    // If everything is empty, ensure that we at least specify the `text` param.
+    if (_.isEmpty(omitEmpty)) {
+      omitEmpty.text = '';
+    }
+
+    const query = queryString.stringify(omitEmpty);
+    return query;
+  }
+
+  /**
+   * Navigates to updated query string and submits a search to the API.
+   *
+   * Omits any empty search parameters from the search.
+   */
+  async submitSearch() {
+    await navigate(`search?${this.queryString}`);
   }
 
   /**
@@ -235,6 +274,9 @@ class Search extends Component {
     }
   }
 
+  /**
+   * Pagination page change handler.
+   */
   async handleChangePage(event, page) {
     await this.setState(prevState => ({
       searchParams: {
@@ -245,6 +287,12 @@ class Search extends Component {
     this.submitSearch();
   }
 
+  /**
+   *
+   * Pagination rows change handler.
+   *
+   * @param {*} event
+   */
   async handleChangeRowsPerPage(event) {
     await this.setState(prevState => ({
       searchParams: {
@@ -279,28 +327,6 @@ class Search extends Component {
     this.setState({
       contributors: contributors,
     });
-  }
-
-  getQueryString() {
-    const omitEmpty = _.pickBy(this.state.searchParams);
-
-    // If everything is empty, ensure that we at least specify the `text` param.
-    if (_.isEmpty(omitEmpty)) {
-      omitEmpty.text = '';
-    }
-
-    const query = queryString.stringify(omitEmpty);
-    return query;
-  }
-
-  /**
-   * Navigates to updated query string and submits a search to the API.
-   *
-   * Omits any empty search parameters from the search.
-   */
-  async submitSearch() {
-    const query = this.getQueryString();
-    await navigate(`search?${query}`);
   }
 
   /**
@@ -486,7 +512,7 @@ class Search extends Component {
               rowRender={renderTableRows}
               colRender={renderTableCol}
               footerRender={renderTableFooter}
-              page={this.state.searchParams.page - 1}
+              page={Math.max(0, this.state.searchParams.page - 1)}
               rowsPerPage={parseInt(this.state.searchParams.limit)}
               handleChangePage={this.handleChangePage}
               handleChangeRowsPerPage={this.handleChangeRowsPerPage}
