@@ -27,7 +27,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import { LooTable, TablePaginationActionsWrapped } from './LooTable';
 import SearchAutocomplete from './SearchAutocomplete';
 
-import { navigate } from '@reach/router';
+import { navigate, Link } from '@reach/router';
 
 const styles = theme => ({
   gridRoot: {
@@ -85,7 +85,11 @@ const renderTableRows = props => {
         const { name, type, opening } = loo.properties;
         return (
           <TableRow key={loo._id}>
-            <TableCell>{name}</TableCell>
+            <TableCell>
+              <Link to={`../loos/${loo._id}`}>
+                {name || 'No Name Recorded'}
+              </Link>
+            </TableCell>
             <TableCell>
               {loo.properties.area.map(val => {
                 return (

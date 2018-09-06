@@ -46,14 +46,25 @@ const styles = theme => ({
   },
 });
 
-const TableRowRender = loo => {
+const TableRowRender = props => {
+  const { data } = props;
   return (
-    <TableRow key={loo[0]}>
-      <TableCell component="th" scope="row">
-        {loo[0]}
-      </TableCell>
-      <TableCell>{JSON.stringify(loo[1])}</TableCell>
-    </TableRow>
+    <>
+      {data.docs.map(loo => {
+        return (
+          <TableRow key={loo[0]}>
+            <TableCell component="th" scope="row">
+              {loo[0]}
+            </TableCell>
+            <TableCell>
+              <div>
+                <pre>{JSON.stringify(loo[1], null, 2)}</pre>
+              </div>
+            </TableCell>
+          </TableRow>
+        );
+      })}
+    </>
   );
 };
 
@@ -152,7 +163,9 @@ class LooView extends Component {
               </Typography>
             </Grid>
             <LooTable
-              data={Object.entries(loo.properties)}
+              data={{
+                docs: Object.entries(loo.properties),
+              }}
               rowRender={TableRowRender}
               colRender={TableColRender}
             />
@@ -186,7 +199,9 @@ class LooView extends Component {
 
                     <ExpansionPanelDetails>
                       <LooTable
-                        data={Object.entries(value.properties)}
+                        data={{
+                          docs: Object.entries(value.properties),
+                        }}
                         rowRender={TableRowRender}
                         colRender={TableColRender}
                       />
