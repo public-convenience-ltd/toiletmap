@@ -641,7 +641,7 @@ class Search extends Component {
           this.state.results.docs && (
             <LooTable
               data={this.state.results}
-              rowRender={renderTableRows.bind(this)}
+              rowRender={renderTableRows}
               colRender={renderTableCol}
               footerRender={renderTableFooter}
               page={Math.max(0, this.state.searchParams.page - 1)}
