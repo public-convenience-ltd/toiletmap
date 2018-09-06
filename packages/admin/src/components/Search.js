@@ -163,7 +163,7 @@ class Search extends Component {
       from_date: '',
       attributions: '',
       area_name: '',
-      page: '0',
+      page: 1,
       limit: 5,
     };
 
@@ -208,7 +208,6 @@ class Search extends Component {
         },
         this.doSearch.bind(this, {
           ...this.state.searchParams,
-          page: this.state.searchParams.page + 1,
         })
       );
     }
@@ -243,7 +242,7 @@ class Search extends Component {
     await this.setState(prevState => ({
       searchParams: {
         ...prevState.searchParams,
-        page: page,
+        page: page + 1,
       },
     }));
     this.submitSearch();
@@ -490,7 +489,7 @@ class Search extends Component {
               rowRender={renderTableRows}
               colRender={renderTableCol}
               footerRender={renderTableFooter}
-              page={this.state.searchParams.page}
+              page={this.state.searchParams.page - 1}
               rowsPerPage={parseInt(this.state.searchParams.limit)}
               handleChangePage={this.handleChangePage}
               handleChangeRowsPerPage={this.handleChangeRowsPerPage}
