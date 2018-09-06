@@ -1,33 +1,30 @@
-import React, { Component } from 'react';
-import settings from '../lib/settings';
-import _ from 'lodash';
-import queryString from 'query-string';
-import classNames from 'classnames';
-import { createStyled } from '../lib/utils.js';
-import { withStyles } from '@material-ui/core/styles';
-
-import TextField from '@material-ui/core/TextField';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
 import RaisedButton from '@material-ui/core/Button';
-import Select from '@material-ui/core/Select';
-import Input from '@material-ui/core/Input';
-import Grid from '@material-ui/core/Grid';
-import SearchIcon from '@material-ui/icons/Search';
-import MenuItem from '@material-ui/core/MenuItem';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import { withStyles } from '@material-ui/core/styles';
+import TableCell from '@material-ui/core/TableCell';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
-
+import SearchIcon from '@material-ui/icons/Search';
+import { Link, navigate } from '@reach/router';
+import classNames from 'classnames';
+import _ from 'lodash';
+import queryString from 'query-string';
+import React, { Component } from 'react';
+import settings from '../lib/settings';
+import { createStyled } from '../lib/utils.js';
 import { LooTable, TablePaginationActionsWrapped } from './LooTable';
 import SearchAutocomplete from './SearchAutocomplete';
-
-import { navigate, Link } from '@reach/router';
 
 const styles = theme => ({
   gridRoot: {
