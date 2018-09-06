@@ -4,18 +4,24 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
+import Chip from '@material-ui/core/Chip';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { withStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
+import Avatar from '@material-ui/core/Avatar';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SearchIcon from '@material-ui/icons/Search';
+import PeopleIcon from '@material-ui/icons/People';
+import NameIcon from '@material-ui/icons/TextFields';
+import CityIcon from '@material-ui/icons/LocationCity';
+import ClockIcon from '@material-ui/icons/AccessTime';
 import { Link, navigate } from '@reach/router';
 import classNames from 'classnames';
 import _ from 'lodash';
@@ -26,6 +32,8 @@ import { createStyled } from '../lib/utils.js';
 import LooTable from './table/LooTable';
 import LooTablePaginationActions from './table/LooTablePaginationActions';
 import SearchAutocomplete from './SearchAutocomplete';
+
+import timeago from 'timeago.js';
 
 const styles = theme => ({
   gridRoot: {
@@ -68,49 +76,165 @@ const styles = theme => ({
   },
 });
 
-const Styled = createStyled({
+const Styled = createStyled(theme => ({
   textList: {
     whiteSpace: 'pre-line',
   },
-});
+  row: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.background.default,
+    },
+    height: '5em',
+  },
+  link: {
+    textDecoration: 'none',
+  },
+  chip: {
+    marginTop: theme.spacing.unit * 0.2,
+    marginBottom: theme.spacing.unit * 0.2,
+    marginLeft: theme.spacing.unit * 0.2,
+  },
+  chipDetail: {
+    verticalAlign: 'bottom',
+    marginTop: theme.spacing.unit * 0.2,
+    marginBottom: theme.spacing.unit * 0.2,
+    marginLeft: theme.spacing.unit * 0.2,
+  },
+}));
 
 const renderTableRows = props => {
+  const MISSING_MESSAGE = 'Not Recorded';
   const { data } = props;
   return (
-    <>
-      {data.docs.map(loo => {
-        const { attributions } = loo;
-        const { name, type, opening } = loo.properties;
-        return (
-          <TableRow key={loo._id}>
-            <TableCell>
-              <Link to={`../loos/${loo._id}`}>
-                {name || 'No Name Recorded'}
-              </Link>
-            </TableCell>
-            <TableCell>
-              {loo.properties.area.map(val => {
-                return (
-                  <React.Fragment key={val._id}>
-                    {val.name} / {val.type}
-                  </React.Fragment>
-                );
-              })}
-            </TableCell>
-            <TableCell>{type}</TableCell>
-            <Styled>
-              {({ classes }) => (
-                <TableCell className={classes.textList}>
-                  {attributions.join('\n')}
-                </TableCell>
-              )}
-            </Styled>
-            <TableCell>{loo.updatedAt}</TableCell>
-            <TableCell>{opening}</TableCell>
-          </TableRow>
-        );
-      })}
-    </>
+    <Styled>
+      {({ classes }) => (
+        <>
+          {data.docs.map(loo => {
+            const { attributions } = loo;
+            const { name, type, opening, area } = loo.properties;
+            return (
+              <React.Fragment key={loo._id}>
+                <TableRow className={classes.row}>
+                  <TableCell component="th" scope="row">
+                    <Link className={classes.link} to={`../loos/${loo._id}`}>
+                      <Chip
+                        avatar={
+                          <Avatar>
+                            <NameIcon />
+                          </Avatar>
+                        }
+                        className={classes.chip}
+                        label={name || MISSING_MESSAGE}
+                        color={name ? 'primary' : 'secondary'}
+                        variant="default"
+                        clickable
+                      />
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    {area.map(val => {
+                      return (
+                        <React.Fragment key={val._id}>
+                          <Chip
+                            className={classes.chip}
+                            avatar={
+                              <Avatar>
+                                <CityIcon />
+                              </Avatar>
+                            }
+                            label={val.name}
+                            color={val.name ? 'primary' : 'secondary'}
+                            variant="default"
+                            onClick={e => {
+                              navigate(`search?area_name=${val.name}`);
+                            }}
+                            clickable
+                          />
+                          <Chip
+                            className={classes.chipDetail}
+                            label={val.type}
+                            color={val.type ? 'primary' : 'secondary'}
+                            variant="outlined"
+                          />
+                        </React.Fragment>
+                      );
+                    })}
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      className={classes.chip}
+                      avatar={
+                        <Avatar>
+                          <PeopleIcon />
+                        </Avatar>
+                      }
+                      label={type || MISSING_MESSAGE}
+                      color={type ? 'primary' : 'secondary'}
+                      variant="default"
+                      clickable
+                    />
+                  </TableCell>
+                  <TableCell className={classes.textList}>
+                    {attributions.map(attr => {
+                      return (
+                        <Chip
+                          key={attr}
+                          className={classes.chip}
+                          avatar={
+                            <Avatar>
+                              <PeopleIcon />
+                            </Avatar>
+                          }
+                          label={attr || MISSING_MESSAGE}
+                          color={attr ? 'primary' : 'secondary'}
+                          variant="default"
+                          onClick={event => {
+                            navigate(`search?attributions=${attr}`);
+                          }}
+                          clickable
+                        />
+                      );
+                    })}
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      avatar={
+                        <Avatar>
+                          <ClockIcon />
+                        </Avatar>
+                      }
+                      label={timeago().format(loo.updatedAt) || MISSING_MESSAGE}
+                      color={loo.updatedAt ? 'primary' : 'secondary'}
+                      variant="default"
+                      onClick={event => {
+                        const dateUpdated = new Date(loo.updatedAt);
+                        const year = dateUpdated.getFullYear();
+                        const month = (
+                          '0' +
+                          (dateUpdated.getMonth() + 1)
+                        ).slice(-2);
+                        const day = ('0' + dateUpdated.getDate()).slice(-2);
+                        const updateString = `${year}-${month}-${day}`;
+                        navigate(`search?from_date=${updateString}`);
+                      }}
+                      clickable
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      className={classes.chipDetail}
+                      label={opening || MISSING_MESSAGE}
+                      color={opening ? 'primary' : 'secondary'}
+                      variant="outlined"
+                    />
+                  </TableCell>
+                </TableRow>
+              </React.Fragment>
+            );
+          })}
+        </>
+      )}
+    </Styled>
   );
 };
 
@@ -139,7 +263,7 @@ const renderTableFooter = props => {
     <TableRow>
       <TablePagination
         colSpan={6}
-        count={data.total || data.docs.count}
+        count={data.total || data.docs.count || 0}
         rowsPerPage={rowsPerPage}
         page={parseInt(page, 10)}
         onChangePage={handleChangePage}
@@ -171,6 +295,7 @@ class Search extends Component {
       : this.searchDefaults.page;
     this.state = {
       searching: false,
+      expanded: false,
       searchParams: {
         ...this.searchDefaults,
         // Apply values from query string.
@@ -368,8 +493,10 @@ class Search extends Component {
       'from_date',
       'to_date',
     ];
-    return advancedParams.some(
-      advancedParam => this.state.searchParams[advancedParam]
+    return (
+      advancedParams.some(
+        advancedParam => this.state.searchParams[advancedParam]
+      ) || this.state.expanded
     );
   }
 
@@ -411,8 +538,13 @@ class Search extends Component {
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <ExpansionPanel defaultExpanded={this.advancedSearch}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <ExpansionPanel expanded={this.advancedSearch}>
+                <ExpansionPanelSummary
+                  onClick={e =>
+                    this.setState({ expanded: !this.state.expanded })
+                  }
+                  expandIcon={<ExpandMoreIcon />}
+                >
                   <Typography className={classes.heading}>
                     Advanced Options
                   </Typography>
@@ -509,7 +641,7 @@ class Search extends Component {
           this.state.results.docs && (
             <LooTable
               data={this.state.results}
-              rowRender={renderTableRows}
+              rowRender={renderTableRows.bind(this)}
               colRender={renderTableCol}
               footerRender={renderTableFooter}
               page={Math.max(0, this.state.searchParams.page - 1)}

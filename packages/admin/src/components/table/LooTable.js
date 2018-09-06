@@ -53,6 +53,7 @@ class LooTable extends Component {
       handleChangeRowsPerPage,
     } = this.props;
     const { page, rowsPerPage } = this.state;
+
     return (
       <div className={classes.root}>
         <Table className={classes.table}>
