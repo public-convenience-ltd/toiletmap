@@ -1,37 +1,31 @@
+import RaisedButton from '@material-ui/core/Button';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import { withStyles } from '@material-ui/core/styles';
+import TableCell from '@material-ui/core/TableCell';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import SearchIcon from '@material-ui/icons/Search';
+import { Link, navigate } from '@reach/router';
+import classNames from 'classnames';
+import _ from 'lodash';
+import queryString from 'query-string';
 import React, { Component } from 'react';
 import settings from '../lib/settings';
-import _ from 'lodash';
-import deburr from 'lodash/deburr';
-import queryString from 'query-string';
-import classNames from 'classnames';
-import Downshift from 'downshift';
-import { withStyles } from '@material-ui/core/styles';
-
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import TextField from '@material-ui/core/TextField';
-import GridList from '@material-ui/core/GridList';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import RaisedButton from '@material-ui/core/Button';
-import Select from '@material-ui/core/Select';
-import Input from '@material-ui/core/Input';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import SearchIcon from '@material-ui/icons/Search';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Typography from '@material-ui/core/Typography';
-import LooTile from './LooTile';
-import CloseOutlined from '@material-ui/icons/CloseOutlined';
-import { Link, navigate } from '@reach/router';
+import { createStyled } from '../lib/utils.js';
+import LooTable from './table/LooTable';
+import LooTablePaginationActions from './table/LooTablePaginationActions';
+import SearchAutocomplete from './SearchAutocomplete';
 
 const styles = theme => ({
   gridRoot: {
@@ -74,47 +68,87 @@ const styles = theme => ({
   },
 });
 
-function renderInput(inputProps) {
-  const { InputProps, classes, ref, ...other } = inputProps;
+const Styled = createStyled({
+  textList: {
+    whiteSpace: 'pre-line',
+  },
+});
 
+const renderTableRows = props => {
+  const { data } = props;
   return (
-    <TextField
-      InputProps={{
-        inputRef: ref,
-        classes: {
-          root: classes.inputRoot,
-        },
-        ...InputProps,
-      }}
-      {...other}
-    />
+    <>
+      {data.docs.map(loo => {
+        const { attributions } = loo;
+        const { name, type, opening } = loo.properties;
+        return (
+          <TableRow key={loo._id}>
+            <TableCell>
+              <Link to={`../loos/${loo._id}`}>
+                {name || 'No Name Recorded'}
+              </Link>
+            </TableCell>
+            <TableCell>
+              {loo.properties.area.map(val => {
+                return (
+                  <React.Fragment key={val._id}>
+                    {val.name} / {val.type}
+                  </React.Fragment>
+                );
+              })}
+            </TableCell>
+            <TableCell>{type}</TableCell>
+            <Styled>
+              {({ classes }) => (
+                <TableCell className={classes.textList}>
+                  {attributions.join('\n')}
+                </TableCell>
+              )}
+            </Styled>
+            <TableCell>{loo.updatedAt}</TableCell>
+            <TableCell>{opening}</TableCell>
+          </TableRow>
+        );
+      })}
+    </>
   );
-}
+};
 
-function renderSuggestion({
-  suggestion,
-  index,
-  itemProps,
-  highlightedIndex,
-  selectedItem,
-}) {
-  const isHighlighted = highlightedIndex === index;
-  const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
-
+const renderTableCol = () => {
   return (
-    <MenuItem
-      {...itemProps}
-      key={suggestion.label}
-      selected={isHighlighted}
-      component="div"
-      style={{
-        fontWeight: isSelected ? 500 : 400,
-      }}
-    >
-      {suggestion.label}
-    </MenuItem>
+    <TableRow>
+      <TableCell>Name</TableCell>
+      <TableCell>Area</TableCell>
+      <TableCell>Type</TableCell>
+      <TableCell>Attributions</TableCell>
+      <TableCell>Date Updated</TableCell>
+      <TableCell>Opening</TableCell>
+    </TableRow>
   );
-}
+};
+
+const renderTableFooter = props => {
+  const {
+    data,
+    rowsPerPage,
+    page,
+    handleChangePage,
+    handleChangeRowsPerPage,
+  } = props;
+  return (
+    <TableRow>
+      <TablePagination
+        colSpan={6}
+        count={data.total || data.docs.count}
+        rowsPerPage={rowsPerPage}
+        page={parseInt(page, 10)}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+        ActionsComponent={LooTablePaginationActions}
+      />
+    </TableRow>
+  );
+};
 
 class Search extends Component {
   constructor(props) {
@@ -127,34 +161,55 @@ class Search extends Component {
       from_date: '',
       attributions: '',
       area_name: '',
+      page: 1,
+      limit: 5,
     };
 
     const parsedQuery = queryString.parse(this.props.location.search);
+    const pageCheck = parseInt(parsedQuery.page)
+      ? parsedQuery.page
+      : this.searchDefaults.page;
     this.state = {
       searching: false,
       searchParams: {
         ...this.searchDefaults,
         // Apply values from query string.
         ...parsedQuery,
+        // Apply checked page value.
+        page: pageCheck,
       },
       areas: [],
+      contributors: [],
     };
 
-    this.submit = this.submit.bind(this);
+    // Submit new search with potentially modified search state.
+    this.submitSearch();
+
+    this.submitSearch = this.submitSearch.bind(this);
     this.doSearch = this.doSearch.bind(this);
     this.fetchAreaData = this.fetchAreaData.bind(this);
     this.fetchContributorData = this.fetchContributorData.bind(this);
     this.updateSearchParam = this.updateSearchParam.bind(this);
     this.updateSearchField = this.updateSearchField.bind(this);
-    this.getSuggestions = this.getSuggestions.bind(this);
+    this.handleChangePage = this.handleChangePage.bind(this);
+    this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
   }
 
+  /**
+   * Fetches essential data upon loading the search route.
+   */
   componentDidMount() {
     this.doSearch(this.state.searchParams);
     this.fetchContributorData();
     this.fetchAreaData();
   }
 
+  /**
+   *
+   * Ensures that, if the search query changes the state is updated and a new search executed.
+   *
+   * @param {*} prevProps
+   */
   componentDidUpdate(prevProps) {
     if (prevProps.location.search !== this.props.location.search) {
       const parsedQuery = queryString.parse(this.props.location.search);
@@ -168,6 +223,30 @@ class Search extends Component {
         this.doSearch.bind(this)
       );
     }
+  }
+
+  /**
+   * Getter for the search query string - strips empty fields.
+   */
+  get queryString() {
+    const omitEmpty = _.pickBy(this.state.searchParams);
+
+    // If everything is empty, ensure that we at least specify the `text` param.
+    if (_.isEmpty(omitEmpty)) {
+      omitEmpty.text = '';
+    }
+
+    const query = queryString.stringify(omitEmpty);
+    return query;
+  }
+
+  /**
+   * Navigates to updated query string and submits a search to the API.
+   *
+   * Omits any empty search parameters from the search.
+   */
+  async submitSearch() {
+    await navigate(`search?${this.queryString}`);
   }
 
   /**
@@ -196,6 +275,35 @@ class Search extends Component {
   }
 
   /**
+   * Pagination page change handler.
+   */
+  async handleChangePage(event, page) {
+    await this.setState(prevState => ({
+      searchParams: {
+        ...prevState.searchParams,
+        page: page + 1,
+      },
+    }));
+    this.submitSearch();
+  }
+
+  /**
+   *
+   * Pagination rows change handler.
+   *
+   * @param {*} event
+   */
+  async handleChangeRowsPerPage(event) {
+    await this.setState(prevState => ({
+      searchParams: {
+        ...prevState.searchParams,
+        limit: event.target.value,
+      },
+    }));
+    this.submitSearch();
+  }
+
+  /**
    * Retreives a flattened list of Areas and Area Types and attaches to state.
    */
   async fetchAreaData() {
@@ -219,24 +327,6 @@ class Search extends Component {
     this.setState({
       contributors: contributors,
     });
-  }
-
-  /**
-   * Navigates to updated query string and submits a search to the API.
-   *
-   * Omits any empty search paramaters from the search.
-   */
-  async submit() {
-    const omitEmpty = _.pickBy(this.state.searchParams);
-
-    // If everything is empty, ensure that we at least specify the `text` param.
-    if (_.isEmpty(omitEmpty)) {
-      omitEmpty.text = '';
-    }
-
-    const query = queryString.stringify(omitEmpty);
-    await navigate(`search?${query}`);
-    this.doSearch();
   }
 
   /**
@@ -283,38 +373,11 @@ class Search extends Component {
     );
   }
 
-  /**
-   *
-   * Returns an array of suggestions based upon an input string and provided array.
-   *
-   * @param {*} data
-   * @param {*} value
-   */
-  getSuggestions(data, value) {
-    const inputValue = deburr(value.trim()).toLowerCase();
-    const inputLength = inputValue.length;
-    let count = 0;
-
-    return inputLength === 0
-      ? []
-      : data.filter(suggestion => {
-          const keep =
-            count < 5 &&
-            suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
-
-          if (keep) {
-            count += 1;
-          }
-
-          return keep;
-        });
-  }
-
   render() {
     const { classes } = this.props;
     return (
       <div>
-        <Paper className={classNames(classes.paper, classes.searchForm)}>
+        <div className={classNames(classes.paper, classes.searchForm)}>
           <Grid container spacing={24}>
             <Grid item xs={12} sm={7} md={9}>
               <FormControl className={classes.formControl} fullWidth>
@@ -358,123 +421,33 @@ class Search extends Component {
                   <Grid container spacing={24}>
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
-                        <Downshift
+                        <SearchAutocomplete
                           id="area_name-search"
                           onChange={_.partial(
                             this.updateSearchParam,
                             'area_name'
                           )}
                           selectedItem={this.state.searchParams.area_name}
-                        >
-                          {({
-                            getInputProps,
-                            getItemProps,
-                            isOpen,
-                            inputValue,
-                            selectedItem,
-                            highlightedIndex,
-                            clearSelection,
-                          }) => (
-                            <div className={classes.container}>
-                              {renderInput({
-                                fullWidth: true,
-                                classes,
-                                InputProps: getInputProps({
-                                  placeholder: 'Search Areas',
-                                  endAdornment: (
-                                    <InputAdornment position="end">
-                                      <IconButton
-                                        aria-label="Clear area input box"
-                                        onClick={clearSelection}
-                                      >
-                                        <CloseOutlined />
-                                      </IconButton>
-                                    </InputAdornment>
-                                  ),
-                                }),
-                              })}
-                              {isOpen ? (
-                                <Paper className={classes.paper} square>
-                                  {this.getSuggestions(
-                                    this.state.areas,
-                                    inputValue
-                                  ).map((suggestion, index) =>
-                                    renderSuggestion({
-                                      suggestion,
-                                      index,
-                                      itemProps: getItemProps({
-                                        item: suggestion.label,
-                                      }),
-                                      highlightedIndex,
-                                      selectedItem,
-                                    })
-                                  )}
-                                </Paper>
-                              ) : null}
-                            </div>
-                          )}
-                        </Downshift>
+                          suggestions={this.state.areas}
+                          placeholderText="Search Areas"
+                          ariaLabel="Clear area input box"
+                        />
                       </FormControl>
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
-                        <Downshift
+                        <SearchAutocomplete
                           id="attribution-search"
                           onChange={_.partial(
                             this.updateSearchParam,
                             'attributions'
                           )}
                           selectedItem={this.state.searchParams.attributions}
-                        >
-                          {({
-                            getInputProps,
-                            getItemProps,
-                            isOpen,
-                            inputValue,
-                            selectedItem,
-                            highlightedIndex,
-                            clearSelection,
-                          }) => (
-                            <div className={classes.container}>
-                              {renderInput({
-                                fullWidth: true,
-                                classes,
-                                InputProps: getInputProps({
-                                  placeholder: 'Search Contributors',
-                                  endAdornment: (
-                                    <InputAdornment position="end">
-                                      <IconButton
-                                        aria-label="Clear contributor input box"
-                                        onClick={clearSelection}
-                                      >
-                                        <CloseOutlined />
-                                      </IconButton>
-                                    </InputAdornment>
-                                  ),
-                                }),
-                              })}
-                              {isOpen ? (
-                                <Paper className={classes.paper} square>
-                                  {this.getSuggestions(
-                                    this.state.contributors,
-                                    inputValue
-                                  ).map((suggestion, index) =>
-                                    renderSuggestion({
-                                      suggestion,
-                                      index,
-                                      itemProps: getItemProps({
-                                        item: suggestion.label,
-                                      }),
-                                      highlightedIndex,
-                                      selectedItem,
-                                    })
-                                  )}
-                                </Paper>
-                              ) : null}
-                            </div>
-                          )}
-                        </Downshift>
+                          suggestions={this.state.contributors}
+                          placeholderText="Search Contributors"
+                          ariaLabel="Clear contributor input box"
+                        />
                       </FormControl>
                     </Grid>
 
@@ -523,38 +496,28 @@ class Search extends Component {
               variant="contained"
               color="primary"
               className={classes.button}
-              onClick={this.submit}
+              onClick={this.submitSearch}
               disabled={this.state.searching}
             >
               <SearchIcon className={classes.rightIcon} />
               Search
             </RaisedButton>
           </div>
-        </Paper>
+        </div>
 
-        <Card className={classes.card}>
-          <CardContent>
-            {this.state.results &&
-              this.state.results.docs && (
-                <div className={classes.gridRoot}>
-                  <GridList className={classes.gridList} cellHeight={180}>
-                    {this.state.results.docs.map(l => {
-                      return (
-                        <GridListTile key={l._id} style={{ width: '33.3%' }}>
-                          <LooTile loo={l} />
-                          <Link to={`../loos/${l._id}`}>
-                            <GridListTileBar
-                              title={l.properties.name || 'Unnamed'}
-                            />
-                          </Link>
-                        </GridListTile>
-                      );
-                    })}
-                  </GridList>
-                </div>
-              )}
-          </CardContent>
-        </Card>
+        {this.state.results &&
+          this.state.results.docs && (
+            <LooTable
+              data={this.state.results}
+              rowRender={renderTableRows}
+              colRender={renderTableCol}
+              footerRender={renderTableFooter}
+              page={Math.max(0, this.state.searchParams.page - 1)}
+              rowsPerPage={parseInt(this.state.searchParams.limit)}
+              handleChangePage={this.handleChangePage}
+              handleChangeRowsPerPage={this.handleChangeRowsPerPage}
+            />
+          )}
       </div>
     );
   }

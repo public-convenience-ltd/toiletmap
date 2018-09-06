@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import settings from '../lib/settings';
 import classNames from 'classnames';
 import LooTile from './LooTile';
-import LooTable from './LooTable';
+import LooTable from './table/LooTable';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -43,6 +45,37 @@ const styles = theme => ({
     width: '100%',
   },
 });
+
+const TableRowRender = props => {
+  const { data } = props;
+  return (
+    <>
+      {data.docs.map(loo => {
+        return (
+          <TableRow key={loo[0]}>
+            <TableCell component="th" scope="row">
+              {loo[0]}
+            </TableCell>
+            <TableCell>
+              <div>
+                <pre>{JSON.stringify(loo[1], null, 2)}</pre>
+              </div>
+            </TableCell>
+          </TableRow>
+        );
+      })}
+    </>
+  );
+};
+
+const TableColRender = () => {
+  return (
+    <TableRow>
+      <TableCell>Property</TableCell>
+      <TableCell>Value</TableCell>
+    </TableRow>
+  );
+};
 
 class LooView extends Component {
   constructor(props) {
@@ -129,7 +162,13 @@ class LooView extends Component {
                 Data attached to this loo.
               </Typography>
             </Grid>
-            <LooTable data={Object.entries(loo.properties)} />
+            <LooTable
+              data={{
+                docs: Object.entries(loo.properties),
+              }}
+              rowRender={TableRowRender}
+              colRender={TableColRender}
+            />
           </Grid>
 
           <Grid container item sm={12}>
@@ -159,7 +198,13 @@ class LooView extends Component {
                     </ExpansionPanelSummary>
 
                     <ExpansionPanelDetails>
-                      <LooTable data={Object.entries(value.properties)} />
+                      <LooTable
+                        data={{
+                          docs: Object.entries(value.properties),
+                        }}
+                        rowRender={TableRowRender}
+                        colRender={TableColRender}
+                      />
                     </ExpansionPanelDetails>
                   </ExpansionPanel>
                 );
