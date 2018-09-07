@@ -44,6 +44,10 @@ const styles = theme => ({
   expansionRoot: {
     width: '100%',
   },
+  root: {
+    marginLeft: '2%',
+    marginRight: '2%',
+  },
 });
 
 const TableRowRender = props => {

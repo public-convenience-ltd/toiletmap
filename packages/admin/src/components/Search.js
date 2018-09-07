@@ -1,3 +1,18 @@
+import React, { Component } from 'react';
+import { Link, navigate } from '@reach/router';
+import classNames from 'classnames';
+import _ from 'lodash';
+import queryString from 'query-string';
+import timeago from 'timeago.js';
+
+// Local
+import settings from '../lib/settings';
+import { createStyled } from '../lib/utils.js';
+import LooTable from './table/LooTable';
+import LooTablePaginationActions from './table/LooTablePaginationActions';
+import SearchAutocomplete from './SearchAutocomplete';
+
+// MUI Core
 import RaisedButton from '@material-ui/core/Button';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -16,24 +31,14 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+
+// MUI Icons
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SearchIcon from '@material-ui/icons/Search';
 import PeopleIcon from '@material-ui/icons/People';
 import NameIcon from '@material-ui/icons/TextFields';
 import CityIcon from '@material-ui/icons/LocationCity';
 import ClockIcon from '@material-ui/icons/AccessTime';
-import { Link, navigate } from '@reach/router';
-import classNames from 'classnames';
-import _ from 'lodash';
-import queryString from 'query-string';
-import React, { Component } from 'react';
-import settings from '../lib/settings';
-import { createStyled } from '../lib/utils.js';
-import LooTable from './table/LooTable';
-import LooTablePaginationActions from './table/LooTablePaginationActions';
-import SearchAutocomplete from './SearchAutocomplete';
-
-import timeago from 'timeago.js';
 
 const styles = theme => ({
   gridRoot: {

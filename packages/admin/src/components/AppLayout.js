@@ -28,10 +28,6 @@ const styles = {
   flex: {
     flex: 1,
   },
-  childContainer: {
-    marginLeft: '10%',
-    marginRight: '10%',
-  },
 };
 
 class AppLayout extends Component {
