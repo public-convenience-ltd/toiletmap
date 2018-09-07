@@ -26,6 +26,8 @@ const styles = theme => ({
   appBarSpacer: theme.mixins.toolbar,
   root: {
     flexGrow: 1,
+    marginLeft: '2%',
+    marginRight: '2%',
   },
   paper: {
     padding: theme.spacing.unit * 2,
@@ -43,10 +45,6 @@ const styles = theme => ({
   },
   expansionRoot: {
     width: '100%',
-  },
-  root: {
-    marginLeft: '2%',
-    marginRight: '2%',
   },
 });
 

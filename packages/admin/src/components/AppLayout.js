@@ -111,14 +111,6 @@ class AppLayout extends Component {
                     <ListItemText primary="Search" />
                   </Link>
                 </ListItem>
-                {/* <ListItem button>
-                            <Link to={"/tools"}>
-                                <ListItemIcon>
-                                    <ToolsIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Tools" />
-                            </Link>
-                        </ListItem> */}
               </List>
             </div>
           </div>
