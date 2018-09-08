@@ -1,6 +1,6 @@
 {
   "name": "@neontribe/gbptm-ui",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "private": true,
   "proxy": "https://localhost:8080",
   "devDependencies": {
@@ -10,7 +10,7 @@
     "react-test-renderer": "16.5.0"
   },
   "dependencies": {
-    "@neontribe/leaflet-control-geocoder": "1.6.0",
+    "@neontribe/leaflet-control-geocoder": "2.7.0",
     "@neontribe/opening-hours": "2.4.0",
     "auth0-js": "9.7.3",
     "core-js": "2.5.7",

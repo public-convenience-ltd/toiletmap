@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.7.0"></a>
+# [2.7.0](https://github.com/neontribe/gbptm/compare/v2.6.0...v2.7.0) (2018-09-08)
+
+
+### Bug Fixes
+
+* annoyingly fix linting eerrors for cra build ([d459b63](https://github.com/neontribe/gbptm/commit/d459b63))
+* fix method & data used when deleting pending loos ([699bc71](https://github.com/neontribe/gbptm/commit/699bc71))
+* move & build leaflet-control-geocoder as package ([e54c8ed](https://github.com/neontribe/gbptm/commit/e54c8ed))
+* stay on react-scripts@next ([f593db3](https://github.com/neontribe/gbptm/commit/f593db3))
+* tag commit which fixes evt propogation issue ([7d59c13](https://github.com/neontribe/gbptm/commit/7d59c13))
+* tag commit which fixes evt propogation issue ([a251ae4](https://github.com/neontribe/gbptm/commit/a251ae4))
+* update deps ([7190702](https://github.com/neontribe/gbptm/commit/7190702))
+
+
+
+
+
 <a name="2.6.0"></a>
 # [2.6.0](https://github.com/neontribe/gbptm/compare/v2.5.0...v2.6.0) (2018-08-24)
 

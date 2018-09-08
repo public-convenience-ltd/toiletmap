@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.7.0"></a>
+# [2.7.0](https://github.com/neontribe/gbptm/compare/v2.6.0...v2.7.0) (2018-09-08)
+
+
+### Bug Fixes
+
+* update deps ([7190702](https://github.com/neontribe/gbptm/commit/7190702))
+
+
+### Features
+
+* add dropdown box for contributor search ([e42e52e](https://github.com/neontribe/gbptm/commit/e42e52e))
+* implement a loo detail page ([a36e24e](https://github.com/neontribe/gbptm/commit/a36e24e))
+* order by updatedAt, filter by updatedAt ([604a62b](https://github.com/neontribe/gbptm/commit/604a62b))
+
+
+
+
+
 <a name="2.6.0"></a>
 # [2.6.0](https://github.com/neontribe/gbptm/compare/v2.5.0...v2.6.0) (2018-08-24)
 
