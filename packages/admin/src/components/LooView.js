@@ -26,6 +26,8 @@ const styles = theme => ({
   appBarSpacer: theme.mixins.toolbar,
   root: {
     flexGrow: 1,
+    marginLeft: '2%',
+    marginRight: '2%',
   },
   paper: {
     padding: theme.spacing.unit * 2,

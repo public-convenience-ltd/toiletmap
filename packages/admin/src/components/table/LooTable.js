@@ -23,25 +23,6 @@ const styles = theme => ({
 });
 
 class LooTable extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      page: this.props.page,
-      rowsPerPage: this.props.rowsPerPage,
-    };
-  }
-
-  componentDidUpdate(prevProps) {
-    const { page: prevPage, rowsPerPage: prevRowsPerPage } = prevProps;
-    const { page, rowsPerPage } = this.props;
-    if (prevPage !== page) {
-      this.setState({ page: page });
-    } else if (prevRowsPerPage !== rowsPerPage) {
-      this.setState({ rowsPerPage });
-    }
-  }
-
   render() {
     const {
       classes,
@@ -49,10 +30,12 @@ class LooTable extends Component {
       colRender,
       rowRender,
       footerRender,
+      rowsPerPage,
+      page,
       handleChangePage,
       handleChangeRowsPerPage,
     } = this.props;
-    const { page, rowsPerPage } = this.state;
+
     return (
       <div className={classes.root}>
         <Table className={classes.table}>
@@ -67,8 +50,8 @@ class LooTable extends Component {
               data,
               rowsPerPage,
               page,
-              handleChangePage: handleChangePage.bind(this),
-              handleChangeRowsPerPage: handleChangeRowsPerPage.bind(this),
+              handleChangePage: handleChangePage,
+              handleChangeRowsPerPage: handleChangeRowsPerPage,
             })}
           </TableFooter>
         </Table>
@@ -90,12 +73,6 @@ LooTable.propTypes = {
 LooTable.defaultProps = {
   footerRender() {
     return null;
-  },
-  handleChangePage(event, page) {
-    this.setState({ page });
-  },
-  handleChangeRowsPerPage(event) {
-    this.setState({ rowsPerPage: event.target.value });
   },
   rowsPerPage: 10,
   page: 0,

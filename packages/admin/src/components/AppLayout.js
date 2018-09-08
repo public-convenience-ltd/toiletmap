@@ -28,10 +28,6 @@ const styles = {
   flex: {
     flex: 1,
   },
-  childContainer: {
-    marginLeft: '10%',
-    marginRight: '10%',
-  },
 };
 
 class AppLayout extends Component {
@@ -115,14 +111,6 @@ class AppLayout extends Component {
                     <ListItemText primary="Search" />
                   </Link>
                 </ListItem>
-                {/* <ListItem button>
-                            <Link to={"/tools"}>
-                                <ListItemIcon>
-                                    <ToolsIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Tools" />
-                            </Link>
-                        </ListItem> */}
               </List>
             </div>
           </div>

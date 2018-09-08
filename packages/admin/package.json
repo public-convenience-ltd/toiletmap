@@ -24,7 +24,8 @@
     "react-animated-number": "0.4.4",
     "react-chartjs-2": "2.7.2",
     "react-dom": "16.4.2",
-    "react-leaflet": "1.9.1"
+    "react-leaflet": "1.9.1",
+    "timeago.js": "3.0.2"
   },
   "scripts": {
     "dev": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
