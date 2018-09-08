@@ -6,7 +6,7 @@
   "devDependencies": {
     "enzyme": "3.6.0",
     "enzyme-adapter-react-16": "1.5.0",
-    "react-scripts": "1.1.5",
+    "react-scripts": "next",
     "react-test-renderer": "16.5.0"
   },
   "dependencies": {
@@ -29,8 +29,8 @@
     "react-redux": "5.0.7",
     "react-responsive": "5.0.0",
     "react-router-dom": "4.3.1",
-    "react-router-ga": "^1.0.0",
-    "react-router-hash-link": "^1.2.0",
+    "react-router-ga": "1.0.0",
+    "react-router-hash-link": "1.2.0",
     "redux": "4.0.0",
     "redux-saga": "0.16.0"
   },
