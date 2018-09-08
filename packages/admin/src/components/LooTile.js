@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import settings from '../lib/settings';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+
 let DefaultIcon = L.icon({
   iconUrl: icon,
   shadowUrl: iconShadow,
 });
 L.Marker.prototype.options.icon = DefaultIcon;
+
+const styles = theme => ({
+  looTile: {
+    width: '100%',
+    height: 300,
+  },
+});
 
 class LooTile extends Component {
   constructor(props) {
@@ -28,8 +36,9 @@ class LooTile extends Component {
   }
 
   render() {
+    const { className, mapProps, classes } = this.props;
     return (
-      <GridListTile style={{ width: '33.3%' }}>
+      <div className={classNames(className) || classes.looTile}>
         <Map
           center={this.state.location}
           zoomControl={false}
@@ -39,6 +48,7 @@ class LooTile extends Component {
           scrollWheelZoom={false}
           doubleClickZoom={false}
           zoom={12}
+          {...mapProps}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -46,8 +56,7 @@ class LooTile extends Component {
           />
           <Marker position={this.state.location} />
         </Map>
-        <GridListTileBar title={this.props.loo.properties.name || 'Unnamed'} />
-      </GridListTile>
+      </div>
     );
   }
 }
@@ -56,4 +65,4 @@ LooTile.propTypes = {
   loo: propTypes.object.isRequired,
 };
 
-export default LooTile;
+export default withStyles(styles)(LooTile);

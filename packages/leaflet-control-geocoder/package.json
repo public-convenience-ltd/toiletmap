@@ -1,0 +1,51 @@
+{
+  "name": "@neontribe/leaflet-control-geocoder",
+  "private": true,
+  "version": "1.6.0",
+  "description": "Extendable geocoder with builtin support for Nominatim, Bing, Google, Mapbox, Photon, What3Words, MapQuest, Mapzen, HERE",
+  "main": "dist/Control.Geocoder.js",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "npm run build:js && npm run build:css && npm run build:img",
+    "build:js": "rollup --output.format=iife --name=L.Control.Geocoder --globals=leaflet:L src/index.js --output.file=dist/Control.Geocoder.js --sourcemap",
+    "build:css": "cpr Control.Geocoder.css dist/Control.Geocoder.css --overwrite",
+    "build:img": "cpr images/ dist/images/ --overwrite",
+    "test": "npm run lint",
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint:js": "eslint 'src/**'",
+    "lint:css": "prettier --list-different '*.css'",
+    "publish": "sh ./scripts/publish.sh",
+    "postpublish": "sh ./scripts/postpublish.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/perliedman/leaflet-control-geocoder.git"
+  },
+  "keywords": [
+    "leaflet",
+    "geocoder",
+    "locations",
+    "nominatim",
+    "bing",
+    "google",
+    "mapbox",
+    "photon",
+    "what3words",
+    "mapquest",
+    "mapzen",
+    "here"
+  ],
+  "author": "Per Liedman <per@liedman.net>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/perliedman/leaflet-control-geocoder/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "cpr": "^3.0.1",
+    "eslint": "^4.15.0",
+    "eslint-plugin-prettier": "^2.4.0",
+    "prettier": "^1.9.2",
+    "rollup": "^0.53.2"
+  }
+}

@@ -7,31 +7,23 @@ import Statistics from './components/Statistics';
 import HeadlineStats from './components/stats/HeadlineStats';
 import AreaComparisonStats from './components/stats/AreaComparisonStats';
 import Search from './components/Search';
-//import Tools from './components/Tools';
+import LooView from './components/LooView';
 
 import './css/index.css';
 
-import {
-  Router,
-  Route,
-  IndexRoute,
-  IndexRedirect,
-  hashHistory,
-} from 'react-router';
+import { Router } from '@reach/router';
 
 ReactDOM.render(
-  <Router history={hashHistory}>
-    <Route path="/" component={AppLayout}>
-      <IndexRedirect to="search" />
-      <Route path="home" component={Home} />
-      <Route path="search" component={Search} />
-      <Route path="statistics" component={Statistics}>
-        <IndexRoute component={HeadlineStats} />
-        <Route path="areas" component={AreaComparisonStats} />
-      </Route>
-
-      {/* <Route path="tools" component={Tools}/> */}
-    </Route>
+  <Router>
+    <AppLayout path="/admin">
+      <Home default path="home" />
+      <Search path="search" />
+      <LooView path="loos/:looId" />
+      <Statistics path="statistics">
+        <HeadlineStats default />
+        <AreaComparisonStats path="areas" />
+      </Statistics>
+    </AppLayout>
   </Router>,
   document.getElementById('root')
 );
