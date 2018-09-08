@@ -5,14 +5,14 @@
   "homepage": "/admin",
   "proxy": "https://localhost:8080",
   "devDependencies": {
-    "react-scripts": "next"
+    "react-scripts": "1.1.5"
   },
   "dependencies": {
-    "@material-ui/core": "3.0.1",
+    "@material-ui/core": "3.0.2",
     "@material-ui/icons": "3.0.1",
     "@reach/router": "1.1.1",
     "chart.js": "2.7.2",
-    "downshift": "2.2.0",
+    "downshift": "2.2.2",
     "leaflet": "1.3.1",
     "lodash": "4.17.10",
     "moment": "2.22.2",
@@ -20,10 +20,10 @@
     "papaparse": "4.5.0",
     "prop-types": "15.6.2",
     "query-string": "4.2.3",
-    "react": "16.4.2",
+    "react": "16.5.0",
     "react-animated-number": "0.4.4",
-    "react-chartjs-2": "2.7.2",
-    "react-dom": "16.4.2",
+    "react-chartjs-2": "2.7.4",
+    "react-dom": "16.5.0",
     "react-leaflet": "1.9.1",
     "timeago.js": "3.0.2"
   },

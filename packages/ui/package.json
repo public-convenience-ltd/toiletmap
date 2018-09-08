@@ -4,14 +4,14 @@
   "private": true,
   "proxy": "https://localhost:8080",
   "devDependencies": {
-    "enzyme": "3.3.0",
-    "enzyme-adapter-react-16": "1.1.1",
-    "react-scripts": "next",
-    "react-test-renderer": "16.4.2"
+    "enzyme": "3.6.0",
+    "enzyme-adapter-react-16": "1.5.0",
+    "react-scripts": "1.1.5",
+    "react-test-renderer": "16.5.0"
   },
   "dependencies": {
-    "@neontribe/opening-hours": "2.4.0",
     "@neontribe/leaflet-control-geocoder": "1.6.0",
+    "@neontribe/opening-hours": "2.4.0",
     "auth0-js": "9.7.3",
     "core-js": "2.5.7",
     "js-cookie": "2.2.0",
@@ -22,10 +22,10 @@
     "lodash": "4.17.10",
     "normalize.css": "8.0.0",
     "prop-types": "15.6.2",
-    "react": "16.4.2",
+    "react": "16.5.0",
     "react-addons-update": "15.6.2",
-    "react-dom": "16.4.2",
-    "react-leaflet": "2.0.0",
+    "react-dom": "16.5.0",
+    "react-leaflet": "2.0.1",
     "react-redux": "5.0.7",
     "react-responsive": "5.0.0",
     "react-router-dom": "4.3.1",
