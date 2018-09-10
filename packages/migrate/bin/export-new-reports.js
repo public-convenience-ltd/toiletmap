@@ -69,12 +69,13 @@ async function main() {
     }
     legReps.forEach(({ _id }) => usedEarlier.add(_id));
 
-    newReps = newReps.concat(migrate.toNewReports(legReps));
+    newReps = newReps.concat(await migrate.toNewReports(legReps));
   }
 
   // ensure we created valid reports
   for (const report of newReps) {
     try {
+      // TODO maybe this is irrelevant now that we're adding to the DB
       await report.validate();
     } catch (err) {
       console.error(err.stack);
