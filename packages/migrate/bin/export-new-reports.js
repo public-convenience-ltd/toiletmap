@@ -3,8 +3,8 @@ require('@neontribe/gbptm-api/src/config/mongo');
 
 const mongoose = require('mongoose');
 
-const migrate = require('../lib/migrate');
-const { LegacyLoo, LegacyReport } = require('../lib/models');
+const migrate = require('../src/migrate');
+const { LegacyLoo, LegacyReport } = require('../src/models');
 
 // use a main function so we can have await niceties
 async function main() {
