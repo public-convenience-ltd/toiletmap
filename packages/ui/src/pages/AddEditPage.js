@@ -20,6 +20,7 @@ import {
 import { actionHighlight } from '../redux/modules/mapControls';
 
 import config from '../config';
+import { mappings } from '@neontribe/api-client';
 
 import styles from './css/edit-loo-page.module.css';
 import layout from '../components/css/layout.module.css';
@@ -47,7 +48,7 @@ class AddEditPage extends Component {
     },
   ];
 
-  optionsMap = config.looProps.definitions;
+  optionsMap = mappings.looProps.definitions;
 
   constructor(props) {
     super(props);

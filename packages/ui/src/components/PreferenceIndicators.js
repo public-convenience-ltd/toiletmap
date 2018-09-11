@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import api from '../api';
+import api from '@neontribe/api-client';
 
 import styles from './css/preference-indicators.module.css';
 

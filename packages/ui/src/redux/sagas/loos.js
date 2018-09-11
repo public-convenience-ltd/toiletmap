@@ -1,7 +1,7 @@
 import { all, takeLatest, call, put } from 'redux-saga/effects';
 import history from '../../history';
 
-import api from '../../api';
+import api from '@neontribe/api-client';
 import { PENDING_REPORT_KEY, PENDING_REMOVE_KEY } from '../../config';
 
 import {

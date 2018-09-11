@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import styles from './css/dismissable-box.module.css';
 
-import api from '../api';
+import api from '@neontribe/api-client';
 
 class DismissableBox extends Component {
   constructor(props) {

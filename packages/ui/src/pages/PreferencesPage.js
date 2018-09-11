@@ -17,7 +17,7 @@ import helpers from '../css/helpers.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
-import api from '../api';
+import api from '@neontribe/api-client';
 import { PREFERENCES_KEY } from '../config';
 
 import accessibleIcon from '../images/pref-accessible.svg';
