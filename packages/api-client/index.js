@@ -10,11 +10,6 @@ class API {
     if (!API.instance) {
       API.instance = this;
     }
-
-    this.findLoos = this.findLoos.bind(this);
-    this.findLooById = this.findLooById.bind(this);
-    this.reportLoo = this.reportLoo.bind(this);
-    this.removeLoo = this.removeLoo.bind(this);
   }
 
   get apiEndpoint() {

@@ -23,17 +23,17 @@ export default function makeLoosSaga(auth) {
   function* findNearbyLoosSaga(action) {
     yield put(actionFindNearbyStart());
     var { lng, lat, radius } = action.payload;
-    var loos = yield call(api.findLoos, lng, lat, radius);
+    var loos = yield call([api, api.findLoos], lng, lat, radius);
     yield put(actionFindNearbySuccess(loos));
   }
   function* findLooByIdSaga(action) {
-    var loo = yield call(api.findLooById, action.payload.id);
+    var loo = yield call([api, api.findLooById], action.payload.id);
     yield put(actionFindByIdSuccess(loo));
   }
 
   function* report(loo) {
     // Todo: Catch HTTP 401 and navigate to '/login'
-    const ids = yield call(api.reportLoo, loo, auth.getAccessToken());
+    const ids = yield call([api, api.reportLoo], loo, auth.getAccessToken());
     yield put(actionReportSuccess(ids));
     yield put(actionUncacheById(ids.loo));
     return yield call(history.push, `/loos/${ids.loo}/thanks`);
@@ -58,7 +58,12 @@ export default function makeLoosSaga(auth) {
 
   function* remove(id, reason) {
     // Todo: Catch HTTP 401 and navigate to '/login'
-    const result = yield call(api.removeLoo, id, reason, auth.getAccessToken());
+    const result = yield call(
+      [api, api.removeLoo],
+      id,
+      reason,
+      auth.getAccessToken()
+    );
     // maybe we should navigate as a result of the success action
     yield put(actionRemoveSuccess(result));
     return yield call(history.push, `/`);
