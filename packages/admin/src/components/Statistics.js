@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { navigate, Location } from '@reach/router';
 import _ from 'lodash';
-import settings from '../lib/settings';
+import api from '@neontribe/api-client';
 import moment from 'moment';
 
 import QueryScoper from './stats/QueryScoper';
@@ -29,23 +29,20 @@ class Statistics extends Component {
     this.updateQuery = this.updateQuery.bind(this);
   }
 
-  componentDidMount() {
-    //gets list of areas and area Types to use in the area dropdowns
-    var searchUrl = settings.getItem('apiUrl') + '/admin_geo/areas';
-    fetch(searchUrl)
-      .then(response => {
-        return response.json();
-      })
-      .then(result => {
-        result.All = _.uniq(_.flatten(_.values(result))).sort();
-        _.each(result, v => v.unshift('All'));
-        this.setState({
-          areaData: result,
-          areaTypeList: _.keys(result).sort(),
-          areaList: result.All,
-          loadedInitialData: true,
-        });
-      });
+  /**
+   * Gets list of areas and area Types to use in the area dropdowns
+   */
+  async componentDidMount() {
+    const result = await api.fetchAreaData();
+
+    result.All = _.uniq(_.flatten(_.values(result))).sort();
+    _.each(result, v => v.unshift('All'));
+    this.setState({
+      areaData: result,
+      areaTypeList: _.keys(result).sort(),
+      areaList: result.All,
+      loadedInitialData: true,
+    });
   }
 
   updateQuery(query) {

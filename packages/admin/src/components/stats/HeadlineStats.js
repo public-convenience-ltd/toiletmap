@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Location } from '@reach/router';
 import _ from 'lodash';
-import settings from '../../lib/settings';
-import queryString from 'query-string';
+import api from '@neontribe/api-client';
 import moment from 'moment';
 
 import Counter from './Counter';
@@ -51,39 +50,17 @@ class HeadlineStats extends Component {
     };
   }
 
-  fetchStats(query) {
+  async fetchStats(query) {
     var q = query || this.props.location.query;
     this.setState({
       refreshing: true,
     });
     //Gets stats from the api applying query values
-    var countersUrl =
-      settings.getItem('apiUrl') +
-      '/statistics/counters?' +
-      queryString.stringify(q);
-    var counters = fetch(countersUrl)
-      .then(response => {
-        return response.json();
-      })
-      .then(result => {
-        this.setState({
-          counters: result,
-        });
-      });
+    const counters = await api.fetchCountersStatistics(q);
+    this.setState({ counters });
 
-    var proportionsUrl =
-      settings.getItem('apiUrl') +
-      '/statistics/proportions?' +
-      queryString.stringify(q);
-    var proportions = fetch(proportionsUrl)
-      .then(response => {
-        return response.json();
-      })
-      .then(result => {
-        this.setState({
-          proportions: result,
-        });
-      });
+    const proportions = await api.fetchProportionsStatistics(q);
+    this.setState({ proportions });
 
     return Promise.all([counters, proportions]).then(() => {
       this.setState({

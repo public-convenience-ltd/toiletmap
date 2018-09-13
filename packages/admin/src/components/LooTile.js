@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
-import settings from '../lib/settings';
+import api from '@neontribe/api-client';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { Map, Marker, TileLayer } from 'react-leaflet';
@@ -27,7 +27,7 @@ class LooTile extends Component {
     super(props);
 
     this.state = {
-      link: settings.getItem('apiUrl') + '/loos/' + props.loo._id,
+      link: api.apiEndpoint + '/loos/' + props.loo._id,
       location: [
         props.loo.geometry.coordinates[1],
         props.loo.geometry.coordinates[0],

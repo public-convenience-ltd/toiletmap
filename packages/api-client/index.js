@@ -35,8 +35,20 @@ class API {
     return geojson.features;
   }
 
-  async findLooById(id) {
-    const url = `${this.apiEndpoint}/loos/${id}`;
+  async findLooById(id, params) {
+    const query = querystring.stringify(params);
+    const url = `${this.apiEndpoint}/loos/${id}?${query}`;
+    const res = await fetch(url, {
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+    return await res.json();
+  }
+
+  async searchLoos(q) {
+    const query = querystring.stringify(q);
+    const url = `${this.apiEndpoint}/search?${query}`;
     const res = await fetch(url, {
       headers: {
         Accept: 'application/json',
@@ -81,6 +93,39 @@ class API {
       throw new Error(res.statusText);
     }
     return res.status;
+  }
+
+  async fetchAreaData() {
+    const searchUrl = `${this.apiEndpoint}/admin_geo/areas`;
+    const response = await fetch(searchUrl);
+    return await response.json();
+  }
+
+  async fetchAreaStatistics(q) {
+    const query = querystring.stringify(q);
+    const searchUrl = `${this.apiEndpoint}/statistics/areas?${query}`;
+    const response = await fetch(searchUrl);
+    return await response.json();
+  }
+
+  async fetchCountersStatistics(q) {
+    const query = querystring.stringify(q);
+    const searchUrl = `${this.apiEndpoint}/statistics/counters?${query}`;
+    const response = await fetch(searchUrl);
+    return await response.json();
+  }
+
+  async fetchProportionsStatistics(q) {
+    const query = querystring.stringify(q);
+    const searchUrl = `${this.apiEndpoint}/statistics/proportions?${query}`;
+    const response = await fetch(searchUrl);
+    return await response.json();
+  }
+
+  async fetchContributors() {
+    const searchUrl = `${this.apiEndpoint}/statistics/contributors`;
+    const response = await fetch(searchUrl);
+    return await response.json();
   }
 
   getSettings(namespace) {

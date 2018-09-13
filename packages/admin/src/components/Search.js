@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import timeago from 'timeago.js';
 
 // Local
-import settings from '../lib/settings';
+import api from '@neontribe/api-client';
 import { createStyled } from '../lib/utils.js';
 import LooTable from './table/LooTable';
 import LooTablePaginationActions from './table/LooTablePaginationActions';
@@ -389,12 +389,7 @@ class Search extends Component {
     if (!_.isEmpty(q)) {
       this.setState({ searching: true });
       try {
-        const res = await fetch(
-          settings.getItem('apiUrl') +
-            '/search?' +
-            queryString.stringify(_.pickBy(q))
-        );
-        const results = await res.json();
+        const results = await api.searchLoos(_.pickBy(q));
         this.setState({ results });
       } catch (err) {
         console.error(err);
@@ -437,9 +432,7 @@ class Search extends Component {
    * Retreives a flattened list of Areas and Area Types and attaches to state.
    */
   async fetchAreaData() {
-    const searchUrl = settings.getItem('apiUrl') + '/admin_geo/areas';
-    const response = await fetch(searchUrl);
-    const result = await response.json();
+    const result = await api.fetchAreaData();
     result.All = _.uniq(_.flatten(_.values(result))).map(x => ({ label: x }));
     this.setState({
       areas: result.All,
@@ -450,9 +443,7 @@ class Search extends Component {
    * Fetches a list of contributors and attaches to state.
    */
   async fetchContributorData() {
-    const searchUrl = settings.getItem('apiUrl') + '/statistics/contributors';
-    const response = await fetch(searchUrl);
-    const result = await response.json();
+    const result = await api.fetchContributors();
     const contributors = Object.keys(result).map(x => ({ label: x }));
     this.setState({
       contributors: contributors,
