@@ -12,7 +12,7 @@ class API {
     }
   }
 
-  get apiEndpoint() {
+  get endpoint() {
     return process.env.NODE_ENV === 'production'
       ? '/api'
       : process.env.REACT_APP_GBPTM_API || '/api';
@@ -20,7 +20,7 @@ class API {
 
   async findLoos(lng, lat, radius) {
     const qs = querystring.stringify({ radius });
-    const url = `${this.apiEndpoint}/loos/near/${lng}/${lat}?${qs}`;
+    const url = `${this.endpoint}/loos/near/${lng}/${lat}?${qs}`;
     const res = await fetch(url, {
       headers: {
         Accept: 'application/json',
@@ -32,7 +32,7 @@ class API {
 
   async findLooById(id, params) {
     const query = querystring.stringify(params);
-    const url = `${this.apiEndpoint}/loos/${id}?${query}`;
+    const url = `${this.endpoint}/loos/${id}?${query}`;
     const res = await fetch(url, {
       headers: {
         Accept: 'application/json',
@@ -43,7 +43,7 @@ class API {
 
   async searchLoos(q) {
     const query = querystring.stringify(q);
-    const url = `${this.apiEndpoint}/search?${query}`;
+    const url = `${this.endpoint}/search?${query}`;
     const res = await fetch(url, {
       headers: {
         Accept: 'application/json',
@@ -54,7 +54,7 @@ class API {
 
   async reportLoo(report, token) {
     // Todo: Handle HTTP 401
-    const url = `${this.apiEndpoint}/reports`;
+    const url = `${this.endpoint}/reports`;
     const res = await fetch(url, {
       headers: {
         Accept: 'application/json',
@@ -72,7 +72,7 @@ class API {
 
   async removeLoo(looId, reason, token) {
     // Todo: Handle HTTP 401
-    const url = `${this.apiEndpoint}/reports/${looId}`;
+    const url = `${this.endpoint}/reports/${looId}`;
     const res = await fetch(url, {
       headers: {
         Accept: 'application/json',
@@ -91,34 +91,34 @@ class API {
   }
 
   async fetchAreaData() {
-    const searchUrl = `${this.apiEndpoint}/admin_geo/areas`;
+    const searchUrl = `${this.endpoint}/admin_geo/areas`;
     const response = await fetch(searchUrl);
     return await response.json();
   }
 
   async fetchAreaStatistics(q) {
     const query = querystring.stringify(q);
-    const searchUrl = `${this.apiEndpoint}/statistics/areas?${query}`;
+    const searchUrl = `${this.endpoint}/statistics/areas?${query}`;
     const response = await fetch(searchUrl);
     return await response.json();
   }
 
   async fetchCountersStatistics(q) {
     const query = querystring.stringify(q);
-    const searchUrl = `${this.apiEndpoint}/statistics/counters?${query}`;
+    const searchUrl = `${this.endpoint}/statistics/counters?${query}`;
     const response = await fetch(searchUrl);
     return await response.json();
   }
 
   async fetchProportionsStatistics(q) {
     const query = querystring.stringify(q);
-    const searchUrl = `${this.apiEndpoint}/statistics/proportions?${query}`;
+    const searchUrl = `${this.endpoint}/statistics/proportions?${query}`;
     const response = await fetch(searchUrl);
     return await response.json();
   }
 
   async fetchContributors() {
-    const searchUrl = `${this.apiEndpoint}/statistics/contributors`;
+    const searchUrl = `${this.endpoint}/statistics/contributors`;
     const response = await fetch(searchUrl);
     return await response.json();
   }

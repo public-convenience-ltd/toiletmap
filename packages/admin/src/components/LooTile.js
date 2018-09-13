@@ -27,7 +27,7 @@ class LooTile extends Component {
     super(props);
 
     this.state = {
-      link: api.apiEndpoint + '/loos/' + props.loo._id,
+      link: api.endpoint + '/loos/' + props.loo._id,
       location: [
         props.loo.geometry.coordinates[1],
         props.loo.geometry.coordinates[0],

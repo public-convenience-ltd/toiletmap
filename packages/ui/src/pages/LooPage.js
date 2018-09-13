@@ -219,7 +219,7 @@ class LooPage extends Component {
                 <th scope="row">Formats:</th>
                 <td>
                   <a
-                    href={`${api.apiEndpoint}/loos/${loo._id}?format=json`}
+                    href={`${api.endpoint}/loos/${loo._id}?format=json`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -231,9 +231,7 @@ class LooPage extends Component {
                 <th scope="row">Sources:</th>
                 <td>
                   {loo.reports.map((report, index) => {
-                    var href = `${
-                      api.apiEndpoint
-                    }/reports/${report}?format=json`;
+                    var href = `${api.endpoint}/reports/${report}?format=json`;
 
                     return (
                       <a
