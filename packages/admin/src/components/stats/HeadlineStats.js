@@ -62,19 +62,16 @@ class HeadlineStats extends Component {
     const proportions = await api.fetchProportionsStatistics(q);
     this.setState({ proportions });
 
-    return Promise.all([counters, proportions]).then(() => {
-      this.setState({
-        refreshing: false,
-      });
+    this.setState({
+      refreshing: false,
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // Rerieve stats for the initial query
-    this.fetchStats().then(() => {
-      this.setState({
-        loadedInitialData: true,
-      });
+    await this.fetchStats();
+    this.setState({
+      loadedInitialData: true,
     });
   }
 
