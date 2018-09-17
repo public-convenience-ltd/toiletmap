@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import styles from './css/dismissable-box.module.css';
 
-import api from '@neontribe/api-client';
+import config from '../config.js';
 
 class DismissableBox extends Component {
   constructor(props) {
@@ -25,7 +25,7 @@ class DismissableBox extends Component {
     });
 
     if (persistKey) {
-      api.setSetting('dismissed', persistKey, true);
+      config.setSetting('dismissed', persistKey, true);
     }
 
     this.props.onDismiss();
@@ -36,7 +36,7 @@ class DismissableBox extends Component {
 
     if (
       this.state.dismissed ||
-      (persistKey && api.getSetting('dismissed', persistKey))
+      (persistKey && config.getSetting('dismissed', persistKey))
     ) {
       return null;
     }
