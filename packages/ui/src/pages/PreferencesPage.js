@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { config, PREFERENCES_KEY } from '../config';
+import config, { PREFERENCES_KEY } from '../config';
 
 /* Note this approach will be deprecated in the future */
 import update from 'react-addons-update';
@@ -16,6 +16,7 @@ import layout from '../components/css/layout.module.css';
 import helpers from '../css/helpers.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
+
 import accessibleIcon from '../images/pref-accessible.svg';
 import freeIcon from '../images/pref-cost.svg';
 import openIcon from '../images/pref-open.svg';
