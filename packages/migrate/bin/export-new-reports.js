@@ -4,7 +4,8 @@ require('@neontribe/gbptm-api/src/config/mongo');
 const mongoose = require('mongoose');
 
 const migrate = require('../src/migrate');
-const { LegacyLoo, LegacyReport } = require('../src/models');
+const LegacyLoo = require('@neontribe/gbptm-api/src/models/loo');
+const LegacyReport = require('@neontribe/gbptm-api/src/models/loo_report');
 
 // use a main function so we can have await niceties
 async function main() {
@@ -91,7 +92,7 @@ async function main() {
   console.log(JSON.stringify(newReps, null, 2));
 
   // tidy
-  await mongoose.connection.close();
+  await mongoose.disconnect();
 }
 
 main();

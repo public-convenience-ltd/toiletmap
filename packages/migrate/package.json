@@ -4,6 +4,7 @@
   "description": "A tool for migrating legacy Toilet Map databases to our new schemas",
   "dependencies": {
     "@neontribe/gbptm-api": "2.5.0",
+    "@neontribe/gbptm-loodb": "2.7.0",
     "lodash": "4.17.10"
   },
   "scripts": {
