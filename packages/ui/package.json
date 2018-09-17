@@ -12,6 +12,7 @@
   "dependencies": {
     "@neontribe/leaflet-control-geocoder": "2.7.0",
     "@neontribe/opening-hours": "2.4.0",
+    "@neontribe/api-client": "2.7.0",
     "auth0-js": "9.7.3",
     "core-js": "2.5.7",
     "js-cookie": "2.2.0",

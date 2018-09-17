@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import settings from '../../lib/settings';
-import queryString from 'query-string';
+import api from '@neontribe/api-client';
 import { Link } from '@reach/router';
 
 import Table from '@material-ui/core/Table';
@@ -52,26 +51,17 @@ class AreaComparisonStats extends Component {
     this.downloadCSV = this.downloadCSV.bind(this);
   }
 
-  fetchStats(query) {
+  async fetchStats(query) {
     var q = query || this.props.location.query;
     this.setState({
       refreshing: true,
     });
     //Gets stats from the api applying query values
-    var dataUrl =
-      settings.getItem('apiUrl') +
-      '/statistics/areas?' +
-      queryString.stringify(q);
-    return fetch(dataUrl)
-      .then(response => {
-        return response.json();
-      })
-      .then(result => {
-        this.setState({
-          data: result,
-          refreshing: false,
-        });
-      });
+    const result = await api.fetchAreaStatistics(q);
+    this.setState({
+      data: result,
+      refreshing: false,
+    });
   }
 
   componentDidMount() {

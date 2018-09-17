@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import settings from '../lib/settings';
+import api from '@neontribe/api-client';
 import classNames from 'classnames';
 import LooTile from './LooTile';
 import LooTable from './table/LooTable';
@@ -97,13 +97,9 @@ class LooView extends Component {
 
   async fetchLooData() {
     this.setState({ loadingData: true });
-    const path =
-      settings.getItem('apiUrl') +
-      '/loos/' +
-      this.props.looId +
-      '?populateReports=true';
-    const response = await fetch(path);
-    const result = await response.json();
+    const result = await api.findLooById(this.props.looId, {
+      populateReports: true,
+    });
     this.setState({
       loadingData: false,
       loo: {
