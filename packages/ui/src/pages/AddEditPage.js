@@ -441,7 +441,7 @@ class AddEditPage extends Component {
         highlight
         mapProps={{
           showLocation: false,
-          showSearchControl: false,
+          showSearchControl: true,
           showLocateControl: false,
           preventDragging: false,
           minZoom: config.editMinZoom,

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
+import { Location } from '@reach/router';
 import _ from 'lodash';
 import settings from '../../lib/settings';
 import queryString from 'query-string';
 import moment from 'moment';
-
-//import RefreshIndicator from 'material-ui/RefreshIndicator';
 
 import Counter from './Counter';
 import CrowdIcon from '@material-ui/icons/GroupAdd';
@@ -171,15 +170,20 @@ class HeadlineStats extends Component {
 
         <GridList cols={2} cellHeight={200} padding={1}>
           <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-            <ListSubheader component="div">
-              <h2>Headline Counts</h2>
-              {`${moment(this.props.location.query.start).format(
-                'ddd, MMM Do YYYY'
-              )} to ${moment(this.props.location.query.end).format(
-                'ddd, MMM Do YYYY'
-              )} in ${this.props.location.query.area ||
-                this.props.location.query.areaType}`}
-            </ListSubheader>
+            <Location>
+              {({ location }) =>
+                location.state && (
+                  <ListSubheader component="div">
+                    <h2>Headline Counts</h2>
+                    {`${moment(location.state.start).format(
+                      'ddd, MMM Do YYYY'
+                    )} to ${moment(location.state.end).format(
+                      'ddd, MMM Do YYYY'
+                    )} in ${location.state.area || location.state.areaType}`}
+                  </ListSubheader>
+                )
+              }
+            </Location>
           </GridListTile>
           <GridListTile rows={2} cols={1}>
             <Doughnut

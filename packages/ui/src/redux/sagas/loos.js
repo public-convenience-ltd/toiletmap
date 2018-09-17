@@ -87,10 +87,11 @@ export default function makeLoosSaga(auth) {
       localStorage.removeItem(PENDING_REPORT_KEY);
       yield call(report, loo);
     }
-    const remove = JSON.parse(localStorage.getItem(PENDING_REMOVE_KEY));
-    if (remove) {
+    const to_remove = JSON.parse(localStorage.getItem(PENDING_REMOVE_KEY));
+    if (to_remove) {
+      const { looId, reason } = to_remove;
       localStorage.removeItem(PENDING_REMOVE_KEY);
-      yield call(report, loo);
+      yield call(remove, looId, reason);
     }
   }
 

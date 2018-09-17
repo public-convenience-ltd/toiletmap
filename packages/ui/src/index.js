@@ -29,6 +29,7 @@ import AddEditPage from './pages/AddEditPage';
 import LoginPage from './pages/LoginPage';
 import PreferencesPage from './pages/PreferencesPage';
 import ThanksPage from './pages/ThanksPage';
+import MapPage from './pages/MapPage';
 
 // Redux reducers
 import appReducer from './redux/modules/app';
@@ -84,6 +85,7 @@ if (typeof document !== 'undefined') {
             <Route exact path="/about" component={AboutPage} />
             <Route path="/loos/:id" exact component={LooPage} />
             <Route path="/login" component={LoginPage} />
+            <Route path="/map/:lng/:lat" component={MapPage} />
             <Route
               exact
               path="/callback"

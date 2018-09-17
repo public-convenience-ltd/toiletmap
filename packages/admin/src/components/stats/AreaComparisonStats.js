@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import settings from '../../lib/settings';
 import queryString from 'query-string';
-import { Link } from 'react-router';
-
-//import RefreshIndicator from 'material-ui/RefreshIndicator';
+import { Link } from '@reach/router';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -141,14 +139,7 @@ class AreaComparisonStats extends Component {
                   );
                 })}
                 <TableCell key={'c_listLink_' + index}>
-                  <Link
-                    to={{
-                      pathname: '/search',
-                      query: {
-                        area_name: row._id,
-                      },
-                    }}
-                  >
+                  <Link to={`../../search?area_name=${row._id}`}>
                     view loos
                   </Link>
                 </TableCell>
