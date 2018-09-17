@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import api from '../api';
+import config from '../config.js';
 
 import styles from './css/preference-indicators.module.css';
 
@@ -23,7 +23,7 @@ const ICONS = {
 
 class PreferenceIndicators extends Component {
   render() {
-    var comparison = api.checkPreferences(this.props.loo);
+    var comparison = config.checkPreferences(this.props.loo);
 
     return (
       <div className={styles.preferenceIndicators}>

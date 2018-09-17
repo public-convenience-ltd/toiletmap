@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import { navigate, Location } from '@reach/router';
 import _ from 'lodash';
-import settings from '../lib/settings';
+import api from '@neontribe/api-client';
 import moment from 'moment';
-import { withRouter } from 'react-router';
 
 import QueryScoper from './stats/QueryScoper';
 
@@ -29,46 +29,50 @@ class Statistics extends Component {
     this.updateQuery = this.updateQuery.bind(this);
   }
 
-  componentDidMount() {
-    //gets list of areas and area Types to use in the area dropdowns
-    var searchUrl = settings.getItem('apiUrl') + '/admin_geo/areas';
-    fetch(searchUrl)
-      .then(response => {
-        return response.json();
-      })
-      .then(result => {
-        result.All = _.uniq(_.flatten(_.values(result))).sort();
-        _.each(result, v => v.unshift('All'));
-        this.setState({
-          areaData: result,
-          areaTypeList: _.keys(result).sort(),
-          areaList: result.All,
-          loadedInitialData: true,
-        });
-      });
+  /**
+   * Gets list of areas and area Types to use in the area dropdowns
+   */
+  async componentDidMount() {
+    const result = await api.fetchAreaData();
+
+    result.All = _.uniq(_.flatten(_.values(result))).sort();
+    _.each(result, v => v.unshift('All'));
+    this.setState({
+      areaData: result,
+      areaTypeList: _.keys(result).sort(),
+      areaList: result.All,
+      loadedInitialData: true,
+    });
   }
 
   updateQuery(query) {
-    this.props.router.push({
-      pathname: this.props.location.pathname,
-      query,
+    navigate(this.props.location.pathname, {
+      state: {
+        query: query,
+      },
     });
   }
 
   render() {
     return this.state.loadedInitialData ? (
       <div>
-        <QueryScoper
-          start={this.props.location.query.start}
-          end={this.props.location.query.end}
-          minDate={this.state.minDate}
-          maxDate={this.state.maxDate}
-          areaType={this.props.location.query.areaType}
-          areaTypeList={this.state.areaTypeList}
-          area={this.props.location.query.area}
-          areaData={this.state.areaData}
-          onChange={this.updateQuery}
-        />
+        <Location>
+          {({ location }) =>
+            location.state && (
+              <QueryScoper
+                start={location.state.start}
+                end={location.state.end}
+                minDate={this.state.minDate}
+                maxDate={this.state.maxDate}
+                areaType={location.state.areaType}
+                areaTypeList={this.state.areaTypeList}
+                area={location.state.area}
+                areaData={location.state.areaData}
+                onChange={this.updateQuery}
+              />
+            )
+          }
+        </Location>
         {this.props.children}
       </div>
     ) : (
@@ -77,4 +81,4 @@ class Statistics extends Component {
   }
 }
 
-export default withRouter(Statistics);
+export default Statistics;

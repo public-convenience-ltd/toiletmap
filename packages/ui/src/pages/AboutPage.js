@@ -127,7 +127,8 @@ class AboutPage extends Component {
               </p>
 
               <p>
-                To join the Use Our Loos campaign please contact{' '}
+                To register your business for the Use Our Loos campaign please
+                contact{' '}
                 <a
                   href="mailto:useourloos@gmail.com"
                   target="_blank"
@@ -155,7 +156,7 @@ class AboutPage extends Component {
         </h2>
 
         <p>
-          A publicly-accessible toilet means any toilet that the public all
+          A publicly-accessible toilet means any toilet that the public are
           allowed to access without needing to be a customer.
         </p>
 

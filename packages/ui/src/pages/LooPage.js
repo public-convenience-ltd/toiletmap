@@ -18,7 +18,7 @@ import helpers from '../css/helpers.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
-import api from '../api';
+import { api, mappings } from '@neontribe/api-client';
 import config from '../config';
 
 class LooPage extends Component {
@@ -110,38 +110,14 @@ class LooPage extends Component {
     };
   }
 
-  // Wrapper to `api.humanize` which allows mappings between loo property values and the
+  // Wrapper to `@neontribe/api-client.mappings.humanizeAPIValue` which allows mappings between loo property values and the
   // text we want to display
   humanizePropertyName(val) {
     if (this.humanizedPropNames[val]) {
       return this.humanizedPropNames[val];
     }
 
-    return api.humanize(val);
-  }
-
-  humanizePropertyValue(val, property) {
-    if (config.looProps.definitions[property]) {
-      // We may a human readable definition of this property value
-      let override = config.looProps.definitions[property].find(
-        s => s.value === val
-      );
-      if (override) {
-        return override.name;
-      }
-    }
-
-    // Second condition is for an irregularity in our dataset; do this until we normalise better
-    if (
-      config.looProps.canHumanize.includes(property) ||
-      (property === 'fee' && val === 'false')
-    ) {
-      // We can humanize this kind of property to make it more human-readable
-      return api.humanize(val);
-    }
-
-    // This was likely entered as human-readable, leave it be
-    return val;
+    return mappings.humanizeAPIValue(val);
   }
 
   renderMain() {
@@ -193,7 +169,10 @@ class LooPage extends Component {
 
         <ul className={styles.properties}>
           {properties.map(name => {
-            var val = this.humanizePropertyValue(loo.properties[name], name);
+            var val = mappings.humanizePropertyValue(
+              loo.properties[name],
+              name
+            );
 
             // Filter out useless/unset data
             if (val !== 'Not known' && val !== '') {
@@ -240,7 +219,7 @@ class LooPage extends Component {
                 <th scope="row">Formats:</th>
                 <td>
                   <a
-                    href={`${config.apiEndpoint}/loos/${loo._id}?format=json`}
+                    href={`${api.endpoint}/loos/${loo._id}?format=json`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -252,9 +231,7 @@ class LooPage extends Component {
                 <th scope="row">Sources:</th>
                 <td>
                   {loo.reports.map((report, index) => {
-                    var href = `${
-                      config.apiEndpoint
-                    }/reports/${report}?format=json`;
+                    var href = `${api.endpoint}/reports/${report}?format=json`;
 
                     return (
                       <a

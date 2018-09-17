@@ -12,10 +12,35 @@ router.get('/', async (req, res) => {
   delete params.limit;
   delete params.page;
 
+  const order = params.order || 'desc';
+
   if (params.text) {
-    query.$or = [{ $text: { $search: req.query.text } }];
+    query.$or = [{ $text: { $search: params.text } }];
   }
+
+  // Note: from_date is the precondition for using the to_date.
+  if (params.from_date) {
+    query.updatedAt = {
+      $gte: params.from_date,
+    };
+    if (params.to_date) {
+      query.updatedAt.$lte = params.to_date;
+    }
+  }
+
+  if (params.attributions) {
+    query.$and = [];
+    query.$and.push({
+      attributions: { $all: [params.attributions] },
+    });
+  }
+
+  // Delete handled keys.
   delete params.text;
+  delete params.order;
+  delete params.to_date;
+  delete params.from_date;
+  delete params.attributions;
 
   // Arbitrary text searches have been removed until a way is found that is not
   // prone to ReDoS attacks or indexing every possible property by text
@@ -40,8 +65,13 @@ router.get('/', async (req, res) => {
     delete params[name];
   });
 
-  const loos = await Loo.paginate(query, { page: page, limit: limit });
-
+  const loos = await Loo.paginate(query, {
+    page: page,
+    limit: limit,
+    sort: {
+      updatedAt: order,
+    },
+  });
   res.status(200).json(loos);
 });
 

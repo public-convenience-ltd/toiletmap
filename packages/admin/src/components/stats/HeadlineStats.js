@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
+import { Location } from '@reach/router';
 import _ from 'lodash';
-import settings from '../../lib/settings';
-import queryString from 'query-string';
+import api from '@neontribe/api-client';
 import moment from 'moment';
-
-//import RefreshIndicator from 'material-ui/RefreshIndicator';
 
 import Counter from './Counter';
 import CrowdIcon from '@material-ui/icons/GroupAdd';
@@ -52,53 +50,28 @@ class HeadlineStats extends Component {
     };
   }
 
-  fetchStats(query) {
+  async fetchStats(query) {
     var q = query || this.props.location.query;
     this.setState({
       refreshing: true,
     });
     //Gets stats from the api applying query values
-    var countersUrl =
-      settings.getItem('apiUrl') +
-      '/statistics/counters?' +
-      queryString.stringify(q);
-    var counters = fetch(countersUrl)
-      .then(response => {
-        return response.json();
-      })
-      .then(result => {
-        this.setState({
-          counters: result,
-        });
-      });
+    const counters = await api.fetchCountersStatistics(q);
+    this.setState({ counters });
 
-    var proportionsUrl =
-      settings.getItem('apiUrl') +
-      '/statistics/proportions?' +
-      queryString.stringify(q);
-    var proportions = fetch(proportionsUrl)
-      .then(response => {
-        return response.json();
-      })
-      .then(result => {
-        this.setState({
-          proportions: result,
-        });
-      });
+    const proportions = await api.fetchProportionsStatistics(q);
+    this.setState({ proportions });
 
-    return Promise.all([counters, proportions]).then(() => {
-      this.setState({
-        refreshing: false,
-      });
+    this.setState({
+      refreshing: false,
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // Rerieve stats for the initial query
-    this.fetchStats().then(() => {
-      this.setState({
-        loadedInitialData: true,
-      });
+    await this.fetchStats();
+    this.setState({
+      loadedInitialData: true,
     });
   }
 
@@ -171,15 +144,20 @@ class HeadlineStats extends Component {
 
         <GridList cols={2} cellHeight={200} padding={1}>
           <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-            <ListSubheader component="div">
-              <h2>Headline Counts</h2>
-              {`${moment(this.props.location.query.start).format(
-                'ddd, MMM Do YYYY'
-              )} to ${moment(this.props.location.query.end).format(
-                'ddd, MMM Do YYYY'
-              )} in ${this.props.location.query.area ||
-                this.props.location.query.areaType}`}
-            </ListSubheader>
+            <Location>
+              {({ location }) =>
+                location.state && (
+                  <ListSubheader component="div">
+                    <h2>Headline Counts</h2>
+                    {`${moment(location.state.start).format(
+                      'ddd, MMM Do YYYY'
+                    )} to ${moment(location.state.end).format(
+                      'ddd, MMM Do YYYY'
+                    )} in ${location.state.area || location.state.areaType}`}
+                  </ListSubheader>
+                )
+              }
+            </Location>
           </GridListTile>
           <GridListTile rows={2} cols={1}>
             <Doughnut

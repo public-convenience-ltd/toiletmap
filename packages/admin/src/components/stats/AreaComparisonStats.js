@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import settings from '../../lib/settings';
-import queryString from 'query-string';
-import { Link } from 'react-router';
-
-//import RefreshIndicator from 'material-ui/RefreshIndicator';
+import api from '@neontribe/api-client';
+import { Link } from '@reach/router';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -54,26 +51,17 @@ class AreaComparisonStats extends Component {
     this.downloadCSV = this.downloadCSV.bind(this);
   }
 
-  fetchStats(query) {
+  async fetchStats(query) {
     var q = query || this.props.location.query;
     this.setState({
       refreshing: true,
     });
     //Gets stats from the api applying query values
-    var dataUrl =
-      settings.getItem('apiUrl') +
-      '/statistics/areas?' +
-      queryString.stringify(q);
-    return fetch(dataUrl)
-      .then(response => {
-        return response.json();
-      })
-      .then(result => {
-        this.setState({
-          data: result,
-          refreshing: false,
-        });
-      });
+    const result = await api.fetchAreaStatistics(q);
+    this.setState({
+      data: result,
+      refreshing: false,
+    });
   }
 
   componentDidMount() {
@@ -141,14 +129,7 @@ class AreaComparisonStats extends Component {
                   );
                 })}
                 <TableCell key={'c_listLink_' + index}>
-                  <Link
-                    to={{
-                      pathname: '/search',
-                      query: {
-                        area_name: row._id,
-                      },
-                    }}
-                  >
+                  <Link to={`../../search?area_name=${row._id}`}>
                     view loos
                   </Link>
                 </TableCell>
