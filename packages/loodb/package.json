@@ -1,0 +1,10 @@
+{
+  "name": "@neontribe/gbptm-loodb",
+  "version": "2.7.0",
+  "description": "The home of our loo mongoose models and database logic",
+  "main": "src/index.js",
+  "dependencies": {
+    "lodash": "4.17.11",
+    "mongoose": "5.2.14"
+  }
+}

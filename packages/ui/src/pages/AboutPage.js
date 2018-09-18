@@ -127,7 +127,8 @@ class AboutPage extends Component {
               </p>
 
               <p>
-                To register your business for the Use Our Loos campaign please contact{' '}
+                To register your business for the Use Our Loos campaign please
+                contact{' '}
                 <a
                   href="mailto:useourloos@gmail.com"
                   target="_blank"

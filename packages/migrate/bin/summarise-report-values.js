@@ -2,7 +2,7 @@ const fs = require('fs');
 
 // the properties that can be in a new report
 const properties = Object.keys(
-  require('../lib/models').Report.schema.tree.diff
+  require('../src/models').Report.schema.tree.diff
 );
 
 /**

@@ -40,7 +40,7 @@ exports.toNewReport = function toNewReport(legacy) {
         automatic: legacy.properties.automatic,
         fee: ignoreEmpty(legacy.properties.fee),
         notes: ignoreEmpty(legacy.properties.notes),
-        removal_reason: ignoreEmpty(legacy.properties.removal_reason),
+        removalReason: ignoreEmpty(legacy.properties.removal_reason),
         area: legacy.properties.area.map(area =>
           _.omit(area.toObject(), ['_id'])
         ),
@@ -57,48 +57,17 @@ exports.toNewReport = function toNewReport(legacy) {
 exports.toNewReports = async function toNewReports(legacies) {
   // create a new report based on a legacy report, with no knowledge of others
   const newReps = legacies.map(exports.toNewReport);
+  await Promise.all(newReps.map(rep => rep.save()));
 
-  // iterate through chain of reports
-  const core = {};
-  for (let i = 0; i < newReps.length; i++) {
-    const toObj = newReps[i].toObject();
-
-    if (i - 1 >= 0) {
-      // remove any values given identically in a previous report
-      for (const key of Object.keys(Report.schema.tree.diff)) {
-        if (_.isEqual(toObj.diff[key], core[key])) {
-          delete toObj.diff[key];
-        }
-      }
-
-      // reference previous report
-      toObj.previous = newReps[i - 1]._id;
-    }
-
-    for (const key of Object.keys(Report.schema.tree.diff)) {
-      // if the property is marked as null, see if it should be
-      if (toObj.diff[key] === null) {
-        if (core[key] === undefined) {
-          // previously the property was undefined
-          delete toObj.diff[key]; // the null is unneeded
-        } else {
-          // null indicates that this report should remove the property from the loo
-          delete core[key]; // remove it from our simulated loo
-          // leave the null value as is, it is needed to indicate the property removal
-        }
-      }
-
-      // keep track of how our loo would be generated on-the-fly
-      core[key] = _.clone(toObj.diff[key]);
-    }
-
-    newReps[i] = new Report(toObj);
+  // add references to prior loos and remove redundant data
+  for (let i = 1; i < newReps.length; i++) {
+    await newReps[i].deriveFrom(newReps[i - 1]);
     await newReps[i].save();
   }
 
-  // add reference to following loo
+  // add reference to following loos
   for (var i = 0; i + 1 < newReps.length; i++) {
-    newReps[i].next = newReps[i + 1]._id;
+    newReps[i].nameSuccessor(newReps[i + 1]);
     await newReps[i].save();
   }
 
