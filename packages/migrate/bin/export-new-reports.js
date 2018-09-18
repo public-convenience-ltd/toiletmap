@@ -91,7 +91,8 @@ async function main() {
   console.log(JSON.stringify(newReps, null, 2));
 
   // tidy
-  await mongoose.connection.close();
+  await mongoose.disconnect();
+  migrate.closeConnection();
 }
 
 main();
