@@ -1,4 +1,4 @@
-# GBPTM
+# GBPTM TEST
 
 A suite of modules for [Public Convenience Ltd](https://www.publicconvenience.org/)'s *[Great British Public Toilet Map](https://www.toiletmap.org.uk)*
 
