@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 // the properties that can be in a new report
-const { Report, close } = require('@neontribe/gbptm-loodb')(
+const { Report, db } = require('@neontribe/gbptm-loodb')(
   'mongodb://localhost:27017/gbptm'
 );
 const properties = Object.keys(Report.schema.tree.diff.type.tree);
@@ -84,4 +84,4 @@ for (const prop of properties) {
 }
 
 // Close the DB connection
-close();
+db.close();

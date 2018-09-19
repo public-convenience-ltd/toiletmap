@@ -97,7 +97,7 @@ async function main() {
 
   // tidy
   await mongoose.disconnect();
-  migrate.closeConnection();
+  migrate.db.close();
 }
 
 main();

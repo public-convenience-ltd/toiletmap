@@ -19,6 +19,7 @@ async function main() {
 
   // tidy
   await mongoose.disconnect();
+  migrate.db.close();
 }
 
 main();
