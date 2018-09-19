@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { Report } = require('@neontribe/gbptm-loodb')(
+const { Report, close } = require('@neontribe/gbptm-loodb')(
   'mongodb://localhost:27017/gbptm'
 );
 
@@ -73,3 +73,8 @@ exports.toNewReports = async function toNewReports(legacies) {
 
   return newReps;
 };
+
+/**
+ * Exposes the close method provided by the loodb instance.
+ */
+exports.closeConnection = close;
