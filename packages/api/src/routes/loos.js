@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const Loo = require('../models/loo');
-const LooList = require('../models/loo_list');
+
+const { Loo } = require('@neontribe/gbptm-loodb')(
+  'mongodb://localhost:27017/gbptm'
+);
+
 const config = require('../config/config');
 
 /**
@@ -17,7 +20,8 @@ router.get('/near/:lon/:lat', async (req, res) => {
     parseFloat(req.params.lat),
     allowedRadius
   ).exec();
-  res.status(200).json(new LooList(loos));
+
+  res.status(200).json(Loo.looList(loos));
 });
 
 /**
@@ -25,7 +29,7 @@ router.get('/near/:lon/:lat', async (req, res) => {
  */
 router.get('/', async (req, res) => {
   const loos = await Loo.find({}, 'type geometry').exec();
-  res.status(200).json(new LooList(loos));
+  res.status(200).json(Loo.looList(loos));
 });
 
 /**
@@ -44,7 +48,7 @@ router.get('/:id/updateArea', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
   const loo = await Loo.findById(req.params.id).exec();
-
+  console.log(loo);
   if (!loo) {
     return res.status(404).end();
   }

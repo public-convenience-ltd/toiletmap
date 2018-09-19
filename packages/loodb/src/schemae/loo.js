@@ -1,5 +1,5 @@
 const { Schema } = require('mongoose');
-
+const mongoosePaginate = require('mongoose-paginate');
 const CoreSchema = require('./core');
 
 const LooSchema = new Schema(
@@ -8,6 +8,9 @@ const LooSchema = new Schema(
   },
   { minimize: false }
 );
+
+LooSchema.index({ 'properties.geometry': '2dsphere' });
+LooSchema.plugin(mongoosePaginate);
 
 /**
  * Create a Loo from a list of LooReports.
@@ -29,6 +32,48 @@ LooSchema.statics.fromReports = function(reports) {
 
   // "this" refers to our static model
   return new this({ properties });
+};
+
+LooSchema.statics.findNear = function(lon, lat, radius) {
+  return this.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: 'Point',
+          coordinates: [lon, lat],
+        },
+        distanceField: 'distance',
+        maxDistance: radius,
+        spherical: true,
+        limit: 2 ** 62, // infeasibly large number
+      },
+    },
+    {
+      $match: {
+        'properties.active': true,
+      },
+    },
+    {
+      $project: {
+        geometry: 1,
+        distance: 1,
+        properties: {
+          fee: 1,
+          accessibleType: 1,
+          opening: 1,
+          type: 1,
+          babyChange: 1,
+        },
+      },
+    },
+  ]);
+};
+
+LooSchema.statics.looList = function(loos) {
+  return {
+    type: 'FeatureCollection',
+    features: loos || [],
+  };
 };
 
 module.exports = exports = LooSchema;

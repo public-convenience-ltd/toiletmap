@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const Loo = require('../models/loo');
-const LooReport = require('../models/loo_report');
+const { Loo, Report } = require('@neontribe/gbptm-loodb')(
+  'mongodb://localhost:27017/gbptm'
+);
 const _ = require('lodash');
 const { DateTime } = require('luxon');
 
@@ -46,18 +47,16 @@ router.get('/counters', async (req, res) => {
   const [
     activeLoos,
     loosCount,
-    looReports,
+    Reports,
     uiReports,
     removals,
     multiReportLoos,
   ] = await Promise.all([
     Loo.count(scopeQuery({}, req.query)).exec(),
     Loo.count(scopeQuery({}, qWithInactive)).exec(),
-    LooReport.count(scopeQuery({}, qWithInactive)).exec(),
-    LooReport.count(
-      scopeQuery({ collectionMethod: 'api' }, qWithInactive)
-    ).exec(),
-    LooReport.count(
+    Report.count(scopeQuery({}, qWithInactive)).exec(),
+    Report.count(scopeQuery({ collectionMethod: 'api' }, qWithInactive)).exec(),
+    Report.count(
       scopeQuery(
         { 'properties.removal_reason': { $exists: true } },
         qWithInactive
@@ -67,14 +66,14 @@ router.get('/counters', async (req, res) => {
       scopeQuery({ 'reports.1': { $exists: true } }, qWithInactive)
     ).exec(),
   ]);
-  const importedReports = looReports - uiReports;
+  const importedReports = Reports - uiReports;
   const inactiveLoos = loosCount - activeLoos;
 
   res.status(200).json({
     'Total Toilets Added': loosCount,
     'Active Toilets Added': activeLoos,
     'Inactive/Removed Toilets': inactiveLoos,
-    'Total Loo Reports Recorded': looReports,
+    'Total Loo Reports Recorded': Reports,
     'Total Reports via Web UI/API': uiReports,
     'Reports from Data Collections': importedReports,
     'Removal Reports Submitted': removals,
@@ -146,7 +145,7 @@ router.get('/proportions', async (req, res) => {
 router.get('/contributors', async (req, res) => {
   const scope = scopeQuery({}, req.query);
   scope.$and.push({ type: 'Feature' });
-  const contributors = await LooReport.aggregate([
+  const contributors = await Report.aggregate([
     {
       $match: scope,
     },

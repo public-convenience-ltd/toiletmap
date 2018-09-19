@@ -2,8 +2,10 @@ const express = require('express');
 const fetch = require('node-fetch');
 const _ = require('lodash');
 
-const LooReport = require('../models/loo_report');
-const Loo = require('../models/loo');
+const { Loo, Report } = require('@neontribe/gbptm-loodb')(
+  'mongodb://localhost:27017/gbptm'
+);
+
 const config = require('../config/config');
 const { checkJwt, checkScopes } = require('../config/auth');
 
@@ -67,14 +69,14 @@ async function save(data, token) {
     collectionMethod: 'api',
   };
 
-  const validator = new LooReport(report);
+  const validator = new Report(report);
 
   try {
     await validator.validate();
   } catch (e) {
     throw e;
   }
-  return await LooReport.processReport(report);
+  return await Report.processReport(report);
 }
 
 router.post('/', checkJwt, checkScopes('report:loo'), async (req, res) => {
@@ -127,7 +129,7 @@ router.delete('/:id', checkJwt, checkScopes('report:loo'), async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
   const id = req.params.id.replace('.json', '');
-  const report = await LooReport.findById(id).exec();
+  const report = await Report.findById(id).exec();
   if (!report) {
     return res.status(404).end();
   }

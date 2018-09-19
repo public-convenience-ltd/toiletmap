@@ -10,5 +10,6 @@ module.exports = exports = function connect(url) {
     Loo: db.model('NewLoo', LooSchema),
     Report: db.model('NewReport', ReportSchema),
     close: db.close.bind(db),
+    db,
   };
 };
