@@ -21,6 +21,22 @@ function ignoreEmpty(string) {
 }
 
 /**
+ * Maps string values to bools and ensures that 'Not Known' is unset.
+ */
+function mapTriState(state) {
+  if (state === 'true') {
+    return true;
+  }
+  if (state === 'false') {
+    return false;
+  }
+  if (state === 'Not Known') {
+    return null;
+  }
+  return state;
+}
+
+/**
  * Convert a legacy report to the new report schema.
  */
 exports.toNewReport = function toNewReport(legacy) {
@@ -34,10 +50,10 @@ exports.toNewReport = function toNewReport(legacy) {
         opening: ignoreEmpty(legacy.properties.opening),
         type: ignoreEmpty(legacy.properties.type),
         accessibleType: ignoreEmpty(legacy.properties.accessibleType),
-        babyChange: legacy.properties.babyChange,
-        radar: legacy.properties.radar,
-        attended: legacy.properties.attended,
-        automatic: legacy.properties.automatic,
+        babyChange: mapTriState(legacy.properties.babyChange),
+        radar: mapTriState(legacy.properties.radar),
+        attended: mapTriState(legacy.properties.attended),
+        automatic: mapTriState(legacy.properties.automatic),
         fee: ignoreEmpty(legacy.properties.fee),
         notes: ignoreEmpty(legacy.properties.notes),
         removalReason: ignoreEmpty(legacy.properties.removal_reason),
