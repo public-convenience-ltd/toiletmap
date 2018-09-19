@@ -1,9 +1,10 @@
 const fs = require('fs');
 
 // the properties that can be in a new report
-const properties = Object.keys(
-  require('../src/models').Report.schema.tree.diff
+const { Report } = require('@neontribe/gbptm-loodb')(
+  'mongodb://localhost:27017/gbptm'
 );
+const properties = Object.keys(Report.schema.tree.diff.type.tree);
 
 /**
  * Get the frequency of different values in a new report's "diff"-section
@@ -59,7 +60,7 @@ function printFreqs(freqs) {
 const group = JSON.parse(fs.readFileSync(0));
 
 // heading and summary
-console.log(`# Analysis of \`${process.argv[2]}\`\n`);
+console.log('# Analysis of reports');
 console.log(`Total: ${group.length}\n`);
 
 // document any properties found that are not in the schema
