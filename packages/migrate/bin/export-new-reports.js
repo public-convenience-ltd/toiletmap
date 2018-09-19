@@ -9,6 +9,10 @@ const LegacyReport = require('@neontribe/gbptm-api/src/models/loo_report');
 
 // use a main function so we can have await niceties
 async function main() {
+  console.warn('Dropping existing report collection.');
+  // Drop exsiting report collection.
+  await migrate.db.dropCollection('newreports');
+
   // get Loos
   let legLoos = await LegacyLoo.find({}, { reports: 1 }).populate('reports');
   console.error(legLoos.length + ' reports fetched');

@@ -9,6 +9,7 @@
   },
   "scripts": {
     "export-new-reports": "node ./bin/export-new-reports.js > ./data/new-reports.json",
+    "export-new-loos": "node ./bin/export-new-loos.js > ./data/new-loos.json",
     "summarise-report-values": "node ./bin/summarise-report-values.js < ./data/new-reports.json > ./data/report-values.md"
   }
 }
