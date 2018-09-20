@@ -5,6 +5,7 @@ const CoreSchema = require('./core');
 const LooSchema = new Schema(
   {
     properties: CoreSchema,
+    reports: [{ type: Schema.Types.ObjectId, ref: 'NewReport' }],
   },
   { minimize: false }
 );
@@ -17,6 +18,7 @@ LooSchema.plugin(mongoosePaginate);
  */
 LooSchema.statics.fromReports = function(reports) {
   // generate the loo from the sequence of diffs
+
   const properties = {};
   for (const rep of reports) {
     for (const [key, value] of Object.entries(rep.toObject().diff)) {
@@ -30,8 +32,14 @@ LooSchema.statics.fromReports = function(reports) {
     }
   }
 
+  // Get just the IDs of the report list to populate Loo metadata
+  const reportIds = reports.map(val => val._id);
+
   // "this" refers to our static model
-  return new this({ properties });
+  return new this({
+    properties,
+    reports: reportIds,
+  });
 };
 
 LooSchema.statics.findNear = function(lon, lat, radius) {

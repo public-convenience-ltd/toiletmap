@@ -178,7 +178,7 @@ class LooPage extends Component {
             );
 
             // Filter out useless/unset data
-            if (val !== 'Not known' && val !== '') {
+            if (val !== 'Not known' && val !== '' && typeof val !== 'object') {
               return (
                 <li className={styles.property} key={name}>
                   <h3 className={styles.propertyName}>
