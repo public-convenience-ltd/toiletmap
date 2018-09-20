@@ -140,7 +140,10 @@ class LooPage extends Component {
             <a
               href={
                 'https://maps.apple.com/?dirflg=w&daddr=' +
-                [loo.geometry.coordinates[1], loo.geometry.coordinates[0]]
+                [
+                  loo.properties.geometry.coordinates[1],
+                  loo.properties.geometry.coordinates[0],
+                ]
               }
               className={controls.btn}
               target="_blank"

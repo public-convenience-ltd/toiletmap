@@ -212,8 +212,8 @@ export class LooMap extends Component {
       var highlight = this.props.highlight && loo._id === this.props.highlight;
 
       var position = {
-        lat: loo.geometry.coordinates[1],
-        lng: loo.geometry.coordinates[0],
+        lat: loo.properties.geometry.coordinates[1],
+        lng: loo.properties.geometry.coordinates[0],
       };
 
       var icon = new L.LooIcon({ highlight });

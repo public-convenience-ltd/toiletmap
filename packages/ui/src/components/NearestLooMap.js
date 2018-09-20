@@ -43,8 +43,8 @@ class NearestLooMap extends Component {
     var looCentre;
     if (loo) {
       looCentre = {
-        lat: loo.geometry.coordinates[1],
-        lng: loo.geometry.coordinates[0],
+        lat: loo.properties.geometry.coordinates[1],
+        lng: loo.properties.geometry.coordinates[0],
       };
     }
 

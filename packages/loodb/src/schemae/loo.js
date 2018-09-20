@@ -55,9 +55,9 @@ LooSchema.statics.findNear = function(lon, lat, radius) {
     },
     {
       $project: {
-        geometry: 1,
         distance: 1,
         properties: {
+          geometry: 1,
           fee: 1,
           accessibleType: 1,
           opening: 1,

@@ -129,7 +129,7 @@ looSchema.methods.regenerate = async function() {
   geometry.coordinates[1] =
     recentLooReports[recentLooReports.length - 1].geometry.coordinates[1];
 
-  loo.geometry = geometry;
+  loo.properties.geometry = geometry;
 
   /*
   //Skewed average based on trust
