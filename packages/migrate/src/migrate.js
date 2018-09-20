@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { Report, close } = require('@neontribe/gbptm-loodb')(
+const { Report, db } = require('@neontribe/gbptm-loodb')(
   'mongodb://localhost:27017/gbptm'
 );
 
@@ -90,7 +90,28 @@ exports.toNewReports = async function toNewReports(legacies) {
   return newReps;
 };
 
+exports.toNewLoos = async function toNewLoos() {
+  // Find all reports that start a list.
+  const tailReports = await Report.find({
+    previous: { $exists: false },
+  }).exec();
+  const newLoos = [];
+  for (const report of tailReports) {
+    let root = report;
+    // Traverse each linked report list to find the root report.
+    while (root.next) {
+      await root.populate('next').execPopulate();
+      root = root.next;
+    }
+    // Generate a loo from each root report and save it.
+    const newLoo = await root.generateLoo();
+    newLoos.push(newLoo);
+    newLoo.save();
+  }
+  return newLoos;
+};
+
 /**
- * Exposes the close method provided by the loodb instance.
+ * Export the db connection instance.
  */
-exports.closeConnection = close;
+exports.db = db;
