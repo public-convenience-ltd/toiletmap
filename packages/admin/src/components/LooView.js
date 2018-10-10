@@ -142,7 +142,7 @@ class LooView extends Component {
             </Typography>
             {loo.properties.area.map(val => {
               return (
-                <Typography key={val._id} variant="subheading" gutterBottom>
+                <Typography key={val._id} variant="subtitle1" gutterBottom>
                   {val.name} / {val.type}
                 </Typography>
               );
@@ -178,7 +178,7 @@ class LooView extends Component {
               <Typography variant="display1" gutterBottom>
                 Toilet Data
               </Typography>
-              <Typography variant="subheading" gutterBottom>
+              <Typography variant="subtitle1" gutterBottom>
                 Data attached to this loo.
               </Typography>
             </Grid>
@@ -193,10 +193,10 @@ class LooView extends Component {
 
           <Grid container item sm={12}>
             <Grid item sm={12}>
-              <Typography variant="display1" gutterBottom>
+              <Typography variant="h4" gutterBottom>
                 Loo Reports
               </Typography>
-              <Typography variant="subheading" gutterBottom>
+              <Typography variant="subtitle1" gutterBottom>
                 Contributions towards this loo.
               </Typography>
             </Grid>
