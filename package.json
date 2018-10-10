@@ -6,8 +6,6 @@
   "main": "index.js",
   "scripts": {
     "test": "CI=true lerna run test --parallel --ignore=@neontribe/gbptm-ui --ignore=@neontribe/leaflet-control-geocoder",
-    "commitmsg": "commitlint -e",
-    "precommit": "lint-staged",
     "reinstall": "lerna clean --yes && rm yarn.lock && yarn install",
     "release": "lerna publish --conventional-commits --no-verify-access --exact -m \"build: release %s\"",
     "lint": "eslint . && stylelint ./**/*.css",
@@ -47,18 +45,24 @@
     }
   },
   "devDependencies": {
-    "@commitlint/cli": "7.1.2",
+    "@commitlint/cli": "7.2.0",
     "@commitlint/config-angular": "7.1.2",
-    "eslint": "4.19.1",
+    "eslint": "5.6.1",
     "eslint-plugin-react": "7.11.1",
-    "husky": "0.14.3",
-    "lerna": "3.3.0",
-    "lint-staged": "7.2.2",
-    "prettier": "1.14.2",
-    "stylelint": "9.5.0",
+    "husky": "1.1.1",
+    "lerna": "3.4.3",
+    "lint-staged": "7.3.0",
+    "prettier": "1.14.3",
+    "stylelint": "9.6.0",
     "stylelint-config-standard": "18.2.0"
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e",
+      "pre-commit": "lint-staged"
+    }
+  }
 }

@@ -14,18 +14,18 @@
     "express-jwt": "5.3.1",
     "express-jwt-authz": "1.0.0",
     "geo-hash": "0.0.2",
-    "helmet": "3.13.0",
+    "helmet": "3.14.0",
     "jwks-rsa": "1.3.0",
-    "lodash": "4.17.10",
-    "luxon": "1.3.3",
-    "mongoose": "5.2.13",
+    "lodash": "4.17.11",
+    "luxon": "1.4.3",
+    "mongoose": "5.3.2",
     "mongoose-paginate": "5.0.3",
     "mongoose-timestamp": "0.6.0",
-    "newrelic": "4.8.1",
+    "newrelic": "4.9.0",
     "node-fetch": "2.2.0"
   },
   "devDependencies": {
-    "jest": "23.2.0",
+    "jest": "23.6.0",
     "supertest": "3.3.0"
   },
   "engines": {
