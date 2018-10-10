@@ -6,7 +6,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  extends: 'eslint:recommended',
+  extends: ['eslint:recommended', 'react-app'],
   parserOptions: {
     ecmaVersion: 2017,
     ecmaFeatures: {
@@ -15,7 +15,6 @@ module.exports = {
     },
     sourceType: 'module',
   },
-  plugins: ['react'],
   rules: {
     indent: ['error', 2],
     'linebreak-style': ['error', 'unix'],
