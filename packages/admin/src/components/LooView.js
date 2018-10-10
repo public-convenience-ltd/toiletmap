@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { navigate } from '@reach/router';
 import settings from '../lib/settings';
 import classNames from 'classnames';
 import LooTile from './LooTile';
@@ -8,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import RaisedButton from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -45,6 +47,10 @@ const styles = theme => ({
   },
   expansionRoot: {
     width: '100%',
+  },
+  buttons: {
+    display: 'flex',
+    justifyContent: 'flex-start',
   },
 });
 
@@ -141,6 +147,18 @@ class LooView extends Component {
                 </Typography>
               );
             })}
+            <div className={classes.buttons}>
+              <RaisedButton
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                onClick={e => {
+                  navigate(`/loos/${this.props.looId}/edit`);
+                }}
+              >
+                Edit
+              </RaisedButton>
+            </div>
           </Grid>
           <Grid container item md={6} sm={12}>
             <Paper className={classNames(classes.paper, classes.mapTile)}>
