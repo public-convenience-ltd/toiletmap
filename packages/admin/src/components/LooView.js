@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { navigate } from '@reach/router';
 import settings from '../lib/settings';
 import classNames from 'classnames';
 import LooTile from './LooTile';
@@ -152,9 +151,7 @@ class LooView extends Component {
                 variant="contained"
                 color="secondary"
                 className={classes.button}
-                onClick={e => {
-                  navigate(`/loos/${this.props.looId}/edit`);
-                }}
+                href={`/loos/${this.props.looId}/edit`}
               >
                 Edit
               </RaisedButton>
