@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import RaisedButton from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -45,6 +46,10 @@ const styles = theme => ({
   },
   expansionRoot: {
     width: '100%',
+  },
+  buttons: {
+    display: 'flex',
+    justifyContent: 'flex-start',
   },
 });
 
@@ -136,11 +141,21 @@ class LooView extends Component {
             </Typography>
             {loo.properties.area.map(val => {
               return (
-                <Typography key={val._id} variant="subheading" gutterBottom>
+                <Typography key={val._id} variant="subtitle1" gutterBottom>
                   {val.name} / {val.type}
                 </Typography>
               );
             })}
+            <div className={classes.buttons}>
+              <RaisedButton
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                href={`/loos/${this.props.looId}/edit`}
+              >
+                Edit
+              </RaisedButton>
+            </div>
           </Grid>
           <Grid container item md={6} sm={12}>
             <Paper className={classNames(classes.paper, classes.mapTile)}>
@@ -160,7 +175,7 @@ class LooView extends Component {
               <Typography variant="display1" gutterBottom>
                 Toilet Data
               </Typography>
-              <Typography variant="subheading" gutterBottom>
+              <Typography variant="subtitle1" gutterBottom>
                 Data attached to this loo.
               </Typography>
             </Grid>
@@ -175,10 +190,10 @@ class LooView extends Component {
 
           <Grid container item sm={12}>
             <Grid item sm={12}>
-              <Typography variant="display1" gutterBottom>
+              <Typography variant="h4" gutterBottom>
                 Loo Reports
               </Typography>
-              <Typography variant="subheading" gutterBottom>
+              <Typography variant="subtitle1" gutterBottom>
                 Contributions towards this loo.
               </Typography>
             </Grid>
