@@ -7,7 +7,7 @@
   "scripts": {
     "test": "CI=true lerna run test --parallel --ignore=@neontribe/gbptm-ui --ignore=@neontribe/leaflet-control-geocoder",
     "reinstall": "lerna clean --yes && rm yarn.lock && yarn install",
-    "release": "lerna publish --conventional-commits --no-verify-access --exact -m \"build: release %s\"",
+    "release": "lerna version --conventional-commits --push --exact -m \"build: release %s\"",
     "lint": "eslint . && stylelint ./**/*.css",
     "prettify": "prettier --single-quote --trailing-comma es5 --write \"./**/*.{js,json}\"",
     "postinstall": "lerna run build --scope=@neontribe/leaflet-control-geocoder",
