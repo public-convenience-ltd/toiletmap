@@ -21,7 +21,7 @@ class Header extends Component {
           </span>
         </Link>
         <HashLink
-          to="/about#use-our-loos"
+          to="/use-our-loos"
           title="Domestos - Use Our Loos Campaign"
           className={styles.sponsorWrapper}
           scroll={el => el.scrollIntoView(true)}
