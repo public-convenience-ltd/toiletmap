@@ -1,13 +1,13 @@
 {
   "name": "@neontribe/gbptm-siphon",
-  "version": "2.4.0",
+  "version": "2.8.0",
   "description": "Flexibly and efficiently process loo reports to yield loos",
   "private": true,
   "main": "src/index.js",
   "license": "MIT",
   "dependencies": {
     "geolib": "2.0.24",
-    "lodash": "4.17.10",
+    "lodash": "4.17.11",
     "uuid": "3.3.2"
   },
   "scripts": {
@@ -19,6 +19,6 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "jest": "23.2.0"
+    "jest": "23.6.0"
   }
 }

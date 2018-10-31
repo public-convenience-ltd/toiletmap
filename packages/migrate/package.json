@@ -3,13 +3,13 @@
   "version": "2.5.0",
   "description": "A tool for migrating legacy Toilet Map databases to our new schemas",
   "dependencies": {
-    "@neontribe/gbptm-api": "2.7.0",
+    "@neontribe/gbptm-api": "2.8.0",
     "@neontribe/gbptm-loodb": "2.7.0",
-    "lodash": "4.17.10"
+    "lodash": "4.17.11"
   },
   "scripts": {
-    "export-new-reports": "node ./bin/export-new-reports.js > ./data/new-reports.json",
-    "export-new-loos": "node ./bin/export-new-loos.js > ./data/new-loos.json",
+    "generate-new-reports": "node ./bin/generate-new-reports.js > ./data/new-reports.json",
+    "generate-new-loos": "node ./bin/generate-new-loos.js > ./data/new-loos.json",
     "summarise-report-values": "node ./bin/summarise-report-values.js < ./data/new-reports.json > ./data/report-values.md"
   }
 }

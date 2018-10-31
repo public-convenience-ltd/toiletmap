@@ -5,7 +5,6 @@
     "main": "index.js",
     "private": true,
     "dependencies": {
-      "@neontribe/opening-hours": "2.4.0"
+      "@neontribe/opening-hours": "2.8.0"
     }
   }
-  
