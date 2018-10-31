@@ -1,6 +1,6 @@
 {
   "name": "@neontribe/gbptm-siphon",
-  "version": "2.4.0",
+  "version": "2.8.0",
   "description": "Flexibly and efficiently process loo reports to yield loos",
   "private": true,
   "main": "src/index.js",
