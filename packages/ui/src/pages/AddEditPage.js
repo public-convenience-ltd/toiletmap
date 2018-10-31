@@ -491,12 +491,16 @@ function onlyChanges(loo, from) {
   });
 }
 
-var mapStateToProps = (state, ownProps) => ({
-  app: state.app,
-  map: state.mapControls,
-  geolocation: state.geolocation,
-  loo: state.loos.byId[ownProps.match.params.id] || null,
-});
+var mapStateToProps = (state, ownProps) => {
+  let loo = state.loos.byId[ownProps.match.params.id] || null;
+  return {
+    app: state.app,
+    map: state.mapControls,
+    geolocation: state.geolocation,
+    loo: loo,
+    key: loo ? loo._id : 'newLoo',
+  };
+};
 
 var mapDispatchToProps = {
   actionReportRequest,

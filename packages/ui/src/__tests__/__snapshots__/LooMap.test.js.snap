@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`LooMap renders snapshot 1`] = `
-<div
-  className="map"
-  id={undefined}
-  style={undefined}
-/>
-`;
