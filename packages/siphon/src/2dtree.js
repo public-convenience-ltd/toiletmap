@@ -71,7 +71,7 @@ class Node2D {
  * Build a 2D tree from a list of childless nodes.
  */
 function buildTree(nodes, oddDepth = true) {
-  if (nodes.length == 0) {
+  if (nodes.length === 0) {
     // empty 2D tree has null root
     return null;
   }

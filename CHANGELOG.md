@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/neontribe/gbptm/compare/v2.7.0...v2.8.0) (2018-10-11)
+
+
+### Bug Fixes
+
+* no need to login to npm ([3b1abb3](https://github.com/neontribe/gbptm/commit/3b1abb3))
+* typo ([08251ae](https://github.com/neontribe/gbptm/commit/08251ae))
+* use link to navigate between apps ([54aef16](https://github.com/neontribe/gbptm/commit/54aef16))
+
+
+### Features
+
+* edit button on loo view with link to loo edit ([4a46b57](https://github.com/neontribe/gbptm/commit/4a46b57))
+* useourloos page ([9832fb7](https://github.com/neontribe/gbptm/commit/9832fb7))
+
+
+
+
+
 <a name="2.7.0"></a>
 # [2.7.0](https://github.com/neontribe/gbptm/compare/v2.6.0...v2.7.0) (2018-09-08)
 

@@ -15,7 +15,7 @@ A suite of modules for [Public Convenience Ltd](https://www.publicconvenience.or
 
 ```
 git clone git@github.com:neontribe/gbptm.git gbptm
-cd gbtpm
+cd gbptm
 nvm install && nvm use
 npm install -g yarn
 yarn install
