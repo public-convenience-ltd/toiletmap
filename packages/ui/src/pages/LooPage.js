@@ -14,11 +14,10 @@ import NearestLooMap from '../components/NearestLooMap';
 
 import styles from './css/loo-page.module.css';
 import layout from '../components/css/layout.module.css';
-import helpers from '../css/helpers.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
-import { api, mappings } from '@neontribe/api-client';
+import { mappings } from '@neontribe/api-client';
 import config from '../config';
 
 class LooPage extends Component {
@@ -192,70 +191,6 @@ class LooPage extends Component {
             return null;
           })}
         </ul>
-
-        <div className={styles.data}>
-          <h3 className={styles.dataTitle}>
-            Data{' '}
-            <span className={styles.dataSubTitle}>
-              (technical info for this toilet)
-            </span>
-          </h3>
-
-          <table className={styles.dataTable}>
-            <caption className={helpers.visuallyHidden}>Toilet Data</caption>
-            <thead className={helpers.visuallyHidden}>
-              <tr>
-                <th scope="col">Keys</th>
-                <th scope="col">Values</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">Credibility:</th>
-                <td dangerouslySetInnerHTML={this.renderRating()} />
-              </tr>
-              <tr>
-                <th scope="row">Geohash:</th>
-                <td>{loo.geohash}</td>
-              </tr>
-              <tr>
-                <th scope="row">Formats:</th>
-                <td>
-                  <a
-                    href={`${api.endpoint}/loos/${loo._id}?format=json`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    JSON
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Sources:</th>
-                <td>
-                  {loo.reports.map((report, index) => {
-                    var href = `${api.endpoint}/reports/${report}?format=json`;
-
-                    return (
-                      <a
-                        key={index}
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        [{index + 1}]
-                      </a>
-                    );
-                  })}
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Contributors:</th>
-                <td>{loo.attributions.join(', ')}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
     );
   }
