@@ -23,7 +23,7 @@ async function main() {
     const newLoos = await migrate.toNewLoos();
 
     // output new loos
-    console.error(newLoos.length + ' reports generated');
+    console.error(newLoos.length + ' loos generated');
     console.log(JSON.stringify(newLoos, null, 2));
   } catch (e) {
     console.error(e);

@@ -41,6 +41,9 @@ function mapTriState(state) {
  */
 exports.toNewReport = function toNewReport(legacy) {
   return new Report({
+    attribution: ignoreEmpty(legacy.attribution),
+    createdAt: legacy.createdAt,
+    updatedAt: legacy.updatedAt,
     diff: _.pickBy(
       {
         geometry: legacy.geometry,
