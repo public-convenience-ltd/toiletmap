@@ -6,6 +6,8 @@ const LooSchema = new Schema(
   {
     properties: CoreSchema,
     reports: [{ type: Schema.Types.ObjectId, ref: 'NewReport' }],
+    createdAt: { type: Schema.Types.Date },
+    updatedAt: { type: Schema.Types.Date },
   },
   { minimize: false }
 );
@@ -35,10 +37,20 @@ LooSchema.statics.fromReports = function(reports) {
   // Get just the IDs of the report list to populate Loo metadata
   const reportIds = reports.map(val => val._id);
 
+  // Calculate the Loo's creation and update time - we sort the report creation times to do this since
+  // early reports were ranked on trust as well...
+  const timeline = reports.map(r => r.createdAt).sort((d1, d2) => {
+    if (d1 > d2) return 1;
+    if (d1 < d2) return -1;
+    return 0;
+  });
+
   // "this" refers to our static model
   return new this({
     properties,
     reports: reportIds,
+    createdAt: timeline[0],
+    updatedAt: timeline[timeline.length - 1],
   });
 };
 

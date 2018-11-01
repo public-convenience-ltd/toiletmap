@@ -57,10 +57,7 @@ router.get('/counters', async (req, res) => {
     Report.count(scopeQuery({}, qWithInactive)).exec(),
     Report.count(scopeQuery({ collectionMethod: 'api' }, qWithInactive)).exec(),
     Report.count(
-      scopeQuery(
-        { 'properties.removal_reason': { $exists: true } },
-        qWithInactive
-      )
+      scopeQuery({ 'properties.active': false }, qWithInactive)
     ).exec(),
     Loo.count(
       scopeQuery({ 'reports.1': { $exists: true } }, qWithInactive)
@@ -95,12 +92,8 @@ router.get('/proportions', async (req, res) => {
   ] = await Promise.all([
     Loo.count(scopeQuery({ 'properties.access': 'public' }, req.query)).exec(),
     Loo.count(scopeQuery({ 'properties.access': 'none' }, req.query)).exec(),
-    Loo.count(
-      scopeQuery({ 'properties.babyChange': 'true' }, req.query)
-    ).exec(),
-    Loo.count(
-      scopeQuery({ 'properties.babyChange': 'Not Known' }, req.query)
-    ).exec(),
+    Loo.count(scopeQuery({ 'properties.babyChange': true }, req.query)).exec(),
+    Loo.count(scopeQuery({ 'properties.babyChange': null }, req.query)).exec(),
     Loo.count(scopeQuery({}, req.query)).exec(),
     Loo.count(
       scopeQuery(
@@ -220,7 +213,7 @@ router.get('/areas', async (req, res) => {
           $cond: [
             {
               $and: [
-                { $eq: ['$properties.babyChange', 'true'] },
+                { $eq: ['$properties.babyChange', true] },
                 { $eq: ['$properties.active', true] },
               ],
             },
