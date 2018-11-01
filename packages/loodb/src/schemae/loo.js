@@ -77,11 +77,4 @@ LooSchema.statics.findNear = function(lon, lat, radius) {
   ]);
 };
 
-LooSchema.statics.looList = function(loos) {
-  return {
-    type: 'FeatureCollection',
-    features: loos || [],
-  };
-};
-
 module.exports = exports = LooSchema;

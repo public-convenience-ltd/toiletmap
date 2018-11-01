@@ -22,8 +22,7 @@ class API {
         Accept: 'application/json',
       },
     });
-    const geojson = await res.json();
-    return geojson.features;
+    return await res.json();
   }
 
   async findLooById(id, params) {

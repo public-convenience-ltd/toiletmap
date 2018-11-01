@@ -21,7 +21,7 @@ router.get('/near/:lon/:lat', async (req, res) => {
     allowedRadius
   ).exec();
 
-  res.status(200).json(Loo.looList(loos));
+  res.status(200).json(loos);
 });
 
 /**
@@ -29,7 +29,7 @@ router.get('/near/:lon/:lat', async (req, res) => {
  */
 router.get('/', async (req, res) => {
   const loos = await Loo.find({}, 'type geometry').exec();
-  res.status(200).json(Loo.looList(loos));
+  res.status(200).json(loos);
 });
 
 /**
