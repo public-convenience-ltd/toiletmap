@@ -8,11 +8,17 @@ const LooSchema = new Schema(
     reports: [{ type: Schema.Types.ObjectId, ref: 'NewReport' }],
     createdAt: { type: Schema.Types.Date },
     updatedAt: { type: Schema.Types.Date },
+    attributions: [{ type: Schema.Types.String }],
   },
   { minimize: false }
 );
 
 LooSchema.index({ 'properties.geometry': '2dsphere' });
+// add text index for search API endpoint
+LooSchema.index(
+  { 'properties.name': 'text', 'properties.notes': 'text' },
+  { default_language: 'none' }
+);
 LooSchema.plugin(mongoosePaginate);
 
 /**
@@ -51,6 +57,7 @@ LooSchema.statics.fromReports = function(reports) {
     reports: reportIds,
     createdAt: timeline[0],
     updatedAt: timeline[timeline.length - 1],
+    attributions: reports.map(r => r.attribution),
   });
 };
 
