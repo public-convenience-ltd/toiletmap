@@ -5,10 +5,8 @@ import api from '@neontribe/api-client';
 import moment from 'moment';
 
 import Counter from './Counter';
-import CrowdIcon from '@material-ui/icons/GroupAdd';
 import LooIcon from '@material-ui/icons/Wc';
 import RemoveIcon from '@material-ui/icons/Delete';
-import ImportIcon from '@material-ui/icons/CloudDownload';
 import StatIcon from '@material-ui/icons/Assessment';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
@@ -119,16 +117,6 @@ class HeadlineStats extends Component {
             value={this.state.counters['Total Loo Reports Recorded']}
             icon={<StatIcon />}
             label="Total Reports"
-          />
-          <Counter
-            value={this.state.counters['Total Reports via Web UI/API']}
-            icon={<CrowdIcon />}
-            label="User Reports"
-          />
-          <Counter
-            value={this.state.counters['Reports from Data Collections']}
-            icon={<ImportIcon />}
-            label="Imported Reports"
           />
           <Counter
             value={this.state.counters['Loos with Multiple Reports']}

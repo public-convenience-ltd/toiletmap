@@ -47,32 +47,25 @@ router.get('/counters', async (req, res) => {
   const [
     activeLoos,
     loosCount,
-    Reports,
-    uiReports,
+    reports,
     removals,
     multiReportLoos,
   ] = await Promise.all([
     Loo.count(scopeQuery({}, req.query)).exec(),
     Loo.count(scopeQuery({}, qWithInactive)).exec(),
     Report.count(scopeQuery({}, qWithInactive)).exec(),
-    Report.count(scopeQuery({ collectionMethod: 'api' }, qWithInactive)).exec(),
-    Report.count(
-      scopeQuery({ 'properties.active': false }, qWithInactive)
-    ).exec(),
+    Report.count(scopeQuery({ 'diff.active': false }, qWithInactive)).exec(),
     Loo.count(
       scopeQuery({ 'reports.1': { $exists: true } }, qWithInactive)
     ).exec(),
   ]);
-  const importedReports = Reports - uiReports;
   const inactiveLoos = loosCount - activeLoos;
 
   res.status(200).json({
     'Total Toilets Added': loosCount,
     'Active Toilets Added': activeLoos,
     'Inactive/Removed Toilets': inactiveLoos,
-    'Total Loo Reports Recorded': Reports,
-    'Total Reports via Web UI/API': uiReports,
-    'Reports from Data Collections': importedReports,
+    'Total Loo Reports Recorded': reports,
     'Removal Reports Submitted': removals,
     'Loos with Multiple Reports': multiReportLoos,
   });
@@ -136,11 +129,10 @@ router.get('/proportions', async (req, res) => {
 });
 
 router.get('/contributors', async (req, res) => {
-  const scope = scopeQuery({}, req.query);
-  scope.$and.push({ type: 'Feature' });
+  //const scope = scopeQuery({attribution: { $exists: true }}, req.query);
   const contributors = await Report.aggregate([
     {
-      $match: scope,
+      $match: { attribution: { $exists: true } },
     },
     {
       $group: {

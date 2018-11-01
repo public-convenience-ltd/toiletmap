@@ -139,7 +139,7 @@ const renderTableRows = props => {
                   <TableCell>
                     {area.map(val => {
                       return (
-                        <React.Fragment key={val._id}>
+                        <React.Fragment key={val.name}>
                           <Chip
                             className={classes.chip}
                             avatar={
@@ -180,10 +180,10 @@ const renderTableRows = props => {
                     />
                   </TableCell>
                   <TableCell className={classes.textList}>
-                    {attributions.map(attr => {
+                    {attributions.map((attr, i) => {
                       return (
                         <Chip
-                          key={attr}
+                          key={attr + i}
                           className={classes.chip}
                           avatar={
                             <Avatar>

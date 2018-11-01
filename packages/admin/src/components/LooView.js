@@ -137,7 +137,7 @@ class LooView extends Component {
             </Typography>
             {loo.properties.area.map(val => {
               return (
-                <Typography key={val._id} variant="subtitle1" gutterBottom>
+                <Typography key={val.name} variant="subtitle1" gutterBottom>
                   {val.name} / {val.type}
                 </Typography>
               );
@@ -206,14 +206,14 @@ class LooView extends Component {
                         Report from: {value.attribution}
                       </Typography>
                       <Typography className={classes.secondaryHeading}>
-                        Created: {value.updatedAt}
+                        Created: {value.createdAt}
                       </Typography>
                     </ExpansionPanelSummary>
 
                     <ExpansionPanelDetails>
                       <LooTable
                         data={{
-                          docs: Object.entries(value.properties),
+                          docs: Object.entries(value.diff),
                         }}
                         rowRender={TableRowRender}
                         colRender={TableColRender}
