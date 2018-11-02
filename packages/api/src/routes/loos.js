@@ -1,11 +1,7 @@
 const express = require('express');
 const router = express.Router();
-
-const { Loo } = require('@neontribe/gbptm-loodb')(
-  'mongodb://localhost:27017/gbptm'
-);
-
 const config = require('../config/config');
+const { Loo } = require('@neontribe/gbptm-loodb')(config.mongo.url);
 
 /**
  * Get loos near lon/lat

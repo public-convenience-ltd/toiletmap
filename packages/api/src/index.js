@@ -5,8 +5,6 @@ const helmet = require('helmet');
 const compression = require('compression');
 const cors = require('cors');
 const path = require('path');
-require('./config/mongo'); // don't much like this bare require
-
 const app = express();
 
 // we can make some nicer assumptions about security if query values are only

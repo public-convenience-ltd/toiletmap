@@ -1,5 +1,5 @@
 // connect to the mongo db gbptm-api uses with mongoose
-require('@neontribe/gbptm-api/src/config/mongo');
+require('../legacyModels/config/mongo');
 
 const mongoose = require('mongoose');
 const migrate = require('../src/migrate');

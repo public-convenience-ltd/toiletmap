@@ -8760,13 +8760,6 @@ mongoose-paginate@5.0.3:
   dependencies:
     bluebird "3.0.5"
 
-mongoose-timestamp@0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/mongoose-timestamp/-/mongoose-timestamp-0.6.0.tgz#da54110ca8e6d4c2b9957a0366836c362ed272be"
-  integrity sha1-2lQRDKjm1MK5lXoDZoNsNi7Scr4=
-  dependencies:
-    defaults "^1.0.3"
-
 mongoose@5.3.8:
   version "5.3.8"
   resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.3.8.tgz#69ccfa4f930131c12d00b2801a47a5b5f3342c9c"

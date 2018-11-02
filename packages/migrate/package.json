@@ -5,6 +5,7 @@
   "dependencies": {
     "@neontribe/gbptm-api": "2.8.0",
     "@neontribe/gbptm-loodb": "2.7.0",
+    "geo-hash": "0.0.2",
     "lodash": "4.17.11"
   },
   "scripts": {

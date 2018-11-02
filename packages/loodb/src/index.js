@@ -5,6 +5,7 @@ const ReportSchema = require('./schemae/report');
 
 module.exports = exports = function connect(url) {
   mongoose.set('useCreateIndex', true);
+  mongoose.set('useNewUrlParser', true);
   const db = mongoose.createConnection(url);
 
   return {

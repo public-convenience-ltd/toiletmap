@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { Loo, Report } = require('@neontribe/gbptm-loodb')(
-  'mongodb://localhost:27017/gbptm'
-);
+const config = require('../config/config');
+const { Loo, Report } = require('@neontribe/gbptm-loodb')(config.mongo.url);
 const _ = require('lodash');
 const { DateTime } = require('luxon');
 

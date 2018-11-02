@@ -1,11 +1,11 @@
 // connect to the mongo db gbptm-api uses with mongoose
-require('@neontribe/gbptm-api/src/config/mongo');
+require('../legacyModels/config/mongo');
 
 const mongoose = require('mongoose');
 
 const migrate = require('../src/migrate');
-const LegacyLoo = require('@neontribe/gbptm-api/src/models/loo');
-const LegacyReport = require('@neontribe/gbptm-api/src/models/loo_report');
+const LegacyLoo = require('../legacyModels/loo');
+const LegacyReport = require('../legacyModels/loo_report');
 
 // use a main function so we can have await niceties
 async function main() {
