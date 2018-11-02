@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import api from '@neontribe/api-client';
+import api from '@toiletmap/api-client';
 import classNames from 'classnames';
 import LooTile from './LooTile';
 import LooTable from './table/LooTable';

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Location } from '@reach/router';
 import _ from 'lodash';
-import api from '@neontribe/api-client';
+import api from '@toiletmap/api-client';
 import moment from 'moment';
 
 import Counter from './Counter';

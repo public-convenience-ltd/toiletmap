@@ -1,10 +1,9 @@
 {
-  "name": "@neontribe/gbptm-migrate",
+  "name": "@toiletmap/migrate",
   "version": "2.5.0",
   "description": "A tool for migrating legacy Toilet Map databases to our new schemas",
   "dependencies": {
-    "@neontribe/gbptm-api": "2.8.0",
-    "@neontribe/gbptm-loodb": "2.7.0",
+    "@toiletmap/api": "2.8.0",
     "geo-hash": "0.0.2",
     "lodash": "4.17.11"
   },

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import api from '@neontribe/api-client';
+import api from '@toiletmap/api-client';
 import { Link } from '@reach/router';
 
 import Table from '@material-ui/core/Table';

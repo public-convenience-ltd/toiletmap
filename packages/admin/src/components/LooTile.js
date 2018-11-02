@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
-import api from '@neontribe/api-client';
+import api from '@toiletmap/api-client';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { Map, Marker, TileLayer } from 'react-leaflet';

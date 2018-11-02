@@ -4,7 +4,7 @@ Tools useful for migrating from the legacy to future loo and report schemas.
 
 ## Dependencies
 
-Ensure that `@neontribe/gbptm-api` is correctly setup, as there is a dependency
+Ensure that `@toiletmap/api` is correctly setup, as there is a dependency
 on files within that package.
 
 ## Usage

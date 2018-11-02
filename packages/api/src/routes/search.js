@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const config = require('../config/config');
-const { Loo } = require('@neontribe/gbptm-loodb')(config.mongo.url);
+const { Loo } = require('../db')(config.mongo.url);
 
 const _ = require('lodash');
 

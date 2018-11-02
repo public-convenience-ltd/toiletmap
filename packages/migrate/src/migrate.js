@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { Report, db } = require('@neontribe/gbptm-loodb')(
+const { Report, db } = require('@toiletmap/api/src/db')(
   'mongodb://localhost:27017/gbptm'
 );
 

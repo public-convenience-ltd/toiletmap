@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 // the properties that can be in a new report
-const { Report, db } = require('@neontribe/gbptm-loodb')(
+const { Report, db } = require('@toiletmap/api/src/db')(
   'mongodb://localhost:27017/gbptm'
 );
 const properties = Object.keys(Report.schema.tree.diff.type.tree);

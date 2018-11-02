@@ -17,7 +17,7 @@ import layout from '../components/css/layout.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
-import { mappings } from '@neontribe/api-client';
+import { mappings } from '@toiletmap/api-client';
 import config from '../config';
 
 class LooPage extends Component {
@@ -109,7 +109,7 @@ class LooPage extends Component {
     };
   }
 
-  // Wrapper to `@neontribe/api-client.mappings.humanizeAPIValue` which allows mappings between loo property values and the
+  // Wrapper to `@toiletmap/api-client.mappings.humanizeAPIValue` which allows mappings between loo property values and the
   // text we want to display
   humanizePropertyName(val) {
     if (this.humanizedPropNames[val]) {

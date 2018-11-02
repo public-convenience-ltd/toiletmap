@@ -1,4 +1,4 @@
-import { definitions } from '@neontribe/opening-hours';
+import { definitions } from '@toiletmap/opening-hours';
 
 export default {
   looProps: {

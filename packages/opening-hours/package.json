@@ -1,5 +1,5 @@
 {
-  "name": "@neontribe/opening-hours",
+  "name": "@toiletmap/opening-hours",
   "version": "2.8.0",
   "description": "A lightweight provider for checking gbptm opening hours strings",
   "main": "index.js",

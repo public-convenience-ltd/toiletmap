@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const LooSchema = require('./schemae/loo');
-const ReportSchema = require('./schemae/report');
+const LooSchema = require('./loo');
+const ReportSchema = require('./report');
 
 module.exports = exports = function connect(url) {
   mongoose.set('useCreateIndex', true);

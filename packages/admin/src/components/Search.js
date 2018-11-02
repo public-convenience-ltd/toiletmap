@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import timeago from 'timeago.js';
 
 // Local
-import api from '@neontribe/api-client';
+import api from '@toiletmap/api-client';
 import { createStyled } from '../lib/utils.js';
 import LooTable from './table/LooTable';
 import LooTablePaginationActions from './table/LooTablePaginationActions';

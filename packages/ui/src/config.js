@@ -1,4 +1,4 @@
-import { isOpen } from '@neontribe/opening-hours';
+import { isOpen } from '@toiletmap/opening-hours';
 
 export const PREFERENCES_KEY = 'preferences';
 export const PENDING_REPORT_KEY = 'pending_loo_report';

@@ -1,10 +1,10 @@
 {
-    "name": "@neontribe/api-client",
+    "name": "@toiletmap/api-client",
     "version": "2.7.0",
     "description": "Allows easy access to common routes used in the gbptm api.",
     "main": "index.js",
     "private": true,
     "dependencies": {
-      "@neontribe/opening-hours": "2.8.0"
+      "@toiletmap/opening-hours": "2.8.0"
     }
   }
