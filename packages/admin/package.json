@@ -11,7 +11,7 @@
     "@material-ui/core": "3.3.2",
     "@material-ui/icons": "3.0.1",
     "@reach/router": "1.2.1",
-    "@toiletmap/api-client": "2.7.0",
+    "@toiletmap/api-client": "2.8.0",
     "chart.js": "2.7.3",
     "downshift": "2.2.2",
     "leaflet": "1.3.4",

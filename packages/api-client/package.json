@@ -1,6 +1,6 @@
 {
     "name": "@toiletmap/api-client",
-    "version": "2.7.0",
+    "version": "2.8.0",
     "description": "Allows easy access to common routes used in the gbptm api.",
     "main": "index.js",
     "private": true,
