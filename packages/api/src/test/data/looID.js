@@ -6,7 +6,7 @@ module.exports = [
     geohash: 'gcpkdwe0hd9k',
     credibility: 6,
     reports: [new mongoose.mongo.ObjectId('54149f7e115902773aa8ef55')],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,

@@ -3,7 +3,7 @@ module.exports = [
   {
     _id: new mongoose.mongo.ObjectId(),
     __v: 0,
-    attribution: 'Brighton & Hove City Council',
+    contributor: 'Brighton & Hove City Council',
     geohash: 'gcpc5pesbg6j',
     geometry: {
       type: 'Point',
@@ -21,7 +21,7 @@ module.exports = [
   {
     _id: new mongoose.mongo.ObjectId(),
     __v: 0,
-    attribution: 'Brighton & Hove City Council',
+    contributor: 'Brighton & Hove City Council',
     geohash: 'gcpc714c10mj',
     geometry: {
       type: 'Point',
@@ -40,7 +40,7 @@ module.exports = [
   {
     _id: new mongoose.mongo.ObjectId(),
     __v: 0,
-    attribution: 'Brighton & Hove City Council',
+    contributor: 'Brighton & Hove City Council',
     geohash: 'gcpchjddhb42',
     geometry: {
       type: 'Point',
@@ -57,7 +57,7 @@ module.exports = [
   {
     _id: new mongoose.mongo.ObjectId(),
     __v: 0,
-    attribution: 'Brighton & Hove City Council',
+    contributor: 'Brighton & Hove City Council',
     geohash: 'gcpchtsnkk1p',
     geometry: {
       type: 'Point',
@@ -75,7 +75,7 @@ module.exports = [
   {
     _id: new mongoose.mongo.ObjectId(),
     __v: 0,
-    attribution: 'Brighton & Hove City Council',
+    contributor: 'Brighton & Hove City Council',
     geohash: 'gcpc726d1037',
     geometry: {
       type: 'Point',

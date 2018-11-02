@@ -102,9 +102,9 @@ looSchema.methods.regenerate = async function() {
   );
   // Merge them together in that order
   loo.properties = _.merge.apply(_, properties);
-  // Record all the sources and attributions
+  // Record all the sources and contributors
   loo.sources = _.uniq(_.map(loo.reports, 'origin'));
-  loo.attributions = _.uniq(_.map(loo.reports, 'attribution'));
+  loo.contributors = _.uniq(_.map(loo.reports, 'contributor'));
 
   // Potential coordinate solutions.
   var recentLooReports = _.remove(
@@ -148,7 +148,7 @@ looSchema.statics.fromLooReport = function(report) {
 
   loo.reports.push(report._id);
   loo.sources.push(report.origin);
-  loo.attributions.push(report.attribution);
+  loo.contributors.push(report.contributor);
   return loo;
 };
 

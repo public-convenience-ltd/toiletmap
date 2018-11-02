@@ -64,7 +64,7 @@ async function save(data, token) {
       area,
     },
     userId: profile.sub,
-    attribution: profile.nickname || config.reports.anonContributor,
+    contributor: profile.nickname || config.reports.anonContributor,
     trust: config.reports.trust,
     collectionMethod: 'api',
   };

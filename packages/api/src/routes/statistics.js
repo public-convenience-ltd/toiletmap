@@ -129,14 +129,14 @@ router.get('/proportions', async (req, res) => {
 });
 
 router.get('/contributors', async (req, res) => {
-  //const scope = scopeQuery({attribution: { $exists: true }}, req.query);
+  //const scope = scopeQuery({contributor: { $exists: true }}, req.query);
   const contributors = await Report.aggregate([
     {
-      $match: { attribution: { $exists: true } },
+      $match: { contributor: { $exists: true } },
     },
     {
       $group: {
-        _id: '$attribution',
+        _id: '$contributor',
         reports: {
           $sum: 1,
         },

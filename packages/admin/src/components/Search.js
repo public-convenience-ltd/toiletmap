@@ -115,7 +115,7 @@ const renderTableRows = props => {
       {({ classes }) => (
         <>
           {data.docs.map(loo => {
-            const { attributions } = loo;
+            const { contributors } = loo;
             const { name, type, opening, area } = loo.properties;
             return (
               <React.Fragment key={loo._id}>
@@ -180,7 +180,7 @@ const renderTableRows = props => {
                     />
                   </TableCell>
                   <TableCell className={classes.textList}>
-                    {attributions.map((attr, i) => {
+                    {contributors.map((attr, i) => {
                       return (
                         <Chip
                           key={attr + i}
@@ -194,7 +194,7 @@ const renderTableRows = props => {
                           color={attr ? 'primary' : 'secondary'}
                           variant="default"
                           onClick={event => {
-                            navigate(`search?attributions=${attr}`);
+                            navigate(`search?contributors=${attr}`);
                           }}
                           clickable
                         />
@@ -249,7 +249,7 @@ const renderTableCol = () => {
       <TableCell>Name</TableCell>
       <TableCell>Area</TableCell>
       <TableCell>Type</TableCell>
-      <TableCell>Attributions</TableCell>
+      <TableCell>contributors</TableCell>
       <TableCell>Date Updated</TableCell>
       <TableCell>Opening</TableCell>
     </TableRow>
@@ -288,7 +288,7 @@ class Search extends Component {
       order: 'desc',
       to_date: '',
       from_date: '',
-      attributions: '',
+      contributors: '',
       area_name: '',
       page: 1,
       limit: 5,
@@ -485,7 +485,7 @@ class Search extends Component {
   get advancedSearch() {
     const advancedParams = [
       'area_name',
-      'attributions',
+      'contributors',
       'from_date',
       'to_date',
     ];
@@ -566,12 +566,12 @@ class Search extends Component {
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
                         <SearchAutocomplete
-                          id="attribution-search"
+                          id="contributor-search"
                           onChange={_.partial(
                             this.updateSearchParam,
-                            'attributions'
+                            'contributors'
                           )}
-                          selectedItem={this.state.searchParams.attributions}
+                          selectedItem={this.state.searchParams.contributors}
                           suggestions={this.state.contributors}
                           placeholderText="Search Contributors"
                           ariaLabel="Clear contributor input box"

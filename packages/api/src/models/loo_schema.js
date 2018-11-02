@@ -76,7 +76,7 @@ schemae.looReportSchema.pre('save', function(next) {
   next();
 });
 schemae.looReportSchema.index({ geohash: 1 });
-schemae.looReportSchema.index({ geohash: 1, attribution: 1 });
+schemae.looReportSchema.index({ geohash: 1, contributor: 1 });
 schemae.looReportSchema.index({ 'properties.active': 1 });
 
 schemae.looSchema = new Schema(

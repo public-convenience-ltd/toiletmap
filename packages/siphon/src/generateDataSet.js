@@ -30,7 +30,7 @@ function demongoify(report) {
   properties = _.pickBy(properties, v => v !== '' && v !== undefined);
   return {
     id: report._id.$oid,
-    attribution: report.attribution,
+    contributor: report.contributor,
     created: report.createdAt ? report.createdAt.$date : null,
     updated: report.updatedAt ? report.updatedAt.$date : null,
     type: report.type,
@@ -46,7 +46,7 @@ function consolidateReports(reports) {
    * Sort by date desc then by trust desc
    * merge down the properties
    * get the center of the array of points
-   * construct attributions
+   * construct contributors
    */
   reps = _.sortBy(_.compact(reps), ['updated', 'created', 'trust']);
   let center = geolib.getCenter(
@@ -58,9 +58,9 @@ function consolidateReports(reports) {
   const loo = {
     licence:
       'http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/',
-    attribution: '© Great British Public Toilet Map, 2018',
+    contributor: '© Great British Public Toilet Map, 2018',
     contributors: _.uniq(
-      ['Great British Public Toilet Map'].concat(_.map(reps, 'attribution'))
+      ['Great British Public Toilet Map'].concat(_.map(reps, 'contributor'))
     ),
     type: 'Feature',
     geometry: {
@@ -162,7 +162,7 @@ let out = {
   type: 'FeatureCollection',
   licence:
     'http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/',
-  attribution: '© Great British Public Toilet Map, 2018',
+  contributor: '© Great British Public Toilet Map, 2018',
   created: new Date().toISOString(),
   features: filtered,
 };

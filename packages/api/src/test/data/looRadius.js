@@ -6,7 +6,7 @@ module.exports = [
     geohash: 'gcpv569khen0',
     credibility: 8,
     reports: ['5414a004115902773aa8f0f6'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -36,7 +36,7 @@ module.exports = [
     geohash: 'gcpv564vv5dn',
     credibility: 14,
     reports: ['5422c573115902773aa906e6', '5414a004115902773aa8f0f7'],
-    attributions: ['Gail Ramster', 'Open Street Map'],
+    contributors: ['Gail Ramster', 'Open Street Map'],
     sources: ['Great British Public Toilet Map', 'http://overpass-api.de'],
     properties: {
       active: true,
@@ -87,7 +87,7 @@ module.exports = [
     geohash: 'gcpv55ps2bpu',
     credibility: 15,
     reports: ['5422c29d115902773aa906e4'],
-    attributions: ['Gail Ramster'],
+    contributors: ['Gail Ramster'],
     sources: ['Great British Public Toilet Map'],
     properties: {
       active: true,
@@ -118,7 +118,7 @@ module.exports = [
     geohash: 'gcpv56kuwmpb',
     credibility: 17,
     reports: ['574d9666d0e3fbe3bd5e33a4'],
-    attributions: ['Christopher Friend'],
+    contributors: ['Christopher Friend'],
     sources: ['Great British Public Toilet Map'],
     properties: {
       active: true,
@@ -145,7 +145,7 @@ module.exports = [
     geohash: 'gcpv53gktyqj',
     credibility: 15,
     reports: ['545b67c1115902773aa907bc'],
-    attributions: ['Gaillyk'],
+    contributors: ['Gaillyk'],
     sources: ['Great British Public Toilet Map'],
     properties: {
       active: true,
@@ -175,7 +175,7 @@ module.exports = [
     geohash: 'gcpv53vkp6eb',
     credibility: 14,
     reports: ['5422c671115902773aa906e7', '5414a003115902773aa8f0f3'],
-    attributions: ['Gail Ramster', 'Open Street Map'],
+    contributors: ['Gail Ramster', 'Open Street Map'],
     sources: ['Great British Public Toilet Map', 'http://overpass-api.de'],
     properties: {
       active: true,
@@ -226,7 +226,7 @@ module.exports = [
     geohash: 'gcpv57tr69f8',
     credibility: 10,
     reports: ['5468df00115902773aab0852', '5414a005115902773aa8f0f8'],
-    attributions: ['Toilet Map', 'Open Street Map'],
+    contributors: ['Toilet Map', 'Open Street Map'],
     sources: ['Great British Public Toilet Map', 'http://overpass-api.de'],
     properties: {
       active: true,
@@ -277,7 +277,7 @@ module.exports = [
     geohash: 'gcpv5e9t0jry',
     credibility: 17,
     reports: ['574d9706d0e3fbe3bd5e33a9'],
-    attributions: ['Christopher Friend'],
+    contributors: ['Christopher Friend'],
     sources: ['Great British Public Toilet Map'],
     properties: {
       active: true,
@@ -305,7 +305,7 @@ module.exports = [
     geohash: 'gcpv52zscdsw',
     credibility: 14,
     reports: ['545b67ec115902773aa907bd', '5414a004115902773aa8f0f4'],
-    attributions: ['Gaillyk', 'Open Street Map'],
+    contributors: ['Gaillyk', 'Open Street Map'],
     sources: ['Great British Public Toilet Map', 'http://overpass-api.de'],
     properties: {
       active: true,
@@ -360,7 +360,7 @@ module.exports = [
     geohash: 'gcpv5dnwpgbu',
     credibility: 9,
     reports: ['5414a005115902773aa8f0fa'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -394,7 +394,7 @@ module.exports = [
     geohash: 'gcpv4ckwcrzb',
     credibility: 18,
     reports: ['54149fe6115902773aa8f08f', '55ec776cd0e3fbe3bd5e30e8'],
-    attributions: ['Andy Eggleden', 'Andy Eggleden'],
+    contributors: ['Andy Eggleden', 'Andy Eggleden'],
     sources: [
       'Great British Public Toilet Map',
       'Great British Public Toilet Map',
@@ -434,7 +434,7 @@ module.exports = [
     geohash: 'gcpv4bwvp1h5',
     credibility: 11,
     reports: ['546770f0115902773aab079b'],
-    attributions: ['Gail Ramster'],
+    contributors: ['Gail Ramster'],
     sources: ['Great British Public Toilet Map'],
     properties: {
       active: true,
@@ -459,7 +459,7 @@ module.exports = [
     geohash: 'gcpv59pu633z',
     credibility: 10,
     reports: ['54550f2a115902773aa9070b', '5414a004115902773aa8f0f5'],
-    attributions: ['Toilet Map', 'Open Street Map'],
+    contributors: ['Toilet Map', 'Open Street Map'],
     sources: ['Great British Public Toilet Map', 'http://overpass-api.de'],
     properties: {
       active: true,
@@ -509,7 +509,7 @@ module.exports = [
     geohash: 'gcpv5m75uqwn',
     credibility: 10,
     reports: ['546b6ef2115902773aab08d4', '5414a008115902773aa8f103'],
-    attributions: ['Toilet Map', 'Open Street Map'],
+    contributors: ['Toilet Map', 'Open Street Map'],
     sources: ['Great British Public Toilet Map', 'http://overpass-api.de'],
     properties: {
       active: true,
@@ -559,7 +559,7 @@ module.exports = [
     geohash: 'gcpv58zk3k3u',
     credibility: 18,
     reports: ['54550ed7115902773aa9070a', '57613d10d0e3fbe3bd5e35a1'],
-    attributions: ['Gail Ramster', 'Gail Ramster'],
+    contributors: ['Gail Ramster', 'Gail Ramster'],
     sources: [
       'Great British Public Toilet Map',
       'Great British Public Toilet Map',
@@ -592,7 +592,7 @@ module.exports = [
     geohash: 'gcpv500vvfgz',
     credibility: 11,
     reports: ['54677089115902773aab079a'],
-    attributions: ['Gail Ramster'],
+    contributors: ['Gail Ramster'],
     sources: ['Great British Public Toilet Map'],
     properties: {
       active: true,
@@ -619,7 +619,7 @@ module.exports = [
     geohash: 'gcpv5jw2896r',
     credibility: 6,
     reports: ['5414a4ff115902773aa8fe9f'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -645,7 +645,7 @@ module.exports = [
     geohash: 'gcpv5svkfv7v',
     credibility: 11,
     reports: ['546d1ee0025fa10200b26892', '546d1e7823310602000dd358'],
-    attributions: ['Anonymous', 'Anonymous'],
+    contributors: ['Anonymous', 'Anonymous'],
     sources: [
       'Great British Public Toilet Map',
       'Great British Public Toilet Map',
@@ -674,7 +674,7 @@ module.exports = [
     geohash: 'gcpv5ghj6ct7',
     credibility: 6,
     reports: ['5414a007115902773aa8f101'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -699,7 +699,7 @@ module.exports = [
     geohash: 'gcpv5j2epjf7',
     credibility: 10,
     reports: ['546a6059115902773aab08ca', '54149fe7115902773aa8f092'],
-    attributions: ['LizzieR', 'Open Street Map'],
+    contributors: ['LizzieR', 'Open Street Map'],
     sources: ['Great British Public Toilet Map', 'http://overpass-api.de'],
     properties: {
       active: true,

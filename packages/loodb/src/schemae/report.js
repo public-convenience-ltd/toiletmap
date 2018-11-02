@@ -5,7 +5,7 @@ const CoreSchema = require('./core');
 
 const ReportSchema = new Schema(
   {
-    attribution: { type: String },
+    contributor: { type: String },
     previous: {
       type: Schema.Types.ObjectId,
       ref: 'NewReport',

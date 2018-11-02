@@ -8,7 +8,7 @@ const LooSchema = new Schema(
     reports: [{ type: Schema.Types.ObjectId, ref: 'NewReport' }],
     createdAt: { type: Schema.Types.Date },
     updatedAt: { type: Schema.Types.Date },
-    attributions: [{ type: Schema.Types.String }],
+    contributors: [{ type: Schema.Types.String }],
   },
   { minimize: false }
 );
@@ -57,7 +57,7 @@ LooSchema.statics.fromReports = function(reports) {
     reports: reportIds,
     createdAt: timeline[0],
     updatedAt: timeline[timeline.length - 1],
-    attributions: reports.map(r => r.attribution),
+    contributors: reports.map(r => r.contributor),
   });
 };
 

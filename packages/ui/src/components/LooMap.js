@@ -297,8 +297,8 @@ export class LooMap extends Component {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           minZoom={this.props.minZoom}
           maxZoom={this.props.maxZoom}
-          attribution={
-            this.props.showAttribution
+          contributor={
+            this.props.showcontributor
               ? 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               : ''
           }
@@ -334,7 +334,7 @@ LooMap.propTypes = {
   preventDragging: PropTypes.bool,
   showSearchControl: PropTypes.bool,
   showLocateControl: PropTypes.bool,
-  showAttribution: PropTypes.bool,
+  showcontributor: PropTypes.bool,
 
   // Label loo markers from a starting number, for a limited number of loos
   countFrom: PropTypes.number,
@@ -378,7 +378,7 @@ LooMap.defaultProps = {
   showSearchControl: false,
   showLocateControl: false,
   showZoomControls: true,
-  showAttribution: false,
+  showcontributor: false,
   showCenter: false,
   countLimit: 0,
   countFrom: 1,

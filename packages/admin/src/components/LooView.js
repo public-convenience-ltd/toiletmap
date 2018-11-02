@@ -203,7 +203,7 @@ class LooView extends Component {
                   >
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography className={classes.heading}>
-                        Report from: {value.attribution}
+                        Report from: {value.contributor}
                       </Typography>
                       <Typography className={classes.secondaryHeading}>
                         Created: {value.createdAt}

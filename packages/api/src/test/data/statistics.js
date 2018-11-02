@@ -4,7 +4,7 @@ module.exports = [
     geohash: 'gcqfydnh3k89',
     credibility: 10,
     reports: ['54653e03115902773aab0598'],
-    attributions: ['National Rail Enquiries'],
+    contributors: ['National Rail Enquiries'],
     sources: ['National Rail Enquiries'],
     properties: {
       active: true,
@@ -27,7 +27,7 @@ module.exports = [
     geohash: 'gcpusdt0u2rc',
     credibility: 8,
     reports: ['545b5e39115902773aa9078b'],
-    attributions: ['Gaillyk'],
+    contributors: ['Gaillyk'],
     sources: ['Great British Public Toilet Map'],
     properties: {
       active: true,
@@ -47,7 +47,7 @@ module.exports = [
     geohash: 'gcpuuj6pup3s',
     credibility: 9,
     reports: ['54149fef115902773aa8f0ae'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -78,7 +78,7 @@ module.exports = [
     geohash: 'gcpkepgb8eb5',
     credibility: 6,
     reports: ['54149f7e115902773aa8ef56'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -100,7 +100,7 @@ module.exports = [
     geohash: 'gcpkdwe0hd9k',
     credibility: 6,
     reports: ['54149f7e115902773aa8ef55'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -124,7 +124,7 @@ module.exports = [
     geohash: 'gcqd7fy2sr3y',
     credibility: 10,
     reports: ['54653e05115902773aab059b'],
-    attributions: ['National Rail Enquiries'],
+    contributors: ['National Rail Enquiries'],
     sources: ['National Rail Enquiries'],
     properties: {
       active: true,
@@ -248,7 +248,7 @@ module.exports = [
     geohash: 'u10yfqtghnne',
     credibility: 10,
     reports: ['54653df7115902773aab057e'],
-    attributions: ['National Rail Enquiries'],
+    contributors: ['National Rail Enquiries'],
     sources: ['National Rail Enquiries'],
     properties: {
       active: true,
@@ -362,7 +362,7 @@ module.exports = [
     geohash: 'gcx6jy5nnfpv',
     credibility: 15,
     reports: ['54635680115902773aab0480'],
-    attributions: ['Chris Brown'],
+    contributors: ['Chris Brown'],
     sources: ['Great British Public Toilet Map'],
     properties: {
       active: true,
@@ -389,7 +389,7 @@ module.exports = [
     geohash: 'gcpvj6xf5hwz',
     credibility: 11,
     reports: ['5414a013115902773aa8f129', '5746fccdd0e3fbe3bd5e3381'],
-    attributions: ['JimDim7', 'JimDim7'],
+    contributors: ['JimDim7', 'JimDim7'],
     sources: [
       'Great British Public Toilet Map',
       'Great British Public Toilet Map',
@@ -415,7 +415,7 @@ module.exports = [
     geohash: 'gcpvj0v1jgqx',
     credibility: 6,
     reports: ['5414a00f115902773aa8f11c', '5414a00f115902773aa8f11b'],
-    attributions: ['Open Street Map', 'Open Street Map'],
+    contributors: ['Open Street Map', 'Open Street Map'],
     sources: ['http://overpass-api.de', 'http://overpass-api.de'],
     properties: {
       active: true,
@@ -441,7 +441,7 @@ module.exports = [
     geohash: 'gcpvj1u4yv07',
     credibility: 6,
     reports: ['5414a00f115902773aa8f11a'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -463,7 +463,7 @@ module.exports = [
     geohash: 'gcpuvrc4nh4q',
     credibility: 6,
     reports: ['5414a00e115902773aa8f117'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -485,7 +485,7 @@ module.exports = [
     geohash: 'gcpvh8xeb6kt',
     credibility: 6,
     reports: ['5414a00a115902773aa8f10a', '5414a00a115902773aa8f109'],
-    attributions: ['Open Street Map', 'Open Street Map'],
+    contributors: ['Open Street Map', 'Open Street Map'],
     sources: ['http://overpass-api.de', 'http://overpass-api.de'],
     properties: {
       active: true,
@@ -507,7 +507,7 @@ module.exports = [
     geohash: 'gcpvhqj654x5',
     credibility: 6,
     reports: ['5414a009115902773aa8f108'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -530,7 +530,7 @@ module.exports = [
     geohash: 'gcpv5ghj6ct7',
     credibility: 6,
     reports: ['5414a007115902773aa8f101'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -552,7 +552,7 @@ module.exports = [
     geohash: 'gcpv5frr4ryh',
     credibility: 6,
     reports: ['5414a007115902773aa8f100'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -577,7 +577,7 @@ module.exports = [
     geohash: 'gcpvh25vbrzv',
     credibility: 6,
     reports: ['5414a006115902773aa8f0fd'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -599,7 +599,7 @@ module.exports = [
     geohash: 'gcpv5dnwpgbu',
     credibility: 9,
     reports: ['5414a005115902773aa8f0fa'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -630,7 +630,7 @@ module.exports = [
     geohash: 'gcpv5dpx6rg3',
     credibility: 11,
     reports: ['5414a005115902773aa8f0f9', '56a0bf74d0e3fbe3bd5e3197'],
-    attributions: ['Laurence Parmenter', 'Laurence Parmenter'],
+    contributors: ['Laurence Parmenter', 'Laurence Parmenter'],
     sources: [
       'Great British Public Toilet Map',
       'Great British Public Toilet Map',
@@ -658,7 +658,7 @@ module.exports = [
     geohash: 'gcpv569khen0',
     credibility: 8,
     reports: ['5414a004115902773aa8f0f6'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -685,7 +685,7 @@ module.exports = [
     geohash: 'gcpuzwnzstuw',
     credibility: 6,
     reports: ['5414a003115902773aa8f0f2'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -707,7 +707,7 @@ module.exports = [
     geohash: 'gcpuzgf3cmsn',
     credibility: 18,
     reports: ['5414a002115902773aa8f0ee', '5752643dd0e3fbe3bd5e355e'],
-    attributions: ['Anthony Williams', 'Anthony Williams'],
+    contributors: ['Anthony Williams', 'Anthony Williams'],
     sources: [
       'Great British Public Toilet Map',
       'Great British Public Toilet Map',
@@ -745,7 +745,7 @@ module.exports = [
     geohash: 'gcpuz702jrpc',
     credibility: 6,
     reports: ['5414a001115902773aa8f0ed'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -769,7 +769,7 @@ module.exports = [
     geohash: 'gcpuz4uxce3j',
     credibility: 6,
     reports: ['5414a001115902773aa8f0ec'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -791,7 +791,7 @@ module.exports = [
     geohash: 'gcpuz517n8m7',
     credibility: 6,
     reports: ['5414a001115902773aa8f0eb'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -813,7 +813,7 @@ module.exports = [
     geohash: 'gcpuzb0r7j66',
     credibility: 9,
     reports: ['5414a001115902773aa8f0ea'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -843,7 +843,7 @@ module.exports = [
     geohash: 'gcpuz8qezywv',
     credibility: 9,
     reports: ['5414a000115902773aa8f0e9'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -875,7 +875,7 @@ module.exports = [
     geohash: 'gcpuxx1ue8en',
     credibility: 9,
     reports: ['5414a000115902773aa8f0e8'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -904,7 +904,7 @@ module.exports = [
     geohash: 'gcpuz4s6ejsd',
     credibility: 6,
     reports: ['5414a000115902773aa8f0e7'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -926,7 +926,7 @@ module.exports = [
     geohash: 'gcpuz4sk08ud',
     credibility: 6,
     reports: ['54149fff115902773aa8f0e6'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -948,7 +948,7 @@ module.exports = [
     geohash: 'gcpuz4tyxydy',
     credibility: 6,
     reports: ['54149fff115902773aa8f0e5'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -970,7 +970,7 @@ module.exports = [
     geohash: 'gcpuz4t6dgff',
     credibility: 6,
     reports: ['54149fff115902773aa8f0e4'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -992,7 +992,7 @@ module.exports = [
     geohash: 'gcpuz4vbj30h',
     credibility: 6,
     reports: ['54149fff115902773aa8f0e3'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1014,7 +1014,7 @@ module.exports = [
     geohash: 'gcpuz4st9ckn',
     credibility: 6,
     reports: ['54149ffe115902773aa8f0e2'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1038,7 +1038,7 @@ module.exports = [
     geohash: 'gcpuz4v8u8jx',
     credibility: 6,
     reports: ['54149ffe115902773aa8f0e1'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1060,7 +1060,7 @@ module.exports = [
     geohash: 'gcpuz4tf5q1j',
     credibility: 6,
     reports: ['54149ffe115902773aa8f0e0'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1082,7 +1082,7 @@ module.exports = [
     geohash: 'gcpuz4m07p1w',
     credibility: 6,
     reports: ['54149ffd115902773aa8f0df'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1105,7 +1105,7 @@ module.exports = [
     geohash: 'gcpuz4kc68ke',
     credibility: 6,
     reports: ['54149ffd115902773aa8f0de'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1127,7 +1127,7 @@ module.exports = [
     geohash: 'gcpuz4w363gz',
     credibility: 6,
     reports: ['54149ffd115902773aa8f0dd'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1149,7 +1149,7 @@ module.exports = [
     geohash: 'gcpuz4gb3hz4',
     credibility: 9,
     reports: ['54149ffc115902773aa8f0dc'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1178,7 +1178,7 @@ module.exports = [
     geohash: 'gcpuvvm83yzn',
     credibility: 6,
     reports: ['54149ffc115902773aa8f0da'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1203,7 +1203,7 @@ module.exports = [
     geohash: 'gcpuy6q4s7yx',
     credibility: 6,
     reports: ['54149ffb115902773aa8f0d7'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1227,7 +1227,7 @@ module.exports = [
     geohash: 'gcpuvdtk8g7t',
     credibility: 6,
     reports: ['54149ffa115902773aa8f0d4'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1249,7 +1249,7 @@ module.exports = [
     geohash: 'gcpux457d7jw',
     credibility: 8,
     reports: ['54149ffa115902773aa8f0d3'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1276,7 +1276,7 @@ module.exports = [
     geohash: 'gcpuwfmdtdz6',
     credibility: 6,
     reports: ['54149ffa115902773aa8f0d2'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1298,7 +1298,7 @@ module.exports = [
     geohash: 'gcpurt1630mv',
     credibility: 6,
     reports: ['54149ff9115902773aa8f0d1'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1320,7 +1320,7 @@ module.exports = [
     geohash: 'gcpuwu30de89',
     credibility: 9,
     reports: ['54149ff9115902773aa8f0d0'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1349,7 +1349,7 @@ module.exports = [
     geohash: 'gcpuwext7fjj',
     credibility: 6,
     reports: ['54149ff9115902773aa8f0cf'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1371,7 +1371,7 @@ module.exports = [
     geohash: 'gcpuws6w6mtw',
     credibility: 6,
     reports: ['54149ff8115902773aa8f0ce'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,
@@ -1393,7 +1393,7 @@ module.exports = [
     geohash: 'gcpuwsejzuzk',
     credibility: 6,
     reports: ['54149ff8115902773aa8f0cd'],
-    attributions: ['Open Street Map'],
+    contributors: ['Open Street Map'],
     sources: ['http://overpass-api.de'],
     properties: {
       active: true,

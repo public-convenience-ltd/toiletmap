@@ -32,10 +32,10 @@ router.get('/', async (req, res) => {
     }
   }
 
-  if (params.attributions) {
+  if (params.contributors) {
     query.$and = [];
     query.$and.push({
-      attributions: { $all: [params.attributions] },
+      contributors: { $all: [params.contributors] },
     });
   }
 
@@ -44,7 +44,7 @@ router.get('/', async (req, res) => {
   delete params.order;
   delete params.to_date;
   delete params.from_date;
-  delete params.attributions;
+  delete params.contributors;
 
   // Arbitrary text searches have been removed until a way is found that is not
   // prone to ReDoS attacks or indexing every possible property by text

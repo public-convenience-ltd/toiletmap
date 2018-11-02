@@ -42,7 +42,7 @@ class LooTile extends Component {
         <Map
           center={this.state.location}
           zoomControl={false}
-          attributionControl={false}
+          contributorControl={false}
           dragging={false}
           touchZoom={false}
           scrollWheelZoom={false}
@@ -52,7 +52,7 @@ class LooTile extends Component {
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+            contributor="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           />
           <Marker position={this.state.location} />
         </Map>
