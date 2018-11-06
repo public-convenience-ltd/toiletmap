@@ -4,12 +4,12 @@
   "private": true,
   "proxy": "http://localhost:8080",
   "devDependencies": {
-    "react-scripts": "2.1.0"
+    "react-scripts": "2.1.1"
   },
   "dependencies": {
+    "@toiletmap/api-client": "2.8.0",
     "@toiletmap/leaflet-control-geocoder": "2.8.0",
     "@toiletmap/opening-hours": "2.8.0",
-    "@toiletmap/api-client": "2.8.0",
     "auth0-js": "9.8.1",
     "core-js": "2.5.7",
     "js-cookie": "2.2.0",

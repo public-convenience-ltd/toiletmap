@@ -4,7 +4,7 @@ FROM node:10
 EXPOSE 8080
 
 # Establish a directory in the container to house our stuff
-WORKDIR /gbptm
+WORKDIR /toiletmap
 
 # Copy the package.json from the api server package (this should be stable-ish)
 COPY ./packages/api/package.json .
