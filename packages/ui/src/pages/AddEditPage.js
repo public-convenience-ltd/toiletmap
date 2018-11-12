@@ -314,7 +314,7 @@ class AddEditPage extends Component {
               No
             </span>
             <span className={styles.questionnaireCol} id="unknown">
-              Don't know
+              Dont know
             </span>
           </div>
 
@@ -397,6 +397,7 @@ class AddEditPage extends Component {
               type="text"
               name="geometry.coordinates.1"
               className={controls.text}
+              data-testid="loo-name"
               value={center.lng}
               readOnly={true}
             />
@@ -418,6 +419,7 @@ class AddEditPage extends Component {
               className={controls.btn}
               onClick={this.save}
               value="Add the toilet"
+              data-testid="add-the-toilet"
             />
           )}
 
