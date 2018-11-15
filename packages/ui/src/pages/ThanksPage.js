@@ -119,9 +119,6 @@ var mapStateToProps = (state, ownProps) => ({
   app: state.app,
   loo: state.loos.byId[ownProps.match.params.id] || null,
   name: state.auth.name,
-  key: state.loos.byId[ownProps.match.params.id]
-    ? ownProps.match.params.id
-    : 'loading',
 });
 
 var mapDispatchToProps = {
