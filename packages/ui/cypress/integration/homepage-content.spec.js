@@ -25,4 +25,12 @@ describe('homepage content', function() {
       },
     });
   });
+
+  it('test loos are present on homepage', () => {
+    cy.get('[data-testid="loo:592456d4d7ffa80011a39c31"]');
+    cy.get('[data-testid="loo:5b60c18c496d4e000532a27d"]');
+    cy.get('[data-testid="loo:5b685e46144284000598727c"]');
+    cy.get('[data-testid="loo:5b60c18c496d4e000532a27d"]');
+    cy.get('[data-testid="loo:574db13bdb14a11000cb4766"]');
+  });
 });

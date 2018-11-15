@@ -73,7 +73,11 @@ export class HomePage extends Component {
         <ul className={styles.looList}>
           {loos &&
             loos.slice(0, config.nearestListLimit).map((loo, i) => (
-              <li key={loo._id} className={styles.looListItem}>
+              <li
+                key={loo._id}
+                className={styles.looListItem}
+                data-testid={`loo:${loo._id}`}
+              >
                 <LooListItem
                   loo={loo}
                   onHoverStart={_.partial(this.props.actionHighlight, loo._id)}
