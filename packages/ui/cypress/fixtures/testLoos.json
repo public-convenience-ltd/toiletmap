@@ -1,0 +1,89 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "_id": "592456d4d7ffa80011a39c31",
+      "properties": {
+        "type": "female and male",
+        "accessibleType": "",
+        "opening": "09:00-18:00",
+        "babyChange": "Not Known",
+        "fee": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.2957537174224854, 52.636445492596394]
+      },
+      "distance": 273.80352040355984
+    },
+    {
+      "_id": "5b60c18c496d4e000532a27d",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.2954265, 52.633398299999996]
+      },
+      "properties": {},
+      "distance": 466.0459819103743
+    },
+    {
+      "_id": "5b685e46144284000598727c",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.290760683841654, 52.632799924535654]
+      },
+      "properties": {},
+      "distance": 467.77932476167473
+    },
+    {
+      "_id": "54c234a82ec4abe957b8446a",
+      "properties": {
+        "fee": "false",
+        "type": "",
+        "accessibleType": "",
+        "opening": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.2864414111111109, 52.640106611111115]
+      },
+      "distance": 503.52109441927445
+    },
+    {
+      "_id": "574db13bdb14a11000cb4766",
+      "properties": {
+        "type": "female and male"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.2940317392349243, 52.63110613616507]
+      },
+      "distance": 668.544087846187
+    },
+    {
+      "_id": "54c234762ec4abe957b83990",
+      "properties": {
+        "babyChange": "false",
+        "opening": "09:00-18:00",
+        "type": "female and male"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.2891045212745667, 52.64481948145492]
+      },
+      "distance": 893.9903868980995
+    },
+    {
+      "_id": "54c2347e2ec4abe957b83b7f",
+      "properties": {
+        "babyChange": "true",
+        "opening": "09:00-17:00",
+        "type": "female and male"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.2925199200000013, 52.62814626000005]
+      },
+      "distance": 981.8777098448265
+    }
+  ]
+}
