@@ -1,4 +1,4 @@
-import { all, takeLatest, call, put, select } from 'redux-saga/effects';
+import { all, takeLatest, call, put, select, take } from 'redux-saga/effects';
 import history from '../../history';
 
 import api from '@toiletmap/api-client';
@@ -6,6 +6,7 @@ import { PENDING_REPORT_KEY, PENDING_REMOVE_KEY } from '../../config';
 
 import {
   FIND_NEARBY_REQUEST,
+  FIND_NEARBY_SUCCESS,
   FIND_BY_ID_REQUEST,
   REPORT_REQUEST,
   REMOVE_REQUEST,
@@ -46,6 +47,7 @@ export default function makeLoosSaga(auth) {
     yield put(actionUncacheById(ids.loo));
     let center = yield select(getCenter);
     yield put(actionFindNearbyRequest(center.lng, center.lat));
+    yield take(FIND_NEARBY_SUCCESS);
     return yield call(history.push, `/loos/${ids.loo}/thanks`);
   }
 
