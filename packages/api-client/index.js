@@ -47,7 +47,7 @@ class API {
     return await res.json();
   }
 
-  async reportLoo(report, token) {
+  async reportLoo(report, token, from) {
     // Todo: Handle HTTP 401
     const url = `${this.endpoint}/reports`;
     const res = await fetch(url, {
@@ -57,7 +57,10 @@ class API {
         Authorization: `Bearer ${token}`,
       },
       method: 'post',
-      body: JSON.stringify(report),
+      body: JSON.stringify({
+        report,
+        from: from ? from._id : null,
+      }),
     });
     if (res.status !== 201) {
       throw new Error(res.statusText);

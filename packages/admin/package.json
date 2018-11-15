@@ -21,11 +21,11 @@
     "papaparse": "4.6.1",
     "prop-types": "15.6.2",
     "query-string": "4.2.3",
-    "react": "16.6.0",
+    "react": "16.6.3",
     "react-animated-number": "0.4.4",
     "react-chartjs-2": "2.7.4",
-    "react-dom": "16.6.0",
-    "react-leaflet": "2.1.1",
+    "react-dom": "16.6.3",
+    "react-leaflet": "2.1.2",
     "timeago.js": "3.0.2"
   },
   "scripts": {

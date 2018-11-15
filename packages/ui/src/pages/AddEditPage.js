@@ -57,26 +57,25 @@ class AddEditPage extends Component {
       // Storing a local copy of the loo allows us to keep track of any changes.
       // Skeleton loo structure required to track state.
       loo: {
-        properties: {
-          name: '',
-          access: '',
-          type: '',
-          accessibleType: '',
-          opening: '',
-          notes: '',
-          fee: '',
-        },
+        active: null,
+        name: '',
+        access: '',
+        type: '',
+        accessibleType: '',
+        opening: '',
+        notes: '',
+        fee: '',
       },
     };
 
     // Set questionnaire loo property defaults
     this.questionnaireMap.forEach(q => {
-      state.loo.properties[q.property] = '';
+      state.loo[q.property] = '';
     });
 
     // Deep extend loo state to ensure we get all properties (since we can't guarantee
     // that `this.props.loo` will include them all)
-    state.loo = _.merge({}, state.loo, this.props.loo);
+    state.loo = _.merge({}, state.loo, props.loo ? props.loo.properties : {});
 
     // Keep track of defaults so we only submit new information
     state.originalData = _.cloneDeep(state.loo);
@@ -126,6 +125,9 @@ class AddEditPage extends Component {
     const before = _.cloneDeep(this.state.originalData);
     const now = _.cloneDeep(this.state.loo);
 
+    // Add the active state for which there's no user-faciong form control as yet.
+    now.active = true;
+
     // Add geometry
     before.geometry = {
       type: 'Point',
@@ -173,12 +175,10 @@ class AddEditPage extends Component {
       coordinates: [this.getCenter().lng, this.getCenter().lat],
     };
 
-    // Show that this report is a derivation of a previous loo
-    if (this.isDerived()) {
-      changes.derivedFrom = this.props.loo._id;
-    }
-
-    this.props.actionReportRequest(changes);
+    this.props.actionReportRequest(
+      changes,
+      this.isDerived() ? this.props.loo : undefined
+    );
   }
 
   renderMain() {
@@ -223,10 +223,10 @@ class AddEditPage extends Component {
         <label>
           Toilet name
           <input
-            name="properties.name"
+            name="name"
             type="text"
             className={controls.text}
-            value={loo.properties.name === null ? '' : loo.properties.name}
+            value={loo.name === null ? '' : loo.name}
             onChange={this.handleChange}
           />
         </label>
@@ -234,9 +234,9 @@ class AddEditPage extends Component {
         <label>
           Who can access?
           <select
-            name="properties.access"
+            name="access"
             className={controls.dropdown}
-            value={loo.properties.access === null ? '' : loo.properties.access}
+            value={loo.access === null ? '' : loo.access}
             onChange={this.handleChange}
           >
             <option value="">Unknown</option>
@@ -251,9 +251,9 @@ class AddEditPage extends Component {
         <label>
           Facilities
           <select
-            name="properties.type"
+            name="type"
             className={controls.dropdown}
-            value={loo.properties.type === null ? '' : loo.properties.type}
+            value={loo.type === null ? '' : loo.type}
             onChange={this.handleChange}
           >
             <option value="">Unknown</option>
@@ -268,13 +268,9 @@ class AddEditPage extends Component {
         <label>
           Accessible facilities
           <select
-            name="properties.accessibleType"
+            name="accessibleType"
             className={controls.dropdown}
-            value={
-              loo.properties.accessibleType === null
-                ? ''
-                : loo.properties.accessibleType
-            }
+            value={loo.accessibleType === null ? '' : loo.accessibleType}
             onChange={this.handleChange}
           >
             <option value="">Unknown</option>
@@ -289,11 +285,9 @@ class AddEditPage extends Component {
         <label>
           Opening hours
           <select
-            name="properties.opening"
+            name="opening"
             className={controls.dropdown}
-            value={
-              loo.properties.opening === null ? '' : loo.properties.opening
-            }
+            value={loo.opening === null ? '' : loo.opening}
             onChange={this.handleChange}
           >
             <option value="">Unknown</option>
@@ -324,32 +318,30 @@ class AddEditPage extends Component {
               <legend className={helpers.visuallyHidden}>{q.question}</legend>
               <span className={styles.questionnaireCol}>{q.question}</span>
               <input
-                name={`properties.${q.property}`}
+                name={q.property}
                 className={styles.questionnaireCol}
                 type="radio"
                 value="true"
                 aria-labelledby="yes"
-                checked={loo.properties[q.property] === 'true'}
+                checked={loo[q.property] === 'true'}
                 onChange={this.handleChange}
               />
               <input
-                name={`properties.${q.property}`}
+                name={q.property}
                 className={styles.questionnaireCol}
                 type="radio"
                 value="false"
                 aria-labelledby="no"
-                checked={loo.properties[q.property] === 'false'}
+                checked={loo[q.property] === 'false'}
                 onChange={this.handleChange}
               />
               <input
-                name={`properties.${q.property}`}
+                name={q.property}
                 className={styles.questionnaireCol}
                 type="radio"
                 value="Not Known"
                 aria-labelledby="unknown"
-                checked={
-                  ['true', 'false'].indexOf(loo.properties[q.property]) === -1
-                }
+                checked={['true', 'false'].indexOf(loo[q.property]) === -1}
                 onChange={this.handleChange}
               />
             </fieldset>
@@ -359,10 +351,10 @@ class AddEditPage extends Component {
         <label>
           Fee?
           <input
-            name="properties.fee"
+            name="fee"
             type="text"
             className={controls.text}
-            value={loo.properties.fee === null ? '' : loo.properties.fee}
+            value={loo.fee === null ? '' : loo.fee}
             placeholder="The amount e.g. £0.10"
             onChange={this.handleChange}
           />
@@ -371,9 +363,9 @@ class AddEditPage extends Component {
         <label>
           Any notes?
           <textarea
-            name="properties.notes"
+            name="notes"
             className={controls.text}
-            value={loo.properties.notes === null ? '' : loo.properties.notes}
+            value={loo.notes === null ? '' : loo.notes}
             onChange={this.handleChange}
           />
         </label>

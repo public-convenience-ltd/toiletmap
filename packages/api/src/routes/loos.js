@@ -44,7 +44,6 @@ router.get('/:id/updateArea', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
   const loo = await Loo.findById(req.params.id).exec();
-  console.log(loo);
   if (!loo) {
     return res.status(404).end();
   }

@@ -49,30 +49,46 @@ async function getContributorData(bearerToken) {
   }
 }
 
-async function save(data, token) {
+// THis all feels a bit much...
+async function save(payload, token) {
+  const { report: data, from } = payload;
+
   const profile = await getContributorData(token);
   const area = await getAreaData(data.geometry);
 
-  const report = {
-    ...data,
-    properties: {
-      ...data.properties,
+  const reportData = {
+    diff: {
+      ...data,
       area,
     },
-    userId: profile.sub,
+    //userId: profile.sub,
     contributor: profile.nickname || config.reports.anonContributor,
-    trust: config.reports.trust,
-    collectionMethod: 'api',
   };
 
-  const validator = new Report(report);
+  let report = new Report(reportData);
+
+  if (from) {
+    let oldloo = await Loo.findById(from);
+    let lastReportId = oldloo.reports[oldloo.reports.length - 1];
+    let previous = await Report.findById(lastReportId);
+    await report.deriveFrom(previous);
+  }
 
   try {
-    await validator.validate();
+    await report.validate();
   } catch (e) {
     throw e;
   }
-  return await Report.processReport(report);
+  const savedReport = await report.save();
+
+  // Until we have a moderation queue we'll create/update a loo accordingly
+  const loo = await savedReport.generateLoo();
+  const savedLoo = await Loo.findOneAndUpdate({ _id: loo._id }, loo, {
+    upsert: true,
+    new: true,
+  });
+
+  return [savedReport, savedLoo];
 }
 
 router.post('/', checkJwt, checkScopes('report:loo'), async (req, res) => {
@@ -86,8 +102,8 @@ router.post('/', checkJwt, checkScopes('report:loo'), async (req, res) => {
     console.error(error);
     return res.sendStatus(500);
   }
-  res.set('Location', `${req.baseUrl}/report/${persist[0]._id}`);
-  res.set('Content-Location', `${req.baseUrl}/loo/${persist[1]._id}`);
+  res.set('Location', `${req.baseUrl}/reports/${persist[0]._id}`);
+  res.set('Content-Location', `${req.baseUrl}/loos/${persist[1]._id}`);
   res.status(201);
   res.send({
     report: persist[0]._id,
@@ -96,20 +112,19 @@ router.post('/', checkJwt, checkScopes('report:loo'), async (req, res) => {
 });
 
 router.delete('/:id', checkJwt, checkScopes('report:loo'), async (req, res) => {
-  const loo = await Loo.findById(req.params.id).exec();
-  const looData = loo.toObject();
-  const report = {
-    type: looData.type,
-    geometry: looData.geometry,
-    properties: {
+  const loo = await Loo.findById(req.params.id);
+  const payload = {
+    from: req.params.id,
+    report: {
       active: false,
       access: 'none',
       removal_reason: req.body.removal_reason,
+      geometry: loo.properties.geometry,
     },
   };
 
   try {
-    await save(report, req.get('Authorization'));
+    await save(payload, req.get('Authorization'));
   } catch (error) {
     if (error.name === 'ValidationError') {
       return res.status(400).send(_.map(error.errors, 'message').join('\n'));
@@ -125,7 +140,7 @@ router.delete('/:id', checkJwt, checkScopes('report:loo'), async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
   const id = req.params.id.replace('.json', '');
-  const report = await Report.findById(id).exec();
+  const report = await Report.findById(id);
   if (!report) {
     return res.status(404).end();
   }

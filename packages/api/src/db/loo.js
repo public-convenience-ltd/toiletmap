@@ -1,9 +1,10 @@
-const { Schema } = require('mongoose');
+const { Schema, Types } = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 const CoreSchema = require('./core');
 
 const LooSchema = new Schema(
   {
+    _id: { type: Schema.Types.ObjectId },
     properties: CoreSchema,
     reports: [{ type: Schema.Types.ObjectId, ref: 'NewReport' }],
     createdAt: { type: Schema.Types.Date },
@@ -26,7 +27,6 @@ LooSchema.plugin(mongoosePaginate);
  */
 LooSchema.statics.fromReports = function(reports) {
   // generate the loo from the sequence of diffs
-
   const properties = {};
   for (const rep of reports) {
     for (const [key, value] of Object.entries(rep.toObject().diff)) {
@@ -45,14 +45,20 @@ LooSchema.statics.fromReports = function(reports) {
 
   // Calculate the Loo's creation and update time - we sort the report creation times to do this since
   // early reports were ranked on trust as well...
-  const timeline = reports.map(r => r.createdAt).sort((d1, d2) => {
-    if (d1 > d2) return 1;
-    if (d1 < d2) return -1;
-    return 0;
-  });
+  const timeline = reports
+    .map(r => r.createdAt)
+    .sort((d1, d2) => {
+      if (d1 > d2) return 1;
+      if (d1 < d2) return -1;
+      return 0;
+    });
+
+  // Calculate the persistent id for this loo from the first of its reports
+  const id = reports[0].suggestLooId();
 
   // "this" refers to our static model
   return new this({
+    _id: Types.ObjectId(id),
     properties,
     reports: reportIds,
     createdAt: timeline[0],

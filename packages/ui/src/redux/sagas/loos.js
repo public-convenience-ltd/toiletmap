@@ -31,9 +31,14 @@ export default function makeLoosSaga(auth) {
     yield put(actionFindByIdSuccess(loo));
   }
 
-  function* report(loo) {
+  function* report(loo, from) {
     // Todo: Catch HTTP 401 and navigate to '/login'
-    const ids = yield call([api, api.reportLoo], loo, auth.getAccessToken());
+    const ids = yield call(
+      [api, api.reportLoo],
+      loo,
+      auth.getAccessToken(),
+      from
+    );
     yield put(actionReportSuccess(ids));
     yield put(actionUncacheById(ids.loo));
     return yield call(history.push, `/loos/${ids.loo}/thanks`);
