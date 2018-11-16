@@ -8,7 +8,7 @@
     "test": "CI=true lerna run test --parallel --ignore=@toiletmap/leaflet-control-geocoder",
     "reinstall": "lerna clean --yes && rm yarn.lock && yarn install",
     "release": "lerna version --conventional-commits --push --exact -m \"build: release %s\"",
-    "lint": "eslint . && stylelint ./**/*.css",
+    "lint": "eslint . && stylelint \"packages/{ui,ui-next,admin}/**/*.css\"",
     "prettify": "prettier --single-quote --trailing-comma es5 --write \"./**/*.{js,json}\"",
     "postinstall": "lerna run build --scope=@toiletmap/leaflet-control-geocoder",
     "load:devData": "mongorestore --noIndexRestore --drop --nsFrom 'app29532998.*' --nsTo 'gbptm.*' --gzip --archive=./data/devData.tar.gz",
@@ -60,13 +60,19 @@
     "stylelint": "9.8.0",
     "stylelint-config-standard": "18.2.0"
   },
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": ["packages/*"]
+  },
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -e",
       "pre-commit": "lint-staged"
     }
+  },
+  "resolutions": {
+    "@types/jest": "23.3.9",
+    "@types/node": "10.12.9",
+    "@types/react": "16.7.6",
+    "@types/react-dom": "16.0.9"
   }
 }

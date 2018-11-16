@@ -7,7 +7,7 @@ const cors = require('cors');
 const path = require('path');
 const app = express();
 
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer } = require('apollo-server-express');
 const { typeDefs, resolvers } = require('./graphql/schema');
 
 // we can make some nicer assumptions about security if query values are only
