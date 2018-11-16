@@ -67,8 +67,8 @@ LooSchema.statics.fromReports = function(reports) {
   });
 };
 
-LooSchema.statics.findNear = function(lon, lat, radius) {
-  return this.aggregate([
+LooSchema.statics.findNear = function(lon, lat, radius, complete) {
+  let args = [
     {
       $geoNear: {
         near: {
@@ -86,7 +86,9 @@ LooSchema.statics.findNear = function(lon, lat, radius) {
         'properties.active': true,
       },
     },
-    {
+  ];
+  if (!complete) {
+    args.push({
       $project: {
         distance: 1,
         properties: {
@@ -98,8 +100,9 @@ LooSchema.statics.findNear = function(lon, lat, radius) {
           babyChange: 1,
         },
       },
-    },
-  ]);
+    });
+  }
+  return this.aggregate(args);
 };
 
 module.exports = exports = LooSchema;

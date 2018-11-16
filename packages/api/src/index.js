@@ -7,6 +7,9 @@ const cors = require('cors');
 const path = require('path');
 const app = express();
 
+const { ApolloServer, gql } = require('apollo-server-express');
+const { typeDefs, resolvers } = require('./graphql/schema');
+
 // we can make some nicer assumptions about security if query values are only
 // ever strings, not arrays or objects
 app.set('query parser', 'simple');
@@ -30,6 +33,14 @@ app.use(helmet());
 app.use(compression());
 app.use(cors());
 
+// Add GraphQL API
+const apollo = new ApolloServer({
+  // These will be defined for both new or existing servers
+  typeDefs,
+  resolvers,
+});
+apollo.applyMiddleware({ app });
+
 // Add API routes
 const routes = require('./routes');
 app.use('/api', routes);
@@ -51,6 +62,7 @@ if (!module.parent) {
   app.listen(config.app.port, () => {
     /* eslint-disable-next-line no-console */
     console.log(`Listening on port ${config.app.port}`);
+    console.log(`Graphql on ${apollo.graphqlPath}`);
   });
 }
 
