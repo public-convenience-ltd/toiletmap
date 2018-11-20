@@ -147,6 +147,8 @@ class LooView extends Component {
                 variant="contained"
                 color="secondary"
                 className={classes.button}
+                target="_blank"
+                rel="noopener noreferer"
                 href={`/loos/${this.props.looId}/edit`}
               >
                 Edit
