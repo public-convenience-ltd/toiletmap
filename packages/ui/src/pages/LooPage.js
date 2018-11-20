@@ -98,17 +98,6 @@ class LooPage extends Component {
     return knownOrder.concat(unknownOrder);
   }
 
-  // Returns HTML representing the loo credibility score
-  renderRating() {
-    var maxScore = 5;
-    var score = Math.ceil((this.props.loo.credibility || 0) / 4);
-    var stars = '&#x2605;'.repeat(score) + '&#x2606;'.repeat(maxScore - score);
-
-    return {
-      __html: `${score} out of 5<br /><span aria-hidden="true">${stars}</span>`,
-    };
-  }
-
   // Wrapper to `@toiletmap/api-client.mappings.humanizeAPIValue` which allows mappings between loo property values and the
   // text we want to display
   humanizePropertyName(val) {
