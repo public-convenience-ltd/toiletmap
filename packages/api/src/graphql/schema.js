@@ -6,16 +6,33 @@ const { GraphQLDateTime } = require('graphql-iso-date');
 const typeDefs = gql`
   scalar DateTime
 
+  """
+  A Geographical Point
+
+  Expressed in WGS84 coordinates (SRID 4326).
+  """
   type Point {
+    "Latitude"
     lat: Float
+    "Longitude"
     lng: Float
   }
 
+  """
+  A unit of Administrative Geography
+
+  e.g. a district council
+  """
   type AdminGeo {
     name: String
     type: String
   }
 
+  """
+  A Toilet
+
+  The data representing a toilet is computed from its **Report**s
+  """
   type Loo {
     id: ID
     createdAt: DateTime
@@ -59,7 +76,7 @@ const typeDefs = gql`
   Reported information about a real-world toilet
 
   Reports are submitted by contributors or created as part of data imports
-  A report can refer another report (via the **previous** field) to indicvate that they refer to the same toilet
+  A report can refer to another report (via the **previous** field) to indicate that they refer to the same toilet
   """
   type Report {
     id: ID!

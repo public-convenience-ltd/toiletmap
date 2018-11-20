@@ -6,6 +6,7 @@ const compression = require('compression');
 const cors = require('cors');
 const path = require('path');
 const app = express();
+const { express: voyagerMiddleware } = require('graphql-voyager/middleware');
 
 const { ApolloServer } = require('apollo-server-express');
 const { typeDefs, resolvers } = require('./graphql/schema');
@@ -40,6 +41,8 @@ const apollo = new ApolloServer({
   resolvers,
 });
 apollo.applyMiddleware({ app });
+// Add voyager for graphql
+app.use('/voyager', voyagerMiddleware({ endpointUrl: '/graphql' }));
 
 // Add API routes
 const routes = require('./routes');
