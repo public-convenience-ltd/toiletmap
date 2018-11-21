@@ -180,7 +180,7 @@ const renderTableRows = props => {
                     />
                   </TableCell>
                   <TableCell className={classes.textList}>
-                    {contributors.map((attr, i) => {
+                    {_.uniq(contributors).map((attr, i) => {
                       return (
                         <Chip
                           key={attr + i}
