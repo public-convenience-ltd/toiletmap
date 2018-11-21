@@ -34,10 +34,13 @@ app.use(cors());
 const routes = require('./routes');
 app.use('/api', routes);
 
-// Serve the built admin UI from /admin
-app.use('/admin', express.static(path.join(__dirname, 'www-admin')));
-app.get('/admin/*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'www-admin', 'index.html'));
+//redirect admin to explorer
+app.all('/admin', (req, res) => res.redirect(301, '/explorer'));
+
+// Serve the built explorer UI from /explorer
+app.use('/explorer', express.static(path.join(__dirname, 'www-explorer')));
+app.get('/explorer/*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'www-explorer', 'index.html'));
 });
 
 // Serve the built UI from the root

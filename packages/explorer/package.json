@@ -1,8 +1,8 @@
 {
-  "name": "@toiletmap/admin",
+  "name": "@toiletmap/explorer",
   "version": "2.8.0",
   "private": true,
-  "homepage": "/admin",
+  "homepage": "/explorer",
   "proxy": "https://localhost:8080",
   "devDependencies": {
     "react-scripts": "2.1.1"

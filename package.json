@@ -13,10 +13,10 @@
     "postinstall": "lerna run build --scope=@toiletmap/leaflet-control-geocoder",
     "load:devData": "mongorestore --noIndexRestore --drop --nsFrom 'app29532998.*' --nsTo 'gbptm.*' --gzip --archive=./data/devData.tar.gz",
     "build:ui": "lerna run build --scope=@toiletmap/ui",
-    "build:admin": "lerna run build --scope=@toiletmap/admin",
+    "build:explorer": "lerna run build --scope=@toiletmap/explorer",
     "docker:build": "docker build --network=host -t toiletmap/toiletmap .",
     "docker:run": "docker run --network=host --env-file .env -d toiletmap/toiletmap",
-    "build": "yarn build:ui && yarn build:admin && yarn docker:build",
+    "build": "yarn build:ui && yarn build:explorer && yarn docker:build",
     "pullconfig": "heroku config:get -s MONGODB_URI --app gbptm-stage >> .env",
     "deploy:push": "heroku container:push web",
     "deploy:release": "heroku container:release web"
