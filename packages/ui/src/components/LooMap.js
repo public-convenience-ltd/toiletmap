@@ -65,6 +65,8 @@ L.LooIcon = L.Icon.extend({
     // make an index label
     var index = document.createElement('div');
     index.setAttribute('class', styles.index);
+    console.log('hello');
+    index.setAttribute('data-testid', 'marker');
     index.innerHTML = this.options.index;
     grouper.appendChild(index);
 

@@ -1,0 +1,15 @@
+{
+  "_id": "592456d4d7ffa80011a39c31",
+  "properties": {
+    "type": "female and male",
+    "accessibleType": "",
+    "opening": "09:00-18:00",
+    "babyChange": "Not Known",
+    "fee": ""
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [52.636445492596394, 1.2957537174224854]
+  },
+  "distance": 273.80352040355984
+}
