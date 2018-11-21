@@ -35,7 +35,7 @@ const routes = require('./routes');
 app.use('/api', routes);
 
 //redirect admin to explorer
-app.all('/admin', (req, res) => res.redirect(301, '/explorer'));
+app.all('/admin', (req, res) => res.redirect(301, '/explorer/'));
 
 // Serve the built explorer UI from /explorer
 app.use('/explorer', express.static(path.join(__dirname, 'www-explorer')));
