@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Loo = require('../models/loo');
-const LooList = require('../models/loo_list');
 const config = require('../config/config');
+const { Loo } = require('../db')(config.mongo.url);
 
 /**
  * Get loos near lon/lat
@@ -17,7 +16,8 @@ router.get('/near/:lon/:lat', async (req, res) => {
     parseFloat(req.params.lat),
     allowedRadius
   ).exec();
-  res.status(200).json(new LooList(loos));
+
+  res.status(200).json(loos);
 });
 
 /**
@@ -25,7 +25,7 @@ router.get('/near/:lon/:lat', async (req, res) => {
  */
 router.get('/', async (req, res) => {
   const loos = await Loo.find({}, 'type geometry').exec();
-  res.status(200).json(new LooList(loos));
+  res.status(200).json(loos);
 });
 
 /**
@@ -44,7 +44,6 @@ router.get('/:id/updateArea', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
   const loo = await Loo.findById(req.params.id).exec();
-
   if (!loo) {
     return res.status(404).end();
   }

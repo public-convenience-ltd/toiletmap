@@ -84,8 +84,8 @@ class RemovePage extends Component {
 
   renderMap() {
     var coords = {
-      lat: this.props.loo.geometry.coordinates[1],
-      lng: this.props.loo.geometry.coordinates[0],
+      lat: this.props.loo.properties.geometry.coordinates[1],
+      lng: this.props.loo.properties.geometry.coordinates[0],
     };
     return (
       <LooMap

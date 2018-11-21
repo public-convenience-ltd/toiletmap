@@ -4,7 +4,7 @@ FROM node:10
 EXPOSE 8080
 
 # Establish a directory in the container to house our stuff
-WORKDIR /gbptm
+WORKDIR /toiletmap
 
 # Copy the package.json from the api server package (this should be stable-ish)
 COPY ./packages/api/package.json .
@@ -18,8 +18,8 @@ RUN yarn install --production=true --pure-lockfile --ignore-optional
 # Copy the rest of the api server sources into place (we do this after the install to preserver the previous layers)
 COPY ./packages/api .
 
-# Copy the built admin UI into the expected location for the static fileserver
-COPY ./packages/admin/build ./src/www-admin
+# Copy the built explorer UI into the expected location for the static fileserver
+COPY ./packages/explorer/build ./src/www-explorer
 
 # Copy the built UI into the expected location for the static fileserver
 COPY ./packages/ui/build ./src/www

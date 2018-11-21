@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Loo = require('../models/loo');
-const LooReport = require('../models/loo_report');
+const config = require('../config/config');
+const { Loo, Report } = require('../db')(config.mongo.url);
 const _ = require('lodash');
 const { DateTime } = require('luxon');
 
@@ -46,37 +46,25 @@ router.get('/counters', async (req, res) => {
   const [
     activeLoos,
     loosCount,
-    looReports,
-    uiReports,
+    reports,
     removals,
     multiReportLoos,
   ] = await Promise.all([
     Loo.count(scopeQuery({}, req.query)).exec(),
     Loo.count(scopeQuery({}, qWithInactive)).exec(),
-    LooReport.count(scopeQuery({}, qWithInactive)).exec(),
-    LooReport.count(
-      scopeQuery({ collectionMethod: 'api' }, qWithInactive)
-    ).exec(),
-    LooReport.count(
-      scopeQuery(
-        { 'properties.removal_reason': { $exists: true } },
-        qWithInactive
-      )
-    ).exec(),
+    Report.count(scopeQuery({}, qWithInactive)).exec(),
+    Report.count(scopeQuery({ 'diff.active': false }, qWithInactive)).exec(),
     Loo.count(
       scopeQuery({ 'reports.1': { $exists: true } }, qWithInactive)
     ).exec(),
   ]);
-  const importedReports = looReports - uiReports;
   const inactiveLoos = loosCount - activeLoos;
 
   res.status(200).json({
     'Total Toilets Added': loosCount,
     'Active Toilets Added': activeLoos,
     'Inactive/Removed Toilets': inactiveLoos,
-    'Total Loo Reports Recorded': looReports,
-    'Total Reports via Web UI/API': uiReports,
-    'Reports from Data Collections': importedReports,
+    'Total Loo Reports Recorded': reports,
     'Removal Reports Submitted': removals,
     'Loos with Multiple Reports': multiReportLoos,
   });
@@ -96,12 +84,8 @@ router.get('/proportions', async (req, res) => {
   ] = await Promise.all([
     Loo.count(scopeQuery({ 'properties.access': 'public' }, req.query)).exec(),
     Loo.count(scopeQuery({ 'properties.access': 'none' }, req.query)).exec(),
-    Loo.count(
-      scopeQuery({ 'properties.babyChange': 'true' }, req.query)
-    ).exec(),
-    Loo.count(
-      scopeQuery({ 'properties.babyChange': 'Not Known' }, req.query)
-    ).exec(),
+    Loo.count(scopeQuery({ 'properties.babyChange': true }, req.query)).exec(),
+    Loo.count(scopeQuery({ 'properties.babyChange': null }, req.query)).exec(),
     Loo.count(scopeQuery({}, req.query)).exec(),
     Loo.count(
       scopeQuery(
@@ -144,15 +128,14 @@ router.get('/proportions', async (req, res) => {
 });
 
 router.get('/contributors', async (req, res) => {
-  const scope = scopeQuery({}, req.query);
-  scope.$and.push({ type: 'Feature' });
-  const contributors = await LooReport.aggregate([
+  //const scope = scopeQuery({contributor: { $exists: true }}, req.query);
+  const contributors = await Report.aggregate([
     {
-      $match: scope,
+      $match: { contributor: { $exists: true } },
     },
     {
       $group: {
-        _id: '$attribution',
+        _id: '$contributor',
         reports: {
           $sum: 1,
         },
@@ -221,7 +204,7 @@ router.get('/areas', async (req, res) => {
           $cond: [
             {
               $and: [
-                { $eq: ['$properties.babyChange', 'true'] },
+                { $eq: ['$properties.babyChange', true] },
                 { $eq: ['$properties.active', true] },
               ],
             },

@@ -1,0 +1,15 @@
+{
+  "name": "@toiletmap/migrate",
+  "version": "2.8.0",
+  "description": "A tool for migrating legacy Toilet Map databases to our new schemas",
+  "dependencies": {
+    "@toiletmap/api": "2.8.0",
+    "geo-hash": "0.0.2",
+    "lodash": "4.17.11"
+  },
+  "scripts": {
+    "generate-new-reports": "node ./bin/generate-new-reports.js > ./data/new-reports.json",
+    "generate-new-loos": "node ./bin/generate-new-loos.js > ./data/new-loos.json",
+    "summarise-report-values": "node ./bin/summarise-report-values.js < ./data/new-reports.json > ./data/report-values.md"
+  }
+}

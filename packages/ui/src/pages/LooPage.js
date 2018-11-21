@@ -14,11 +14,10 @@ import NearestLooMap from '../components/NearestLooMap';
 
 import styles from './css/loo-page.module.css';
 import layout from '../components/css/layout.module.css';
-import helpers from '../css/helpers.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
-import api from '../api';
+import { mappings } from '@toiletmap/api-client';
 import config from '../config';
 
 class LooPage extends Component {
@@ -99,49 +98,14 @@ class LooPage extends Component {
     return knownOrder.concat(unknownOrder);
   }
 
-  // Returns HTML representing the loo credibility score
-  renderRating() {
-    var maxScore = 5;
-    var score = Math.ceil((this.props.loo.credibility || 0) / 4);
-    var stars = '&#x2605;'.repeat(score) + '&#x2606;'.repeat(maxScore - score);
-
-    return {
-      __html: `${score} out of 5<br /><span aria-hidden="true">${stars}</span>`,
-    };
-  }
-
-  // Wrapper to `api.humanize` which allows mappings between loo property values and the
+  // Wrapper to `@toiletmap/api-client.mappings.humanizeAPIValue` which allows mappings between loo property values and the
   // text we want to display
   humanizePropertyName(val) {
     if (this.humanizedPropNames[val]) {
       return this.humanizedPropNames[val];
     }
 
-    return api.humanize(val);
-  }
-
-  humanizePropertyValue(val, property) {
-    if (config.looProps.definitions[property]) {
-      // We may a human readable definition of this property value
-      let override = config.looProps.definitions[property].find(
-        s => s.value === val
-      );
-      if (override) {
-        return override.name;
-      }
-    }
-
-    // Second condition is for an irregularity in our dataset; do this until we normalise better
-    if (
-      config.looProps.canHumanize.includes(property) ||
-      (property === 'fee' && val === 'false')
-    ) {
-      // We can humanize this kind of property to make it more human-readable
-      return api.humanize(val);
-    }
-
-    // This was likely entered as human-readable, leave it be
-    return val;
+    return mappings.humanizeAPIValue(val);
   }
 
   renderMain() {
@@ -164,7 +128,10 @@ class LooPage extends Component {
             <a
               href={
                 'https://maps.apple.com/?dirflg=w&daddr=' +
-                [loo.geometry.coordinates[1], loo.geometry.coordinates[0]]
+                [
+                  loo.properties.geometry.coordinates[1],
+                  loo.properties.geometry.coordinates[0],
+                ]
               }
               className={controls.btn}
               target="_blank"
@@ -193,10 +160,13 @@ class LooPage extends Component {
 
         <ul className={styles.properties}>
           {properties.map(name => {
-            var val = this.humanizePropertyValue(loo.properties[name], name);
+            var val = mappings.humanizePropertyValue(
+              loo.properties[name],
+              name
+            );
 
             // Filter out useless/unset data
-            if (val !== 'Not known' && val !== '') {
+            if (val !== 'Not known' && val !== '' && typeof val !== 'object') {
               return (
                 <li className={styles.property} key={name}>
                   <h3 className={styles.propertyName}>
@@ -210,72 +180,6 @@ class LooPage extends Component {
             return null;
           })}
         </ul>
-
-        <div className={styles.data}>
-          <h3 className={styles.dataTitle}>
-            Data{' '}
-            <span className={styles.dataSubTitle}>
-              (technical info for this toilet)
-            </span>
-          </h3>
-
-          <table className={styles.dataTable}>
-            <caption className={helpers.visuallyHidden}>Toilet Data</caption>
-            <thead className={helpers.visuallyHidden}>
-              <tr>
-                <th scope="col">Keys</th>
-                <th scope="col">Values</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">Credibility:</th>
-                <td dangerouslySetInnerHTML={this.renderRating()} />
-              </tr>
-              <tr>
-                <th scope="row">Geohash:</th>
-                <td>{loo.geohash}</td>
-              </tr>
-              <tr>
-                <th scope="row">Formats:</th>
-                <td>
-                  <a
-                    href={`${config.apiEndpoint}/loos/${loo._id}?format=json`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    JSON
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Sources:</th>
-                <td>
-                  {loo.reports.map((report, index) => {
-                    var href = `${
-                      config.apiEndpoint
-                    }/reports/${report}?format=json`;
-
-                    return (
-                      <a
-                        key={index}
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        [{index + 1}]
-                      </a>
-                    );
-                  })}
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Contributors:</th>
-                <td>{loo.attributions.join(', ')}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
     );
   }

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Loo = require('../models/loo');
+const config = require('../config/config');
+const { Loo } = require('../db')(config.mongo.url);
 const _ = require('lodash');
 
 router.get('/areas', async (req, res) => {

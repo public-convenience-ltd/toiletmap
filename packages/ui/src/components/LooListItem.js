@@ -25,8 +25,8 @@ class LooListItem extends Component {
     var loo = this.props.loo;
 
     var coords = [
-      this.props.loo.geometry.coordinates[1],
-      this.props.loo.geometry.coordinates[0],
+      this.props.loo.properties.geometry.coordinates[1],
+      this.props.loo.properties.geometry.coordinates[0],
     ];
 
     return (

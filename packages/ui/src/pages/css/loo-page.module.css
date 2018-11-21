@@ -39,43 +39,6 @@
   white-space: pre-line;
 }
 
-.dataTable {
-  table-layout: fixed;
-  width: 100%;
-  margin-bottom: 1rem;
-}
-
-.dataTable tr {
-  vertical-align: top;
-}
-
-.dataTable th {
-  text-align: left;
-}
-
-.dataTable td {
-  text-align: left;
-}
-
-.data {
-  padding: 1rem;
-  border: 2px solid #222;
-}
-
-.dataTitle {
-  composes: large from '../../css/headings.module.css';
-  padding-bottom: 1rem;
-  border-bottom: 2px solid #222;
-  text-align: center;
-}
-
-.dataSubTitle {
-  display: block;
-  color: #666;
-  font-weight: normal;
-  font-size: 1rem;
-}
-
 .preferenceIndicators {
   margin-bottom: 1rem;
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@neontribe/gbptm-api",
+  "name": "@toiletmap/api",
   "private": true,
   "description": "API server for the Great British Public Toilet Map",
   "version": "2.8.0",
@@ -9,24 +9,19 @@
   },
   "dependencies": {
     "compression": "1.7.3",
-    "cors": "2.8.4",
+    "cors": "2.8.5",
     "express": "4.16.4",
     "express-jwt": "5.3.1",
     "express-jwt-authz": "1.0.0",
-    "geo-hash": "0.0.2",
-    "helmet": "3.14.0",
+    "hasha": "3.0.0",
+    "helmet": "3.15.0",
     "jwks-rsa": "1.3.0",
     "lodash": "4.17.11",
-    "luxon": "1.4.5",
-    "mongoose": "5.3.8",
+    "luxon": "1.7.1",
+    "mongoose": "5.3.13",
     "mongoose-paginate": "5.0.3",
-    "mongoose-timestamp": "0.6.0",
-    "newrelic": "4.9.0",
-    "node-fetch": "2.2.0"
-  },
-  "devDependencies": {
-    "jest": "23.6.0",
-    "supertest": "3.3.0"
+    "newrelic": "4.10.0",
+    "node-fetch": "2.3.0"
   },
   "engines": {
     "node": ">=10.0.0",
@@ -49,7 +44,6 @@
   },
   "scripts": {
     "dev": "NEW_RELIC_ENABLED=false NEW_RELIC_NO_CONFIG_FILE=true node src/index.js",
-    "start": "node src/index.js",
-    "test": "NODE_ENV=test NEW_RELIC_ENABLED=false NEW_RELIC_NO_CONFIG_FILE=true jest"
+    "start": "node src/index.js"
   }
 }
