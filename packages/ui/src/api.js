@@ -1,5 +1,6 @@
 import querystring from 'querystring';
 import { isOpen } from '@neontribe/opening-hours';
+import axios from 'axios';
 
 import config, { PREFERENCES_KEY } from './config';
 
@@ -8,56 +9,60 @@ const api = {};
 api.findLoos = async function(lng, lat, radius) {
   const qs = querystring.stringify({ radius });
   const url = `${config.apiEndpoint}/loos/near/${lng}/${lat}?${qs}`;
-  const res = await fetch(url, {
+  const res = await axios({
+    url,
     headers: {
       Accept: 'application/json',
     },
   });
-  const geojson = await res.json();
-  return geojson.features;
+  //const geojson = await res.json();
+  return res.data.features;
 };
 
 api.findLooById = async function(id) {
   const url = `${config.apiEndpoint}/loos/${id}`;
-  const res = await fetch(url, {
+  const res = await axios({
+    url,
     headers: {
       Accept: 'application/json',
     },
   });
-  return await res.json();
+  return res.data;
 };
 
 api.reportLoo = async function(report, token) {
   // Todo: Handle HTTP 401
   const url = `${config.apiEndpoint}/reports`;
-  const res = await fetch(url, {
+  const res = await axios({
+    url,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     method: 'post',
-    body: JSON.stringify(report),
+    data: report,
   });
   if (res.status !== 201) {
     throw new Error(res.statusText);
   }
-  return await res.json();
+  return await res.data;
 };
 
 api.removeLoo = async function(looId, reason, token) {
   // Todo: Handle HTTP 401
   const url = `${config.apiEndpoint}/reports/${looId}`;
-  const res = await fetch(url, {
+  const res = await axios({
+    url,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     method: 'delete',
-    body: JSON.stringify({
+    data: {
       removal_reason: reason,
-    }),
+    },
   });
   if (res.status !== 200) {
     throw new Error(res.statusText);

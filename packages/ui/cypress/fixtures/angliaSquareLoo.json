@@ -1,0 +1,31 @@
+{
+  "geometry": {
+    "coordinates": [1.2957537174224854, 52.636445492596394],
+    "type": "Point"
+  },
+  "properties": {
+    "active": true,
+    "access": "public",
+    "area": [],
+    "name": "Anglia Square Shopping Center",
+    "type": "female and male",
+    "accessibleType": "",
+    "opening": "09:00-18:00",
+    "attended": "false",
+    "babyChange": "Not Known",
+    "automatic": "false",
+    "radar": "Not Known",
+    "fee": "",
+    "notes": ""
+  },
+  "type": "Feature",
+  "sources": ["Great British Public Toilet Map"],
+  "attributions": ["Sophie Cabot"],
+  "reports": ["592456d4d0e3fbe3bd5e50c9"],
+  "_id": "592456d4d7ffa80011a39c31",
+  "createdAt": "2017-05-23T15:35:48.327Z",
+  "updatedAt": "2017-05-23T15:35:48.327Z",
+  "geohash": "u12gmqpt90xg",
+  "credibility": 18,
+  "__v": 0
+}
