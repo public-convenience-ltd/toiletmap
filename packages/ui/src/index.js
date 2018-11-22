@@ -14,7 +14,7 @@ import Analytics from 'react-router-ga';
 
 import config from './config';
 
-import registerServiceWorker from './registerServiceWorker';
+import * as serviceWorker from './serviceWorker';
 
 // Global CSS
 import './css/global';
@@ -106,4 +106,8 @@ if (typeof document !== 'undefined') {
     document.getElementById('root')
   );
 }
-registerServiceWorker();
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: http://bit.ly/CRA-PWA
+serviceWorker.register();
