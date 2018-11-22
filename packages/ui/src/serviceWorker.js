@@ -74,7 +74,7 @@ function registerValidSW(swUrl, config) {
                   'tabs for this page are closed. See http://bit.ly/CRA-PWA.'
               );
               alert(
-                'New updates for the toilet map are ready. You can update by closing all tabs for this site and then visiting again.'
+                'New updates for the toilet map are ready.\nYou can update by closing all tabs for this site and then visiting again.'
               );
 
               // Execute callback
