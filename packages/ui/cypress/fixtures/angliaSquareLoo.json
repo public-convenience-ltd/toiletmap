@@ -1,31 +1,28 @@
 {
-  "geometry": {
-    "coordinates": [1.2957537174224854, 52.636445492596394],
-    "type": "Point"
-  },
+  "reports": ["5bf56d128f7ef35a916e70cf", "5bf56d128f7ef35a916e70d0"],
+  "contributors": ["Sophie Cabot", "rupert+gbptm"],
+  "_id": "040992f25ba360e6967b463d",
   "properties": {
+    "geometry": {
+      "coordinates": [1.2957537174224854, 52.636445492596394],
+      "type": "Point"
+    },
+    "name": "Anglia Square Shopping Center",
     "active": true,
     "access": "public",
-    "area": [],
-    "name": "Anglia Square Shopping Center",
-    "type": "female and male",
-    "accessibleType": "",
     "opening": "09:00-18:00",
-    "attended": "false",
-    "babyChange": "Not Known",
-    "automatic": "false",
-    "radar": "Not Known",
-    "fee": "",
-    "notes": ""
+    "type": "female and male",
+    "attended": false,
+    "automatic": false,
+    "area": [
+      {
+        "type": "District council",
+        "name": "Norwich City Council"
+      }
+    ],
+    "radar": false
   },
-  "type": "Feature",
-  "sources": ["Great British Public Toilet Map"],
-  "attributions": ["Sophie Cabot"],
-  "reports": ["592456d4d0e3fbe3bd5e50c9"],
-  "_id": "592456d4d7ffa80011a39c31",
-  "createdAt": "2017-05-23T15:35:48.327Z",
-  "updatedAt": "2017-05-23T15:35:48.327Z",
-  "geohash": "u12gmqpt90xg",
-  "credibility": 18,
+  "createdAt": "2017-05-23T15:35:48.010Z",
+  "updatedAt": "2018-11-13T09:17:36.646Z",
   "__v": 0
 }

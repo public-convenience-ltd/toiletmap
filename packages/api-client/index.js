@@ -1,5 +1,8 @@
 import querystring from 'querystring';
 import mappings from './src/mappings';
+import axios from 'axios';
+
+const endpoint = 'https://gbptm-unity.herokuapp.com/api';
 
 class API {
   constructor() {
@@ -8,79 +11,78 @@ class API {
     }
   }
 
-  get endpoint() {
-    return process.env.NODE_ENV === 'production'
-      ? '/api'
-      : process.env.REACT_APP_GBPTM_API || '/api';
-  }
-
   async findLoos(lng, lat, radius) {
     const qs = querystring.stringify({ radius });
-    const url = `${this.endpoint}/loos/near/${lng}/${lat}?${qs}`;
-    const res = await fetch(url, {
+    const url = `${endpoint}/loos/near/${lng}/${lat}?${qs}`;
+    const res = await axios({
+      url,
       headers: {
         Accept: 'application/json',
       },
     });
-    return await res.json();
+    return res.data;
   }
 
   async findLooById(id, params) {
     const query = querystring.stringify(params);
-    const url = `${this.endpoint}/loos/${id}?${query}`;
-    const res = await fetch(url, {
+    const url = `${endpoint}/loos/${id}?${query}`;
+    const res = await axios({
+      url,
       headers: {
         Accept: 'application/json',
       },
     });
-    return await res.json();
+    return res.data;
   }
 
   async searchLoos(q) {
     const query = querystring.stringify(q);
-    const url = `${this.endpoint}/search?${query}`;
-    const res = await fetch(url, {
+    const url = `${endpoint}/search?${query}`;
+    const res = await axios({
+      url,
       headers: {
         Accept: 'application/json',
       },
     });
-    return await res.json();
+    return res.data;
   }
 
   async reportLoo(report, token, from) {
     // Todo: Handle HTTP 401
-    const url = `${this.endpoint}/reports`;
-    const res = await fetch(url, {
+    const url = `${endpoint}/reports`;
+    const res = await axios({
+      url,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
       method: 'post',
-      body: JSON.stringify({
+      data: {
         report,
         from: from ? from._id : null,
-      }),
+      },
     });
     if (res.status !== 201) {
       throw new Error(res.statusText);
     }
-    return await res.json();
+    return res.data;
   }
 
   async removeLoo(looId, reason, token) {
     // Todo: Handle HTTP 401
-    const url = `${this.endpoint}/reports/${looId}`;
-    const res = await fetch(url, {
+    const url = `${endpoint}/reports/${looId}`;
+    const res = await axios({
+      url,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
       method: 'delete',
-      body: JSON.stringify({
+      data: {
         removal_reason: reason,
-      }),
+      },
     });
     if (res.status !== 200) {
       throw new Error(res.statusText);
@@ -89,36 +91,36 @@ class API {
   }
 
   async fetchAreaData() {
-    const searchUrl = `${this.endpoint}/admin_geo/areas`;
-    const response = await fetch(searchUrl);
-    return await response.json();
+    const searchUrl = `${endpoint}/admin_geo/areas`;
+    const res = await axios(searchUrl);
+    return res.data;
   }
 
   async fetchAreaStatistics(q) {
     const query = querystring.stringify(q);
-    const searchUrl = `${this.endpoint}/statistics/areas?${query}`;
-    const response = await fetch(searchUrl);
-    return await response.json();
+    const searchUrl = `${endpoint}/statistics/areas?${query}`;
+    const res = await axios(searchUrl);
+    return res.data;
   }
 
   async fetchCountersStatistics(q) {
     const query = querystring.stringify(q);
-    const searchUrl = `${this.endpoint}/statistics/counters?${query}`;
-    const response = await fetch(searchUrl);
-    return await response.json();
+    const searchUrl = `${endpoint}/statistics/counters?${query}`;
+    const res = await axios(searchUrl);
+    return res.data;
   }
 
   async fetchProportionsStatistics(q) {
     const query = querystring.stringify(q);
-    const searchUrl = `${this.endpoint}/statistics/proportions?${query}`;
-    const response = await fetch(searchUrl);
-    return await response.json();
+    const searchUrl = `${endpoint}/statistics/proportions?${query}`;
+    const res = await axios(searchUrl);
+    return res.data;
   }
 
   async fetchContributors() {
-    const searchUrl = `${this.endpoint}/statistics/contributors`;
-    const response = await fetch(searchUrl);
-    return await response.json();
+    const searchUrl = `${endpoint}/statistics/contributors`;
+    const res = await fetch(searchUrl);
+    return res.data;
   }
 }
 

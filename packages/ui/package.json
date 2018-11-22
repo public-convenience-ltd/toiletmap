@@ -2,13 +2,14 @@
   "name": "@toiletmap/ui",
   "version": "2.8.0",
   "private": true,
-  "proxy": "http://localhost:8080",
   "devDependencies": {
     "cypress": "3.1.2",
     "cypress-image-snapshot": "2.3.5",
     "eslint-plugin-cypress": "2.1.2",
+    "http-proxy-middleware": "0.19.0",
     "react-scripts": "2.1.1",
-    "serve": "10.1.1"
+    "serve": "10.1.1",
+    "start-server-and-test": "1.7.10"
   },
   "dependencies": {
     "@toiletmap/api-client": "2.8.0",
@@ -38,7 +39,11 @@
   },
   "scripts": {
     "dev": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
-    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build"
+    "start": "serve -n -s -l 5000 ./build",
+    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
+    "cy:open": "cypress open --config baseUrl=http://localhost:3000 --env failOnSnapshotDiff=false",
+    "cy:run": "cypress run --config baseUrl=http://localhost:3000,video=false --env failOnSnapshotDiff=false",
+    "test:integration": "start-server-and-test start http://localhost:5000 cy:run"
   },
   "eslintConfig": {
     "extends": "react-app"
