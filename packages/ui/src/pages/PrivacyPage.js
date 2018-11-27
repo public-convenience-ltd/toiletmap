@@ -93,8 +93,8 @@ class PrivacyPage extends Component {
           >
             gbtoiletmap@gmail.com
           </a>
-          . If you'd like to excercise any of your rights under the GDPR that's
-          the adress to use.
+          . If you'd like to exercise any of your rights under the GDPR that's
+          the address to use.
         </p>
       </div>
     );
