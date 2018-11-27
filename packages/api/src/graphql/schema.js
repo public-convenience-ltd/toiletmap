@@ -76,7 +76,7 @@ const typeDefs = gql`
   Reported information about a real-world toilet
 
   Reports are submitted by contributors or created as part of data imports
-  A report can refer to another report (via the **previous** field) to indicate that they refer to the same toilet
+  A report can refer to another report (via the **previous** field) to indicate that it is intended to augment or adjust an exisitn Loo
   """
   type Report {
     id: ID!
@@ -104,6 +104,8 @@ const typeDefs = gql`
     fee: String
     notes: String
     removalReason: String
+    "The Loo which uses the data submitted in this report"
+    loo: Loo
   }
 
   type Query {
@@ -153,6 +155,7 @@ const resolvers = {
       lat: r.diff.geometry.coordinates[1],
     }),
     ...looInfoResolver('diff'),
+    loo: r => r.getLoo(),
   },
 
   Loo: {

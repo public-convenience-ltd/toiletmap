@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { Schema } = require('mongoose');
+const { Schema, Types } = require('mongoose');
 const hasha = require('hasha');
 
 const CoreSchema = require('./core');
@@ -148,6 +148,16 @@ ReportSchema.methods.suggestLooId = function() {
   });
   let hash = hasha(input, { algorithm: 'md5', encoding: 'hex' }).slice(0, 24);
   return hash;
+};
+
+/**
+ * Find the loo which refers to this report
+ * It is an article of faith that there can't be more than one ;-)
+ */
+ReportSchema.methods.getLoo = async function() {
+  return await this.model('NewLoo').findOne({
+    reports: Types.ObjectId(this.id),
+  });
 };
 
 module.exports = exports = ReportSchema;
