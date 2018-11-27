@@ -33,12 +33,13 @@
   "homepage": "https://github.com/neontribe/gbptm#readme",
   "lint-staged": {
     "linters": {
-      "*.{js,json}": [
+      "*.json": [
         "prettier --single-quote --trailing-comma es5 --write",
         "git add"
       ],
       "*.js": [
         "eslint",
+        "prettier --single-quote --trailing-comma es5 --write",
         "git add"
       ],
       "*.css": "stylelint"
