@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/neontribe/gbptm/compare/v2.8.0...v2.9.0) (2018-11-27)
+
+
+### Bug Fixes
+
+* update deps ([b05e25f](https://github.com/neontribe/gbptm/commit/b05e25f))
+
+
+
+
+
 # [2.8.0](https://github.com/neontribe/gbptm/compare/v2.7.0...v2.8.0) (2018-10-11)
 
 **Note:** Version bump only for package @neontribe/gbptm-api
