@@ -180,7 +180,7 @@ const renderTableRows = props => {
                     />
                   </TableCell>
                   <TableCell className={classes.textList}>
-                    {contributors.map((attr, i) => {
+                    {_.uniq(contributors).map((attr, i) => {
                       return (
                         <Chip
                           key={attr + i}
@@ -633,19 +633,18 @@ class Search extends Component {
           </div>
         </div>
 
-        {this.state.results &&
-          this.state.results.docs && (
-            <LooTable
-              data={this.state.results}
-              rowRender={renderTableRows}
-              colRender={renderTableCol}
-              footerRender={renderTableFooter}
-              page={Math.max(0, this.state.searchParams.page - 1)}
-              rowsPerPage={parseInt(this.state.searchParams.limit)}
-              handleChangePage={this.handleChangePage}
-              handleChangeRowsPerPage={this.handleChangeRowsPerPage}
-            />
-          )}
+        {this.state.results && this.state.results.docs && (
+          <LooTable
+            data={this.state.results}
+            rowRender={renderTableRows}
+            colRender={renderTableCol}
+            footerRender={renderTableFooter}
+            page={Math.max(0, this.state.searchParams.page - 1)}
+            rowsPerPage={parseInt(this.state.searchParams.limit)}
+            handleChangePage={this.handleChangePage}
+            handleChangeRowsPerPage={this.handleChangeRowsPerPage}
+          />
+        )}
       </div>
     );
   }

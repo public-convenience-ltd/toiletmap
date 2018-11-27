@@ -14,7 +14,7 @@ import Analytics from 'react-router-ga';
 
 import config from './config';
 
-import registerServiceWorker from './registerServiceWorker';
+import * as serviceWorker from './serviceWorker';
 
 // Global CSS
 import './css/global';
@@ -31,6 +31,7 @@ import PreferencesPage from './pages/PreferencesPage';
 import ThanksPage from './pages/ThanksPage';
 import MapPage from './pages/MapPage';
 import UseOurLoosPage from './pages/UseOurLoosPage';
+import PrivacyPage from './pages/PrivacyPage';
 
 // Redux reducers
 import appReducer from './redux/modules/app';
@@ -84,6 +85,7 @@ if (typeof document !== 'undefined') {
             <Route exact path="/" component={HomePage} />
             <Route exact path="/preferences" component={PreferencesPage} />
             <Route exact path="/about" component={AboutPage} />
+            <Route exact path="/privacy" component={PrivacyPage} />
             <Route exact path="/use-our-loos" component={UseOurLoosPage} />
             <Route path="/loos/:id" exact component={LooPage} />
             <Route path="/login" component={LoginPage} />
@@ -104,4 +106,8 @@ if (typeof document !== 'undefined') {
     document.getElementById('root')
   );
 }
-registerServiceWorker();
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: http://bit.ly/CRA-PWA
+serviceWorker.register();

@@ -217,54 +217,6 @@ class AboutPage extends Component {
             <a href="mailto:gbtoiletmap@gmail.com">gbtoiletmap@gmail.com</a>.
           </strong>
         </p>
-        <div className={layout.bandedSection}>
-          <div className={layout.bandedSectionText}>
-            <div className={layout.mainContainer}>
-              <h2 id="privacy" className={headings.regular}>
-                Privacy Policy
-              </h2>
-
-              <p>
-                Cookies on RCA web sites are used to gather anonymous data such
-                as which pages are viewed, what time the visit occurred, if the
-                visitor has been to the site before, and which site referred the
-                visitor to the web page etc.
-              </p>
-
-              <p>
-                The Royal College of Art also notes and saves information such
-                as time of day, browser type and content requested. That
-                information is used to provide more relevant services to users.
-              </p>
-
-              <p>
-                Any data collected automatically from visitors to our web sites
-                through the use of cookies will be used to improve the sites,
-                and will not and cannot be used to identify any visitor. Consent
-                by site visitors for this anonymous data to be collected and
-                used by RCA for the purpose stated above will be assumed by your
-                continued navigation of this website.
-              </p>
-
-              <p>
-                We will not associate any data gathered from this site with any
-                personally identifying information from any source. We may also
-                log Internet Protocol (IP) address (but nothing that directly
-                identifies visitors) in order to receive and send the required
-                information over the internet.
-              </p>
-
-              <p>
-                For further details about the RCA’s policy on privacy and
-                cookies, please visit:
-                <br />
-                <a href="http://www.rca.ac.uk/contact-us/about-this-website/privacy-cookies">
-                  Privacy and Cookies
-                </a>
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     );
   }
