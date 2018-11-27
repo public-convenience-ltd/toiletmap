@@ -10,14 +10,17 @@ class Footer extends Component {
         <ul className={styles.footerList}>
           <li className={styles.footerListItem}>
             <Link to="/preferences" className={styles.footerItem}>
-              <span className={styles.footerItemText}>
-                My toilet preferences
-              </span>
+              <span className={styles.footerItemText}>Preferences</span>
+            </Link>
+          </li>
+          <li className={styles.footerListItem}>
+            <Link to="/privacy" className={styles.footerItem}>
+              <span className={styles.footerItemText}>Privacy Policy</span>
             </Link>
           </li>
           <li className={styles.footerListItem}>
             <Link to="/about" className={styles.footerItem}>
-              <span className={styles.footerItemText}>About this project</span>
+              <span className={styles.footerItemText}>About</span>
             </Link>
           </li>
         </ul>

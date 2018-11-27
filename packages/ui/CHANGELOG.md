@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/neontribe/gbptm/compare/v2.8.0...v2.9.0) (2018-11-27)
+
+
+### Bug Fixes
+
+* rerender edit page after fetch ([14a52c7](https://github.com/neontribe/gbptm/commit/14a52c7)), closes [#295](https://github.com/neontribe/gbptm/issues/295)
+* spelling errors ([569af20](https://github.com/neontribe/gbptm/commit/569af20))
+* update deps ([b05e25f](https://github.com/neontribe/gbptm/commit/b05e25f))
+
+
+### Features
+
+* alert user to updates ([305d72d](https://github.com/neontribe/gbptm/commit/305d72d))
+* alert user to updates ([110ff9e](https://github.com/neontribe/gbptm/commit/110ff9e))
+* privacy policy ([18bbe40](https://github.com/neontribe/gbptm/commit/18bbe40))
+
+
+
+
+
 # [2.8.0](https://github.com/neontribe/gbptm/compare/v2.7.0...v2.8.0) (2018-10-11)
 
 

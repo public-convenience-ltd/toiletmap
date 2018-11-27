@@ -75,6 +75,7 @@ class ThanksPage extends Component {
           We rely on contributions of data like yours to keep the map accurate
           and useful.
         </p>
+        <p>Please consider signing up with our sponsor's campaign.</p>
         <a
           className={controls.btnFeatured}
           target="_blank"
