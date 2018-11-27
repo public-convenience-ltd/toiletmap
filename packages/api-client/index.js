@@ -2,7 +2,7 @@ import querystring from 'querystring';
 import mappings from './src/mappings';
 import axios from 'axios';
 
-const endpoint = 'https://gbptm-unity.herokuapp.com/api';
+const endpoint = '/api';
 
 class API {
   constructor() {

@@ -7,6 +7,7 @@
     "cypress-image-snapshot": "2.3.5",
     "eslint-plugin-cypress": "2.1.2",
     "http-proxy-middleware": "0.19.0",
+    "http-server": "0.11.1",
     "react-scripts": "2.1.1",
     "serve": "10.1.1",
     "start-server-and-test": "1.7.10"
@@ -39,10 +40,10 @@
   },
   "scripts": {
     "dev": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
-    "start": "serve -n -s -l 5000 ./build",
+    "start": "http-server ./build -p 5000 -a localhost --proxy https://gbptm-unity.herokuapp.com",
     "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
-    "cy:open": "cypress open --config baseUrl=http://localhost:3000 --env failOnSnapshotDiff=false",
-    "cy:run": "cypress run --config baseUrl=http://localhost:3000,video=false --env failOnSnapshotDiff=false",
+    "cy:open": "cypress open --config baseUrl=http://localhost:5000 --env failOnSnapshotDiff=false",
+    "cy:run": "cypress run --config baseUrl=http://localhost:5000,video=false --env failOnSnapshotDiff=false",
     "test:integration": "start-server-and-test start http://localhost:5000 cy:run"
   },
   "eslintConfig": {
