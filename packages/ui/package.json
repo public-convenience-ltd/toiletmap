@@ -42,7 +42,7 @@
     "dev": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
     "start": "http-server ./build -p 5000 -a localhost --proxy https://gbptm-unity.herokuapp.com",
     "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
-    "cy:open": "cypress open --config baseUrl=http://localhost:5000 --env failOnSnapshotDiff=false",
+    "cy:open": "cypress open --config baseUrl=http://localhost:3000 --env failOnSnapshotDiff=false",
     "cy:run": "cypress run --config baseUrl=http://localhost:5000,video=false --env failOnSnapshotDiff=false",
     "test:integration": "start-server-and-test start http://localhost:5000 cy:run"
   },

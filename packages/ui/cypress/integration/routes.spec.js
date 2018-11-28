@@ -24,13 +24,13 @@ describe('Navigation', () => {
     cy.url().should('include', '/report');
   });
 
-  it('contains a working link to "preferences"', () => {
-    cy.contains('My toilet preferences').click();
+  it('contains a working link to "/preferences"', () => {
+    cy.contains('Preferences').click();
     cy.url().should('include', '/preferences');
   });
 
-  it('contains a working link to "about this project"', () => {
-    cy.contains('About this project').click();
+  it('contains a working link to "/about"', () => {
+    cy.contains('About').click();
     cy.url().should('include', '/about');
   });
 });
