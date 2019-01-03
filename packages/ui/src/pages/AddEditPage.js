@@ -85,6 +85,7 @@ class AddEditPage extends Component {
     this.state = state;
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleTriStateChange = this.handleTriStateChange.bind(this);
     this.save = this.save.bind(this);
   }
 
@@ -109,6 +110,29 @@ class AddEditPage extends Component {
 
     // Sets nested loo property value
     _.set(loo, event.target.name, event.target.value);
+
+    this.setState({
+      loo,
+    });
+  }
+
+  handleTriStateChange(event) {
+    let val;
+    switch (event.target.value) {
+      case 'true':
+        val = true;
+        break;
+      case 'false':
+        val = false;
+        break;
+      default:
+        val = event.target.value;
+    }
+
+    // Avoid state mutation
+    var loo = _.cloneDeep(this.state.loo);
+
+    _.set(loo, event.target.name, val);
 
     this.setState({
       loo,
@@ -321,28 +345,28 @@ class AddEditPage extends Component {
                 name={q.property}
                 className={styles.questionnaireCol}
                 type="radio"
-                value="true"
+                value={true}
                 aria-labelledby="yes"
-                checked={loo[q.property] === 'true'}
-                onChange={this.handleChange}
+                checked={loo[q.property] === true}
+                onChange={this.handleTriStateChange}
               />
               <input
                 name={q.property}
                 className={styles.questionnaireCol}
                 type="radio"
-                value="false"
+                value={false}
                 aria-labelledby="no"
-                checked={loo[q.property] === 'false'}
-                onChange={this.handleChange}
+                checked={loo[q.property] === false}
+                onChange={this.handleTriStateChange}
               />
               <input
                 name={q.property}
                 className={styles.questionnaireCol}
                 type="radio"
-                value="Not Known"
+                value=""
                 aria-labelledby="unknown"
-                checked={['true', 'false'].indexOf(loo[q.property]) === -1}
-                onChange={this.handleChange}
+                checked={loo[q.property] === ''}
+                onChange={this.handleTriStateChange}
               />
             </fieldset>
           ))}
