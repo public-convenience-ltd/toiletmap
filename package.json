@@ -45,8 +45,8 @@
     }
   },
   "devDependencies": {
-    "@commitlint/cli": "7.2.1",
-    "@commitlint/config-angular": "7.1.2",
+    "@commitlint/cli": "7.3.1",
+    "@commitlint/config-conventional": "7.3.1",
     "eslint": "5.12.0",
     "eslint-config-react-app": "^3.0.6",
     "eslint-plugin-flowtype": "3.2.1",

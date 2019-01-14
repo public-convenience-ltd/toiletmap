@@ -23,7 +23,7 @@
     "react": "16.7.0",
     "react-addons-update": "15.6.2",
     "react-dom": "16.7.0",
-    "react-leaflet": "2.1.4",
+    "react-leaflet": "2.2.0",
     "react-redux": "6.0.0",
     "react-responsive": "6.0.1",
     "react-router-dom": "4.3.1",
