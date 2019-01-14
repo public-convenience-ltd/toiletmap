@@ -20,6 +20,7 @@ import * as serviceWorker from './serviceWorker';
 import './css/global';
 
 import App from './components/App';
+import ProtectedRoute from './components/ProtectedRoute';
 import AuthCallback from './pages/AuthCallback';
 import LooPage from './pages/LooPage';
 import RemovePage from './pages/RemovePage';
@@ -95,10 +96,27 @@ if (typeof document !== 'undefined') {
               path="/callback"
               render={props => <AuthCallback auth={auth} {...props} />}
             />
-            <Route exact path="/report" component={AddEditPage} />
-            <Route path="/loos/:id/edit" component={AddEditPage} />
-            <Route path="/loos/:id/remove" component={RemovePage} />
-            <Route path="/loos/:id/thanks" component={ThanksPage} />
+            <ProtectedRoute
+              exact
+              path="/report"
+              component={AddEditPage}
+              auth={auth}
+            />
+            <ProtectedRoute
+              path="/loos/:id/edit"
+              component={AddEditPage}
+              auth={auth}
+            />
+            <ProtectedRoute
+              path="/loos/:id/remove"
+              component={RemovePage}
+              auth={auth}
+            />
+            <ProtectedRoute
+              path="/loos/:id/thanks"
+              component={ThanksPage}
+              auth={auth}
+            />
           </App>
         </Analytics>
       </Router>
@@ -110,4 +128,4 @@ if (typeof document !== 'undefined') {
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.register();
+serviceWorker.unregister();

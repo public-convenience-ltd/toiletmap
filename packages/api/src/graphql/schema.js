@@ -13,9 +13,9 @@ const typeDefs = gql`
   """
   type Point {
     "Latitude"
-    lat: Float
+    lat: Float!
     "Longitude"
-    lng: Float
+    lng: Float!
   }
 
   """
@@ -109,10 +109,22 @@ const typeDefs = gql`
   }
 
   type Query {
+    "Retrieve a Loo by ID"
     loo(id: ID): Loo
-    loos: [Loo]
-    loosNearby(lat: Float!, lng: Float!, maxDistance: Int = 1000): [Loo]
-    reports: [Report]
+    "Retrieve Loos by proximity to a Point"
+    loosByProximity(
+      "A Point from which to begin the search"
+      from: ProximityInput!
+    ): [Loo]
+  }
+
+  input ProximityInput {
+    "Latitude"
+    lat: Float!
+    "Longitude"
+    lng: Float!
+    "Maximum Distance in meters"
+    maxDistance: Int = 1000
   }
 `;
 
@@ -141,10 +153,13 @@ const looInfoResolver = property => {
 const resolvers = {
   Query: {
     loo: (parent, args) => Loo.findById(args.id),
-    loos: () => Loo.find({}).limit(10),
-    loosNearby: (parent, args) =>
-      Loo.findNear(args.lng, args.lat, args.maxDistance, 'complete'),
-    reports: () => Report.find({}).limit(10),
+    loosByProximity: (parent, args) =>
+      Loo.findNear(
+        args.from.lng,
+        args.from.lat,
+        args.from.maxDistance,
+        'complete'
+      ),
   },
 
   Report: {

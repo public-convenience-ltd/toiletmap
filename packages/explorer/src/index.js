@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import registerServiceWorker from './registerServiceWorker';
 import AppLayout from './components/AppLayout';
 import Home from './components/Home';
 import Statistics from './components/Statistics';
@@ -8,6 +7,8 @@ import HeadlineStats from './components/stats/HeadlineStats';
 import AreaComparisonStats from './components/stats/AreaComparisonStats';
 import Search from './components/Search';
 import LooView from './components/LooView';
+
+import * as serviceWorker from './serviceWorker';
 
 import './css/index.css';
 
@@ -27,4 +28,8 @@ ReactDOM.render(
   </Router>,
   document.getElementById('root')
 );
-registerServiceWorker();
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: http://bit.ly/CRA-PWA
+serviceWorker.unregister();

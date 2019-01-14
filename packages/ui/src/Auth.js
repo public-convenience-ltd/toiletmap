@@ -71,6 +71,14 @@ export default class Auth {
     };
   }
 
+  redirectOnNextLogin(location) {
+    localStorage.setItem('redirectOnLogin', JSON.stringify(location));
+  }
+
+  redirectOnLogin() {
+    return JSON.parse(localStorage.getItem('redirectOnLogin'));
+  }
+
   login() {
     this.auth0.authorize();
   }
