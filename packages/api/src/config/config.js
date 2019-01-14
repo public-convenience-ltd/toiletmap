@@ -23,7 +23,7 @@ var base = {
   },
   graphql: {
     engine: {
-      apiKey: process.env.APOLLO_ENGINE_KEY,
+      apiKey: process.env.ENGINE_API_KEY,
     },
   },
   query_defaults: {
