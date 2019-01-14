@@ -28,17 +28,10 @@ var base = {
     playground: {
       tabs: [
         {
-          endpoint: 'https://gbptm-stage.herokuapp.com/graphql',
-          name: 'Example Nearby Loos Query',
-          variables: JSON.stringify({
-            loc: {
-              lat: 52.633521,
-              lng: 1.295324,
-              maxDistance: 500,
-            },
-          }),
+          endpoint: '/graphql',
+          name: 'Nearby Loos Query',
           query:
-            'query loosNearNeontribe(loc: ProximityInput!) {\nloosByProximity(from: $loc) {\nid\n}\n}',
+            'query loosNearNeontribe {\n\tloosByProximity(from: {lat: 52.6335, lng: 1.2953, maxDistance: 500}) {\n\t\tid\n\t\tname\n\t}\n}',
         },
       ],
     },
