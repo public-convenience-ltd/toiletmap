@@ -25,6 +25,23 @@ var base = {
     engine: {
       apiKey: process.env.ENGINE_API_KEY,
     },
+    playground: {
+      tabs: [
+        {
+          endpoint: 'https://gbptm-stage.herokuapp.com/graphql',
+          name: 'Example Nearby Loos Query',
+          variables: JSON.stringify({
+            loc: {
+              lat: 52.633521,
+              lng: 1.295324,
+              maxDistance: 500,
+            },
+          }),
+          query:
+            'query loosNearNeontribe(loc: ProximityInput!) {\nloosByProximity(from: $loc) {\nid\n}\n}',
+        },
+      ],
+    },
   },
   query_defaults: {
     defaultRadius: 5000,
