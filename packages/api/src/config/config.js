@@ -21,6 +21,11 @@ var base = {
   mongo: {
     url: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/gbptm',
   },
+  graphql: {
+    engine: {
+      apiKey: process.env.APOLLO_ENGINE_KEY,
+    },
+  },
   query_defaults: {
     defaultRadius: 5000,
     maxRadius: 50000,

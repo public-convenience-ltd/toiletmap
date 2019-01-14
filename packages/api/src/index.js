@@ -39,6 +39,7 @@ const apollo = new ApolloServer({
   // These will be defined for both new or existing servers
   typeDefs,
   resolvers,
+  engine: { ...config.graphql.engine },
 });
 apollo.applyMiddleware({ app });
 // Add voyager for graphql
