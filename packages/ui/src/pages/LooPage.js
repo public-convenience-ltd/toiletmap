@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
+import { DateTime } from 'luxon';
 
 import { actionFindByIdRequest } from '../redux/modules/loos';
 import { actionHighlight } from '../redux/modules/mapControls';
@@ -180,6 +181,24 @@ class LooPage extends Component {
             return null;
           })}
         </ul>
+        <h3 className={headings.small}>Data</h3>
+        <p>
+          Last updated:{' '}
+          {DateTime.fromISO(loo.updatedAt).toLocaleString(
+            DateTime.DATETIME_MED
+          )}
+        </p>
+        <p>
+          View more detailed data about this Toilet at{' '}
+          <a
+            href={`/explorer/loos/${loo._id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Toilet Map Explorer
+          </a>
+          .
+        </p>
       </div>
     );
   }
