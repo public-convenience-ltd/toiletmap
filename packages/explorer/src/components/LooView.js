@@ -142,18 +142,20 @@ class LooView extends Component {
                 </Typography>
               );
             })}
-            <div className={classes.buttons}>
-              <RaisedButton
-                variant="contained"
-                color="secondary"
-                className={classes.button}
-                target="_blank"
-                rel="noopener noreferer"
-                href={`/loos/${this.props.looId}/edit`}
-              >
-                Edit
-              </RaisedButton>
-            </div>
+            {this.props.auth.isAuthenticated() && (
+              <div className={classes.buttons}>
+                <RaisedButton
+                  variant="contained"
+                  color="secondary"
+                  className={classes.button}
+                  target="_blank"
+                  rel="noopener noreferer"
+                  href={`/loos/${this.props.looId}/edit`}
+                >
+                  Edit
+                </RaisedButton>
+              </div>
+            )}
           </Grid>
           <Grid container item md={6} sm={12}>
             <Paper className={classNames(classes.paper, classes.mapTile)}>

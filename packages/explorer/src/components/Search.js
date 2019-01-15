@@ -3,7 +3,7 @@ import { Link, navigate } from '@reach/router';
 import classNames from 'classnames';
 import _ from 'lodash';
 import queryString from 'query-string';
-import timeago from 'timeago.js';
+import TimeAgo from 'timeago-react';
 
 // Local
 import api from '@toiletmap/api-client';
@@ -208,7 +208,9 @@ const renderTableRows = props => {
                           <ClockIcon />
                         </Avatar>
                       }
-                      label={timeago().format(loo.updatedAt) || MISSING_MESSAGE}
+                      label={
+                        <TimeAgo datetime={loo.updatedAt} /> || MISSING_MESSAGE
+                      }
                       color={loo.updatedAt ? 'primary' : 'secondary'}
                       variant="default"
                       onClick={event => {

@@ -7,6 +7,7 @@ import HeadlineStats from './components/stats/HeadlineStats';
 import AreaComparisonStats from './components/stats/AreaComparisonStats';
 import Search from './components/Search';
 import LooView from './components/LooView';
+import AuthCallback from './components/AuthCallback';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -14,12 +15,16 @@ import './css/index.css';
 
 import { Router } from '@reach/router';
 
+import Auth from './Auth';
+const auth = new Auth();
+
 ReactDOM.render(
   <Router>
-    <AppLayout path="/explorer">
+    <AppLayout path="/explorer" auth={auth}>
       <Home default path="home" />
+      <AuthCallback path="callback" auth={auth} />
       <Search path="search" />
-      <LooView path="loos/:looId" />
+      <LooView path="loos/:looId" auth={auth} />
       <Statistics path="statistics">
         <HeadlineStats default />
         <AreaComparisonStats path="areas" />
