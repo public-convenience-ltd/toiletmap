@@ -1,5 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Router } from '@reach/router';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
+
 import AppLayout from './components/AppLayout';
 import Home from './components/Home';
 import Statistics from './components/Statistics';
@@ -13,24 +17,28 @@ import * as serviceWorker from './serviceWorker';
 
 import './css/index.css';
 
-import { Router } from '@reach/router';
-
 import Auth from './Auth';
 const auth = new Auth();
 
+const client = new ApolloClient({
+  uri: process.env.REACT_APP_GBPTM_GRAPHQL || '/graphql',
+});
+
 ReactDOM.render(
-  <Router>
-    <AppLayout path="/explorer" auth={auth}>
-      <Home default path="home" />
-      <AuthCallback path="callback" auth={auth} />
-      <Search path="search" />
-      <LooView path="loos/:looId" auth={auth} />
-      <Statistics path="statistics">
-        <HeadlineStats default />
-        <AreaComparisonStats path="areas" />
-      </Statistics>
-    </AppLayout>
-  </Router>,
+  <ApolloProvider client={client}>
+    <Router>
+      <AppLayout path="/explorer" auth={auth}>
+        <Home default path="home" />
+        <AuthCallback path="callback" auth={auth} />
+        <Search path="search" />
+        <LooView path="loos/:id" auth={auth} />
+        <Statistics path="statistics">
+          <HeadlineStats default />
+          <AreaComparisonStats path="areas" />
+        </Statistics>
+      </AppLayout>
+    </Router>
+  </ApolloProvider>,
   document.getElementById('root')
 );
 

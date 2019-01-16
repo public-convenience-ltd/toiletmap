@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
-import api from '@toiletmap/api-client';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { Map, Marker, TileLayer } from 'react-leaflet';
@@ -27,20 +26,16 @@ class LooTile extends Component {
     super(props);
 
     this.state = {
-      link: api.endpoint + '/loos/' + props.loo._id,
-      location: [
-        props.loo.properties.geometry.coordinates[1],
-        props.loo.properties.geometry.coordinates[0],
-      ],
+      location: [props.lat, props.lng],
     };
   }
 
   render() {
-    const { className, mapProps, classes } = this.props;
+    const { lat, lng, className, mapProps, classes } = this.props;
     return (
       <div className={classNames(className) || classes.looTile}>
         <Map
-          center={this.state.location}
+          center={[lat, lng]}
           zoomControl={false}
           contributorControl={false}
           dragging={false}
@@ -54,7 +49,7 @@ class LooTile extends Component {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             contributor='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
-          <Marker position={this.state.location} />
+          <Marker position={[lat, lng]} />
         </Map>
       </div>
     );
@@ -62,7 +57,8 @@ class LooTile extends Component {
 }
 
 LooTile.propTypes = {
-  loo: propTypes.object.isRequired,
+  lat: propTypes.number.isRequired,
+  lng: propTypes.number.isRequired,
 };
 
 export default withStyles(styles)(LooTile);

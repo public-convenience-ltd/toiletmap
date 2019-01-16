@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import api from '@toiletmap/api-client';
+import { Query } from 'react-apollo';
 import classNames from 'classnames';
 import LooTile from './LooTile';
 import LooTable from './table/LooTable';
@@ -14,6 +14,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { withStyles } from '@material-ui/core/styles';
+import { loader } from 'graphql.macro';
+import omit from 'lodash/omit';
+import pickBy from 'lodash/pickBy';
+import { DateTime } from 'luxon';
+const LOO_DETAILS = loader('./looDetails.graphql');
 
 const styles = theme => ({
   looTile: {
@@ -88,29 +93,8 @@ class LooView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loadingData: true,
       expanded: null,
-      loo: {},
     };
-
-    this.fetchLooData = this.fetchLooData.bind(this);
-  }
-
-  componentDidMount() {
-    this.fetchLooData();
-  }
-
-  async fetchLooData() {
-    this.setState({ loadingData: true });
-    const result = await api.findLooById(this.props.looId, {
-      populateReports: true,
-    });
-    this.setState({
-      loadingData: false,
-      loo: {
-        ...result,
-      },
-    });
   }
 
   handleChange = panel => (event, expanded) => {
@@ -120,116 +104,133 @@ class LooView extends Component {
   };
 
   render() {
-    const { loo, loadingData, expanded } = this.state;
+    const { expanded } = this.state;
     const { classes } = this.props;
-
-    if (loadingData) {
-      return <p>Loading Loo Info</p>;
-    }
-
     return (
-      <div className={classes.root}>
-        <div className={classes.appBarSpacer} />
-        <Grid container spacing={24}>
-          <Grid item md={6} sm={12}>
-            <Typography variant="display1" gutterBottom>
-              {loo.properties.name}
-            </Typography>
-            {loo.properties.area.map(val => {
-              return (
-                <Typography key={val.name} variant="subtitle1" gutterBottom>
-                  {val.name} / {val.type}
-                </Typography>
-              );
-            })}
-            {this.props.auth.isAuthenticated() && (
-              <div className={classes.buttons}>
-                <RaisedButton
-                  variant="contained"
-                  color="secondary"
-                  className={classes.button}
-                  target="_blank"
-                  rel="noopener noreferer"
-                  href={`/loos/${this.props.looId}/edit`}
-                >
-                  Edit
-                </RaisedButton>
-              </div>
-            )}
-          </Grid>
-          <Grid container item md={6} sm={12}>
-            <Paper className={classNames(classes.paper, classes.mapTile)}>
-              <LooTile
-                className={classes.looTile}
-                loo={loo}
-                mapProps={{
-                  scrollWheelZoom: true,
-                  dragging: true,
-                }}
-              />
-            </Paper>
-          </Grid>
+      <Query query={LOO_DETAILS} variables={{ id: this.props.id }}>
+        {({ loading, error, data }) => {
+          if (loading) return <p>Loading Loo Info</p>;
+          if (error) return <p>Failed to fetch loo :(</p>;
+          let loo = pickBy(data.loo, val => val !== null);
+          return (
+            <div className={classes.root}>
+              <div className={classes.appBarSpacer} />
+              <Grid container spacing={24}>
+                <Grid item md={6} sm={12}>
+                  <Typography variant="display1" gutterBottom>
+                    {loo.name}
+                  </Typography>
+                  {loo.area.map(({ name, type }) => (
+                    <Typography key={name} variant="subtitle1" gutterBottom>
+                      {name} / {type}
+                    </Typography>
+                  ))}
+                  {this.props.auth.isAuthenticated() && (
+                    <div className={classes.buttons}>
+                      <RaisedButton
+                        variant="contained"
+                        color="secondary"
+                        className={classes.button}
+                        target="_blank"
+                        rel="noopener noreferer"
+                        href={`/loos/${loo.id}/edit`}
+                      >
+                        Edit
+                      </RaisedButton>
+                    </div>
+                  )}
+                </Grid>
+                <Grid container item md={6} sm={12}>
+                  <Paper className={classNames(classes.paper, classes.mapTile)}>
+                    <LooTile
+                      className={classes.looTile}
+                      {...loo.location}
+                      mapProps={{
+                        scrollWheelZoom: true,
+                        dragging: true,
+                      }}
+                    />
+                  </Paper>
+                </Grid>
 
-          <Grid container item sm={12}>
-            <Grid item sm={12}>
-              <Typography variant="display1" gutterBottom>
-                Toilet Data
-              </Typography>
-              <Typography variant="subtitle1" gutterBottom>
-                Data attached to this loo.
-              </Typography>
-            </Grid>
-            <LooTable
-              data={{
-                docs: Object.entries(loo.properties),
-              }}
-              rowRender={TableRowRender}
-              colRender={TableColRender}
-            />
-          </Grid>
+                <Grid container item sm={12}>
+                  <Grid item sm={12}>
+                    <Typography variant="display1" gutterBottom>
+                      Toilet Data
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                      Data attached to this loo.
+                    </Typography>
+                  </Grid>
+                  <LooTable
+                    data={{
+                      docs: Object.entries(
+                        omit(loo, '__typename', 'location', 'area', 'reports')
+                      ),
+                    }}
+                    rowRender={TableRowRender}
+                    colRender={TableColRender}
+                  />
+                </Grid>
 
-          <Grid container item sm={12}>
-            <Grid item sm={12}>
-              <Typography variant="h4" gutterBottom>
-                Loo Reports
-              </Typography>
-              <Typography variant="subtitle1" gutterBottom>
-                Contributions towards this loo.
-              </Typography>
-            </Grid>
-            <div className={classes.expansionRoot}>
-              {loo.reports.map(value => {
-                return (
-                  <ExpansionPanel
-                    key={value._id}
-                    expanded={expanded === value._id}
-                    onChange={this.handleChange(value._id)}
-                  >
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                      <Typography className={classes.heading}>
-                        Report from: {value.contributor}
-                      </Typography>
-                      <Typography className={classes.secondaryHeading}>
-                        Created: {value.createdAt}
-                      </Typography>
-                    </ExpansionPanelSummary>
+                <Grid container item sm={12}>
+                  <Grid item sm={12}>
+                    <Typography variant="h4" gutterBottom>
+                      Loo Reports
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                      Contributions towards this loo.
+                    </Typography>
+                  </Grid>
+                  <div className={classes.expansionRoot}>
+                    {loo.reports.map(value => {
+                      let report = pickBy(value, val => val !== null);
+                      return (
+                        <ExpansionPanel
+                          key={report.id}
+                          expanded={expanded === report.id}
+                          onChange={this.handleChange(report.id)}
+                        >
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                          >
+                            <Typography className={classes.heading}>
+                              Report from: {report.contributor}
+                            </Typography>
+                            <Typography className={classes.secondaryHeading}>
+                              Created:{' '}
+                              {DateTime.fromISO(
+                                report.createdAt
+                              ).toLocaleString(DateTime.DATETIME_MED)}
+                            </Typography>
+                          </ExpansionPanelSummary>
 
-                    <ExpansionPanelDetails>
-                      <LooTable
-                        data={{
-                          docs: Object.entries(value.diff),
-                        }}
-                        rowRender={TableRowRender}
-                        colRender={TableColRender}
-                      />
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-                );
-              })}
+                          <ExpansionPanelDetails>
+                            <LooTable
+                              data={{
+                                docs: Object.entries(
+                                  omit(
+                                    report,
+                                    'contributor',
+                                    'createdAt',
+                                    '__typename'
+                                  )
+                                ),
+                              }}
+                              rowRender={TableRowRender}
+                              colRender={TableColRender}
+                            />
+                          </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                      );
+                    })}
+                  </div>
+                </Grid>
+              </Grid>
             </div>
-          </Grid>
-        </Grid>
-      </div>
+          );
+        }}
+      </Query>
     );
   }
 }
