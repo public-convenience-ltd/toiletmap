@@ -1,15 +1,12 @@
 require('newrelic');
-const config = require('./config/config');
+const config = require('./config');
 const express = require('express');
 const helmet = require('helmet');
 const compression = require('compression');
 const cors = require('cors');
 const path = require('path');
+const applyGraphqlMiddleware = require('./graphql');
 const app = express();
-const { express: voyagerMiddleware } = require('graphql-voyager/middleware');
-
-const { ApolloServer } = require('apollo-server-express');
-const { typeDefs, resolvers } = require('./graphql/schema');
 
 // we can make some nicer assumptions about security if query values are only
 // ever strings, not arrays or objects
@@ -34,21 +31,12 @@ app.use(helmet());
 app.use(compression());
 app.use(cors());
 
-// Add GraphQL API
-const apollo = new ApolloServer({
-  // These will be defined for both new or existing servers
-  typeDefs,
-  resolvers,
-  engine: { ...config.graphql.engine },
-  playground: { ...config.graphql.playground },
-});
-apollo.applyMiddleware({ app });
-// Add voyager for graphql
-app.use('/voyager', voyagerMiddleware({ endpointUrl: '/graphql' }));
+// Add GraphQL endpoint, playground and voyager
+applyGraphqlMiddleware(app);
 
-// Add API routes
-const routes = require('./routes');
-app.use('/api', routes);
+// Add REST API routes
+const rest = require('./rest');
+app.use('/api', rest);
 
 //redirect admin to explorer
 app.all('/admin', (req, res) => res.redirect(301, '/explorer/'));
@@ -70,7 +58,8 @@ if (!module.parent) {
   app.listen(config.app.port, () => {
     /* eslint-disable-next-line no-console */
     console.log(`Listening on port ${config.app.port}`);
-    console.log(`Graphql on ${apollo.graphqlPath}`);
+    console.log('Graphql on /graphql');
+    console.log('Graphql voyager on /voyager');
   });
 }
 

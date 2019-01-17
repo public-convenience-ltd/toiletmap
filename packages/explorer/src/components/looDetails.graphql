@@ -36,7 +36,10 @@ query fullLooDetails($id: ID) {
       fee
       notes
       removalReason
-      location
+      location {
+        lat
+        lng
+      }
     }
   }
 }

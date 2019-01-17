@@ -14,6 +14,7 @@ import LooView from './components/LooView';
 import AuthCallback from './components/AuthCallback';
 
 import * as serviceWorker from './serviceWorker';
+import { version } from '../package.json';
 
 import './css/index.css';
 
@@ -21,7 +22,19 @@ import Auth from './Auth';
 const auth = new Auth();
 
 const client = new ApolloClient({
+  name: 'Toilet Map Explorer',
+  version: version,
   uri: process.env.REACT_APP_GBPTM_GRAPHQL || '/graphql',
+  request: operation => {
+    if (auth.isAuthenticated()) {
+      operation.setContext({
+        headers: {
+          Authorization: `Bearer ${auth.getAccessToken()}`,
+        },
+      });
+    }
+    return operation;
+  },
 });
 
 ReactDOM.render(

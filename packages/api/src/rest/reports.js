@@ -1,9 +1,9 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const _ = require('lodash');
-const config = require('../config/config');
+const config = require('../config');
 const { Loo, Report } = require('../db')(config.mongo.url);
-const { checkJwt, checkScopes } = require('../config/auth');
+const { checkJwt, checkScopes } = require('./auth');
 
 const router = express.Router();
 router.use(express.json());

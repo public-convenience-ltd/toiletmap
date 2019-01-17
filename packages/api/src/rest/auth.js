@@ -1,6 +1,7 @@
 const jwt = require('express-jwt');
 const jwtAuthz = require('express-jwt-authz');
 const jwksRsa = require('jwks-rsa');
+const config = require('../config').auth0;
 
 /**
  * Express middleware to validate a jwt.
@@ -14,13 +15,13 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: 'https://gbptm.eu.auth0.com/.well-known/jwks.json',
+    jwksUri: config.jwksUri,
   }),
 
   // Validate the audience and the issuer.
-  audience: 'https://www.toiletmap.org.uk/api',
-  issuer: 'https://gbptm.eu.auth0.com/',
-  algorithms: ['RS256'],
+  audience: config.audience,
+  issuer: config.issuer,
+  algorithms: config.algorithms,
 });
 
 /**

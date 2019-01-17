@@ -7,6 +7,11 @@ var base = {
   },
   auth0: {
     userinfoUrl: 'https://gbptm.eu.auth0.com/userinfo',
+    jwksUri: 'https://gbptm.eu.auth0.com/.well-known/jwks.json',
+    audience: 'https://www.toiletmap.org.uk/api',
+    issuer: 'https://gbptm.eu.auth0.com/',
+    algorithms: ['RS256'],
+    permissionsKey: 'https://toiletmap.org.uk/permissions',
   },
   mapit: {
     apiKey: process.env.MAPIT_API_KEY,

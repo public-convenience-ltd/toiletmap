@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const config = require('../config/config');
+const config = require('../config');
 const { Loo, Report } = require('../db')(config.mongo.url);
 const _ = require('lodash');
 const { DateTime } = require('luxon');
