@@ -1,6 +1,8 @@
 import auth0 from 'auth0-js';
 import { navigate } from '@reach/router';
 
+const permissionsKey = 'https://toiletmap.org.uk/permissions';
+
 export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: 'gbptm.eu.auth0.com',
@@ -41,6 +43,11 @@ export default class Auth {
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
+    localStorage.setItem('name', authResult.idTokenPayload.nickname);
+    localStorage.setItem(
+      'permissions',
+      JSON.stringify(authResult.idTokenPayload[permissionsKey])
+    );
   }
 
   getAccessToken() {
@@ -56,19 +63,12 @@ export default class Auth {
       let accessToken = this.getAccessToken();
       this.auth0.client.userInfo(accessToken, (err, profile) => {
         if (profile) {
-          localStorage.setItem('name', profile.name);
           resolve(profile);
         } else if (err) {
           reject(err);
         }
       });
     });
-  }
-
-  getProfile() {
-    return {
-      name: localStorage.getItem('name'),
-    };
   }
 
   login() {
@@ -78,6 +78,7 @@ export default class Auth {
   logout() {
     // Clear Access Token and ID Token from local storage also the cached email
     localStorage.removeItem('name');
+    localStorage.removeItem('permissions');
     localStorage.removeItem('access_token');
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
@@ -90,5 +91,19 @@ export default class Auth {
     // Access Token's expiry time
     let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
     return new Date().getTime() < expiresAt;
+  }
+
+  getPermissions() {
+    return JSON.parse(localStorage.getItem('permissions') || '[]');
+  }
+
+  checkPermission(perm) {
+    return this.getPermissions().includes(perm);
+  }
+
+  getProfile() {
+    return {
+      name: localStorage.getItem('name'),
+    };
   }
 }

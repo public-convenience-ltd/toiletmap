@@ -179,6 +179,7 @@ const renderTableRows = props => {
                       clickable
                     />
                   </TableCell>
+
                   <TableCell className={classes.textList}>
                     {_.uniq(contributors).map((attr, i) => {
                       return (
@@ -201,6 +202,7 @@ const renderTableRows = props => {
                       );
                     })}
                   </TableCell>
+
                   <TableCell>
                     <Chip
                       avatar={
@@ -391,7 +393,13 @@ class Search extends Component {
     if (!_.isEmpty(q)) {
       this.setState({ searching: true });
       try {
-        const results = await api.searchLoos(_.pickBy(q));
+        let results = await api.searchLoos(_.pickBy(q));
+        if (!this.props.auth.checkPermission('VIEW_CONTRIBUTOR_INFO')) {
+          results.docs = results.docs.map(r => ({
+            ...r,
+            contributors: ['Anonymous'],
+          }));
+        }
         this.setState({ results });
       } catch (err) {
         console.error(err);
@@ -564,22 +572,25 @@ class Search extends Component {
                         />
                       </FormControl>
                     </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth>
-                        <SearchAutocomplete
-                          id="contributor-search"
-                          onChange={_.partial(
-                            this.updateSearchParam,
-                            'contributors'
-                          )}
-                          selectedItem={this.state.searchParams.contributors}
-                          suggestions={this.state.contributors}
-                          placeholderText="Search Contributors"
-                          ariaLabel="Clear contributor input box"
-                        />
-                      </FormControl>
-                    </Grid>
+                    {this.props.auth.checkPermission(
+                      'VIEW_CONTRIBUTOR_INFO'
+                    ) && (
+                      <Grid item xs={12} sm={6}>
+                        <FormControl fullWidth>
+                          <SearchAutocomplete
+                            id="contributor-search"
+                            onChange={_.partial(
+                              this.updateSearchParam,
+                              'contributors'
+                            )}
+                            selectedItem={this.state.searchParams.contributors}
+                            suggestions={this.state.contributors}
+                            placeholderText="Search Contributors"
+                            ariaLabel="Clear contributor input box"
+                          />
+                        </FormControl>
+                      </Grid>
+                    )}
 
                     <Grid item xs={12} sm={6}>
                       <FormControl className={classes.formControl} fullWidth>

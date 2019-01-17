@@ -43,7 +43,7 @@ ReactDOM.render(
       <AppLayout path="/explorer" auth={auth}>
         <Home default path="home" />
         <AuthCallback path="callback" auth={auth} />
-        <Search path="search" />
+        <Search path="search" auth={auth} />
         <LooView path="loos/:id" auth={auth} />
         <Statistics path="statistics">
           <HeadlineStats default />
