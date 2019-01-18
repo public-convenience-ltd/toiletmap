@@ -1,5 +1,4 @@
 const express = require('express');
-const fetch = require('node-fetch');
 const _ = require('lodash');
 const config = require('../config');
 const { Loo, Report } = require('../db')(config.mongo.url);
