@@ -8,34 +8,6 @@ const { checkJwt, checkScopes } = require('./auth');
 const router = express.Router();
 router.use(express.json());
 
-async function getAreaData(point) {
-  let url = `${config.mapit.endpoint}${point.coordinates.join(',')}?apiKey=${
-    config.mapit.apiKey
-  }`;
-  let response = await fetch(url);
-  if (!response.ok) {
-    console.error(
-      `Failed to fetch area data from ${url} got response (${
-        response.status
-      }) ${response.statusText}`
-    );
-    return undefined;
-  }
-  let data = await response.json();
-  // Mapit returns an object keyed by numerid area id.
-  // We are only looking for the values containing a type_name our config
-  // tells us is interesting. We'll extract them and map them into an
-  let area = _.map(data, v => {
-    if (config.mapit.areaTypes.includes(v.type_name)) {
-      return {
-        type: v.type_name,
-        name: v.name,
-      };
-    }
-  });
-  return _.compact(area);
-}
-
 async function getContributorData(bearerToken) {
   try {
     let reqProfile = await fetch(config.auth0.userinfoUrl, {
@@ -49,52 +21,12 @@ async function getContributorData(bearerToken) {
   }
 }
 
-// THis all feels a bit much...
-async function save(payload, token) {
-  const { report: data, from } = payload;
-
-  const profile = await getContributorData(token);
-  const area = await getAreaData(data.geometry);
-
-  const reportData = {
-    diff: {
-      ...data,
-      area,
-    },
-    contributorId: profile.sub,
-    contributor: profile.nickname || config.reports.anonContributor,
-  };
-
-  let report = new Report(reportData);
-
-  if (from) {
-    let oldloo = await Loo.findById(from);
-    let lastReportId = oldloo.reports[oldloo.reports.length - 1];
-    let previous = await Report.findById(lastReportId);
-    await report.deriveFrom(previous);
-  }
-
-  try {
-    await report.validate();
-  } catch (e) {
-    throw e;
-  }
-  const savedReport = await report.save();
-
-  // Until we have a moderation queue we'll create/update a loo accordingly
-  const loo = await savedReport.generateLoo();
-  const savedLoo = await Loo.findOneAndUpdate({ _id: loo._id }, loo, {
-    upsert: true,
-    new: true,
-  });
-
-  return [savedReport, savedLoo];
-}
-
 router.post('/', checkJwt, checkScopes('report:loo'), async (req, res) => {
   let persist;
   try {
-    persist = await save(req.body, req.get('Authorization'));
+    let user = await getContributorData(req.get('Authorization'));
+    let { report: data, from } = req.body;
+    persist = await Report.submit(data, user, from);
   } catch (error) {
     if (error.name === 'ValidationError') {
       return res.status(400).send(_.map(error.errors, 'message').join('\n'));
@@ -124,7 +56,9 @@ router.delete('/:id', checkJwt, checkScopes('report:loo'), async (req, res) => {
   };
 
   try {
-    await save(payload, req.get('Authorization'));
+    let user = await getContributorData(req.get('Authorization'));
+    let { report: data, from } = payload;
+    await Report.submit(data, user, from);
   } catch (error) {
     if (error.name === 'ValidationError') {
       return res.status(400).send(_.map(error.errors, 'message').join('\n'));

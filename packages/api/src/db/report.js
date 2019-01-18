@@ -1,6 +1,8 @@
 const _ = require('lodash');
 const { Schema, Types } = require('mongoose');
+const fetch = require('node-fetch');
 const hasha = require('hasha');
+const config = require('../config');
 
 const CoreSchema = require('./core');
 
@@ -159,6 +161,74 @@ ReportSchema.methods.getLoo = async function() {
   return await this.model('NewLoo').findOne({
     reports: Types.ObjectId(this.id),
   });
+};
+
+async function getAreaData(point) {
+  let url = `${config.mapit.endpoint}${point.coordinates.join(',')}?apiKey=${
+    config.mapit.apiKey
+  }`;
+  let response = await fetch(url);
+  if (!response.ok) {
+    console.error(
+      `Failed to fetch area data from ${url} got response (${
+        response.status
+      }) ${response.statusText}`
+    );
+    return undefined;
+  }
+  let data = await response.json();
+  // Mapit returns an object keyed by numerid area id.
+  // We are only looking for the values containing a type_name our config
+  // tells us is interesting. We'll extract them and map them into an
+  let area = _.map(data, v => {
+    if (config.mapit.areaTypes.includes(v.type_name)) {
+      return {
+        type: v.type_name,
+        name: v.name,
+      };
+    }
+  });
+  return _.compact(area);
+}
+
+ReportSchema.statics.submit = async function(data, user, from) {
+  const area = await getAreaData(data.geometry);
+  const reportData = {
+    diff: {
+      ...data,
+      area,
+    },
+    contributorId: user.sub,
+    contributor: user.nickname || config.reports.anonContributor,
+  };
+
+  let report = new this(reportData);
+  if (from) {
+    let oldloo = await this.model('NewLoo').findById(from);
+    let lastReportId = oldloo.reports[oldloo.reports.length - 1];
+    let previous = await this.model('NewReport').findById(lastReportId);
+    await report.deriveFrom(previous);
+  }
+
+  try {
+    await report.validate();
+  } catch (e) {
+    throw e;
+  }
+  const savedReport = await report.save();
+
+  // Until we have a moderation queue we'll create/update a loo accordingly
+  const loo = await savedReport.generateLoo();
+  const savedLoo = await this.model('NewLoo').findOneAndUpdate(
+    { _id: loo._id },
+    loo,
+    {
+      upsert: true,
+      new: true,
+    }
+  );
+
+  return [savedReport, savedLoo];
 };
 
 module.exports = exports = ReportSchema;
