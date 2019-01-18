@@ -36,6 +36,18 @@ const resolvers = {
       ),
   },
 
+  Mutation: {
+    submitReport: (parent, args, context) => {
+      //let input = args.report;
+      // Do stuff
+      return {
+        code: '201',
+        success: true,
+        message: 'Not gonna do anything yet',
+      };
+    },
+  },
+
   Report: {
     id: r => r._id.toString(),
     previous: r => Report.findById(r.previous),

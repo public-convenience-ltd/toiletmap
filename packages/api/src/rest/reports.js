@@ -61,7 +61,7 @@ async function save(payload, token) {
       ...data,
       area,
     },
-    //userId: profile.sub,
+    contributorId: profile.sub,
     contributor: profile.nickname || config.reports.anonContributor,
   };
 

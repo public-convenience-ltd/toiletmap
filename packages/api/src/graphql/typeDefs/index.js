@@ -3,7 +3,7 @@ const { gql } = require('apollo-server');
 const typeDefs = gql`
   scalar DateTime
 
-  directive @auth(requires: Permission) on FIELD_DEFINITION
+  directive @auth(requires: Permission) on OBJECT | FIELD_DEFINITION
   directive @redact(requires: Permission, replace: String) on FIELD_DEFINITION
 
   enum Permission {
@@ -132,6 +132,44 @@ const typeDefs = gql`
     lng: Float!
     "Maximum Distance in meters"
     maxDistance: Int = 1000
+  }
+
+  interface MutationResponse {
+    code: String!
+    success: Boolean!
+    message: String!
+  }
+
+  input PointInput {
+    lat: Float!
+    lng: Float!
+  }
+
+  input ReportInput {
+    location: PointInput!
+    name: String
+    access: AccessPermission
+    opening: String
+    type: Facilities
+    accessibleType: Facilities
+    babyChange: Boolean
+    radar: Boolean
+    attended: Boolean
+    automatic: Boolean
+    fee: String
+    notes: String
+  }
+
+  type ReportMutationResponse implements MutationResponse {
+    code: String!
+    success: Boolean!
+    message: String!
+    report: Report
+    loo: Loo
+  }
+
+  type Mutation @auth(requires: SUBMIT_REPORT) {
+    submitReport(report: ReportInput): ReportMutationResponse
   }
 `;
 
