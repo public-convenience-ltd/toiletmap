@@ -8,25 +8,11 @@ const { checkJwt, checkScopes } = require('./auth');
 const router = express.Router();
 router.use(express.json());
 
-async function getContributorData(bearerToken) {
-  try {
-    let reqProfile = await fetch(config.auth0.userinfoUrl, {
-      headers: {
-        Authorization: bearerToken,
-      },
-    });
-    return await reqProfile.json();
-  } catch (error) {
-    throw error;
-  }
-}
-
 router.post('/', checkJwt, checkScopes('report:loo'), async (req, res) => {
   let persist;
   try {
-    let user = await getContributorData(req.get('Authorization'));
     let { report: data, from } = req.body;
-    persist = await Report.submit(data, user, from);
+    persist = await Report.submit(data, req.user, from);
   } catch (error) {
     if (error.name === 'ValidationError') {
       return res.status(400).send(_.map(error.errors, 'message').join('\n'));
@@ -56,9 +42,8 @@ router.delete('/:id', checkJwt, checkScopes('report:loo'), async (req, res) => {
   };
 
   try {
-    let user = await getContributorData(req.get('Authorization'));
     let { report: data, from } = payload;
-    await Report.submit(data, user, from);
+    await Report.submit(data, req.user, from);
   } catch (error) {
     if (error.name === 'ValidationError') {
       return res.status(400).send(_.map(error.errors, 'message').join('\n'));

@@ -43,7 +43,7 @@ const apollo = new ApolloServer({
     const authorization = req.headers.authorization;
     if (authorization) {
       const token = authorization.replace('Bearer ', '');
-      const tokenData = await new Promise((resolve, reject) => {
+      user = await new Promise((resolve, reject) => {
         jwt.verify(token, getKey, options, (err, decoded) => {
           if (err) {
             return reject(err);
@@ -51,9 +51,6 @@ const apollo = new ApolloServer({
           resolve(decoded);
         });
       });
-      user = {
-        permissions: tokenData[config.auth0.permissionsKey],
-      };
     }
     return {
       user,

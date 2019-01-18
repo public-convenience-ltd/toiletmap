@@ -37,14 +37,34 @@ const resolvers = {
   },
 
   Mutation: {
-    submitReport: (parent, args, context) => {
-      //let input = args.report;
-      // Do stuff
-      return {
-        code: '201',
-        success: true,
-        message: 'Not gonna do anything yet',
+    submitReport: async (parent, args, context) => {
+      let user = context.user;
+      let { edit, location, ...data } = args.report;
+      // Format report data to match old api
+      let report = {
+        ...data,
+        geometry: {
+          type: 'Point',
+          coordinates: [location.lat, location.lng],
+        },
       };
+
+      try {
+        let result = await Report.submit(report, user, edit);
+        return {
+          code: '200',
+          success: true,
+          message: 'Report processed',
+          report: result[0],
+          loo: result[1],
+        };
+      } catch (e) {
+        return {
+          code: '400',
+          success: false,
+          message: e,
+        };
+      }
     },
   },
 

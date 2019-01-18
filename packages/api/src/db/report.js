@@ -199,7 +199,8 @@ ReportSchema.statics.submit = async function(data, user, from) {
       area,
     },
     contributorId: user.sub,
-    contributor: user.nickname || config.reports.anonContributor,
+    contributor:
+      user[config.auth0.profileKey].nickname || config.reports.anonContributor,
   };
 
   let report = new this(reportData);

@@ -146,6 +146,7 @@ const typeDefs = gql`
   }
 
   input ReportInput {
+    edit: ID
     location: PointInput!
     name: String
     access: AccessPermission
