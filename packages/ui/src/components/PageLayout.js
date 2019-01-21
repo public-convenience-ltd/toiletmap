@@ -27,7 +27,7 @@ class PageLayout extends Component {
         </div>
 
         <MediaQuery minWidth={config.viewport.mobile}>
-          <aside className={layout.mapContainer}>
+          <aside data-testid="mainMap" className={layout.mapContainer}>
             {React.cloneElement(this.props.map, this.props)}
           </aside>
         </MediaQuery>

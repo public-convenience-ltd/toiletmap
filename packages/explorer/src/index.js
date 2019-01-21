@@ -24,7 +24,7 @@ const auth = new Auth();
 const client = new ApolloClient({
   name: 'Toilet Map Explorer',
   version: version,
-  uri: process.env.REACT_APP_GBPTM_GRAPHQL || '/graphql',
+  uri: '/graphql',
   request: operation => {
     const headers = {
       'apollographql-client-name': 'toiletmap-explorer',

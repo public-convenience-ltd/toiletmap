@@ -252,6 +252,7 @@ class AddEditPage extends Component {
             className={controls.text}
             value={loo.name === null ? '' : loo.name}
             onChange={this.handleChange}
+            data-testid="toilet-name"
           />
         </label>
 
@@ -262,6 +263,7 @@ class AddEditPage extends Component {
             className={controls.dropdown}
             value={loo.access === null ? '' : loo.access}
             onChange={this.handleChange}
+            data-testid="who-can-access"
           >
             <option value="">Unknown</option>
             {this.optionsMap.access.map((option, index) => (
@@ -279,6 +281,7 @@ class AddEditPage extends Component {
             className={controls.dropdown}
             value={loo.type === null ? '' : loo.type}
             onChange={this.handleChange}
+            data-testid="facilities"
           >
             <option value="">Unknown</option>
             {this.optionsMap.type.map((option, index) => (
@@ -296,6 +299,7 @@ class AddEditPage extends Component {
             className={controls.dropdown}
             value={loo.accessibleType === null ? '' : loo.accessibleType}
             onChange={this.handleChange}
+            data-testid="accessible-facilities"
           >
             <option value="">Unknown</option>
             {this.optionsMap.type.map((option, index) => (
@@ -313,6 +317,7 @@ class AddEditPage extends Component {
             className={controls.dropdown}
             value={loo.opening === null ? '' : loo.opening}
             onChange={this.handleChange}
+            data-testid="opening-hours"
           >
             <option value="">Unknown</option>
             {this.optionsMap.opening.map((option, index) => (
@@ -333,7 +338,7 @@ class AddEditPage extends Component {
               No
             </span>
             <span className={styles.questionnaireCol} id="unknown">
-              Don't know
+              Dont know
             </span>
           </div>
 
@@ -349,6 +354,7 @@ class AddEditPage extends Component {
                 aria-labelledby="yes"
                 checked={loo[q.property] === true}
                 onChange={this.handleTriStateChange}
+                data-testid={`${q.property}:yes`}
               />
               <input
                 name={q.property}
@@ -358,6 +364,7 @@ class AddEditPage extends Component {
                 aria-labelledby="no"
                 checked={loo[q.property] === false}
                 onChange={this.handleTriStateChange}
+                data-testid={`${q.property}:no`}
               />
               <input
                 name={q.property}
@@ -367,6 +374,7 @@ class AddEditPage extends Component {
                 aria-labelledby="unknown"
                 checked={loo[q.property] === ''}
                 onChange={this.handleTriStateChange}
+                data-testid={`${q.property}:unknown`}
               />
             </fieldset>
           ))}
@@ -381,6 +389,7 @@ class AddEditPage extends Component {
             value={loo.fee === null ? '' : loo.fee}
             placeholder="The amount e.g. £0.10"
             onChange={this.handleChange}
+            data-testid="fee"
           />
         </label>
 
@@ -391,6 +400,7 @@ class AddEditPage extends Component {
             className={controls.text}
             value={loo.notes === null ? '' : loo.notes}
             onChange={this.handleChange}
+            data-testid="notes"
           />
         </label>
 
@@ -414,6 +424,7 @@ class AddEditPage extends Component {
               type="text"
               name="geometry.coordinates.1"
               className={controls.text}
+              data-testid="loo-name"
               value={center.lng}
               readOnly={true}
             />
@@ -435,6 +446,7 @@ class AddEditPage extends Component {
               className={controls.btn}
               onClick={this.save}
               value="Add the toilet"
+              data-testid="add-the-toilet"
             />
           )}
 

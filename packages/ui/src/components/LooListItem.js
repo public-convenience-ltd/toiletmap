@@ -31,6 +31,7 @@ class LooListItem extends Component {
 
     return (
       <Link
+        data-testid={`loo:${loo._id}`}
         to={`/loos/${loo._id}`}
         className={styles.container}
         onMouseOver={this.props.onHoverStart}

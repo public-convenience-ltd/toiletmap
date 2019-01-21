@@ -1,10 +1,17 @@
 {
   "name": "@toiletmap/ui",
   "version": "2.9.0",
-  "private": true,
   "proxy": "http://localhost:8080",
+  "private": true,
   "devDependencies": {
-    "react-scripts": "2.1.3"
+    "cypress": "3.1.2",
+    "cypress-image-snapshot": "3.0.0",
+    "eslint-plugin-cypress": "2.1.2",
+    "http-proxy-middleware": "0.19.1",
+    "http-server": "0.11.1",
+    "react-scripts": "2.1.3",
+    "serve": "10.1.1",
+    "start-server-and-test": "1.7.11"
   },
   "dependencies": {
     "@toiletmap/api-client": "2.9.0",
@@ -34,7 +41,11 @@
   },
   "scripts": {
     "dev": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
-    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build"
+    "start": "http-server ./build -p 5000 -a localhost --proxy https://gbptm-unity.herokuapp.com",
+    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
+    "cy:open": "cypress open --config baseUrl=http://localhost:3000",
+    "cy:run": "cypress run --config baseUrl=http://localhost:5000,video=false",
+    "test:integration": "start-server-and-test start http://localhost:5000 cy:run"
   },
   "eslintConfig": {
     "extends": "react-app"

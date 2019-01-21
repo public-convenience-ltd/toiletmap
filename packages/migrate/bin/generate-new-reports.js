@@ -70,11 +70,8 @@ async function main() {
     let newReps = [];
     for (const legLoo of legLoos) {
       // sort by trust in ascending order, then by createdAt date from oldest to newest
-      const legReps = legLoo.reports.sort(
-        (a, b) =>
-          a.trust - b.trust !== 0
-            ? a.trust - b.trust
-            : a.createdAt - b.createdAt
+      const legReps = legLoo.reports.sort((a, b) =>
+        a.trust - b.trust !== 0 ? a.trust - b.trust : a.createdAt - b.createdAt
       );
 
       // check we're not using a report for this loo that was used for another,
