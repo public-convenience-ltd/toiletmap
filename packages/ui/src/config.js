@@ -1,8 +1,6 @@
 import { isOpen } from '@toiletmap/opening-hours';
 
 export const PREFERENCES_KEY = 'preferences';
-export const PENDING_REPORT_KEY = 'pending_loo_report';
-export const PENDING_REMOVE_KEY = 'pending_loo_removal';
 
 export default {
   viewport: {

@@ -19,7 +19,7 @@ class Callback extends Component {
       // dispatch a login action
       this.props.loggedIn(true);
       this.props.setName(this.props.auth.getProfile().name);
-      this.props.history.push('/');
+      this.props.history.push(this.props.auth.redirectOnLogin() || '/');
     } else {
       this.props.history.push('/login');
     }

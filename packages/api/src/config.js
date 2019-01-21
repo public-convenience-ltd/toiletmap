@@ -12,6 +12,7 @@ var base = {
     issuer: 'https://gbptm.eu.auth0.com/',
     algorithms: ['RS256'],
     permissionsKey: 'https://toiletmap.org.uk/permissions',
+    profileKey: 'https://toiletmap.org.uk/profile',
   },
   mapit: {
     apiKey: process.env.MAPIT_API_KEY,

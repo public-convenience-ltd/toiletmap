@@ -36,6 +36,38 @@ const resolvers = {
       ),
   },
 
+  Mutation: {
+    submitReport: async (parent, args, context) => {
+      let user = context.user;
+      let { edit, location, ...data } = args.report;
+      // Format report data to match old api
+      let report = {
+        ...data,
+        geometry: {
+          type: 'Point',
+          coordinates: [location.lat, location.lng],
+        },
+      };
+
+      try {
+        let result = await Report.submit(report, user, edit);
+        return {
+          code: '200',
+          success: true,
+          message: 'Report processed',
+          report: result[0],
+          loo: result[1],
+        };
+      } catch (e) {
+        return {
+          code: '400',
+          success: false,
+          message: e,
+        };
+      }
+    },
+  },
+
   Report: {
     id: r => r._id.toString(),
     previous: r => Report.findById(r.previous),

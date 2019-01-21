@@ -1,10 +1,11 @@
 require('newrelic');
-const config = require('./config/config');
+const config = require('./config');
 const express = require('express');
 const helmet = require('helmet');
 const compression = require('compression');
 const cors = require('cors');
 const path = require('path');
+const applyGraphqlMiddleware = require('./graphql');
 const app = express();
 
 // we can make some nicer assumptions about security if query values are only
@@ -30,9 +31,12 @@ app.use(helmet());
 app.use(compression());
 app.use(cors());
 
-// Add API routes
-const routes = require('./routes');
-app.use('/api', routes);
+// Add GraphQL endpoint, playground and voyager
+applyGraphqlMiddleware(app);
+
+// Add REST API routes
+const rest = require('./rest');
+app.use('/api', rest);
 
 //redirect admin to explorer
 app.all('/admin', (req, res) => res.redirect(301, '/explorer/'));
@@ -54,6 +58,8 @@ if (!module.parent) {
   app.listen(config.app.port, () => {
     /* eslint-disable-next-line no-console */
     console.log(`Listening on port ${config.app.port}`);
+    console.log('Graphql on /graphql');
+    console.log('Graphql voyager on /voyager');
   });
 }
 
