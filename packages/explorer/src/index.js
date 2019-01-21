@@ -26,13 +26,16 @@ const client = new ApolloClient({
   version: version,
   uri: process.env.REACT_APP_GBPTM_GRAPHQL || '/graphql',
   request: operation => {
+    const headers = {
+      'apollographql-client-name': 'toiletmap-explorer',
+      'apollographql-client-version': `${version}`,
+    };
     if (auth.isAuthenticated()) {
-      operation.setContext({
-        headers: {
-          Authorization: `Bearer ${auth.getAccessToken()}`,
-        },
-      });
+      headers['Authorization'] = `Bearer ${auth.getAccessToken()}`;
     }
+    operation.setContext({
+      headers,
+    });
     return operation;
   },
 });
