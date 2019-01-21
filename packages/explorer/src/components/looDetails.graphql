@@ -1,0 +1,45 @@
+query fullLooDetails($id: ID) {
+  loo(id: $id) {
+    id
+    name
+    area {
+      name
+      type
+    }
+    location {
+      lat
+      lng
+    }
+    active
+    access
+    opening
+    type
+    accessibleType
+    babyChange
+    radar
+    attended
+    fee
+    notes
+    removalReason
+    reports {
+      id
+      contributor
+      createdAt
+      active
+      access
+      opening
+      type
+      accessibleType
+      babyChange
+      radar
+      attended
+      fee
+      notes
+      removalReason
+      location {
+        lat
+        lng
+      }
+    }
+  }
+}
