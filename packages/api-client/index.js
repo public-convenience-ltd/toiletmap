@@ -119,7 +119,7 @@ class API {
 
   async fetchContributors() {
     const searchUrl = `${endpoint}/statistics/contributors`;
-    const res = await fetch(searchUrl);
+    const res = await axios(searchUrl);
     return res.data;
   }
 }
