@@ -43,9 +43,43 @@ const resolvers = {
       // Format report data to match old api
       let report = {
         ...data,
+        active: true,
         geometry: {
           type: 'Point',
           coordinates: [location.lat, location.lng],
+        },
+      };
+
+      try {
+        let result = await Report.submit(report, user, edit);
+        return {
+          code: '200',
+          success: true,
+          message: 'Report processed',
+          report: result[0],
+          loo: result[1],
+        };
+      } catch (e) {
+        return {
+          code: '400',
+          success: false,
+          message: e,
+        };
+      }
+    },
+    submitRemovalReport: async (parent, args, context) => {
+      const user = context.user;
+      let { edit, reason } = args.report;
+      // We sadly need the current geometry here
+      const loo = await Loo.findById(edit);
+      const coordinates = loo.properties.geometry.coordinates;
+      // Format report data to match old api
+      let report = {
+        active: false,
+        removalReason: reason,
+        geometry: {
+          type: 'Point',
+          coordinates,
         },
       };
 

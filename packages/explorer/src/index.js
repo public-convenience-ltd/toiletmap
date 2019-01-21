@@ -33,9 +33,7 @@ const client = new ApolloClient({
     if (auth.isAuthenticated()) {
       headers['Authorization'] = `Bearer ${auth.getAccessToken()}`;
     }
-    operation.setContext({
-      headers,
-    });
+    operation.setContext({ headers });
     return operation;
   },
 });
