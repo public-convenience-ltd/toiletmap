@@ -161,6 +161,11 @@ const typeDefs = gql`
     notes: String
   }
 
+  input RemovalReportInput {
+    edit: ID!
+    reason: String!
+  }
+
   type ReportMutationResponse implements MutationResponse {
     code: String!
     success: Boolean!
@@ -171,6 +176,7 @@ const typeDefs = gql`
 
   type Mutation @auth(requires: SUBMIT_REPORT) {
     submitReport(report: ReportInput): ReportMutationResponse
+    submitRemovalReport(report: RemovalReportInput): ReportMutationResponse
   }
 `;
 
