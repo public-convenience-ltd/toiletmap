@@ -10,6 +10,7 @@ describe('Individual Loo Page', function() {
 
   it('matches the visual snapshot', () => {
     cy.get('[data-testid="looMarker:040992f25ba360e6967b463d"]');
+
     cy.matchImageSnapshot('Loo Page');
   });
 });
