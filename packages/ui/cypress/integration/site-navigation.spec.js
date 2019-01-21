@@ -1,11 +1,11 @@
-describe('adding a loo without being logged in', () => {
-  before(function() {
+describe('Site Navigation', () => {
+  beforeEach(function() {
     cy.server();
     cy.fixture('nearbyLoos.json').as('loos');
     cy.fixture('angliaSquareLoo.json').as('loo');
     cy.route('/api/loos/near/*/*', '@loos');
     cy.route('/api/loos/*', '@loo');
-    cy.visit('/report', {
+    cy.visit('/', {
       onBeforeLoad: win => {
         cy.stub(win.navigator.geolocation, 'getCurrentPosition', success => {
           return success({
@@ -19,8 +19,13 @@ describe('adding a loo without being logged in', () => {
     });
   });
 
-  it('adding a toilet without being logged takes you to the login page', () => {
-    cy.get('[data-testid=add-the-toilet]').click();
-    cy.url().should('include', '/login');
+  it('contains a working link to "/preferences"', () => {
+    cy.contains('Preferences').click();
+    cy.url().should('include', '/preferences');
+  });
+
+  it('contains a working link to "/about"', () => {
+    cy.contains('About').click();
+    cy.url().should('include', '/about');
   });
 });

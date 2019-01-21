@@ -1,5 +1,5 @@
-describe('Navigation', () => {
-  beforeEach(function() {
+describe('homepage content', function() {
+  before(function() {
     cy.server();
     cy.fixture('nearbyLoos.json').as('loos');
     cy.fixture('angliaSquareLoo.json').as('loo');
@@ -19,18 +19,9 @@ describe('Navigation', () => {
     });
   });
 
-  it('opens the "add a toilet" page when button is clicked', () => {
+  it('requests that the user is invited to login or sign up when they attempt to add a loo', () => {
+    cy.visit('/');
     cy.contains('Add a toilet').click();
-    cy.url().should('include', '/report');
-  });
-
-  it('contains a working link to "/preferences"', () => {
-    cy.contains('Preferences').click();
-    cy.url().should('include', '/preferences');
-  });
-
-  it('contains a working link to "/about"', () => {
-    cy.contains('About').click();
-    cy.url().should('include', '/about');
+    cy.contains('Log In/Sign Up');
   });
 });
