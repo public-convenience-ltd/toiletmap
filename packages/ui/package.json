@@ -1,7 +1,6 @@
 {
   "name": "@toiletmap/ui",
   "version": "2.9.0",
-  "proxy": "http://localhost:8080",
   "private": true,
   "devDependencies": {
     "cypress": "3.1.4",
