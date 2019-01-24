@@ -1,0 +1,44 @@
+body {
+  font-family: Cabin, sans-serif;
+  background-color: #e8eaf6;
+}
+
+.wrapper {
+  display: grid;
+  height: 100%;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    'intro intro intro intro'
+    'stats search api licensing';
+}
+
+.main {
+  flex: 1;
+}
+
+.intro {
+  grid-area: intro;
+  padding: 2%;
+  background-color: primary;
+}
+
+.stats {
+  grid-area: stats;
+  padding: 10%;
+}
+
+.search {
+  grid-area: search;
+  padding: 10%;
+}
+
+.api {
+  grid-area: api;
+  padding: 10%;
+}
+
+.licensing {
+  grid-area: licensing;
+  padding: 10%;
+}
