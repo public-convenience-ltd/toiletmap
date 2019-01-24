@@ -4,7 +4,7 @@
 
 * Get a statistical overview of the data
 * Search for specific toilet data
-* explore the data by UK Administrative Geography
+* Explore the data by UK Administrative Geography
 * Learn how to use our APIs to power your application
 * Learn about the Licensing terms under which you can use this data
 
@@ -29,4 +29,3 @@ To conduct mutations, or to get un-redacted results for certain fields you'll ne
 Please familiarize yourself with the [terms under which our data is licensed](#licensing) before making use of it.
 
 ## Licensing
-
