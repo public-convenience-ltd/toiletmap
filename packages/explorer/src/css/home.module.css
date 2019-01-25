@@ -3,46 +3,7 @@ body {
   background-color: #e8eaf6;
 }
 
-.paper {
-  padding: 20%;
-}
-
-.wrapper {
-  display: grid;
-  height: 100%;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  grid-template-areas:
-    'intro intro intro intro'
-    'stats search api licensing';
-}
-
 .main {
   flex: 1;
-}
-
-.intro {
-  grid-area: intro;
-  padding: 2%;
-  background-color: primary;
-}
-
-.stats {
-  grid-area: stats;
-  padding: 8%;
-}
-
-.search {
-  grid-area: search;
-  padding: 8%;
-}
-
-.api {
-  grid-area: api;
-  padding: 8%;
-}
-
-.licensing {
-  grid-area: licensing;
-  padding: 8%;
+  padding: 1rem;
 }
