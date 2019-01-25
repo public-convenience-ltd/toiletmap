@@ -23,7 +23,6 @@ const SubTypography = withStyles({
 
 class Home extends Component {
   render() {
-    const { classes } = this.props;
     return (
       <div className={styles.main}>
         <div>
