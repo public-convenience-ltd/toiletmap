@@ -88,7 +88,7 @@ class Home extends Component {
               </HeadingTypography>
               <SubTypography variant="body1" component="body2">
                 You can search for toilet data using keyword searches{' '}
-                <Link href={'./statistics'}>here</Link>
+                <Link href={'./search'}>here</Link>
               </SubTypography>
             </Paper>
           </Grid>
@@ -114,7 +114,7 @@ class Home extends Component {
                 <Link href={'https://graphql.org/'}>GraphQL</Link>. The endpoint
                 is served at `https://www.toiletmap.org.uk/graphql`.You can{' '}
                 <Link href={'/voyager'}>visualise the schema</Link>, or{' '}
-                <Link href={'.graphql'}>experiment with queries</Link>. To
+                <Link href={'/graphql'}>experiment with queries</Link>. To
                 conduct mutations, or to get un-redacted results for certain
                 fields you'll need to supply some credentials in an
                 `Authorization` header. Please get in touch if you'd like to
