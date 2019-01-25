@@ -3,6 +3,10 @@ body {
   background-color: #e8eaf6;
 }
 
+.paper {
+  padding: 20%;
+}
+
 .wrapper {
   display: grid;
   height: 100%;
@@ -25,20 +29,20 @@ body {
 
 .stats {
   grid-area: stats;
-  padding: 10%;
+  padding: 8%;
 }
 
 .search {
   grid-area: search;
-  padding: 10%;
+  padding: 8%;
 }
 
 .api {
   grid-area: api;
-  padding: 10%;
+  padding: 8%;
 }
 
 .licensing {
   grid-area: licensing;
-  padding: 10%;
+  padding: 8%;
 }
