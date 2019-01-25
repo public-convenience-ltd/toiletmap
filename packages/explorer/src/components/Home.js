@@ -99,7 +99,7 @@ class Home extends Component {
                 Licensing
               </HeadingTypography>
               <SubTypography variant="body1" component="body2">
-                <br />
+                Licensing information coming soon
               </SubTypography>
             </Paper>
           </Grid>
