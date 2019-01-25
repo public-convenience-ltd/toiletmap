@@ -63,7 +63,8 @@ const sagaMiddleware = createSagaMiddleware();
 
 const middleware = applyMiddleware(sagaMiddleware);
 
-const devTools = window.devToolsExtension && window.devToolsExtension();
+const devTools =
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
 
 const initialState = {};
 

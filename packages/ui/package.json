@@ -16,8 +16,8 @@
     "@toiletmap/api-client": "2.9.0",
     "@toiletmap/leaflet-control-geocoder": "2.9.0",
     "@toiletmap/opening-hours": "2.9.0",
-    "auth0-js": "9.9.0",
-    "core-js": "2.6.2",
+    "auth0-js": "9.9.1",
+    "core-js": "2.6.3",
     "js-cookie": "2.2.0",
     "leaflet": "1.4.0",
     "leaflet-loading": "0.1.24",
@@ -33,10 +33,10 @@
     "react-redux": "6.0.0",
     "react-responsive": "6.0.1",
     "react-router-dom": "4.3.1",
-    "react-router-ga": "1.0.0",
+    "react-router-ga": "1.1.0",
     "react-router-hash-link": "1.2.1",
     "redux": "4.0.1",
-    "redux-saga": "0.16.2"
+    "redux-saga": "1.0.0"
   },
   "scripts": {
     "dev": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
