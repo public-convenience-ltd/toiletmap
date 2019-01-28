@@ -1,0 +1,35 @@
+.mobileMap {
+  display: flex;
+  height: 200px;
+  margin-bottom: 1rem;
+}
+
+.properties {
+  list-style: none;
+  margin-bottom: 1rem;
+}
+
+.property {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0.75rem 0;
+}
+
+.property + .property {
+  border-top: 2px dashed #222;
+}
+
+.properyName,
+.propertyValue {
+  margin: 0;
+  line-height: 1;
+}
+
+.propertyValue {
+  white-space: pre-line;
+}
+
+.preferenceIndicators {
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,35 @@
+@value colors: '../../colors.css';
+@value colorLinkActive from colors;
+
+.base {
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  font-weight: bold;
+}
+
+.block {
+  display: block;
+  padding: 0.75rem;
+}
+
+.block.light {
+  background-color: #1a1a1a;
+}
+
+.block:hover,
+.block:active {
+  color: #fff;
+  background-color: colorLinkActive;
+}
+
+.light,
+.light:hover,
+.light:active {
+  color: #fff;
+}
+
+.text {
+  padding-bottom: 1px;
+  border-bottom: 1px solid currentColor;
+}

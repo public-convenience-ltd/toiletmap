@@ -1,0 +1,20 @@
+.container {
+  position: relative;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px dashed #1a1a1a;
+}
+
+.close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  border: 0;
+  padding: 0;
+  font-weight: bold;
+  font-size: 1.5rem;
+  background: none;
+
+  /* Avoid collision with title */
+  margin-left: 25px;
+}

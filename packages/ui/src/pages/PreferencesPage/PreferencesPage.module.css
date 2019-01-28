@@ -1,0 +1,44 @@
+@value colors: '../../design-system/src/colors.css';
+@value colorSelected from colors;
+
+.preferenceWrapper {
+  position: relative;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.preference {
+  composes: base from '../../design-system/src/components/Button/Button.module.css';
+
+  /* Unselected/default state */
+  color: #222;
+  text-align: left;
+  background-color: #ccc;
+  padding-right: 3rem; /* Avoid overlapping absolute checkbox */
+}
+
+.preference:hover {
+  /* Avoid inheriting Button hover styles */
+  color: inherit;
+  background-color: #ccc;
+}
+
+.preferenceInput {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 1rem;
+  margin: auto;
+}
+
+.preferenceImage {
+  height: 2rem;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 1rem;
+}
+
+/* Selected state */
+.preferenceWrapper input:checked + span {
+  background-color: colorSelected;
+}

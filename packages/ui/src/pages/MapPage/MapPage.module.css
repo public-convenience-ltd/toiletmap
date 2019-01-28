@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.looList {
+  list-style: none;
+}
+
+.looListItem + .looListItem {
+  margin-top: 1rem;
+}
+
+.mobileContent {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  position: relative;
+}
+
+.mobileMap {
+  display: flex;
+  flex: 1;
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+  margin-bottom: -0.75rem;
+}
+
+/* Cluster markers */
+
+.marker {
+  height: 50px;
+  width: 50px;
+  padding-top: 6px;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  line-height: 1;
+  background-color: #1a1a1a;
+}
+
+.count {
+  display: block;
+  font-weight: normal;
+  font-size: 1.25rem;
+}

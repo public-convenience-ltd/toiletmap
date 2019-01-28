@@ -1,0 +1,49 @@
+.distance {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0.5rem;
+  border-radius: 0.5rem 0 0;
+  color: #fff;
+  background-color: #1a1a1a;
+}
+
+.container {
+  position: relative;
+  display: block;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: #fff;
+  background-color: #1a1a1a;
+  cursor: pointer;
+}
+
+.container:hover,
+.container:hover .distance {
+  background-color: #165016;
+}
+
+.strip {
+  display: block;
+  padding: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-radius: 0 0 0.25rem 0.25rem;
+  text-align: right;
+  text-decoration: none;
+  color: #fff;
+}
+
+.linkText {
+  display: inline-block;
+  padding-bottom: 1px;
+  border-bottom: 1px solid;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.preferenceIndicators {
+  float: left;
+  position: relative;
+  left: -4px;
+}

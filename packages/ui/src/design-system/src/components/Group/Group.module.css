@@ -1,0 +1,15 @@
+.group {
+  display: flex;
+}
+
+.row > * + * {
+  margin-left: 0.25rem;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.column > * + * {
+  margin-top: 0.5rem;
+}

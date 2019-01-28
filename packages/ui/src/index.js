@@ -17,10 +17,10 @@ import config from './config';
 import * as serviceWorker from './serviceWorker';
 
 // Global CSS
-import './css/global';
+import './design-system/src/global';
 
-import App from './components/App';
-import ProtectedRoute from './components/ProtectedRoute';
+import App from './App';
+import ProtectedRoute from './ProtectedRoute';
 import AuthCallback from './pages/AuthCallback';
 import LooPage from './pages/LooPage';
 import RemovePage from './pages/RemovePage';
@@ -49,6 +49,7 @@ import mapControlsSaga from './redux/sagas/mapControls';
 
 import history from './history';
 import Auth from './Auth';
+
 const auth = new Auth();
 
 const rootReducer = combineReducers({

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import MediaQuery from 'react-responsive';
 
 import { actionLoggedIn, actionSetName } from '../redux/modules/auth';
 
-import PageLayout from '../components/PageLayout';
-import Notification from '../components/Notification';
-import MediaQuery from 'react-responsive';
+import Notification from '../design-system/src/components/Notification';
+
+import PageLayout from '../PageLayout';
+
 import config from '../config';
 
 class Callback extends Component {

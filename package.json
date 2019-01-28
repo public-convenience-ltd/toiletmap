@@ -70,6 +70,8 @@
     }
   },
   "resolutions": {
+    "react": "16.7.0",
+    "react-dom": "16.7.0",
     "graphql": "14.1.1"
   }
 }

@@ -8,17 +8,18 @@ import {
 
 import config from '../config';
 
-import PageLayout from '../components/PageLayout';
-import Loading from '../components/Loading';
-import LooMap from '../components/LooMap';
+import Button from '../design-system/src/components/Button';
+import Heading from '../design-system/src/components/Heading';
+import VerticalSpacing from '../design-system/src/components/VerticalSpacing';
 
-import layout from '../components/css/layout.module.css';
-import headings from '../css/headings.module.css';
-import controls from '../css/controls.module.css';
+import PageLayout from '../PageLayout';
+import Loading from '../Loading';
+import LooMap from '../LooMap';
 
 class RemovePage extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       reason: '',
     };
@@ -44,20 +45,16 @@ class RemovePage extends Component {
   renderMain() {
     return (
       <div>
-        <div>
-          <div className={layout.controls}>
-            {config.showBackButtons && (
-              <button
-                onClick={this.props.history.goBack}
-                className={controls.btn}
-              >
-                Back
-              </button>
-            )}
-          </div>
-        </div>
+        {config.showBackButtons && (
+          <React.Fragment>
+            <Button onClick={this.props.history.goBack}>Back</Button>
+            <VerticalSpacing />
+          </React.Fragment>
+        )}
 
-        <h2 className={headings.large}>Toilet Remover</h2>
+        <Heading headingLevel={2} size="large">
+          Toilet Remover
+        </Heading>
 
         <p>
           Please let us know why you're removing this toilet from the map using
@@ -69,15 +66,14 @@ class RemovePage extends Component {
           <textarea
             type="text"
             name="reason"
-            className={controls.text}
             value={this.state.reason}
             onChange={this.updateReason}
           />
         </label>
 
-        <button onClick={this.doSubmit} className={controls.btnCaution}>
+        <Button onClick={this.doSubmit} type="caution">
           Remove it
-        </button>
+        </Button>
       </div>
     );
   }
@@ -87,6 +83,7 @@ class RemovePage extends Component {
       lat: this.props.loo.properties.geometry.coordinates[1],
       lng: this.props.loo.properties.geometry.coordinates[0],
     };
+
     return (
       <LooMap
         loos={[this.props.loo]}
@@ -107,11 +104,12 @@ class RemovePage extends Component {
     if (!this.props.loo) {
       return (
         <PageLayout
-          main={<Loading message={'Fetching Toilet Data'} />}
-          map={<Loading message={'Fetching Toilet Data'} />}
+          main={<Loading message="Fetching Toilet Data" />}
+          map={<Loading message="Fetching Toilet Data" />}
         />
       );
     }
+
     return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
   }
 }

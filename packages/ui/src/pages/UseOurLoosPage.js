@@ -2,33 +2,29 @@ import React, { Component } from 'react';
 
 import config from '../config';
 
-import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/NearestLooMap';
+import Button from '../design-system/src/components/Button';
+import Heading from '../design-system/src/components/Heading';
+import VerticalSpacing from '../design-system/src/components/VerticalSpacing';
+import List from '../design-system/src/components/List';
 
-import lists from '../css/lists.module.css';
-import headings from '../css/headings.module.css';
-import layout from '../components/css/layout.module.css';
-import controls from '../css/controls.module.css';
+import PageLayout from '../PageLayout';
+import NearestLooMap from '../NearestLooMap';
+import BandedSection from '../BandedSection';
 
 class UseOurLoosPage extends Component {
   renderMain() {
     return (
       <div>
-        <div>
-          <div className={layout.controls}>
-            {config.showBackButtons && (
-              <button
-                onClick={this.props.history.goBack}
-                className={controls.btn}
-              >
-                Back
-              </button>
-            )}
-          </div>
-        </div>
-        <h2 id="use-our-loos" className={headings.regular}>
+        {config.showBackButtons && (
+          <React.Fragment>
+            <Button onClick={this.props.history.goBack}>Back</Button>
+            <VerticalSpacing />
+          </React.Fragment>
+        )}
+
+        <Heading headingLevel={2} id="use-our-loos">
           Use Our Loos
-        </h2>
+        </Heading>
         <p>
           <strong>Use Our Loos</strong> is the first national community toilet
           scheme, created by the British Toilet Association, Domestos and the{' '}
@@ -41,7 +37,7 @@ class UseOurLoosPage extends Component {
           and non-customers, to use your loos. By joining our initiative, you
           will:
         </p>
-        <ul className={lists.inset}>
+        <List>
           <li>
             Receive a Domestos welcome pack with free products and discounts to
             keep the toilet clean.
@@ -55,7 +51,7 @@ class UseOurLoosPage extends Component {
             Get local fame and benefit from increased customers and a stronger
             connection to your community.
           </li>
-        </ul>
+        </List>
 
         <p>
           <strong>
@@ -81,86 +77,84 @@ class UseOurLoosPage extends Component {
           </a>
           .
         </p>
-        <div className={layout.bandedSection}>
-          <div className={layout.bandedSectionText}>
-            <div className={layout.mainContainer}>
-              <h2 id="faq" className={headings.regular}>
-                Use Our Loos FAQs
-              </h2>
-              <h3>Who Can Join The Scheme?</h3>
-              <p>Businesses of all sizes can join the scheme.</p>
-              <h3>What are the requirements of joining the scheme?</h3>
-              <p>
-                Participating businesses should allow customers and non
-                customers alike to access their toilet facilities during normal
-                opening hours and display stickers to make people aware of their
-                participation in the scheme. There is an expectation that
-                facilities will be maintained to acceptable standards of hygiene
-                and cleanliness.
-              </p>
-              <h3>Why was this scheme created?</h3>
-              <p>
-                Over the past two decades, the number of public toilets
-                available throughout the UK have been steadily reduced. There is
-                currently no legal requirement for local authorities to provide
-                toilets. This often leads to loos being closed if councils deem
-                they cannot afford the cost to maintain. This presents a
-                struggle for the many individuals and families who have a
-                greater need for access to public facilities; it’s also a basic
-                human need for us all. The Use Our Loos scheme has been designed
-                to bring the public loos back by opening more loos through
-                cafes, restaurants, and shops, where facilities already exist.
-              </p>
-              <p>
-                Community Toilet Schemes have been run successfully at a local
-                level across the country but the public are often unaware of
-                their existence. By bringing these schemes under one umbrella,
-                as well as welcoming new members we hope to increase the value
-                for everyone.
-              </p>
-              <h3>
-                Does this scheme aim to replace traditional public toilets?
-              </h3>
-              <p>
-                No. Purpose built public toilets serve an important role in
-                public life, and we will continue to encourage councils to
-                increase rather than cut provision. This scheme aims to find a
-                community-oriented solution to filling the gaps in current
-                provision.
-              </p>
-              <h3>
-                Can Businesses also participate in Local Community Toilet
-                Schemes?
-              </h3>
-              <p>
-                Yes! The Use Our Loos Campaign is not intended to replace
-                existing schemes run by local authorities. We aim to unite
-                existing schemes with a common and recognizable brand to enable
-                the public to access them more easily. For areas where local
-                schemes exist businesses are encouraged to sign up to both.
-              </p>
-              <h3>What if a dangerous situation arises in my loo?</h3>
-              <p>
-                Businesses reserve the right to manage situations as they would
-                with any customer to their establishment, including escalating
-                issues as needed.
-              </p>
-              <h3>What if I want to leave the scheme?</h3>
-              <p>
-                Businesses can leave the scheme at any time by contacting the
-                campaign manager and asking to be removed from the map.
-              </p>
-              <h3>Terms and Conditions</h3>
-              <p>
-                You can view the full project{' '}
-                <a href="https://drive.google.com/file/d/1lnTVYZWBc36W6J9YjLo1mB1bB4MIudOi/view?usp=sharing">
-                  terms and conditions here
-                </a>
-                .
-              </p>
-            </div>
-          </div>
-        </div>
+
+        <VerticalSpacing />
+        <BandedSection>
+          <Heading headingLevel={2} id="faq">
+            Use Our Loos FAQs
+          </Heading>
+          <Heading headingLevel={3}>Who Can Join The Scheme?</Heading>
+          <p>Businesses of all sizes can join the scheme.</p>
+          <Heading headingLevel={3}>
+            What are the requirements of joining the scheme?
+          </Heading>
+          <p>
+            Participating businesses should allow customers and non customers
+            alike to access their toilet facilities during normal opening hours
+            and display stickers to make people aware of their participation in
+            the scheme. There is an expectation that facilities will be
+            maintained to acceptable standards of hygiene and cleanliness.
+          </p>
+          <Heading headingLevel={3}>Why was this scheme created?</Heading>
+          <p>
+            Over the past two decades, the number of public toilets available
+            throughout the UK have been steadily reduced. There is currently no
+            legal requirement for local authorities to provide toilets. This
+            often leads to loos being closed if councils deem they cannot afford
+            the cost to maintain. This presents a struggle for the many
+            individuals and families who have a greater need for access to
+            public facilities; it’s also a basic human need for us all. The Use
+            Our Loos scheme has been designed to bring the public loos back by
+            opening more loos through cafes, restaurants, and shops, where
+            facilities already exist.
+          </p>
+          <p>
+            Community Toilet Schemes have been run successfully at a local level
+            across the country but the public are often unaware of their
+            existence. By bringing these schemes under one umbrella, as well as
+            welcoming new members we hope to increase the value for everyone.
+          </p>
+          <Heading headingLevel={3}>
+            Does this scheme aim to replace traditional public toilets?
+          </Heading>
+          <p>
+            No. Purpose built public toilets serve an important role in public
+            life, and we will continue to encourage councils to increase rather
+            than cut provision. This scheme aims to find a community-oriented
+            solution to filling the gaps in current provision.
+          </p>
+          <Heading headingLevel={3}>
+            Can Businesses also participate in Local Community Toilet Schemes?
+          </Heading>
+          <p>
+            Yes! The Use Our Loos Campaign is not intended to replace existing
+            schemes run by local authorities. We aim to unite existing schemes
+            with a common and recognizable brand to enable the public to access
+            them more easily. For areas where local schemes exist businesses are
+            encouraged to sign up to both.
+          </p>
+          <h3>What if a dangerous situation arises in my loo?</h3>
+          <p>
+            Businesses reserve the right to manage situations as they would with
+            any customer to their establishment, including escalating issues as
+            needed.
+          </p>
+          <Heading headingLevel={3}>
+            What if I want to leave the scheme?
+          </Heading>
+          <p>
+            Businesses can leave the scheme at any time by contacting the
+            campaign manager and asking to be removed from the map.
+          </p>
+          <Heading headingLevel={3}>Terms and Conditions</Heading>
+          <p>
+            You can view the full project{' '}
+            <a href="https://drive.google.com/file/d/1lnTVYZWBc36W6J9YjLo1mB1bB4MIudOi/view?usp=sharing">
+              terms and conditions here
+            </a>
+            .
+          </p>
+        </BandedSection>
       </div>
     );
   }

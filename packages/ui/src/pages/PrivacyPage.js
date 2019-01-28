@@ -2,33 +2,28 @@ import React, { Component } from 'react';
 
 import config from '../config';
 
-import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/NearestLooMap';
+import Button from '../design-system/src/components/Button';
+import Heading from '../design-system/src/components/Heading';
+import VerticalSpacing from '../design-system/src/components/VerticalSpacing';
 
-import headings from '../css/headings.module.css';
-import layout from '../components/css/layout.module.css';
-import controls from '../css/controls.module.css';
+import PageLayout from '../PageLayout';
+import NearestLooMap from '../NearestLooMap';
 
 class PrivacyPage extends Component {
   renderMain() {
     return (
       <div>
-        <div>
-          <div className={layout.controls}>
-            {config.showBackButtons && (
-              <button
-                onClick={this.props.history.goBack}
-                className={controls.btn}
-              >
-                Back
-              </button>
-            )}
-          </div>
-        </div>
-        <h2 id="privacy-policy" className={headings.regular}>
+        {config.showBackButtons && (
+          <React.Fragment>
+            <Button onClick={this.props.history.goBack}>Back</Button>
+            <VerticalSpacing />
+          </React.Fragment>
+        )}
+
+        <Heading headingLevel={2} id="privacy-policy">
           Privacy Policy
-        </h2>
-        <h3>Visitors to the site</h3>
+        </Heading>
+        <Heading headingLevel={3}>Visitors to the site</Heading>
         <p>
           Cookies on The Great British Public Toilet Map website are used to
           gather anonymous data such as which pages are viewed, what time the
@@ -56,7 +51,7 @@ class PrivacyPage extends Component {
           send the required information over the internet.
         </p>
 
-        <h3>Contributors to the site</h3>
+        <Heading headingLevel={3}>Contributors to the site</Heading>
         <p>
           Contributors to The Great British Public Toilet Map website are asked
           to sign-in via the Auth0 platform using their email address. This
@@ -73,7 +68,9 @@ class PrivacyPage extends Component {
           be disclosed or shared and is only visible to Public Convenience Ltd.
         </p>
 
-        <h3>Public and Business Supporters of Use Our Loos campaign</h3>
+        <Heading headingLevel={3}>
+          Public and Business Supporters of Use Our Loos campaign
+        </Heading>
         <p>
           Individuals and businesses who click the “Join the Use Our Loos
           campaign” button on The Great British Public Toilet Map should have

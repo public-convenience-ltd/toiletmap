@@ -1,0 +1,16 @@
+@value colors: '../../design-system/src/colors.css';
+@value colorLinkActive, colorBackground from colors;
+
+.footer {
+  color: #fff;
+  background-color: colorBackground;
+}
+
+.list {
+  display: table;
+  width: 100%;
+}
+
+.item {
+  display: table-cell;
+}

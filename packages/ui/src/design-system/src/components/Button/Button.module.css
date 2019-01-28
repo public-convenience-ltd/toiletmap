@@ -1,0 +1,56 @@
+@value colors: '../../colors.css';
+@value colorButton, colorButtonDisabled, colorButtonActive, colorButtonFeatured, colorButtonFeaturedActive, colorButtonCaution, colorButtonCautionActive from colors;
+
+.base {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 0;
+  border-radius: 0.5rem;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  background-color: colorButton;
+  cursor: pointer;
+  appearance: none;
+}
+
+.base:hover,
+.base:focus {
+  color: #fff;
+  background-color: colorButtonActive;
+}
+
+.base[disabled] {
+  background-color: colorButtonDisabled;
+}
+
+.base[disabled]:hover,
+.base[disabled]:focus {
+  cursor: default;
+  background-color: colorButtonDisabled;
+}
+
+.small {
+  font-size: 0.85rem;
+}
+
+.featured {
+  background-color: colorButtonFeatured;
+}
+
+.featured:hover,
+.featured:focus {
+  background-color: colorButtonFeaturedActive;
+}
+
+.caution {
+  composes: base;
+  background-color: colorButtonCaution;
+}
+
+.caution:hover,
+.caution:focus {
+  background-color: colorButtonCautionActive;
+}

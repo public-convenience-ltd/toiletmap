@@ -4,13 +4,14 @@ import { connect } from 'react-redux';
 import { actionFindByIdRequest } from '../redux/modules/loos';
 import { actionHighlight } from '../redux/modules/mapControls';
 
-import PageLayout from '../components/PageLayout';
-import Loading from '../components/Loading';
-import NearestLooMap from '../components/NearestLooMap';
+import Button from '../design-system/src/components/Button';
+import LinkButton from '../design-system/src/components/LinkButton';
+import Heading from '../design-system/src/components/Heading';
+import VerticalSpacing from '../design-system/src/components/VerticalSpacing';
 
-import layout from '../components/css/layout.module.css';
-import headings from '../css/headings.module.css';
-import controls from '../css/controls.module.css';
+import PageLayout from '../PageLayout';
+import Loading from '../Loading';
+import NearestLooMap from '../NearestLooMap';
 
 import config from '../config';
 
@@ -55,35 +56,25 @@ class ThanksPage extends Component {
 
     return (
       <div>
-        <div>
-          <div className={layout.controls}>
-            {config.showBackButtons && (
-              <button
-                onClick={this.props.history.goBack}
-                className={controls.btn}
-              >
-                Back
-              </button>
-            )}
-          </div>
-        </div>
-        <h2 id="thanks" className={headings.regular}>
+        {config.showBackButtons && (
+          <React.Fragment>
+            <Button onClick={this.props.history.goBack}>Back</Button>
+            <VerticalSpacing />
+          </React.Fragment>
+        )}
+
+        <Heading headingLevel={2} id="thanks">
           Thank You!
-        </h2>
+        </Heading>
         <p>Thanks for the information you've provided.</p>
         <p>
           We rely on contributions of data like yours to keep the map accurate
           and useful.
         </p>
         <p>Please consider signing up with our sponsor's campaign.</p>
-        <a
-          className={controls.btnFeatured}
-          target="_blank"
-          rel="noopener noreferrer"
-          href={constructCampaignLink(loo, name)}
-        >
+        <LinkButton to={constructCampaignLink(loo, name)} type="featured">
           Join the <strong>Use Our Loos</strong> campaign
-        </a>
+        </LinkButton>
       </div>
     );
   }
@@ -107,8 +98,8 @@ class ThanksPage extends Component {
     if (!this.props.loo) {
       return (
         <PageLayout
-          main={<Loading message={'Fetching Toilet Data'} />}
-          map={<Loading message={'Fetching Toilet Data'} />}
+          main={<Loading message="Fetching Toilet Data" />}
+          map={<Loading message="Fetching Toilet Data" />}
         />
       );
     }

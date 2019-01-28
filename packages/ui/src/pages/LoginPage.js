@@ -5,31 +5,27 @@ import config from '../config';
 
 import { actionLogin } from '../redux/modules/auth';
 
-import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/NearestLooMap';
+import Button from '../design-system/src/components/Button';
+import Heading from '../design-system/src/components/Heading';
+import VerticalSpacing from '../design-system/src/components/VerticalSpacing';
 
-import layout from '../components/css/layout.module.css';
-import headings from '../css/headings.module.css';
-import controls from '../css/controls.module.css';
+import PageLayout from '../PageLayout';
+import NearestLooMap from '../NearestLooMap';
 
 class LoginPage extends Component {
   renderMain() {
     return (
       <div>
-        <div>
-          <div className={layout.controls}>
-            {config.showBackButtons && (
-              <button
-                onClick={this.props.history.goBack}
-                className={controls.btn}
-              >
-                Back
-              </button>
-            )}
-          </div>
-        </div>
+        {config.showBackButtons && (
+          <React.Fragment>
+            <Button onClick={this.props.history.goBack}>Back</Button>
+            <VerticalSpacing />
+          </React.Fragment>
+        )}
 
-        <h2 className={headings.large}>Hello! What's your name?</h2>
+        <Heading headingLevel={2} size="large">
+          Hello! What's your name?
+        </Heading>
 
         <p>Before you can contribute data we'll need to know who to thank.</p>
         <p>
@@ -38,11 +34,9 @@ class LoginPage extends Component {
         </p>
         <p>Login or sign up to let us know you're real.</p>
 
-        <div className={controls.btnStack}>
-          <button onClick={this.props.doLogin} className={controls.btn}>
-            Log In/Sign Up
-          </button>
-        </div>
+        <VerticalSpacing />
+
+        <Button onClick={this.props.doLogin}>Log In/Sign Up</Button>
       </div>
     );
   }

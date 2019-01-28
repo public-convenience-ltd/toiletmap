@@ -2,33 +2,29 @@ import React, { Component } from 'react';
 
 import config from '../config';
 
-import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/NearestLooMap';
+import Button from '../design-system/src/components/Button';
+import Heading from '../design-system/src/components/Heading';
+import VerticalSpacing from '../design-system/src/components/VerticalSpacing';
+import List from '../design-system/src/components/List';
 
-import lists from '../css/lists.module.css';
-import headings from '../css/headings.module.css';
-import layout from '../components/css/layout.module.css';
-import controls from '../css/controls.module.css';
+import PageLayout from '../PageLayout';
+import NearestLooMap from '../NearestLooMap';
+import BandedSection from '../BandedSection';
 
 class AboutPage extends Component {
   renderMain() {
     return (
       <div>
-        <div>
-          <div className={layout.controls}>
-            {config.showBackButtons && (
-              <button
-                onClick={this.props.history.goBack}
-                className={controls.btn}
-              >
-                Back
-              </button>
-            )}
-          </div>
-        </div>
-        <h2 id="about" className={headings.regular}>
+        {config.showBackButtons && (
+          <React.Fragment>
+            <Button onClick={this.props.history.goBack}>Back</Button>
+            <VerticalSpacing />
+          </React.Fragment>
+        )}
+
+        <Heading headingLevel={2} id="about">
           About the map
-        </h2>
+        </Heading>
         <p>
           The Great British Public Toilet Map is the UK's largest database of
           publicly-accessible toilets, with over 11000 facilities.
@@ -62,106 +58,105 @@ class AboutPage extends Component {
           </a>{' '}
           (who designed and built it).
         </p>
-        <div className={layout.bandedSection}>
-          <div className={layout.bandedSectionText}>
-            <div className={layout.mainContainer}>
-              <h2 id="use-our-loos" className={headings.regular}>
-                Use Our Loos
-              </h2>
 
-              <p>
-                We all need toilets. When you need to go, you need to go. At
-                home or in an office this isn’t a problem. However, out and
-                about, are you sure there’s somewhere to go when the need
-                arises?
-              </p>
+        <VerticalSpacing />
+        <BandedSection>
+          <Heading headingLevel={2} id="use-our-loos">
+            Use Our Loos
+          </Heading>
 
-              <p>
-                Across the UK, more than one in every three public toilets have
-                been closed over the last two decades. Some councils are already
-                without a single free-to-use public convenience.
-              </p>
+          <p>
+            We all need toilets. When you need to go, you need to go. At home or
+            in an office this isn’t a problem. However, out and about, are you
+            sure there’s somewhere to go when the need arises?
+          </p>
 
-              <p>
-                <strong>Use Our Loos</strong> is the first national community
-                toilet scheme, created by the{' '}
-                <a
-                  href="http://www.btaloos.co.uk"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  British Toilet Association
-                </a>
-                ,{' '}
-                <a
-                  href="http://www.domestos.co.uk"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Domestos
-                </a>{' '}
-                and the <strong>Great British Public Toilet Map</strong>, with
-                the ambition to unlock the loos that are hidden in high street
-                cafes, restaurants, coffee shops and bars and open them up to
-                the community.
-              </p>
+          <p>
+            Across the UK, more than one in every three public toilets have been
+            closed over the last two decades. Some councils are already without
+            a single free-to-use public convenience.
+          </p>
 
-              <p>
-                As more public loos are closed, we’re asking that more loos are
-                made public.
-              </p>
+          <p>
+            <strong>Use Our Loos</strong> is the first national community toilet
+            scheme, created by the{' '}
+            <a
+              href="http://www.btaloos.co.uk"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              British Toilet Association
+            </a>
+            ,{' '}
+            <a
+              href="http://www.domestos.co.uk"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Domestos
+            </a>{' '}
+            and the <strong>Great British Public Toilet Map</strong>, with the
+            ambition to unlock the loos that are hidden in high street cafes,
+            restaurants, coffee shops and bars and open them up to the
+            community.
+          </p>
 
-              <p>
-                We’re inviting businesses to sign up and welcome everyone,
-                customers and non-customers, to use their loos. In return, we’re
-                providing them with free Domestos product, directing people to
-                their venues and driving local fame so they will benefit from
-                increased customers and a stronger connection to their
-                community.
-              </p>
+          <p>
+            As more public loos are closed, we’re asking that more loos are made
+            public.
+          </p>
 
-              <p>
-                We’re inviting the public to use our map to discover loos near
-                them and to help us improve the service by adding new locations
-                or flagging loos that have closed.
-              </p>
+          <p>
+            We’re inviting businesses to sign up and welcome everyone, customers
+            and non-customers, to use their loos. In return, we’re providing
+            them with free Domestos product, directing people to their venues
+            and driving local fame so they will benefit from increased customers
+            and a stronger connection to their community.
+          </p>
 
-              <p>
-                To register your business for the Use Our Loos campaign please
-                contact{' '}
-                <a
-                  href="mailto:useourloos@gmail.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  useourloos@gmail.com
-                </a>
-              </p>
-              <p>
-                You can also register your interest{' '}
-                <a
-                  href="https://goo.gl/forms/JRw6J7yoDe46YIB23"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  here.
-                </a>
-              </p>
-            </div>
-          </div>
-        </div>
+          <p>
+            We’re inviting the public to use our map to discover loos near them
+            and to help us improve the service by adding new locations or
+            flagging loos that have closed.
+          </p>
 
-        <h2 id="contributing" className={headings.regular}>
+          <p>
+            To register your business for the Use Our Loos campaign please
+            contact{' '}
+            <a
+              href="mailto:useourloos@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              useourloos@gmail.com
+            </a>
+          </p>
+          <p>
+            You can also register your interest{' '}
+            <a
+              href="https://goo.gl/forms/JRw6J7yoDe46YIB23"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              here.
+            </a>
+          </p>
+        </BandedSection>
+        <VerticalSpacing />
+
+        <Heading headingLevel={2} id="contributing">
           Thinking about adding a toilet?
-        </h2>
+        </Heading>
 
         <p>
           A publicly-accessible toilet means any toilet that the public are
           allowed to access without needing to be a customer.
         </p>
 
-        <h3 className={headings.small}>Public toilets</h3>
-        <ul className={lists.inset}>
+        <Heading headingLevel={3} size="small">
+          Public toilets
+        </Heading>
+        <List>
           <li>Council-run toilets and other public toilet blocks</li>
           <li>
             Toilets in train stations, bus stations, service/petrol stations,
@@ -169,10 +164,12 @@ class AboutPage extends Component {
             networks
           </li>
           <li>Shopping centre toilets</li>
-        </ul>
+        </List>
 
-        <h3 className={headings.small}>Other publicly-accessible toilets</h3>
-        <ul className={lists.inset}>
+        <Heading headingLevel={3} size="small">
+          Other publicly-accessible toilets
+        </Heading>
+        <List>
           <li>
             Toilets in public buildings, such as town halls, libraries,
             hospitals, museums and leisure centres
@@ -183,7 +180,7 @@ class AboutPage extends Component {
             are often part of Community Toilet Schemes (run by councils) and can
             include shops, cafes, supermarkets, restaurants, hotels and pubs
           </li>
-        </ul>
+        </List>
 
         <p>
           <strong>
