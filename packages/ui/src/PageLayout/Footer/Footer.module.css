@@ -1,4 +1,4 @@
-@value colors: '../../colors.css';
+@value colors: '@toiletmap/design-system/es/colors.css';
 @value colorLinkActive, colorBackground from colors;
 
 .footer {
