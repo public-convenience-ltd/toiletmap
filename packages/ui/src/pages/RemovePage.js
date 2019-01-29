@@ -8,9 +8,7 @@ import {
 
 import config from '../config';
 
-import Button from '../design-system/src/components/Button';
-import Heading from '../design-system/src/components/Heading';
-import VerticalSpacing from '../design-system/src/components/VerticalSpacing';
+import { Button, Heading, VerticalSpacing } from '@toiletmap/design-system';
 
 import PageLayout from '../PageLayout';
 import Loading from '../Loading';

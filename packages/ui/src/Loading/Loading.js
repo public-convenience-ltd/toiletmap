@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Notification from '../design-system/src/components/Notification';
+import { Notification } from '@toiletmap/design-system';
 
 import styles from './Loading.module.css';
 

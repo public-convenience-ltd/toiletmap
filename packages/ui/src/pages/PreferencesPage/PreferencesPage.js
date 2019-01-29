@@ -6,12 +6,14 @@ import config, { PREFERENCES_KEY } from '../../config';
 /* Note this approach will be deprecated in the future */
 import update from 'react-addons-update';
 
-import Button from '../../design-system/src/components/Button';
-import Heading from '../../design-system/src/components/Heading';
-import DismissibleBox from '../../design-system/src/components/DismissibleBox';
-import Notification from '../../design-system/src/components/Notification';
-import VerticalSpacing from '../../design-system/src/components/VerticalSpacing';
-import VisuallyHidden from '../../design-system/src/components/VisuallyHidden';
+import {
+  Button,
+  Heading,
+  DismissibleBox,
+  Notification,
+  VerticalSpacing,
+  VisuallyHidden,
+} from '@toiletmap/design-system';
 
 import PageLayout from '../../PageLayout';
 import NearestLooMap from '../../NearestLooMap';

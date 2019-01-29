@@ -1,4 +1,4 @@
-@value colors: '../../design-system/src/colors.css';
+@value colors: '../../colors.css';
 @value colorSelected from colors;
 
 .preferenceWrapper {
@@ -8,7 +8,7 @@
 }
 
 .preference {
-  composes: base from '../../design-system/src/components/Button/Button.module.css';
+  /* composes: base from '../@toiletmap/design-systemButton/Button.module.css'; */
 
   /* Unselected/default state */
   color: #222;

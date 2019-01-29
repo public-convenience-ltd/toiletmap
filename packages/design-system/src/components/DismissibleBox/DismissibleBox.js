@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './DismissibleBox.module.css';
 
 // Todo: Should not be handled within the design-system
-import config from '../../../../config';
+//import config from '../../../../config';
 
 import Heading from '../Heading';
 
@@ -31,7 +31,8 @@ class DismissibleBox extends Component {
     });
 
     if (persistKey) {
-      config.setSetting('dismissed', persistKey, true);
+      throw new Error('TODO: Fix Me!');
+      //config.setSetting('dismissed', persistKey, true);
     }
 
     this.props.onDismiss();
@@ -41,8 +42,9 @@ class DismissibleBox extends Component {
     var persistKey = this.props.persistKey;
 
     if (
-      this.state.dismissed ||
-      (persistKey && config.getSetting('dismissed', persistKey))
+      this.state.dismissed
+      // this.state.dismissed ||
+      // (persistKey && config.getSetting('dismissed', persistKey))
     ) {
       return null;
     }

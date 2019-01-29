@@ -121,7 +121,6 @@ exports.createPages = ({ graphql, actions }) => {
           });
         })
         .catch(err => {
-          console.log(err);
           throw new Error(err);
         })
     );

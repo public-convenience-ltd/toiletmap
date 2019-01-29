@@ -5,13 +5,15 @@ import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 
-import Button from '../../design-system/src/components/Button';
-import LinkButton from '../../design-system/src/components/LinkButton';
-import Group from '../../design-system/src/components/Group';
-import Heading from '../../design-system/src/components/Heading';
-import DismissibleBox from '../../design-system/src/components/DismissibleBox';
-import Notification from '../../design-system/src/components/Notification';
-import VerticalSpacing from '../../design-system/src/components/VerticalSpacing';
+import {
+  Button,
+  LinkButton,
+  Group,
+  Heading,
+  DismissibleBox,
+  Notification,
+  VerticalSpacing,
+} from '@toiletmap/design-system';
 
 import LooItem from '../../LooItem';
 import PageLayout from '../../PageLayout';

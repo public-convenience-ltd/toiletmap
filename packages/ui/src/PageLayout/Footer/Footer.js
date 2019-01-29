@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Link from '../../design-system/src/components/Link';
+import { Link } from '@toiletmap/design-system';
 
 import styles from './Footer.module.css';
 

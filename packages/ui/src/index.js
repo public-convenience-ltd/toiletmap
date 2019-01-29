@@ -16,8 +16,10 @@ import config from './config';
 
 import * as serviceWorker from './serviceWorker';
 
-// Global CSS
-import './design-system/src/global';
+import 'leaflet/dist/leaflet.css';
+import '@toiletmap/leaflet-control-geocoder/dist/Control.Geocoder.css';
+import 'leaflet-loading/src/Control.Loading.css';
+import '@toiletmap/design-system/es/global';
 
 import App from './App';
 import ProtectedRoute from './ProtectedRoute';

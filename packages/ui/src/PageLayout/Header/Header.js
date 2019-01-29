@@ -7,7 +7,7 @@ import styles from './Header.module.css';
 
 import config from '../../config';
 
-import VisuallyHidden from '../../design-system/src/components/VisuallyHidden';
+import { VisuallyHidden } from '@toiletmap/design-system';
 
 import logo from '../../images/logo.svg';
 import domestosLogo from '../../images/domestos_logo3.png';

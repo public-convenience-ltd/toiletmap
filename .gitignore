@@ -16,6 +16,7 @@ packages/api/data
 
 build
 coverage
+es
 
 # OSX
 .DS_Store

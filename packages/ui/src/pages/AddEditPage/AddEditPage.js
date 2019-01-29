@@ -9,14 +9,16 @@ import { mappings } from '@toiletmap/api-client';
 
 import config from '../../config';
 
-import Button from '../../design-system/src/components/Button';
-import LinkButton from '../../design-system/src/components/LinkButton';
-import Group from '../../design-system/src/components/Group';
-import Heading from '../../design-system/src/components/Heading';
-import DismissibleBox from '../../design-system/src/components/DismissibleBox';
-import Notification from '../../design-system/src/components/Notification';
-import VerticalSpacing from '../../design-system/src/components/VerticalSpacing';
-import VisuallyHidden from '../../design-system/src/components/VisuallyHidden';
+import {
+  Button,
+  LinkButton,
+  Group,
+  Heading,
+  DismissibleBox,
+  Notification,
+  VerticalSpacing,
+  VisuallyHidden,
+} from '@toiletmap/design-system';
 
 import PageLayout from '../../PageLayout';
 import Loading from '../../Loading';

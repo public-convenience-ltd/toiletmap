@@ -1,4 +1,4 @@
-@value colors: '../../design-system/src/colors.css';
+@value colors: '../../colors.css';
 @value colorLinkActive, colorBackground from colors;
 
 .footer {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 
-import Link from '../design-system/src/components/Link';
+import { Link } from '@toiletmap/design-system';
 
 import LooMap from '../LooMap';
 import PreferenceIndicators from '../PreferenceIndicators';

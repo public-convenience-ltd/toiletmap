@@ -5,9 +5,7 @@ import config from '../config';
 
 import { actionLogin } from '../redux/modules/auth';
 
-import Button from '../design-system/src/components/Button';
-import Heading from '../design-system/src/components/Heading';
-import VerticalSpacing from '../design-system/src/components/VerticalSpacing';
+import { Button, Heading, VerticalSpacing } from '@toiletmap/design-system';
 
 import PageLayout from '../PageLayout';
 import NearestLooMap from '../NearestLooMap';

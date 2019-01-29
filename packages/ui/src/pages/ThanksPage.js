@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 import { actionFindByIdRequest } from '../redux/modules/loos';
 import { actionHighlight } from '../redux/modules/mapControls';
 
-import Button from '../design-system/src/components/Button';
-import LinkButton from '../design-system/src/components/LinkButton';
-import Heading from '../design-system/src/components/Heading';
-import VerticalSpacing from '../design-system/src/components/VerticalSpacing';
+import {
+  Button,
+  LinkButton,
+  Heading,
+  VerticalSpacing,
+} from '@toiletmap/design-system';
 
 import PageLayout from '../PageLayout';
 import Loading from '../Loading';

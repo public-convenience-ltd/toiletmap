@@ -8,11 +8,13 @@ import { mappings } from '@toiletmap/api-client';
 
 import config from '../../config';
 
-import Button from '../../design-system/src/components/Button';
-import LinkButton from '../../design-system/src/components/LinkButton';
-import Group from '../../design-system/src/components/Group';
-import Heading from '../../design-system/src/components/Heading';
-import VerticalSpacing from '../../design-system/src/components/VerticalSpacing';
+import {
+  Button,
+  LinkButton,
+  Group,
+  Heading,
+  VerticalSpacing,
+} from '@toiletmap/design-system';
 
 import PageLayout from '../../PageLayout';
 import Loading from '../../Loading';

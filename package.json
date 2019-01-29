@@ -9,7 +9,7 @@
     "release": "lerna version --conventional-commits --push --exact -m \"build: release %s\"",
     "lint": "eslint . && stylelint \"packages/{ui,admin}/**/*.css\"",
     "prettify": "prettier --write \"./**/*.{js,json}\"",
-    "postinstall": "lerna run build --scope=@toiletmap/leaflet-control-geocoder",
+    "postinstall": "lerna run build --scope=@toiletmap/leaflet-control-geocoder && lerna run build:lib --scope=@toiletmap/design-system",
     "build:ui": "lerna run build --scope=@toiletmap/ui",
     "build:explorer": "lerna run build --scope=@toiletmap/explorer",
     "docker:build": "docker build --network=host -t toiletmap/toiletmap .",

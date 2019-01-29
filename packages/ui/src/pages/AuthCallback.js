@@ -4,7 +4,7 @@ import MediaQuery from 'react-responsive';
 
 import { actionLoggedIn, actionSetName } from '../redux/modules/auth';
 
-import Notification from '../design-system/src/components/Notification';
+import { Notification } from '@toiletmap/design-system';
 
 import PageLayout from '../PageLayout';
 
