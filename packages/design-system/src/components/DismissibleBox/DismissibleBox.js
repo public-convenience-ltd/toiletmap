@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 
 import styles from './DismissibleBox.module.css';
 
-// Todo: Should not be handled within the design-system
-//import config from '../../../../config';
-
 import Heading from '../Heading';
+
+const STORAGE_NAMESPACE = 'dismissed';
 
 /**
  * `<DismissibleBox>`
@@ -21,31 +20,38 @@ class DismissibleBox extends Component {
     };
 
     this.onDismiss = this.onDismiss.bind(this);
+    this.getPersistenceSetting = this.getPersistenceSetting.bind(this);
+    this.setPersistenceSetting = this.setPersistenceSetting.bind(this);
   }
 
   onDismiss() {
-    var persistKey = this.props.persistKey;
+    const { persistKey } = this.props;
 
     this.setState({
       dismissed: true,
     });
 
     if (persistKey) {
-      throw new Error('TODO: Fix Me!');
-      //config.setSetting('dismissed', persistKey, true);
+      this.setPersistenceSetting(persistKey);
     }
 
     this.props.onDismiss();
   }
 
-  render() {
-    var persistKey = this.props.persistKey;
+  getPersistenceSetting() {
+    return JSON.parse(localStorage.getItem(STORAGE_NAMESPACE) || '{}');
+  }
 
-    if (
-      this.state.dismissed
-      // this.state.dismissed ||
-      // (persistKey && config.getSetting('dismissed', persistKey))
-    ) {
+  setPersistenceSetting() {
+    var settings = this.getPersistenceSetting();
+    settings[this.props.persistKey] = true;
+    localStorage.setItem(STORAGE_NAMESPACE, JSON.stringify(settings));
+  }
+
+  render() {
+    const { persistKey } = this.props;
+
+    if (this.state.dismissed || (persistKey && this.getPersistenceSetting())) {
       return null;
     }
 
