@@ -23,3 +23,7 @@ es
 
 # IDE
 .idea
+
+# Design system
+packages/design-system/.cache
+packages/design-system/public
