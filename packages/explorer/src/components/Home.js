@@ -25,19 +25,16 @@ class Home extends Component {
   render() {
     return (
       <div className={styles.main}>
-        <div>
-          <br />
-          <Typography variant="h5" component="body1">
+        <div className={styles.intro}>
+          <Typography variant="h5" component="body1" gutterBottom>
             Toilet Map Explorer exists to help people who want to know more
             about the data behind the{' '}
-            <Link href={'https://www.toiletmap.org.uk'}>
+            <Link href="https://www.toiletmap.org.uk">
               The Great British Public Toilet Map
             </Link>
           </Typography>
-          <br />
-          <Typography variant="body1" component="body2">
+          <Typography variant="body1" component="body2" gutterBottom>
             You've come to the right place if you want to:
-            <br />
             <div>
               <ul>
                 <li>Get a statistical overview of the data</li>
@@ -51,21 +48,19 @@ class Home extends Component {
               </ul>
             </div>
           </Typography>
-          <Typography variant="body1" component="body2">
+          <Typography variant="body1" component="body2" gutterBottom>
             If you're looking for the nearest Loo you're better off using{' '}
-            <Link href={'https://www.toiletmap.org.uk'}>
+            <Link href="https://www.toiletmap.org.uk">
               The Great British Public Toilet Map
             </Link>
           </Typography>
-          <br />
-          <Typography variant="body1" component="body2">
+          <Typography variant="body1" component="body2" gutterBottom>
             If you're looking for information about our software please head on
             over to{' '}
-            <Link href={'https://github.com/neontribe/gbptm'}>
+            <Link href="https://github.com/neontribe/gbptm">
               our Github repository
             </Link>
           </Typography>
-          <br />
         </div>
         <Grid container spacing={16}>
           <Grid xs={12} md={4} item>
@@ -75,7 +70,7 @@ class Home extends Component {
               </HeadingTypography>
               <SubTypography variant="body1" component="body2">
                 You can view a selection of high level statistics{' '}
-                <Link href={'./statistics'}>here</Link>
+                <Link href="./statistics">here</Link>
               </SubTypography>
             </Paper>
           </Grid>
@@ -87,7 +82,7 @@ class Home extends Component {
               </HeadingTypography>
               <SubTypography variant="body1" component="body2">
                 You can search for toilet data using keyword searches{' '}
-                <Link href={'./search'}>here</Link>
+                <Link href="./search">here</Link>
               </SubTypography>
             </Paper>
           </Grid>
