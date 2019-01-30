@@ -12,6 +12,7 @@ const LinkButton = ({ to, ...props }) => {
   if (to.match('//')) {
     return (
       <Button
+        href={to}
         withComponent="a"
         target="_blank"
         rel="noopener noreferrer"
