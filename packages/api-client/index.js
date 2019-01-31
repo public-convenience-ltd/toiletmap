@@ -13,7 +13,7 @@ class API {
 
   async findLoos(lng, lat, radius) {
     const qs = querystring.stringify({ radius });
-    const url = `${endpoint}/loos/near/${lng}/${lat}?${qs}`;
+    const url = `${endpoint}/loos/v2/near/${lng}/${lat}?${qs}`;
     const res = await axios({
       url,
       headers: {
@@ -25,7 +25,7 @@ class API {
 
   async findLooById(id, params) {
     const query = querystring.stringify(params);
-    const url = `${endpoint}/loos/${id}?${query}`;
+    const url = `${endpoint}/loos/v2/${id}?${query}`;
     const res = await axios({
       url,
       headers: {
