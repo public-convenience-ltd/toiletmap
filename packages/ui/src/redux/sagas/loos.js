@@ -1,5 +1,4 @@
 import { all, takeLatest, call, put, select, take } from 'redux-saga/effects';
-import history from '../../history';
 
 import api from '@toiletmap/api-client';
 
@@ -47,7 +46,7 @@ export default function makeLoosSaga(auth) {
     let center = yield select(getCenter);
     yield put(actionFindNearbyRequest(center.lng, center.lat));
     yield take(FIND_NEARBY_SUCCESS);
-    return yield call(history.push, `/loos/${ids.loo}/thanks`);
+    return yield call(() => (window.location = `/loos/${ids.loo}/thanks`));
   }
 
   function* remove(action) {
@@ -59,7 +58,7 @@ export default function makeLoosSaga(auth) {
       auth.getAccessToken()
     );
     yield put(actionRemoveSuccess(result));
-    return yield call(history.push, `/`);
+    return yield call(() => (window.location = `/`));
   }
 
   return function* loosSaga() {

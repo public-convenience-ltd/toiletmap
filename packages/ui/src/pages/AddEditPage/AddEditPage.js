@@ -20,9 +20,8 @@ import {
   VisuallyHidden,
 } from '@toiletmap/design-system';
 
-import PageLayout from '../../PageLayout';
+import LooMap from '../../LooMap';
 import Loading from '../../Loading';
-import NearestLooMap from '../../NearestLooMap';
 
 import {
   actionReportRequest,
@@ -96,11 +95,11 @@ class AddEditPage extends Component {
 
   componentDidMount() {
     // If our url contains a loo id and we don't have the data, ask for it
-    if (this.props.match.params.id) {
+    if (this.props.id) {
       if (!this.props.loo) {
-        this.props.actionFindByIdRequest(this.props.match.params.id);
+        this.props.actionFindByIdRequest(this.props.id);
       }
-      this.props.actionHighlight(this.props.match.params.id);
+      this.props.actionHighlight(this.props.id);
     }
   }
 
@@ -210,6 +209,37 @@ class AddEditPage extends Component {
     );
   }
 
+  renderMap() {
+    const { loo } = this.props;
+
+    var mapProps = {
+      showCenter: true,
+      showSearchControl: true,
+      minZoom: config.editMinZoom,
+    };
+
+    if (loo) {
+      mapProps = {
+        ...mapProps,
+        loos: [loo],
+        highlight: loo._id,
+        initialPosition: [
+          loo.properties.geometry.coordinates[1],
+          loo.properties.geometry.coordinates[0],
+        ],
+      };
+    } else {
+      mapProps = {
+        ...mapProps,
+        loos: this.props.loosNearby,
+        initialPosition:
+          this.props.map.center || this.props.geolocation.position,
+      };
+    }
+
+    return <LooMap {...mapProps} />;
+  }
+
   renderMain() {
     const loo = this.state.loo;
     const center = this.getCenter();
@@ -218,7 +248,7 @@ class AddEditPage extends Component {
       <div>
         {config.showBackButtons && (
           <React.Fragment>
-            <Button onClick={this.props.history.goBack}>Back</Button>
+            <Button onClick={window.history.back}>Back</Button>
             <VerticalSpacing />
           </React.Fragment>
         )}
@@ -454,32 +484,12 @@ class AddEditPage extends Component {
     );
   }
 
-  renderMap() {
-    return (
-      <NearestLooMap
-        loo={this.props.loo}
-        highlight
-        mapProps={{
-          showLocation: false,
-          showSearchControl: true,
-          showLocateControl: false,
-          preventDragging: false,
-          minZoom: config.editMinZoom,
-        }}
-      />
-    );
-  }
-
   render() {
-    if (this.props.match.params.id && !this.props.loo) {
-      return (
-        <PageLayout
-          main={<Loading message="Fetching Toilet Data" />}
-          map={<Loading message="Fetching Toilet Data" />}
-        />
-      );
+    if (this.props.id && !this.props.loo) {
+      return <Loading message="Fetching Toilet Data" />;
     }
-    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
+
+    return this.renderMain();
   }
 }
 
@@ -510,14 +520,16 @@ function onlyChanges(loo, from) {
   });
 }
 
-var mapStateToProps = (state, ownProps) => {
-  let loo = state.loos.byId[ownProps.match.params.id] || null;
+var mapStateToProps = (state, props) => {
+  let loo = state.loos.byId[props.id] || null;
+
   return {
     app: state.app,
     map: state.mapControls,
     geolocation: state.geolocation,
     loo: loo,
     key: loo ? loo._id : 'newLoo',
+    loosNearby: state.loos.nearby,
   };
 };
 

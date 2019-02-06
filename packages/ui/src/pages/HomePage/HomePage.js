@@ -15,9 +15,8 @@ import {
   VerticalSpacing,
 } from '@toiletmap/design-system';
 
+import LooMap from '../../LooMap';
 import LooItem from '../../LooItem';
-import PageLayout from '../../PageLayout';
-import NearestLooMap from '../../NearestLooMap';
 
 import styles from './HomePage.module.css';
 
@@ -42,6 +41,18 @@ export class HomePage extends Component {
   componentWillUnmount() {
     // Clear any marker highlighting when navigating away
     this.props.actionHighlight(null);
+  }
+
+  // Todo: Duplicated at App.js
+  componentDidUpdate(prevProps) {
+    // Only do if leaflet map element is ready and we've started loading or loaded
+    if (this.looMap && this.props.loadingNearby !== prevProps.loadingNearby) {
+      if (this.props.loadingNearby) {
+        this.looMap.refs.map.leafletElement.fire('dataloading');
+      } else {
+        this.looMap.refs.map.leafletElement.fire('dataload');
+      }
+    }
   }
 
   renderList(mobile) {
@@ -106,7 +117,8 @@ export class HomePage extends Component {
     );
   }
 
-  renderMain() {
+  // Todo: <LooMap> is a duplication of the implementation at App.js
+  render() {
     var mode = this.props.app.viewMode;
 
     return (
@@ -146,7 +158,24 @@ export class HomePage extends Component {
           {mode === 'list' && this.renderWelcome()}
           {mode === 'list' && this.renderList(true)}
           {mode === 'map' && (
-            <div className={styles.mobileMap}>{this.renderMap()}</div>
+            <div className={styles.mobileMap}>
+              <LooMap
+                loos={this.props.loos}
+                countLimit={config.nearestListLimit}
+                showContributor={true}
+                showLocation={true}
+                showSearchControl={true}
+                showLocateControl={true}
+                showCenter={true}
+                onZoom={this.props.actionZoom}
+                onUpdateCenter={this.onUpdateCenter}
+                initialZoom={this.props.map.zoom}
+                highlight={this.props.map.highlight}
+                initialPosition={
+                  this.props.map.center || this.props.geolocation.position
+                }
+              />
+            </div>
           )}
         </MediaQuery>
         <MediaQuery minWidth={config.viewport.mobile}>
@@ -156,14 +185,6 @@ export class HomePage extends Component {
       </div>
     );
   }
-
-  renderMap() {
-    return <NearestLooMap numberNearest />;
-  }
-
-  render() {
-    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
-  }
 }
 
 HomePage.propTypes = {
@@ -171,6 +192,7 @@ HomePage.propTypes = {
 };
 
 var mapStateToProps = state => ({
+  map: state.mapControls,
   geolocation: state.geolocation,
   mapControls: state.mapControls,
   loos: state.loos.nearby,

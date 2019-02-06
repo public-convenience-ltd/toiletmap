@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link } from '@reach/router';
 
 import Button from '../Button';
 
@@ -22,7 +22,7 @@ const LinkButton = ({ to, ...props }) => {
   }
 
   // Internal link
-  return <Button withComponent={RouterLink} to={to} {...props} />;
+  return <Button withComponent={Link} to={to} {...props} />;
 };
 
 LinkButton.propTypes = {

@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
 
 import { Link } from '@toiletmap/design-system';
+
+import history from '../history';
 
 import LooMap from '../LooMap';
 import PreferenceIndicators from '../PreferenceIndicators';
 
 import styles from './LooItem.module.css';
+
+const { navigate } = history;
 
 // Todo: Find better approach to global `distance--zindexfix` class name hack
 
@@ -42,7 +45,7 @@ class LooItem extends Component {
       <div
         onClick={() => {
           // Programmatically navigate for non-a11y users
-          this.props.history.push(destination);
+          navigate(destination);
         }}
         className={styles.container}
         onMouseOver={this.props.onHoverStart}
@@ -107,4 +110,4 @@ LooItem.defaultProps = {
   onHoverEnd: Function.prototype,
 };
 
-export default withRouter(LooItem);
+export default LooItem;

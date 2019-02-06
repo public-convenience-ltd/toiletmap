@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from '@reach/router';
 
 import styles from './Link.module.css';
 

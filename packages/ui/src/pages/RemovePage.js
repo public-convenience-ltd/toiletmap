@@ -10,9 +10,7 @@ import config from '../config';
 
 import { Button, Heading, VerticalSpacing } from '@toiletmap/design-system';
 
-import PageLayout from '../PageLayout';
 import Loading from '../Loading';
-import LooMap from '../LooMap';
 
 class RemovePage extends Component {
   constructor(props) {
@@ -25,7 +23,7 @@ class RemovePage extends Component {
 
   componentDidMount() {
     if (!this.props.loo) {
-      this.props.actionFindByIdRequest(this.props.match.params.id);
+      this.props.actionFindByIdRequest(this.props.id);
     }
   }
 
@@ -40,12 +38,16 @@ class RemovePage extends Component {
     this.props.actionRemoveRequest(this.props.loo._id, this.state.reason);
   };
 
-  renderMain() {
+  render() {
+    if (!this.props.loo) {
+      return <Loading message="Fetching Toilet Data" />;
+    }
+
     return (
       <div>
         {config.showBackButtons && (
           <React.Fragment>
-            <Button onClick={this.props.history.goBack}>Back</Button>
+            <Button onClick={window.history.back}>Back</Button>
             <VerticalSpacing />
           </React.Fragment>
         )}
@@ -75,46 +77,11 @@ class RemovePage extends Component {
       </div>
     );
   }
-
-  renderMap() {
-    var coords = {
-      lat: this.props.loo.properties.geometry.coordinates[1],
-      lng: this.props.loo.properties.geometry.coordinates[0],
-    };
-
-    return (
-      <LooMap
-        loos={[this.props.loo]}
-        initialPosition={coords}
-        highlight={this.props.loo._id}
-        showLocation={false}
-        showSearchControl={false}
-        showLocateControl={false}
-        showCenter={false}
-        preventDragging={true}
-        preventZoom={true}
-        minZoom={config.editMinZoom}
-      />
-    );
-  }
-
-  render() {
-    if (!this.props.loo) {
-      return (
-        <PageLayout
-          main={<Loading message="Fetching Toilet Data" />}
-          map={<Loading message="Fetching Toilet Data" />}
-        />
-      );
-    }
-
-    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
-  }
 }
 
-var mapStateToProps = (state, ownProps) => ({
+var mapStateToProps = (state, props) => ({
   app: state.app,
-  loo: state.loos.byId[ownProps.match.params.id] || null,
+  loo: state.loos.byId[props.id] || null,
 });
 
 var mapDispatchToProps = {

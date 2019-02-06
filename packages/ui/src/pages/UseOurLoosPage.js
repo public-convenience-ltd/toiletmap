@@ -9,17 +9,15 @@ import {
   List,
 } from '@toiletmap/design-system';
 
-import PageLayout from '../PageLayout';
-import NearestLooMap from '../NearestLooMap';
 import BandedSection from '../BandedSection';
 
 class UseOurLoosPage extends Component {
-  renderMain() {
+  render() {
     return (
       <div>
         {config.showBackButtons && (
           <React.Fragment>
-            <Button onClick={this.props.history.goBack}>Back</Button>
+            <Button onClick={window.history.back}>Back</Button>
             <VerticalSpacing />
           </React.Fragment>
         )}
@@ -159,14 +157,6 @@ class UseOurLoosPage extends Component {
         </BandedSection>
       </div>
     );
-  }
-
-  renderMap() {
-    return <NearestLooMap numberNearest />;
-  }
-
-  render() {
-    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
   }
 }
 

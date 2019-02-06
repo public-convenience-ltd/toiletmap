@@ -1,3 +1,5 @@
-import createHistory from 'history/createBrowserHistory';
+import { createHistory } from '@reach/router';
 
-export default createHistory();
+const history = createHistory(window);
+
+export default history;

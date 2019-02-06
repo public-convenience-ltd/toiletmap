@@ -6,15 +6,13 @@ import 'core-js/fn/object/entries';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route } from 'react-router-dom';
+import { Router, LocationProvider } from '@reach/router';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
-import Analytics from 'react-router-ga';
-
-import config from './config';
 
 import * as serviceWorker from './serviceWorker';
+import history from './history';
 
 import 'leaflet/dist/leaflet.css';
 import '@toiletmap/leaflet-control-geocoder/dist/Control.Geocoder.css';
@@ -49,8 +47,9 @@ import makeLoosSaga from './redux/sagas/loos';
 import makeAuthSaga from './redux/sagas/auth';
 import mapControlsSaga from './redux/sagas/mapControls';
 
-import history from './history';
 import Auth from './Auth';
+
+import styles from './App/App.module.css';
 
 const auth = new Auth();
 
@@ -73,57 +72,42 @@ const initialState = {};
 
 const store = middleware(createStore)(rootReducer, initialState, devTools);
 
+history.listen(() => {
+  window.ga('send', 'pageview');
+});
+
 // Run sagas
 sagaMiddleware.run(makeAuthSaga(auth));
 sagaMiddleware.run(geolocationSaga);
 sagaMiddleware.run(makeLoosSaga(auth));
 sagaMiddleware.run(mapControlsSaga);
 
-// Create an enhanced history that syncs navigation events with the store
-
 if (typeof document !== 'undefined') {
   ReactDOM.render(
     <Provider store={store}>
-      <Router history={history} forceRefresh={false}>
-        <Analytics id={config.analyticsId}>
-          <App>
-            <Route exact path="/" component={HomePage} />
-            <Route exact path="/preferences" component={PreferencesPage} />
-            <Route exact path="/about" component={AboutPage} />
-            <Route exact path="/privacy" component={PrivacyPage} />
-            <Route exact path="/use-our-loos" component={UseOurLoosPage} />
-            <Route path="/loos/:id" exact component={LooPage} />
-            <Route path="/login" component={LoginPage} />
-            <Route path="/map/:lng/:lat" component={MapPage} />
-            <Route
-              exact
-              path="/callback"
-              render={props => <AuthCallback auth={auth} {...props} />}
-            />
-            <ProtectedRoute
-              exact
-              path="/report"
-              component={AddEditPage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/edit"
-              component={AddEditPage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/remove"
-              component={RemovePage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/thanks"
-              component={ThanksPage}
-              auth={auth}
-            />
+      <LocationProvider history={history}>
+        <Router className={styles.appContainer}>
+          <App path="/">
+            <HomePage default />
+            <AboutPage path="about" />
+            <PreferencesPage path="preferences" />
+            <PrivacyPage path="privacy" />
+            <UseOurLoosPage path="use-our-loos" />
+            <LooPage path="loos/:id" />
+            <LoginPage path="login" />
+            <MapPage path="map/:lng/:lat" />
+            <AuthCallback path="callback" auth={auth} />
+            <ProtectedRoute path="report" auth={auth}>
+              <AddEditPage default />
+            </ProtectedRoute>
+            <ProtectedRoute path="loos/:id" auth={auth}>
+              <AddEditPage path="edit" />
+              <RemovePage path="remove" />
+              <ThanksPage path="thanks" />
+            </ProtectedRoute>
           </App>
-        </Analytics>
-      </Router>
+        </Router>
+      </LocationProvider>
     </Provider>,
     document.getElementById('root')
   );

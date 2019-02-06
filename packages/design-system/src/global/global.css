@@ -125,7 +125,7 @@ textarea {
   background-color: #fff;
 }
 
-input[type="text"],
+input[type="text"][readonly],
 select[readonly],
 textarea[readonly] {
   background-color: #eaeaea;

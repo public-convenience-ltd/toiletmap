@@ -6,45 +6,34 @@ import { actionLoggedIn, actionSetName } from '../redux/modules/auth';
 
 import { Notification } from '@toiletmap/design-system';
 
-import PageLayout from '../PageLayout';
-
 import config from '../config';
 
 class Callback extends Component {
   async componentDidMount() {
-    if (/access_token|id_token|error/.test(this.props.location.hash)) {
-      await this.props.auth.handleAuthentication();
-      await this.props.auth.fetchProfile();
+    const { auth } = this.props;
+
+    if (/access_token|id_token|error/.test(window.location.hash)) {
+      await auth.handleAuthentication();
+      await auth.fetchProfile();
     }
 
-    if (this.props.auth.isAuthenticated()) {
+    if (auth.isAuthenticated()) {
       // dispatch a login action
       this.props.loggedIn(true);
-      this.props.setName(this.props.auth.getProfile().name);
-      this.props.history.push(this.props.auth.redirectOnLogin() || '/');
+      this.props.setName(auth.getProfile().name);
+      window.location = auth.redirectOnLogin() || '/';
     } else {
-      this.props.history.push('/login');
+      window.location = 'login';
     }
   }
 
   render() {
     return (
-      <PageLayout
-        main={
-          <MediaQuery minWidth={config.viewport.mobile}>
-            <Notification>
-              <p>Updating credentials</p>
-            </Notification>
-          </MediaQuery>
-        }
-        map={
-          <MediaQuery minWidth={config.viewport.mobile}>
-            <Notification>
-              <p>Updating credentials</p>
-            </Notification>
-          </MediaQuery>
-        }
-      />
+      <MediaQuery minWidth={config.viewport.mobile}>
+        <Notification>
+          <p>Updating credentials</p>
+        </Notification>
+      </MediaQuery>
     );
   }
 }

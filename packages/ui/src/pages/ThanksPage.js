@@ -11,9 +11,7 @@ import {
   VerticalSpacing,
 } from '@toiletmap/design-system';
 
-import PageLayout from '../PageLayout';
 import Loading from '../Loading';
-import NearestLooMap from '../NearestLooMap';
 
 import config from '../config';
 
@@ -33,18 +31,18 @@ function constructCampaignLink(loo, email = '') {
 class ThanksPage extends Component {
   componentDidMount() {
     if (!this.props.loo) {
-      this.props.actionFindByIdRequest(this.props.match.params.id);
+      this.props.actionFindByIdRequest(this.props.id);
     }
-    this.props.actionHighlight(this.props.match.params.id);
+    this.props.actionHighlight(this.props.id);
   }
 
   componentDidUpdate(prevProps) {
     // Support navigation _between_ loo pages
-    if (this.props.match.params.id !== prevProps.match.params.id) {
+    if (this.props.id !== prevProps.id) {
       if (!this.props.loo) {
-        this.props.actionFindByIdRequest(this.props.match.params.id);
+        this.props.actionFindByIdRequest(this.props.id);
       }
-      this.props.actionHighlight(this.props.match.params.id);
+      this.props.actionHighlight(this.props.id);
     }
   }
 
@@ -53,14 +51,18 @@ class ThanksPage extends Component {
     this.props.actionHighlight(null);
   }
 
-  renderMain() {
+  render() {
     let { loo, name } = this.props;
+
+    if (!this.props.loo) {
+      return <Loading message="Fetching Toilet Data" />;
+    }
 
     return (
       <div>
         {config.showBackButtons && (
           <React.Fragment>
-            <Button onClick={this.props.history.goBack}>Back</Button>
+            <Button onClick={window.history.back}>Back</Button>
             <VerticalSpacing />
           </React.Fragment>
         )}
@@ -80,38 +82,11 @@ class ThanksPage extends Component {
       </div>
     );
   }
-
-  renderMap() {
-    return (
-      <NearestLooMap
-        loo={this.props.loo}
-        mapProps={{
-          showLocation: false,
-          showSearchControl: false,
-          showLocateControl: false,
-          showCenter: false,
-          countLimit: null,
-        }}
-      />
-    );
-  }
-
-  render() {
-    if (!this.props.loo) {
-      return (
-        <PageLayout
-          main={<Loading message="Fetching Toilet Data" />}
-          map={<Loading message="Fetching Toilet Data" />}
-        />
-      );
-    }
-    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
-  }
 }
 
-var mapStateToProps = (state, ownProps) => ({
+var mapStateToProps = (state, props) => ({
   app: state.app,
-  loo: state.loos.byId[ownProps.match.params.id] || null,
+  loo: state.loos.byId[props.id] || null,
   name: state.auth.name,
 });
 

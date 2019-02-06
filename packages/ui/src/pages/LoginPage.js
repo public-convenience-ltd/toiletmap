@@ -7,16 +7,13 @@ import { actionLogin } from '../redux/modules/auth';
 
 import { Button, Heading, VerticalSpacing } from '@toiletmap/design-system';
 
-import PageLayout from '../PageLayout';
-import NearestLooMap from '../NearestLooMap';
-
 class LoginPage extends Component {
   renderMain() {
     return (
       <div>
         {config.showBackButtons && (
           <React.Fragment>
-            <Button onClick={this.props.history.goBack}>Back</Button>
+            <Button onClick={window.history.back}>Back</Button>
             <VerticalSpacing />
           </React.Fragment>
         )}
@@ -39,12 +36,8 @@ class LoginPage extends Component {
     );
   }
 
-  renderMap() {
-    return <NearestLooMap />;
-  }
-
   render() {
-    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
+    return this.renderMain();
   }
 }
 

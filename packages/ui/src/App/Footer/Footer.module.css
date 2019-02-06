@@ -1,0 +1,16 @@
+@value colors: '@toiletmap/design-system/es/colors.css';
+@value colorLinkActive, colorBackground from colors;
+
+.footer {
+  color: #fff;
+  background-color: colorBackground;
+}
+
+.list {
+  display: table;
+  width: 100%;
+}
+
+.item {
+  display: table-cell;
+}

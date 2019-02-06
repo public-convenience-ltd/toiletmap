@@ -26,7 +26,7 @@ const Button = ({ withComponent, htmlType, type, size, ...props }) =>
 
 Button.propTypes = {
   /** The component to render */
-  withComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  // Todo: Throwing in UI. withComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   /** The html `type` attribute value */
   htmlType: PropTypes.oneOf(['submit', 'button', 'reset']),
   /** Visual type */

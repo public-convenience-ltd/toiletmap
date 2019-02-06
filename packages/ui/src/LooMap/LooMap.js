@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-import { withRouter } from 'react-router-dom';
+import { navigate } from '@reach/router';
 import _ from 'lodash';
 import L from 'leaflet';
 
@@ -153,11 +152,19 @@ export class LooMap extends Component {
 
   onMarkerClick(loo) {
     if (this.props.activeMarkers) {
-      this.props.history.push('/loos/' + loo._id);
+      navigate('/loos/' + loo._id);
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // Center around new coordinates when our position changes
+    if (
+      prevProps.initialPosition.lat !== this.props.initialPosition.lat &&
+      prevProps.initialPosition.lng !== this.props.initialPosition.lng
+    ) {
+      this.leafletElement.panTo(this.props.initialPosition);
+    }
+
     // New cluster layer, we probably remounted
     if (prevState.clusterLayer !== this.state.clusterLayer) {
       // We need to re-add everything
@@ -306,7 +313,7 @@ export class LooMap extends Component {
             minZoom={this.props.minZoom}
             maxZoom={this.props.maxZoom}
             contributor={
-              this.props.showcontributor
+              this.props.showContributor
                 ? 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 : ''
             }
@@ -343,7 +350,7 @@ LooMap.propTypes = {
   preventDragging: PropTypes.bool,
   showSearchControl: PropTypes.bool,
   showLocateControl: PropTypes.bool,
-  showcontributor: PropTypes.bool,
+  showContributor: PropTypes.bool,
 
   // Label loo markers from a starting number, for a limited number of loos
   countFrom: PropTypes.number,
@@ -373,6 +380,7 @@ LooMap.propTypes = {
   // Loo id to highlight
   highlight: PropTypes.string,
 
+  // Makes marker click interactions navigate to their individual loo page
   activeMarkers: PropTypes.bool,
 };
 
@@ -387,7 +395,7 @@ LooMap.defaultProps = {
   showSearchControl: false,
   showLocateControl: false,
   showZoomControls: true,
-  showcontributor: false,
+  showContributor: false,
   showCenter: false,
   countLimit: 0,
   countFrom: 1,
@@ -398,4 +406,4 @@ LooMap.defaultProps = {
   activeMarkers: true,
 };
 
-export default withRouter(LooMap);
+export default LooMap;

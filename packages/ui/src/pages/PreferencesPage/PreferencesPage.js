@@ -15,9 +15,6 @@ import {
   VisuallyHidden,
 } from '@toiletmap/design-system';
 
-import PageLayout from '../../PageLayout';
-import NearestLooMap from '../../NearestLooMap';
-
 import styles from './PreferencesPage.module.css';
 
 import accessibleIcon from '../../images/pref-accessible.svg';
@@ -113,7 +110,7 @@ class PreferencesPage extends Component {
       <div>
         {config.showBackButtons && (
           <React.Fragment>
-            <Button onClick={this.props.history.goBack}>Back</Button>
+            <Button onClick={window.history.back}>Back</Button>
             <VerticalSpacing />
           </React.Fragment>
         )}
@@ -169,12 +166,8 @@ class PreferencesPage extends Component {
     );
   }
 
-  renderMap() {
-    return <NearestLooMap />;
-  }
-
   render() {
-    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
+    return this.renderMain();
   }
 }
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
@@ -17,9 +16,8 @@ import {
   VerticalSpacing,
 } from '@toiletmap/design-system';
 
+import LooMap from '../../LooMap';
 import LooItem from '../../LooItem';
-import PageLayout from '../../PageLayout';
-import NearestLooMap from '../../NearestLooMap';
 
 import styles from './MapPage.module.css';
 
@@ -33,8 +31,8 @@ import { actionLogin, actionLogout } from '../../redux/modules/auth';
 export class MapPage extends Component {
   positionFromRouter() {
     return {
-      lat: parseFloat(this.props.match.params.lat),
-      lng: parseFloat(this.props.match.params.lng),
+      lat: parseFloat(this.props.lat),
+      lng: parseFloat(this.props.lng),
     };
   }
 
@@ -95,7 +93,7 @@ export class MapPage extends Component {
     );
   }
 
-  renderMain() {
+  render() {
     var mode = this.props.app.viewMode;
 
     return (
@@ -124,6 +122,7 @@ export class MapPage extends Component {
             </Button>
           </MediaQuery>
         </Group>
+        <VerticalSpacing />
 
         <MediaQuery
           maxWidth={config.viewport.mobile}
@@ -131,7 +130,23 @@ export class MapPage extends Component {
         >
           {mode === 'list' && this.renderList(true)}
           {mode === 'map' && (
-            <div className={styles.mobileMap}>{this.renderMap()}</div>
+            <div className={styles.mobileMap}>
+              <LooMap
+                initialPosition={this.positionFromRouter()}
+                // Todo: duplication of the implementation at App.js
+                loos={this.props.loos}
+                countLimit={config.nearestListLimit}
+                showContributor={true}
+                showLocation={true}
+                showSearchControl={true}
+                showLocateControl={true}
+                showCenter={true}
+                onZoom={this.props.actionZoom}
+                onUpdateCenter={this.onUpdateCenter}
+                initialZoom={this.props.map.zoom}
+                highlight={this.props.map.highlight}
+              />
+            </div>
           )}
         </MediaQuery>
         <MediaQuery minWidth={config.viewport.mobile}>
@@ -139,19 +154,6 @@ export class MapPage extends Component {
         </MediaQuery>
       </div>
     );
-  }
-
-  renderMap() {
-    return (
-      <NearestLooMap
-        mapProps={{ initialPosition: this.positionFromRouter() }}
-        numberNearest
-      />
-    );
-  }
-
-  render() {
-    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
   }
 }
 
@@ -161,7 +163,7 @@ MapPage.propTypes = {
 
 var mapStateToProps = state => ({
   geolocation: state.geolocation,
-  mapControls: state.mapControls,
+  map: state.mapControls,
   loos: state.loos.nearby,
   app: state.app,
   isAuthenticated: state.auth.isAuthenticated,
@@ -179,4 +181,4 @@ var mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(MapPage));
+)(MapPage);

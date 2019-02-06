@@ -4,16 +4,13 @@ import config from '../config';
 
 import { Button, Heading, VerticalSpacing } from '@toiletmap/design-system';
 
-import PageLayout from '../PageLayout';
-import NearestLooMap from '../NearestLooMap';
-
 class PrivacyPage extends Component {
   renderMain() {
     return (
       <div>
         {config.showBackButtons && (
           <React.Fragment>
-            <Button onClick={this.props.history.goBack}>Back</Button>
+            <Button onClick={window.history.back}>Back</Button>
             <VerticalSpacing />
           </React.Fragment>
         )}
@@ -95,12 +92,8 @@ class PrivacyPage extends Component {
     );
   }
 
-  renderMap() {
-    return <NearestLooMap numberNearest />;
-  }
-
   render() {
-    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
+    return this.renderMain();
   }
 }
 
