@@ -5,6 +5,8 @@ import { StaticRouter } from 'react-router';
 
 import ComponentPreview from '../ComponentPreview';
 
+import './Example.module.css';
+
 const isValidNode = () => true;
 const isCodeExample = ({ name = '' } = {}) => name === 'pre';
 

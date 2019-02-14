@@ -1,0 +1,10 @@
+.page {
+  max-width: 960px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.heading {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}

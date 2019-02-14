@@ -2,18 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'gatsby';
 
+import styles from './TOC.module.css';
+
 class TOC extends React.Component {
   render() {
     const { allComponents } = this.props.pageContext;
 
     return (
-      <div>
-        <h1>Component styleguide</h1>
+      <div className={styles.page}>
+        <div className={styles.section}>
+          <h1>Components</h1>
+          <p>A collection of reusable components for the GBPTM project.</p>
+        </div>
 
-        <ul>
-          {allComponents.map(({ displayName, filePath }, index) => (
-            <li key={index}>
-              <Link to={filePath}>{displayName}</Link>
+        <ul className={styles.grid}>
+          {allComponents.map(({ displayName, filePath, iconPath }, index) => (
+            <li key={index} className={styles.cell}>
+              <Link to={filePath} className={styles.link}>
+                <span>{displayName}</span>
+              </Link>
             </li>
           ))}
         </ul>
@@ -27,7 +34,7 @@ TOC.propTypes = {
     allComponents: PropTypes.arrayOf(
       PropTypes.shape({
         displayName: PropTypes.string.isRequired,
-        filePath: PropTypes.string.isRequired,
+        filePath: PropTypes.string,
       }).isRequired
     ).isRequired,
   }).isRequired,

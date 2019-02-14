@@ -1,0 +1,29 @@
+.page {
+  max-width: 960px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+}
+
+.cell {
+  display: flex;
+  border: 1px dotted;
+}
+
+.link {
+  flex: 1;
+  padding: 20px;
+}
+
+.link:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}

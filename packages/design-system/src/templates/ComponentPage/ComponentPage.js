@@ -6,18 +6,27 @@ import '../../global';
 
 import Example from './components/Example';
 
+import styles from './ComponentPage.module.css';
+
 class ComponentPage extends React.Component {
   render() {
     const { displayName, props, html, description } = this.props.pageContext;
 
     return (
-      <React.Fragment>
-        <div>
+      <div className={styles.page}>
+        <Link to="/components/" className={styles.back}>
+          Back to Components
+        </Link>
+
+        <div className={styles.section}>
           <h1>{displayName}</h1>
           {description && <p>{description.text}</p>}
+        </div>
+
+        <div className={styles.section}>
           <h2>Props/Methods</h2>
 
-          <table>
+          <table className={styles.table}>
             <thead>
               <tr>
                 <th>Name</th>
@@ -37,12 +46,10 @@ class ComponentPage extends React.Component {
               ))}
             </tbody>
           </table>
-
-          <Example html={html} />
-
-          <Link to="/components/">[index]</Link>
         </div>
-      </React.Fragment>
+
+        <Example html={html} />
+      </div>
     );
   }
 }
