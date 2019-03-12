@@ -27,6 +27,26 @@ const looInfoResolver = property => {
 const resolvers = {
   Query: {
     loo: (parent, args) => Loo.findById(args.id),
+    loos: async (parent, args) => {
+      let query = {
+        'properties.fee': { $exists: args.filters.fee },
+      };
+
+      let res = await Loo.paginate(query, {
+        page: args.pagination.page,
+        limit: args.pagination.limit,
+        sort: {
+          updatedAt: 'desc',
+        },
+      });
+      return {
+        loos: res.docs,
+        total: res.total,
+        pages: res.pages,
+        limit: res.limit,
+        page: res.page,
+      };
+    },
     loosByProximity: (parent, args) =>
       Loo.findNear(
         args.from.lng,

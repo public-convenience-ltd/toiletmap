@@ -118,11 +118,34 @@ const typeDefs = gql`
   type Query {
     "Retrieve a Loo by ID"
     loo(id: ID): Loo
+    "Search for loos matching a filter"
+    loos(
+      filters: LooFilter!
+      pagination: PaginationInput = { limit: 10, page: 1 }
+    ): LooSearchResponse!
     "Retrieve Loos by proximity to a Point"
     loosByProximity(
       "A Point from which to begin the search"
       from: ProximityInput!
-    ): [Loo]
+    ): [Loo!]!
+  }
+
+  "Include or Exclude Loos from search results based on whether they satisfy a filter condition"
+  input LooFilter {
+    fee: Boolean
+  }
+
+  input PaginationInput {
+    limit: Int = 10
+    page: Int = 1
+  }
+
+  type LooSearchResponse {
+    loos: [Loo!]!
+    total: Int
+    page: Int
+    limit: Int
+    pages: Int
   }
 
   input ProximityInput {
