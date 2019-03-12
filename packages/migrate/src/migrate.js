@@ -12,12 +12,47 @@ function ignoreEmpty(string) {
     return undefined;
   }
 
+  if (string === null) {
+    return null;
+  }
+
   if (string.trim().length === 0) {
     // only whitespace, the field was likely intended to be removed
     return null;
   }
 
   return string.trim();
+}
+
+/**
+ * Nullifies useless strings
+ *
+ */
+function ignorePointless(string) {
+  let pointless = [
+    'Free',
+    'free',
+    'FREE',
+    '0',
+    '£0',
+    '0.00',
+    '0.0',
+    '£0.00',
+    '£00.00',
+    'false',
+    'no',
+    'NO',
+    'No',
+    'none',
+    'None',
+    'Nil',
+    'Zero',
+    'No fee',
+  ];
+  if (pointless.includes(string)) {
+    return null;
+  }
+  return string;
 }
 
 /**
@@ -57,7 +92,7 @@ exports.toNewReport = function toNewReport(legacy) {
         radar: mapTriState(legacy.properties.radar),
         attended: mapTriState(legacy.properties.attended),
         automatic: mapTriState(legacy.properties.automatic),
-        fee: ignoreEmpty(legacy.properties.fee),
+        fee: ignoreEmpty(ignorePointless(legacy.properties.fee)),
         notes: ignoreEmpty(legacy.properties.notes),
         removalReason: ignoreEmpty(legacy.properties.removal_reason),
         area: legacy.properties.area.map(area =>
