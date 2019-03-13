@@ -30,6 +30,7 @@ const resolvers = {
     loos: async (parent, args) => {
       let query = {
         'properties.fee': { $exists: args.filters.fee },
+        'properties.active': args.filters.active,
       };
 
       let res = await Loo.paginate(query, {

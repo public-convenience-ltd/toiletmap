@@ -132,6 +132,7 @@ const typeDefs = gql`
 
   "Include or Exclude Loos from search results based on whether they satisfy a filter condition"
   input LooFilter {
+    active: Boolean = true
     fee: Boolean
   }
 
