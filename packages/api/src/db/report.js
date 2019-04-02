@@ -109,9 +109,9 @@ ReportSchema.methods.unroll = async function() {
   return looroll;
 };
 
-ReportSchema.methods.generateLoo = async function() {
+ReportSchema.methods.generateLoo = async function(idOverride) {
   let looroll = await this.unroll();
-  let loo = this.model('NewLoo').fromReports(looroll);
+  let loo = this.model('NewLoo').fromReports(looroll, idOverride);
   return loo;
 };
 
@@ -204,11 +204,15 @@ ReportSchema.statics.submit = async function(data, user, from) {
   };
 
   let report = new this(reportData);
+  let looId = null;
   if (from) {
     let oldloo = await this.model('NewLoo').findById(from);
     let lastReportId = oldloo.reports[oldloo.reports.length - 1];
     let previous = await this.model('NewReport').findById(lastReportId);
     await report.deriveFrom(previous);
+    if (oldloo) {
+      looId = oldloo._id;
+    }
   }
 
   try {
@@ -219,7 +223,7 @@ ReportSchema.statics.submit = async function(data, user, from) {
   const savedReport = await report.save();
 
   // Until we have a moderation queue we'll create/update a loo accordingly
-  const loo = await savedReport.generateLoo();
+  const loo = await savedReport.generateLoo(looId);
   const savedLoo = await this.model('NewLoo').findOneAndUpdate(
     { _id: loo._id },
     loo,
