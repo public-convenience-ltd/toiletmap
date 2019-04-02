@@ -110,6 +110,7 @@ ReportSchema.methods.unroll = async function() {
 };
 
 ReportSchema.methods.generateLoo = async function(idOverride) {
+  idOverride = idOverride || null;
   let looroll = await this.unroll();
   let loo = this.model('NewLoo').fromReports(looroll, idOverride);
   return loo;
