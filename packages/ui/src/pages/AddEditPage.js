@@ -338,7 +338,7 @@ class AddEditPage extends Component {
               No
             </span>
             <span className={styles.questionnaireCol} id="unknown">
-              Dont know
+              Don't know
             </span>
           </div>
 
