@@ -25,7 +25,7 @@ LooSchema.plugin(mongoosePaginate);
 /**
  * Create a Loo from a list of LooReports.
  */
-LooSchema.statics.fromReports = function(reports) {
+LooSchema.statics.fromReports = function(reports, idOverride) {
   // generate the loo from the sequence of diffs
   const properties = {};
   for (const rep of reports) {
@@ -53,8 +53,8 @@ LooSchema.statics.fromReports = function(reports) {
       return 0;
     });
 
-  // Calculate the persistent id for this loo from the first of its reports
-  const id = reports[0].suggestLooId();
+  // Use id given or calculate a persistent id for this loo from the first of its reports
+  const id = idOverride || reports[0].suggestLooId();
 
   // "this" refers to our static model
   return new this({
