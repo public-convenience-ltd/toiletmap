@@ -199,6 +199,11 @@ class AddEditPage extends Component {
       coordinates: [this.getCenter().lng, this.getCenter().lat],
     };
 
+    // Set questionnaire options to null before transport.
+    this.questionnaireMap.forEach(q => {
+      if (changes[q.property] === '') changes[q.property] = null;
+    });
+
     this.props.actionReportRequest(
       changes,
       this.isDerived() ? this.props.loo : undefined
