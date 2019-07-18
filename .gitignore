@@ -19,3 +19,6 @@ coverage
 
 # OSX
 .DS_Store
+
+# IDE
+.idea

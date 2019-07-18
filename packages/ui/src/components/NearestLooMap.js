@@ -43,8 +43,8 @@ class NearestLooMap extends Component {
     var looCentre;
     if (loo) {
       looCentre = {
-        lat: loo.geometry.coordinates[1],
-        lng: loo.geometry.coordinates[0],
+        lat: loo.properties.geometry.coordinates[1],
+        lng: loo.properties.geometry.coordinates[0],
       };
     }
 
@@ -62,7 +62,7 @@ class NearestLooMap extends Component {
           wrappedComponentRef={it => (this.looMap = it)}
           loos={loos}
           countLimit={this.props.numberNearest ? 5 : 0}
-          showAttribution={true}
+          showcontributor={true}
           showLocation={true}
           showSearchControl={true}
           showLocateControl={true}

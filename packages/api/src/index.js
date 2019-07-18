@@ -1,12 +1,11 @@
 require('newrelic');
-const config = require('./config/config');
+const config = require('./config');
 const express = require('express');
 const helmet = require('helmet');
 const compression = require('compression');
 const cors = require('cors');
 const path = require('path');
-require('./config/mongo'); // don't much like this bare require
-
+const applyGraphqlMiddleware = require('./graphql');
 const app = express();
 
 // we can make some nicer assumptions about security if query values are only
@@ -32,14 +31,20 @@ app.use(helmet());
 app.use(compression());
 app.use(cors());
 
-// Add API routes
-const routes = require('./routes');
-app.use('/api', routes);
+// Add GraphQL endpoint, playground and voyager
+applyGraphqlMiddleware(app);
 
-// Serve the built admin UI from /admin
-app.use('/admin', express.static(path.join(__dirname, 'www-admin')));
-app.get('/admin/*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'www-admin', 'index.html'));
+// Add REST API routes
+const rest = require('./rest');
+app.use('/api', rest);
+
+//redirect admin to explorer
+app.all('/admin', (req, res) => res.redirect(301, '/explorer/'));
+
+// Serve the built explorer UI from /explorer
+app.use('/explorer', express.static(path.join(__dirname, 'www-explorer')));
+app.get('/explorer/*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'www-explorer', 'index.html'));
 });
 
 // Serve the built UI from the root
@@ -53,6 +58,8 @@ if (!module.parent) {
   app.listen(config.app.port, () => {
     /* eslint-disable-next-line no-console */
     console.log(`Listening on port ${config.app.port}`);
+    console.log('Graphql on /graphql');
+    console.log('Graphql voyager on /voyager');
   });
 }
 

@@ -1,0 +1,55 @@
+{
+  "name": "@toiletmap/explorer",
+  "version": "2.9.0",
+  "private": true,
+  "homepage": "/explorer",
+  "devDependencies": {
+    "react-scripts": "2.1.3"
+  },
+  "dependencies": {
+    "@material-ui/core": "3.9.1",
+    "@material-ui/icons": "3.0.2",
+    "@reach/router": "1.2.1",
+    "@toiletmap/api-client": "2.9.0",
+    "apollo-boost": "0.1.27",
+    "auth0-js": "9.10.0",
+    "chart.js": "2.7.3",
+    "downshift": "3.2.1",
+    "graphql": "14.1.1",
+    "graphql.macro": "1.3.3",
+    "leaflet": "1.4.0",
+    "lodash": "4.17.11",
+    "moment": "2.24.0",
+    "ospoint": "0.2.0",
+    "papaparse": "4.6.3",
+    "prop-types": "15.6.2",
+    "query-string": "6.2.0",
+    "react": "16.7.0",
+    "react-animated-number": "0.4.4",
+    "react-apollo": "2.4.1",
+    "react-chartjs-2": "2.7.4",
+    "react-dom": "16.7.0",
+    "react-leaflet": "2.2.0",
+    "timeago-react": "2.0.1"
+  },
+  "scripts": {
+    "dev": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
+    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "development": [
+      "last 2 chrome versions",
+      "last 2 firefox versions",
+      "last 2 edge versions"
+    ],
+    "production": [
+      ">1%",
+      "last 4 versions",
+      "Firefox ESR",
+      "not ie < 11"
+    ]
+  }
+}

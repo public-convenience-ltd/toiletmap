@@ -118,11 +118,6 @@
   border: 1px solid #ccc;
 }
 
-:global(.leaflet-bar a) {
-  height: 30px !important;
-  width: 30px !important;
-}
-
 /* Override geocode control vendor styles */
 
 :global(.leaflet-control-geocoder-icon) {
@@ -134,6 +129,11 @@
   /* ../../images/geocoder.png */
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH3QkbCxsL2s3qTQAAAV9JREFUSMft1j1LHFEUxvGfuyCIWIhY2pjCKPhWaRsQLIRtFf0AfgHBwkbwWwi6FiKxUAghEEh6a18KiwSUNKIgvqDIyu6mucJlMO7MZhcEPXDhDvOc+z/nzDkzw7u9dmtJqevER7TjGod4aGQg4/iKEqrRusU6PjQi02VUEoDkusfM/4CWosNKKKKACUzjW3S/jKl6IIPBuYo/GPmHrhAyquIcHVlBW1GkYzW081FmC1kgrbgJjrsp9Hn8Dvq9l4S5xHVPVILvKUBl/Az7gSyguM5XKatwGfnm04LOon1vStDTLF2EDFPbr1Dz/WcCSVpX9Ex3snbdctRJizWG+nOk/ZQV1IHT4FzBCtoSmu4E5BFD9QztaGiGp4Mu8QWr+BENarwu6oX146DGu+7kGdhwPbA85rCN45DZETYxGZplrVGwWpYLn4wkrK9ZsGIjmiMtbAN3mG32r0EuDPEbsL/JR3UBK1q82QAAAABJRU5ErkJggg==') !important;
   cursor: pointer;
+}
+
+:global(.leaflet-bar a) {
+  height: 30px !important;
+  width: 30px !important;
 }
 
 :global(.leaflet-control-geocoder-throbber .leaflet-control-geocoder-icon) {

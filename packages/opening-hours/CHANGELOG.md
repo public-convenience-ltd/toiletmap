@@ -16,7 +16,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.8.0](https://github.com/neontribe/gbptm/compare/v2.7.0...v2.8.0) (2018-10-11)
 
-**Note:** Version bump only for package @neontribe/opening-hours
+**Note:** Version bump only for package @toiletmap/opening-hours
 
 
 

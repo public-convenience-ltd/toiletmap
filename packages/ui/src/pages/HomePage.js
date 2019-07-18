@@ -117,7 +117,11 @@ export class HomePage extends Component {
 
         <div className={layout.controls}>
           {config.allowAddEditLoo && (
-            <Link to="/report" className={controls.btn}>
+            <Link
+              to="/report"
+              className={controls.btn}
+              data-testid="add-a-toilet"
+            >
               Add a toilet
             </Link>
           )}

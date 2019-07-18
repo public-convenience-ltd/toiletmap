@@ -15,7 +15,7 @@ import controls from '../css/controls.module.css';
 import config from '../config';
 
 function constructCampaignLink(loo, email = '') {
-  let coords = loo.geometry.coordinates.join(',');
+  let coords = loo.properties.geometry.coordinates.join(',');
   let name = loo.properties.name || '';
   let opening = loo.properties.opening || '';
   return `https://docs.google.com/forms/d/e/1FAIpQLScMvkjoE68mR1Z-yyVH7YhdndHCd_k8QwbugwfbqgZGUr_DvQ/viewform?emailAddress=${encodeURIComponent(

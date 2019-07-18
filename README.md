@@ -2,6 +2,8 @@
 
 A suite of modules for [Public Convenience Ltd](https://www.publicconvenience.org/)'s *[Great British Public Toilet Map](https://www.toiletmap.org.uk)*
 
+This documentation is oriented towards developers, if you'd like to learn more about our data and how to access it please refer to [Toilet Map Explorer](https://www.toiletmap.org.uk/explorer).
+
 ## Getting Started
 
 ### Prerequisites
@@ -23,10 +25,12 @@ yarn install
 
 ### UI Development
 
-The gbptm ui is built with [create-react-app](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md). When working locally, if you don't want the hassle of setting up your own database and api server copy the contents of `packages/ui/example.env` to `packages/ui/.env` and adjust to taste.
+The toiletmap ui is built with [create-react-app](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md). There are two components, the main ui (`packages/ui`), and the explorer (`packages/explorer`)
 
-You can run the local development server with `yarn dev` from the `packages/ui` folder.
+When working locally, both of these apps provide a proxy to the api server at `https://gbptm-stage.herokuapp.com` this saves you having to set up an API server locally. Should you wish to proxy to a different backend copy the relevant application's `example.env` file to `.env` and adjust the values of the `PROXY` variable to taste.
 
-### Data sources
+You can run a local development server with `yarn dev` from each application's folder.
 
-For development purposes a reasonably up-to-date dataset is included in `data`. Use `yarn load:devData` to insert it in your local mongodb instance. **caution** this will dump your existing `gbptm` db first.
+### API Development
+
+The toiletmap api stores its data in a mongodb instance, you'll need one locally to perform api-related development. The data is managed via `mongoose.js` through the schema definitions in `packages/api/db`. The package exposes a REST api and a GraphQL endpoint. The REST api is scheduled for deprecation in late 2019.

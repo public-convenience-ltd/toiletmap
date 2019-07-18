@@ -25,12 +25,13 @@ class LooListItem extends Component {
     var loo = this.props.loo;
 
     var coords = [
-      this.props.loo.geometry.coordinates[1],
-      this.props.loo.geometry.coordinates[0],
+      this.props.loo.properties.geometry.coordinates[1],
+      this.props.loo.properties.geometry.coordinates[0],
     ];
 
     return (
       <Link
+        data-testid={`loo:${loo._id}`}
         to={`/loos/${loo._id}`}
         className={styles.container}
         onMouseOver={this.props.onHoverStart}

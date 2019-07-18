@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import config from '../config';
+import config, { PREFERENCES_KEY } from '../config';
 
 /* Note this approach will be deprecated in the future */
 import update from 'react-addons-update';
@@ -17,9 +17,6 @@ import helpers from '../css/helpers.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
-import api from '../api';
-import { PREFERENCES_KEY } from '../config';
-
 import accessibleIcon from '../images/pref-accessible.svg';
 import freeIcon from '../images/pref-cost.svg';
 import openIcon from '../images/pref-open.svg';
@@ -33,7 +30,7 @@ class PreferencesPage extends Component {
 
     this.state = {
       unsavedPreferences: {},
-      savedPreferences: api.getSettings(PREFERENCES_KEY),
+      savedPreferences: config.getSettings(PREFERENCES_KEY),
     };
 
     this.preferenceMap = [
@@ -97,7 +94,7 @@ class PreferencesPage extends Component {
 
     for (let key in preferences) {
       if (preferences.hasOwnProperty(key)) {
-        api.setSetting(PREFERENCES_KEY, key, preferences[key]);
+        config.setSetting(PREFERENCES_KEY, key, preferences[key]);
       }
     }
 

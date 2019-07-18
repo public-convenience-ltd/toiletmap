@@ -26,6 +26,7 @@ L.LooIcon = L.Icon.extend({
     iconSize: [25, 41],
     iconAnchor: [12.5, 41],
     highlight: false,
+    looId: null,
   },
 
   initialize: function(options) {
@@ -53,6 +54,7 @@ L.LooIcon = L.Icon.extend({
     if (!this.options.index) {
       var img = this._createImg(this._getIconUrl('icon'));
       this._setIconStyles(img, 'icon');
+      img.setAttribute('data-testid', 'looMarker:' + this.options.looId);
       return img;
     }
 
@@ -60,6 +62,7 @@ L.LooIcon = L.Icon.extend({
     var grouper = document.createElement('div');
     grouper.style.background = `url('${this._getIconUrl('icon')}')`;
     grouper.style.backgroundSize = '100% 100%';
+    grouper.setAttribute('data-testid', 'looMarker:' + this.options.looId);
     this._setIconStyles(grouper, 'icon');
 
     // make an index label
@@ -212,11 +215,11 @@ export class LooMap extends Component {
       var highlight = this.props.highlight && loo._id === this.props.highlight;
 
       var position = {
-        lat: loo.geometry.coordinates[1],
-        lng: loo.geometry.coordinates[0],
+        lat: loo.properties.geometry.coordinates[1],
+        lng: loo.properties.geometry.coordinates[0],
       };
 
-      var icon = new L.LooIcon({ highlight });
+      var icon = new L.LooIcon({ highlight, looId: id });
       var marker = L.marker(position, { icon }); // We'll work out numbering below
 
       // Individual marker click handler
@@ -250,6 +253,7 @@ export class LooMap extends Component {
           new L.LooIcon({
             highlight,
             index,
+            looId: loo._id,
           })
         );
       }
@@ -297,8 +301,8 @@ export class LooMap extends Component {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           minZoom={this.props.minZoom}
           maxZoom={this.props.maxZoom}
-          attribution={
-            this.props.showAttribution
+          contributor={
+            this.props.showcontributor
               ? 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               : ''
           }
@@ -334,7 +338,7 @@ LooMap.propTypes = {
   preventDragging: PropTypes.bool,
   showSearchControl: PropTypes.bool,
   showLocateControl: PropTypes.bool,
-  showAttribution: PropTypes.bool,
+  showcontributor: PropTypes.bool,
 
   // Label loo markers from a starting number, for a limited number of loos
   countFrom: PropTypes.number,
@@ -378,7 +382,7 @@ LooMap.defaultProps = {
   showSearchControl: false,
   showLocateControl: false,
   showZoomControls: true,
-  showAttribution: false,
+  showcontributor: false,
   showCenter: false,
   countLimit: 0,
   countFrom: 1,

@@ -1,0 +1,12 @@
+body {
+  background-color: #e8eaf6;
+}
+
+.main {
+  flex: 1;
+  padding: 2rem;
+}
+
+.intro {
+  padding-bottom: 2rem;
+}

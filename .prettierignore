@@ -5,3 +5,5 @@ build
 dist
 .git
 yarn.lock
+data
+leaflet-control-geocoder
