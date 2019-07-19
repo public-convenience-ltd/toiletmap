@@ -47,7 +47,6 @@ class HeadlineStats extends Component {
     this.state = {
       loadedInitialData: false,
       refreshing: false,
-      counters: null,
       proportions: null,
     };
   }
@@ -58,9 +57,6 @@ class HeadlineStats extends Component {
       refreshing: true,
     });
     //Gets stats from the api applying query values
-    const counters = await api.fetchCountersStatistics(q);
-    this.setState({ counters });
-
     const proportions = await api.fetchProportionsStatistics(q);
     this.setState({ proportions });
 

@@ -42,32 +42,10 @@ function scopeQuery(query, options) {
 }
 
 router.get('/counters', async (req, res) => {
-  const qWithInactive = _.merge({ includeInactive: true }, req.query);
-  const [
-    activeLoos,
-    loosCount,
-    reports,
-    removals,
-    multiReportLoos,
-  ] = await Promise.all([
-    Loo.count(scopeQuery({}, req.query)).exec(),
-    Loo.count(scopeQuery({}, qWithInactive)).exec(),
-    Report.count(scopeQuery({}, qWithInactive)).exec(),
-    Report.count(scopeQuery({ 'diff.active': false }, qWithInactive)).exec(),
-    Loo.count(
-      scopeQuery({ 'reports.1': { $exists: true } }, qWithInactive)
-    ).exec(),
-  ]);
-  const inactiveLoos = loosCount - activeLoos;
-
-  res.status(200).json({
-    'Total Toilets Added': loosCount,
-    'Active Toilets Added': activeLoos,
-    'Inactive/Removed Toilets': inactiveLoos,
-    'Total Loo Reports Recorded': reports,
-    'Removal Reports Submitted': removals,
-    'Loos with Multiple Reports': multiReportLoos,
-  });
+  res.status(400).json({
+    message:
+      'This API endpoint has moved permanently to the GraphQL API interface. [TODO more info]',
+  }); // 301: moved permanently
 });
 
 router.get('/proportions', async (req, res) => {
