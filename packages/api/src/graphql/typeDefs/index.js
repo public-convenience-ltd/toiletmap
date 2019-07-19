@@ -115,6 +115,18 @@ const typeDefs = gql`
     loo: Loo
   }
 
+  """
+  A container type for various statistical counters
+  """
+  type Counters {
+    activeLoos: Int
+    inactiveLoos: Int
+    totalLoos: Int
+    totalReports: Int
+    removalReports: Int
+    multipleReports: Int
+  }
+
   type Query {
     "Retrieve a Loo by ID"
     loo(id: ID): Loo
@@ -128,6 +140,8 @@ const typeDefs = gql`
       "A Point from which to begin the search"
       from: ProximityInput!
     ): [Loo!]!
+    "Retrieve 'counter' statistics"
+    counters: Counters!
   }
 
   "Include or Exclude Loos from search results based on whether they satisfy a filter condition"

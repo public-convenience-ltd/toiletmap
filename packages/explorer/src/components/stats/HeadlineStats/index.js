@@ -3,8 +3,10 @@ import { Location } from '@reach/router';
 import _ from 'lodash';
 import api from '@toiletmap/api-client';
 import moment from 'moment';
+import { loader } from 'graphql.macro';
+import { Query } from 'react-apollo';
 
-import Counter from './Counter';
+import Counter from '../Counter';
 import LooIcon from '@material-ui/icons/Wc';
 import RemoveIcon from '@material-ui/icons/Delete';
 import StatIcon from '@material-ui/icons/Assessment';
@@ -15,6 +17,8 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { Doughnut } from 'react-chartjs-2';
+
+const ALL_COUNTERS = loader('./counters.graphql');
 
 const RED = '#FF6384';
 const GREEN = '#36A2EB';
@@ -95,40 +99,49 @@ class HeadlineStats extends Component {
           </span>
         </div>
 
-        <div
-          style={{
-            display: 'flex',
-            flexFlow: 'row wrap',
-            justifyContent: 'space-around',
-            padding: '0.5px',
+        <Query query={ALL_COUNTERS}>
+          {({ loading, error, data }) => {
+            if (loading) return <h1>Loading counters...</h1>;
+            if (error) return <h1>Error fetching counters: {error}</h1>;
+
+            return (
+              <div
+                style={{
+                  display: 'flex',
+                  flexFlow: 'row wrap',
+                  justifyContent: 'space-around',
+                  padding: '0.5px',
+                }}
+              >
+                <Counter
+                  value={data.counters.activeLoos}
+                  icon={<LooIcon />}
+                  label="Active Loos"
+                />
+                <Counter
+                  value={data.counters.inactiveLoos}
+                  icon={<RemoveIcon />}
+                  label="Removed Loos"
+                />
+                <Counter
+                  value={data.counters.totalLoos}
+                  icon={<StatIcon />}
+                  label="Total Reports"
+                />
+                <Counter
+                  value={data.counters.multipleReports}
+                  icon={<RefreshIcon />}
+                  label="Multiple Reports"
+                />
+                <Counter
+                  value={data.counters.removalReports}
+                  icon={<RemoveIcon />}
+                  label="Removal Reports"
+                />
+              </div>
+            );
           }}
-        >
-          <Counter
-            value={this.state.counters['Active Toilets Added']}
-            icon={<LooIcon />}
-            label="Active Loos"
-          />
-          <Counter
-            value={this.state.counters['Inactive/Removed Toilets']}
-            icon={<RemoveIcon />}
-            label="Removed Loos"
-          />
-          <Counter
-            value={this.state.counters['Total Loo Reports Recorded']}
-            icon={<StatIcon />}
-            label="Total Reports"
-          />
-          <Counter
-            value={this.state.counters['Loos with Multiple Reports']}
-            icon={<RefreshIcon />}
-            label="Multiple Reports"
-          />
-          <Counter
-            value={this.state.counters['Removal Reports Submitted']}
-            icon={<RemoveIcon />}
-            label="Removal Reports"
-          />
-        </div>
+        </Query>
 
         <GridList cols={2} cellHeight={200} padding={1}>
           <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>

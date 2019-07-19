@@ -1,6 +1,7 @@
 const config = require('../../config');
 const { Loo, Report } = require('../../db')(config.mongo.url);
 const { GraphQLDateTime } = require('graphql-iso-date');
+const scopeQuery = require('./scopeQuery');
 
 const subPropertyResolver = property => (parent, args, context, info) =>
   parent[property][info.fieldName];
@@ -55,6 +56,37 @@ const resolvers = {
         args.from.maxDistance,
         'complete'
       ),
+    counters: async (parent, args) => {
+      const qWithInactive = { includeInactive: true };
+      const [
+        activeLoos,
+        totalLoos,
+        totalReports,
+        removalReports,
+        multipleReports,
+      ] = await Promise.all([
+        Loo.count(scopeQuery({}, {})).exec(),
+        Loo.count(scopeQuery({}, qWithInactive)).exec(),
+        Report.count(scopeQuery({}, qWithInactive)).exec(),
+        Report.count(
+          scopeQuery({ 'diff.active': false }, qWithInactive)
+        ).exec(),
+        Loo.count(
+          scopeQuery({ 'reports.1': { $exists: true } }, qWithInactive)
+        ).exec(),
+      ]);
+
+      const inactiveLoos = totalLoos - activeLoos;
+
+      return {
+        activeLoos,
+        inactiveLoos,
+        totalLoos,
+        totalReports,
+        removalReports,
+        multipleReports,
+      };
+    },
   },
 
   Mutation: {
