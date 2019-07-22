@@ -1,24 +1,21 @@
+fragment chunkDetails on Chunk {
+  name
+  value
+}
+
 query getAllProportions {
 	proportions {
     activeLoos {
-      active
-      inactive
-      unknown
+      ...chunkDetails
     }
     publicLoos {
-      public
-      restricted
-      unknown
+      ...chunkDetails
     }
     babyChanging {
-      yes
-      no
-      unknown
+      ...chunkDetails
     }
     accessibleLoos {
-      accessible
-      inaccessible
-      unknown
+      ...chunkDetails
     }
   }
 }

@@ -111,26 +111,32 @@ const resolvers = {
       ]);
 
       return {
-        activeLoos: {
-          active: activeLoos,
-          inactive: totalLoos - activeLoos,
-          unknown: 0,
-        },
-        publicLoos: {
-          public: publicLoos,
-          restricted: totalLoos - (publicLoos + unknownAccessLoos),
-          unknown: unknownAccessLoos,
-        },
-        babyChanging: {
-          yes: babyChange,
-          no: totalLoos - (babyChange + babyChangeUnknown),
-          unknown: babyChangeUnknown,
-        },
-        accessibleLoos: {
-          accessible: totalLoos - (inaccessibleLoos + accessibleLoosUnknown),
-          inaccessible: inaccessibleLoos,
-          unknown: accessibleLoosUnknown,
-        },
+        activeLoos: [
+          { name: 'active', value: activeLoos },
+          { name: 'inactive', value: totalLoos - activeLoos },
+          { name: 'unknown', value: 0 },
+        ],
+        publicLoos: [
+          { name: 'public', value: publicLoos },
+          {
+            name: 'restricted',
+            value: totalLoos - (publicLoos + unknownAccessLoos),
+          },
+          { name: 'unknown', value: unknownAccessLoos },
+        ],
+        babyChanging: [
+          { name: 'yes', value: babyChange },
+          { name: 'no', value: totalLoos - (babyChange + babyChangeUnknown) },
+          { name: 'unknown', value: babyChangeUnknown },
+        ],
+        accessibleLoos: [
+          {
+            name: 'accessible',
+            value: totalLoos - (inaccessibleLoos + accessibleLoosUnknown),
+          },
+          { name: 'inaccessible', value: inaccessibleLoos },
+          { name: 'unknown', value: accessibleLoosUnknown },
+        ],
       };
     },
   },

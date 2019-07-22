@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Location } from '@reach/router';
 import _ from 'lodash';
-import api from '@toiletmap/api-client';
 import moment from 'moment';
 import { loader } from 'graphql.macro';
 import { Query } from 'react-apollo';
@@ -42,10 +41,6 @@ function makeDoughnutData(labels, data) {
 }
 
 class HeadlineStats extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   UNSAFE_componentWillReceiveProps(props) {
     if (!_.isEqual(props.location.query, this.props.location.query)) {
       // TODO - what do we do when we have a query string?
@@ -124,6 +119,18 @@ class HeadlineStats extends Component {
               accessibleLoos,
             } = data.proportions;
 
+            const getNames = proportions => {
+              return proportions.map(chunk => {
+                return chunk.name;
+              });
+            };
+
+            const getValues = proportions => {
+              return proportions.map(chunk => {
+                return chunk.value;
+              });
+            };
+
             return (
               <GridList cols={2} cellHeight={200} padding={1}>
                 <GridListTile
@@ -151,12 +158,8 @@ class HeadlineStats extends Component {
                   <Doughnut
                     height={150}
                     data={makeDoughnutData(
-                      ['public', 'restricted', 'unknown'],
-                      [
-                        publicLoos.public,
-                        publicLoos.restricted,
-                        publicLoos.unknown,
-                      ]
+                      getNames(publicLoos),
+                      getValues(publicLoos)
                     )}
                   />
                   <GridListTileBar
@@ -169,8 +172,8 @@ class HeadlineStats extends Component {
                   <Doughnut
                     height={150}
                     data={makeDoughnutData(
-                      ['open', 'closed'],
-                      [activeLoos.active, activeLoos.inactive]
+                      getNames(activeLoos),
+                      getValues(activeLoos)
                     )}
                   />
                   <GridListTileBar
@@ -183,12 +186,8 @@ class HeadlineStats extends Component {
                   <Doughnut
                     height={150}
                     data={makeDoughnutData(
-                      ['accessible', 'inaccessible', 'unknown'],
-                      [
-                        accessibleLoos.accessible,
-                        accessibleLoos.inaccessible,
-                        accessibleLoos.unknown,
-                      ]
+                      getNames(accessibleLoos),
+                      getValues(accessibleLoos)
                     )}
                   />
                   <GridListTileBar
@@ -201,8 +200,8 @@ class HeadlineStats extends Component {
                   <Doughnut
                     height={150}
                     data={makeDoughnutData(
-                      ['yes', 'no', 'unknown'],
-                      [babyChanging.yes, babyChanging.no, babyChanging.unknown]
+                      getNames(babyChanging),
+                      getValues(babyChanging)
                     )}
                   />
                   <GridListTileBar

@@ -133,35 +133,16 @@ const typeDefs = gql`
     multipleReports: Int
   }
 
-  type PropActiveLoos {
-    active: Int!
-    inactive: Int!
-    unknown: Int!
-  }
-
-  type PropPublicLoos {
-    public: Int!
-    restricted: Int!
-    unknown: Int!
-  }
-
-  type PropBabyChanging {
-    yes: Int!
-    no: Int!
-    unknown: Int!
-  }
-
-  type PropAccessibleLoos {
-    accessible: Int!
-    inaccessible: Int!
-    unknown: Int!
+  type Chunk {
+    name: String!
+    value: Int!
   }
 
   type Proportions {
-    activeLoos: PropActiveLoos
-    publicLoos: PropPublicLoos
-    babyChanging: PropBabyChanging
-    accessibleLoos: PropAccessibleLoos
+    activeLoos: [Chunk]!
+    publicLoos: [Chunk]!
+    babyChanging: [Chunk]!
+    accessibleLoos: [Chunk]!
   }
 
   type Query {

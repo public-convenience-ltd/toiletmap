@@ -103,13 +103,6 @@ class API {
     return res.data;
   }
 
-  async fetchProportionsStatistics(q) {
-    const query = querystring.stringify(q);
-    const searchUrl = `${endpoint}/statistics/proportions?${query}`;
-    const res = await axios(searchUrl);
-    return res.data;
-  }
-
   async fetchContributors() {
     const searchUrl = `${endpoint}/statistics/contributors`;
     const res = await axios(searchUrl);

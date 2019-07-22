@@ -41,79 +41,16 @@ function scopeQuery(query, options) {
   return query;
 }
 
-router.get('/counters', async (req, res) => {
+function handleDeprecated(res) {
   res.status(400).json({
     message:
       'This API endpoint has moved permanently to the GraphQL API interface. [TODO more info]',
   });
-});
+}
 
-router.get('/proportions', async (req, res) => {
-  const [
-    publicLoos,
-    unknownAccessLoos,
-    babyChange,
-    babyChangeUnknown,
-    activeLoos,
-    inaccessibleLoos,
-    accessibleLoosUnknown,
-    loosCount,
-    inactiveLoos,
-  ] = await Promise.all([
-    Loo.countDocuments(
-      scopeQuery({ 'properties.access': 'public' }, req.query)
-    ).exec(),
-    Loo.countDocuments(
-      scopeQuery({ 'properties.access': 'none' }, req.query)
-    ).exec(),
-    Loo.countDocuments(
-      scopeQuery({ 'properties.babyChange': true }, req.query)
-    ).exec(),
-    Loo.countDocuments(
-      scopeQuery({ 'properties.babyChange': null }, req.query)
-    ).exec(),
-    Loo.countDocuments(scopeQuery({}, req.query)).exec(),
-    Loo.countDocuments(
-      scopeQuery(
-        {
-          'properties.accessibleType': 'none',
-        },
-        req.query
-      )
-    ).exec(),
-    Loo.countDocuments(
-      scopeQuery(
-        {
-          'properties.accessibleType': { $exists: false },
-        },
-        req.query
-      )
-    ).exec(),
-    Loo.countDocuments(scopeQuery({}, req.query)).exec(),
-    Loo.countDocuments(
-      scopeQuery({}, _.merge({ includeInactive: true }, req.query))
-    ),
-  ]);
+router.get('/counters', (req, res) => handleDeprecated(res));
 
-  res.status(200).json({
-    'Active Loos': [activeLoos, inactiveLoos - activeLoos, 0],
-    'Public Loos': [
-      publicLoos,
-      loosCount - (publicLoos + unknownAccessLoos),
-      unknownAccessLoos,
-    ],
-    'Baby Changing': [
-      babyChange,
-      loosCount - (babyChange + babyChangeUnknown),
-      babyChangeUnknown,
-    ],
-    'Accessible Loos': [
-      loosCount - (inaccessibleLoos + accessibleLoosUnknown),
-      inaccessibleLoos,
-      accessibleLoosUnknown,
-    ],
-  });
-});
+router.get('/proportions', (req, res) => handleDeprecated(res));
 
 router.get('/contributors', async (req, res) => {
   //const scope = scopeQuery({contributor: { $exists: true }}, req.query);
