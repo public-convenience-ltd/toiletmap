@@ -1,5 +1,15 @@
 const { DateTime } = require('luxon');
 
+/*
+  Scopes a `query` based on the `options` passed to it
+
+  Options can be:
+    - start: ISO formatted datetime string, default 2009-01-01
+    - end: ISO formatted datetime string, default now
+    - area: string, default 'All'
+    - areaType: string, default 'All'
+    - includeInactive: bool, default false
+*/
 function scopeQuery(query, options) {
   var start = options.start
     ? DateTime.fromISO(options.start)

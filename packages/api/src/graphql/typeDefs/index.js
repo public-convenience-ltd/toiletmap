@@ -119,12 +119,49 @@ const typeDefs = gql`
   A container type for various statistical counters
   """
   type Counters {
+    "The number of loos that are still open"
     activeLoos: Int
+    "The number of loos which have been closed/removed"
     inactiveLoos: Int
+    "The total number of loos"
     totalLoos: Int
+    "The total number of reports"
     totalReports: Int
+    "The total number of reports that report a loo as closed/removed"
     removalReports: Int
+    "The number of loos which have more than one report registered for them"
     multipleReports: Int
+  }
+
+  type PropActiveLoos {
+    active: Int!
+    inactive: Int!
+    unknown: Int!
+  }
+
+  type PropPublicLoos {
+    public: Int!
+    restricted: Int!
+    unknown: Int!
+  }
+
+  type PropBabyChanging {
+    yes: Int!
+    no: Int!
+    unknown: Int!
+  }
+
+  type PropAccessibleLoos {
+    accessible: Int!
+    inaccessible: Int!
+    unknown: Int!
+  }
+
+  type Proportions {
+    activeLoos: PropActiveLoos
+    publicLoos: PropPublicLoos
+    babyChanging: PropBabyChanging
+    accessibleLoos: PropAccessibleLoos
   }
 
   type Query {
@@ -142,6 +179,7 @@ const typeDefs = gql`
     ): [Loo!]!
     "Retrieve 'counter' statistics"
     counters: Counters!
+    proportions: Proportions!
   }
 
   "Include or Exclude Loos from search results based on whether they satisfy a filter condition"

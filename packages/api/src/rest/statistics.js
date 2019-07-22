@@ -45,7 +45,7 @@ router.get('/counters', async (req, res) => {
   res.status(400).json({
     message:
       'This API endpoint has moved permanently to the GraphQL API interface. [TODO more info]',
-  }); // 301: moved permanently
+  });
 });
 
 router.get('/proportions', async (req, res) => {
@@ -60,12 +60,20 @@ router.get('/proportions', async (req, res) => {
     loosCount,
     inactiveLoos,
   ] = await Promise.all([
-    Loo.count(scopeQuery({ 'properties.access': 'public' }, req.query)).exec(),
-    Loo.count(scopeQuery({ 'properties.access': 'none' }, req.query)).exec(),
-    Loo.count(scopeQuery({ 'properties.babyChange': true }, req.query)).exec(),
-    Loo.count(scopeQuery({ 'properties.babyChange': null }, req.query)).exec(),
-    Loo.count(scopeQuery({}, req.query)).exec(),
-    Loo.count(
+    Loo.countDocuments(
+      scopeQuery({ 'properties.access': 'public' }, req.query)
+    ).exec(),
+    Loo.countDocuments(
+      scopeQuery({ 'properties.access': 'none' }, req.query)
+    ).exec(),
+    Loo.countDocuments(
+      scopeQuery({ 'properties.babyChange': true }, req.query)
+    ).exec(),
+    Loo.countDocuments(
+      scopeQuery({ 'properties.babyChange': null }, req.query)
+    ).exec(),
+    Loo.countDocuments(scopeQuery({}, req.query)).exec(),
+    Loo.countDocuments(
       scopeQuery(
         {
           'properties.accessibleType': 'none',
@@ -73,7 +81,7 @@ router.get('/proportions', async (req, res) => {
         req.query
       )
     ).exec(),
-    Loo.count(
+    Loo.countDocuments(
       scopeQuery(
         {
           'properties.accessibleType': { $exists: false },
@@ -81,8 +89,10 @@ router.get('/proportions', async (req, res) => {
         req.query
       )
     ).exec(),
-    Loo.count(scopeQuery({}, req.query)).exec(),
-    Loo.count(scopeQuery({}, _.merge({ includeInactive: true }, req.query))),
+    Loo.countDocuments(scopeQuery({}, req.query)).exec(),
+    Loo.countDocuments(
+      scopeQuery({}, _.merge({ includeInactive: true }, req.query))
+    ),
   ]);
 
   res.status(200).json({

@@ -1,0 +1,24 @@
+query getAllProportions {
+	proportions {
+    activeLoos {
+      active
+      inactive
+      unknown
+    }
+    publicLoos {
+      public
+      restricted
+      unknown
+    }
+    babyChanging {
+      yes
+      no
+      unknown
+    }
+    accessibleLoos {
+      accessible
+      inaccessible
+      unknown
+    }
+  }
+}

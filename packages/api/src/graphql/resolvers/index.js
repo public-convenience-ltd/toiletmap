@@ -65,13 +65,13 @@ const resolvers = {
         removalReports,
         multipleReports,
       ] = await Promise.all([
-        Loo.count(scopeQuery({}, {})).exec(),
-        Loo.count(scopeQuery({}, qWithInactive)).exec(),
-        Report.count(scopeQuery({}, qWithInactive)).exec(),
-        Report.count(
+        Loo.countDocuments(scopeQuery({}, {})).exec(),
+        Loo.countDocuments(scopeQuery({}, qWithInactive)).exec(),
+        Report.countDocuments(scopeQuery({}, qWithInactive)).exec(),
+        Report.countDocuments(
           scopeQuery({ 'diff.active': false }, qWithInactive)
         ).exec(),
-        Loo.count(
+        Loo.countDocuments(
           scopeQuery({ 'reports.1': { $exists: true } }, qWithInactive)
         ).exec(),
       ]);
@@ -85,6 +85,52 @@ const resolvers = {
         totalReports,
         removalReports,
         multipleReports,
+      };
+    },
+    proportions: async (parent, args) => {
+      const [
+        publicLoos,
+        unknownAccessLoos,
+        babyChange,
+        babyChangeUnknown,
+        inaccessibleLoos,
+        accessibleLoosUnknown,
+        activeLoos,
+        totalLoos,
+      ] = await Promise.all([
+        Loo.countDocuments({ 'properties.access': 'public' }).exec(),
+        Loo.countDocuments({ 'properties.access': 'none' }).exec(),
+        Loo.countDocuments({ 'properties.babyChange': true }).exec(),
+        Loo.countDocuments({ 'properties.babyChange': null }).exec(),
+        Loo.countDocuments({ 'properties.accessibleType': 'none' }).exec(),
+        Loo.countDocuments({
+          'properties.accessibleType': { $exists: false },
+        }).exec(),
+        Loo.countDocuments({ 'properties.active': true }).exec(),
+        Loo.countDocuments({}).exec(),
+      ]);
+
+      return {
+        activeLoos: {
+          active: activeLoos,
+          inactive: totalLoos - activeLoos,
+          unknown: 0,
+        },
+        publicLoos: {
+          public: publicLoos,
+          restricted: totalLoos - (publicLoos + unknownAccessLoos),
+          unknown: unknownAccessLoos,
+        },
+        babyChanging: {
+          yes: babyChange,
+          no: totalLoos - (babyChange + babyChangeUnknown),
+          unknown: babyChangeUnknown,
+        },
+        accessibleLoos: {
+          accessible: totalLoos - (inaccessibleLoos + accessibleLoosUnknown),
+          inaccessible: inaccessibleLoos,
+          unknown: accessibleLoosUnknown,
+        },
       };
     },
   },
