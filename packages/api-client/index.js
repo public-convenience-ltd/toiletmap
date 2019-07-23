@@ -96,13 +96,6 @@ class API {
     return res.data;
   }
 
-  async fetchAreaStatistics(q) {
-    const query = querystring.stringify(q);
-    const searchUrl = `${endpoint}/statistics/areas?${query}`;
-    const res = await axios(searchUrl);
-    return res.data;
-  }
-
   async fetchContributors() {
     const searchUrl = `${endpoint}/statistics/contributors`;
     const res = await axios(searchUrl);
