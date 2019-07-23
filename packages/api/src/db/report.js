@@ -38,7 +38,7 @@ const ReportSchema = new Schema(
         }
 
         // check that it references us as the previous report
-        if (!next.previous.equals(this._id)) {
+        if (!next.previous.equaReportSchemals(this._id)) {
           throw new Error(
             `'next' report ${value} refers to wrong previous report, ${
               next.previous
@@ -235,6 +235,19 @@ ReportSchema.statics.submit = async function(data, user, from) {
   );
 
   return [savedReport, savedLoo];
+};
+
+ReportSchema.statics.getCounters = async function() {
+  const [totalReports, removalReports] = await Promise.all([
+    this.countDocuments({}).exec(),
+    this.countDocuments({ 'diff.active': false }).exec(),
+  ]);
+
+  // Be careful about changing the names of these - they are linked to the GraphQL schema
+  return {
+    totalReports,
+    removalReports,
+  };
 };
 
 module.exports = exports = ReportSchema;

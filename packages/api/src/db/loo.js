@@ -105,4 +105,22 @@ LooSchema.statics.findNear = function(lon, lat, radius, complete) {
   return this.aggregate(args);
 };
 
+LooSchema.statics.getCounters = async function() {
+  const [activeLoos, totalLoos, multipleReports] = await Promise.all([
+    this.countDocuments({ 'properties.active': true }).exec(),
+    this.countDocuments().exec(),
+    this.countDocuments({ 'reports.1': { $exists: true } }).exec(),
+  ]);
+
+  const inactiveLoos = totalLoos - activeLoos;
+
+  // Be careful about changing the names of these - they are linked to the GraphQL schema
+  return {
+    activeLoos,
+    inactiveLoos,
+    totalLoos,
+    multipleReports,
+  };
+};
+
 module.exports = exports = LooSchema;

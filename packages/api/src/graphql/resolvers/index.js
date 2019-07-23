@@ -57,34 +57,12 @@ const resolvers = {
         'complete'
       ),
     counters: async (parent, args) => {
-      const qWithInactive = { includeInactive: true };
-      const [
-        activeLoos,
-        totalLoos,
-        totalReports,
-        removalReports,
-        multipleReports,
-      ] = await Promise.all([
-        Loo.countDocuments(scopeQuery({}, {})).exec(),
-        Loo.countDocuments(scopeQuery({}, qWithInactive)).exec(),
-        Report.countDocuments(scopeQuery({}, qWithInactive)).exec(),
-        Report.countDocuments(
-          scopeQuery({ 'diff.active': false }, qWithInactive)
-        ).exec(),
-        Loo.countDocuments(
-          scopeQuery({ 'reports.1': { $exists: true } }, qWithInactive)
-        ).exec(),
-      ]);
-
-      const inactiveLoos = totalLoos - activeLoos;
+      let looCounters = await Loo.getCounters();
+      let reportCounters = await Report.getCounters();
 
       return {
-        activeLoos,
-        inactiveLoos,
-        totalLoos,
-        totalReports,
-        removalReports,
-        multipleReports,
+        ...looCounters,
+        ...reportCounters,
       };
     },
     proportions: async (parent, args) => {
