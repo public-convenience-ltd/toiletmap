@@ -133,16 +133,44 @@ const typeDefs = gql`
     multipleReports: Int
   }
 
+  """
+  A piece of proportional data, with a name and a value
+  """
   type Chunk {
     name: String!
     value: Int!
   }
 
+  """
+  Proportions of different values for different attributes
+  """
   type Proportions {
+    "The proportions of loos that are active vs removed"
     activeLoos: [Chunk]!
+    "The proportions of loos that are public vs restricted access"
     publicLoos: [Chunk]!
+    "The proportions of loos that have baby changing facilities vs those that don't"
     babyChanging: [Chunk]!
+    "The proportions of loos that are accessible vs not accessible"
     accessibleLoos: [Chunk]!
+  }
+
+  """
+  Statistics for a certain area.
+  """
+  type AreaStats {
+    "The area's identifier. Note that only the \`name\` will be passed with this field."
+    area: AdminGeo!
+    "The total number of loos in this area"
+    totalLoos: Int!
+    "The number of loos marked as active in this area"
+    activeLoos: Int!
+    "The number of loos marked as public access in this area"
+    publicLoos: Int!
+    "The number of loos marked with permissive access in this area"
+    permissiveLoos: Int!
+    "The number of loos with baby changing facilities in this area"
+    babyChangeLoos: Int!
   }
 
   type Query {
@@ -160,7 +188,10 @@ const typeDefs = gql`
     ): [Loo!]!
     "Retrieve 'counter' statistics"
     counters: Counters!
+    "Retrieve proportional statistics"
     proportions: Proportions!
+    "Retrieve statistics, broken down by area, for all areas"
+    areaStats: [AreaStats]!
   }
 
   "Include or Exclude Loos from search results based on whether they satisfy a filter condition"

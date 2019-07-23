@@ -139,6 +139,99 @@ const resolvers = {
         ],
       };
     },
+    areaStats: async (parent, args) => {
+      const scope = scopeQuery({}, { includeInactive: true });
+      const areas = await Loo.aggregate([
+        {
+          $match: scope,
+        },
+        {
+          $unwind: '$properties.area',
+        },
+        {
+          $project: {
+            areaName: {
+              $cond: [
+                '$properties.area.name',
+                '$properties.area.name',
+                'Unknown Area',
+              ],
+            },
+            active: {
+              $cond: ['$properties.active', 1, 0],
+            },
+            public: {
+              $cond: [
+                {
+                  $eq: ['$properties.access', 'public'],
+                },
+                1,
+                0,
+              ],
+            },
+            permissive: {
+              $cond: [
+                {
+                  $eq: ['$properties.access', 'permissive'],
+                },
+                1,
+                0,
+              ],
+            },
+            babyChange: {
+              $cond: [
+                {
+                  $and: [
+                    { $eq: ['$properties.babyChange', true] },
+                    { $eq: ['$properties.active', true] },
+                  ],
+                },
+                1,
+                0,
+              ],
+            },
+          },
+        },
+        {
+          $group: {
+            _id: '$areaName',
+            looCount: {
+              $sum: 1,
+            },
+            activeLooCount: {
+              $sum: '$active',
+            },
+            publicLooCount: {
+              $sum: '$public',
+            },
+            permissiveLooCount: {
+              $sum: '$permissive',
+            },
+            babyChangeCount: {
+              $sum: '$babyChange',
+            },
+          },
+        },
+        {
+          $sort: {
+            _id: 1,
+          },
+        },
+      ]).exec();
+
+      return areas.map(area => {
+        return {
+          area: {
+            name: area._id,
+          },
+          totalLoos: area.looCount,
+          activeLoos: area.activeLooCount,
+          publicLoos: area.publicLooCount,
+          permissiveLoos: area.permissiveLooCount,
+          babyChangeLoos: area.babyChangeCount,
+        };
+      });
+    },
   },
 
   Mutation: {
