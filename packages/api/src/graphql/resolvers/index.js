@@ -1,7 +1,6 @@
 const config = require('../../config');
 const { Loo, Report } = require('../../db')(config.mongo.url);
 const { GraphQLDateTime } = require('graphql-iso-date');
-const scopeQuery = require('./scopeQuery');
 
 const subPropertyResolver = property => (parent, args, context, info) =>
   parent[property][info.fieldName];
@@ -66,7 +65,7 @@ const resolvers = {
       };
     },
     proportions: async (parent, args) => {
-      const [
+      const {
         publicLoos,
         unknownAccessLoos,
         babyChange,
@@ -75,18 +74,7 @@ const resolvers = {
         accessibleLoosUnknown,
         activeLoos,
         totalLoos,
-      ] = await Promise.all([
-        Loo.countDocuments({ 'properties.access': 'public' }).exec(),
-        Loo.countDocuments({ 'properties.access': 'none' }).exec(),
-        Loo.countDocuments({ 'properties.babyChange': true }).exec(),
-        Loo.countDocuments({ 'properties.babyChange': null }).exec(),
-        Loo.countDocuments({ 'properties.accessibleType': 'none' }).exec(),
-        Loo.countDocuments({
-          'properties.accessibleType': { $exists: false },
-        }).exec(),
-        Loo.countDocuments({ 'properties.active': true }).exec(),
-        Loo.countDocuments({}).exec(),
-      ]);
+      } = await Loo.getProportionCounters();
 
       return {
         activeLoos: [
@@ -118,84 +106,7 @@ const resolvers = {
       };
     },
     areaStats: async (parent, args) => {
-      const scope = scopeQuery({}, { includeInactive: true });
-      const areas = await Loo.aggregate([
-        {
-          $match: scope,
-        },
-        {
-          $unwind: '$properties.area',
-        },
-        {
-          $project: {
-            areaName: {
-              $cond: [
-                '$properties.area.name',
-                '$properties.area.name',
-                'Unknown Area',
-              ],
-            },
-            active: {
-              $cond: ['$properties.active', 1, 0],
-            },
-            public: {
-              $cond: [
-                {
-                  $eq: ['$properties.access', 'public'],
-                },
-                1,
-                0,
-              ],
-            },
-            permissive: {
-              $cond: [
-                {
-                  $eq: ['$properties.access', 'permissive'],
-                },
-                1,
-                0,
-              ],
-            },
-            babyChange: {
-              $cond: [
-                {
-                  $and: [
-                    { $eq: ['$properties.babyChange', true] },
-                    { $eq: ['$properties.active', true] },
-                  ],
-                },
-                1,
-                0,
-              ],
-            },
-          },
-        },
-        {
-          $group: {
-            _id: '$areaName',
-            looCount: {
-              $sum: 1,
-            },
-            activeLooCount: {
-              $sum: '$active',
-            },
-            publicLooCount: {
-              $sum: '$public',
-            },
-            permissiveLooCount: {
-              $sum: '$permissive',
-            },
-            babyChangeCount: {
-              $sum: '$babyChange',
-            },
-          },
-        },
-        {
-          $sort: {
-            _id: 1,
-          },
-        },
-      ]).exec();
+      const areas = await Loo.getAreasCounters();
 
       return areas.map(area => {
         return {
