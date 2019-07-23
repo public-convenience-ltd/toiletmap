@@ -10,46 +10,36 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-import Papa from 'papaparse';
+//import Papa from 'papaparse';
 
 const AREA_STATS = loader('./areaStats.graphql');
 
 const cells = [
   {
-    keys: ['area', 'name'],
+    key: 'area.name',
     name: 'Area Name',
   },
   {
-    keys: ['totalLoos'],
+    key: 'totalLoos',
     name: 'Loos',
   },
   {
-    keys: ['activeLoos'],
+    key: 'activeLoos',
     name: 'Active Loos',
   },
   {
-    keys: ['publicLoos'],
+    key: 'publicLoos',
     name: 'Public Loos',
   },
   {
-    keys: ['permissiveLoos'],
+    key: 'permissiveLoos',
     name: 'Permissive Loos',
   },
   {
-    keys: ['babyChangeLoos'],
+    key: 'babyChangeLoos',
     name: 'Baby Changing',
   },
 ];
-
-/*
-  Get an element of an object/array from a 1-dimensional array of keys
-*/
-function accessFromKeys(obj, keys) {
-  if (keys.length <= 1) return obj[keys[0]];
-
-  // Recurse!
-  return accessFromKeys(obj[keys[0]], keys.slice(1));
-}
 
 class AreaComparisonStats extends Component {
   constructor(props) {
@@ -100,11 +90,7 @@ class AreaComparisonStats extends Component {
           <TableHead>
             <TableRow>
               {_.map(cells, val => {
-                return (
-                  <TableCell key={'h_' + val.keys.join('_')}>
-                    {val.name}
-                  </TableCell>
-                );
+                return <TableCell key={'h_' + val.key}>{val.name}</TableCell>;
               })}
               <TableCell key={'h_listLink'} />
             </TableRow>
@@ -118,8 +104,8 @@ class AreaComparisonStats extends Component {
                 return data.areaStats.map((area, index) => (
                   <TableRow key={index}>
                     {cells.map(cell => (
-                      <TableCell key={cell.keys.join('_') + 'c_' + index}>
-                        {accessFromKeys(area, cell.keys)}
+                      <TableCell key={cell.key + 'c_' + index}>
+                        {_.get(area, cell.key)}
                       </TableCell>
                     ))}
 
