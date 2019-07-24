@@ -6,7 +6,7 @@ import 'core-js/fn/object/entries';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
@@ -33,6 +33,7 @@ import ThanksPage from './pages/ThanksPage';
 import MapPage from './pages/MapPage';
 import UseOurLoosPage from './pages/UseOurLoosPage';
 import PrivacyPage from './pages/PrivacyPage';
+import NotFound from './pages/404';
 
 // Redux reducers
 import appReducer from './redux/modules/app';
@@ -84,40 +85,43 @@ if (typeof document !== 'undefined') {
       <Router history={history} forceRefresh={false}>
         <Analytics id={config.analyticsId}>
           <App>
-            <Route exact path="/" component={HomePage} />
-            <Route exact path="/preferences" component={PreferencesPage} />
-            <Route exact path="/about" component={AboutPage} />
-            <Route exact path="/privacy" component={PrivacyPage} />
-            <Route exact path="/use-our-loos" component={UseOurLoosPage} />
-            <Route path="/loos/:id" exact component={LooPage} />
-            <Route path="/login" component={LoginPage} />
-            <Route path="/map/:lng/:lat" component={MapPage} />
-            <Route
-              exact
-              path="/callback"
-              render={props => <AuthCallback auth={auth} {...props} />}
-            />
-            <ProtectedRoute
-              exact
-              path="/report"
-              component={AddEditPage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/edit"
-              component={AddEditPage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/remove"
-              component={RemovePage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/thanks"
-              component={ThanksPage}
-              auth={auth}
-            />
+            <Switch>
+              <Route exact path="/" component={HomePage} />
+              <Route exact path="/preferences" component={PreferencesPage} />
+              <Route exact path="/about" component={AboutPage} />
+              <Route exact path="/privacy" component={PrivacyPage} />
+              <Route exact path="/use-our-loos" component={UseOurLoosPage} />
+              <Route path="/loos/:id" exact component={LooPage} />
+              <Route path="/login" component={LoginPage} />
+              <Route path="/map/:lng/:lat" component={MapPage} />
+              <Route
+                exact
+                path="/callback"
+                render={props => <AuthCallback auth={auth} {...props} />}
+              />
+              <ProtectedRoute
+                exact
+                path="/report"
+                component={AddEditPage}
+                auth={auth}
+              />
+              <ProtectedRoute
+                path="/loos/:id/edit"
+                component={AddEditPage}
+                auth={auth}
+              />
+              <ProtectedRoute
+                path="/loos/:id/remove"
+                component={RemovePage}
+                auth={auth}
+              />
+              <ProtectedRoute
+                path="/loos/:id/thanks"
+                component={ThanksPage}
+                auth={auth}
+              />
+              <Route component={NotFound} />
+            </Switch>
           </App>
         </Analytics>
       </Router>
