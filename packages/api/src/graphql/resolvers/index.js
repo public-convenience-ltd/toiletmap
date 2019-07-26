@@ -159,6 +159,23 @@ const resolvers = {
         };
       });
     },
+    contributors: async (parent, args) => {
+      const contributors = await Report.aggregate([
+        {
+          $match: { contributor: { $exists: true } },
+        },
+        {
+          $group: {
+            _id: '$contributor',
+            reports: {
+              $sum: 1,
+            },
+          },
+        },
+      ]).exec();
+
+      return contributors.map(val => val._id);
+    },
   },
 
   Mutation: {

@@ -178,6 +178,13 @@ const typeDefs = gql`
     babyChangeLoos: Int!
   }
 
+  """
+  The name of a contributor. This requires a certain level of permissions to access.
+  """
+  type AuthedContributor {
+    name: String! @redact(requires: VIEW_CONTRIBUTOR_INFO, replace: "Anonymous")
+  }
+
   type Query {
     "Retrieve a Loo by ID"
     loo(id: ID): Loo
@@ -198,6 +205,8 @@ const typeDefs = gql`
     proportions: Proportions!
     "Retrieve statistics, broken down by area, for all areas"
     areaStats: [AreaStats!]!
+    "Retrieve a list of contributors. Requires correct authentication"
+    contributors: [AuthedContributor!]!
   }
 
   "Include or Exclude Loos from search results based on whether they satisfy a filter condition"
