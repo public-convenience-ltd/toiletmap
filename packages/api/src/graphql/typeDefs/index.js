@@ -78,6 +78,11 @@ const typeDefs = gql`
     NONE
   }
 
+  enum SortOrder {
+    NEWEST_FIRST
+    OLDEST_FIRST
+  }
+
   """
   Reported information about a real-world toilet
 
@@ -146,13 +151,13 @@ const typeDefs = gql`
   """
   type Proportions {
     "The proportions of loos that are active vs removed"
-    activeLoos: [Chunk]!
+    activeLoos: [Chunk!]!
     "The proportions of loos that are public vs restricted access"
-    publicLoos: [Chunk]!
+    publicLoos: [Chunk!]!
     "The proportions of loos that have baby changing facilities vs those that don't"
-    babyChanging: [Chunk]!
+    babyChanging: [Chunk!]!
     "The proportions of loos that are accessible vs not accessible"
-    accessibleLoos: [Chunk]!
+    accessibleLoos: [Chunk!]!
   }
 
   """
@@ -180,6 +185,7 @@ const typeDefs = gql`
     loos(
       filters: LooFilter!
       pagination: PaginationInput = { limit: 10, page: 1 }
+      sort: SortOrder = NEWEST_FIRST
     ): LooSearchResponse!
     "Retrieve Loos by proximity to a Point"
     loosByProximity(
@@ -191,13 +197,18 @@ const typeDefs = gql`
     "Retrieve proportional statistics"
     proportions: Proportions!
     "Retrieve statistics, broken down by area, for all areas"
-    areaStats: [AreaStats]!
+    areaStats: [AreaStats!]!
   }
 
   "Include or Exclude Loos from search results based on whether they satisfy a filter condition"
   input LooFilter {
     active: Boolean = true
     fee: Boolean
+    text: String
+    fromDate: DateTime
+    toDate: DateTime
+    contributors: [String]
+    areaName: String
   }
 
   input PaginationInput {

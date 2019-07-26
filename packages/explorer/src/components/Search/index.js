@@ -7,9 +7,9 @@ import TimeAgo from 'timeago-react';
 
 // Local
 import api from '@toiletmap/api-client';
-import { createStyled } from '../lib/utils.js';
-import LooTable from './table/LooTable';
-import LooTablePaginationActions from './table/LooTablePaginationActions';
+import { createStyled } from '../../lib/utils.js';
+import LooTable from '../table/LooTable';
+import LooTablePaginationActions from '../table/LooTablePaginationActions';
 import SearchAutocomplete from './SearchAutocomplete';
 
 // MUI Core
@@ -253,7 +253,7 @@ const renderTableCol = () => {
       <TableCell>Name</TableCell>
       <TableCell>Area</TableCell>
       <TableCell>Type</TableCell>
-      <TableCell>contributors</TableCell>
+      <TableCell>Contributors</TableCell>
       <TableCell>Date Updated</TableCell>
       <TableCell>Opening</TableCell>
     </TableRow>
@@ -572,9 +572,9 @@ class Search extends Component {
                         />
                       </FormControl>
                     </Grid>
-                    {this.props.auth.checkPermission(
+                    {/*this.props.auth.checkPermission(
                       'VIEW_CONTRIBUTOR_INFO'
-                    ) && (
+                       )*/ true && (
                       <Grid item xs={12} sm={6}>
                         <FormControl fullWidth>
                           <SearchAutocomplete

@@ -27,19 +27,54 @@ const looInfoResolver = property => {
 const resolvers = {
   Query: {
     loo: (parent, args) => Loo.findById(args.id),
-    loos: async (parent, args) => {
+    loos: async (parent, args, context) => {
+      const REQUIRED_PERMISSION = 'VIEW_CONTRIBUTOR_INFO';
+
+      // Construct the search query
       let query = {
         'properties.fee': { $exists: args.filters.fee },
         'properties.active': args.filters.active,
+        'properties.area.name': args.filters.areaName, // TODO: how does this handle an undefined? Move, remove etc?
       };
+
+      // Text search for the loo name
+      if (args.filters.text) {
+        query.$or = [{ $text: { $search: args.filters.text } }];
+      }
+
+      // Bound by dates
+      if (args.filters.fromDate || args.filters.toDate) {
+        query.updatedAt = {};
+      }
+
+      if (args.filters.fromDate) {
+        query.updatedAt.$gte = args.filters.fromDate;
+      }
+
+      if (args.filters.toDate) {
+        query.updatedAt.$lte = args.filters.toDate;
+      }
+
+      // Check the context for proper auth - we can't allow people to query by contributors when
+      // they don't have permission to view who has contributed info for each report
+      if (
+        args.filters.contributors &&
+        args.filters.contributors.length &&
+        context.user &&
+        context.user[config.auth0.permissionsKey].includes(REQUIRED_PERMISSION)
+      ) {
+        query.$and = [];
+        query.$and.push({
+          contributors: { $all: [args.filters.contributors] },
+        });
+      }
 
       let res = await Loo.paginate(query, {
         page: args.pagination.page,
         limit: args.pagination.limit,
-        sort: {
-          updatedAt: 'desc',
-        },
+        sort: args.sort,
       });
+
       return {
         loos: res.docs,
         total: res.total,
@@ -232,6 +267,11 @@ const resolvers = {
     MALE_URINAL: 'male urinal',
     CHILDREN: 'children only',
     NONE: 'none',
+  },
+
+  SortOrder: {
+    NEWEST_FIRST: { updatedAt: 'desc' },
+    OLDEST_FIRST: { updatedAt: 'asc' },
   },
 };
 
