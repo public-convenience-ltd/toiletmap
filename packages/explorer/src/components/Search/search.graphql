@@ -1,5 +1,5 @@
 query search(
-  $rows: Int = 5,
+  $rows: Int = 10,
   $page: Int = 1,
   $text: String,
   $order: SortOrder = NEWEST_FIRST,
@@ -17,20 +17,26 @@ query search(
       text: $text,
       fromDate: $fromDate,
       toDate: $toDate,
-      contributors: [$contributor]
+      contributors: [$contributor],
+      areaName: $areaName
     },
     sort: $order,
   ) {
-    name
-    area {
+    loos {
+      id
       name
+      area {
+        name
+        type
+      }
       type
+      reports {
+        contributor
+      }
+      updatedAt
+      opening
     }
-    type
-    reports {
-      contributor
-    }
-    updatedAt
-    opening
+    total
+    page
   }
 }

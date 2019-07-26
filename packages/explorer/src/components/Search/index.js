@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import _ from 'lodash';
 import queryString from 'query-string';
 import TimeAgo from 'timeago-react';
+import { Query } from 'react-apollo';
+import { loader } from 'graphql.macro';
 
 // Local
 import api from '@toiletmap/api-client';
@@ -39,6 +41,8 @@ import PeopleIcon from '@material-ui/icons/People';
 import NameIcon from '@material-ui/icons/TextFields';
 import CityIcon from '@material-ui/icons/LocationCity';
 import ClockIcon from '@material-ui/icons/AccessTime';
+
+const SEARCH_QUERY = loader('./search.graphql');
 
 const styles = theme => ({
   gridRoot: {
@@ -107,21 +111,23 @@ const Styled = createStyled(theme => ({
   },
 }));
 
-const renderTableRows = props => {
+const renderTableRows = ({ data }) => {
   const MISSING_MESSAGE = 'Not Recorded';
-  const { data } = props;
   return (
     <Styled>
       {({ classes }) => (
         <>
-          {data.docs.map(loo => {
-            const { contributors } = loo;
-            const { name, type, opening, area } = loo.properties;
+          {data.loos.map(loo => {
+            const contributors = loo.reports.reduce((current, next) => {
+              current.push(next.contributor);
+              return current;
+            }, []);
+            const { name, type, opening, area } = loo;
             return (
-              <React.Fragment key={loo._id}>
+              <React.Fragment key={loo.id}>
                 <TableRow className={classes.row}>
                   <TableCell component="th" scope="row">
-                    <Link className={classes.link} to={`../loos/${loo._id}`}>
+                    <Link className={classes.link} to={`../loos/${loo.id}`}>
                       <Chip
                         avatar={
                           <Avatar>
@@ -272,7 +278,7 @@ const renderTableFooter = props => {
     <TableRow>
       <TablePagination
         colSpan={6}
-        count={data.total || data.docs.count || 0}
+        count={data.total || data.loos.length || 0}
         rowsPerPage={rowsPerPage}
         page={parseInt(page, 10)}
         onChangePage={handleChangePage}
@@ -320,7 +326,6 @@ class Search extends Component {
     this.submitSearch();
 
     this.submitSearch = this.submitSearch.bind(this);
-    this.doSearch = this.doSearch.bind(this);
     this.fetchAreaData = this.fetchAreaData.bind(this);
     this.fetchContributorData = this.fetchContributorData.bind(this);
     this.updateSearchParam = this.updateSearchParam.bind(this);
@@ -333,7 +338,6 @@ class Search extends Component {
    * Fetches essential data upon loading the search route.
    */
   componentDidMount() {
-    this.doSearch(this.state.searchParams);
     this.fetchContributorData();
     this.fetchAreaData();
   }
@@ -347,15 +351,12 @@ class Search extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.location.search !== this.props.location.search) {
       const parsedQuery = queryString.parse(this.props.location.search);
-      this.setState(
-        {
-          searchParams: {
-            ...this.searchDefaults,
-            ...parsedQuery,
-          },
+      this.setState({
+        searchParams: {
+          ...this.searchDefaults,
+          ...parsedQuery,
         },
-        this.doSearch.bind(this)
-      );
+      });
     }
   }
 
@@ -381,32 +382,6 @@ class Search extends Component {
    */
   async submitSearch() {
     await navigate(`search?${this.queryString}`);
-  }
-
-  /**
-   *
-   * Performs a search given the provided query object and attaches results to state.
-   *
-   * @param {*} q
-   */
-  async doSearch(q = this.state.searchParams) {
-    if (!_.isEmpty(q)) {
-      this.setState({ searching: true });
-      try {
-        let results = await api.searchLoos(_.pickBy(q));
-        if (!this.props.auth.checkPermission('VIEW_CONTRIBUTOR_INFO')) {
-          results.docs = results.docs.map(r => ({
-            ...r,
-            contributors: ['Anonymous'],
-          }));
-        }
-        this.setState({ results });
-      } catch (err) {
-        console.error(err);
-      } finally {
-        this.setState({ searching: false });
-      }
-    }
   }
 
   /**
@@ -451,6 +426,7 @@ class Search extends Component {
 
   /**
    * Fetches a list of contributors and attaches to state.
+   * TODO use proper authentication
    */
   async fetchContributorData() {
     const result = await api.fetchContributors();
@@ -645,18 +621,34 @@ class Search extends Component {
             </RaisedButton>
           </div>
         </div>
+        <Query
+          query={SEARCH_QUERY}
+          variables={
+            {
+              /* TODO */
+            }
+          }
+        >
+          {({ loading, error, data }) => {
+            if (loading) return <h1>Loading...</h1>;
+            if (error) return <h1>Error fetching search data: {error}</h1>;
 
-        {this.state.results && this.state.results.docs && (
-          <LooTable
-            data={this.state.results}
-            rowRender={renderTableRows}
-            colRender={renderTableCol}
-            footerRender={renderTableFooter}
-            page={Math.max(0, this.state.searchParams.page - 1)}
-            rowsPerPage={parseInt(this.state.searchParams.limit)}
-            handleChangePage={this.handleChangePage}
-            handleChangeRowsPerPage={this.handleChangeRowsPerPage}
-          />
+            console.log(data.loos.loos);
+
+            return (
+              <LooTable
+                data={data.loos}
+                rowRender={renderTableRows}
+                colRender={renderTableCol}
+                footerRender={renderTableFooter}
+                page={Math.max(0, this.state.searchParams.page - 1)}
+                rowsPerPage={parseInt(this.state.searchParams.limit)}
+                handleChangePage={this.handleChangePage}
+                handleChangeRowsPerPage={this.handleChangeRowsPerPage}
+              />
+            );
+          }}
+        </Query>
         )}
       </div>
     );

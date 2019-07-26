@@ -34,8 +34,11 @@ const resolvers = {
       let query = {
         'properties.fee': { $exists: args.filters.fee },
         'properties.active': args.filters.active,
-        'properties.area.name': args.filters.areaName, // TODO: how does this handle an undefined? Move, remove etc?
       };
+
+      if (args.filters.areaName) {
+        query['properties.area.name'] = args.filters.areaName;
+      }
 
       // Text search for the loo name
       if (args.filters.text) {
