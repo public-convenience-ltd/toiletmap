@@ -1,6 +1,7 @@
 const config = require('../../config');
 const { Loo, Report } = require('../../db')(config.mongo.url);
 const { GraphQLDateTime } = require('graphql-iso-date');
+const _ = require('lodash');
 
 const subPropertyResolver = property => (parent, args, context, info) =>
   parent[property][info.fieldName];
@@ -60,6 +61,7 @@ const resolvers = {
 
       // Check the context for proper auth - we can't allow people to query by contributors when
       // they don't have permission to view who has contributed info for each report
+      args.filters.contributors = _.without(args.filters.contributors, null);
       if (
         args.filters.contributors &&
         args.filters.contributors.length &&
@@ -174,7 +176,7 @@ const resolvers = {
         },
       ]).exec();
 
-      return contributors.map(val => val._id);
+      return contributors.map(val => ({ name: val._id }));
     },
   },
 

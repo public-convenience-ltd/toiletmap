@@ -52,10 +52,6 @@ const apollo = new ApolloServer({
         });
       });
     }
-    if (user)
-      user['https://toiletmap.org.uk/permissions'].push(
-        'VIEW_CONTRIBUTOR_INFO'
-      ); // TODO: this fakes a permission, remove before merging
     return {
       user,
     };

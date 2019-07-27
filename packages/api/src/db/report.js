@@ -38,7 +38,7 @@ const ReportSchema = new Schema(
         }
 
         // check that it references us as the previous report
-        if (!next.previous.equaReportSchemals(this._id)) {
+        if (!next.previous.equals(this._id)) {
           throw new Error(
             `'next' report ${value} refers to wrong previous report, ${
               next.previous
