@@ -10,7 +10,6 @@ import { Router, Route } from 'react-router-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
-import Analytics from 'react-router-ga';
 
 import config from './config';
 
@@ -20,6 +19,7 @@ import * as serviceWorker from './serviceWorker';
 import './css/global';
 
 import App from './components/App';
+import Tracking from './components/Tracking';
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthCallback from './pages/AuthCallback';
 import LooPage from './pages/LooPage';
@@ -82,7 +82,7 @@ if (typeof document !== 'undefined') {
   ReactDOM.render(
     <Provider store={store}>
       <Router history={history} forceRefresh={false}>
-        <Analytics id={config.analyticsId}>
+        <Tracking analyticsId={config.analyticsId}>
           <App>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/preferences" component={PreferencesPage} />
@@ -119,7 +119,7 @@ if (typeof document !== 'undefined') {
               auth={auth}
             />
           </App>
-        </Analytics>
+        </Tracking>
       </Router>
     </Provider>,
     document.getElementById('root')
