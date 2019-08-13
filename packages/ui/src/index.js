@@ -19,7 +19,6 @@ import * as serviceWorker from './serviceWorker';
 import './css/global';
 
 import App from './components/App';
-import Tracking from './components/Tracking';
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthCallback from './pages/AuthCallback';
 import LooPage from './pages/LooPage';
@@ -82,44 +81,42 @@ if (typeof document !== 'undefined') {
   ReactDOM.render(
     <Provider store={store}>
       <Router history={history} forceRefresh={false}>
-        <Tracking analyticsId={config.analyticsId}>
-          <App>
-            <Route exact path="/" component={HomePage} />
-            <Route exact path="/preferences" component={PreferencesPage} />
-            <Route exact path="/about" component={AboutPage} />
-            <Route exact path="/privacy" component={PrivacyPage} />
-            <Route exact path="/use-our-loos" component={UseOurLoosPage} />
-            <Route path="/loos/:id" exact component={LooPage} />
-            <Route path="/login" component={LoginPage} />
-            <Route path="/map/:lng/:lat" component={MapPage} />
-            <Route
-              exact
-              path="/callback"
-              render={props => <AuthCallback auth={auth} {...props} />}
-            />
-            <ProtectedRoute
-              exact
-              path="/report"
-              component={AddEditPage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/edit"
-              component={AddEditPage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/remove"
-              component={RemovePage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/thanks"
-              component={ThanksPage}
-              auth={auth}
-            />
-          </App>
-        </Tracking>
+        <App>
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/preferences" component={PreferencesPage} />
+          <Route exact path="/about" component={AboutPage} />
+          <Route exact path="/privacy" component={PrivacyPage} />
+          <Route exact path="/use-our-loos" component={UseOurLoosPage} />
+          <Route path="/loos/:id" exact component={LooPage} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/map/:lng/:lat" component={MapPage} />
+          <Route
+            exact
+            path="/callback"
+            render={props => <AuthCallback auth={auth} {...props} />}
+          />
+          <ProtectedRoute
+            exact
+            path="/report"
+            component={AddEditPage}
+            auth={auth}
+          />
+          <ProtectedRoute
+            path="/loos/:id/edit"
+            component={AddEditPage}
+            auth={auth}
+          />
+          <ProtectedRoute
+            path="/loos/:id/remove"
+            component={RemovePage}
+            auth={auth}
+          />
+          <ProtectedRoute
+            path="/loos/:id/thanks"
+            component={ThanksPage}
+            auth={auth}
+          />
+        </App>
       </Router>
     </Provider>,
     document.getElementById('root')

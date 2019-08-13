@@ -1,39 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
 import styles from '../css/cookie-popup.module.css';
 import controlStyles from '../../css/controls.module.css';
 
-const CookiePopupButton = ({ onClick }) => (
-  <div className={styles.cookieButton}>
-    <button
-      type="button"
-      onClick={onClick}
-      className={controlStyles.btn}
-      title="Re-open the cookie banner"
-    >
-      <span role="img" aria-label="Cookie Emoji">
-        🍪
-      </span>
-    </button>
-  </div>
-);
-
 const noop = () => {};
-
-const CookiePopup = ({
-  options = [],
-  onChange = noop,
-  value,
-  open,
-  onOpen = noop,
-}) => (
+const CookiePopup = ({ options = [], onChange = noop, value, open }) => (
   <div className={open ? styles.wrapperOpen : styles.wrapper}>
-    {!open && <CookiePopupButton onClick={onOpen} />}
     {open && (
       <div className={styles.popupBody}>
-        <p>TODO: Some words</p>
+        <p>Tracking words</p>
+        <p>Tracking words</p>
+        <p>Tracking words</p>
+        <p>Tracking words</p>
+        <hr />
+        <p>Tracking words</p>
+        <p>Tracking words</p>
+        <p>Tracking words</p>
 
         <div>
           <div className={controlStyles.btnStack}>
@@ -45,7 +28,7 @@ const CookiePopup = ({
                 onClick={() => onChange(option)}
               >
                 {text}
-                {value === option && '✓'}
+                {value === option && ' ✓'}
               </button>
             ))}
           </div>
@@ -61,8 +44,4 @@ CookiePopup.propTypes = {
   onChange: PropTypes.func,
 };
 
-export default props =>
-  ReactDOM.createPortal(
-    <CookiePopup {...props} />,
-    document.getElementById('cookie-popup-root')
-  );
+export default props => <CookiePopup {...props} />;

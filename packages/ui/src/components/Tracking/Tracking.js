@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// TODO roll our own analytics as this doesn't clean up after itself.
-import Analytics from 'react-router-ga';
 import config from '../../config';
 
+import Analytics from 'react-router-ga';
 import AdobeTracking from './AdobeTracking';
 import CookiePopup from './CookiePopup';
 
@@ -16,31 +15,36 @@ export const TRACKING_STATE_CHOSEN = 'chosen tracking state';
 export const TRACKING_STATE_UNCHOSEN = 'not chosen tracking state';
 
 class Tracking extends React.Component {
-  static namespace = 'tracking';
+  static configNS = 'tracking';
 
   state = {
     trackingLevel: config.getSetting(
-      Tracking.namespace,
+      Tracking.configNS,
       'trackingLevel',
       TRACK_LVL_NONE
     ),
     trackingState: config.getSetting(
-      Tracking.namespace,
+      Tracking.configNS,
       'trackingState',
       TRACKING_STATE_UNCHOSEN
     ),
-    popupOpen:
-      config.getSetting(Tracking.namespace, 'trackingState') !==
-      TRACKING_STATE_CHOSEN,
   };
 
   saveTrackingLevel(newLevel) {
-    config.setSetting(Tracking.namespace, 'trackingLevel', newLevel);
+    const oldLevel = this.state.trackingLevel;
+
+    config.setSetting(Tracking.configNS, 'trackingLevel', newLevel);
     config.setSetting(
-      Tracking.namespace,
+      Tracking.configNS,
       'trackingState',
       TRACKING_STATE_CHOSEN
     );
+
+    // We need to full page reload to remove the analytics script from the DOM
+    // TODO: roll our own page tracking which cleans up after it's unmounted
+    if (oldLevel !== newLevel && newLevel === TRACK_LVL_NONE) {
+      window.location.reload();
+    }
   }
 
   trackingLevelChosen = newLevel => {
@@ -48,12 +52,9 @@ class Tracking extends React.Component {
     this.setState({
       trackingLevel: newLevel,
       trackingState: TRACKING_STATE_CHOSEN,
-      popupOpen: false,
     });
-  };
 
-  openCookiePopup = () => {
-    this.setState({ popupOpen: true });
+    this.props.onChange(newLevel);
   };
 
   renderTracking() {
@@ -80,16 +81,12 @@ class Tracking extends React.Component {
     return (
       <>
         <CookiePopup
-          open={this.state.popupOpen}
+          open={this.props.open}
           onChange={this.trackingLevelChosen}
-          onOpen={this.openCookiePopup}
           options={[
-            [TRACK_LVL_NONE, "Don't track me, just let me find a loo"],
-            [TRACK_LVL_MIN, 'Track my page visits and let me find a loo'],
-            [
-              TRACK_LVL_FULL,
-              'Track how I use the website and let me find a loo',
-            ],
+            [TRACK_LVL_NONE, "Don't track me"],
+            [TRACK_LVL_MIN, 'Track my page visits'],
+            [TRACK_LVL_FULL, 'Share with demestos'],
           ]}
           value={this.state.trackingLevel}
         />
@@ -102,6 +99,12 @@ class Tracking extends React.Component {
 Tracking.propTypes = {
   analyticsId: PropTypes.string,
   children: PropTypes.node,
+  open: PropTypes.bool,
+  onChange: PropTypes.func,
+};
+
+Tracking.defaultProps = {
+  onChange: () => {},
 };
 
 export default Tracking;

@@ -1,28 +1,12 @@
-.wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 99999;
-}
-
-.wrapperOpen {
-  composes: wrapper;
-  min-height: 100%;
-  display: flex;
-  align-items: stretch;
-  background: rgba(255, 255, 255, 0.7);
-  min-width: 100%;
-}
-
 .popupBody {
-  composes: mainContainer from './layout.module.css';
+  border: 1px dashed #1a1a1a;
   padding: 0.75rem;
-  background: #fff;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-bottom: 1rem;
 }
 
-.cookieButton {
-  margin: 0.25rem;
+.cookieButtonWrapper {
+  padding: 0.25rem 0;
 }
