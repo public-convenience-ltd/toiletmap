@@ -32,7 +32,7 @@ const CookiePopup = ({
   <div className={open ? styles.wrapperOpen : styles.wrapper}>
     {!open && <CookiePopupButton onClick={onOpen} />}
     {open && (
-      <>
+      <div className={styles.popupBody}>
         <p>TODO: Some words</p>
 
         <div>
@@ -50,7 +50,7 @@ const CookiePopup = ({
             ))}
           </div>
         </div>
-      </>
+      </div>
     )}
   </div>
 );

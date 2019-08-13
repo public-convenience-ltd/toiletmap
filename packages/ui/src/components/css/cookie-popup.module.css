@@ -2,15 +2,22 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 9999999999999999;
+  z-index: 99999;
 }
 
 .wrapperOpen {
-  padding: 1rem; /* TODO: check spacing in theme or similar */
-  background: #fff;
   composes: wrapper;
   min-height: 100%;
-  min-width: 33%;
+  display: flex;
+  align-items: stretch;
+  background: rgba(255, 255, 255, 0.7);
+  min-width: 100%;
+}
+
+.popupBody {
+  composes: mainContainer from './layout.module.css';
+  padding: 0.75rem;
+  background: #fff;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
