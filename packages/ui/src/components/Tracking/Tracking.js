@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 // TODO roll our own analytics as this doesn't clean up after itself.
 import Analytics from 'react-router-ga';
+import config from '../../config';
+
 import AdobeTracking from './AdobeTracking';
 import CookiePopup from './CookiePopup';
 
@@ -13,15 +15,36 @@ export const TRACK_LVL_NONE = 'no tracking';
 export const TRACKING_STATE_CHOSEN = 'chosen tracking state';
 export const TRACKING_STATE_UNCHOSEN = 'not chosen tracking state';
 
-const Tracking = class Tracking extends React.Component {
+class Tracking extends React.Component {
+  static namespace = 'tracking';
+
   state = {
-    trackingLevel: TRACK_LVL_NONE, // TODO load from local storage
-    trackingState: TRACKING_STATE_UNCHOSEN, // TODO load from local storage
-    popupOpen: true, // TODO set it to trackingState === TRACKING_STATE_UNCHOSEN
+    trackingLevel: config.getSetting(
+      Tracking.namespace,
+      'trackingLevel',
+      TRACK_LVL_NONE
+    ),
+    trackingState: config.getSetting(
+      Tracking.namespace,
+      'trackingState',
+      TRACKING_STATE_UNCHOSEN
+    ),
+    popupOpen:
+      config.getSetting(Tracking.namespace, 'trackingState') !==
+      TRACKING_STATE_CHOSEN,
   };
 
+  saveTrackingLevel(newLevel) {
+    config.setSetting(Tracking.namespace, 'trackingLevel', newLevel);
+    config.setSetting(
+      Tracking.namespace,
+      'trackingState',
+      TRACKING_STATE_CHOSEN
+    );
+  }
+
   trackingLevelChosen = newLevel => {
-    // TODO set into local storage
+    this.saveTrackingLevel(newLevel);
     this.setState({
       trackingLevel: newLevel,
       trackingState: TRACKING_STATE_CHOSEN,
@@ -74,7 +97,7 @@ const Tracking = class Tracking extends React.Component {
       </>
     );
   }
-};
+}
 
 Tracking.propTypes = {
   analyticsId: PropTypes.string,

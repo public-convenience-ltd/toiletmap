@@ -35,8 +35,10 @@ export default {
   getSettings(namespace) {
     return JSON.parse(localStorage.getItem(namespace) || '{}');
   },
-  getSetting(namespace, key) {
-    return this.getSettings(namespace)[key];
+  getSetting(namespace, key, defaultVal) {
+    const val = this.getSettings(namespace)[key];
+
+    return val === undefined ? defaultVal : val;
   },
   setSetting(namespace, key, val) {
     var settings = this.getSettings(namespace);
