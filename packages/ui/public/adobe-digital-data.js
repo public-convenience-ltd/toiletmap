@@ -1,4 +1,5 @@
-/* eslint-disable */
+/* eslint-disable no-useless-escape, no-native-reassign */
+/* global digitalData */
 // From the adobe documentation from Unilever
 function isMobile() {
   var check = false;
@@ -77,4 +78,4 @@ digitalData.page.attributes.brandCategory = 'BRAND CATEGORY';
 digitalData.page.attributes.country = 'BRAND COUNTRY';
 digitalData.page.attributes.globalBrand = 'GLOBAL BRAND NAME';
 digitalData.page.attributes.localBrand = 'LOCAL BRAND NAME';
-digitalData.user[n].profile[n].profileInfo.crmID = 'CRM ID'; //Optional digitalData.trackingInfo.tool[0].id = "GA TRACKING ID";
+// digitalData.user[n].profile[n].profileInfo.crmID = 'CRM ID'; //Optional digitalData.trackingInfo.tool[0].id = "GA TRACKING ID";
