@@ -11,8 +11,6 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 
-import config from './config';
-
 import * as serviceWorker from './serviceWorker';
 
 // Global CSS
