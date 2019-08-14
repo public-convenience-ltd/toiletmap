@@ -9,8 +9,23 @@ import Footer from './Footer';
 import layout from './css/layout.module.css';
 
 import config from '../config';
+import Tracking, { TRACKING_STATE_CHOSEN } from './Tracking/Tracking';
 
 class PageLayout extends Component {
+  state = {
+    cookieSettingsOpen:
+      config.getSetting(Tracking.configNS, 'trackingState') !==
+      TRACKING_STATE_CHOSEN,
+  };
+
+  handleCookieButtonClick = () => {
+    this.setState({ cookieSettingsOpen: true });
+  };
+
+  handleCookieChoiceChange = () => {
+    this.setState({ cookieSettingsOpen: false });
+  };
+
   render() {
     return (
       <div className={layout.appContainer}>
@@ -19,10 +34,16 @@ class PageLayout extends Component {
             <Header />
 
             <main className={layout.content}>
-              <div>{React.cloneElement(this.props.main, this.props)}</div>
+              <Tracking
+                analyticsId={config.analyticsId}
+                open={this.state.cookieSettingsOpen}
+                onChange={this.handleCookieChoiceChange}
+              >
+                <div>{React.cloneElement(this.props.main, this.props)}</div>
+              </Tracking>
             </main>
 
-            <Footer />
+            <Footer onCookieButtonClick={this.handleCookieButtonClick} />
           </div>
         </div>
 
