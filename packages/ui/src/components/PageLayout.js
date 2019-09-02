@@ -18,7 +18,7 @@ class PageLayout extends Component {
       TRACKING_STATE_CHOSEN,
   };
 
-  handleCookieButtonClick = () => {
+  handleCookieBoxButtonClick = () => {
     this.setState({ cookieSettingsOpen: true });
   };
 
@@ -43,7 +43,7 @@ class PageLayout extends Component {
               </Tracking>
             </main>
 
-            <Footer onCookieButtonClick={this.handleCookieButtonClick} />
+            <Footer onCookieBoxButtonClick={this.handleCookieBoxButtonClick} />
           </div>
         </div>
 

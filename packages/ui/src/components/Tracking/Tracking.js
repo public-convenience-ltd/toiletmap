@@ -5,10 +5,11 @@ import config from '../../config';
 
 import Analytics from 'react-router-ga';
 import AdobeTracking from './AdobeTracking';
-import CookiePopup from './CookiePopup';
+import CookieBox from './CookieBox';
 
 export const TRACK_LVL_FULL = 'full tracking';
-export const TRACK_LVL_MIN = 'min tracking';
+export const TRACK_LVL_GA = 'google analytics only tracking';
+export const TRACK_LVL_AA = 'adobe analytics only tracking';
 export const TRACK_LVL_NONE = 'no tracking';
 
 export const TRACKING_STATE_CHOSEN = 'chosen tracking state';
@@ -40,9 +41,7 @@ class Tracking extends React.Component {
       TRACKING_STATE_CHOSEN
     );
 
-    // We need to full page reload to remove the analytics script from the DOM
-    // TODO: roll our own page tracking which cleans up after it's unmounted
-    if (oldLevel !== newLevel && newLevel === TRACK_LVL_NONE) {
+    if (oldLevel !== newLevel) {
       window.location.reload();
     }
   }
@@ -60,34 +59,34 @@ class Tracking extends React.Component {
   renderTracking() {
     const { analyticsId, children } = this.props;
 
-    if (this.state.trackingLevel === TRACK_LVL_MIN) {
-      return <Analytics id={analyticsId}>{children}</Analytics>;
-    }
+    switch (this.state.trackingLevel) {
+      case TRACK_LVL_FULL:
+        return (
+          <>
+            <AdobeTracking />
+            <Analytics id={analyticsId}>{children}</Analytics>
+          </>
+        );
 
-    if (this.state.trackingLevel === TRACK_LVL_FULL) {
-      return (
-        <>
-          <AdobeTracking />
-          <Analytics id={analyticsId}>{children}</Analytics>
-        </>
-      );
-    }
+      case TRACK_LVL_GA:
+        return <Analytics id={analyticsId}>{children}</Analytics>;
 
-    // i.e. trackingLevel === TRACK_LVL_NONE
-    return children;
+      case TRACK_LVL_AA:
+        return <AdobeTracking />;
+
+      case TRACK_LVL_NONE:
+      default:
+        // i.e. trackingLevel === TRACK_LVL_NONE
+        return children;
+    }
   }
 
   render() {
     return (
       <>
-        <CookiePopup
+        <CookieBox
           open={this.props.open}
           onChange={this.trackingLevelChosen}
-          options={[
-            [TRACK_LVL_NONE, "Don't track me"],
-            [TRACK_LVL_MIN, 'Track my page visits'],
-            [TRACK_LVL_FULL, 'Share with demestos'],
-          ]}
           value={this.state.trackingLevel}
         />
         {this.renderTracking()}

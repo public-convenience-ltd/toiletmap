@@ -1,9 +1,9 @@
 import React from 'react';
 
-import styles from '../css/cookie-popup.module.css';
+import styles from '../css/cookie-box.module.css';
 import controlStyles from '../../css/controls.module.css';
 
-const CookiePopupButton = ({ onClick }) => (
+const CookieBoxButton = ({ onClick }) => (
   <div className={styles.cookieButtonWrapper}>
     <button
       className={controlStyles.btn}
@@ -18,4 +18,4 @@ const CookiePopupButton = ({ onClick }) => (
   </div>
 );
 
-export default CookiePopupButton;
+export default CookieBoxButton;
