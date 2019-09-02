@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import config from '../../config';
@@ -7,76 +7,74 @@ import Analytics from 'react-router-ga';
 import AdobeTracking from './AdobeTracking';
 import CookieBox from './CookieBox';
 
-export const TRACK_LVL_FULL = 'full tracking';
-export const TRACK_LVL_GA = 'google analytics only tracking';
-export const TRACK_LVL_AA = 'adobe analytics only tracking';
-export const TRACK_LVL_NONE = 'no tracking';
-
 export const TRACKING_STATE_CHOSEN = 'chosen tracking state';
 export const TRACKING_STATE_UNCHOSEN = 'not chosen tracking state';
+
+const becomeFalse = (oldVal, newVal) => oldVal && !newVal;
 
 class Tracking extends React.Component {
   static configNS = 'tracking';
 
   state = {
-    trackingLevel: config.getSetting(
-      Tracking.configNS,
-      'trackingLevel',
-      TRACK_LVL_NONE
-    ),
-    trackingState: config.getSetting(
-      Tracking.configNS,
-      'trackingState',
-      TRACKING_STATE_UNCHOSEN
-    ),
+    aaAccepted: config.getSetting(Tracking.configNS, 'aaAccepted'),
+    gaAccepted: config.getSetting(Tracking.configNS, 'gaAccepted'),
   };
 
-  saveTrackingLevel(newLevel) {
-    const oldLevel = this.state.trackingLevel;
+  saveTrackingLevel = ({ aaAccepted, gaAccepted }) => {
+    const oldVals = {
+      aaAccepted: this.state.aaAccepted,
+      gaAccepted: this.state.gaAccepted,
+    };
 
-    config.setSetting(Tracking.configNS, 'trackingLevel', newLevel);
-    config.setSetting(
-      Tracking.configNS,
-      'trackingState',
-      TRACKING_STATE_CHOSEN
-    );
-
-    if (oldLevel !== newLevel) {
-      window.location.reload();
-    }
-  }
-
-  trackingLevelChosen = newLevel => {
-    this.saveTrackingLevel(newLevel);
     this.setState({
-      trackingLevel: newLevel,
-      trackingState: TRACKING_STATE_CHOSEN,
+      aaAccepted,
+      gaAccepted,
     });
 
-    this.props.onChange(newLevel);
+    config.setSettings(Tracking.configNS, {
+      trackingState: TRACKING_STATE_CHOSEN,
+      aaAccepted: aaAccepted,
+      gaAccepted: gaAccepted,
+    });
+
+    this.props.onClose();
+
+    // Unload the scripts completely if we have de-selected tracking.
+    if (
+      becomeFalse(oldVals.aaAccepted, aaAccepted) ||
+      becomeFalse(oldVals.gaAccepted, gaAccepted)
+    ) {
+      window.location.reload();
+      return;
+    }
   };
 
   renderTracking() {
     const { analyticsId, children } = this.props;
+    const { gaAccepted, aaAccepted } = this.state;
 
-    switch (this.state.trackingLevel) {
-      case TRACK_LVL_FULL:
+    switch (true) {
+      case gaAccepted && aaAccepted:
         return (
-          <>
+          <Fragment>
             <AdobeTracking />
             <Analytics id={analyticsId}>{children}</Analytics>
-          </>
+          </Fragment>
         );
 
-      case TRACK_LVL_GA:
+      case gaAccepted:
         return <Analytics id={analyticsId}>{children}</Analytics>;
 
-      case TRACK_LVL_AA:
-        return <AdobeTracking />;
+      case aaAccepted:
+        return (
+          <Fragment>
+            <AdobeTracking />
+            {children}
+          </Fragment>
+        );
 
-      case TRACK_LVL_NONE:
       default:
-        // i.e. trackingLevel === TRACK_LVL_NONE
+        // i.e. don't track me at all
         return children;
     }
   }
@@ -86,7 +84,7 @@ class Tracking extends React.Component {
       <>
         <CookieBox
           open={this.props.open}
-          onChange={this.trackingLevelChosen}
+          onSubmit={this.saveTrackingLevel}
           value={this.state.trackingLevel}
         />
         {this.renderTracking()}
@@ -99,11 +97,11 @@ Tracking.propTypes = {
   analyticsId: PropTypes.string,
   children: PropTypes.node,
   open: PropTypes.bool,
-  onChange: PropTypes.func,
+  onClose: PropTypes.func,
 };
 
 Tracking.defaultProps = {
-  onChange: () => {},
+  onClose: () => {},
 };
 
 export default Tracking;

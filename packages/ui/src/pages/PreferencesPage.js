@@ -132,6 +132,7 @@ class PreferencesPage extends Component {
         <h2 className={headings.large}>My Toilet Preferences</h2>
 
         <div className={styles.preferences}>
+          {/* This checkbox style is also used in the CookieBox component. */}
           {this.preferenceMap.map(preference => (
             <label key={preference.name} className={controls.preferenceWrapper}>
               <input

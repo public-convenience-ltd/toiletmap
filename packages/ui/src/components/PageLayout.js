@@ -22,7 +22,7 @@ class PageLayout extends Component {
     this.setState({ cookieSettingsOpen: true });
   };
 
-  handleCookieChoiceChange = () => {
+  handleClose = () => {
     this.setState({ cookieSettingsOpen: false });
   };
 
@@ -37,7 +37,7 @@ class PageLayout extends Component {
               <Tracking
                 analyticsId={config.analyticsId}
                 open={this.state.cookieSettingsOpen}
-                onChange={this.handleCookieChoiceChange}
+                onClose={this.handleClose}
               >
                 <div>{React.cloneElement(this.props.main, this.props)}</div>
               </Tracking>
