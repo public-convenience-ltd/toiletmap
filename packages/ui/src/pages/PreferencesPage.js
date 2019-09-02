@@ -133,18 +133,18 @@ class PreferencesPage extends Component {
 
         <div className={styles.preferences}>
           {this.preferenceMap.map(preference => (
-            <label key={preference.name} className={styles.preferenceWrapper}>
+            <label key={preference.name} className={controls.preferenceWrapper}>
               <input
-                className={styles.preferenceInput}
+                className={controls.preferenceInput}
                 type="checkbox"
                 name={preference.name}
                 onChange={this.updateSelection}
                 defaultChecked={this.state.savedPreferences[preference.name]}
               />
-              <span className={styles.preference}>
+              <span className={controls.preference}>
                 <img
                   alt={preference.name}
-                  className={styles.preferenceImage}
+                  className={controls.preferenceImage}
                   src={preference.image}
                 />
                 <span>{preference.label}</span>
