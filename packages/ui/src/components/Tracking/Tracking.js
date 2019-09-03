@@ -33,11 +33,9 @@ class Tracking extends React.Component {
 
     config.setSettings(Tracking.configNS, {
       trackingState: TRACKING_STATE_CHOSEN,
-      aaAccepted: aaAccepted,
-      gaAccepted: gaAccepted,
+      aaAccepted,
+      gaAccepted,
     });
-
-    this.props.onClose();
 
     // Unload the scripts completely if we have de-selected tracking.
     if (
@@ -47,6 +45,7 @@ class Tracking extends React.Component {
       window.location.reload();
       return;
     }
+    this.props.onClose();
   };
 
   renderTracking() {
@@ -85,7 +84,8 @@ class Tracking extends React.Component {
         <CookieBox
           open={this.props.open}
           onSubmit={this.saveTrackingLevel}
-          value={this.state.trackingLevel}
+          aaAccepted={this.state.aaAccepted}
+          gaAccepted={this.state.gaAccepted}
         />
         {this.renderTracking()}
       </>

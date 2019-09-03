@@ -7,14 +7,14 @@ import controls from '../../css/controls.module.css';
 
 // Copy/pasted from pages/PreferencesPage.js.
 // TODO: Abstract this is we see this pattern any more times.
-const PreferenceCheckbox = ({ children, defaultChecked, name, onChange }) => (
+const PreferenceCheckbox = ({ children, checked, name, onChange }) => (
   <label className={controls.preferenceWrapper}>
     <input
       className={controls.preferenceInput}
       type="checkbox"
       name={name}
       onChange={onChange}
-      defaultChecked={defaultChecked}
+      checked={checked}
     />
     <span className={controls.preference}>{children}</span>
   </label>
@@ -37,8 +37,8 @@ class CookieBox extends React.Component {
     super(props, context);
 
     this.state = {
-      aaAccepted: props.aaAccepted,
-      gaAccepted: props.gaAccepted,
+      aaAccepted: props.aaAccepted || false,
+      gaAccepted: props.gaAccepted || false,
     };
   }
 
@@ -68,9 +68,9 @@ class CookieBox extends React.Component {
             <form onSubmit={this.handleSubmit}>
               <PreferenceCheckbox
                 onChange={evt =>
-                  this.setState({ aaAccepted: evt.target.checked })
+                  this.setState({ gaAccepted: evt.target.checked })
                 }
-                defaultChecked={this.state.aaAccepted}
+                checked={this.state.gaAccepted}
               >
                 <span>Opt in to Google Analytics</span>
               </PreferenceCheckbox>
@@ -84,9 +84,9 @@ class CookieBox extends React.Component {
 
               <PreferenceCheckbox
                 onChange={evt =>
-                  this.setState({ gaAccepted: evt.target.checked })
+                  this.setState({ aaAccepted: evt.target.checked })
                 }
-                defaultChecked={this.state.gaAccepted}
+                checked={this.state.aaAccepted}
               >
                 <span>Opt into Adobe Analytics</span>
               </PreferenceCheckbox>
