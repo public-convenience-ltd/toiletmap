@@ -18,6 +18,8 @@ class PageLayout extends Component {
       TRACKING_STATE_CHOSEN,
   };
 
+  mainRef = React.createRef();
+
   handleCookieBoxButtonClick = () => {
     this.setState({ cookieSettingsOpen: true });
   };
@@ -26,6 +28,14 @@ class PageLayout extends Component {
     this.setState({ cookieSettingsOpen: false });
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.mainRef.current) {
+      if (!prevState.cookieSettingsOpen && this.state.cookieSettingsOpen) {
+        this.mainRef.current.scrollTop = 0;
+      }
+    }
+  }
+
   render() {
     return (
       <div className={layout.appContainer}>
@@ -33,7 +43,7 @@ class PageLayout extends Component {
           <div className={layout.main}>
             <Header />
 
-            <main className={layout.content}>
+            <main ref={this.mainRef} className={layout.content}>
               <Tracking
                 analyticsId={config.analyticsId}
                 open={this.state.cookieSettingsOpen}
