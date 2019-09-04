@@ -1,12 +1,11 @@
 import React from 'react';
 
-import styles from '../css/cookie-box.module.css';
-import controlStyles from '../../css/controls.module.css';
+import styles from '../css/cookie-box-button.module.css';
 
 const CookieBoxButton = ({ onClick }) => (
   <div className={styles.cookieButtonWrapper}>
     <button
-      className={controlStyles.btn}
+      className={styles.btn}
       type="button"
       onClick={onClick}
       title="Open the cookie settings"
