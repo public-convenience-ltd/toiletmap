@@ -61,10 +61,9 @@ class CookieBox extends React.Component {
         <div className={styles.popupBody}>
           <p>We use two types of optional cookies on this site.</p>
           <p>
-            You can opt in to cookies that improve your experience with the site
-            so you can find a loo quicker. By opting in to the Google Analytics
-            cookie you would be sharing your data with Public Convenience Ltd
-            and tech partners Neontribe as well as Google itself.
+             Opt in to a Google Analytics cookie. This will help us improve your experience with the
+             site, so you can find a loo quicker. By opting in you would be sharing your data with Public
+             Convenience Ltd and tech partners Neontribe as well as Google itself.
           </p>
 
           <form onSubmit={this.handleSubmit}>
@@ -78,10 +77,10 @@ class CookieBox extends React.Component {
             </PreferenceCheckbox>
 
             <p>
-              You can also opt in to an additional cookie to support the project
-              indirectly. By opting in to the Adobe Analytics cookie we can
-              share your data with Unilever, and benefit from their continued
-              sponsorship. This opting in is entirely up to you.
+               You can also opt in to additional cookies to support the
+               project indirectly. By opting in to additional analytics cookies
+               we can share your data with Unilever via Google and Adobe Analytics, 
+               and benefit from Unilever's continued sponsorship. This opting in is entirely up to you.
             </p>
 
             <PreferenceCheckbox
