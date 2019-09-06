@@ -59,7 +59,6 @@ class CookieBox extends React.Component {
     return (
       <div>
         <div className={styles.popupBody}>
-          <p>We use two types of optional cookies on this site.</p>
           <p>
              Opt in to a Google Analytics cookie. This will help us improve your experience with the
              site, so you can find a loo quicker. By opting in you would be sharing your data with Public
