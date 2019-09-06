@@ -1,0 +1,42 @@
+query search(
+  $rows: Int = 10,
+  $page: Int = 1,
+  $text: String,
+  $order: SortOrder = NEWEST_FIRST,
+  $areaName: String,
+  $fromDate: DateTime,
+  $toDate: DateTime,
+  $contributor: String
+) {
+  loos(
+    pagination: {
+      limit: $rows,
+      page: $page
+    },
+    filters: {
+      text: $text,
+      fromDate: $fromDate,
+      toDate: $toDate,
+      contributors: [$contributor],
+      areaName: $areaName
+    },
+    sort: $order,
+  ) {
+    loos {
+      id
+      name
+      area {
+        name
+        type
+      }
+      type
+      reports {
+        contributor
+      }
+      updatedAt
+      opening
+    }
+    total
+    page
+  }
+}

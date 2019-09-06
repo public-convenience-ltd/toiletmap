@@ -1,0 +1,12 @@
+query getAreaStats {
+  areaStats {
+    area {
+      name
+    }
+    totalLoos
+    activeLoos
+    publicLoos
+    permissiveLoos
+    babyChangeLoos
+  }
+}

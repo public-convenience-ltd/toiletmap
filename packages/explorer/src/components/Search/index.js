@@ -4,12 +4,14 @@ import classNames from 'classnames';
 import _ from 'lodash';
 import queryString from 'query-string';
 import TimeAgo from 'timeago-react';
+import { Query } from 'react-apollo';
+import { loader } from 'graphql.macro';
 
 // Local
 import api from '@toiletmap/api-client';
-import { createStyled } from '../lib/utils.js';
-import LooTable from './table/LooTable';
-import LooTablePaginationActions from './table/LooTablePaginationActions';
+import { createStyled } from '../../lib/utils.js';
+import LooTable from '../table/LooTable';
+import LooTablePaginationActions from '../table/LooTablePaginationActions';
 import SearchAutocomplete from './SearchAutocomplete';
 
 // MUI Core
@@ -39,6 +41,9 @@ import PeopleIcon from '@material-ui/icons/People';
 import NameIcon from '@material-ui/icons/TextFields';
 import CityIcon from '@material-ui/icons/LocationCity';
 import ClockIcon from '@material-ui/icons/AccessTime';
+
+const SEARCH_QUERY = loader('./search.graphql');
+const CONTRIBUTORS = loader('./getContributors.graphql');
 
 const styles = theme => ({
   gridRoot: {
@@ -107,21 +112,24 @@ const Styled = createStyled(theme => ({
   },
 }));
 
-const renderTableRows = props => {
+const renderTableRows = ({ data }) => {
   const MISSING_MESSAGE = 'Not Recorded';
-  const { data } = props;
   return (
     <Styled>
       {({ classes }) => (
         <>
-          {data.docs.map(loo => {
-            const { contributors } = loo;
-            const { name, type, opening, area } = loo.properties;
+          {data.loos.map(loo => {
+            const contributors = loo.reports.reduce((current, next) => {
+              current.push(next.contributor);
+              return current;
+            }, []);
+            const { name, type, opening, area } = loo;
+
             return (
-              <React.Fragment key={loo._id}>
+              <React.Fragment key={loo.id}>
                 <TableRow className={classes.row}>
                   <TableCell component="th" scope="row">
-                    <Link className={classes.link} to={`../loos/${loo._id}`}>
+                    <Link className={classes.link} to={`../loos/${loo.id}`}>
                       <Chip
                         avatar={
                           <Avatar>
@@ -173,7 +181,11 @@ const renderTableRows = props => {
                           <PeopleIcon />
                         </Avatar>
                       }
-                      label={type || MISSING_MESSAGE}
+                      label={
+                        type
+                          ? _.startCase(_.toLower(type.replace(/_/g, ' ')))
+                          : MISSING_MESSAGE
+                      }
                       color={type ? 'primary' : 'secondary'}
                       variant="default"
                       clickable
@@ -253,7 +265,7 @@ const renderTableCol = () => {
       <TableCell>Name</TableCell>
       <TableCell>Area</TableCell>
       <TableCell>Type</TableCell>
-      <TableCell>contributors</TableCell>
+      <TableCell>Contributors</TableCell>
       <TableCell>Date Updated</TableCell>
       <TableCell>Opening</TableCell>
     </TableRow>
@@ -272,7 +284,7 @@ const renderTableFooter = props => {
     <TableRow>
       <TablePagination
         colSpan={6}
-        count={data.total || data.docs.count || 0}
+        count={data.total || data.loos.length || 0}
         rowsPerPage={rowsPerPage}
         page={parseInt(page, 10)}
         onChangePage={handleChangePage}
@@ -289,13 +301,13 @@ class Search extends Component {
 
     this.searchDefaults = {
       text: '',
-      order: 'desc',
+      order: 'NEWEST_FIRST',
       to_date: '',
       from_date: '',
       contributors: '',
       area_name: '',
       page: 1,
-      limit: 5,
+      limit: 10,
     };
 
     const parsedQuery = queryString.parse(this.props.location.search);
@@ -303,7 +315,6 @@ class Search extends Component {
       ? parsedQuery.page
       : this.searchDefaults.page;
     this.state = {
-      searching: false,
       expanded: false,
       searchParams: {
         ...this.searchDefaults,
@@ -313,16 +324,13 @@ class Search extends Component {
         page: pageCheck,
       },
       areas: [],
-      contributors: [],
     };
 
     // Submit new search with potentially modified search state.
     this.submitSearch();
 
     this.submitSearch = this.submitSearch.bind(this);
-    this.doSearch = this.doSearch.bind(this);
     this.fetchAreaData = this.fetchAreaData.bind(this);
-    this.fetchContributorData = this.fetchContributorData.bind(this);
     this.updateSearchParam = this.updateSearchParam.bind(this);
     this.updateSearchField = this.updateSearchField.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
@@ -333,8 +341,6 @@ class Search extends Component {
    * Fetches essential data upon loading the search route.
    */
   componentDidMount() {
-    this.doSearch(this.state.searchParams);
-    this.fetchContributorData();
     this.fetchAreaData();
   }
 
@@ -347,15 +353,12 @@ class Search extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.location.search !== this.props.location.search) {
       const parsedQuery = queryString.parse(this.props.location.search);
-      this.setState(
-        {
-          searchParams: {
-            ...this.searchDefaults,
-            ...parsedQuery,
-          },
+      this.setState({
+        searchParams: {
+          ...this.searchDefaults,
+          ...parsedQuery,
         },
-        this.doSearch.bind(this)
-      );
+      });
     }
   }
 
@@ -381,32 +384,6 @@ class Search extends Component {
    */
   async submitSearch() {
     await navigate(`search?${this.queryString}`);
-  }
-
-  /**
-   *
-   * Performs a search given the provided query object and attaches results to state.
-   *
-   * @param {*} q
-   */
-  async doSearch(q = this.state.searchParams) {
-    if (!_.isEmpty(q)) {
-      this.setState({ searching: true });
-      try {
-        let results = await api.searchLoos(_.pickBy(q));
-        if (!this.props.auth.checkPermission('VIEW_CONTRIBUTOR_INFO')) {
-          results.docs = results.docs.map(r => ({
-            ...r,
-            contributors: ['Anonymous'],
-          }));
-        }
-        this.setState({ results });
-      } catch (err) {
-        console.error(err);
-      } finally {
-        this.setState({ searching: false });
-      }
-    }
   }
 
   /**
@@ -446,17 +423,6 @@ class Search extends Component {
     result.All = _.uniq(_.flatten(_.values(result))).map(x => ({ label: x }));
     this.setState({
       areas: result.All,
-    });
-  }
-
-  /**
-   * Fetches a list of contributors and attaches to state.
-   */
-  async fetchContributorData() {
-    const result = await api.fetchContributors();
-    const contributors = Object.keys(result).map(x => ({ label: x }));
-    this.setState({
-      contributors: contributors,
     });
   }
 
@@ -506,6 +472,36 @@ class Search extends Component {
     );
   }
 
+  /**
+   * Takes a date string and returns a date object or, if the string is empty, null
+   *
+   * @param {string} dateString
+   */
+  parseDate(dateString) {
+    return dateString ? new Date(dateString) : null;
+  }
+
+  /**
+   * Gets the GraphQL query variables
+   */
+  get queryVariables() {
+    let fromDate = this.parseDate(this.state.searchParams.from_date);
+    let toDate = this.parseDate(this.state.searchParams.to_date);
+
+    let variables = {
+      rows: parseInt(this.state.searchParams.limit),
+      page: parseInt(this.state.searchParams.page),
+      text: this.state.searchParams.text,
+      order: this.state.searchParams.order,
+      areaName: this.state.searchParams.area_name,
+      fromDate,
+      toDate,
+      contributor: this.state.searchParams.contributors,
+    };
+
+    return variables;
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -534,10 +530,10 @@ class Search extends Component {
                   onChange={_.partial(this.updateSearchField, 'order')}
                   input={<Input name="order" id="order-helper" />}
                 >
-                  <MenuItem value={'desc'} key={0}>
+                  <MenuItem value={'NEWEST_FIRST'} key={0}>
                     Newest First
                   </MenuItem>
-                  <MenuItem value={'asc'} key={1}>
+                  <MenuItem value={'OLDEST_FIRST'} key={1}>
                     Oldest First
                   </MenuItem>
                 </Select>
@@ -577,17 +573,36 @@ class Search extends Component {
                     ) && (
                       <Grid item xs={12} sm={6}>
                         <FormControl fullWidth>
-                          <SearchAutocomplete
-                            id="contributor-search"
-                            onChange={_.partial(
-                              this.updateSearchParam,
-                              'contributors'
-                            )}
-                            selectedItem={this.state.searchParams.contributors}
-                            suggestions={this.state.contributors}
-                            placeholderText="Search Contributors"
-                            ariaLabel="Clear contributor input box"
-                          />
+                          <Query query={CONTRIBUTORS}>
+                            {({ loading, error, data }) => {
+                              if (loading) return null;
+                              if (error) {
+                                console.error(error);
+                                return null;
+                              }
+
+                              // Re-map contributors for search autocomplete
+                              let contributors = data.contributors.map(
+                                contributor => ({ label: contributor.name })
+                              );
+
+                              return (
+                                <SearchAutocomplete
+                                  id="contributor-search"
+                                  onChange={_.partial(
+                                    this.updateSearchParam,
+                                    'contributors'
+                                  )}
+                                  selectedItem={
+                                    this.state.searchParams.contributors
+                                  }
+                                  suggestions={contributors}
+                                  placeholderText="Search Contributors"
+                                  ariaLabel="Clear contributor input box"
+                                />
+                              );
+                            }}
+                          </Query>
                         </FormControl>
                       </Grid>
                     )}
@@ -638,26 +653,31 @@ class Search extends Component {
               color="primary"
               className={classes.button}
               onClick={this.submitSearch}
-              disabled={this.state.searching}
             >
               <SearchIcon className={classes.rightIcon} />
               Search
             </RaisedButton>
           </div>
         </div>
+        <Query query={SEARCH_QUERY} variables={this.queryVariables}>
+          {({ loading, error, data }) => {
+            if (loading) return <h1>Loading...</h1>;
+            if (error) return <h1>Error fetching search data: {error}</h1>;
 
-        {this.state.results && this.state.results.docs && (
-          <LooTable
-            data={this.state.results}
-            rowRender={renderTableRows}
-            colRender={renderTableCol}
-            footerRender={renderTableFooter}
-            page={Math.max(0, this.state.searchParams.page - 1)}
-            rowsPerPage={parseInt(this.state.searchParams.limit)}
-            handleChangePage={this.handleChangePage}
-            handleChangeRowsPerPage={this.handleChangeRowsPerPage}
-          />
-        )}
+            return (
+              <LooTable
+                data={data.loos}
+                rowRender={renderTableRows}
+                colRender={renderTableCol}
+                footerRender={renderTableFooter}
+                page={Math.max(0, this.state.searchParams.page - 1)}
+                rowsPerPage={parseInt(this.state.searchParams.limit)}
+                handleChangePage={this.handleChangePage}
+                handleChangeRowsPerPage={this.handleChangeRowsPerPage}
+              />
+            );
+          }}
+        </Query>
       </div>
     );
   }

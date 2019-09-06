@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import api from '@toiletmap/api-client';
 import { Link } from '@reach/router';
+import { loader } from 'graphql.macro';
+import { Query } from 'react-apollo';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,31 +10,33 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-import Papa from 'papaparse';
+//import Papa from 'papaparse';
+
+const AREA_STATS = loader('./areaStats.graphql');
 
 const cells = [
   {
-    key: '_id',
+    key: 'area.name',
     name: 'Area Name',
   },
   {
-    key: 'looCount',
+    key: 'totalLoos',
     name: 'Loos',
   },
   {
-    key: 'activeLooCount',
+    key: 'activeLoos',
     name: 'Active Loos',
   },
   {
-    key: 'publicLooCount',
+    key: 'publicLoos',
     name: 'Public Loos',
   },
   {
-    key: 'permissiveLooCount',
+    key: 'permissiveLoos',
     name: 'Permissive Loos',
   },
   {
-    key: 'babyChangeCount',
+    key: 'babyChangeLoos',
     name: 'Baby Changing',
   },
 ];
@@ -41,45 +44,18 @@ const cells = [
 class AreaComparisonStats extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      loadedInitialData: false,
-      refreshing: false,
-      data: null,
-    };
-
     this.downloadCSV = this.downloadCSV.bind(this);
-  }
-
-  async fetchStats(query) {
-    var q = query || this.props.location.query;
-    this.setState({
-      refreshing: true,
-    });
-    //Gets stats from the api applying query values
-    const result = await api.fetchAreaStatistics(q);
-    this.setState({
-      data: result,
-      refreshing: false,
-    });
-  }
-
-  componentDidMount() {
-    // Rerieve stats for the initial query
-    this.fetchStats().then(() => {
-      this.setState({
-        loadedInitialData: true,
-      });
-    });
   }
 
   UNSAFE_componentWillReceiveProps(props) {
     if (!_.isEqual(props.location.query, this.props.location.query)) {
-      this.fetchStats(props.location.query);
+      // TODO - what do we do when we have a query string?
     }
   }
 
   downloadCSV() {
+    // TODO: to get the data for this CSV, use a GraphQL query with `withApollo`
+    /*
     console.log('Download a csv');
     var csv = Papa.unparse(this.state.data);
     console.log(csv);
@@ -92,10 +68,11 @@ class AreaComparisonStats extends Component {
     link.setAttribute('href', data);
     link.setAttribute('download', 'gbptm.csv');
     link.click();
+    */
   }
 
   render() {
-    return this.state.loadedInitialData ? (
+    return (
       <div>
         <div
           style={{
@@ -119,22 +96,28 @@ class AreaComparisonStats extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.state.data.map((row, index) => (
-              <TableRow key={index}>
-                {cells.map(cell => {
-                  return (
-                    <TableCell key={cell.key + 'c_' + index}>
-                      {row[cell.key]}
+            <Query query={AREA_STATS}>
+              {({ loading, error, data }) => {
+                if (loading) return <h1>Loading area stats...</h1>;
+                if (error) return <h1>Error fetching area stats: {error}</h1>;
+
+                return data.areaStats.map((area, index) => (
+                  <TableRow key={index}>
+                    {cells.map(cell => (
+                      <TableCell key={cell.key + 'c_' + index}>
+                        {_.get(area, cell.key)}
+                      </TableCell>
+                    ))}
+
+                    <TableCell key={'c_listLink_' + index}>
+                      <Link to={`../../search?area_name=${area.area.name}`}>
+                        view loos
+                      </Link>
                     </TableCell>
-                  );
-                })}
-                <TableCell key={'c_listLink_' + index}>
-                  <Link to={`../../search?area_name=${row._id}`}>
-                    view loos
-                  </Link>
-                </TableCell>
-              </TableRow>
-            ))}
+                  </TableRow>
+                ));
+              }}
+            </Query>
           </TableBody>
         </Table>
         {/* <Toolbar>
@@ -150,8 +133,6 @@ class AreaComparisonStats extends Component {
 					</ToolbarGroup>
 				</Toolbar> */}
       </div>
-    ) : (
-      <h1>Loading</h1>
     );
   }
 }

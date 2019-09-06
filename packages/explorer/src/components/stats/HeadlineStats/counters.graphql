@@ -1,0 +1,10 @@
+query getAllCounters {
+	counters {
+    activeLoos,
+    inactiveLoos,
+    totalLoos,
+    totalReports,
+    removalReports,
+    multipleReports
+  }
+}
