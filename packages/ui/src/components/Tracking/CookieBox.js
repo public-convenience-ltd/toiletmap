@@ -76,10 +76,10 @@ class CookieBox extends React.Component {
             </PreferenceCheckbox>
 
             <p>
-               You can also opt into additional cookies to support the
+               You can also opt in to additional cookies to support the
                project indirectly. By opting in to additional analytics cookies
                we can share your data with Unilever via Google and Adobe Analytics, 
-               and benefit from Unilever's continued sponsorship. This opting in is entirely up to you.
+               and benefit from Unilever's continued sponsorship. 
             </p>
 
             <PreferenceCheckbox
@@ -88,11 +88,11 @@ class CookieBox extends React.Component {
               }
               checked={this.state.aaAccepted}
             >
-              <span>Opt into Adobe Analytics</span>
+              <span>Opt in to Adobe Analytics</span>
             </PreferenceCheckbox>
 
             <p>
-              For more detailed information about the cookies we use, see our{' '}
+              Opting in is entirely up to you. For more detailed information about the cookies we use, see our{' '}
               <Link to="/privacy">Cookies page.</Link>
             </p>
 
