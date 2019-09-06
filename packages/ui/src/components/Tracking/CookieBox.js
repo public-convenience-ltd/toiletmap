@@ -52,56 +52,57 @@ class CookieBox extends React.Component {
   };
 
   render() {
+    if (!this.props.open) {
+      return null;
+    }
+
     return (
-      <div className={this.props.open ? styles.wrapperOpen : styles.wrapper}>
-        {this.props.open && (
-          <div className={styles.popupBody}>
-            <p>We use two types of optional cookies on this site.</p>
+      <div>
+        <div className={styles.popupBody}>
+          <p>We use two types of optional cookies on this site.</p>
+          <p>
+            You can opt in to cookies that improve your experience with the site
+            so you can find a loo quicker. By opting in to the Google Analytics
+            cookie you would be sharing your data with Public Convenience Ltd
+            and tech partners Neontribe as well as Google itself.
+          </p>
+
+          <form onSubmit={this.handleSubmit}>
+            <PreferenceCheckbox
+              onChange={evt =>
+                this.setState({ gaAccepted: evt.target.checked })
+              }
+              checked={this.state.gaAccepted}
+            >
+              <span>Opt in to Google Analytics</span>
+            </PreferenceCheckbox>
+
             <p>
-              You can opt in to cookies that improve your experience with the
-              site so you can find a loo quicker. By opting in to the Google
-              Analytics cookie you would be sharing your data with Public
-              Convenience Ltd and tech partners Neontribe as well as Google
-              itself.
+              You can also opt in to an additional cookie to support the project
+              indirectly. By opting in to the Adobe Analytics cookie we can
+              share your data with Unilever, and benefit from their continued
+              sponsorship. This opting in is entirely up to you.
             </p>
 
-            <form onSubmit={this.handleSubmit}>
-              <PreferenceCheckbox
-                onChange={evt =>
-                  this.setState({ gaAccepted: evt.target.checked })
-                }
-                checked={this.state.gaAccepted}
-              >
-                <span>Opt in to Google Analytics</span>
-              </PreferenceCheckbox>
+            <PreferenceCheckbox
+              onChange={evt =>
+                this.setState({ aaAccepted: evt.target.checked })
+              }
+              checked={this.state.aaAccepted}
+            >
+              <span>Opt into Adobe Analytics</span>
+            </PreferenceCheckbox>
 
-              <p>
-                You can also opt in to an additional cookie to support the
-                project indirectly. By opting in to the Adobe Analytics cookie
-                we can share your data with Unilever, and benefit from their
-                continued sponsorship. This opting in is entirely up to you.
-              </p>
+            <p>
+              For more detailed information about the cookies we use, see our{' '}
+              <Link to="/privacy">Cookies page.</Link>
+            </p>
 
-              <PreferenceCheckbox
-                onChange={evt =>
-                  this.setState({ aaAccepted: evt.target.checked })
-                }
-                checked={this.state.aaAccepted}
-              >
-                <span>Opt into Adobe Analytics</span>
-              </PreferenceCheckbox>
-
-              <p>
-                For more detailed information about the cookies we use, see our{' '}
-                <Link to="/privacy">Cookies page.</Link>
-              </p>
-
-              <div>
-                <button className={controls.btn}>Save and close</button>
-              </div>
-            </form>
-          </div>
-        )}
+            <div>
+              <button className={controls.btn}>Save and close</button>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }
