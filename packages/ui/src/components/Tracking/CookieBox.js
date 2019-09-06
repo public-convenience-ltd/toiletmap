@@ -72,7 +72,7 @@ class CookieBox extends React.Component {
               }
               checked={this.state.gaAccepted}
             >
-              <span>Opt in to Google Analytics</span>
+              <span>Opt-in to Google Analytics</span>
             </PreferenceCheckbox>
 
             <p>
@@ -88,7 +88,7 @@ class CookieBox extends React.Component {
               }
               checked={this.state.aaAccepted}
             >
-              <span>Opt in to Adobe Analytics</span>
+              <span>Opt-in to Adobe Analytics</span>
             </PreferenceCheckbox>
 
             <p>
