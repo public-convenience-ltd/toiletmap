@@ -45,6 +45,15 @@ export default {
     settings[key] = val;
     localStorage.setItem(namespace, JSON.stringify(settings));
   },
+  setSettings(namespace, obj = {}) {
+    localStorage.setItem(
+      namespace,
+      JSON.stringify({
+        ...this.getSettings(namespace),
+        ...obj,
+      })
+    );
+  },
 
   // Compares the user's preferences with properties on the loo to
   // determine which preferences, if any, are met.

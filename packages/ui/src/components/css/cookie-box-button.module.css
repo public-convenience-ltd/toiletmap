@@ -1,0 +1,8 @@
+.btn {
+  composes: btn from '../../css/controls.module.css';
+  padding: 0.5rem;
+}
+
+.cookieButtonWrapper {
+  padding: 0.25rem;
+}

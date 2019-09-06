@@ -1,5 +1,12 @@
 @value colors: './colors.css';
-@value colorButton, colorButtonDisabled, colorButtonActive, colorButtonFeatured, colorButtonFeaturedActive, colorButtonCaution, colorButtonCautionActive from colors;
+@value colorButton from colors;
+@value colorButtonDisabled from colors;
+@value colorButtonActive from colors;
+@value colorButtonFeatured from colors;
+@value colorButtonFeaturedActive from colors;
+@value colorButtonCaution from colors;
+@value colorButtonCautionActive from colors;
+@value colorSelected from colors;
 
 .btn {
   display: block;
@@ -77,4 +84,45 @@
 
 .dropdown {
   composes: text;
+}
+
+.preferenceWrapper {
+  position: relative;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.preference {
+  composes: btn;
+
+  /* Unselected/default state */
+  color: #222 !important;
+  text-align: left;
+  background-color: #ccc;
+  padding-right: 3rem; /* Avoid overlapping absolute checkbox */
+}
+
+.preference:hover {
+  color: #222;
+  background-color: #ccc;
+}
+
+.preferenceInput {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 1rem;
+  margin: auto;
+}
+
+.preferenceImage {
+  height: 2rem;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 1rem;
+}
+
+/* Selected state */
+.preferenceWrapper input:checked + span {
+  background-color: colorSelected;
 }

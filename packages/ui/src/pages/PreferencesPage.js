@@ -132,19 +132,20 @@ class PreferencesPage extends Component {
         <h2 className={headings.large}>My Toilet Preferences</h2>
 
         <div className={styles.preferences}>
+          {/* This checkbox style is also used in the CookieBox component. */}
           {this.preferenceMap.map(preference => (
-            <label key={preference.name} className={styles.preferenceWrapper}>
+            <label key={preference.name} className={controls.preferenceWrapper}>
               <input
-                className={styles.preferenceInput}
+                className={controls.preferenceInput}
                 type="checkbox"
                 name={preference.name}
                 onChange={this.updateSelection}
                 defaultChecked={this.state.savedPreferences[preference.name]}
               />
-              <span className={styles.preference}>
+              <span className={controls.preference}>
                 <img
                   alt={preference.name}
-                  className={styles.preferenceImage}
+                  className={controls.preferenceImage}
                   src={preference.image}
                 />
                 <span>{preference.label}</span>

@@ -29,9 +29,5 @@ export default () => {
     return <Production />;
   }
 
-  if (config.getStage() === 'staging') {
-    return <Staging />;
-  }
-
-  return null;
+  return <Staging />;
 };
