@@ -2,28 +2,6 @@
   padding: 0.75rem;
 }
 
-.logoWrapper {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  color: currentColor;
-
-  /* Todo: Should be margin but also avoid percentage padding/margin values */
-  padding-top: 2%;
-}
-
-.logo {
-  height: 3rem;
-}
-
-.title {
-  display: flex;
-  flex-direction: column;
-  margin-left: 1rem;
-  font-size: 1.25rem;
-  line-height: 1.25;
-}
-
 .sponsorWrapper {
   display: flex;
   align-items: center;
@@ -35,6 +13,10 @@
   display: flex;
   flex-direction: column;
   font-size: 1rem;
+}
+
+.sponsorLogo {
+  height: 3rem;
 }
 
 /* issues/336 */
