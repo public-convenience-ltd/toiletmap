@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 import styles from './css/footer.module.css';
 
+import CookieBoxButton from './Tracking/CookieBoxButton';
+
 class Footer extends Component {
   render() {
     return (
@@ -22,6 +24,9 @@ class Footer extends Component {
             <Link to="/about" className={styles.footerItem}>
               <span className={styles.footerItemText}>About</span>
             </Link>
+          </li>
+          <li className={styles.footerListItem}>
+            <CookieBoxButton onClick={this.props.onCookieBoxButtonClick} />
           </li>
         </ul>
       </footer>

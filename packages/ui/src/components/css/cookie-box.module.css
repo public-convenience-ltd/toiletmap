@@ -1,0 +1,8 @@
+.popupBody {
+  border: 1px dashed #1a1a1a;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}

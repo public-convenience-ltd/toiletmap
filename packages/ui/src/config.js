@@ -21,16 +21,38 @@ export default {
     lat: 51.507351,
     lng: -0.127758,
   },
+  getStage() {
+    if (process.env.NODE_ENV === 'production') {
+      if (window.location.hostname === 'www.toiletmap.org.uk') {
+        return 'production';
+      }
+
+      return 'staging';
+    }
+
+    return process.env.NODE_ENV;
+  },
   getSettings(namespace) {
     return JSON.parse(localStorage.getItem(namespace) || '{}');
   },
-  getSetting(namespace, key) {
-    return this.getSettings(namespace)[key];
+  getSetting(namespace, key, defaultVal) {
+    const val = this.getSettings(namespace)[key];
+
+    return val === undefined ? defaultVal : val;
   },
   setSetting(namespace, key, val) {
     var settings = this.getSettings(namespace);
     settings[key] = val;
     localStorage.setItem(namespace, JSON.stringify(settings));
+  },
+  setSettings(namespace, obj = {}) {
+    localStorage.setItem(
+      namespace,
+      JSON.stringify({
+        ...this.getSettings(namespace),
+        ...obj,
+      })
+    );
   },
 
   // Compares the user's preferences with properties on the loo to

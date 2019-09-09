@@ -1,6 +1,7 @@
 const config = require('../../config');
 const { Loo, Report } = require('../../db')(config.mongo.url);
 const { GraphQLDateTime } = require('graphql-iso-date');
+const _ = require('lodash');
 
 const subPropertyResolver = property => (parent, args, context, info) =>
   parent[property][info.fieldName];
@@ -27,19 +28,58 @@ const looInfoResolver = property => {
 const resolvers = {
   Query: {
     loo: (parent, args) => Loo.findById(args.id),
-    loos: async (parent, args) => {
+    loos: async (parent, args, context) => {
+      const REQUIRED_PERMISSION = 'VIEW_CONTRIBUTOR_INFO';
+
+      // Construct the search query
       let query = {
         'properties.fee': { $exists: args.filters.fee },
         'properties.active': args.filters.active,
       };
 
+      if (args.filters.areaName) {
+        query['properties.area.name'] = args.filters.areaName;
+      }
+
+      // Text search for the loo name
+      if (args.filters.text) {
+        query.$or = [{ $text: { $search: args.filters.text } }];
+      }
+
+      // Bound by dates
+      if (args.filters.fromDate || args.filters.toDate) {
+        query.updatedAt = {};
+      }
+
+      if (args.filters.fromDate) {
+        query.updatedAt.$gte = args.filters.fromDate;
+      }
+
+      if (args.filters.toDate) {
+        query.updatedAt.$lte = args.filters.toDate;
+      }
+
+      // Check the context for proper auth - we can't allow people to query by contributors when
+      // they don't have permission to view who has contributed info for each report
+      args.filters.contributors = _.without(args.filters.contributors, null);
+      if (
+        args.filters.contributors &&
+        args.filters.contributors.length &&
+        context.user &&
+        context.user[config.auth0.permissionsKey].includes(REQUIRED_PERMISSION)
+      ) {
+        query.$and = [];
+        query.$and.push({
+          contributors: { $all: [args.filters.contributors] },
+        });
+      }
+
       let res = await Loo.paginate(query, {
         page: args.pagination.page,
         limit: args.pagination.limit,
-        sort: {
-          updatedAt: 'desc',
-        },
+        sort: args.sort,
       });
+
       return {
         loos: res.docs,
         total: res.total,
@@ -55,6 +95,89 @@ const resolvers = {
         args.from.maxDistance,
         'complete'
       ),
+    counters: async (parent, args) => {
+      let looCounters = await Loo.getCounters();
+      let reportCounters = await Report.getCounters();
+
+      return {
+        ...looCounters,
+        ...reportCounters,
+      };
+    },
+    proportions: async (parent, args) => {
+      const {
+        publicLoos,
+        unknownAccessLoos,
+        babyChange,
+        babyChangeUnknown,
+        inaccessibleLoos,
+        accessibleLoosUnknown,
+        activeLoos,
+        totalLoos,
+      } = await Loo.getProportionCounters();
+
+      return {
+        activeLoos: [
+          { name: 'active', value: activeLoos },
+          { name: 'inactive', value: totalLoos - activeLoos },
+          { name: 'unknown', value: 0 },
+        ],
+        publicLoos: [
+          { name: 'public', value: publicLoos },
+          {
+            name: 'restricted',
+            value: totalLoos - (publicLoos + unknownAccessLoos),
+          },
+          { name: 'unknown', value: unknownAccessLoos },
+        ],
+        babyChanging: [
+          { name: 'yes', value: babyChange },
+          { name: 'no', value: totalLoos - (babyChange + babyChangeUnknown) },
+          { name: 'unknown', value: babyChangeUnknown },
+        ],
+        accessibleLoos: [
+          {
+            name: 'accessible',
+            value: totalLoos - (inaccessibleLoos + accessibleLoosUnknown),
+          },
+          { name: 'inaccessible', value: inaccessibleLoos },
+          { name: 'unknown', value: accessibleLoosUnknown },
+        ],
+      };
+    },
+    areaStats: async (parent, args) => {
+      const areas = await Loo.getAreasCounters();
+
+      return areas.map(area => {
+        return {
+          area: {
+            name: area._id,
+          },
+          totalLoos: area.looCount,
+          activeLoos: area.activeLooCount,
+          publicLoos: area.publicLooCount,
+          permissiveLoos: area.permissiveLooCount,
+          babyChangeLoos: area.babyChangeCount,
+        };
+      });
+    },
+    contributors: async (parent, args) => {
+      const contributors = await Report.aggregate([
+        {
+          $match: { contributor: { $exists: true } },
+        },
+        {
+          $group: {
+            _id: '$contributor',
+            reports: {
+              $sum: 1,
+            },
+          },
+        },
+      ]).exec();
+
+      return contributors.map(val => ({ name: val._id }));
+    },
   },
 
   Mutation: {
@@ -166,6 +289,11 @@ const resolvers = {
     MALE_URINAL: 'male urinal',
     CHILDREN: 'children only',
     NONE: 'none',
+  },
+
+  SortOrder: {
+    NEWEST_FIRST: { updatedAt: 'desc' },
+    OLDEST_FIRST: { updatedAt: 'asc' },
   },
 };
 

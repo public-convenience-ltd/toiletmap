@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import classNames from 'classnames';
-import LooTile from './LooTile';
-import LooTable from './table/LooTable';
+import LooTile from '../LooTile';
+import LooTable from '../table/LooTable';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';

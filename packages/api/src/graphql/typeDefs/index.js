@@ -78,6 +78,11 @@ const typeDefs = gql`
     NONE
   }
 
+  enum SortOrder {
+    NEWEST_FIRST
+    OLDEST_FIRST
+  }
+
   """
   Reported information about a real-world toilet
 
@@ -115,6 +120,71 @@ const typeDefs = gql`
     loo: Loo
   }
 
+  """
+  A container type for various statistical counters
+  """
+  type Counters {
+    "The number of loos that are still open"
+    activeLoos: Int
+    "The number of loos which have been closed/removed"
+    inactiveLoos: Int
+    "The total number of loos"
+    totalLoos: Int
+    "The total number of reports"
+    totalReports: Int
+    "The total number of reports that report a loo as closed/removed"
+    removalReports: Int
+    "The number of loos which have more than one report registered for them"
+    multipleReports: Int
+  }
+
+  """
+  A piece of proportional data, with a name and a value
+  """
+  type Chunk {
+    name: String!
+    value: Int!
+  }
+
+  """
+  Proportions of different values for different attributes
+  """
+  type Proportions {
+    "The proportions of loos that are active vs removed"
+    activeLoos: [Chunk!]!
+    "The proportions of loos that are public vs restricted access"
+    publicLoos: [Chunk!]!
+    "The proportions of loos that have baby changing facilities vs those that don't"
+    babyChanging: [Chunk!]!
+    "The proportions of loos that are accessible vs not accessible"
+    accessibleLoos: [Chunk!]!
+  }
+
+  """
+  Statistics for a certain area.
+  """
+  type AreaStats {
+    "The area's identifier. Note that only the \`name\` will be passed with this field."
+    area: AdminGeo!
+    "The total number of loos in this area"
+    totalLoos: Int!
+    "The number of loos marked as active in this area"
+    activeLoos: Int!
+    "The number of loos marked as public access in this area"
+    publicLoos: Int!
+    "The number of loos marked with permissive access in this area"
+    permissiveLoos: Int!
+    "The number of loos with baby changing facilities in this area"
+    babyChangeLoos: Int!
+  }
+
+  """
+  The name of a contributor. This requires a certain level of permissions to access.
+  """
+  type AuthedContributor {
+    name: String! @redact(requires: VIEW_CONTRIBUTOR_INFO, replace: "Anonymous")
+  }
+
   type Query {
     "Retrieve a Loo by ID"
     loo(id: ID): Loo
@@ -122,18 +192,32 @@ const typeDefs = gql`
     loos(
       filters: LooFilter!
       pagination: PaginationInput = { limit: 10, page: 1 }
+      sort: SortOrder = NEWEST_FIRST
     ): LooSearchResponse!
     "Retrieve Loos by proximity to a Point"
     loosByProximity(
       "A Point from which to begin the search"
       from: ProximityInput!
     ): [Loo!]!
+    "Retrieve 'counter' statistics"
+    counters: Counters!
+    "Retrieve proportional statistics"
+    proportions: Proportions!
+    "Retrieve statistics, broken down by area, for all areas"
+    areaStats: [AreaStats!]!
+    "Retrieve a list of contributors. Requires correct authentication"
+    contributors: [AuthedContributor!]!
   }
 
   "Include or Exclude Loos from search results based on whether they satisfy a filter condition"
   input LooFilter {
     active: Boolean = true
     fee: Boolean
+    text: String
+    fromDate: DateTime
+    toDate: DateTime
+    contributors: [String]
+    areaName: String
   }
 
   input PaginationInput {
