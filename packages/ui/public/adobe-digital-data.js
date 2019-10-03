@@ -20,7 +20,7 @@ if (isMobile()) {
 } else {
   channelVal = 'Brand Site';
 }
-digitalData = {
+window.digitalData = {
   siteInfo: {
     channel: '',
     sitetype: 'Non-D2',
@@ -30,7 +30,7 @@ digitalData = {
       destinationURL: 'DESTINATION URL-To be set on link clicks',
     },
     category: {
-      pageType: 'PAGE TYPE-To be set on each page change',
+      pageType: '',
     },
   },
   video: [],
@@ -55,29 +55,31 @@ digitalData = {
   },
   promotion: [],
 };
-digitalData.siteInfo.channel = channelVal;
-digitalData.page.category.primaryCategory = channelVal;
-digitalData.trackingInfo = {};
-digitalData.trackingInfo.tool = [{}];
-digitalData.trackingInfo.tool[0] = {};
-digitalData.trackingInfo.tool[1] = {};
-digitalData.privacy = {};
-digitalData.page.attributes = {};
-digitalData.privacy.accessCategories = [{}];
-digitalData.privacy.accessCategories[0].domains = [];
-digitalData.event = [];
-digitalData.page.pageInfo.pageName = 'PAGENAME'; //To be set on each page change
-digitalData.page.pageInfo.language = 'PAGE LANGUAGE';
-digitalData.page.category.subCategory1 = 'SITE SECTION 1';
-digitalData.page.category.subCategory2 = 'SITE SECTION 2';
-digitalData.page.category.subCategory3 = 'SITE SECTION 3';
-digitalData.page.attributes.contentType = 'CONTENT TYPE OF PAGE'; // To be set on each page change. Should contain 404 for error pages
-digitalData.page.attributes.articleName = 'ARTICLE NAME'; //Populate only on Article pages
-digitalData.page.attributes.brandCategory = 'BRAND CATEGORY';
-digitalData.page.attributes.country = 'BRAND COUNTRY';
-digitalData.page.attributes.globalBrand = 'GLOBAL BRAND NAME';
-digitalData.page.attributes.localBrand = 'LOCAL BRAND NAME';
-//digitalData.user[n].profile[n].profileInfo.crmID = 'CRM ID'; //Optional
-digitalData.trackingInfo.tool[0].id = '';
-digitalData.trackingInfo.tool[1].id = 'Adobe Report Suite ID';
-digitalData.siteInfo.internalDomain = 'INTERNAL DOMAIN';
+window.digitalData.siteInfo.channel = channelVal;
+window.digitalData.page.category.primaryCategory = channelVal;
+window.digitalData.trackingInfo = {};
+window.digitalData.trackingInfo.tool = [{}];
+window.digitalData.trackingInfo.tool[0] = {};
+window.digitalData.trackingInfo.tool[1] = {};
+window.digitalData.privacy = {};
+window.digitalData.page.attributes = {};
+window.digitalData.privacy.accessCategories = [{}];
+window.digitalData.privacy.accessCategories[0].domains = [];
+window.digitalData.event = [];
+window.digitalData.page.pageInfo.pageName = 'PAGENAME'; //To be set on each page change like... Welcome to Toilet Map
+window.digitalData.page.pageInfo.language = 'EN';
+window.digitalData.page.category.subCategory1 = 'SITE SECTION 1';// Not compulsory
+window.digitalData.page.category.subCategory2 = 'SITE SECTION 2';// Not compulsory
+window.digitalData.page.category.subCategory3 = 'SITE SECTION 3';// Not compulsory
+window.digitalData.page.attributes.contentType = 'CONTENT TYPE OF PAGE'; // To be set on each page change. Should contain 404 for error pages.
+window.digitalData.page.attributes.articleName = 'ARTICLE NAME'; //Populate only on Article pages
+window.digitalData.page.attributes.brandCategory = 'Home Care';
+window.digitalData.page.attributes.country = 'UK';
+window.digitalData.page.attributes.globalBrand = 'Toilet Map';
+window.digitalData.page.attributes.localBrand = 'Toilet Map';
+//window.digitalData.user[n].profile[n].profileInfo.crmID = 'CRM ID'; //Optional
+window.digitalData.trackingInfo.tool[0].id = '';
+window.digitalData.trackingInfo.tool[1].id = 'unilever-toiletmap-uk,unilever-global-allbrands';// use for production
+window.digitalData.siteInfo.internalDomain = 'toiletmap.org.uk';// use for production
+//window.digitalData.trackingInfo.tool[1].id = 'unilever-toiletmap-uk-uat,unilever-global-allbrands-uat';// use for UAT
+//window.digitalData.siteInfo.internalDomain = 'herokuapp.com';// use for UAT
