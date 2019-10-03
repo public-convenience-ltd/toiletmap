@@ -1,0 +1,35 @@
+.bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #efefef;
+  width: 100vw;
+  height: 100vh;
+  z-index: -10;
+}
+
+.main {
+  width: 100%;
+  height: 100%;
+  color: #111;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.title {
+  margin-top: 4rem;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.info {
+  margin-top: 3rem;
+  font-size: 1.2rem;
+}
+
+.homeBtn {
+  composes: btn from '../../css/controls.module.css';
+  display: inline-block;
+  width: auto;
+  margin: 2rem 0;
+}

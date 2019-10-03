@@ -1,0 +1,21 @@
+.wrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  color: currentColor;
+
+  /* Todo: Should be margin but also avoid percentage padding/margin values */
+  padding-top: 2%;
+}
+
+.image {
+  height: 3rem;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+  font-size: 1.25rem;
+  line-height: 1.25;
+}

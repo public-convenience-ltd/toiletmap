@@ -62,9 +62,7 @@ class LooTable extends Component {
 
 LooTable.propTypes = {
   classes: PropTypes.object.isRequired,
-  data: PropTypes.shape({
-    docs: PropTypes.array.isRequired,
-  }),
+  data: PropTypes.object.isRequired,
   rowRender: PropTypes.func.isRequired,
   colRender: PropTypes.func.isRequired,
   rowsPerPage: PropTypes.number.isRequired,

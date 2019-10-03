@@ -105,4 +105,142 @@ LooSchema.statics.findNear = function(lon, lat, radius, complete) {
   return this.aggregate(args);
 };
 
+LooSchema.statics.getCounters = async function() {
+  const [activeLoos, totalLoos, multipleReports] = await Promise.all([
+    this.countDocuments({ 'properties.active': true }).exec(),
+    this.countDocuments().exec(),
+    this.countDocuments({ 'reports.1': { $exists: true } }).exec(),
+  ]);
+
+  const inactiveLoos = totalLoos - activeLoos;
+
+  // Be careful about changing the names of these - they are linked to the GraphQL schema
+  return {
+    activeLoos,
+    inactiveLoos,
+    totalLoos,
+    multipleReports,
+  };
+};
+
+LooSchema.statics.getProportionCounters = async function() {
+  const [
+    publicLoos,
+    unknownAccessLoos,
+    babyChange,
+    babyChangeUnknown,
+    inaccessibleLoos,
+    accessibleLoosUnknown,
+    activeLoos,
+    totalLoos,
+  ] = await Promise.all([
+    this.countDocuments({ 'properties.access': 'public' }).exec(),
+    this.countDocuments({ 'properties.access': 'none' }).exec(),
+    this.countDocuments({ 'properties.babyChange': true }).exec(),
+    this.countDocuments({ 'properties.babyChange': null }).exec(),
+    this.countDocuments({ 'properties.accessibleType': 'none' }).exec(),
+    this.countDocuments({
+      'properties.accessibleType': { $exists: false },
+    }).exec(),
+    this.countDocuments({ 'properties.active': true }).exec(),
+    this.countDocuments({}).exec(),
+  ]);
+
+  return {
+    publicLoos,
+    unknownAccessLoos,
+    babyChange,
+    babyChangeUnknown,
+    inaccessibleLoos,
+    accessibleLoosUnknown,
+    activeLoos,
+    totalLoos,
+  };
+};
+
+/*
+  Returns an array of areas with various statistical counts attached
+*/
+LooSchema.statics.getAreasCounters = async function() {
+  const areas = await this.aggregate([
+    {
+      $match: {},
+    },
+    {
+      $unwind: '$properties.area',
+    },
+    {
+      $project: {
+        areaName: {
+          $cond: [
+            '$properties.area.name',
+            '$properties.area.name',
+            'Unknown Area',
+          ],
+        },
+        active: {
+          $cond: ['$properties.active', 1, 0],
+        },
+        public: {
+          $cond: [
+            {
+              $eq: ['$properties.access', 'public'],
+            },
+            1,
+            0,
+          ],
+        },
+        permissive: {
+          $cond: [
+            {
+              $eq: ['$properties.access', 'permissive'],
+            },
+            1,
+            0,
+          ],
+        },
+        babyChange: {
+          $cond: [
+            {
+              $and: [
+                { $eq: ['$properties.babyChange', true] },
+                { $eq: ['$properties.active', true] },
+              ],
+            },
+            1,
+            0,
+          ],
+        },
+      },
+    },
+    {
+      $group: {
+        _id: '$areaName',
+        looCount: {
+          $sum: 1,
+        },
+        activeLooCount: {
+          $sum: '$active',
+        },
+        publicLooCount: {
+          $sum: '$public',
+        },
+        permissiveLooCount: {
+          $sum: '$permissive',
+        },
+        babyChangeCount: {
+          $sum: '$babyChange',
+        },
+      },
+    },
+    {
+      $sort: {
+        _id: 1,
+      },
+    },
+  ]).exec();
+
+  return areas;
+};
+
 module.exports = exports = LooSchema;

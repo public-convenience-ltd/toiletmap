@@ -6,13 +6,10 @@ import 'core-js/fn/object/entries';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
-import Analytics from 'react-router-ga';
-
-import config from './config';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -33,6 +30,7 @@ import ThanksPage from './pages/ThanksPage';
 import MapPage from './pages/MapPage';
 import UseOurLoosPage from './pages/UseOurLoosPage';
 import PrivacyPage from './pages/PrivacyPage';
+import NotFound from './pages/404';
 
 // Redux reducers
 import appReducer from './redux/modules/app';
@@ -82,8 +80,8 @@ if (typeof document !== 'undefined') {
   ReactDOM.render(
     <Provider store={store}>
       <Router history={history} forceRefresh={false}>
-        <Analytics id={config.analyticsId}>
-          <App>
+        <App>
+          <Switch>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/preferences" component={PreferencesPage} />
             <Route exact path="/about" component={AboutPage} />
@@ -118,8 +116,9 @@ if (typeof document !== 'undefined') {
               component={ThanksPage}
               auth={auth}
             />
-          </App>
-        </Analytics>
+            <Route component={NotFound} />
+          </Switch>
+        </App>
       </Router>
     </Provider>,
     document.getElementById('root')

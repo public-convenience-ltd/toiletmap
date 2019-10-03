@@ -2,3 +2,5 @@ node_modules
 packages/leaflet-control-geocoder
 build
 coverage
+adobe-digital-data.js
+adobe-digital-data-stage.js

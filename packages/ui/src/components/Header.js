@@ -1,25 +1,16 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 
 import styles from './css/header.module.css';
-import logo from '../images/logo.svg';
 import domestosLogo from '../images/domestos_logo3.png';
+
+import Logo from '../components/Logo';
 
 class Header extends Component {
   render() {
     return (
       <header className={styles.header}>
-        <Link to="/" title="Go to home page" className={styles.logoWrapper}>
-          <img
-            src={logo}
-            alt="'The Great British Toilet Map' logo"
-            className={styles.logo}
-          />
-          <span className={styles.title}>
-            The Great British <span>Public Toilet Map</span>
-          </span>
-        </Link>
+        <Logo />
         <HashLink
           to="/use-our-loos"
           title="Domestos - Use Our Loos Campaign"
@@ -27,7 +18,11 @@ class Header extends Component {
           scroll={el => el.scrollIntoView(true)}
         >
           <span className={styles.sponsorTitle}>proudly sponsored by</span>
-          <img src={domestosLogo} alt="Domestos" className={styles.logo} />
+          <img
+            src={domestosLogo}
+            alt="Domestos"
+            className={styles.sponsorLogo}
+          />
         </HashLink>
       </header>
     );

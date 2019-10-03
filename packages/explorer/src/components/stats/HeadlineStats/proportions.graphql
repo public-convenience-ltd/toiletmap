@@ -1,0 +1,21 @@
+fragment chunkDetails on Chunk {
+  name
+  value
+}
+
+query getAllProportions {
+	proportions {
+    activeLoos {
+      ...chunkDetails
+    }
+    publicLoos {
+      ...chunkDetails
+    }
+    babyChanging {
+      ...chunkDetails
+    }
+    accessibleLoos {
+      ...chunkDetails
+    }
+  }
+}
