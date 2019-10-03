@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import styles from './css/footer.module.css';
 
-import CookiePopupButton from './Tracking/CookiePopupButton';
+import CookieBoxButton from './Tracking/CookieBoxButton';
 
 class Footer extends Component {
   render() {
@@ -26,7 +26,7 @@ class Footer extends Component {
             </Link>
           </li>
           <li className={styles.footerListItem}>
-            <CookiePopupButton onClick={this.props.onCookieButtonClick} />
+            <CookieBoxButton onClick={this.props.onCookieBoxButtonClick} />
           </li>
         </ul>
       </footer>

@@ -18,13 +18,23 @@ class PageLayout extends Component {
       TRACKING_STATE_CHOSEN,
   };
 
-  handleCookieButtonClick = () => {
+  mainRef = React.createRef();
+
+  handleCookieBoxButtonClick = () => {
     this.setState({ cookieSettingsOpen: true });
   };
 
-  handleCookieChoiceChange = () => {
+  handleClose = () => {
     this.setState({ cookieSettingsOpen: false });
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.mainRef.current) {
+      if (!prevState.cookieSettingsOpen && this.state.cookieSettingsOpen) {
+        this.mainRef.current.scrollTop = 0;
+      }
+    }
+  }
 
   render() {
     return (
@@ -33,17 +43,17 @@ class PageLayout extends Component {
           <div className={layout.main}>
             <Header />
 
-            <main className={layout.content}>
+            <main ref={this.mainRef} className={layout.content}>
               <Tracking
                 analyticsId={config.analyticsId}
                 open={this.state.cookieSettingsOpen}
-                onChange={this.handleCookieChoiceChange}
+                onClose={this.handleClose}
               >
                 <div>{React.cloneElement(this.props.main, this.props)}</div>
               </Tracking>
             </main>
 
-            <Footer onCookieButtonClick={this.handleCookieButtonClick} />
+            <Footer onCookieBoxButtonClick={this.handleCookieBoxButtonClick} />
           </div>
         </div>
 
