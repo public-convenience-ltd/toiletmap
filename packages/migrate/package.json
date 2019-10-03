@@ -5,7 +5,7 @@
   "dependencies": {
     "@toiletmap/api": "2.9.0",
     "geo-hash": "0.0.2",
-    "lodash": "4.17.11"
+    "lodash": "4.17.15"
   },
   "scripts": {
     "generate-new-reports": "node ./bin/generate-new-reports.js > ./data/new-reports.json",
