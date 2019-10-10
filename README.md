@@ -16,7 +16,7 @@ This documentation is oriented towards developers, if you'd like to learn more a
 ### Installation
 
 ```
-git clone git@github.com:neontribe/gbptm.git gbptm
+git clone https://github.com/neontribe/gbptm.git gbptm
 cd gbptm
 nvm install && nvm use
 npm install -g yarn
