@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/neontribe/gbptm/compare/v2.9.0...v3.0.0) (2019-10-14)
+
+
+### Bug Fixes
+
+* adjust router to new url ([6922c95](https://github.com/neontribe/gbptm/commit/6922c95))
+* clean up envs ([b96d126](https://github.com/neontribe/gbptm/commit/b96d126))
+* dep updates ([a2d07fd](https://github.com/neontribe/gbptm/commit/a2d07fd))
+* dependency updates ([3f75a8c](https://github.com/neontribe/gbptm/commit/3f75a8c))
+* deps ([c5c3b71](https://github.com/neontribe/gbptm/commit/c5c3b71))
+* deps ([8e60716](https://github.com/neontribe/gbptm/commit/8e60716))
+* links ([5a898f8](https://github.com/neontribe/gbptm/commit/5a898f8))
+* package updates ([8fdab8e](https://github.com/neontribe/gbptm/commit/8fdab8e))
+* remove 'classes' ([bc21f29](https://github.com/neontribe/gbptm/commit/bc21f29))
+* show unique contributors in search results ([ebbedf5](https://github.com/neontribe/gbptm/commit/ebbedf5))
+* update dependencies ([dc0369e](https://github.com/neontribe/gbptm/commit/dc0369e))
+* update dependencies ([c89240f](https://github.com/neontribe/gbptm/commit/c89240f))
+* updeps ([d283a31](https://github.com/neontribe/gbptm/commit/d283a31))
+
+
+### Features
+
+* [WIP] move search to graphql interface ([fdb1380](https://github.com/neontribe/gbptm/commit/fdb1380))
+* add a graphql search interface for the explorer search ([ef815d0](https://github.com/neontribe/gbptm/commit/ef815d0))
+* add auth and redaction for graphql ([b1069f4](https://github.com/neontribe/gbptm/commit/b1069f4))
+* add auth to explorer ([ac57930](https://github.com/neontribe/gbptm/commit/ac57930))
+* deprecate counters REST API ([3929c8d](https://github.com/neontribe/gbptm/commit/3929c8d))
+* deprecate proportions REST API ([09bc8cf](https://github.com/neontribe/gbptm/commit/09bc8cf))
+* explorer page placeholder layout and text ([621108f](https://github.com/neontribe/gbptm/commit/621108f))
+* move admin to explorer ([db4dded](https://github.com/neontribe/gbptm/commit/db4dded))
+* move area statistics to graphql API ([fdd5c92](https://github.com/neontribe/gbptm/commit/fdd5c92))
+* move explorer search to graphql interface ([72df97b](https://github.com/neontribe/gbptm/commit/72df97b))
+* move proportions to graphql API ([517f390](https://github.com/neontribe/gbptm/commit/517f390))
+* send client details with operations ([e390452](https://github.com/neontribe/gbptm/commit/e390452))
+* supress contributor names in searches ([fd52771](https://github.com/neontribe/gbptm/commit/fd52771))
+* switch counters to graphql interface ([4a27165](https://github.com/neontribe/gbptm/commit/4a27165))
+* use graphql for single loo view ([cb006c8](https://github.com/neontribe/gbptm/commit/cb006c8))
+
+
+
+
+
 # [2.9.0](https://github.com/neontribe/gbptm/compare/v2.8.0...v2.9.0) (2018-11-27)
 
 

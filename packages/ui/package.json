@@ -1,6 +1,6 @@
 {
   "name": "@toiletmap/ui",
-  "version": "2.9.0",
+  "version": "3.0.0",
   "private": true,
   "devDependencies": {
     "cypress": "3.1.4",
@@ -14,9 +14,9 @@
     "start-server-and-test": "1.7.11"
   },
   "dependencies": {
-    "@toiletmap/api-client": "2.9.0",
-    "@toiletmap/leaflet-control-geocoder": "2.9.0",
-    "@toiletmap/opening-hours": "2.9.0",
+    "@toiletmap/api-client": "3.0.0",
+    "@toiletmap/leaflet-control-geocoder": "3.0.0",
+    "@toiletmap/opening-hours": "3.0.0",
     "auth0-js": "9.10.0",
     "core-js": "2.6.3",
     "js-cookie": "2.2.1",

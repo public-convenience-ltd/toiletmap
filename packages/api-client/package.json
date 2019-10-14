@@ -1,11 +1,11 @@
 {
   "name": "@toiletmap/api-client",
-  "version": "2.9.0",
+  "version": "3.0.0",
   "description": "Allows easy access to common routes used in the gbptm api.",
   "main": "index.js",
   "private": true,
   "dependencies": {
-    "@toiletmap/opening-hours": "2.9.0",
+    "@toiletmap/opening-hours": "3.0.0",
     "axios": "0.19.0"
   }
 }

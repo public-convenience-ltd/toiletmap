@@ -3,6 +3,85 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/neontribe/gbptm/compare/v2.9.0...v3.0.0) (2019-10-14)
+
+
+### Bug Fixes
+
+* access geometry correctly ([76f040c](https://github.com/neontribe/gbptm/commit/76f040c))
+* apostrophe ([6727301](https://github.com/neontribe/gbptm/commit/6727301))
+* apply config to tracking ([9cbd152](https://github.com/neontribe/gbptm/commit/9cbd152))
+* apply config to tracking ([5212713](https://github.com/neontribe/gbptm/commit/5212713))
+* call api context ([cde4809](https://github.com/neontribe/gbptm/commit/cde4809))
+* clean up envs ([b96d126](https://github.com/neontribe/gbptm/commit/b96d126))
+* comment out broken JS ([450222f](https://github.com/neontribe/gbptm/commit/450222f))
+* conv str to null value so field removed in mongoose ([708f44d](https://github.com/neontribe/gbptm/commit/708f44d))
+* correct 'in to' to 'into' ([f91cc2c](https://github.com/neontribe/gbptm/commit/f91cc2c))
+* correct proxy URL for local dev environment ([afbf9ce](https://github.com/neontribe/gbptm/commit/afbf9ce))
+* corrected lint warnings ([dcc7e8b](https://github.com/neontribe/gbptm/commit/dcc7e8b))
+* correctly wire up tracking config ([e43cffe](https://github.com/neontribe/gbptm/commit/e43cffe))
+* dep updates ([6bfd9d8](https://github.com/neontribe/gbptm/commit/6bfd9d8))
+* deps ([c5c3b71](https://github.com/neontribe/gbptm/commit/c5c3b71))
+* deps ([db634d6](https://github.com/neontribe/gbptm/commit/db634d6))
+* deps ([8e60716](https://github.com/neontribe/gbptm/commit/8e60716))
+* deps up ([da82142](https://github.com/neontribe/gbptm/commit/da82142))
+* ensure versions are exact ([579b4db](https://github.com/neontribe/gbptm/commit/579b4db))
+* import default correctly ([12d035a](https://github.com/neontribe/gbptm/commit/12d035a))
+* improve button styles ([c0afbad](https://github.com/neontribe/gbptm/commit/c0afbad))
+* leaflet L global for adobe scripts ([9c0a5c3](https://github.com/neontribe/gbptm/commit/9c0a5c3))
+* move to axios to allow cypress testing ([0be52a9](https://github.com/neontribe/gbptm/commit/0be52a9))
+* no post report navigation till after refetch ([e467467](https://github.com/neontribe/gbptm/commit/e467467))
+* opt-in ([47a4aa0](https://github.com/neontribe/gbptm/commit/47a4aa0))
+* package updates ([8fdab8e](https://github.com/neontribe/gbptm/commit/8fdab8e))
+* package.json include api ([7265d65](https://github.com/neontribe/gbptm/commit/7265d65))
+* position the popup better and show a white overlay ([90bdd8b](https://github.com/neontribe/gbptm/commit/90bdd8b))
+* refetch nearby loos after reporting ([3fda105](https://github.com/neontribe/gbptm/commit/3fda105))
+* reflect tristate values in form ([d114af8](https://github.com/neontribe/gbptm/commit/d114af8))
+* remove now unnecessary first <p> that we missed ([2942604](https://github.com/neontribe/gbptm/commit/2942604))
+* remove unused div ([53477d7](https://github.com/neontribe/gbptm/commit/53477d7))
+* scroll to cookie message ([e55a731](https://github.com/neontribe/gbptm/commit/e55a731))
+* update adobe script ([c98b19c](https://github.com/neontribe/gbptm/commit/c98b19c))
+* update copy as per Gail's email ([3b3fb64](https://github.com/neontribe/gbptm/commit/3b3fb64))
+* update cypress tests to work with new site flow ([a20dd69](https://github.com/neontribe/gbptm/commit/a20dd69))
+* update dependencies ([dc0369e](https://github.com/neontribe/gbptm/commit/dc0369e))
+* update dependencies ([c89240f](https://github.com/neontribe/gbptm/commit/c89240f))
+* update deps ([c6ae63e](https://github.com/neontribe/gbptm/commit/c6ae63e))
+* updated copy to be more accurate ([6d3aab8](https://github.com/neontribe/gbptm/commit/6d3aab8))
+* updeps ([d283a31](https://github.com/neontribe/gbptm/commit/d283a31))
+* updeps ([d6a9107](https://github.com/neontribe/gbptm/commit/d6a9107))
+
+
+### Features
+
+* add cookie copy and change ux options ([6c1f4af](https://github.com/neontribe/gbptm/commit/6c1f4af))
+* enable adobe tracking locally ([4d14bbe](https://github.com/neontribe/gbptm/commit/4d14bbe))
+* **#415:** add initial tracking scripts and popup ([7a3ef69](https://github.com/neontribe/gbptm/commit/7a3ef69)), closes [#415](https://github.com/neontribe/gbptm/issues/415)
+* **#415:** remember tracking settings ([17b12b5](https://github.com/neontribe/gbptm/commit/17b12b5)), closes [#415](https://github.com/neontribe/gbptm/issues/415)
+* **#415:** unobstruct user when presenting cookie choices ([ec781d1](https://github.com/neontribe/gbptm/commit/ec781d1)), closes [#415](https://github.com/neontribe/gbptm/issues/415)
+* add 404 page ([34fdf87](https://github.com/neontribe/gbptm/commit/34fdf87))
+* add report id list to loo schema ([baf063d](https://github.com/neontribe/gbptm/commit/baf063d))
+* cleaner schema ([e8519c4](https://github.com/neontribe/gbptm/commit/e8519c4))
+* cypress overhaul ([cfd4456](https://github.com/neontribe/gbptm/commit/cfd4456))
+* graphql+ts client ([0d35ac1](https://github.com/neontribe/gbptm/commit/0d35ac1))
+* link from loo to explorer ([bdd3467](https://github.com/neontribe/gbptm/commit/bdd3467))
+* login before form-filling ([eeb92b6](https://github.com/neontribe/gbptm/commit/eeb92b6))
+* move api client funcs into package ([ef624dc](https://github.com/neontribe/gbptm/commit/ef624dc))
+* move to new data structures ([ab17e0e](https://github.com/neontribe/gbptm/commit/ab17e0e))
+* remove technical data from ui ([f6d2537](https://github.com/neontribe/gbptm/commit/f6d2537))
+* test adding loos ([bf47c82](https://github.com/neontribe/gbptm/commit/bf47c82))
+* test map rendering correctly by matching snapshot to stored image ([33418f1](https://github.com/neontribe/gbptm/commit/33418f1))
+* wip ([fc56d3a](https://github.com/neontribe/gbptm/commit/fc56d3a))
+
+
+### BREAKING CHANGES
+
+* requires full database migration, see the migrate
+package
+
+
+
+
+
 # [2.9.0](https://github.com/neontribe/gbptm/compare/v2.8.0...v2.9.0) (2018-11-27)
 
 
