@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/neontribe/gbptm/compare/v2.9.0...v3.0.0) (2019-10-14)
+
+
+### Bug Fixes
+
+* dependency updates ([3980464](https://github.com/neontribe/gbptm/commit/3980464))
+* update dependencies ([c89240f](https://github.com/neontribe/gbptm/commit/c89240f))
+
+
+### Features
+
+* move to new data structures ([ab17e0e](https://github.com/neontribe/gbptm/commit/ab17e0e))
+
+
+### BREAKING CHANGES
+
+* requires full database migration, see the migrate
+package
+
+
+
+
+
 # [2.9.0](https://github.com/neontribe/gbptm/compare/v2.8.0...v2.9.0) (2018-11-27)
 
 

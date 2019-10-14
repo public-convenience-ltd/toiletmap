@@ -58,6 +58,7 @@ const apollo = new ApolloServer({
   },
   engine: { ...config.graphql.engine },
   playground: { ...config.graphql.playground },
+  introspection: true,
 });
 
 const applyMiddleware = app => {

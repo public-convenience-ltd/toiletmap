@@ -71,5 +71,8 @@
   },
   "resolutions": {
     "graphql": "14.1.1"
+  },
+  "dependencies": {
+    "babel-eslint": "9.x"
   }
 }

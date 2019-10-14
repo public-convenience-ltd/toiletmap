@@ -1,9 +1,9 @@
 {
   "name": "@toiletmap/migrate",
-  "version": "2.9.0",
+  "version": "3.0.0",
   "description": "A tool for migrating legacy Toilet Map databases to our new schemas",
   "dependencies": {
-    "@toiletmap/api": "2.9.0",
+    "@toiletmap/api": "3.0.0",
     "geo-hash": "0.0.2",
     "lodash": "4.17.15"
   },
