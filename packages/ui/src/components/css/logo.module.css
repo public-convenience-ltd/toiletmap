@@ -12,6 +12,10 @@
   height: 3rem;
 }
 
+.newimage {
+  height: 5.5rem;
+}
+
 .title {
   display: flex;
   flex-direction: column;
