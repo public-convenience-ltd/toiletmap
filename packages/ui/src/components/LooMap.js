@@ -11,6 +11,7 @@ import 'leaflet-loading';
 import { Map, TileLayer } from 'react-leaflet';
 import GeolocationMapControl from './GeolocationMapControl.js';
 import LocateMapControl from './LocateMapControl.js';
+import NewLogo from './NewLogo.js';
 
 import config from '../config.js';
 
@@ -310,6 +311,7 @@ export class LooMap extends Component {
 
         {this.props.showSearchControl && <GeolocationMapControl />}
         {this.props.showLocateControl && <LocateMapControl />}
+        <NewLogo />
       </Map>
     );
   }

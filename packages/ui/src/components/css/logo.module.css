@@ -19,3 +19,25 @@
   font-size: 1.25rem;
   line-height: 1.25;
 }
+
+.newimage {
+  height: 7em;
+}
+
+.newlogoimage {
+  height: 4rem;
+  position: fixed;
+  bottom: 3.84em;
+  left: 0.5em;
+  z-index: 9999;
+}
+
+@media screen and (min-width: 768px) {
+  .newlogoimage {
+    height: 4rem;
+    position: fixed;
+    bottom: 0.5em;
+    left: 30em;
+    z-index: 9999;
+  }
+}
