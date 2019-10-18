@@ -9,7 +9,7 @@ import lists from '../css/lists.module.css';
 import headings from '../css/headings.module.css';
 import layout from '../components/css/layout.module.css';
 import controls from '../css/controls.module.css';
-import newlogo from '../images/newlogo.png';
+import useOurLoosLogo from '../images/domestos_use_our_loos_logo.png';
 
 class UseOurLoosPage extends Component {
   renderMain() {
@@ -27,7 +27,7 @@ class UseOurLoosPage extends Component {
             )}
           </div>
         </div>
-        <img src={newlogo} alt="Powered by Domestos" />
+        <img src={useOurLoosLogo} alt="Powered by Domestos" />
         <p>
           <strong>Use Our Loos</strong> is the first national community toilet
           scheme, created by the British Toilet Association, Domestos and the{' '}

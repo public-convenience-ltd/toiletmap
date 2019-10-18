@@ -24,7 +24,7 @@
   height: 7em;
 }
 
-.newlogoimage {
+.useOurLoosLogoImage {
   height: 4rem;
   position: fixed;
   bottom: 3.84em;
@@ -33,7 +33,7 @@
 }
 
 @media screen and (min-width: 768px) {
-  .newlogoimage {
+  .useOurLoosLogoImage {
     height: 4rem;
     position: fixed;
     bottom: 0.5em;

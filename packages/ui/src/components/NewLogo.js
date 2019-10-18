@@ -2,7 +2,7 @@ import React from 'react';
 import { HashLink } from 'react-router-hash-link';
 
 import styles from './css/logo.module.css';
-import newlogo from '../images/newlogo.png';
+import logo from '../images/domestos_use_our_loos_logo.png';
 
 export default () => (
   <HashLink
@@ -11,6 +11,6 @@ export default () => (
     className={styles.wrapper}
     scroll={el => el.scrollIntoView(true)}
   >
-    <img src={newlogo} alt="Domestos" className={styles.newlogoimage} />
+    <img src={logo} alt="Domestos" className={styles.useOurLoosLogoImage} />
   </HashLink>
 );
