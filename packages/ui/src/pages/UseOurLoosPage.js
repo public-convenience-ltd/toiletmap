@@ -27,7 +27,7 @@ class UseOurLoosPage extends Component {
             )}
           </div>
         </div>
-        <img src={newlogo} alt="Sponsored by Domestos" />
+        <img src={newlogo} alt="Powered by Domestos" />
         <p>
           <strong>Use Our Loos</strong> is the first national community toilet
           scheme, created by the British Toilet Association, Domestos and the{' '}
