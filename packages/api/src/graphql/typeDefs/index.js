@@ -194,6 +194,8 @@ const typeDefs = gql`
       pagination: PaginationInput = { limit: 10, page: 1 }
       sort: SortOrder = NEWEST_FIRST
     ): LooSearchResponse!
+    "Retrieve a list of areas in existance"
+    areas: [AdminGeo!]!
     "Retrieve Loos by proximity to a Point"
     loosByProximity(
       "A Point from which to begin the search"
