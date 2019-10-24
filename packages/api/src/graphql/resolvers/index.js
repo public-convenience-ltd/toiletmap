@@ -129,6 +129,10 @@ const resolvers = {
 
       return areas;
     },
+    report: async (parent, args) => {
+      const id = args.id;
+      return await Report.findById(id);
+    },
     counters: async (parent, args) => {
       let looCounters = await Loo.getCounters();
       let reportCounters = await Report.getCounters();
