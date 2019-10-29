@@ -74,6 +74,16 @@ sagaMiddleware.run(geolocationSaga);
 sagaMiddleware.run(makeLoosSaga(auth));
 sagaMiddleware.run(mapControlsSaga);
 
+// Set a function to be called on location change
+history.listen(function(location) {
+  // If we havn't opted in, we shouldn't have digitalData on window
+  if (window.hasOwnProperty('digitalData')) {
+    // does not include
+    window.digitalData.page.pageInfo.pageName = `${location.pathname}`;
+    window.digitalData.page.pageInfo.destinationURL = `${window.location.href}`;
+  }
+});
+
 // Create an enhanced history that syncs navigation events with the store
 
 if (typeof document !== 'undefined') {
