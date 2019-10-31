@@ -40,7 +40,7 @@ When you commit all the files you touch in your work will be run through `pretti
 
 ## Making a Pull Request
 
-We use github `pull requests` to integrate changes to this codebase. When you've got a set of changes as one or more commits which you'd like to propose you should separate them into a branch made from `master`. Everyone appreciates it very much if you are able to make the commit history on your branch as clean as possible.
+We use github `pull requests` to integrate changes to this codebase. When you've got a set of changes as one or more commits which you'd like to propose you should separate them into a branch made from `develop`. Everyone appreciates it very much if you are able to make the commit history on your branch as clean as possible.
 
 Once you have your branch the way you like it you can push it to the remote. Once it is there you can use the github interface to make a `pull request` targeting the `master` branch.
 
@@ -55,16 +55,16 @@ Once you've submitted the request a few different things will happen. Right away
 
 If all that goes well it'll mark your PR with a nice green tick. If a check fails it'll place a red cross and a link where you can find out what went wrong.
 
-You'll also find that folk will add labels to your PR, maybe marking it for a specific release, noting that it still needs review, that it conflicts when trying to merge with master, etc. After a while you'll get used to adding some of these yourself.
+You'll also find that folk will add labels to your PR, maybe marking it for a specific release, noting that it still needs review, that it conflicts when trying to merge with develop, etc. After a while you'll get used to adding some of these yourself.
 
-Soon people will start to review your code. We do this to help each other find better ways to solve our problems, and also to spread knowledge around the team. In this project our rule is that two people who didn't contribute to the PR must give explicit approval before the branch can merge to master.
+Soon people will start to review your code. We do this to help each other find better ways to solve our problems, and also to spread knowledge around the team. In this project our rule is that someone who didn't contribute to the PR must give explicit approval before the branch can merge.
 
-It is possible to request review from specific people using the github interface, and these days it even suggests people who might be appropriate. Feel free to do that, it works well. (If you'd like you can also look at the `maintainers` entry in the `package.json` for a module you're intested in to see who is likely to be able to help you with it.)
+It is possible to request review from specific people using the github interface, and these days it even suggests people who might be appropriate. Feel free to do that, it works well.
 
 Please keep an active eye on PRs you have open. It is your responsibility to shepherd them along to the point when they can be merged. You should check them regularly to see if they've got hung up at any point, or you can set up some notifications to help you with that. Often you'll find you need to maintain them to take advantage of points raised in review, or just to ensure that they can still merge cleanly.
 
 ## Merging
 
-Once all the robots and people are happy with a PR it will get merged. This is normally done by a release maintainer (anyone can do this - it isn't usually a complicated job) and they'll take responsibility for merging PRs, updating any referenced JIRAs and publishing a release. You'll find that your commit messages will make their way into the changelogs of the packages you edited.
+Once all the robots and people are happy with a PR it will get merged. This is normally done by a release maintainer (anyone can do this - it isn't usually a complicated job) and they'll take responsibility for merging PRs, updating any referenced issues and publishing a release. You'll find that your commit messages will make their way into the changelogs of the packages you edited.
 
 # Thanks for helping out!
