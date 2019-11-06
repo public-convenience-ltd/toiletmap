@@ -6,7 +6,7 @@ import 'core-js/fn/object/entries';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
@@ -88,56 +88,65 @@ history.listen(function(location) {
 
 // Create an enhanced history that syncs navigation events with the store
 
-if (typeof document !== 'undefined') {
-  ReactDOM.render(
-    <Provider store={store}>
-      <Router history={history} forceRefresh={false}>
-        <App>
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route exact path="/preferences" component={PreferencesPage} />
-            <Route exact path="/about" component={AboutPage} />
-            <Route exact path="/privacy" component={PrivacyPage} />
-            <Route exact path="/use-our-loos" component={UseOurLoosPage} />
-            <Route path="/loos/:id" exact component={LooPage} />
-            <Route path="/login" component={LoginPage} />
-            <Route path="/map/:lng/:lat" component={MapPage} />
-            <Route
-              exact
-              path="/callback"
-              render={props => <AuthCallback auth={auth} {...props} />}
-            />
-            <ProtectedRoute
-              exact
-              path="/report"
-              component={AddEditPage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/edit"
-              component={AddEditPage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/remove"
-              component={RemovePage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/thanks"
-              component={ThanksPage}
-              auth={auth}
-            />
-            <Route component={NotFound} />
-          </Switch>
-        </App>
-      </Router>
-    </Provider>,
-    document.getElementById('root')
-  );
+const startApp = () => {
+  if (typeof document !== 'undefined') {
+    ReactDOM.render(
+      <Provider store={store}>
+        <HashRouter history={history} forceRefresh={false}>
+          <App>
+            <Switch>
+              <Route exact path="/" component={HomePage} />
+              <Route exact path="/preferences" component={PreferencesPage} />
+              <Route exact path="/about" component={AboutPage} />
+              <Route exact path="/privacy" component={PrivacyPage} />
+              <Route exact path="/use-our-loos" component={UseOurLoosPage} />
+              <Route path="/loos/:id" exact component={LooPage} />
+              <Route path="/login" component={LoginPage} />
+              <Route path="/map/:lng/:lat" component={MapPage} />
+              <Route
+                exact
+                path="/callback"
+                render={props => <AuthCallback auth={auth} {...props} />}
+              />
+              <ProtectedRoute
+                exact
+                path="/report"
+                component={AddEditPage}
+                auth={auth}
+              />
+              <ProtectedRoute
+                path="/loos/:id/edit"
+                component={AddEditPage}
+                auth={auth}
+              />
+              <ProtectedRoute
+                path="/loos/:id/remove"
+                component={RemovePage}
+                auth={auth}
+              />
+              <ProtectedRoute
+                path="/loos/:id/thanks"
+                component={ThanksPage}
+                auth={auth}
+              />
+              <Route component={NotFound} />
+            </Switch>
+          </App>
+        </HashRouter>
+      </Provider>,
+      document.getElementById('root')
+    );
+    serviceWorker.unregister();
+  }
+}
+
+if(window.cordova) {
+  document.addEventListener('deviceready', startApp, false);
+} else {
+  startApp()
 }
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+
