@@ -1,0 +1,39 @@
+{
+  "files": {
+    "main.css": "./static/css/main.889e429e.chunk.css",
+    "main.js": "./static/js/main.1d4917ca.chunk.js",
+    "main.js.map": "./static/js/main.1d4917ca.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.fd3cbda2.js",
+    "runtime-main.js.map": "./static/js/runtime-main.fd3cbda2.js.map",
+    "static/css/2.5d642e5f.chunk.css": "./static/css/2.5d642e5f.chunk.css",
+    "static/js/2.258d4eb2.chunk.js": "./static/js/2.258d4eb2.chunk.js",
+    "static/js/2.258d4eb2.chunk.js.map": "./static/js/2.258d4eb2.chunk.js.map",
+    "index.html": "./index.html",
+    "precache-manifest.418689555ae5aaa72ed4804cd714b82b.js": "./precache-manifest.418689555ae5aaa72ed4804cd714b82b.js",
+    "service-worker.js": "./service-worker.js",
+    "static/css/2.5d642e5f.chunk.css.map": "./static/css/2.5d642e5f.chunk.css.map",
+    "static/css/main.889e429e.chunk.css.map": "./static/css/main.889e429e.chunk.css.map",
+    "static/media/global.css": "./static/media/cabin-regular-webfont.e1521652.woff",
+    "static/media/domestos_use_our_loos_logo.png": "./static/media/domestos_use_our_loos_logo.ee86e081.png",
+    "static/media/logo.svg": "./static/media/logo.999b4a66.svg",
+    "static/media/pref-accessible-white.svg": "./static/media/pref-accessible-white.ae279168.svg",
+    "static/media/pref-accessible.svg": "./static/media/pref-accessible.aac416f1.svg",
+    "static/media/pref-babychanging-white.svg": "./static/media/pref-babychanging-white.10f815cf.svg",
+    "static/media/pref-babychanging.svg": "./static/media/pref-babychanging.7ed6f047.svg",
+    "static/media/pref-cost-white.svg": "./static/media/pref-cost-white.fc6c081c.svg",
+    "static/media/pref-cost.svg": "./static/media/pref-cost.907d70f1.svg",
+    "static/media/pref-female-white.svg": "./static/media/pref-female-white.936f1ef1.svg",
+    "static/media/pref-female.svg": "./static/media/pref-female.15866789.svg",
+    "static/media/pref-male-white.svg": "./static/media/pref-male-white.dbf159ae.svg",
+    "static/media/pref-male.svg": "./static/media/pref-male.8c941839.svg",
+    "static/media/pref-open-white.svg": "./static/media/pref-open-white.0c71ed98.svg",
+    "static/media/pref-open.svg": "./static/media/pref-open.6977530b.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.fd3cbda2.js",
+    "static/css/2.5d642e5f.chunk.css",
+    "static/js/2.258d4eb2.chunk.js",
+    "static/css/main.889e429e.chunk.css",
+    "static/js/main.1d4917ca.chunk.js"
+  ]
+}
