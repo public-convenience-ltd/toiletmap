@@ -47,6 +47,11 @@ import mapControlsSaga from './redux/sagas/mapControls';
 
 import history from './history';
 import Auth from './Auth';
+
+import { ApolloClient, ApolloProvider, HttpLink } from '@apollo/client';
+
+import { version } from '../package.json';
+
 const auth = new Auth();
 
 const rootReducer = combineReducers({
@@ -88,50 +93,72 @@ history.listen(function(location) {
 
 // Create an enhanced history that syncs navigation events with the store
 
+// Create GraphQL client
+const client = new ApolloClient({
+  name: 'Toilet Map UI',
+  version: version,
+  link: new HttpLink({
+    uri: '/graphql',
+  }),
+  request: operation => {
+    const headers = {
+      'apollographql-client-name': 'toiletmap-ui',
+      'apollographql-client-version': `${version}`,
+    };
+    if (auth.isAuthenticated()) {
+      headers['Authorization'] = `Bearer ${auth.getAccessToken()}`;
+    }
+    operation.setContext({ headers });
+    return operation;
+  },
+});
+
 if (typeof document !== 'undefined') {
   ReactDOM.render(
     <Provider store={store}>
-      <Router history={history} forceRefresh={false}>
-        <App>
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route exact path="/preferences" component={PreferencesPage} />
-            <Route exact path="/about" component={AboutPage} />
-            <Route exact path="/privacy" component={PrivacyPage} />
-            <Route exact path="/use-our-loos" component={UseOurLoosPage} />
-            <Route path="/loos/:id" exact component={LooPage} />
-            <Route path="/login" component={LoginPage} />
-            <Route path="/map/:lng/:lat" component={MapPage} />
-            <Route
-              exact
-              path="/callback"
-              render={props => <AuthCallback auth={auth} {...props} />}
-            />
-            <ProtectedRoute
-              exact
-              path="/report"
-              component={AddEditPage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/edit"
-              component={AddEditPage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/remove"
-              component={RemovePage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/thanks"
-              component={ThanksPage}
-              auth={auth}
-            />
-            <Route component={NotFound} />
-          </Switch>
-        </App>
-      </Router>
+      <ApolloProvider client={client}>
+        <Router history={history} forceRefresh={false}>
+          <App>
+            <Switch>
+              <Route exact path="/" component={HomePage} />
+              <Route exact path="/preferences" component={PreferencesPage} />
+              <Route exact path="/about" component={AboutPage} />
+              <Route exact path="/privacy" component={PrivacyPage} />
+              <Route exact path="/use-our-loos" component={UseOurLoosPage} />
+              <Route path="/loos/:id" exact component={LooPage} />
+              <Route path="/login" component={LoginPage} />
+              <Route path="/map/:lng/:lat" component={MapPage} />
+              <Route
+                exact
+                path="/callback"
+                render={props => <AuthCallback auth={auth} {...props} />}
+              />
+              <ProtectedRoute
+                exact
+                path="/report"
+                component={AddEditPage}
+                auth={auth}
+              />
+              <ProtectedRoute
+                path="/loos/:id/edit"
+                component={AddEditPage}
+                auth={auth}
+              />
+              <ProtectedRoute
+                path="/loos/:id/remove"
+                component={RemovePage}
+                auth={auth}
+              />
+              <ProtectedRoute
+                path="/loos/:id/thanks"
+                component={ThanksPage}
+                auth={auth}
+              />
+              <Route component={NotFound} />
+            </Switch>
+          </App>
+        </Router>
+      </ApolloProvider>
     </Provider>,
     document.getElementById('root')
   );
