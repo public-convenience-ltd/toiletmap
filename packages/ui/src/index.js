@@ -48,7 +48,12 @@ import mapControlsSaga from './redux/sagas/mapControls';
 import history from './history';
 import Auth from './Auth';
 
-import { ApolloClient, ApolloProvider, HttpLink } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloProvider,
+  HttpLink,
+  InMemoryCache,
+} from '@apollo/client';
 
 import { version } from '../package.json';
 
@@ -100,6 +105,7 @@ const client = new ApolloClient({
   link: new HttpLink({
     uri: '/graphql',
   }),
+  cache: new InMemoryCache(),
   request: operation => {
     const headers = {
       'apollographql-client-name': 'toiletmap-ui',
