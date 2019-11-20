@@ -70,7 +70,7 @@ const LooPage = function LooPage(props) {
       id: looId,
     },
     onCompleted: data => {
-      console.log('completed,', data.loo);
+      // console.log('completed,', data.loo);
       setCurrentLoo(data.loo);
     },
   });
@@ -190,7 +190,7 @@ const LooPage = function LooPage(props) {
     // TODO currentLoo
     return (
       <NearestLooMap
-        loo={currentLoo /* TODO fix */}
+        loo={currentLoo}
         mapProps={{
           showLocation: false,
           showSearchControl: false,
@@ -221,7 +221,7 @@ const LooPage = function LooPage(props) {
   return (
     <PageLayout
       main={renderMain()}
-      map={<Loading message={'TODO'} /> /*renderMap()*/}
+      map={/*<Loading message={'TODO'} />*/ renderMap()}
     />
   );
 };

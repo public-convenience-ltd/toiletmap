@@ -53,6 +53,7 @@ import {
   ApolloProvider,
   HttpLink,
   InMemoryCache,
+  gql,
 } from '@apollo/client';
 
 import { version } from '../package.json';
@@ -74,9 +75,13 @@ const middleware = applyMiddleware(sagaMiddleware);
 const devTools =
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
 
-const initialState = {};
+const initialStateTODOREMOVE = {};
 
-const store = middleware(createStore)(rootReducer, initialState, devTools);
+const store = middleware(createStore)(
+  rootReducer,
+  initialStateTODOREMOVE,
+  devTools
+);
 
 // Run sagas
 sagaMiddleware.run(makeAuthSaga(auth));
@@ -117,6 +122,34 @@ const client = new ApolloClient({
     operation.setContext({ headers });
     return operation;
   },
+});
+
+// Set the initial cache state
+const initialState = {
+  mapControls: {
+    zoom: 16,
+    center: {
+      lat: 52.633238,
+      lng: 1.295365,
+    },
+    highlight: null, // should be a loo id
+  },
+};
+
+client.writeQuery({
+  query: gql`
+    query updateMapControls {
+      mapControls {
+        zoom
+        center {
+          lat
+          lng
+        }
+        highlight
+      }
+    }
+  `,
+  data: initialState,
 });
 
 if (typeof document !== 'undefined') {

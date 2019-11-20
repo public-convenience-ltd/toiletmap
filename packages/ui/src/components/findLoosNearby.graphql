@@ -1,0 +1,10 @@
+query findLoosNearby($lat: Float!, $lng: Float!, $radius: Int!) {
+  loosByProximity(from: {
+    lat: $lat,
+    lng: $lng,
+    maxDistance: $radius
+  }) {
+    id
+    name
+  }
+}

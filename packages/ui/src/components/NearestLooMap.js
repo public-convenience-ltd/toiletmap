@@ -1,87 +1,155 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { connect } from 'react-redux';
-
 import LooMap from './LooMap';
+import WithApolloClient from './WithApolloClient';
 
-import { actionZoom, actionUpdateCenter } from '../redux/modules/mapControls';
+import { useQuery, gql } from '@apollo/client';
+import { loader } from 'graphql.macro';
 
 import styles from './css/loo-map.module.css';
 
-class NearestLooMap extends Component {
-  constructor(props) {
-    super(props);
-    this.onUpdateCenter = this.onUpdateCenter.bind(this);
-  }
+const FIND_LOOS_NEARBY = loader('./findLoosNearby.graphql');
 
-  componentDidMount() {
-    // Only do if leaflet map element is ready and we're loading
-    if (this.looMap && this.props.loadingNearby) {
-      this.looMap.refs.map.leafletElement.fire('dataloading');
-    }
-  }
+const NearestLooMap = function NearestLooMap(props) {
+  let [geolocation, setGeolocation] = useState();
+  let [loos, setLoos] = useState([]);
+  const { apolloClient } = props;
+  let looMap;
 
-  componentDidUpdate(prevProps) {
-    // Only do if leaflet map element is ready and we've started loading or loaded
-    if (this.looMap && this.props.loadingNearby !== prevProps.loadingNearby) {
-      if (this.props.loadingNearby) {
-        this.looMap.refs.map.leafletElement.fire('dataloading');
-      } else {
-        this.looMap.refs.map.leafletElement.fire('dataload');
+  let { mapControls } = apolloClient.readQuery({
+    query: gql`
+      query getMapControls {
+        mapControls {
+          zoom
+          center {
+            lat
+            lng
+          }
+        }
       }
-    }
+    `,
+  });
+
+  let loo = props.loo;
+  let looCentre;
+  if (loo) {
+    looCentre = {
+      ...loo.location,
+    };
   }
 
-  onUpdateCenter({ lng, lat }) {
-    this.props.actionUpdateCenter({ lat, lng });
+  // Return map to last stored position or default to user locationon
+  var position = looCentre || mapControls.center || geolocation.position;
+
+  console.log('controls:', mapControls);
+
+  function onUpdateCenter({ lat, lng }) {
+    console.log('update centre');
+    apolloClient.writeQuery({
+      query: gql`
+        query updateCenter {
+          mapControls {
+            center {
+              lat
+              lng
+            }
+          }
+        }
+      `,
+      data: {
+        mapControls: {
+          center: {
+            lat,
+            lng,
+          },
+        },
+      },
+    });
   }
 
-  render() {
-    var loos = this.props.loos;
-    var loo = this.props.loo;
-    var looCentre;
-    if (loo) {
-      looCentre = {
-        lat: loo.properties.geometry.coordinates[1],
-        lng: loo.properties.geometry.coordinates[0],
-      };
+  function onUpdateZoom(zoom) {
+    console.log('update zoom');
+    apolloClient.writeQuery({
+      query: gql`
+        query updateZoom {
+          mapControls {
+            zoom
+          }
+        }
+      `,
+      data: {
+        mapControls: {
+          zoom,
+        },
+      },
+    });
+  }
+
+  // A helper function to fire events for the map leaflet
+  const updateLoadingStatus = function updateLoadingStatus(isLoading) {
+    if (!looMap) {
+      return;
     }
 
-    // Return map to last stored position or default to user location
-    var position =
-      looCentre || this.props.map.center || this.props.geolocation.position;
+    if (isLoading) {
+      looMap.refs.map.leafletElement.fire('dataloading');
+    } else {
+      looMap.refs.map.leafletElement.fire('dataload');
+    }
+  };
 
-    return (
-      <div className={styles.map}>
-        {!loos && (
-          <div className={styles.loading}>Fetching toilets&hellip;</div>
-        )}
-
-        <LooMap
-          wrappedComponentRef={it => (this.looMap = it)}
-          loos={loos}
-          countLimit={this.props.numberNearest ? 5 : 0}
-          showcontributor={true}
-          showLocation={true}
-          showSearchControl={true}
-          showLocateControl={true}
-          showCenter={true}
-          onZoom={this.props.actionZoom}
-          onUpdateCenter={this.onUpdateCenter}
-          initialZoom={this.props.map.zoom}
-          initialPosition={position}
-          highlight={this.props.map.highlight}
-          {...this.props.mapProps}
-        />
-      </div>
+  // Fetch the current geolocation on rerender
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      response => {
+        const { longitude, latitude } = response.coords;
+        let newPos = { lng: longitude, lat: latitude };
+        setGeolocation(newPos);
+        // onUpdateCenter(newPos); // maybe keep in?
+      },
+      error => console.error(error)
     );
-  }
-}
+  }, []);
+
+  // Fetch the nearby loos
+  updateLoadingStatus(true);
+  useQuery(FIND_LOOS_NEARBY, {
+    variables: {
+      ...position,
+      radius: 1500, // TODO change
+    },
+    onCompleted: data => {
+      updateLoadingStatus(false);
+      setLoos(data.loosByProximity);
+    },
+  });
+
+  return (
+    <div className={styles.map}>
+      {!loos && <div className={styles.loading}>Fetching toilets&hellip;</div>}
+
+      <LooMap
+        wrappedComponentRef={it => (looMap = it)}
+        loos={[] /*loos*/}
+        countLimit={props.numberNearest ? 5 : 0}
+        showcontributor={true}
+        showLocation={true}
+        showSearchControl={true}
+        showLocateControl={true}
+        showCenter={true}
+        onZoom={onUpdateZoom}
+        onUpdateCenter={onUpdateCenter}
+        initialZoom={mapControls.zoom}
+        initialPosition={position}
+        highlight={mapControls.highlight}
+        {...props.mapProps}
+      />
+    </div>
+  );
+};
 
 NearestLooMap.propTypes = {
-  // An array of loo instances to be represented as map markers
-  loos: PropTypes.array,
   // A loo to focus
   loo: PropTypes.object,
   // props to spread (last) over the LooMap instance
@@ -90,19 +158,10 @@ NearestLooMap.propTypes = {
   numberNearest: PropTypes.bool,
 };
 
-var mapStateToProps = state => ({
-  geolocation: state.geolocation,
-  map: state.mapControls,
-  loos: state.loos.nearby,
-  loadingNearby: state.loos.loadingNearby,
-});
+const NearestLooMapWithApolloClient = props => (
+  <WithApolloClient>
+    <NearestLooMap {...props} />
+  </WithApolloClient>
+);
 
-var mapDispatchToProps = {
-  actionZoom,
-  actionUpdateCenter,
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NearestLooMap);
+export default NearestLooMapWithApolloClient;
