@@ -2372,25 +2372,30 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@newrelic/koa@^1.0.0":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@newrelic/koa/-/koa-1.0.8.tgz#59bf54e86cef700427e32dbdc7c931a213146ac1"
-  integrity sha512-kY//FlLQkGdUIKEeGJlyY3dJRU63EG77YIa48ACMGZxQbWRd3WZMikyft33f8XScTq6WpCDo9xa0viNo8zeYkg==
+"@newrelic/aws-sdk@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@newrelic/aws-sdk/-/aws-sdk-1.0.0.tgz#9e109ba5f1d2fc96ce0547c18ee67216a13a633c"
+  integrity sha512-7stfRvWPQrNdVlrYgJX9hNZ3HMzTGVa5rxJVz5SJuNSi7ngUFGAmImKIbzyGnx3EzSMUsFLemHNcDradfn992w==
+
+"@newrelic/koa@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@newrelic/koa/-/koa-3.0.0.tgz#048f636c6c06ab4e823674a2ed3d67677a22ed50"
+  integrity sha512-SxfcMqSxiKa3pi7dRmVoCXnh/VLc196GmwyGU2Fr5+vMxS5jPVj2a15v1mn2DGu04XngfXDvyt9Xa6u1JVRDpQ==
   dependencies:
     methods "^1.1.2"
 
-"@newrelic/native-metrics@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@newrelic/native-metrics/-/native-metrics-4.0.0.tgz#736017f086d73a37d4ac61ba4bb2bc3e0eb781ad"
-  integrity sha512-ZDUlOufD++AdiY9vWC9zpsUw0Q3od7M2mZSG/avTQnQYR6MtGhaOoXqY7GuAlmbNiN8lGkDR+4BkbYO57hq70g==
+"@newrelic/native-metrics@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@newrelic/native-metrics/-/native-metrics-5.0.0.tgz#d31344e4fabf82e7187552dce1b1335ad097c01d"
+  integrity sha512-6Smx/9MlsZTcbLe+Co39O9kJ3sYo/3xunNTOhTP+nPlLxQmQBPDT0/ULmEogTkhaEX5MuCx6L4cN+1QU4uZdDw==
   dependencies:
-    nan "^2.12.1"
+    nan "^2.14.0"
     semver "^5.5.1"
 
-"@newrelic/superagent@^1.0.0":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@newrelic/superagent/-/superagent-1.0.2.tgz#37f424d5390249792233ad1c2fccdb6952033236"
-  integrity sha512-B2fM48kfY+5L6pwk6Yt79yk1JzMWKu1wV73If2shAzMsujNqSA4P+mLKCnTthIuKlhE78OfB1MzSpRMeB7kgWw==
+"@newrelic/superagent@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@newrelic/superagent/-/superagent-2.0.0.tgz#48279c1ff8a720006202a2ca76c38c6de1c5e650"
+  integrity sha512-FrQfMhbv/HFB60wAQixbSjMk8hT+vS5ms6XJ9J40b9z6YI6x4/wgOc13GbvXbztcfOKCTeGVVDbBCruuh9udRA==
   dependencies:
     methods "^1.1.2"
 
@@ -3474,6 +3479,13 @@ agent-base@4, agent-base@^4.1.0, agent-base@~4.2.0:
   dependencies:
     es6-promisify "^5.0.0"
 
+agent-base@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-4.3.0.tgz#8165f01c436009bccad0b1d122f05ed770efc6ee"
+  integrity sha512-salcGninV0nPrwpGNn4VTXBb1SOuXQBiqbrNXoeizJsHrsL6ERFM2Ne3JUSBWRE6aeNJI2ROP/WEEIDUiDe3cg==
+  dependencies:
+    es6-promisify "^5.0.0"
+
 agentkeepalive@^3.4.1:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/agentkeepalive/-/agentkeepalive-3.5.2.tgz#a113924dd3fa24a0bc3b78108c450c2abee00f67"
@@ -4266,17 +4278,17 @@ async@2.4.0:
   dependencies:
     lodash "^4.14.0"
 
-async@2.6.1, async@^2.1.4:
+async@^1.5.0, async@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
+  integrity sha1-7GphrlZIDAw8skHJVhjiCJL5Zyo=
+
+async@^2.1.4:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/async/-/async-2.6.1.tgz#b245a23ca71930044ec53fa46aa00a3e87c6a610"
   integrity sha512-fNEiL2+AZt6AlAw/29Cr0UDe4sRAHCpEHh54WMz+Bb7QfNcFw4h3loofyJpLeQs4Yx7yuqu/2dLgM5hKOs6HlQ==
   dependencies:
     lodash "^4.17.10"
-
-async@^1.5.0, async@^1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
-  integrity sha1-7GphrlZIDAw8skHJVhjiCJL5Zyo=
 
 asynckit@^0.4.0:
   version "0.4.0"
@@ -4820,10 +4832,10 @@ bser@^2.0.0:
   dependencies:
     node-int64 "^0.4.0"
 
-bson@^1.1.0, bson@~1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/bson/-/bson-1.1.0.tgz#bee57d1fb6a87713471af4e32bcae36de814b5b0"
-  integrity sha512-9Aeai9TacfNtWXOYarkFJRW2CWo+dRon+fuLZYJmvLV3+MiUp0bEI6IAZfXEIg7/Pl/7IWlLaDnhzTsD81etQA==
+bson@^1.1.1, bson@~1.1.1:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/bson/-/bson-1.1.3.tgz#aa82cb91f9a453aaa060d6209d0675114a8154d3"
+  integrity sha512-TdiJxMVnodVS7r0BdL42y/pqC9cL2iKynVwA0Ho3qbsQYr428veL3l7BQyuqiw+Q5SqqoT0m4srSY/BlZ9AxXg==
 
 btoa-lite@^1.0.0:
   version "1.0.0"
@@ -7210,6 +7222,18 @@ escodegen@^1.11.0, escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
+escodegen@^1.11.1:
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/escodegen/-/escodegen-1.12.0.tgz#f763daf840af172bb3a2b6dd7219c0e17f7ff541"
+  integrity sha512-TuA+EhsanGcme5T3R0L80u4t8CpbXQjegRmf7+FPTJrtCTErXFeelblRgHQa1FofEzqYYJmJ/OqjTwREp9qgmg==
+  dependencies:
+    esprima "^3.1.3"
+    estraverse "^4.2.0"
+    esutils "^2.0.2"
+    optionator "^0.8.1"
+  optionalDependencies:
+    source-map "~0.6.1"
+
 eslint-config-react-app@^3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/eslint-config-react-app/-/eslint-config-react-app-3.0.6.tgz#addcae1359235941e95f3c96970b7ac8552e1130"
@@ -7545,7 +7569,7 @@ esprima@^3.1.3:
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-3.1.3.tgz#fdca51cee6133895e3c88d535ce49dbff62a4633"
   integrity sha1-/cpRzuYTOJXjyI1TXOSdv/YqRjM=
 
-esprima@^4.0.0, esprima@~4.0.0:
+esprima@^4.0.0, esprima@^4.0.1, esprima@~4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.1.tgz#13b04cdb3e6c5d19df91ab6987a8695619b0aa71"
   integrity sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
@@ -9412,6 +9436,14 @@ https-proxy-agent@^2.2.1:
     agent-base "^4.1.0"
     debug "^3.1.0"
 
+https-proxy-agent@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-3.0.1.tgz#b8c286433e87602311b01c8ea34413d856a4af81"
+  integrity sha512-+ML2Rbh6DAuee7d07tYGEKOEi2voWPUGan+ExdPbPW6Z3svq+JCqr0v8WmKPOkz1vOVykPCBSuobe7G8GJUtVg==
+  dependencies:
+    agent-base "^4.3.0"
+    debug "^3.1.0"
+
 humanize-ms@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/humanize-ms/-/humanize-ms-1.2.1.tgz#c46e3159a293f6b896da29316d8b6fe8bb79bbed"
@@ -11053,10 +11085,10 @@ jws@^3.1.5:
     jwa "^1.1.5"
     safe-buffer "^5.0.1"
 
-kareem@2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/kareem/-/kareem-2.3.0.tgz#ef33c42e9024dce511eeaf440cd684f3af1fc769"
-  integrity sha512-6hHxsp9e6zQU8nXsP+02HGWXwTkOEw6IROhF2ZA28cYbUk4eJ6QbtZvdqZOdD9YPKghG3apk5eOCvs+tLl3lRg==
+kareem@2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/kareem/-/kareem-2.3.1.tgz#def12d9c941017fabfb00f873af95e9c99e1be87"
+  integrity sha512-l3hLhffs9zqoDe8zjmb/mAN4B8VT3L56EUvKNqLFVs9YlFA+zx7ke1DO8STAdDyYNkeSo1nKmjuvQeI12So8Xw==
 
 keycode@^2.1.9:
   version "2.2.0"
@@ -12195,24 +12227,16 @@ moment@^2.10.2, moment@^2.22.1, moment@^2.22.2:
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.23.0.tgz#759ea491ac97d54bac5ad776996e2a58cc1bc225"
   integrity sha512-3IE39bHVqFbWWaPOMHZF98Q9c3LDKGTmypMiTM2QygGXXElkFWIH7GxfmlwmY2vwa+wmNsoYZmG2iusf1ZjJoA==
 
-mongodb-core@3.1.9:
-  version "3.1.9"
-  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-3.1.9.tgz#c31ee407bf932b0149eaed775c17ee09974e4ca3"
-  integrity sha512-MJpciDABXMchrZphh3vMcqu8hkNf/Mi+Gk6btOimVg1XMxLXh87j6FAvRm+KmwD1A9fpu3qRQYcbQe4egj23og==
+mongodb@3.3.4:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.3.4.tgz#f52eec4a04005101e63715d4d1f67bf784fa0aef"
+  integrity sha512-6fmHu3FJTpeZxacJcfjUGIP3BSteG0l2cxLkSrf1nnnS1OrlnVGiP9P/wAC4aB6dM6H4vQ2io8YDjkuPkje7AA==
   dependencies:
-    bson "^1.1.0"
+    bson "^1.1.1"
     require_optional "^1.0.1"
     safe-buffer "^5.1.2"
   optionalDependencies:
     saslprep "^1.0.0"
-
-mongodb@3.1.10:
-  version "3.1.10"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.1.10.tgz#45ad9b74ea376f4122d0881b75e5489b9e504ed7"
-  integrity sha512-Uml42GeFxhTGQVml1XQ4cD0o/rp7J2ROy0fdYUcVitoE7vFqEhKH4TYVqRDpQr/bXtCJVxJdNQC1ntRxNREkPQ==
-  dependencies:
-    mongodb-core "3.1.9"
-    safe-buffer "^5.1.2"
 
 mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
@@ -12226,22 +12250,21 @@ mongoose-paginate@5.0.3:
   dependencies:
     bluebird "3.0.5"
 
-mongoose@5.4.7:
-  version "5.4.7"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.4.7.tgz#eac012b38636a4b9075f66480263dd426e65c5c1"
-  integrity sha512-bFB9/VHB1FAY2dgTHIjtUYThcIaYSyS0vG0sCpwjW2GZ3XDTykXKV9dlGSWPqJ9+dnSOevdrhoHBgL3b63Or5w==
+mongoose@5.7.12:
+  version "5.7.12"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.7.12.tgz#ef22a0f741970b6ba504995fdbe0ac9d8289d615"
+  integrity sha512-TqRiJPUeHN1u7Xs/zQmiMHcrzEb1/uKjK3uGzZhyqw25RKQiMV2vSBeBTMt5HXoYlUuDEWXE75FMjpK9X9kD0w==
   dependencies:
-    async "2.6.1"
-    bson "~1.1.0"
-    kareem "2.3.0"
-    mongodb "3.1.10"
-    mongodb-core "3.1.9"
+    bson "~1.1.1"
+    kareem "2.3.1"
+    mongodb "3.3.4"
     mongoose-legacy-pluralize "1.0.2"
-    mpath "0.5.1"
-    mquery "3.2.0"
-    ms "2.0.0"
-    regexp-clone "0.0.1"
+    mpath "0.6.0"
+    mquery "3.2.2"
+    ms "2.1.2"
+    regexp-clone "1.0.0"
     safe-buffer "5.1.2"
+    sift "7.0.1"
     sliced "1.0.1"
 
 move-concurrently@^1.0.1:
@@ -12256,19 +12279,19 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
-mpath@0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/mpath/-/mpath-0.5.1.tgz#17131501f1ff9e6e4fbc8ffa875aa7065b5775ab"
-  integrity sha512-H8OVQ+QEz82sch4wbODFOz+3YQ61FYz/z3eJ5pIdbMEaUzDqA268Wd+Vt4Paw9TJfvDgVKaayC0gBzMIw2jhsg==
+mpath@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/mpath/-/mpath-0.6.0.tgz#aa922029fca4f0f641f360e74c5c1b6a4c47078e"
+  integrity sha512-i75qh79MJ5Xo/sbhxrDrPSEG0H/mr1kcZXJ8dH6URU5jD/knFxCVqVC/gVSW7GIXL/9hHWlT9haLbCXWOll3qw==
 
-mquery@3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/mquery/-/mquery-3.2.0.tgz#e276472abd5109686a15eb2a8e0761db813c81cc"
-  integrity sha512-qPJcdK/yqcbQiKoemAt62Y0BAc0fTEKo1IThodBD+O5meQRJT/2HSe5QpBNwaa4CjskoGrYWsEyjkqgiE0qjhg==
+mquery@3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/mquery/-/mquery-3.2.2.tgz#e1383a3951852ce23e37f619a9b350f1fb3664e7"
+  integrity sha512-XB52992COp0KP230I3qloVUbkLUxJIu328HBP2t2EsxSFtf4W1HPSOBWOXf1bqxK4Xbb66lfMJ+Bpfd9/yZE1Q==
   dependencies:
     bluebird "3.5.1"
     debug "3.1.0"
-    regexp-clone "0.0.1"
+    regexp-clone "^1.0.0"
     safe-buffer "5.1.2"
     sliced "1.0.1"
 
@@ -12276,6 +12299,11 @@ ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
   integrity sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=
+
+ms@2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
+  integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
 ms@^2.0.0, ms@^2.1.1:
   version "2.1.1"
@@ -12328,6 +12356,11 @@ nan@^2.12.1, nan@^2.9.2:
   version "2.12.1"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.12.1.tgz#7b1aa193e9aa86057e3c7bbd0ac448e770925552"
   integrity sha512-JY7V6lRkStKcKTvHO5NVSQRv+RV+FIL5pvDoLiAtSL9pKlC5x9PKQcZDsq7m4FO4d57mkhC6Z+QhAh3Jdk5JFw==
+
+nan@^2.14.0:
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
+  integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
 
 nanomatch@^1.2.9:
   version "1.2.13"
@@ -12388,22 +12421,25 @@ netrc-parser@^3.1.4:
     debug "^3.1.0"
     execa "^0.10.0"
 
-newrelic@5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/newrelic/-/newrelic-5.2.0.tgz#7f577d786f8af2221669bd2ae841ff8597696591"
-  integrity sha512-mhy4J6ZQUFhyLcKOydanjIJUpuSgMZ3kvgNbiJsk4be/EgYXjtjH16w54dl23g5NknDLi9eQwMJuvKkBvs2meA==
+newrelic@6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/newrelic/-/newrelic-6.2.0.tgz#7350cb470721bc9f41b98eebe55b6c4cc682c01a"
+  integrity sha512-xzWuZJPIMaPVHITuyUhb6uX+dRjBbs4RsyG0ia7UesKVUORbwX2lyJ6XqiqSQhIw2HnhpAuIBjKmHuR2Rw40WA==
   dependencies:
-    "@newrelic/koa" "^1.0.0"
-    "@newrelic/superagent" "^1.0.0"
+    "@newrelic/aws-sdk" "^1.0.0"
+    "@newrelic/koa" "^3.0.0"
+    "@newrelic/superagent" "^2.0.0"
     "@tyriar/fibonacci-heap" "^2.0.7"
     async "^2.1.4"
-    concat-stream "^1.5.0"
-    https-proxy-agent "^2.2.1"
+    concat-stream "^2.0.0"
+    escodegen "^1.11.1"
+    esprima "^4.0.1"
+    https-proxy-agent "^3.0.0"
     json-stringify-safe "^5.0.0"
-    readable-stream "^2.1.4"
+    readable-stream "^3.1.1"
     semver "^5.3.0"
   optionalDependencies:
-    "@newrelic/native-metrics" "^4.0.0"
+    "@newrelic/native-metrics" "^5.0.0"
 
 next-tick@^1.0.0:
   version "1.0.0"
@@ -15166,7 +15202,7 @@ read@1, read@~1.0.1:
   dependencies:
     mute-stream "~0.0.4"
 
-"readable-stream@1 || 2", readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.4, readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.3.3, readable-stream@^2.3.5, readable-stream@^2.3.6, readable-stream@~2.3.6:
+"readable-stream@1 || 2", readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.4, readable-stream@^2.0.6, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.3.3, readable-stream@^2.3.5, readable-stream@^2.3.6, readable-stream@~2.3.6:
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
   integrity sha512-tQtKA9WIAhBF3+VLAseyMqZeBjW0AHJoxOtYqSUZNJxauErmLbVm2FW1y+J/YA9dUrAC39ITejlZWhVIwawkKw==
@@ -15189,7 +15225,7 @@ readable-stream@1.0:
     isarray "0.0.1"
     string_decoder "~0.10.x"
 
-"readable-stream@2 || 3", readable-stream@^3.0.2:
+"readable-stream@2 || 3", readable-stream@^3.0.2, readable-stream@^3.1.1:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-3.4.0.tgz#a51c26754658e0a3c21dbf59163bd45ba6f447fc"
   integrity sha512-jItXPLmrSR8jmTRmRWJXCnGJsfy85mB3Wd/uINMXA65yrnFo0cPClFIUWzo2najVNSl+mx7/4W8ttlLWJe99pQ==
@@ -15372,10 +15408,10 @@ regex-parser@2.2.10:
   resolved "https://registry.yarnpkg.com/regex-parser/-/regex-parser-2.2.10.tgz#9e66a8f73d89a107616e63b39d4deddfee912b37"
   integrity sha512-8t6074A68gHfU8Neftl0Le6KTDwfGAj7IyjPIMSfikI2wJUTHDMaIq42bUsfVnj8mhx0R+45rdUXHGpN164avA==
 
-regexp-clone@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/regexp-clone/-/regexp-clone-0.0.1.tgz#a7c2e09891fdbf38fbb10d376fb73003e68ac589"
-  integrity sha1-p8LgmJH9vzj7sQ03b7cwA+aKxYk=
+regexp-clone@1.0.0, regexp-clone@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/regexp-clone/-/regexp-clone-1.0.0.tgz#222db967623277056260b992626354a04ce9bf63"
+  integrity sha512-TuAasHQNamyyJ2hb97IuBEif4qBHGjPHBS64sZwytpLEqtBQ1gPJTnOaQ6qmpET16cK14kkjbazl6+p0RRv0yw==
 
 regexpp@^2.0.1:
   version "2.0.1"
@@ -16184,6 +16220,11 @@ shellwords@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
   integrity sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww==
+
+sift@7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/sift/-/sift-7.0.1.tgz#47d62c50b159d316f1372f8b53f9c10cd21a4b08"
+  integrity sha512-oqD7PMJ+uO6jV9EQCl0LrRw1OwsiPsiFQR5AR30heR+4Dl7jBBbDLnNvWiak20tzZlSE1H7RB30SX/1j/YYT7g==
 
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
