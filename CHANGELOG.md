@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/neontribe/gbptm/compare/v3.0.0...v3.2.0) (2019-11-28)
+
+
+### Bug Fixes
+
+* add cross-env ([1935f64](https://github.com/neontribe/gbptm/commit/1935f64))
+* get history to fill some variables when the location changes ([5a0a68f](https://github.com/neontribe/gbptm/commit/5a0a68f))
+* put pagetitle in instead of pathname ([fe5a6fe](https://github.com/neontribe/gbptm/commit/fe5a6fe))
+
+
+### Features
+
+* disable save button when preferences haven't been changed ([a49e293](https://github.com/neontribe/gbptm/commit/a49e293))
+* track client-side pageViews ([9518028](https://github.com/neontribe/gbptm/commit/9518028))
+
+
+
+
+
+# [3.1.0](https://github.com/neontribe/gbptm/compare/v3.0.0...v3.1.0) (2019-11-28)
+
+
+### Bug Fixes
+
+* add cross-env ([1935f64](https://github.com/neontribe/gbptm/commit/1935f64))
+* get history to fill some variables when the location changes ([5a0a68f](https://github.com/neontribe/gbptm/commit/5a0a68f))
+* put pagetitle in instead of pathname ([fe5a6fe](https://github.com/neontribe/gbptm/commit/fe5a6fe))
+
+
+### Features
+
+* disable save button when preferences haven't been changed ([a49e293](https://github.com/neontribe/gbptm/commit/a49e293))
+* track client-side pageViews ([9518028](https://github.com/neontribe/gbptm/commit/9518028))
+
+
+
+
+
 # [3.0.0](https://github.com/neontribe/gbptm/compare/v2.9.0...v3.0.0) (2019-10-14)
 
 

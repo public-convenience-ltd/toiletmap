@@ -1,7 +1,7 @@
 {
   "name": "@toiletmap/leaflet-control-geocoder",
   "private": true,
-  "version": "3.0.0",
+  "version": "3.2.0",
   "description": "Extendable geocoder with builtin support for Nominatim, Bing, Google, Mapbox, Photon, What3Words, MapQuest, Mapzen, HERE",
   "main": "dist/Control.Geocoder.js",
   "scripts": {

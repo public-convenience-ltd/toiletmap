@@ -105,6 +105,10 @@ class PreferencesPage extends Component {
     });
   }
 
+  isDirty() {
+    return Object.keys(this.state.unsavedPreferences).length !== 0;
+  }
+
   renderMain() {
     return (
       <div>
@@ -161,7 +165,11 @@ class PreferencesPage extends Component {
           </Notification>
         )}
 
-        <button className={controls.btn} onClick={this.save}>
+        <button
+          className={controls.btn}
+          onClick={this.save}
+          disabled={!this.isDirty()}
+        >
           Save
         </button>
       </div>

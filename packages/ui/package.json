@@ -1,8 +1,9 @@
 {
   "name": "@toiletmap/ui",
-  "version": "3.0.0",
+  "version": "3.2.0",
   "private": true,
   "devDependencies": {
+    "cross-env": "6.0.3",
     "cypress": "3.1.4",
     "cypress-image-snapshot": "3.0.0",
     "eslint-plugin-cypress": "2.2.0",
@@ -14,9 +15,9 @@
     "start-server-and-test": "1.7.11"
   },
   "dependencies": {
-    "@toiletmap/api-client": "3.0.0",
-    "@toiletmap/leaflet-control-geocoder": "3.0.0",
-    "@toiletmap/opening-hours": "3.0.0",
+    "@toiletmap/api-client": "3.2.0",
+    "@toiletmap/leaflet-control-geocoder": "3.2.0",
+    "@toiletmap/opening-hours": "3.2.0",
     "auth0-js": "9.10.0",
     "core-js": "2.6.3",
     "js-cookie": "2.2.1",
@@ -41,9 +42,9 @@
     "redux-saga": "1.0.0"
   },
   "scripts": {
-    "dev": "SKIP_PREFLIGHT_CHECK=true react-app-rewired start",
+    "dev": "cross-env SKIP_PREFLIGHT_CHECK=true react-app-rewired start",
     "start": "http-server ./build -p 5000 -a localhost --proxy https://gbptm-unity.herokuapp.com",
-    "build": "SKIP_PREFLIGHT_CHECK=true react-app-rewired build",
+    "build": "cross-env SKIP_PREFLIGHT_CHECK=true react-app-rewired build",
     "cy:open": "cypress open --config baseUrl=http://localhost:3000",
     "cy:run": "cypress run --config baseUrl=http://localhost:5000,video=false",
     "test:integration": "start-server-and-test start http://localhost:5000 cy:run"

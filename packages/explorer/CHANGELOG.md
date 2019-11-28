@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/neontribe/gbptm/compare/v3.0.0...v3.2.0) (2019-11-28)
+
+
+### Bug Fixes
+
+* add cross-env ([1935f64](https://github.com/neontribe/gbptm/commit/1935f64))
+
+
+
+
+
+# [3.1.0](https://github.com/neontribe/gbptm/compare/v3.0.0...v3.1.0) (2019-11-28)
+
+
+### Bug Fixes
+
+* add cross-env ([1935f64](https://github.com/neontribe/gbptm/commit/1935f64))
+
+
+
+
+
 # [3.0.0](https://github.com/neontribe/gbptm/compare/v2.9.0...v3.0.0) (2019-10-14)
 
 
