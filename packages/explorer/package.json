@@ -1,6 +1,6 @@
 {
   "name": "@toiletmap/explorer",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "private": true,
   "homepage": "/explorer",
   "devDependencies": {
@@ -11,7 +11,7 @@
     "@material-ui/core": "3.9.1",
     "@material-ui/icons": "3.0.2",
     "@reach/router": "1.2.1",
-    "@toiletmap/api-client": "3.1.0",
+    "@toiletmap/api-client": "3.2.0",
     "apollo-boost": "0.1.27",
     "auth0-js": "9.10.0",
     "chart.js": "2.7.3",
