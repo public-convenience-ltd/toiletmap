@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
@@ -62,22 +62,16 @@ const LooPage = function LooPage(props) {
     '__typename',
   ];
 
-  const [currentLoo, setCurrentLoo] = useState();
-
   let looId = props.match.params.id;
-  const { queryLoading, queryError } = useQuery(FIND_LOO_QUERY, {
+  const { loading, data, error } = useQuery(FIND_LOO_QUERY, {
     variables: {
       id: looId,
-    },
-    onCompleted: data => {
-      // console.log('completed,', data.loo);
-      setCurrentLoo(data.loo);
     },
   });
 
   function getPropertyNames() {
     // All property names in our loo object
-    var names = Object.keys(currentLoo);
+    var names = Object.keys(data.loo);
 
     // Pick out contained properties of known order, we'll put them at the front
     var knownOrder = _.intersection(propertiesSort, names);
@@ -100,7 +94,7 @@ const LooPage = function LooPage(props) {
   }
 
   function renderMain() {
-    var loo = currentLoo;
+    var loo = data.loo;
     var properties = getPropertyNames();
 
     return (
@@ -187,10 +181,9 @@ const LooPage = function LooPage(props) {
   }
 
   function renderMap() {
-    // TODO currentLoo
     return (
       <NearestLooMap
-        loo={currentLoo}
+        loo={data.loo}
         mapProps={{
           showLocation: false,
           showSearchControl: false,
@@ -198,15 +191,16 @@ const LooPage = function LooPage(props) {
           showCenter: false,
           countLimit: null,
         }}
+        highlight={data.loo.id}
       />
     );
   }
 
-  if (queryLoading || queryError || !currentLoo) {
+  if (loading || error || !data.loo) {
     let msg;
-    if (queryError) {
+    if (error) {
       msg = 'An error occurred. ';
-      console.error(queryError);
+      console.error(error);
     } else {
       msg = 'Fetching toilet data';
     }
@@ -218,12 +212,7 @@ const LooPage = function LooPage(props) {
       />
     );
   }
-  return (
-    <PageLayout
-      main={renderMain()}
-      map={/*<Loading message={'TODO'} />*/ renderMap()}
-    />
-  );
+  return <PageLayout main={renderMain()} map={renderMap()} />;
 };
 
 export default LooPage;

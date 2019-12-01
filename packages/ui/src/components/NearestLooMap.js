@@ -12,8 +12,7 @@ import styles from './css/loo-map.module.css';
 const FIND_LOOS_NEARBY = loader('./findLoosNearby.graphql');
 
 const NearestLooMap = function NearestLooMap(props) {
-  let [geolocation, setGeolocation] = useState();
-  let [loos, setLoos] = useState([]);
+  const [geolocation, setGeolocation] = useState();
   const { apolloClient } = props;
   let looMap;
 
@@ -26,6 +25,7 @@ const NearestLooMap = function NearestLooMap(props) {
             lat
             lng
           }
+          highlight
         }
       }
     `,
@@ -39,13 +39,50 @@ const NearestLooMap = function NearestLooMap(props) {
     };
   }
 
-  // Return map to last stored position or default to user locationon
-  var position = looCentre || mapControls.center || geolocation.position;
+  // Return map to last stored position or default to user location
+  const [mapCenter, setMapCenter] = useState(mapControls.center);
 
-  console.log('controls:', mapControls);
+  // A helper function to fire events for the map leaflet
+  const updateLoadingStatus = function updateLoadingStatus(isLoading) {
+    if (!looMap) return;
+
+    if (isLoading) {
+      looMap.refs.map.leafletElement.fire('dataloading');
+    } else {
+      looMap.refs.map.leafletElement.fire('dataload');
+    }
+  };
+
+  // Fetch the current geolocation on rerender
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      response => {
+        const { longitude, latitude } = response.coords;
+        let newPos = { lng: longitude, lat: latitude };
+        setGeolocation(newPos);
+      },
+      error => console.error(error)
+    );
+  }, []);
+
+  // Fetch the nearby loos
+  updateLoadingStatus(true);
+  const { loading, data, refetch } = useQuery(FIND_LOOS_NEARBY, {
+    variables: {
+      ...mapCenter,
+      radius: 20000,
+    },
+    onCompleted: data => {
+      updateLoadingStatus(false);
+    },
+  });
 
   function onUpdateCenter({ lat, lng }) {
-    console.log('update centre');
+    if (!loading) {
+      updateLoadingStatus(true);
+      refetch();
+    }
+    setMapCenter({ lat, lng });
     apolloClient.writeQuery({
       query: gql`
         query updateCenter {
@@ -69,7 +106,6 @@ const NearestLooMap = function NearestLooMap(props) {
   }
 
   function onUpdateZoom(zoom) {
-    console.log('update zoom');
     apolloClient.writeQuery({
       query: gql`
         query updateZoom {
@@ -86,52 +122,15 @@ const NearestLooMap = function NearestLooMap(props) {
     });
   }
 
-  // A helper function to fire events for the map leaflet
-  const updateLoadingStatus = function updateLoadingStatus(isLoading) {
-    if (!looMap) {
-      return;
-    }
-
-    if (isLoading) {
-      looMap.refs.map.leafletElement.fire('dataloading');
-    } else {
-      looMap.refs.map.leafletElement.fire('dataload');
-    }
-  };
-
-  // Fetch the current geolocation on rerender
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      response => {
-        const { longitude, latitude } = response.coords;
-        let newPos = { lng: longitude, lat: latitude };
-        setGeolocation(newPos);
-        // onUpdateCenter(newPos); // maybe keep in?
-      },
-      error => console.error(error)
-    );
-  }, []);
-
-  // Fetch the nearby loos
-  updateLoadingStatus(true);
-  useQuery(FIND_LOOS_NEARBY, {
-    variables: {
-      ...position,
-      radius: 1500, // TODO change
-    },
-    onCompleted: data => {
-      updateLoadingStatus(false);
-      setLoos(data.loosByProximity);
-    },
-  });
-
   return (
     <div className={styles.map}>
-      {!loos && <div className={styles.loading}>Fetching toilets&hellip;</div>}
+      {loading && (
+        <div className={styles.loading}>Fetching toilets&hellip;</div>
+      )}
 
       <LooMap
         wrappedComponentRef={it => (looMap = it)}
-        loos={[] /*loos*/}
+        loos={data ? data.loosByProximity : []}
         countLimit={props.numberNearest ? 5 : 0}
         showcontributor={true}
         showLocation={true}
@@ -141,8 +140,10 @@ const NearestLooMap = function NearestLooMap(props) {
         onZoom={onUpdateZoom}
         onUpdateCenter={onUpdateCenter}
         initialZoom={mapControls.zoom}
-        initialPosition={position}
-        highlight={mapControls.highlight}
+        initialPosition={
+          looCentre || mapControls.center || geolocation.position
+        }
+        highlight={props.highlight || mapControls.highlight}
         {...props.mapProps}
       />
     </div>

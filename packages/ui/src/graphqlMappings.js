@@ -100,7 +100,6 @@ export default {
       val = JSON.parse((val + '').toLowerCase()) ? 'Yes' : 'No';
     }
 
-    console.log(property, val);
     // Pricing - use weak type coercian to interpret values like '0'
     // eslint-disable-next-line eqeqeq
     if (property === 'fee' && val == 0 && val !== '') {

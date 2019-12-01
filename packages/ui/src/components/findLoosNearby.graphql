@@ -6,5 +6,9 @@ query findLoosNearby($lat: Float!, $lng: Float!, $radius: Int!) {
   }) {
     id
     name
+    location {
+      lat
+      lng
+    }
   }
 }
