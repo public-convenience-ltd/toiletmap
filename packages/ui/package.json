@@ -49,7 +49,7 @@
   },
   "scripts": {
     "dev": "cross-env SKIP_PREFLIGHT_CHECK=true react-app-rewired start",
-    "start": "http-server ./build -p 5000 -a localhost --proxy https://gbptm-state.herokuapp.com",
+    "start": "http-server ./build -p 5000 -a localhost --proxy https://gbptm-stage.herokuapp.com",
     "build": "cross-env SKIP_PREFLIGHT_CHECK=true react-app-rewired build",
     "cy:open": "cypress open --config baseUrl=http://localhost:3000",
     "prebuild-cordova": "yarn build && cpx \"build/**/*\" www/",
