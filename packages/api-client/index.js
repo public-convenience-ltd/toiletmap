@@ -2,18 +2,18 @@ import querystring from 'querystring';
 import mappings from './src/mappings';
 import axios from 'axios';
 
-const endpoint = '/api';
-
 class API {
-  constructor() {
+  constructor(prefix = '/api') {
     if (!API.instance) {
       API.instance = this;
     }
+
+    this.prefix = prefix;
   }
 
   async findLoos(lng, lat, radius) {
     const qs = querystring.stringify({ radius });
-    const url = `${endpoint}/loos/v2/near/${lng}/${lat}?${qs}`;
+    const url = `${this.prefix}/loos/v2/near/${lng}/${lat}?${qs}`;
     const res = await axios({
       url,
       headers: {
@@ -25,7 +25,7 @@ class API {
 
   async findLooById(id, params) {
     const query = querystring.stringify(params);
-    const url = `${endpoint}/loos/v2/${id}?${query}`;
+    const url = `${this.prefix}/loos/v2/${id}?${query}`;
     const res = await axios({
       url,
       headers: {
@@ -37,7 +37,7 @@ class API {
 
   async searchLoos(q) {
     const query = querystring.stringify(q);
-    const url = `${endpoint}/search?${query}`;
+    const url = `${this.prefix}/search?${query}`;
     const res = await axios({
       url,
       headers: {
@@ -49,7 +49,7 @@ class API {
 
   async reportLoo(report, token, from) {
     // Todo: Handle HTTP 401
-    const url = `${endpoint}/reports`;
+    const url = `${this.prefix}/reports`;
     const res = await axios({
       url,
       headers: {
@@ -71,7 +71,7 @@ class API {
 
   async removeLoo(looId, reason, token) {
     // Todo: Handle HTTP 401
-    const url = `${endpoint}/reports/${looId}`;
+    const url = `${this.prefix}/reports/${looId}`;
     const res = await axios({
       url,
       headers: {
@@ -91,13 +91,13 @@ class API {
   }
 
   async fetchAreaData() {
-    const searchUrl = `${endpoint}/admin_geo/areas`;
+    const searchUrl = `${this.prefix}/admin_geo/areas`;
     const res = await axios(searchUrl);
     return res.data;
   }
 
   async fetchContributors() {
-    const searchUrl = `${endpoint}/statistics/contributors`;
+    const searchUrl = `${this.prefix}/statistics/contributors`;
     const res = await axios(searchUrl);
     return res.data;
   }
@@ -108,4 +108,4 @@ Object.freeze(api);
 
 export default api;
 
-export { api, mappings };
+export { api, mappings, API };
