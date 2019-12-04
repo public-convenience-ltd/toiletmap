@@ -75,8 +75,18 @@ export default {
       babychanging: 'babyChange',
     };
 
+    let gender = {
+      male: preferences.male,
+      female: preferences.female,
+    };
+
+    const wrongGender = {
+      male: ['FEMALE'],
+      female: ['MALE', 'MALE_URINAL'],
+    };
+
     Object.keys(preferences).forEach(name => {
-      var value = loo.properties[map[name]];
+      var value = loo[map[name]];
 
       if (['', undefined, null].indexOf(value) !== -1) {
         return;
@@ -94,10 +104,13 @@ export default {
           break;
 
         case 'accessible':
-          result[name] =
-            value === false ||
-            value === 'false' ||
-            value.toLowerCase() !== 'none';
+          if (gender.male === gender.female) {
+            result[name] = value !== 'NONE';
+          } else if (gender.male) {
+            result[name] = wrongGender.male.indexOf(value) === -1;
+          } else if (gender.female) {
+            result[name] = wrongGender.female.indexOf(value) === -1;
+          }
           break;
 
         case 'open':
@@ -107,11 +120,11 @@ export default {
           break;
 
         case 'male':
-          result[name] = /\bmale\b|unisex/.test(value);
+          result[name] = wrongGender.male.indexOf(value) === -1;
           break;
 
         case 'female':
-          result[name] = /\bfemale\b|unisex/.test(value);
+          result[name] = wrongGender.female.indexOf(value) === -1;
           break;
 
         case 'babychanging':

@@ -6,7 +6,7 @@ import { DateTime } from 'luxon';
 
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
-// import PreferenceIndicators from '../components/PreferenceIndicators';
+import PreferenceIndicators from '../components/PreferenceIndicators';
 import NearestLooMap from '../components/NearestLooMap';
 
 import styles from './css/loo-page.module.css';
@@ -130,9 +130,7 @@ const LooPage = function LooPage(props) {
         <h2 className={headings.large}>{loo.name || 'Toilet'}</h2>
 
         <div className={styles.preferenceIndicators}>
-          {
-            '' /* <PreferenceIndicators loo={loo} iconSize={2.5} /> TODO fix this */
-          }
+          <PreferenceIndicators loo={loo} iconSize={2.5} />
         </div>
 
         <MediaQuery maxWidth={config.viewport.mobile}>
