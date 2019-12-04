@@ -11,6 +11,10 @@ class API {
     this.prefix = prefix;
   }
 
+  setPrefix(prefix) {
+    this.prefix = prefix;
+  }
+
   async findLoos(lng, lat, radius) {
     const qs = querystring.stringify({ radius });
     const url = `${this.prefix}/loos/v2/near/${lng}/${lat}?${qs}`;
@@ -104,7 +108,6 @@ class API {
 }
 
 const api = new API();
-Object.freeze(api);
 
 export default api;
 

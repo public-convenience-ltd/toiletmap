@@ -11,6 +11,8 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 
+import { api } from '@toiletmap/api-client';
+
 import * as serviceWorker from './serviceWorker';
 
 // Global CSS
@@ -47,6 +49,9 @@ import mapControlsSaga from './redux/sagas/mapControls';
 
 import history from './history';
 import Auth from './Auth';
+
+api.setPrefix(process.env.REACT_BAKED_BACKEND);
+
 const auth = new Auth();
 
 const rootReducer = combineReducers({
@@ -138,15 +143,14 @@ const startApp = () => {
     );
     serviceWorker.unregister();
   }
-}
+};
 
-if(window.cordova) {
+if (window.cordova) {
   document.addEventListener('deviceready', startApp, false);
 } else {
-  startApp()
+  startApp();
 }
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
-
