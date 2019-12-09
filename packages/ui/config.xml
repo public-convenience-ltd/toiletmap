@@ -1,34 +1,41 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="uk.org.toiletmap" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
-    <name>Gbptm</name>
-    <description>
-        A sample Apache Cordova application that responds to the deviceready event.
-    </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
-    </author>
-    <content src="http://localhost:3000" />
-    <!-- swap above for <content src="index.html" /> when building for real -->
-    <plugin name="cordova-plugin-whitelist" spec="1" />
-    <access origin="*" />
-    <allow-navigation href="http://localhost:3000/*" />
-    <allow-intent href="https://gbptm.eu.auth0.com/login/*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
-    <platform name="android">
-        <allow-intent href="market:*" />
-        <!-- start: remove in proper build -->
-        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
-            <application android:usesCleartextTraffic="true" />
-        </edit-config>
-        <!-- end: remove in proper build -->
-    </platform>
-    <platform name="ios">
-        <allow-intent href="itms:*" />
-        <allow-intent href="itms-apps:*" />
-    </platform>
+<widget
+  id="uk.org.toiletmap"
+  version="3.2.0"
+  xmlns="http://www.w3.org/ns/widgets"
+  xmlns:cdv="http://cordova.apache.org/ns/1.0"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+>
+  <name>Gbptm</name>
+  <description>
+    A sample Apache Cordova application that responds to the deviceready event.
+  </description>
+  <author email="dev@cordova.apache.org" href="http://cordova.io">
+    Apache Cordova Team
+  </author>
+  <content src="http://localhost:3000"></content>
+  <plugin name="cordova-plugin-whitelist" spec="1"></plugin>
+  <access origin="*"></access>
+  <allow-navigation href="http://localhost:3000/*"></allow-navigation>
+  <allow-intent href="https://gbptm.eu.auth0.com/login/*"></allow-intent>
+  <allow-intent href="http://*/*"></allow-intent>
+  <allow-intent href="https://*/*"></allow-intent>
+  <allow-intent href="tel:*"></allow-intent>
+  <allow-intent href="sms:*"></allow-intent>
+  <allow-intent href="mailto:*"></allow-intent>
+  <allow-intent href="geo:*"></allow-intent>
+  <platform name="android">
+    <allow-intent href="market:*"></allow-intent>
+    <edit-config
+      file="app/src/main/AndroidManifest.xml"
+      mode="merge"
+      target="/manifest/application"
+    >
+      <application android:usesCleartextTraffic="true"></application>
+    </edit-config>
+  </platform>
+  <platform name="ios">
+    <allow-intent href="itms:*"></allow-intent>
+    <allow-intent href="itms-apps:*"></allow-intent>
+  </platform>
 </widget>

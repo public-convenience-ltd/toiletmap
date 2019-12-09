@@ -5,6 +5,7 @@
   "main": "index.js",
   "homepage": "./",
   "devDependencies": {
+    "@babel/node": "7.7.4",
     "cordova": "9.0.0",
     "cross-env": "6.0.3",
     "cypress": "3.1.4",
@@ -15,13 +16,15 @@
     "react-app-rewired": "2.1.3",
     "react-scripts": "3.2.0",
     "serve": "10.1.1",
-    "start-server-and-test": "1.7.11"
+    "start-server-and-test": "1.7.11",
+    "yargs": "15.0.2"
   },
   "dependencies": {
     "@toiletmap/api-client": "3.2.0",
     "@toiletmap/leaflet-control-geocoder": "3.2.0",
     "@toiletmap/opening-hours": "3.2.0",
     "auth0-js": "9.10.0",
+    "concurrently": "5.0.0",
     "cordova-android": "^8.1.0",
     "cordova-plugin-whitelist": "^1.3.4",
     "core-js": "2.6.3",
@@ -52,12 +55,13 @@
     "start": "http-server ./build -p 5000 -a localhost --proxy https://gbptm-stage.herokuapp.com",
     "build": "cross-env SKIP_PREFLIGHT_CHECK=true react-app-rewired build",
     "cy:open": "cypress open --config baseUrl=http://localhost:3000",
+    "cy:run": "cypress run --config baseUrl=http://localhost:5000,video=false",
+    "test:integration": "start-server-and-test start http://localhost:5000 cy:run",
+    "configure": "babel-node --presets @babel/preset-react tasks/cordova-config.js",
     "prebuild-cordova": "cordova requirements && yarn yarn build && cpx \"build/**/*\" www/",
     "build-cordova": "cordova build",
-    "predev-cordova": "cordova requirements",
-    "dev-cordova-android": "cordova run android",
-    "cy:run": "cypress run --config baseUrl=http://localhost:5000,video=false",
-    "test:integration": "start-server-and-test start http://localhost:5000 cy:run"
+    "predev-cordova": "yarn configure --dev && cordova requirements",
+    "dev-cordova": "concurrently -k 'yarn dev' 'cordova run'"
   },
   "eslintConfig": {
     "extends": "react-app"
