@@ -72,10 +72,19 @@ const NearestLooMap = function NearestLooMap(props) {
   }, []);
 
   // Fetch the nearby loos
+  // This uses a very hacky method of setting the location to be 0, 0 when
+  // overrideLoos is set, which means that very little data will be passed
+  // when the query is sent. Hopefully when the functionality of skip is fixed so that
+  // when it's true a query is _never_ sent, this hack can be removed.
   updateLoadingStatus(true);
   const { loading, data, refetch } = useQuery(FIND_LOOS_NEARBY, {
     variables: {
-      ...mapCenter,
+      ...(props.overrideLoos
+        ? {
+            lat: 0,
+            lng: 0,
+          }
+        : mapCenter),
       radius: config.nearestRadius,
     },
     skip: !!props.overrideLoos, // this doesn't actually have any effect, Apollo bug
