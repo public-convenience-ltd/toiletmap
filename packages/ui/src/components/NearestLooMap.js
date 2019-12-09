@@ -7,6 +7,9 @@ import WithApolloClient from './WithApolloClient';
 import { useQuery, gql } from '@apollo/client';
 import { loader } from 'graphql.macro';
 
+import Notification from './Notification';
+import config from '../config';
+
 import styles from './css/loo-map.module.css';
 
 const FIND_LOOS_NEARBY = loader('./findLoosNearby.graphql');
@@ -16,7 +19,7 @@ const NearestLooMap = function NearestLooMap(props) {
   const { apolloClient } = props;
   let looMap;
 
-  let { mapControls } = apolloClient.readQuery({
+  const { mapControls } = apolloClient.readQuery({
     query: gql`
       query getMapControls {
         mapControls {
@@ -58,10 +61,13 @@ const NearestLooMap = function NearestLooMap(props) {
     navigator.geolocation.getCurrentPosition(
       response => {
         const { longitude, latitude } = response.coords;
-        let newPos = { lng: longitude, lat: latitude };
-        setGeolocation(newPos);
+        setGeolocation({ lng: longitude, lat: latitude });
       },
-      error => console.error(error)
+      error => {
+        setGeolocation({
+          error: true,
+        });
+      }
     );
   }, []);
 
@@ -70,18 +76,24 @@ const NearestLooMap = function NearestLooMap(props) {
   const { loading, data, refetch } = useQuery(FIND_LOOS_NEARBY, {
     variables: {
       ...mapCenter,
-      radius: 20000,
+      radius: config.nearestRadius,
     },
+    skip: !!props.overrideLoos, // this doesn't actually have any effect, Apollo bug
     onCompleted: data => {
       updateLoadingStatus(false);
     },
   });
 
   function onUpdateCenter({ lat, lng }) {
+    if (props.onUpdateCenter) {
+      props.onUpdateCenter({ lat, lng });
+    }
+
     if (!loading) {
       updateLoadingStatus(true);
       refetch();
     }
+
     setMapCenter({ lat, lng });
     apolloClient.writeQuery({
       query: gql`
@@ -122,30 +134,49 @@ const NearestLooMap = function NearestLooMap(props) {
     });
   }
 
+  const getInitialPosition = () => {
+    // Work out what the best possible initial position is
+    if (looCentre) {
+      return looCentre;
+    } else if (mapControls.center.lat !== 0 && mapControls.center.lng !== 0) {
+      return mapControls.center;
+    } else if (geolocation) {
+      if (geolocation.error) {
+        return config.fallbackLocation;
+      } else {
+        return geolocation;
+      }
+    } else {
+      return null;
+    }
+  };
+
   return (
     <div className={styles.map}>
       {loading && (
         <div className={styles.loading}>Fetching toilets&hellip;</div>
       )}
 
-      <LooMap
-        wrappedComponentRef={it => (looMap = it)}
-        loos={data ? data.loosByProximity : []}
-        countLimit={props.numberNearest ? 5 : 0}
-        showcontributor={true}
-        showLocation={true}
-        showSearchControl={true}
-        showLocateControl={true}
-        showCenter={true}
-        onZoom={onUpdateZoom}
-        onUpdateCenter={onUpdateCenter}
-        initialZoom={mapControls.zoom}
-        initialPosition={
-          looCentre || mapControls.center || geolocation.position
-        }
-        highlight={props.highlight || mapControls.highlight}
-        {...props.mapProps}
-      />
+      {getInitialPosition() ? (
+        <LooMap
+          wrappedComponentRef={it => (looMap = it)}
+          loos={props.overrideLoos || (data ? data.loosByProximity : [])}
+          countLimit={props.numberNearest ? 5 : 0}
+          showcontributor={true}
+          showLocation={true}
+          showSearchControl={true}
+          showLocateControl={true}
+          showCenter={true}
+          onZoom={onUpdateZoom}
+          onUpdateCenter={onUpdateCenter}
+          initialZoom={mapControls.zoom}
+          initialPosition={getInitialPosition()}
+          highlight={props.highlight || mapControls.highlight}
+          {...props.mapProps}
+        />
+      ) : (
+        <Notification>Finding your location&hellip;</Notification>
+      )}
     </div>
   );
 };
@@ -157,6 +188,10 @@ NearestLooMap.propTypes = {
   mapProps: PropTypes.object,
   // Whether to show an index on the nearest five loos
   numberNearest: PropTypes.bool,
+  // An optional callback
+  onUpdateCenter: PropTypes.func,
+  // An optional list of loos to use instead of querying the server
+  overrideLoos: PropTypes.array,
 };
 
 const NearestLooMapWithApolloClient = props => (

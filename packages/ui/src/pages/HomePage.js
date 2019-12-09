@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
@@ -18,42 +17,100 @@ import layout from '../components/css/layout.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
-import {
-  actionHighlight,
-  actionUpdateCenter,
-} from '../redux/modules/mapControls';
-import { actionToggleViewMode } from '../redux/modules/app';
-import { actionLogin, actionLogout } from '../redux/modules/auth';
+import { useQuery, gql } from '@apollo/client';
+import { loader } from 'graphql.macro';
+import WithApolloClient from '../components/WithApolloClient';
 
 import config from '../config';
 
-export class HomePage extends Component {
-  componentDidMount() {
-    var center = this.props.mapControls.center;
+const FIND_NEARBY = loader('../components/findLoosNearby.graphql');
 
-    if (!this.props.loos) {
-      this.props.actionUpdateCenter(center);
-    }
-  }
+const HomePage = function(props) {
+  const [highlight, setHighlight] = useState();
+  const { apolloClient } = props;
 
-  componentWillUnmount() {
-    // Clear any marker highlighting when navigating away
-    this.props.actionHighlight(null);
-  }
+  const getMapControls = () => {
+    const { mapControls } = apolloClient.readQuery({
+      query: gql`
+        query getMapControls {
+          mapControls {
+            center {
+              lat
+              lng
+            }
+            viewMap
+          }
+        }
+      `,
+    });
+    return mapControls;
+  };
 
-  renderList(mobile) {
-    var loos = this.props.loos;
+  const [mapControls, setMapControls] = useState(_.cloneDeep(getMapControls()));
 
+  const { loading, data, error } = useQuery(FIND_NEARBY, {
+    variables: {
+      ...mapControls.center,
+      radius: config.nearestRadius,
+    },
+  });
+
+  const toggleViewMode = () => {
+    let newVal = !mapControls.viewMap;
+
+    apolloClient.writeQuery({
+      query: gql`
+        query getMapControls {
+          mapControls {
+            viewMap
+          }
+        }
+      `,
+      data: {
+        mapControls: {
+          viewMap: newVal,
+        },
+      },
+    });
+
+    setMapControls({
+      ...mapControls,
+      viewMap: newVal,
+    });
+  };
+
+  const onUpdateCenter = center => {
+    // We don't need to handle a global state update, that's done in
+    // NearestLooMap
+    setMapControls({
+      ...mapControls,
+      center,
+    });
+  };
+
+  const renderList = mobile => {
     // Loading - either this is the first query of the user or they are on a
     // mobile and so can't rely on the map's loading spinner to know the loos
     // they see are outdated
-    if (!loos || (this.props.loadingNearby && mobile)) {
+    if (loading) {
       return (
         <Notification>
           <p>Fetching toilets&hellip;</p>
         </Notification>
       );
     }
+
+    if (error || !data || !data.loosByProximity) {
+      console.error(error || data.loosByProximity);
+      return (
+        <Notification>
+          <p>Oops, there was a problem finding toilets.</p>
+          <p>Consider checking your internet connection.</p>
+        </Notification>
+      );
+    }
+
+    var loos = data.loosByProximity;
 
     // No results
     if (loos && !loos.length) {
@@ -73,11 +130,12 @@ export class HomePage extends Component {
         <ul className={styles.looList}>
           {loos &&
             loos.slice(0, config.nearestListLimit).map((loo, i) => (
-              <li key={loo._id} className={styles.looListItem}>
+              <li key={loo.id} className={styles.looListItem}>
                 <LooListItem
+                  center={mapControls.center}
                   loo={loo}
-                  onHoverStart={_.partial(this.props.actionHighlight, loo._id)}
-                  onHoverEnd={_.partial(this.props.actionHighlight, undefined)}
+                  onHoverStart={() => setHighlight(loo.id)}
+                  onHoverEnd={() => setHighlight()}
                   index={i + 1}
                 />
               </li>
@@ -85,13 +143,11 @@ export class HomePage extends Component {
         </ul>
       </div>
     );
-  }
+  };
 
-  renderWelcome() {
+  const renderWelcome = () => {
     var content = `
-            <p>The ${
-              config.nearestListLimit
-            } nearest toilets are listed below. Click more info to find out about
+            <p>The ${config.nearestListLimit} nearest toilets are listed below. Click more info to find out about
             each toilet's features.</p><p>You can set preferences to highlight toilets that meet your specific
             needs.</p>
         `;
@@ -99,18 +155,19 @@ export class HomePage extends Component {
     return (
       <DismissableBox persistKey="home-welcome" title="Hi!" content={content} />
     );
-  }
+  };
 
-  renderMain() {
-    var mode = this.props.app.viewMode;
+  const renderMain = () => {
+    var viewMap = mapControls.viewMap;
 
     return (
       <div className={styles.container}>
-        {/* Logged in message */}
-        {this.props.isAuthenticated && (
+        {/* TODO Logged in message */}
+        {props.isAuthenticated && (
           <Notification>
             <p>
-              Logged in. <button onClick={this.props.doLogout}>Log out</button>
+              Logged in.{' '}
+              <button onClick={/* TODO */ props.doLogout}>Log out</button>
             </p>
           </Notification>
         )}
@@ -127,11 +184,8 @@ export class HomePage extends Component {
           )}
 
           <MediaQuery maxWidth={config.viewport.mobile}>
-            <button
-              className={controls.btn}
-              onClick={this.props.actionToggleViewMode}
-            >
-              {mode === 'list' ? 'View map' : 'View list'}
+            <button className={controls.btn} onClick={toggleViewMode}>
+              {viewMap ? 'View list' : 'View map'}
             </button>
           </MediaQuery>
         </div>
@@ -140,53 +194,44 @@ export class HomePage extends Component {
           maxWidth={config.viewport.mobile}
           className={styles.mobileContent}
         >
-          {mode === 'list' && this.renderWelcome()}
-          {mode === 'list' && this.renderList(true)}
-          {mode === 'map' && (
+          {!viewMap && renderWelcome()}
+          {!viewMap && renderList(true)}
+          {viewMap && (
             <div className={styles.mobileMap}>
-              <div className={toiletMap.map}>{this.renderMap()}</div>
+              <div className={toiletMap.map}>{renderMap()}</div>
             </div>
           )}
         </MediaQuery>
         <MediaQuery minWidth={config.viewport.mobile}>
-          {this.renderWelcome()}
-          {this.renderList(false)}
+          {renderWelcome()}
+          {renderList(false)}
         </MediaQuery>
       </div>
     );
-  }
+  };
 
-  renderMap() {
-    return <NearestLooMap numberNearest />;
-  }
+  const renderMap = () => {
+    return (
+      <NearestLooMap
+        numberNearest
+        highlight={highlight}
+        onUpdateCenter={onUpdateCenter}
+        overrideLoos={data ? data.loosByProximity : []}
+      />
+    );
+  };
 
-  render() {
-    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
-  }
-}
+  return <PageLayout main={renderMain()} map={renderMap()} />;
+};
 
 HomePage.propTypes = {
   loos: PropTypes.array,
 };
 
-var mapStateToProps = state => ({
-  geolocation: state.geolocation,
-  mapControls: state.mapControls,
-  loos: state.loos.nearby,
-  app: state.app,
-  isAuthenticated: state.auth.isAuthenticated,
-  loadingNearby: state.loos.loadingNearby,
-});
+const HomePageWithApolloClient = props => (
+  <WithApolloClient>
+    <HomePage {...props} />
+  </WithApolloClient>
+);
 
-var mapDispatchToProps = {
-  actionHighlight,
-  actionUpdateCenter,
-  actionToggleViewMode,
-  doLogout: actionLogout,
-  doLogin: actionLogin,
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HomePage);
+export default HomePageWithApolloClient;
