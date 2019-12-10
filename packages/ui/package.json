@@ -61,7 +61,7 @@
     "prebuild-cordova": "cordova requirements && yarn yarn build && cpx \"build/**/*\" www/",
     "build-cordova": "cordova build",
     "predev-cordova": "yarn configure --dev && cordova requirements",
-    "dev-cordova": "concurrently -k 'yarn dev' 'cordova run'"
+    "dev-cordova": "concurrently -n 'ReactDevServer,AndroidDevInstall' 'yarn dev' 'cordova run android'"
   },
   "eslintConfig": {
     "extends": "react-app"

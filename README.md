@@ -37,7 +37,7 @@ The UI has the ability to be packaged as a mobile app using cordova. Make sure t
 
 You can only build iOS apps on apple computers, for easy android app dev use the android studio. https://developer.android.com/studio.
 
-The task `yarn dev-cordova android` launches the phone app and react app at the same time, for this to work configure the port 3000 to be forwarded to the phone. Either use the [chrome dev tools chrome://inspect](chrome://inspect), or, you can use `adb reverse tcp:3000 tcp:3000`. For the latter you should have the emmulator running before hand.
+The task `yarn dev-cordova android` launches the phone app and react app at the same time, for this to work configure the port 3000 to be forwarded to the phone. Either use the [chrome dev tools chrome://inspect](chrome://inspect), or, you can use `adb reverse tcp:3000 tcp:3000`. For the latter you should have the emulator running before hand.
 
 e.g.
 ```bash
