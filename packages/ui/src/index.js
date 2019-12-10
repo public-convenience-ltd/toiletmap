@@ -50,7 +50,13 @@ import mapControlsSaga from './redux/sagas/mapControls';
 import history from './history';
 import Auth from './Auth';
 
-api.setPrefix(process.env.REACT_BAKED_BACKEND);
+const { REACT_APP_BAKED_BACKEND } = process.env;
+
+if (REACT_APP_BAKED_BACKEND) {
+  api.setPrefix(process.env.REACT_APP_BAKED_BACKEND);
+} else {
+  api.setPrefix('/api');
+}
 
 const auth = new Auth();
 
