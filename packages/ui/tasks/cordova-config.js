@@ -33,6 +33,22 @@ const Application = props => (
   <application {...namespaceProps('android', props)} />
 );
 
+// I don't think we need these
+const AllowIntents = () => (
+  <React.Fragment>
+    <allow-intent href="https://gbptm.eu.auth0.com/login/*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+  </React.Fragment>
+);
+// const AllowAPI = () => {
+
+// };
+
 const config = ReactDOM.renderToStaticMarkup(
   <Widget
     id="uk.org.toiletmap"
@@ -56,14 +72,8 @@ const config = ReactDOM.renderToStaticMarkup(
     )}
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
-    <allow-navigation href="http://localhost:3000/*" />
-    <allow-intent href="https://gbptm.eu.auth0.com/login/*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
+    {DEV && <allow-navigation href="http://localhost:3000/*" />}
+    <AllowIntents />
     <platform name="android">
       <allow-intent href="market:*" />
       {DEV && (
@@ -76,6 +86,13 @@ const config = ReactDOM.renderToStaticMarkup(
         </edit-config>
       )}
     </platform>
+    <edit-config
+      target="NSLocationWhenInUseUsageDescription"
+      file="*-Info.plist"
+      mode="merge"
+    >
+      <string>need location access to find things nearby</string>
+    </edit-config>
     <platform name="ios">
       <allow-intent href="itms:*" />
       <allow-intent href="itms-apps:*" />
