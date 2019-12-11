@@ -5,9 +5,22 @@ const prettier = require('prettier');
 const fs = require('fs');
 const path = require('path');
 
+if (process.argv.slice(2).some(arg => arg.match(/^-?-h/))) {
+  console.log(
+    'Builds config.xml, use with --dev to build a dev version which is useful for running the app locally against localhost:3000'
+  );
+  console.log(
+    'Set the env var REACT_APP_BAKED_BACKEND to configure which url should be allowed to be accessed from the phone.'
+  );
+  process.exit(0);
+}
+
+// Configuration
+const DEV = process.argv.slice(2).includes('--dev');
+const { REACT_APP_BAKED_BACKEND } = process.env;
+
 const configXMLDestination = path.resolve(__dirname, '..', 'config.xml');
 const pkg = require('../package.json');
-const DEV = process.argv.slice(2).indexOf('--dev') !== -1;
 const lowerFirst = str => str[0].toLowerCase() + str.slice(1);
 const namespaceProps = (prefix, props) => {
   const newProps = {};
@@ -34,20 +47,36 @@ const Application = props => (
 );
 
 // I don't think we need these
-const AllowIntents = () => (
-  <React.Fragment>
-    <allow-intent href="https://gbptm.eu.auth0.com/login/*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
-  </React.Fragment>
-);
-// const AllowAPI = () => {
+// const AllowIntents = () => (
+//   <React.Fragment>
+//     <allow-intent href="https://gbptm.eu.auth0.com/login/*" />
+//     <allow-intent href="http://*/*" />
+//     <allow-intent href="https://*/*" />
+//     <allow-intent href="tel:*" />
+//     <allow-intent href="sms:*" />
+//     <allow-intent href="mailto:*" />
+//     <allow-intent href="geo:*" />
+//   </React.Fragment>
+// );
+const singleJoiningSlash = (a, b) => {
+  const aSlash = a.endsWith('/');
+  const bSlash = b.startsWith('/');
 
-// };
+  if (aSlash && bSlash) {
+    return a + b.slice(1);
+  }
+
+  if (!aSlash && !bSlash) {
+    return `${a}/${b}`;
+  }
+
+  return a + b;
+};
+const AllowAPI = () => {
+  return (
+    <allow-intent href={singleJoiningSlash(REACT_APP_BAKED_BACKEND, '*')} />
+  );
+};
 
 const config = ReactDOM.renderToStaticMarkup(
   <Widget
@@ -73,7 +102,7 @@ const config = ReactDOM.renderToStaticMarkup(
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
     {DEV && <allow-navigation href="http://localhost:3000/*" />}
-    <AllowIntents />
+    <AllowAPI />
     <platform name="android">
       <allow-intent href="market:*" />
       {DEV && (
