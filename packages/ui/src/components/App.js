@@ -9,18 +9,7 @@ import styles from './css/app.module.css';
 class App extends Component {
   componentDidMount() {
     if (!this.props.geolocation.location || !this.props.geolocation.error) {
-      // Cordova environment expects us to wait for `deviceready`. If the geolocation
-      // request is fired too early we get an ugly message.
-      // http://stackoverflow.com/questions/28891339/fix-cordova-geolocation-ask-for-location-message
-      if (window.cordova) {
-        document.addEventListener(
-          'deviceready',
-          this.props.actionGetGeolocationRequest,
-          false
-        );
-      } else {
-        this.props.actionGetGeolocationRequest();
-      }
+      this.props.actionGetGeolocationRequest();
     }
   }
 

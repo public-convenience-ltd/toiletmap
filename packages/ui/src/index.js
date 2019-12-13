@@ -98,8 +98,8 @@ history.listen(function(location) {
 });
 
 // Create an enhanced history that syncs navigation events with the store
-
 const startApp = () => {
+  console.log('startApp');
   if (typeof document !== 'undefined') {
     ReactDOM.render(
       <Provider store={store}>
@@ -150,7 +150,6 @@ const startApp = () => {
     serviceWorker.unregister();
   }
 };
-
 if (window.cordova) {
   document.addEventListener('deviceready', startApp, false);
 } else {

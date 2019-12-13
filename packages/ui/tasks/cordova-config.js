@@ -73,6 +73,10 @@ const singleJoiningSlash = (a, b) => {
   return a + b;
 };
 const AllowAPI = () => {
+  if (!REACT_APP_BAKED_BACKEND) {
+    return null;
+  }
+
   return (
     <allow-intent href={singleJoiningSlash(REACT_APP_BAKED_BACKEND, '*')} />
   );

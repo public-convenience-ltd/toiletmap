@@ -37,7 +37,7 @@ The UI has the ability to be packaged as a mobile app using cordova. Make sure t
 
 You can only build iOS apps on apple computers, for easy android app dev use the android studio. https://developer.android.com/studio.
 
-The task `yarn dev-cordova android` launches the phone app and react app at the same time, for this to work configure the port 3000 to be forwarded to the phone. Either use the [chrome dev tools chrome://inspect](chrome://inspect), or, you can use `adb reverse tcp:3000 tcp:3000`. For the latter you should have the emulator running before hand.
+The task `yarn dev-cordova` launches the phone app and react app at the same time, for this to work configure the port 3000 to be forwarded to the phone. Either use the [chrome dev tools chrome://inspect](chrome://inspect), or, you can use `adb reverse tcp:3000 tcp:3000`. For the latter you should have the emulator running before hand.
 
 e.g.
 ```bash
@@ -57,8 +57,9 @@ Useful platform guides (TODO: turn this into a docker image?):
     1. https://gradle.org/install
     1. [android studio](https://developer.android.com/studio)
     1. Launch android studio once on an empty project, from there you can use the gui versions of the avd manager and sdk manager.
-    1. configure some environment variables, usually best done in your ~/.bashrc on un*x, or on windows using the _Advanced system settings_ gui. Some example values:
+    1. configure some environment variables, usually best done in your `~/.bashrc` or `~/.bash_profile` on un*x, or on windows using the _Advanced system settings_ gui. Some example values:
         ```bash
+        # Set to where you installed the android studio + `/jre`
         export JAVA_HOME=$HOME/apps/android-studio/jre
         export ANDROID_SDK_ROOT=$HOME/Android/Sdk
         export PATH=${PATH}:${ANDROID_SDK_ROOT}/platform-tools:${ANDROID_SDK_ROOT}/tools/bin:${ANDROID_SDK_ROOT}/emulator
