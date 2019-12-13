@@ -13,7 +13,10 @@ import config from '../../config';
 function* findGeolocation() {
   function getGeolocation() {
     return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(resolve, reject);
+      // We need a timeout here for android https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-geolocation/#android-quirks
+      navigator.geolocation.getCurrentPosition(resolve, reject, {
+        timeout: 5000,
+      });
     });
   }
 
