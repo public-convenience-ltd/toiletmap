@@ -6,7 +6,7 @@ import 'core-js/fn/object/entries';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch, Router } from 'react-router-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
@@ -50,7 +50,7 @@ import mapControlsSaga from './redux/sagas/mapControls';
 import history from './history';
 import Auth from './Auth';
 
-const { REACT_APP_BAKED_BACKEND } = process.env;
+const { REACT_APP_BAKED_BACKEND, REACT_APP_CORDOVA_BUILD } = process.env;
 
 if (REACT_APP_BAKED_BACKEND) {
   api.setPrefix(process.env.REACT_APP_BAKED_BACKEND);
@@ -97,13 +97,20 @@ history.listen(function(location) {
   }
 });
 
+const PickRouter = ({ history, ...props }) => {
+  if (REACT_APP_CORDOVA_BUILD) {
+    return <HashRouter {...props} />;
+  }
+
+  return <Router history={history} {...props} />;
+};
+
 // Create an enhanced history that syncs navigation events with the store
 const startApp = () => {
-  console.log('startApp');
   if (typeof document !== 'undefined') {
     ReactDOM.render(
       <Provider store={store}>
-        <HashRouter history={history} forceRefresh={false}>
+        <PickRouter history={history} forceRefresh={false}>
           <App>
             <Switch>
               <Route exact path="/" component={HomePage} />
@@ -143,7 +150,7 @@ const startApp = () => {
               <Route component={NotFound} />
             </Switch>
           </App>
-        </HashRouter>
+        </PickRouter>
       </Provider>,
       document.getElementById('root')
     );
