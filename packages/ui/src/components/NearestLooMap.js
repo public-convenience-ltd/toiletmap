@@ -18,7 +18,7 @@ class NearestLooMap extends Component {
   componentDidMount() {
     // Only do if leaflet map element is ready and we're loading
     if (this.looMap && this.props.loadingNearby) {
-      this.looMap.refs.map.leafletElement.fire('dataloading');
+      this.looMap.leafletElement.fire('dataloading');
     }
   }
 
@@ -26,9 +26,9 @@ class NearestLooMap extends Component {
     // Only do if leaflet map element is ready and we've started loading or loaded
     if (this.looMap && this.props.loadingNearby !== prevProps.loadingNearby) {
       if (this.props.loadingNearby) {
-        this.looMap.refs.map.leafletElement.fire('dataloading');
+        this.looMap.leafletElement.fire('dataloading');
       } else {
-        this.looMap.refs.map.leafletElement.fire('dataload');
+        this.looMap.leafletElement.fire('dataload');
       }
     }
   }

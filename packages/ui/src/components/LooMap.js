@@ -9,6 +9,7 @@ import 'leaflet.markercluster';
 import 'leaflet-loading';
 
 import { Map, TileLayer } from 'react-leaflet';
+
 import GeolocationMapControl from './GeolocationMapControl.js';
 import LocateMapControl from './LocateMapControl.js';
 
@@ -94,31 +95,26 @@ export class LooMap extends Component {
     this.onMarkerClick = this.onMarkerClick.bind(this);
   }
 
-  componentDidMount() {
-    // Diffiult to determine when `ref` is set since we need to wait for the `Map`
-    // child component lifecycle to complete
-    //
-    // `setTimeout, 0` was not sufficient for both tests and browser
-    //
-    // https://github.com/tomchentw/react-google-maps/issues/122
-    // https://github.com/facebook/react/issues/5053
-    if (this.refs.map && this.refs.map.leafletElement) {
-      var map = (this.leafletElement = this.refs.map.leafletElement);
-      var center = map.getCenter();
+  setRef = el => {
+    if (el) {
+      const { leafletElement } = el;
+      this.leafletElement = leafletElement;
+
+      const center = leafletElement.getCenter();
 
       // Create a marker cluster layer which will be reset each time this
       // component receives props
-      var clusterLayer = L.markerClusterGroup({
+      const clusterLayer = L.markerClusterGroup({
         showCoverageOnHover: false,
         disableClusteringAtZoom: 15,
         iconCreateFunction: cluster => {
-          var count = cluster.getChildCount();
+          const count = cluster.getChildCount();
 
           return L.divIcon({
             html: `<div class=${styles.cluster}>
-                              <span class=${styles.count}>${count}</span>
-                              toilets
-                          </div>`,
+                      <span class=${styles.count}>${count}</span>
+                      toilets
+                  </div>`,
           });
         },
       });
@@ -130,11 +126,11 @@ export class LooMap extends Component {
         clusterLayer,
         markers: {},
       });
-    }
 
-    this.props.onInitialised(map);
-    this.props.onUpdateCenter(center);
-  }
+      this.props.onInitialised(leafletElement);
+      this.props.onUpdateCenter(center);
+    }
+  };
 
   onMove(event) {
     var map = this.leafletElement;
@@ -283,7 +279,7 @@ export class LooMap extends Component {
     // `minZoom` and `maxZoom` needed on `Map` Component for clustering and `TileLayer` for `react-leaflet`
     return (
       <Map
-        ref="map"
+        ref={this.setRef}
         center={center}
         zoom={this.props.initialZoom}
         zoomControl={!this.props.preventZoom && this.props.showZoomControls}
