@@ -22,10 +22,11 @@
     "yargs": "15.0.2"
   },
   "dependencies": {
+    "@auth0/cordova": "0.4.0",
     "@toiletmap/api-client": "3.2.0",
     "@toiletmap/leaflet-control-geocoder": "3.2.0",
     "@toiletmap/opening-hours": "3.2.0",
-    "auth0-js": "9.10.0",
+    "auth0-js": "9.12.0",
     "concurrently": "5.0.0",
     "cordova-android": "^8.1.0",
     "cordova-plugin-geolocation": "^4.0.2",
@@ -60,6 +61,7 @@
     "cy:open": "cypress open --config baseUrl=http://localhost:3000",
     "cy:run": "cypress run --config baseUrl=http://localhost:5000,video=false",
     "test:integration": "start-server-and-test start http://localhost:5000 cy:run",
+    "postinstall": "yarn configure && cordova prepare",
     "configure": "env-cmd babel-node --presets @babel/preset-react tasks/cordova-config.js",
     "prebuild-cordova": "cordova requirements && cross-env REACT_APP_CORDOVA_BUILD=true yarn build && cpx \"build/**/*\" www/",
     "build-cordova": "cordova build",

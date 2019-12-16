@@ -46,8 +46,7 @@ $ cd packages/ui
 $ npx cordova requirements
 No platforms added to this project. Please use `cordova platform add <platform>`.
 
-$ npx cordova platform add android
-$ npx cordova platform add ios
+$ npx cordova prepare
 $ yarn run dev-cordova
 ```
 
