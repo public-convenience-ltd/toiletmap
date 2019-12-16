@@ -19,6 +19,7 @@
     "@toiletmap/api-client": "3.2.0",
     "@toiletmap/leaflet-control-geocoder": "3.2.0",
     "@toiletmap/opening-hours": "3.2.0",
+    "apollo-link-context": "1.0.19",
     "auth0-js": "9.10.0",
     "core-js": "2.6.3",
     "js-cookie": "2.2.1",

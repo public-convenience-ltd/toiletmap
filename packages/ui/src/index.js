@@ -56,6 +56,8 @@ import {
   gql,
 } from '@apollo/client';
 
+import { setContext } from 'apollo-link-context';
+
 import { version } from '../package.json';
 
 const auth = new Auth();
@@ -104,24 +106,30 @@ history.listen(function(location) {
 // Create an enhanced history that syncs navigation events with the store
 
 // Create GraphQL client
+
+const httpLink = new HttpLink({
+  uri: '/graphql',
+});
+
+const authLink = setContext((_, { headers }) => {
+  console.log('callback called');
+  return {
+    headers: {
+      ...headers,
+      'apollographql-client-name': 'toiletmap-ui',
+      'apollographql-client-version': `${version}`,
+      authorization: auth.isAuthenticated()
+        ? `Bearer ${auth.getAccessToken()}`
+        : '',
+    },
+  };
+});
+
 const client = new ApolloClient({
   name: 'Toilet Map UI',
   version: version,
-  link: new HttpLink({
-    uri: '/graphql',
-  }),
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
-  request: operation => {
-    const headers = {
-      'apollographql-client-name': 'toiletmap-ui',
-      'apollographql-client-version': `${version}`,
-    };
-    if (auth.isAuthenticated()) {
-      headers['Authorization'] = `Bearer ${auth.getAccessToken()}`;
-    }
-    operation.setContext({ headers });
-    return operation;
-  },
 });
 
 // Set the initial cache state
