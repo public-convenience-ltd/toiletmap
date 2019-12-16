@@ -9,6 +9,7 @@ import 'leaflet.markercluster';
 import 'leaflet-loading';
 
 import { Map, TileLayer } from 'react-leaflet';
+import ResizeObserver from 'resize-observer-polyfill';
 
 import GeolocationMapControl from './GeolocationMapControl.js';
 import LocateMapControl from './LocateMapControl.js';
@@ -95,10 +96,32 @@ export class LooMap extends Component {
     this.onMarkerClick = this.onMarkerClick.bind(this);
   }
 
+  observe = el => {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+
+    this.resizeObserver = new ResizeObserver((entries, observer) => {
+      if (this.leafletElement) {
+        this.leafletElement.invalidateSize();
+      }
+    });
+
+    this.resizeObserver.observe(el);
+  };
+
+  componentWillUnmount() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+  }
+
   setRef = el => {
     if (el) {
-      const { leafletElement } = el;
+      const { leafletElement, container } = el;
       this.leafletElement = leafletElement;
+
+      this.observe(container);
 
       const center = leafletElement.getCenter();
 
