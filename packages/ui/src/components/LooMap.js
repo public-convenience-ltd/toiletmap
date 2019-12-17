@@ -157,7 +157,20 @@ export class LooMap extends Component {
 
   onMove(event) {
     var map = this.leafletElement;
-    var center = map.getCenter();
+
+    var center;
+
+    try {
+      // HACK - this can throw a type error when the map resizes a lot
+      center = map.getCenter();
+    } catch (e) {
+      if (e instanceof TypeError && e.message.indexOf('_leaflet_pos') > -1) {
+        console.error(e);
+        return;
+      }
+
+      throw e;
+    }
 
     this.props.onUpdateCenter(center);
     this.props.onMove(center.lng, center.lat);
