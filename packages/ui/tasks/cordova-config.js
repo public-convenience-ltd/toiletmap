@@ -18,9 +18,11 @@ if (process.argv.slice(2).some(arg => arg.match(/^-?-h/))) {
 // Configuration
 const DEV = process.argv.slice(2).includes('--dev');
 const { REACT_APP_BAKED_BACKEND } = process.env;
+const appid = 'uk.org.toiletmap';
 
 const configXMLDestination = path.resolve(__dirname, '..', 'config.xml');
 const pkg = require('../package.json');
+
 const lowerFirst = str => str[0].toLowerCase() + str.slice(1);
 const namespaceProps = (prefix, props) => {
   const newProps = {};
@@ -84,7 +86,7 @@ const AllowAPI = () => {
 
 const config = ReactDOM.renderToStaticMarkup(
   <Widget
-    id="uk.org.toiletmap"
+    id={appid}
     version={pkg.version}
     xmlns="http://www.w3.org/ns/widgets"
     xmlnsCdv="http://cordova.apache.org/ns/1.0"
@@ -103,10 +105,11 @@ const config = ReactDOM.renderToStaticMarkup(
     ) : (
       <content src="index.html" />
     )}
-    <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
     {DEV && <allow-navigation href="http://localhost:3000/*" />}
     <AllowAPI />
+    {/* Make sure that the auth0 integration works well */}
+    <preference name="AndroidLaunchMode" value="singleTask" />
     <platform name="android">
       <allow-intent href="market:*" />
       {DEV && (

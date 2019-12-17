@@ -6300,12 +6300,22 @@ cordova-lib@^9.0.0:
     shebang-command "^1.2.0"
     underscore "^1.9.1"
 
-cordova-plugin-geolocation@^4.0.2:
+cordova-plugin-customurlscheme@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-customurlscheme/-/cordova-plugin-customurlscheme-5.0.0.tgz#efce96f14da4c407369faf12fadee7b6f8850622"
+  integrity sha512-AuVlQyq88cCxGyoYvQyx2N6igLZ5aHxEqGch2vdu1EWvxHzsjj33VFgA3+tjzJUmYYgIN4QYTkyOVsLIMozIPg==
+
+cordova-plugin-geolocation@4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/cordova-plugin-geolocation/-/cordova-plugin-geolocation-4.0.2.tgz#4668a01ae8a49e27c5515f8b81880983e96d7eb3"
   integrity sha512-QGThnPKzPxESHkruZlpE0+5aFBVOet8al0vIJ7laSUOQHIC1dd/JY6peVIbtLboKi5Dap1wCKRubOqPqH8xcQA==
 
-cordova-plugin-whitelist@^1.3.4:
+cordova-plugin-safariviewcontroller@1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-safariviewcontroller/-/cordova-plugin-safariviewcontroller-1.6.0.tgz#7a86c28e946d52eddd662cfa0c9a7b2247cdc675"
+  integrity sha512-TSrVTTdIjCb1iK+FT0GSnfVhmEY5oRzB2yhlwSnxgwxhTrFHDnfTXrX4KKHWaszxGnMKNFuUFTv8K+fc0GNqEg==
+
+cordova-plugin-whitelist@1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/cordova-plugin-whitelist/-/cordova-plugin-whitelist-1.3.4.tgz#31938545c7c3e7de35c20ab08c2c3afa06e8a3f9"
   integrity sha512-EYC5eQFVkoYXq39l7tYKE6lEjHJ04mvTmKXxGL7quHLdFPfJMNzru/UYpn92AOfpl3PQaZmou78C7EgmFOwFQQ==
