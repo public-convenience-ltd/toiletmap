@@ -50,6 +50,7 @@ import mapControlsSaga from './redux/sagas/mapControls';
 import history from './history';
 import Auth from './Auth';
 import Router from './Router';
+import config from './config';
 
 const { REACT_APP_BAKED_BACKEND } = process.env;
 
@@ -138,7 +139,7 @@ const startApp = () => {
   }
 };
 
-if (window.cordova) {
+if (config.isNativeApp()) {
   var Auth0Cordova = require('@auth0/cordova');
 
   const main = () => {

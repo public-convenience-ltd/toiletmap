@@ -1,5 +1,6 @@
 import auth0 from 'auth0-js';
 import history from './history';
+import config from './config';
 
 const { SafariViewController } = window;
 const SHORT_PACKAGE_ID = 'toiletmap';
@@ -93,7 +94,7 @@ function openUrl(url) {
 }
 
 export default class Auth {
-  auth0 = window.cordova ? makeAuthNative() : makeAuthWeb();
+  auth0 = config.isNativeApp() ? makeAuthNative() : makeAuthWeb();
 
   handleAuthentication = () =>
     new Promise((resolve, reject) => {

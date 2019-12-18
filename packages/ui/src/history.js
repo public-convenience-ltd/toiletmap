@@ -1,7 +1,10 @@
 import createHashHistory from 'history/createHashHistory';
 import createBrowserHistory from 'history/createBrowserHistory';
+import config from './config';
 
-const history = window.cordova ? createHashHistory() : createBrowserHistory();
+const history = config.isNativeApp()
+  ? createHashHistory()
+  : createBrowserHistory();
 
 // Set a function to be called on location change
 history.listen(function(location) {

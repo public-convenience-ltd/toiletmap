@@ -1,11 +1,12 @@
 import { all, takeLatest, call, put } from 'redux-saga/effects';
 import history from '../../history';
+import config from '../../config';
 
 import { LOGIN, LOGOUT, actionLoggedIn, actionSetName } from '../modules/auth';
 
 export default function makeAuthSaga(auth) {
   function* doLogin() {
-    if (!window.cordova) {
+    if (!config.isNativeApp()) {
       yield call(auth.webLogin);
       return;
     }

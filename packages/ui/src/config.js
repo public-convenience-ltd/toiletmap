@@ -126,4 +126,7 @@ export default {
 
     return result;
   },
+  isNativeApp() {
+    return typeof window.cordova !== 'undefined';
+  },
 };
