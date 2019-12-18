@@ -108,6 +108,8 @@ const config = ReactDOM.renderToStaticMarkup(
     <access origin="*" />
     {DEV && <allow-navigation href="http://localhost:3000/*" />}
     <AllowAPI />
+    <allow-intent href="https://maps.apple.com/*" />
+    <allow-intent href="https://*.google.com/maps/*" />
     {/* Make sure that the auth0 integration works well */}
     <preference name="AndroidLaunchMode" value="singleTask" />
     <platform name="android">
