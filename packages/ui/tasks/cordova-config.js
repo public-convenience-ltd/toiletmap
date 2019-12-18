@@ -43,7 +43,7 @@ const config = ReactDOM.renderToStaticMarkup(
     {/* Set SingleTask mode to make sure that the auth0 integration works well */}
     <preference name="AndroidLaunchMode" value="singleTask" />
     <preference name="phonegap-version" value="cli-9.0.0" />
-    <CordovaPlugins dependencies={pkg.dependencies} />
+    <CordovaPlugins dependencies={pkg.dependencies} config={pkg.cordova} />
   </Config>
 );
 
