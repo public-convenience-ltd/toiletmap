@@ -6,7 +6,7 @@ import 'core-js/fn/object/entries';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter, Route, Switch, Router } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
@@ -49,6 +49,7 @@ import mapControlsSaga from './redux/sagas/mapControls';
 
 import history from './history';
 import Auth from './Auth';
+import Router from './Router';
 
 const { REACT_APP_BAKED_BACKEND } = process.env;
 
@@ -85,32 +86,11 @@ sagaMiddleware.run(geolocationSaga);
 sagaMiddleware.run(makeLoosSaga(auth));
 sagaMiddleware.run(mapControlsSaga);
 
-// Set a function to be called on location change
-history.listen(function(location) {
-  // If we havn't opted in, we shouldn't have digitalData on window
-  if (window.hasOwnProperty('digitalData') && window.hasOwnProperty('s')) {
-    // does not include
-    window.digitalData.page.pageInfo.pageName = `${document.title}`;
-    window.digitalData.page.attributes.contentType = '200';
-    // Fire a track (I know...)
-    window.s.t();
-  }
-});
-
-const PickRouter = ({ history, ...props }) => {
-  if (window.cordova) {
-    return <HashRouter {...props} />;
-  }
-
-  return <Router history={history} {...props} />;
-};
-
-// Create an enhanced history that syncs navigation events with the store
 const startApp = () => {
   if (typeof document !== 'undefined') {
     ReactDOM.render(
       <Provider store={store}>
-        <PickRouter history={history} forceRefresh={false}>
+        <Router history={history} forceRefresh={false}>
           <App>
             <Switch>
               <Route exact path="/" component={HomePage} />
@@ -150,7 +130,7 @@ const startApp = () => {
               <Route component={NotFound} />
             </Switch>
           </App>
-        </PickRouter>
+        </Router>
       </Provider>,
       document.getElementById('root')
     );

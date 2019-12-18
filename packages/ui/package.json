@@ -91,10 +91,10 @@
       "cordova-plugin-whitelist": {},
       "cordova-plugin-geolocation": {},
       "cordova-plugin-customurlscheme": {
-        "URL_SCHEME": "uk.org.toiletmap",
-        "ANDROID_SCHEME": "uk.org.toiletmap",
+        "URL_SCHEME": "toiletmap",
+        "ANDROID_SCHEME": "toiletmap",
         "ANDROID_HOST": "gbptm.eu.auth0.com",
-        "ANDROID_PATHPREFIX": "/cordova/uk.org.toiletmap/callback"
+        "ANDROID_PATHPREFIX": "/cordova/toiletmap/callback"
       },
       "cordova-plugin-safariviewcontroller": {}
     },
