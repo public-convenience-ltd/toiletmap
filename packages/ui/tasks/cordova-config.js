@@ -92,13 +92,16 @@ const config = ReactDOM.renderToStaticMarkup(
     xmlnsCdv="http://cordova.apache.org/ns/1.0"
     xmlnsAndroid="http://schemas.android.com/apk/res/android"
   >
-    <name>Gbptm</name>
+    <name>Toilet Map</name>
     <description>
-      A sample Apache Cordova application that responds to the deviceready
-      event.
+      The Great British Public Toilet Map is the UK's largest database of
+      publicly-accessible toilets, with over 11000 facilities.
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-      Apache Cordova Team
+    <author
+      email="toiletmap-admin@neontribe.co.uk"
+      href="https://www.toiletmap.org.uk"
+    >
+      Neontribe
     </author>
     {DEV ? (
       <content src="http://localhost:3000" />
@@ -129,7 +132,7 @@ const config = ReactDOM.renderToStaticMarkup(
       file="*-Info.plist"
       mode="merge"
     >
-      <string>need location access to find things nearby</string>
+      <string>need location access to find toilets nearby</string>
     </edit-config>
     <platform name="ios">
       <allow-intent href="itms:*" />
