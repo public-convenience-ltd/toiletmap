@@ -55,7 +55,7 @@ import config from './config';
 const { REACT_APP_BAKED_BACKEND } = process.env;
 
 if (REACT_APP_BAKED_BACKEND) {
-  api.setPrefix(process.env.REACT_APP_BAKED_BACKEND);
+  api.setPrefix(REACT_APP_BAKED_BACKEND);
 } else {
   api.setPrefix('/api');
 }
