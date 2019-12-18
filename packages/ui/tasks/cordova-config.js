@@ -7,6 +7,7 @@ const path = require('path');
 
 const AllowAPI = require('./config-components/AllowAPI');
 const Config = require('./config-components/Config');
+const CordovaPlugins = require('./config-components/CordovaPlugins');
 
 if (process.argv.slice(2).some(arg => arg.match(/^-?-h/))) {
   console.log(
@@ -42,6 +43,7 @@ const config = ReactDOM.renderToStaticMarkup(
     {/* Set SingleTask mode to make sure that the auth0 integration works well */}
     <preference name="AndroidLaunchMode" value="singleTask" />
     <preference name="phonegap-version" value="cli-9.0.0" />
+    <CordovaPlugins dependencies={pkg.dependencies} />
   </Config>
 );
 
