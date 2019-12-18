@@ -75,15 +75,19 @@ class ThanksPage extends Component {
           We rely on contributions of data like yours to keep the map accurate
           and useful.
         </p>
-        <p>Please consider signing up with our sponsor's campaign.</p>
-        <a
-          className={controls.btnFeatured}
-          target="_blank"
-          rel="noopener noreferrer"
-          href={constructCampaignLink(loo, name)}
-        >
-          Join the <strong>Use Our Loos</strong> campaign
-        </a>
+        {config.isNativeApp() && (
+          <>
+            <p>Please consider signing up with our sponsor's campaign.</p>
+            <a
+              className={controls.btnFeatured}
+              target="_blank"
+              rel="noopener noreferrer"
+              href={constructCampaignLink(loo, name)}
+            >
+              Join the <strong>Use Our Loos</strong> campaign
+            </a>
+          </>
+        )}
       </div>
     );
   }

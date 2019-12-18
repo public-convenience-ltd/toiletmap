@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import styles from '../css/cookie-box.module.css';
 import controls from '../../css/controls.module.css';
+import config from '../../config';
 
 // Copy/pasted from pages/PreferencesPage.js.
 // TODO: Abstract this is we see this pattern any more times.
@@ -60,9 +61,10 @@ class CookieBox extends React.Component {
       <div>
         <div className={styles.popupBody}>
           <p>
-             Opt in to a Google Analytics cookie. This will help us improve your experience with the
-             site, so you can find a loo quicker. By opting in you would be sharing your data with Public
-             Convenience Ltd and tech partners Neontribe as well as Google itself.
+            Opt in to a Google Analytics cookie. This will help us improve your
+            experience with the site, so you can find a loo quicker. By opting
+            in you would be sharing your data with Public Convenience Ltd and
+            tech partners Neontribe as well as Google itself.
           </p>
 
           <form onSubmit={this.handleSubmit}>
@@ -75,24 +77,30 @@ class CookieBox extends React.Component {
               <span>Opt-in to Google Analytics</span>
             </PreferenceCheckbox>
 
-            <p>
-               You can also opt in to additional cookies to support the
-               project indirectly. By opting in to additional analytics cookies
-               we can share your data with Unilever via Google and Adobe Analytics, 
-               and benefit from Unilever's continued sponsorship. 
-            </p>
+            {config.shouldShowSponsor() && (
+              <>
+                <p>
+                  You can also opt in to additional cookies to support the
+                  project indirectly. By opting in to additional analytics
+                  cookies we can share your data with Unilever via Google and
+                  Adobe Analytics, and benefit from Unilever's continued
+                  sponsorship.
+                </p>
 
-            <PreferenceCheckbox
-              onChange={evt =>
-                this.setState({ aaAccepted: evt.target.checked })
-              }
-              checked={this.state.aaAccepted}
-            >
-              <span>Opt-in to Adobe Analytics</span>
-            </PreferenceCheckbox>
+                <PreferenceCheckbox
+                  onChange={evt =>
+                    this.setState({ aaAccepted: evt.target.checked })
+                  }
+                  checked={this.state.aaAccepted}
+                >
+                  <span>Opt-in to Adobe Analytics</span>
+                </PreferenceCheckbox>
+              </>
+            )}
 
             <p>
-              Opting in is entirely up to you. For more detailed information about the cookies we use, see our{' '}
+              Opting in is entirely up to you. For more detailed information
+              about the cookies we use, see our{' '}
               <Link to="/privacy">Cookies page.</Link>
             </p>
 

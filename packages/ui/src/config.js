@@ -1,6 +1,7 @@
 import { isOpen } from '@toiletmap/opening-hours';
 
 export const PREFERENCES_KEY = 'preferences';
+const { REACT_APP_BUNDLE_BRANDING } = process.env;
 
 export default {
   viewport: {
@@ -128,5 +129,13 @@ export default {
   },
   isNativeApp() {
     return typeof window.cordova !== 'undefined';
+  },
+  shouldShowSponsor() {
+    if (REACT_APP_BUNDLE_BRANDING === 'false') {
+      return false;
+    }
+
+    // this can be toggled with REACT_APP_BUNDLE_BRANDING
+    return !this.isNativeApp() || REACT_APP_BUNDLE_BRANDING === 'true';
   },
 };
