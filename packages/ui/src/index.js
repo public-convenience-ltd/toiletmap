@@ -112,7 +112,6 @@ const httpLink = new HttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-  console.log('callback called');
   return {
     headers: {
       ...headers,
@@ -140,7 +139,6 @@ const initialState = {
       lat: 0,
       lng: 0,
     },
-    highlight: null, // should be a loo id
     viewMap: true, // whether to view a map or list
   },
 };
@@ -154,7 +152,6 @@ client.writeQuery({
           lat
           lng
         }
-        highlight
         viewMap
       }
     }

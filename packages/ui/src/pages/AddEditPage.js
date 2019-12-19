@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 
@@ -12,15 +10,8 @@ import NearestLooMap from '../components/NearestLooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
 
-import {
-  actionReportRequest,
-  actionFindByIdRequest,
-} from '../redux/modules/loos';
-
-import { actionHighlight } from '../redux/modules/mapControls';
-
 import config from '../config';
-import { mappings } from '@toiletmap/api-client';
+import graphqlMappings from '../graphqlMappings';
 
 import styles from './css/edit-loo-page.module.css';
 import layout from '../components/css/layout.module.css';
@@ -28,8 +19,15 @@ import helpers from '../css/helpers.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
-class AddEditPage extends Component {
-  questionnaireMap = [
+import { useQuery, useMutation } from '@apollo/client';
+import { loader } from 'graphql.macro';
+import history from '../history';
+
+const FIND_BY_ID = loader('./findLooById.graphql');
+const UPDATE_LOO = loader('./updateLoo.graphql');
+
+const AddEditPage = function(props) {
+  const questionnaireMap = [
     {
       question: 'Attended?',
       property: 'attended',
@@ -48,75 +46,106 @@ class AddEditPage extends Component {
     },
   ];
 
-  optionsMap = mappings.looProps.definitions;
+  const optionsMap = graphqlMappings.looProps.definitions;
 
-  constructor(props) {
-    super(props);
+  const isDerived = () => {
+    // Presence of id indicates that we are editing
+    // Conditional expression converts truthy/falsey to boolean
+    return props.match.params.id ? true : false;
+  };
 
-    var state = {
-      // Storing a local copy of the loo allows us to keep track of any changes.
-      // Skeleton loo structure required to track state.
-      loo: {
-        active: null,
-        name: '',
-        access: '',
-        type: '',
-        accessibleType: '',
-        opening: '',
-        notes: '',
-        fee: '',
+  // Find the raw loo data for the given loo
+  const { loading: loadingLooData, data: looData, error } = useQuery(
+    FIND_BY_ID,
+    {
+      variables: {
+        id: props.match.params.id,
       },
+      skip: !isDerived(),
+    }
+  );
+
+  // A temp state for the map center
+  // We don't need to fetch this from the cached map state using readQuery, because nearestLooMap
+  // does that bit itself, and if it changes it'll tell us with the callback. This is just a
+  // store for us so that we can send off the location with a loo report.
+  const [mapCenter, setMapCenter] = useState();
+
+  const [geolocation, setGeolocation] = useState();
+
+  // Fetch the current geolocation
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      response => {
+        const { longitude, latitude } = response.coords;
+        setGeolocation({ lng: longitude, lat: latitude });
+      },
+      error => {
+        console.error('Could not find geolocation:', error);
+      }
+    );
+  }, []);
+
+  // LooState is the temporary loo object that hold's the user's representation of the loo
+  const [looState, setLooState] = useState();
+
+  // Original is compared against LooState when saving changes
+  const [original, setOriginal] = useState();
+
+  useEffect(() => {
+    if (!looData && isDerived()) {
+      return;
+    }
+
+    let looDataToUse = {};
+    if (isDerived()) {
+      looDataToUse = looData.loo;
+    }
+
+    let tempLoo = {
+      active: null,
+      name: '',
+      access: '',
+      type: '',
+      accessibleType: '',
+      opening: '',
+      notes: '',
+      fee: '',
     };
 
     // Set questionnaire loo property defaults
-    this.questionnaireMap.forEach(q => {
-      state.loo[q.property] = '';
+    questionnaireMap.forEach(q => {
+      tempLoo[q.property] = '';
     });
 
     // Deep extend loo state to ensure we get all properties (since we can't guarantee
-    // that `this.props.loo` will include them all)
-    state.loo = _.merge({}, state.loo, props.loo ? props.loo.properties : {});
+    // that `looData` will include them all)
+    let newLoo = _.merge({}, tempLoo, looDataToUse);
+    setLooState(newLoo);
+    setMapCenter(newLoo.location);
 
     // Keep track of defaults so we only submit new information
-    state.originalData = _.cloneDeep(state.loo);
-    state.originalCenter = this.getCenter();
+    setOriginal({
+      loo: _.cloneDeep(newLoo),
+      center: getCenter(),
+    });
 
-    // Set initial internal state
-    this.state = state;
+    // Whatever you do, don't listen to eslint here. Putting questionnaireMap as a dependency
+    // of useEffect will lead to infinite rerenders, crashing the app and browser
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadingLooData]);
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleTriStateChange = this.handleTriStateChange.bind(this);
-    this.save = this.save.bind(this);
-  }
-
-  componentDidMount() {
-    // If our url contains a loo id and we don't have the data, ask for it
-    if (this.props.match.params.id) {
-      if (!this.props.loo) {
-        this.props.actionFindByIdRequest(this.props.match.params.id);
-      }
-      this.props.actionHighlight(this.props.match.params.id);
-    }
-  }
-
-  componentWillUnmount() {
-    // Clear any marker highlighting when navigating away
-    this.props.actionHighlight(null);
-  }
-
-  handleChange(event) {
+  const handleChange = event => {
     // Avoid state mutation
-    var loo = _.cloneDeep(this.state.loo);
+    let loo = _.cloneDeep(looState);
 
     // Sets nested loo property value
     _.set(loo, event.target.name, event.target.value);
 
-    this.setState({
-      loo,
-    });
-  }
+    setLooState(loo);
+  };
 
-  handleTriStateChange(event) {
+  const handleTriStateChange = event => {
     let val;
     switch (event.target.value) {
       case 'true':
@@ -130,113 +159,120 @@ class AddEditPage extends Component {
     }
 
     // Avoid state mutation
-    var loo = _.cloneDeep(this.state.loo);
+    var loo = _.cloneDeep(looState);
 
     _.set(loo, event.target.name, val);
 
-    this.setState({
-      loo,
-    });
-  }
+    setLooState(loo);
+  };
 
-  isDerived() {
-    // Presenve of this.props.loo indicates that we are editing
-    // Conditional expression converts truthy/falsey to boolean
-    return this.props.loo ? true : false;
-  }
+  const getNovelInput = () => {
+    const before = _.cloneDeep(original.loo);
+    const now = _.cloneDeep(looState);
 
-  getNovelInput() {
-    const before = _.cloneDeep(this.state.originalData);
-    const now = _.cloneDeep(this.state.loo);
-
-    // Add the active state for which there's no user-faciong form control as yet.
+    // Add the active state for which there's no user-facing form control as yet.
     now.active = true;
 
-    // Add geometry
-    before.geometry = {
-      type: 'Point',
-      coordinates: [
-        this.state.originalCenter.lng,
-        this.state.originalCenter.lat,
-      ],
+    // Add location
+    before.location = {
+      lng: original.center.lng,
+      lat: original.center.lat,
     };
-    now.geometry = {
-      type: 'Point',
-      coordinates: [this.getCenter().lng, this.getCenter().lat],
+
+    let center = getCenter();
+    now.location = {
+      lng: center.lng,
+      lat: center.lat,
     };
 
     // Keep only new or changed data, by comparing to the form's initial state
     const changes = onlyChanges(now, before);
 
-    if (!this.isDerived()) {
-      // If we're a new loo, we always want geometry, regardless of whether it
+    if (!isDerived()) {
+      // If we're a new loo, we always want location, regardless of whether it
       // has changed since the start of the form
-      changes.geometry = now.geometry;
+      changes.location = now.location;
     }
 
     return changes;
+  };
+
+  const onMapCenterUpdate = newCenter => {
+    setMapCenter(newCenter);
+  };
+
+  // Get the center to use for the loo
+  const getCenter = () => {
+    return (
+      mapCenter ||
+      (looData ? looData.loo.location : null) ||
+      geolocation ||
+      config.fallbackLocation
+    );
+  };
+
+  const [
+    updateLoo,
+    { loading: saveLoading, data: saveResponse, error: saveError },
+  ] = useMutation(UPDATE_LOO);
+
+  if (saveError) {
+    console.error('error saving:', saveError);
   }
 
-  getCenter() {
-    // Preferably, use the maps center coordinates:
-    // these will default to the loo position if a loo has been provided
-    if (this.props.map.center) {
-      return this.props.map.center;
-    }
-
-    // Else default center coordinates to the user's location:
-    // this will be the case when a loo has not been provided to edit
-    // e.g. the user has directly navigated to /report
-    return this.props.geolocation.position;
+  // Redirect to thanks page if successfully made changes
+  if (saveResponse && saveResponse.submitReport.code === '200') {
+    history.push(`/loos/${saveResponse.submitReport.loo.id}/thanks`);
   }
 
-  save() {
-    const changes = this.getNovelInput();
+  const save = () => {
+    const changes = getNovelInput();
 
     // Always associate geometry with a report, even if unchanged
-    changes.geometry = {
-      type: 'Point',
-      coordinates: [this.getCenter().lng, this.getCenter().lat],
+    let center = getCenter();
+    changes.location = {
+      lng: center.lng,
+      lat: center.lat,
     };
 
     // Set questionnaire options to null before transport.
-    this.questionnaireMap.forEach(q => {
+    questionnaireMap.forEach(q => {
       if (changes[q.property] === '') changes[q.property] = null;
     });
 
-    this.props.actionReportRequest(
-      changes,
-      this.isDerived() ? this.props.loo : undefined
-    );
-  }
+    if (isDerived()) {
+      changes.id = looData.loo.id;
+    }
 
-  renderMain() {
-    const loo = this.state.loo;
-    const center = this.getCenter();
+    updateLoo({
+      variables: changes,
+    });
+  };
+
+  const renderMain = () => {
+    const loo = looState;
+    const center = getCenter();
 
     return (
       <div>
         <div>
           <div className={layout.controls}>
             {config.showBackButtons && (
-              <button
-                onClick={this.props.history.goBack}
-                className={controls.btn}
-              >
+              <button onClick={props.history.goBack} className={controls.btn}>
                 Back
               </button>
             )}
           </div>
         </div>
 
-        {this.isDerived() ? (
+        {isDerived() ? (
           <h2 className={headings.large}>Update This Toilet</h2>
         ) : (
           <h2 className={headings.large}>Add This Toilet</h2>
         )}
 
         <MediaQuery maxWidth={config.viewport.mobile}>
-          <div className={styles.mobileMap}>{this.renderMap()}</div>
+          <div className={styles.mobileMap}>{renderMap()}</div>
         </MediaQuery>
 
         <Notification>
@@ -256,7 +292,7 @@ class AddEditPage extends Component {
             type="text"
             className={controls.text}
             value={loo.name === null ? '' : loo.name}
-            onChange={this.handleChange}
+            onChange={handleChange}
             data-testid="toilet-name"
           />
         </label>
@@ -267,11 +303,11 @@ class AddEditPage extends Component {
             name="access"
             className={controls.dropdown}
             value={loo.access === null ? '' : loo.access}
-            onChange={this.handleChange}
+            onChange={handleChange}
             data-testid="who-can-access"
           >
             <option value="">Unknown</option>
-            {this.optionsMap.access.map((option, index) => (
+            {optionsMap.access.map((option, index) => (
               <option key={index} value={option.value}>
                 {option.name}
               </option>
@@ -285,11 +321,11 @@ class AddEditPage extends Component {
             name="type"
             className={controls.dropdown}
             value={loo.type === null ? '' : loo.type}
-            onChange={this.handleChange}
+            onChange={handleChange}
             data-testid="facilities"
           >
             <option value="">Unknown</option>
-            {this.optionsMap.type.map((option, index) => (
+            {optionsMap.type.map((option, index) => (
               <option key={index} value={option.value}>
                 {option.name}
               </option>
@@ -303,11 +339,11 @@ class AddEditPage extends Component {
             name="accessibleType"
             className={controls.dropdown}
             value={loo.accessibleType === null ? '' : loo.accessibleType}
-            onChange={this.handleChange}
+            onChange={handleChange}
             data-testid="accessible-facilities"
           >
             <option value="">Unknown</option>
-            {this.optionsMap.type.map((option, index) => (
+            {optionsMap.type.map((option, index) => (
               <option key={index} value={option.value}>
                 {option.name}
               </option>
@@ -321,11 +357,11 @@ class AddEditPage extends Component {
             name="opening"
             className={controls.dropdown}
             value={loo.opening === null ? '' : loo.opening}
-            onChange={this.handleChange}
+            onChange={handleChange}
             data-testid="opening-hours"
           >
             <option value="">Unknown</option>
-            {this.optionsMap.opening.map((option, index) => (
+            {optionsMap.opening.map((option, index) => (
               <option key={index} value={option.value}>
                 {option.name}
               </option>
@@ -347,7 +383,7 @@ class AddEditPage extends Component {
             </span>
           </div>
 
-          {this.questionnaireMap.map((q, index) => (
+          {questionnaireMap.map((q, index) => (
             <fieldset key={index} className={styles.questionnaireGroup}>
               <legend className={helpers.visuallyHidden}>{q.question}</legend>
               <span className={styles.questionnaireCol}>{q.question}</span>
@@ -358,7 +394,7 @@ class AddEditPage extends Component {
                 value={true}
                 aria-labelledby="yes"
                 checked={loo[q.property] === true}
-                onChange={this.handleTriStateChange}
+                onChange={handleTriStateChange}
                 data-testid={`${q.property}:yes`}
               />
               <input
@@ -368,7 +404,7 @@ class AddEditPage extends Component {
                 value={false}
                 aria-labelledby="no"
                 checked={loo[q.property] === false}
-                onChange={this.handleTriStateChange}
+                onChange={handleTriStateChange}
                 data-testid={`${q.property}:no`}
               />
               <input
@@ -378,7 +414,7 @@ class AddEditPage extends Component {
                 value=""
                 aria-labelledby="unknown"
                 checked={loo[q.property] === ''}
-                onChange={this.handleTriStateChange}
+                onChange={handleTriStateChange}
                 data-testid={`${q.property}:unknown`}
               />
             </fieldset>
@@ -393,7 +429,7 @@ class AddEditPage extends Component {
             className={controls.text}
             value={loo.fee === null ? '' : loo.fee}
             placeholder="The amount e.g. £0.10"
-            onChange={this.handleChange}
+            onChange={handleChange}
             data-testid="fee"
           />
         </label>
@@ -404,7 +440,7 @@ class AddEditPage extends Component {
             name="notes"
             className={controls.text}
             value={loo.notes === null ? '' : loo.notes}
-            onChange={this.handleChange}
+            onChange={handleChange}
             data-testid="notes"
           />
         </label>
@@ -436,28 +472,46 @@ class AddEditPage extends Component {
           </label>
         </div>
 
+        {saveLoading && <Loading message={'Saving your changes...'} />}
+
+        {// This message probably won't be seen, but just in case the redirect fails...
+        saveResponse && saveResponse.submitReport.code === '200' && (
+          <Notification>
+            Successfully saved changes! Redirecting&hellip;
+          </Notification>
+        )}
+
+        {// TODO better error message?
+        (saveError ||
+          (saveResponse && saveResponse.submitReport.code !== '200')) && (
+          <Notification>
+            Oops, there was an error saving your changes.
+            {console.log(saveError, saveResponse)}
+          </Notification>
+        )}
+
         <div className={controls.btnStack}>
-          {this.isDerived() ? (
+          {isDerived() ? (
             <input
               type="submit"
               className={controls.btn}
-              onClick={this.save}
+              onClick={save}
               value="Update the toilet"
-              disabled={_.isEmpty(this.getNovelInput())}
+              disabled={_.isEmpty(getNovelInput())}
             />
           ) : (
             <input
               type="submit"
               className={controls.btn}
-              onClick={this.save}
+              onClick={save}
               value="Add the toilet"
               data-testid="add-the-toilet"
             />
           )}
 
-          {this.isDerived() && (
+          {isDerived() && (
             <Link
-              to={`/loos/${this.props.loo._id}/remove`}
+              to={`/loos/${props.match.params.id}/remove`}
               className={controls.btnCaution}
             >
               Remove the toilet
@@ -466,13 +520,13 @@ class AddEditPage extends Component {
         </div>
       </div>
     );
-  }
+  };
 
-  renderMap() {
+  const renderMap = () => {
     return (
       <NearestLooMap
-        loo={this.props.loo}
-        highlight
+        loo={looData ? looData.loo : null}
+        highlight={props.match.params.id}
         mapProps={{
           showLocation: false,
           showSearchControl: true,
@@ -480,28 +534,34 @@ class AddEditPage extends Component {
           preventDragging: false,
           minZoom: config.editMinZoom,
         }}
+        onUpdateCenter={onMapCenterUpdate}
+      />
+    );
+  };
+
+  if ((isDerived() && (loadingLooData || !looData)) || !looState) {
+    return (
+      <PageLayout
+        main={<Loading message={'Fetching Toilet Data'} />}
+        map={<Loading message={'Fetching Toilet Data'} />}
       />
     );
   }
 
-  render() {
-    if (this.props.match.params.id && !this.props.loo) {
-      return (
-        <PageLayout
-          main={<Loading message={'Fetching Toilet Data'} />}
-          map={<Loading message={'Fetching Toilet Data'} />}
-        />
-      );
-    }
-    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
+  if (error) {
+    console.error(error);
+    return (
+      <PageLayout
+        main={<Loading message={'Error fetching toilet data'} />}
+        map={<Loading message={'Error fetching toilet data'} />}
+      />
+    );
   }
-}
 
-AddEditPage.propTypes = {
-  // If provided, the form will be in 'edit' mode and populated against the loo instance.
-  // The absence of a loo results in the form being in 'add' mode.
-  loo: PropTypes.object,
+  return <PageLayout main={renderMain()} map={renderMap()} />;
 };
+
+AddEditPage.propTypes = {};
 
 /**
  * Only keep fields in loo that are different to their corresponding field in
@@ -524,24 +584,4 @@ function onlyChanges(loo, from) {
   });
 }
 
-var mapStateToProps = (state, ownProps) => {
-  let loo = state.loos.byId[ownProps.match.params.id] || null;
-  return {
-    app: state.app,
-    map: state.mapControls,
-    geolocation: state.geolocation,
-    loo: loo,
-    key: loo ? loo._id : 'newLoo',
-  };
-};
-
-var mapDispatchToProps = {
-  actionReportRequest,
-  actionFindByIdRequest,
-  actionHighlight,
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddEditPage);
+export default AddEditPage;

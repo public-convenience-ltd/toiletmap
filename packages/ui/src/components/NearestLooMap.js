@@ -28,7 +28,6 @@ const NearestLooMap = function NearestLooMap(props) {
             lat
             lng
           }
-          highlight
         }
       }
     `,
@@ -72,11 +71,10 @@ const NearestLooMap = function NearestLooMap(props) {
   }, []);
 
   // Fetch the nearby loos
-  // This uses a very hacky method of setting the location to be 0, 0 when
+  // This uses a very hacky method of setting the location to be (0, 0) when
   // overrideLoos is set, which means that very little data will be passed
   // when the query is sent. Hopefully when the functionality of skip is fixed so that
   // when it's true a query is _never_ sent, this hack can be removed.
-  updateLoadingStatus(true);
   const { loading, data, refetch } = useQuery(FIND_LOOS_NEARBY, {
     variables: {
       ...(props.overrideLoos
@@ -88,10 +86,12 @@ const NearestLooMap = function NearestLooMap(props) {
       radius: config.nearestRadius,
     },
     skip: !!props.overrideLoos, // this doesn't actually have any effect, Apollo bug
-    onCompleted: data => {
-      updateLoadingStatus(false);
-    },
   });
+
+  useEffect(() => {
+    updateLoadingStatus(loading);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
 
   function onUpdateCenter({ lat, lng }) {
     if (props.onUpdateCenter) {
@@ -180,7 +180,7 @@ const NearestLooMap = function NearestLooMap(props) {
           onUpdateCenter={onUpdateCenter}
           initialZoom={mapControls.zoom}
           initialPosition={getInitialPosition()}
-          highlight={props.highlight || mapControls.highlight}
+          highlight={props.highlight}
           {...props.mapProps}
         />
       ) : (
@@ -201,6 +201,8 @@ NearestLooMap.propTypes = {
   onUpdateCenter: PropTypes.func,
   // An optional list of loos to use instead of querying the server
   overrideLoos: PropTypes.array,
+  // The id of the loo to highlight
+  highlight: PropTypes.string,
 };
 
 const NearestLooMapWithApolloClient = props => (

@@ -158,7 +158,7 @@ const HomePage = function(props) {
   };
 
   const renderMain = () => {
-    var viewMap = mapControls.viewMap;
+    var { viewMap } = mapControls;
 
     return (
       <div className={styles.container}>
