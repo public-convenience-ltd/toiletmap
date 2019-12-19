@@ -63,7 +63,7 @@ export class MapPage extends Component {
       return (
         <Notification>
           <p>
-            No toilets found within {config.nearestRadius / 1000}
+            No toilets found within {this.props.mapControls.radius / 1000}
             km.
           </p>
         </Notification>

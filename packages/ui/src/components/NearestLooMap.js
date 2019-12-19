@@ -33,8 +33,8 @@ class NearestLooMap extends Component {
     }
   }
 
-  onUpdateCenter({ lng, lat }) {
-    this.props.actionUpdateCenter({ lat, lng });
+  onUpdateCenter({ lng, lat }, radius) {
+    this.props.actionUpdateCenter({ lat, lng, radius });
   }
 
   render() {

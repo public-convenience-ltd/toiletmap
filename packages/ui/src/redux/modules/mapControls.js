@@ -1,3 +1,5 @@
+import config from '../../config';
+
 export const ZOOM = 'MAP_CONTROLS/ZOOM';
 export const UPDATE_CENTER = 'MAP_CONTROLS/UPDATE_CENTER';
 export const UPDATE_CENTER_FINISH = 'MAP_CONTROLS/UPDATE_CENTER_FINISH';
@@ -12,17 +14,19 @@ export const actionZoom = zoom => ({
   },
 });
 
-export const actionUpdateCenter = center => ({
+export const actionUpdateCenter = ({ lat, lng, radius }) => ({
   type: UPDATE_CENTER,
   payload: {
-    center,
+    center: { lat, lng },
+    radius,
   },
 });
 
-export const actionUpdateCenterFinish = center => ({
+export const actionUpdateCenterFinish = ({ lat, lng, radius }) => ({
   type: UPDATE_CENTER_FINISH,
   payload: {
-    center,
+    center: { lat, lng },
+    radius,
   },
 });
 
@@ -45,6 +49,7 @@ const ACTION_HANDLERS = {
     return {
       ...state,
       center: action.payload.center,
+      radius: action.payload.radius,
     };
   },
 
@@ -56,7 +61,13 @@ const ACTION_HANDLERS = {
   },
 };
 
-export default function mapControlsReducer(state = {}, action) {
+const initialState = {
+  radius: config.nearestRadius,
+  zoom: config.initialZoom,
+  center: config.fallbackLocation,
+};
+
+export default function mapControlsReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
   return handler ? handler(state, action) : state;
 }

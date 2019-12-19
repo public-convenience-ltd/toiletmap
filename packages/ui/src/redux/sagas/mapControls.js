@@ -6,14 +6,17 @@ import {
   actionUpdateCenterFinish,
 } from '../modules/mapControls';
 import { actionFindNearbyRequest } from '../modules/loos';
-
 import config from '../../config';
 
 export const getCenter = state => state.mapControls.center;
+// get view mode from the app
+const getViewMode = state => state.map.viewMode;
 
 function* updateCenterSaga(action) {
   const oldCenter = yield select(getCenter);
+  const viewMode = yield select(getViewMode);
   const newCenter = action.payload.center;
+  const newRadius = action.payload.radius;
 
   // Get nearby loos if we've moved
   if (!_.isEqual(oldCenter, newCenter)) {
@@ -21,7 +24,8 @@ function* updateCenterSaga(action) {
       actionFindNearbyRequest(
         newCenter.lng,
         newCenter.lat,
-        config.nearestRadius
+        // unconformable
+        viewMode === 'map' ? newRadius : config.nearestRadius
       )
     );
   }

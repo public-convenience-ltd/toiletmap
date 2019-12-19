@@ -23,6 +23,13 @@ import markerIconRetina from '../images/marker-icon-2x.png';
 import markerIconHighlight from '../images/marker-icon-highlight.png';
 import markerIconRetinaHighlight from '../images/marker-icon-highlight-2x.png';
 
+const getRadius = (map, center) => {
+  const mapBoundNorthEast = map.getBounds().getNorthEast();
+  const mapDistance = mapBoundNorthEast.distanceTo(center);
+
+  return mapDistance;
+};
+
 L.LooIcon = L.Icon.extend({
   options: {
     iconSize: [25, 41],
@@ -156,8 +163,7 @@ export class LooMap extends Component {
   };
 
   onMove(event) {
-    var map = this.leafletElement;
-
+    const map = this.leafletElement;
     var center;
 
     try {
@@ -172,8 +178,10 @@ export class LooMap extends Component {
       throw e;
     }
 
-    this.props.onUpdateCenter(center);
-    this.props.onMove(center.lng, center.lat);
+    const radius = getRadius(map, center);
+
+    this.props.onUpdateCenter(center, radius);
+    this.props.onMove(center.lng, center.lat, radius);
   }
 
   onZoom(event) {
