@@ -67,8 +67,8 @@ Useful platform guides (TODO: turn this into a docker image?):
     1. [Set up an emulator](https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html#project-configuration).
 - [ios](https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html)
     Quickstart:
-    - xCode
-    - **TODO**
+    - install full xCode
+    - use this to make xcode work from the cli `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`
 
 #### Errors:
 - `Unable to load PlatformApi from platform. Error: Cannot find module '.../foo.js`
