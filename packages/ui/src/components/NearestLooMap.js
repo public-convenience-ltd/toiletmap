@@ -7,6 +7,7 @@ import WithApolloClient from './WithApolloClient';
 import { useQuery, gql } from '@apollo/client';
 import { loader } from 'graphql.macro';
 
+import getGeolocation from '../getGeolocation';
 import Notification from './Notification';
 import config from '../config';
 
@@ -57,7 +58,7 @@ const NearestLooMap = function NearestLooMap(props) {
 
   // Fetch the current geolocation on rerender
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
+    getGeolocation(
       response => {
         const { longitude, latitude } = response.coords;
         setGeolocation({ lng: longitude, lat: latitude });

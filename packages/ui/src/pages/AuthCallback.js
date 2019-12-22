@@ -1,60 +1,70 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
 
-import { actionLoggedIn, actionSetName } from '../redux/modules/auth';
-
+import WithApolloClient from '../components/WithApolloClient';
+import { gql } from '@apollo/client';
 import PageLayout from '../components/PageLayout';
 import Notification from '../components/Notification';
 import MediaQuery from 'react-responsive';
 import config from '../config';
 
-class Callback extends Component {
-  async componentDidMount() {
-    if (/access_token|id_token|error/.test(this.props.location.hash)) {
-      await this.props.auth.handleAuthentication();
-      await this.props.auth.fetchProfile();
-    }
+const Callback = function(props) {
+  useEffect(() => {
+    // This is pretty horrible but necessary, since useEffect can't take an async function
+    (async () => {
+      if (/access_token|id_token|error/.test(props.location.hash)) {
+        await props.auth.handleAuthentication();
+        await props.auth.fetchProfile();
+      }
+    })().then(() => {
+      if (props.auth.isAuthenticated()) {
+        // Update state to set logged in
+        props.apolloClient.writeQuery({
+          query: gql`
+            query updateUserData {
+              userData {
+                loggedIn
+                name
+              }
+            }
+          `,
+          data: {
+            userData: {
+              loggedIn: true,
+              name: props.auth.getProfile().name,
+            },
+          },
+        });
+        props.history.push(props.auth.redirectOnLogin() || '/');
+      } else {
+        props.history.push('/login');
+      }
+    });
+  });
 
-    if (this.props.auth.isAuthenticated()) {
-      // dispatch a login action
-      this.props.loggedIn(true);
-      this.props.setName(this.props.auth.getProfile().name);
-      this.props.history.push(this.props.auth.redirectOnLogin() || '/');
-    } else {
-      this.props.history.push('/login');
-    }
-  }
-
-  render() {
-    return (
-      <PageLayout
-        main={
-          <MediaQuery minWidth={config.viewport.mobile}>
-            <Notification>
-              <p>Updating credentials</p>
-            </Notification>
-          </MediaQuery>
-        }
-        map={
-          <MediaQuery minWidth={config.viewport.mobile}>
-            <Notification>
-              <p>Updating credentials</p>
-            </Notification>
-          </MediaQuery>
-        }
-      />
-    );
-  }
-}
-
-const mapStateToProps = state => ({});
-
-const mapDispatchToProps = {
-  loggedIn: actionLoggedIn,
-  setName: actionSetName,
+  return (
+    <PageLayout
+      main={
+        <MediaQuery minWidth={config.viewport.mobile}>
+          <Notification>
+            <p>Updating credentials</p>
+          </Notification>
+        </MediaQuery>
+      }
+      map={
+        <MediaQuery minWidth={config.viewport.mobile}>
+          <Notification>
+            <p>Updating credentials</p>
+          </Notification>
+        </MediaQuery>
+      }
+    />
+  );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Callback);
+const CallbackWithApolloClient = props => (
+  <WithApolloClient>
+    <Callback {...props} />
+  </WithApolloClient>
+);
+
+export default CallbackWithApolloClient;

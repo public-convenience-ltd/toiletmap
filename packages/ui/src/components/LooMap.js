@@ -133,7 +133,6 @@ export class LooMap extends Component {
     }
 
     this.props.onInitialised(map);
-    console.log('center:', center);
     this.props.onUpdateCenter(center);
   }
 

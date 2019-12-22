@@ -9,6 +9,7 @@ import Loading from '../components/Loading';
 import NearestLooMap from '../components/NearestLooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
+import getGeolocation from '../getGeolocation';
 
 import config from '../config';
 import graphqlMappings from '../graphqlMappings';
@@ -22,9 +23,12 @@ import controls from '../css/controls.module.css';
 import { useQuery, useMutation } from '@apollo/client';
 import { loader } from 'graphql.macro';
 import history from '../history';
+import WithApolloClient from '../components/WithApolloClient';
 
 const FIND_BY_ID = loader('./findLooById.graphql');
 const UPDATE_LOO = loader('./updateLoo.graphql');
+
+const getLooCachedId = looId => 'Loo:' + looId;
 
 const AddEditPage = function(props) {
   const questionnaireMap = [
@@ -75,15 +79,10 @@ const AddEditPage = function(props) {
 
   // Fetch the current geolocation
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      response => {
-        const { longitude, latitude } = response.coords;
-        setGeolocation({ lng: longitude, lat: latitude });
-      },
-      error => {
-        console.error('Could not find geolocation:', error);
-      }
-    );
+    getGeolocation(response => {
+      const { longitude, latitude } = response.coords;
+      setGeolocation({ lng: longitude, lat: latitude });
+    });
   }, []);
 
   // LooState is the temporary loo object that hold's the user's representation of the loo
@@ -241,7 +240,15 @@ const AddEditPage = function(props) {
     });
 
     if (isDerived()) {
-      changes.id = looData.loo.id;
+      let id = looData.loo.id;
+      changes.id = id;
+
+      // Evict the loo from the cache before updating - Apollo
+      // is normally smart and can work out when something's changed, but
+      // in this case it doesn't and stale data can persist without
+      // a cache eviction
+      let cache = props.apolloClient.cache;
+      cache.evict(getLooCachedId(id));
     }
 
     updateLoo({
@@ -584,4 +591,10 @@ function onlyChanges(loo, from) {
   });
 }
 
-export default AddEditPage;
+const AddEditPageWithApolloClient = props => (
+  <WithApolloClient>
+    <AddEditPage {...props} />
+  </WithApolloClient>
+);
+
+export default AddEditPageWithApolloClient;

@@ -46,6 +46,41 @@ const HomePage = function(props) {
     return mapControls;
   };
 
+  const getAuth = () => {
+    const { userData } = apolloClient.readQuery({
+      query: gql`
+        query getAuth {
+          userData {
+            loggedIn
+            name
+          }
+        }
+      `,
+    });
+    return userData;
+  };
+
+  const logout = () => {
+    props.auth.logout();
+    apolloClient.writeQuery({
+      query: gql`
+        query getAuth {
+          userData {
+            loggedIn
+            name
+          }
+        }
+      `,
+      data: {
+        userData: {
+          loggedIn: false,
+          name: '',
+        },
+      },
+    });
+    props.history.push('/');
+  };
+
   const [mapControls, setMapControls] = useState(_.cloneDeep(getMapControls()));
 
   const { loading, data, error } = useQuery(FIND_NEARBY, {
@@ -162,12 +197,10 @@ const HomePage = function(props) {
 
     return (
       <div className={styles.container}>
-        {/* TODO Logged in message */}
-        {props.isAuthenticated && (
+        {getAuth().loggedIn && (
           <Notification>
             <p>
-              Logged in.{' '}
-              <button onClick={/* TODO */ props.doLogout}>Log out</button>
+              Logged in. <button onClick={logout}>Log out</button>
             </p>
           </Notification>
         )}
@@ -226,6 +259,8 @@ const HomePage = function(props) {
 
 HomePage.propTypes = {
   loos: PropTypes.array,
+  // The authentication object
+  auth: PropTypes.object,
 };
 
 const HomePageWithApolloClient = props => (
