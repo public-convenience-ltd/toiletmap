@@ -20,6 +20,7 @@ import controls from '../css/controls.module.css';
 import { useQuery, gql } from '@apollo/client';
 import { loader } from 'graphql.macro';
 import WithApolloClient from '../components/WithApolloClient';
+import { doLogout } from '../components/auth';
 
 import config from '../config';
 
@@ -60,26 +61,7 @@ const HomePage = function(props) {
     return userData;
   };
 
-  const logout = () => {
-    props.auth.logout();
-    apolloClient.writeQuery({
-      query: gql`
-        query getAuth {
-          userData {
-            loggedIn
-            name
-          }
-        }
-      `,
-      data: {
-        userData: {
-          loggedIn: false,
-          name: '',
-        },
-      },
-    });
-    props.history.push('/');
-  };
+  const logout = () => doLogout(props.auth, apolloClient, props.history);
 
   const [mapControls, setMapControls] = useState(_.cloneDeep(getMapControls()));
 
@@ -95,7 +77,7 @@ const HomePage = function(props) {
 
     apolloClient.writeQuery({
       query: gql`
-        query getMapControls {
+        query setMapControls {
           mapControls {
             viewMap
           }
@@ -244,12 +226,19 @@ const HomePage = function(props) {
   };
 
   const renderMap = () => {
+    let mapProps = props.initialPosition
+      ? {
+          initialPosition: props.initialPosition,
+        }
+      : {};
+
     return (
       <NearestLooMap
         numberNearest
         highlight={highlight}
         onUpdateCenter={onUpdateCenter}
         overrideLoos={data ? data.loosByProximity : []}
+        mapProps={mapProps}
       />
     );
   };
@@ -258,9 +247,13 @@ const HomePage = function(props) {
 };
 
 HomePage.propTypes = {
-  loos: PropTypes.array,
   // The authentication object
   auth: PropTypes.object,
+  // An initial position
+  initialPosition: PropTypes.shape({
+    lat: PropTypes.number,
+    lng: PropTypes.number,
+  }),
 };
 
 const HomePageWithApolloClient = props => (

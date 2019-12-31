@@ -197,7 +197,10 @@ if (typeof document !== 'undefined') {
                 path="/login"
                 render={props => <LoginPage auth={auth} {...props} />}
               />
-              <Route path="/map/:lng/:lat" component={MapPage} />
+              <Route
+                path="/map/:lng/:lat"
+                render={props => <MapPage auth={auth} {...props} />}
+              />
               <Route
                 exact
                 path="/callback"
