@@ -45,13 +45,13 @@ import mapControlsSaga from './redux/sagas/mapControls';
 
 import history from './history';
 import Auth from './Auth';
+import localSchema from './localSchema';
 
 import {
   ApolloClient,
   ApolloProvider,
   HttpLink,
   InMemoryCache,
-  gql,
 } from '@apollo/client';
 
 import { setContext } from 'apollo-link-context';
@@ -99,9 +99,9 @@ history.listen(function(location) {
   }
 });
 
-// Create an enhanced history that syncs navigation events with the store
-
+//
 // Create GraphQL client
+//
 
 const httpLink = new HttpLink({
   uri: '/graphql',
@@ -137,44 +137,38 @@ const client = new ApolloClient({
   version: version,
   link: authLink.concat(httpLink),
   cache,
+  ...localSchema,
 });
 
 // Set the initial cache state
 let isAuthed = auth.isAuthenticated();
 const initialState = {
   mapControls: {
+    __typename: 'MapControls',
     zoom: 16,
     center: {
+      __typename: 'Point',
       lat: 0,
       lng: 0,
     },
     viewMap: true, // whether to view a map or list
   },
   userData: {
+    __typename: 'UserData',
     loggedIn: isAuthed,
-    name: isAuthed ? auth.getProfile().name : '',
+    name: isAuthed ? auth.getProfile().name : null,
   },
 };
 
-client.writeQuery({
-  query: gql`
-    query updateGlobalState {
-      mapControls {
-        zoom
-        center {
-          lat
-          lng
-        }
-        viewMap
-      }
-      userData {
-        loggedIn
-        name
-      }
-    }
-  `,
-  data: initialState,
-});
+const initialize = () =>
+  cache.writeData({
+    data: initialState,
+  });
+
+initialize();
+
+// resetStore isn't used anywhere yet, but just in case...
+client.onResetStore(initialize);
 
 if (typeof document !== 'undefined') {
   ReactDOM.render(

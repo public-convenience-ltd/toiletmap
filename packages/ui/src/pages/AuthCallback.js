@@ -1,13 +1,20 @@
 import React, { useEffect } from 'react';
 
-import WithApolloClient from '../components/WithApolloClient';
-import { gql } from '@apollo/client';
+import { useMutation, gql } from '@apollo/client';
 import PageLayout from '../components/PageLayout';
 import Notification from '../components/Notification';
 import MediaQuery from 'react-responsive';
 import config from '../config';
 
+const MUTATION_LOGIN = gql`
+  mutation LoginUser($name: String!) {
+    loginUser(name: $name) @client
+  }
+`;
+
 const Callback = function(props) {
+  const [doLogin] = useMutation(MUTATION_LOGIN);
+
   useEffect(() => {
     // This is pretty horrible but necessary, since useEffect can't take an async function
     (async () => {
@@ -18,20 +25,9 @@ const Callback = function(props) {
     })().then(() => {
       if (props.auth.isAuthenticated()) {
         // Update state to set logged in
-        props.apolloClient.writeQuery({
-          query: gql`
-            query updateUserData {
-              userData {
-                loggedIn
-                name
-              }
-            }
-          `,
-          data: {
-            userData: {
-              loggedIn: true,
-              name: props.auth.getProfile().name,
-            },
+        doLogin({
+          variables: {
+            name: props.auth.getProfile().name,
           },
         });
         props.history.push(props.auth.redirectOnLogin() || '/');
@@ -61,10 +57,4 @@ const Callback = function(props) {
   );
 };
 
-const CallbackWithApolloClient = props => (
-  <WithApolloClient>
-    <Callback {...props} />
-  </WithApolloClient>
-);
-
-export default CallbackWithApolloClient;
+export default Callback;

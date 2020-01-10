@@ -70,7 +70,7 @@ const AddEditPage = function(props) {
   );
 
   // A temp state for the map center
-  // We don't need to fetch this from the cached map state using readQuery, because nearestLooMap
+  // We don't need to fetch this from the cached map state, because nearestLooMap
   // does that bit itself, and if it changes it'll tell us with the callback. This is just a
   // store for us so that we can send off the location with a loo report.
   const [mapCenter, setMapCenter] = useState();

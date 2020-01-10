@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import LooMap from './LooMap';
 import WithApolloClient from './WithApolloClient';
 
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, gql, useMutation } from '@apollo/client';
 import { loader } from 'graphql.macro';
 
 import getGeolocation from '../getGeolocation';
@@ -15,24 +15,37 @@ import styles from './css/loo-map.module.css';
 
 const FIND_LOOS_NEARBY = loader('./findLoosNearby.graphql');
 
+const GET_MAP_CONTROLS = gql`
+  {
+    mapControls @client {
+      zoom
+      center {
+        lat
+        lng
+      }
+    }
+  }
+`;
+
+const SET_MAP_CENTER = gql`
+  mutation SetMapCenter($lat: Number!, $lng: Number!) {
+    updateCenter(lat: $lat, lng: $lng) @client
+  }
+`;
+
+const SET_MAP_ZOOM = gql`
+  mutation SetMapZoom($zoom: Number!) {
+    updateZoom(zoom: $zoom) @client
+  }
+`;
+
 const NearestLooMap = function NearestLooMap(props) {
   const [geolocation, setGeolocation] = useState();
-  const { apolloClient } = props;
   let looMap;
 
-  const { mapControls } = apolloClient.readQuery({
-    query: gql`
-      query getMapControls {
-        mapControls {
-          zoom
-          center {
-            lat
-            lng
-          }
-        }
-      }
-    `,
-  });
+  const {
+    data: { mapControls },
+  } = useQuery(GET_MAP_CONTROLS);
 
   let loo = props.loo;
   let looCentre;
@@ -94,9 +107,10 @@ const NearestLooMap = function NearestLooMap(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
-  function onUpdateCenter({ lat, lng }) {
+  const [updateStoreCenter] = useMutation(SET_MAP_CENTER);
+  function onUpdateCenter(coords) {
     if (props.onUpdateCenter) {
-      props.onUpdateCenter({ lat, lng });
+      props.onUpdateCenter(coords);
     }
 
     if (!loading) {
@@ -104,42 +118,19 @@ const NearestLooMap = function NearestLooMap(props) {
       refetch();
     }
 
-    setMapCenter({ lat, lng });
-    apolloClient.writeQuery({
-      query: gql`
-        query updateCenter {
-          mapControls {
-            center {
-              lat
-              lng
-            }
-          }
-        }
-      `,
-      data: {
-        mapControls: {
-          center: {
-            lat,
-            lng,
-          },
-        },
+    setMapCenter(coords);
+    updateStoreCenter({
+      variables: {
+        ...coords,
       },
     });
   }
 
+  const [updateStoreZoom] = useMutation(SET_MAP_ZOOM);
   function onUpdateZoom(zoom) {
-    apolloClient.writeQuery({
-      query: gql`
-        query updateZoom {
-          mapControls {
-            zoom
-          }
-        }
-      `,
-      data: {
-        mapControls: {
-          zoom,
-        },
+    updateStoreZoom({
+      variables: {
+        zoom,
       },
     });
   }

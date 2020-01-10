@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
-import _ from 'lodash';
 
 import PageLayout from '../components/PageLayout';
 import NearestLooMap from '../components/NearestLooMap';
@@ -17,53 +16,59 @@ import layout from '../components/css/layout.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, useMutation, gql } from '@apollo/client';
 import { loader } from 'graphql.macro';
-import WithApolloClient from '../components/WithApolloClient';
-import { doLogout } from '../components/auth';
 
 import config from '../config';
 
 const FIND_NEARBY = loader('../components/findLoosNearby.graphql');
 
+const GET_MAP_CONTROLS = gql`
+  {
+    mapControls @client {
+      center {
+        lat
+        lng
+      }
+      viewMap
+    }
+  }
+`;
+
+const GET_AUTH_STATUS = gql`
+  {
+    userData @client {
+      loggedIn
+    }
+  }
+`;
+
+const LOGOUT = gql`
+  mutation logout {
+    logoutUser @client
+  }
+`;
+
+const TOGGLE_VIEW_MODE = gql`
+  mutation ToggleViewMode {
+    toggleViewMode @client
+  }
+`;
+
 const HomePage = function(props) {
   const [highlight, setHighlight] = useState();
-  const { apolloClient } = props;
 
-  const getMapControls = () => {
-    const { mapControls } = apolloClient.readQuery({
-      query: gql`
-        query getMapControls {
-          mapControls {
-            center {
-              lat
-              lng
-            }
-            viewMap
-          }
-        }
-      `,
-    });
-    return mapControls;
-  };
+  const {
+    data: { mapControls },
+  } = useQuery(GET_MAP_CONTROLS);
 
-  const getAuth = () => {
-    const { userData } = apolloClient.readQuery({
-      query: gql`
-        query getAuth {
-          userData {
-            loggedIn
-            name
-          }
-        }
-      `,
-    });
-    return userData;
-  };
+  const {
+    data: { userData },
+  } = useQuery(GET_AUTH_STATUS);
 
-  const logout = () => doLogout(props.auth, apolloClient, props.history);
-
-  const [mapControls, setMapControls] = useState(_.cloneDeep(getMapControls()));
+  const [logoutMutation] = useMutation(LOGOUT);
+  const logout = () =>
+    props.auth.reactContextLogout(logoutMutation, props.history);
 
   const { loading, data, error } = useQuery(FIND_NEARBY, {
     variables: {
@@ -72,37 +77,9 @@ const HomePage = function(props) {
     },
   });
 
+  const [mutateToggleViewMode] = useMutation(TOGGLE_VIEW_MODE);
   const toggleViewMode = () => {
-    let newVal = !mapControls.viewMap;
-
-    apolloClient.writeQuery({
-      query: gql`
-        query setMapControls {
-          mapControls {
-            viewMap
-          }
-        }
-      `,
-      data: {
-        mapControls: {
-          viewMap: newVal,
-        },
-      },
-    });
-
-    setMapControls({
-      ...mapControls,
-      viewMap: newVal,
-    });
-  };
-
-  const onUpdateCenter = center => {
-    // We don't need to handle a global state update, that's done in
-    // NearestLooMap
-    setMapControls({
-      ...mapControls,
-      center,
-    });
+    mutateToggleViewMode();
   };
 
   const renderList = mobile => {
@@ -179,7 +156,7 @@ const HomePage = function(props) {
 
     return (
       <div className={styles.container}>
-        {getAuth().loggedIn && (
+        {userData.loggedIn && (
           <Notification>
             <p>
               Logged in. <button onClick={logout}>Log out</button>
@@ -236,7 +213,6 @@ const HomePage = function(props) {
       <NearestLooMap
         numberNearest
         highlight={highlight}
-        onUpdateCenter={onUpdateCenter}
         overrideLoos={data ? data.loosByProximity : []}
         mapProps={mapProps}
       />
@@ -256,10 +232,4 @@ HomePage.propTypes = {
   }),
 };
 
-const HomePageWithApolloClient = props => (
-  <WithApolloClient>
-    <HomePage {...props} />
-  </WithApolloClient>
-);
-
-export default HomePageWithApolloClient;
+export default HomePage;

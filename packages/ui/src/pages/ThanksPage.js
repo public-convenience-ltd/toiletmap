@@ -31,6 +31,14 @@ function constructCampaignLink(loo, email = '') {
   )}&entry.1574991632=${encodeURIComponent(opening)}`;
 }
 
+const GET_USER_DATA = gql`
+  {
+    userData @client {
+      name
+    }
+  }
+`;
+
 const ThanksPage = function(props) {
   const { loading: loadingLoo, data: looData, error: looError } = useQuery(
     FIND_BY_ID,
@@ -41,18 +49,9 @@ const ThanksPage = function(props) {
     }
   );
 
-  const getName = () => {
-    const { userData } = props.apolloClient.readQuery({
-      query: gql`
-        query getName {
-          userData {
-            name
-          }
-        }
-      `,
-    });
-    return userData.name;
-  };
+  const {
+    data: { userData },
+  } = useQuery(GET_USER_DATA);
 
   const renderMain = () => {
     return (
@@ -82,7 +81,7 @@ const ThanksPage = function(props) {
           className={controls.btnFeatured}
           target="_blank"
           rel="noopener noreferrer"
-          href={constructCampaignLink(looData.loo, getName())}
+          href={constructCampaignLink(looData.loo, userData.name)}
         >
           Join the <strong>Use Our Loos</strong> campaign
         </a>
