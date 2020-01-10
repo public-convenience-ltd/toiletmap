@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { PropTypes } from 'prop-types';
 
 import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
@@ -23,7 +24,6 @@ import controls from '../css/controls.module.css';
 import { useQuery, useMutation } from '@apollo/client';
 import { loader } from 'graphql.macro';
 import history from '../history';
-import WithApolloClient from '../components/WithApolloClient';
 
 const FIND_BY_ID = loader('./findLooById.graphql');
 const UPDATE_LOO = loader('./updateLoo.graphql');
@@ -247,7 +247,7 @@ const AddEditPage = function(props) {
       // is normally smart and can work out when something's changed, but
       // in this case it doesn't and stale data can persist without
       // a cache eviction
-      let cache = props.apolloClient.cache;
+      let cache = props.cache;
       cache.evict(getLooCachedId(id));
     }
 
@@ -568,7 +568,9 @@ const AddEditPage = function(props) {
   return <PageLayout main={renderMain()} map={renderMap()} />;
 };
 
-AddEditPage.propTypes = {};
+AddEditPage.propTypes = {
+  cache: PropTypes.object,
+};
 
 /**
  * Only keep fields in loo that are different to their corresponding field in
@@ -591,10 +593,4 @@ function onlyChanges(loo, from) {
   });
 }
 
-const AddEditPageWithApolloClient = props => (
-  <WithApolloClient>
-    <AddEditPage {...props} />
-  </WithApolloClient>
-);
-
-export default AddEditPageWithApolloClient;
+export default AddEditPage;

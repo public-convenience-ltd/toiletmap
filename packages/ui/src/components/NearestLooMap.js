@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import LooMap from './LooMap';
-import WithApolloClient from './WithApolloClient';
 
 import { useQuery, gql, useMutation } from '@apollo/client';
 import { loader } from 'graphql.macro';
@@ -197,10 +196,4 @@ NearestLooMap.propTypes = {
   highlight: PropTypes.string,
 };
 
-const NearestLooMapWithApolloClient = props => (
-  <WithApolloClient>
-    <NearestLooMap {...props} />
-  </WithApolloClient>
-);
-
-export default NearestLooMapWithApolloClient;
+export default NearestLooMap;

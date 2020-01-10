@@ -203,13 +203,15 @@ if (typeof document !== 'undefined') {
               <ProtectedRoute
                 exact
                 path="/report"
-                component={AddEditPage}
                 auth={auth}
+                injectProps={{ cache }}
+                component={AddEditPage}
               />
               <ProtectedRoute
                 path="/loos/:id/edit"
-                component={AddEditPage}
                 auth={auth}
+                injectProps={{ cache }}
+                component={AddEditPage}
               />
               <ProtectedRoute
                 path="/loos/:id/remove"

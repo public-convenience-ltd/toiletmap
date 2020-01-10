@@ -13,8 +13,6 @@ import controls from '../css/controls.module.css';
 
 import config from '../config';
 
-import WithApolloClient from '../components/WithApolloClient';
-
 const FIND_BY_ID = loader('./findLooById.graphql');
 
 function constructCampaignLink(loo, email = '') {
@@ -122,10 +120,4 @@ const ThanksPage = function(props) {
   return <PageLayout main={renderMain()} map={renderMap()} />;
 };
 
-const ThanksPageWithApolloClient = props => (
-  <WithApolloClient>
-    <ThanksPage {...props} />
-  </WithApolloClient>
-);
-
-export default ThanksPageWithApolloClient;
+export default ThanksPage;
