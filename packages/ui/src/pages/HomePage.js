@@ -25,13 +25,11 @@ const FIND_NEARBY = loader('../components/findLoosNearby.graphql');
 
 const GET_MAP_CONTROLS = gql`
   {
-    mapControls @client {
-      center {
-        lat
-        lng
-      }
-      viewMap
+    mapCenter @client {
+      lat
+      lng
     }
+    viewMap @client
   }
 `;
 
@@ -58,13 +56,26 @@ const TOGGLE_VIEW_MODE = gql`
 const HomePage = function(props) {
   const [highlight, setHighlight] = useState();
 
-  const {
-    data: { mapControls },
-  } = useQuery(GET_MAP_CONTROLS);
+  const { loading: loadingMapControls, data: mapControlsData } = useQuery(
+    GET_MAP_CONTROLS
+  );
 
-  const {
-    data: { userData },
-  } = useQuery(GET_AUTH_STATUS);
+  let mapControls = {};
+  if (!loadingMapControls) {
+    mapControls = {
+      center: mapControlsData.mapCenter,
+      viewMap: mapControlsData.viewMap,
+    };
+  }
+
+  const { loading: loadingUserData, data: userDataData } = useQuery(
+    GET_AUTH_STATUS
+  );
+
+  let userData = {};
+  if (!loadingUserData) {
+    userData = userDataData.userData;
+  }
 
   const [logoutMutation] = useMutation(LOGOUT);
   const logout = () =>
@@ -75,6 +86,7 @@ const HomePage = function(props) {
       ...mapControls.center,
       radius: config.nearestRadius,
     },
+    skip: loadingMapControls,
   });
 
   const [mutateToggleViewMode] = useMutation(TOGGLE_VIEW_MODE);
@@ -152,6 +164,10 @@ const HomePage = function(props) {
   };
 
   const renderMain = () => {
+    if (loadingMapControls || loadingUserData) {
+      return <></>;
+    }
+
     var { viewMap } = mapControls;
 
     return (

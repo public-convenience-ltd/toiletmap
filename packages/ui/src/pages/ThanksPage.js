@@ -47,9 +47,9 @@ const ThanksPage = function(props) {
     }
   );
 
-  const {
-    data: { userData },
-  } = useQuery(GET_USER_DATA);
+  const { loading: loadingUserData, data: userDataData } = useQuery(
+    GET_USER_DATA
+  );
 
   const renderMain = () => {
     return (
@@ -79,7 +79,7 @@ const ThanksPage = function(props) {
           className={controls.btnFeatured}
           target="_blank"
           rel="noopener noreferrer"
-          href={constructCampaignLink(looData.loo, userData.name)}
+          href={constructCampaignLink(looData.loo, userDataData.userData.name)}
         >
           Join the <strong>Use Our Loos</strong> campaign
         </a>
@@ -103,7 +103,7 @@ const ThanksPage = function(props) {
     );
   };
 
-  if (loadingLoo || looError) {
+  if (loadingLoo || looError || loadingUserData) {
     let message = 'Fetching Toilet Data';
     if (looError) {
       message = 'Error Fetching Toilet Data';

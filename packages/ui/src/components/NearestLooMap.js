@@ -16,12 +16,10 @@ const FIND_LOOS_NEARBY = loader('./findLoosNearby.graphql');
 
 const GET_MAP_CONTROLS = gql`
   {
-    mapControls @client {
-      zoom
-      center {
-        lat
-        lng
-      }
+    mapZoom @client
+    mapCenter @client {
+      lat
+      lng
     }
   }
 `;
@@ -42,9 +40,17 @@ const NearestLooMap = function NearestLooMap(props) {
   const [geolocation, setGeolocation] = useState();
   let looMap;
 
-  const {
-    data: { mapControls },
-  } = useQuery(GET_MAP_CONTROLS);
+  const { loading: loadingMapControls, data: mapControlsData } = useQuery(
+    GET_MAP_CONTROLS
+  );
+
+  let mapControls = {};
+  if (!loadingMapControls) {
+    mapControls = {
+      zoom: mapControlsData.mapZoom,
+      center: mapControlsData.mapCenter,
+    };
+  }
 
   let loo = props.loo;
   let looCentre;
@@ -53,9 +59,6 @@ const NearestLooMap = function NearestLooMap(props) {
       ...loo.location,
     };
   }
-
-  // Return map to last stored position or default to user location
-  const [mapCenter, setMapCenter] = useState(mapControls.center);
 
   // A helper function to fire events for the map leaflet
   const updateLoadingStatus = function updateLoadingStatus(isLoading) {
@@ -95,11 +98,13 @@ const NearestLooMap = function NearestLooMap(props) {
             lat: 0,
             lng: 0,
           }
-        : mapCenter),
+        : mapControls.center),
       radius: config.nearestRadius,
     },
-    skip: !!props.overrideLoos, // this doesn't actually have any effect, Apollo bug
+    skip: !!props.overrideLoos || loadingMapControls, // this doesn't actually have any effect, Apollo bug?
   });
+
+  // TODO check if still skip bug with beta 20
 
   useEffect(() => {
     updateLoadingStatus(loading);
@@ -108,6 +113,12 @@ const NearestLooMap = function NearestLooMap(props) {
 
   const [updateStoreCenter] = useMutation(SET_MAP_CENTER);
   function onUpdateCenter(coords) {
+    updateStoreCenter({
+      variables: {
+        ...coords,
+      },
+    });
+
     if (props.onUpdateCenter) {
       props.onUpdateCenter(coords);
     }
@@ -116,13 +127,6 @@ const NearestLooMap = function NearestLooMap(props) {
       updateLoadingStatus(true);
       refetch();
     }
-
-    setMapCenter(coords);
-    updateStoreCenter({
-      variables: {
-        ...coords,
-      },
-    });
   }
 
   const [updateStoreZoom] = useMutation(SET_MAP_ZOOM);
@@ -157,7 +161,7 @@ const NearestLooMap = function NearestLooMap(props) {
         <div className={styles.loading}>Fetching toilets&hellip;</div>
       )}
 
-      {getInitialPosition() ? (
+      {!loadingMapControls && getInitialPosition() ? (
         <LooMap
           wrappedComponentRef={it => (looMap = it)}
           loos={props.overrideLoos || (data ? data.loosByProximity : [])}

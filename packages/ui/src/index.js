@@ -143,15 +143,12 @@ const client = new ApolloClient({
 // Set the initial cache state
 let isAuthed = auth.isAuthenticated();
 const initialState = {
-  mapControls: {
-    __typename: 'MapControls',
-    zoom: 16,
-    center: {
-      __typename: 'Point',
-      lat: 0,
-      lng: 0,
-    },
-    viewMap: true, // whether to view a map or list
+  viewMap: true, // whether to view a map or list
+  mapZoom: 16,
+  mapCenter: {
+    __typename: 'Point',
+    lat: 0,
+    lng: 0,
   },
   userData: {
     __typename: 'UserData',
@@ -160,10 +157,11 @@ const initialState = {
   },
 };
 
-const initialize = () =>
+const initialize = () => {
   cache.writeData({
     data: initialState,
   });
+};
 
 initialize();
 

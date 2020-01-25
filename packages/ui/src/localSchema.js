@@ -3,76 +3,98 @@ import { gql } from '@apollo/client';
 const resolvers = {
   Mutation: {
     updateCenter: (_root, { lat, lng }, { cache }) => {
-      console.log('mutate update center:', lat, lng);
-      const newData = {
-        mapControls: {
-          center: {
-            lat,
-            lng,
-          },
+      const query = gql`
+        query mapCenter {
+          mapCenter @client {
+            lat
+            lng
+          }
+        }
+      `;
+
+      const data = {
+        mapCenter: {
+          __typename: 'Point',
+          lat,
+          lng,
         },
       };
-      cache.writeData({
-        data: newData,
-      });
-      console.log('done update location');
+
+      cache.writeQuery({ query, data });
+
       return true;
     },
     updateZoom: (_root, { zoom }, { cache }) => {
-      console.log('mutate update zoom:', zoom);
-      const newData = {
-        mapControls: {
-          zoom,
-        },
+      const query = gql`
+        query mapCenter {
+          mapZoom @client
+        }
+      `;
+
+      const data = {
+        mapZoom: zoom,
       };
-      cache.writeData({
-        data: newData,
-      });
-      console.log('done update zoom');
+
+      cache.writeQuery({ query, data });
+
       return true;
     },
     toggleViewMode: (_root, vars, { cache }) => {
-      const { mapControls } = cache.readQuery({
-        query: gql`
-          {
-            mapControls {
-              viewMap
-            }
-          }
-        `,
-      });
-      const newData = {
-        mapControls: {
-          viewMap: !mapControls.viewMap,
-        },
+      const query = gql`
+        query getViewMap {
+          viewMap @client
+        }
+      `;
+
+      const { viewMap } = cache.readQuery({ query });
+
+      const data = {
+        viewMap: !viewMap,
       };
-      cache.writeData({
-        data: newData,
-      });
+
+      cache.writeQuery({ data, query });
       return true;
     },
     loginUser: (_root, { name }, { cache }) => {
-      const newData = {
+      const query = gql`
+        query getUserData {
+          userData @client {
+            name
+            loggedIn
+          }
+        }
+      `;
+
+      const data = {
         userData: {
+          __typename: 'UserData',
           name,
           loggedIn: true,
         },
       };
-      cache.writeData({
-        data: newData,
-      });
+
+      cache.writeQuery({ data, query });
       return true;
     },
     logoutUser: (_root, vars, { cache }) => {
-      const newData = {
+      const query = gql`
+        query getUserData {
+          userData @client {
+            name
+            loggedIn
+          }
+        }
+      `;
+
+      const data = {
         userData: {
+          __typename: 'UserData',
           name: null,
           loggedIn: false,
         },
       };
-      cache.writeData({
-        data: newData,
-      });
+
+      cache.writeQuery({ data, query });
       return true;
     },
   },
@@ -81,18 +103,19 @@ const resolvers = {
 // No validation is done with this, but it allows us an overview of how
 // we are handling the local state
 const typeDefs = gql`
+  extend type Query {
+    mapCenter: Point!
+    mapZoom: Number!
+    viewMap: Boolean!
+    userData: UserData!
+  }
+
   extend type Mutation {
     updateCenter(lat: Number!, lng: Number!): Boolean
     updateZoom(zoom: Number!): Boolean
     toggleViewMode: Boolean
     loginUser(name: String!): Boolean
     logoutUser: Boolean
-  }
-
-  type MapControls {
-    zoom: Number!
-    center: Point!
-    viewMap: Boolean!
   }
 
   type Point {
