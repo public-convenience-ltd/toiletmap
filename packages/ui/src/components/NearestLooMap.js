@@ -38,6 +38,10 @@ const SET_MAP_ZOOM = gql`
 
 const NearestLooMap = function NearestLooMap(props) {
   const [geolocation, setGeolocation] = useState();
+  // Local zoom is used to make sure that zooming doesn't ping back to where it came
+  // from, which used to happen because it wasn't being updated from the local apollo
+  // cache quick enough (probably).
+  const [localZoom, setLocalZoom] = useState();
   let looMap;
 
   const { loading: loadingMapControls, data: mapControlsData } = useQuery(
@@ -50,6 +54,10 @@ const NearestLooMap = function NearestLooMap(props) {
       zoom: mapControlsData.mapZoom,
       center: mapControlsData.mapCenter,
     };
+
+    if (!localZoom) {
+      setLocalZoom(mapControls.zoom);
+    }
   }
 
   let loo = props.loo;
@@ -97,6 +105,7 @@ const NearestLooMap = function NearestLooMap(props) {
         ? {
             lat: 0,
             lng: 0,
+            skipped: true,
           }
         : mapControls.center),
       radius: config.nearestRadius,
@@ -104,7 +113,7 @@ const NearestLooMap = function NearestLooMap(props) {
     skip: !!props.overrideLoos || loadingMapControls, // this doesn't actually have any effect, Apollo bug?
   });
 
-  // TODO check if still skip bug with beta 20
+  // TODO check if still skip bug with latest beta (still is with beta 31)
 
   useEffect(() => {
     updateLoadingStatus(loading);
@@ -131,6 +140,7 @@ const NearestLooMap = function NearestLooMap(props) {
 
   const [updateStoreZoom] = useMutation(SET_MAP_ZOOM);
   function onUpdateZoom(zoom) {
+    setLocalZoom(zoom);
     updateStoreZoom({
       variables: {
         zoom,
@@ -173,7 +183,7 @@ const NearestLooMap = function NearestLooMap(props) {
           showCenter={true}
           onZoom={onUpdateZoom}
           onUpdateCenter={onUpdateCenter}
-          initialZoom={mapControls.zoom}
+          initialZoom={localZoom}
           initialPosition={getInitialPosition()}
           highlight={props.highlight}
           {...props.mapProps}
