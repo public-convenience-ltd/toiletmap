@@ -7,9 +7,6 @@ import 'core-js/fn/object/entries';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, Switch } from 'react-router-dom';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import createSagaMiddleware from 'redux-saga';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -32,17 +29,6 @@ import UseOurLoosPage from './pages/UseOurLoosPage';
 import PrivacyPage from './pages/PrivacyPage';
 import NotFound from './pages/404';
 
-// Redux reducers
-import appReducer from './redux/modules/app';
-import loosReducer from './redux/modules/loos';
-import mapControlsReducer from './redux/modules/mapControls';
-import authReducer from './redux/modules/auth';
-
-// Redux sagas
-import makeLoosSaga from './redux/sagas/loos';
-import makeAuthSaga from './redux/sagas/auth';
-import mapControlsSaga from './redux/sagas/mapControls';
-
 import history from './history';
 import Auth from './Auth';
 import localSchema from './localSchema';
@@ -59,33 +45,6 @@ import { setContext } from 'apollo-link-context';
 import { version } from '../package.json';
 
 const auth = new Auth();
-
-const rootReducer = combineReducers({
-  app: appReducer,
-  auth: authReducer,
-  loos: loosReducer,
-  mapControls: mapControlsReducer,
-});
-
-const sagaMiddleware = createSagaMiddleware();
-
-const middleware = applyMiddleware(sagaMiddleware);
-
-const devTools =
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
-
-const initialStateTODOREMOVE = {};
-
-const store = middleware(createStore)(
-  rootReducer,
-  initialStateTODOREMOVE,
-  devTools
-);
-
-// Run sagas
-sagaMiddleware.run(makeAuthSaga(auth));
-sagaMiddleware.run(makeLoosSaga(auth));
-sagaMiddleware.run(mapControlsSaga);
 
 // Set a function to be called on location change
 history.listen(function(location) {
@@ -170,63 +129,61 @@ client.onResetStore(initialize);
 
 if (typeof document !== 'undefined') {
   ReactDOM.render(
-    <Provider store={store}>
-      <ApolloProvider client={client}>
-        <Router history={history} forceRefresh={false}>
-          <App>
-            <Switch>
-              <Route
-                exact
-                path="/"
-                render={props => <HomePage auth={auth} {...props} />}
-              />
-              <Route exact path="/preferences" component={PreferencesPage} />
-              <Route exact path="/about" component={AboutPage} />
-              <Route exact path="/privacy" component={PrivacyPage} />
-              <Route exact path="/use-our-loos" component={UseOurLoosPage} />
-              <Route path="/loos/:id" exact component={LooPage} />
-              <Route
-                path="/login"
-                render={props => <LoginPage auth={auth} {...props} />}
-              />
-              <Route
-                path="/map/:lng/:lat"
-                render={props => <MapPage auth={auth} {...props} />}
-              />
-              <Route
-                exact
-                path="/callback"
-                render={props => <AuthCallback auth={auth} {...props} />}
-              />
-              <ProtectedRoute
-                exact
-                path="/report"
-                auth={auth}
-                injectProps={{ cache }}
-                component={AddEditPage}
-              />
-              <ProtectedRoute
-                path="/loos/:id/edit"
-                auth={auth}
-                injectProps={{ cache }}
-                component={AddEditPage}
-              />
-              <ProtectedRoute
-                path="/loos/:id/remove"
-                component={RemovePage}
-                auth={auth}
-              />
-              <ProtectedRoute
-                path="/loos/:id/thanks"
-                component={ThanksPage}
-                auth={auth}
-              />
-              <Route component={NotFound} />
-            </Switch>
-          </App>
-        </Router>
-      </ApolloProvider>
-    </Provider>,
+    <ApolloProvider client={client}>
+      <Router history={history} forceRefresh={false}>
+        <App>
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={props => <HomePage auth={auth} {...props} />}
+            />
+            <Route exact path="/preferences" component={PreferencesPage} />
+            <Route exact path="/about" component={AboutPage} />
+            <Route exact path="/privacy" component={PrivacyPage} />
+            <Route exact path="/use-our-loos" component={UseOurLoosPage} />
+            <Route path="/loos/:id" exact component={LooPage} />
+            <Route
+              path="/login"
+              render={props => <LoginPage auth={auth} {...props} />}
+            />
+            <Route
+              path="/map/:lng/:lat"
+              render={props => <MapPage auth={auth} {...props} />}
+            />
+            <Route
+              exact
+              path="/callback"
+              render={props => <AuthCallback auth={auth} {...props} />}
+            />
+            <ProtectedRoute
+              exact
+              path="/report"
+              auth={auth}
+              injectProps={{ cache }}
+              component={AddEditPage}
+            />
+            <ProtectedRoute
+              path="/loos/:id/edit"
+              auth={auth}
+              injectProps={{ cache }}
+              component={AddEditPage}
+            />
+            <ProtectedRoute
+              path="/loos/:id/remove"
+              component={RemovePage}
+              auth={auth}
+            />
+            <ProtectedRoute
+              path="/loos/:id/thanks"
+              component={ThanksPage}
+              auth={auth}
+            />
+            <Route component={NotFound} />
+          </Switch>
+        </App>
+      </Router>
+    </ApolloProvider>,
     document.getElementById('root')
   );
 }
