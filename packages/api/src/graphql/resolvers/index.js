@@ -33,9 +33,12 @@ const resolvers = {
 
       // Construct the search query
       let query = {
-        'properties.fee': { $exists: args.filters.fee },
         'properties.active': args.filters.active,
       };
+
+      if (args.filters.fee) {
+        query['properties.fee'] = { $exists: true };
+      }
 
       if (args.filters.areaName) {
         query['properties.area.name'] = args.filters.areaName;
