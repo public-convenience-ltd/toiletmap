@@ -99,19 +99,22 @@ const NearestLooMap = function NearestLooMap(props) {
   // overrideLoos is set, which means that very little data will be passed
   // when the query is sent. Hopefully when the functionality of skip is fixed so that
   // when it's true a query is _never_ sent, this hack can be removed.
-  const { loading, data, refetch } = useQuery(FIND_LOOS_NEARBY, {
-    variables: {
-      ...(props.overrideLoos
-        ? {
-            lat: 0,
-            lng: 0,
-            skipped: true,
-          }
-        : mapControls.center),
-      radius: config.nearestRadius,
-    },
-    skip: !!props.overrideLoos || loadingMapControls, // this doesn't actually have any effect, Apollo bug?
-  });
+  const { error: loosError, loading, data, refetch } = useQuery(
+    FIND_LOOS_NEARBY,
+    {
+      variables: {
+        ...(props.overrideLoos
+          ? {
+              lat: 0,
+              lng: 0,
+              skipped: true,
+            }
+          : mapControls.center),
+        radius: config.nearestRadius,
+      },
+      skip: !!props.overrideLoos || loadingMapControls, // this doesn't actually have any effect, Apollo bug?
+    }
+  );
 
   // TODO check if still skip bug with latest beta (still is with beta 31)
 
@@ -169,6 +172,12 @@ const NearestLooMap = function NearestLooMap(props) {
     <div className={styles.map}>
       {loading && (
         <div className={styles.loading}>Fetching toilets&hellip;</div>
+      )}
+      {loosError && (
+        <Notification>
+          Oops, there was an problem finding toilets. Check your internet
+          connection.
+        </Notification>
       )}
 
       {!loadingMapControls && getInitialPosition() ? (

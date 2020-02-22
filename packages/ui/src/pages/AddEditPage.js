@@ -59,7 +59,7 @@ const AddEditPage = function(props) {
   };
 
   // Find the raw loo data for the given loo
-  const { loading: loadingLooData, data: looData, error } = useQuery(
+  const { loading: loadingLooData, data: looData, error: looError } = useQuery(
     FIND_BY_ID,
     {
       variables: {
@@ -555,8 +555,8 @@ const AddEditPage = function(props) {
     );
   }
 
-  if (error) {
-    console.error(error);
+  if (looError) {
+    console.error(looError);
     return (
       <PageLayout
         main={<Loading message={'Error fetching toilet data'} />}
