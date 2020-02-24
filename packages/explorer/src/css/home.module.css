@@ -10,3 +10,12 @@ body {
 .intro {
   padding-bottom: 2rem;
 }
+
+.internalLink {
+  color: #3f51b5;
+  text-decoration: none;
+}
+
+.internalLink:hover {
+  text-decoration: underline;
+}
