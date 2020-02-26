@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { navigate, Location } from '@reach/router';
-import _ from 'lodash';
-import api from '@toiletmap/api-client';
+// import _ from 'lodash';
 import moment from 'moment';
 
 import QueryScoper from './stats/QueryScoper';
@@ -14,7 +13,6 @@ class Statistics extends Component {
     super(props);
 
     this.state = {
-      loadedInitialData: false,
       refreshing: false,
       counters: null,
       proportions: null,
@@ -33,6 +31,8 @@ class Statistics extends Component {
    * Gets list of areas and area Types to use in the area dropdowns
    */
   async componentDidMount() {
+    // TODO: when QueryScoper is made to actually work in the future, fix this to work with GraphQL
+    /*
     const result = await api.fetchAreaData();
 
     result.All = _.uniq(_.flatten(_.values(result))).sort();
@@ -43,6 +43,7 @@ class Statistics extends Component {
       areaList: result.All,
       loadedInitialData: true,
     });
+    */
   }
 
   updateQuery(query) {
@@ -54,7 +55,7 @@ class Statistics extends Component {
   }
 
   render() {
-    return this.state.loadedInitialData ? (
+    return (
       <div>
         <Location>
           {({ location }) =>
@@ -75,8 +76,6 @@ class Statistics extends Component {
         </Location>
         {this.props.children}
       </div>
-    ) : (
-      <h1>Loading</h1>
     );
   }
 }

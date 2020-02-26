@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 import config from '../config';
-
-import { actionLogin } from '../redux/modules/auth';
 
 import PageLayout from '../components/PageLayout';
 import NearestLooMap from '../components/NearestLooMap';
@@ -39,7 +36,10 @@ class LoginPage extends Component {
         <p>Login or sign up to let us know you're real.</p>
 
         <div className={controls.btnStack}>
-          <button onClick={this.props.doLogin} className={controls.btn}>
+          <button
+            onClick={() => this.props.auth.login()}
+            className={controls.btn}
+          >
             Log In/Sign Up
           </button>
         </div>
@@ -56,15 +56,4 @@ class LoginPage extends Component {
   }
 }
 
-var mapStateToProps = state => ({
-  app: state.app,
-});
-
-var mapDispatchToProps = {
-  doLogin: actionLogin,
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoginPage);
+export default LoginPage;

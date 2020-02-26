@@ -1,10 +1,7 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
 
-import {
-  actionRemoveRequest,
-  actionFindByIdRequest,
-} from '../redux/modules/loos';
+import { useQuery, useMutation } from '@apollo/client';
+import { loader } from 'graphql.macro';
 
 import config from '../config';
 
@@ -16,41 +13,50 @@ import layout from '../components/css/layout.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
-class RemovePage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      reason: '',
-    };
-  }
+const FIND_LOO_BY_ID = loader('./findLooLocationById.graphql');
+const REMOVE_LOO_MUTATION = loader('./removeLoo.graphql');
 
-  componentDidMount() {
-    if (!this.props.loo) {
-      this.props.actionFindByIdRequest(this.props.match.params.id);
+const RemovePage = function(props) {
+  const [reason, setReason] = useState('');
+
+  const { loading: loadingLoo, data: looData, error: looError } = useQuery(
+    FIND_LOO_BY_ID,
+    {
+      variables: {
+        id: props.match.params.id,
+      },
     }
-  }
+  );
 
-  updateReason = evt => {
-    let reason = evt.currentTarget.value;
-    this.setState(() => ({
-      reason,
-    }));
+  const [
+    doRemove,
+    { loading: loadingRemove, error: removeError },
+  ] = useMutation(REMOVE_LOO_MUTATION, {
+    onCompleted: () => {
+      props.history.push('/');
+    },
+  });
+
+  const updateReason = evt => {
+    setReason(evt.currentTarget.value);
   };
 
-  doSubmit = () => {
-    this.props.actionRemoveRequest(this.props.loo._id, this.state.reason);
+  const doSubmit = () => {
+    doRemove({
+      variables: {
+        id: looData.loo.id,
+        reason,
+      },
+    });
   };
 
-  renderMain() {
+  const renderMain = () => {
     return (
       <div>
         <div>
           <div className={layout.controls}>
             {config.showBackButtons && (
-              <button
-                onClick={this.props.history.goBack}
-                className={controls.btn}
-              >
+              <button onClick={props.history.goBack} className={controls.btn}>
                 Back
               </button>
             )}
@@ -70,28 +76,30 @@ class RemovePage extends Component {
             type="text"
             name="reason"
             className={controls.text}
-            value={this.state.reason}
-            onChange={this.updateReason}
+            value={reason}
+            onChange={updateReason}
           />
         </label>
 
-        <button onClick={this.doSubmit} className={controls.btnCaution}>
+        <button onClick={doSubmit} className={controls.btnCaution}>
           Remove it
         </button>
+
+        {loadingRemove && <Loading message="Submitting removal report..." />}
+        {removeError && (
+          <Loading message="Oops. We can't submit your report at this time. Try again later." />
+        )}
       </div>
     );
-  }
+  };
 
-  renderMap() {
-    var coords = {
-      lat: this.props.loo.properties.geometry.coordinates[1],
-      lng: this.props.loo.properties.geometry.coordinates[0],
-    };
+  const renderMap = () => {
+    var coords = looData.loo.location;
     return (
       <LooMap
-        loos={[this.props.loo]}
+        loos={[looData.loo]}
         initialPosition={coords}
-        highlight={this.props.loo._id}
+        highlight={looData.loo.id}
         showLocation={false}
         showSearchControl={false}
         showLocateControl={false}
@@ -101,32 +109,22 @@ class RemovePage extends Component {
         minZoom={config.editMinZoom}
       />
     );
+  };
+
+  if (removeError || looError) {
+    console.error(removeError || looError);
   }
 
-  render() {
-    if (!this.props.loo) {
-      return (
-        <PageLayout
-          main={<Loading message={'Fetching Toilet Data'} />}
-          map={<Loading message={'Fetching Toilet Data'} />}
-        />
-      );
-    }
-    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
+  if (loadingLoo || looError) {
+    let msg = loadingLoo ? 'Fetching Toilet Data' : 'Error finding toilet.';
+    return (
+      <PageLayout
+        main={<Loading message={msg} />}
+        map={<Loading message={msg} />}
+      />
+    );
   }
-}
-
-var mapStateToProps = (state, ownProps) => ({
-  app: state.app,
-  loo: state.loos.byId[ownProps.match.params.id] || null,
-});
-
-var mapDispatchToProps = {
-  actionRemoveRequest,
-  actionFindByIdRequest,
+  return <PageLayout main={renderMain()} map={renderMap()} />;
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RemovePage);
+export default RemovePage;

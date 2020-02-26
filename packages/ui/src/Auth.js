@@ -100,4 +100,10 @@ export default class Auth {
     let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
     return new Date().getTime() < expiresAt;
   }
+
+  reactContextLogout(logoutMutation, history) {
+    this.logout();
+    logoutMutation();
+    history.push('/');
+  }
 }
