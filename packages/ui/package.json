@@ -30,10 +30,11 @@
     "auth0-js": "9.12.0",
     "concurrently": "5.0.0",
     "cordova-android": "^8.1.0",
+    "cordova-ios": "^5.1.1",
     "cordova-plugin-customurlscheme": "5.0.0",
     "cordova-plugin-geolocation": "4.0.2",
-    "cordova-plugin-whitelist": "1.3.4",
     "cordova-plugin-safariviewcontroller": "1.6.0",
+    "cordova-plugin-whitelist": "1.3.4",
     "core-js": "2.6.3",
     "js-cookie": "2.2.1",
     "leaflet": "1.5.1",
@@ -71,7 +72,8 @@
     "prebuild-cordova": "cross-env yarn build && cpx \"build/**/*\" www/",
     "build-cordova": "yarn configure && cordova requirements && cordova build",
     "predev-cordova": "yarn configure --dev && cordova requirements",
-    "dev-cordova": "concurrently -n 'ReactDevServer,AndroidDevInstall' 'cross-env yarn dev' 'cordova run android'"
+    "dev-cordova": "concurrently -n 'ReactDevServer,AndroidDevInstall' 'cross-env yarn dev' 'cordova run android'",
+    "dev-cordova-ios": "concurrently -n 'ReactDevServer,AndroidDevInstall' 'cross-env yarn dev' 'cordova run ios'"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -102,7 +104,8 @@
       "cordova-plugin-safariviewcontroller": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ]
   }
 }
