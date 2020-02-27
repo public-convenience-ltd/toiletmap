@@ -33,9 +33,12 @@ const resolvers = {
 
       // Construct the search query
       let query = {
-        'properties.fee': { $exists: args.filters.fee },
         'properties.active': args.filters.active,
       };
+
+      if (args.filters.fee) {
+        query['properties.fee'] = { $exists: true };
+      }
 
       if (args.filters.areaName) {
         query['properties.area.name'] = args.filters.areaName;
@@ -68,10 +71,11 @@ const resolvers = {
         context.user &&
         context.user[config.auth0.permissionsKey].includes(REQUIRED_PERMISSION)
       ) {
-        query.$and = [];
-        query.$and.push({
-          contributors: { $all: [args.filters.contributors] },
-        });
+        query.$and = [
+          {
+            contributors: { $all: [args.filters.contributors] },
+          },
+        ];
       }
 
       let res = await Loo.paginate(query, {
@@ -95,6 +99,40 @@ const resolvers = {
         args.from.maxDistance,
         'complete'
       ),
+    areas: async (parent, args) => {
+      const data = await Loo.aggregate([
+        {
+          $match: {
+            'properties.area.name': { $exists: true },
+            'properties.area.type': { $exists: true },
+          },
+        },
+        {
+          $unwind: '$properties.area',
+        },
+        {
+          $group: {
+            _id: '$properties.area.name',
+            type: {
+              $first: '$properties.area.type',
+            },
+          },
+        },
+      ]);
+
+      const areas = data.map(area => {
+        return {
+          type: area.type,
+          name: area._id,
+        };
+      });
+
+      return areas;
+    },
+    report: async (parent, args) => {
+      const id = args.id;
+      return await Report.findById(id);
+    },
     counters: async (parent, args) => {
       let looCounters = await Loo.getCounters();
       let reportCounters = await Report.getCounters();
@@ -190,7 +228,7 @@ const resolvers = {
         active: true,
         geometry: {
           type: 'Point',
-          coordinates: [location.lat, location.lng],
+          coordinates: [location.lng, location.lat], // flip coords, stored differently in db
         },
       };
 

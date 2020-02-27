@@ -1,0 +1,38 @@
+mutation updateLoo(
+  $id: ID,
+  $location: PointInput!,
+  $name: String,
+  $access: AccessPermission,
+  $opening: String,
+  $type: Facilities,
+  $accessibleType: Facilities,
+  $babyChange: Boolean,
+  $radar: Boolean,
+  $attended: Boolean,
+  $automatic: Boolean,
+  $fee: String,
+  $notes: String
+) {
+  submitReport(report: {
+    edit: $id,
+    location: $location,
+    name: $name,
+    access: $access,
+    opening: $opening,
+    type: $type,
+    accessibleType: $accessibleType,
+    babyChange: $babyChange,
+    radar: $radar,
+    attended: $attended,
+    automatic: $automatic,
+    fee: $fee,
+    notes: $notes
+  }) {
+    code
+    success
+    message
+    loo {
+      id
+    }
+  }
+}

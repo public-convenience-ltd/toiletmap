@@ -49,11 +49,12 @@
     "testEnvironment": "node"
   },
   "scripts": {
-    "dev": "NEW_RELIC_ENABLED=false NEW_RELIC_NO_CONFIG_FILE=true nodemon src/index.js",
+    "dev": "nodemon -r dotenv/config src/index.js",
     "start": "node src/index.js"
   },
   "devDependencies": {
     "apollo": "^2.3.1",
+    "dotenv": "8.2.0",
     "nodemon": "1.19.3"
   }
 }

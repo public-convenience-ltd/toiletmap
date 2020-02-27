@@ -204,4 +204,19 @@ export default class Auth {
     let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
     return new Date().getTime() < expiresAt;
   };
+
+  reactContextLogin = () => {
+    if (!config.isNativeApp()) {
+      // TODO move to new login place
+      this.webLogin();
+      return;
+    }
+    this.nativeLogin();
+  };
+
+  reactContextLogout = (logoutMutation, history) => {
+    this.logout();
+    logoutMutation();
+    history.push('/');
+  };
 }

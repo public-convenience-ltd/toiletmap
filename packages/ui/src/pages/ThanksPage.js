@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
-import { actionFindByIdRequest } from '../redux/modules/loos';
-import { actionHighlight } from '../redux/modules/mapControls';
+import { useQuery, gql } from '@apollo/client';
+import { loader } from 'graphql.macro';
 
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
@@ -14,10 +13,13 @@ import controls from '../css/controls.module.css';
 
 import config from '../config';
 
+const FIND_BY_ID = loader('./findLooById.graphql');
+
 function constructCampaignLink(loo, email = '') {
-  let coords = loo.properties.geometry.coordinates.join(',');
-  let name = loo.properties.name || '';
-  let opening = loo.properties.opening || '';
+  let loc = loo.location;
+  let coords = `${loc.lng},${loc.lat}`;
+  let name = loo.name || '';
+  let opening = loo.opening || '';
   return `https://docs.google.com/forms/d/e/1FAIpQLScMvkjoE68mR1Z-yyVH7YhdndHCd_k8QwbugwfbqgZGUr_DvQ/viewform?emailAddress=${encodeURIComponent(
     email
   )}&entry.975653982=${encodeURIComponent(
@@ -27,32 +29,29 @@ function constructCampaignLink(loo, email = '') {
   )}&entry.1574991632=${encodeURIComponent(opening)}`;
 }
 
-class ThanksPage extends Component {
-  componentDidMount() {
-    if (!this.props.loo) {
-      this.props.actionFindByIdRequest(this.props.match.params.id);
-    }
-    this.props.actionHighlight(this.props.match.params.id);
-  }
-
-  componentDidUpdate(prevProps) {
-    // Support navigation _between_ loo pages
-    if (this.props.match.params.id !== prevProps.match.params.id) {
-      if (!this.props.loo) {
-        this.props.actionFindByIdRequest(this.props.match.params.id);
-      }
-      this.props.actionHighlight(this.props.match.params.id);
+const GET_USER_DATA = gql`
+  {
+    userData @client {
+      name
     }
   }
+`;
 
-  componentWillUnmount() {
-    // Clear any marker highlighting when navigating away
-    this.props.actionHighlight(null);
-  }
+const ThanksPage = function(props) {
+  const { loading: loadingLoo, data: looData, error: looError } = useQuery(
+    FIND_BY_ID,
+    {
+      variables: {
+        id: props.match.params.id,
+      },
+    }
+  );
 
-  renderMain() {
-    let { loo, name } = this.props;
+  const { loading: loadingUserData, data: userDataData } = useQuery(
+    GET_USER_DATA
+  );
 
+  const renderMain = () => {
     return (
       <div>
         <div>
@@ -82,7 +81,10 @@ class ThanksPage extends Component {
               className={controls.btnFeatured}
               target="_blank"
               rel="noopener noreferrer"
-              href={constructCampaignLink(loo, name)}
+              href={constructCampaignLink(
+                looData.loo,
+                userDataData.userData.name
+              )}
             >
               Join the <strong>Use Our Loos</strong> campaign
             </a>
@@ -90,12 +92,12 @@ class ThanksPage extends Component {
         )}
       </div>
     );
-  }
+  };
 
-  renderMap() {
+  const renderMap = () => {
     return (
       <NearestLooMap
-        loo={this.props.loo}
+        loo={looData.loo}
         mapProps={{
           showLocation: false,
           showSearchControl: false,
@@ -103,35 +105,26 @@ class ThanksPage extends Component {
           showCenter: false,
           countLimit: null,
         }}
+        highlight={props.match.params.id}
+      />
+    );
+  };
+
+  if (loadingLoo || looError || loadingUserData) {
+    let message = 'Fetching Toilet Data';
+    if (looError) {
+      message = 'Error Fetching Toilet Data';
+    }
+
+    return (
+      <PageLayout
+        main={<Loading message={message} />}
+        map={<Loading message={message} />}
       />
     );
   }
 
-  render() {
-    if (!this.props.loo) {
-      return (
-        <PageLayout
-          main={<Loading message={'Fetching Toilet Data'} />}
-          map={<Loading message={'Fetching Toilet Data'} />}
-        />
-      );
-    }
-    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
-  }
-}
-
-var mapStateToProps = (state, ownProps) => ({
-  app: state.app,
-  loo: state.loos.byId[ownProps.match.params.id] || null,
-  name: state.auth.name,
-});
-
-var mapDispatchToProps = {
-  actionFindByIdRequest,
-  actionHighlight,
+  return <PageLayout main={renderMain()} map={renderMap()} />;
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ThanksPage);
+export default ThanksPage;

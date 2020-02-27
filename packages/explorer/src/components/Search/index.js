@@ -8,7 +8,6 @@ import { Query } from 'react-apollo';
 import { loader } from 'graphql.macro';
 
 // Local
-import api from '@toiletmap/api-client';
 import { createStyled } from '../../lib/utils.js';
 import LooTable from '../table/LooTable';
 import LooTablePaginationActions from '../table/LooTablePaginationActions';
@@ -44,6 +43,7 @@ import ClockIcon from '@material-ui/icons/AccessTime';
 
 const SEARCH_QUERY = loader('./search.graphql');
 const CONTRIBUTORS = loader('./getContributors.graphql');
+const AREAS_QUERY = loader('./getAreas.graphql');
 
 const styles = theme => ({
   gridRoot: {
@@ -323,25 +323,16 @@ class Search extends Component {
         // Apply checked page value.
         page: pageCheck,
       },
-      areas: [],
     };
 
     // Submit new search with potentially modified search state.
     this.submitSearch();
 
     this.submitSearch = this.submitSearch.bind(this);
-    this.fetchAreaData = this.fetchAreaData.bind(this);
     this.updateSearchParam = this.updateSearchParam.bind(this);
     this.updateSearchField = this.updateSearchField.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
-  }
-
-  /**
-   * Fetches essential data upon loading the search route.
-   */
-  componentDidMount() {
-    this.fetchAreaData();
   }
 
   /**
@@ -413,17 +404,6 @@ class Search extends Component {
       },
     }));
     this.submitSearch();
-  }
-
-  /**
-   * Retreives a flattened list of Areas and Area Types and attaches to state.
-   */
-  async fetchAreaData() {
-    const result = await api.fetchAreaData();
-    result.All = _.uniq(_.flatten(_.values(result))).map(x => ({ label: x }));
-    this.setState({
-      areas: result.All,
-    });
   }
 
   /**
@@ -555,17 +535,38 @@ class Search extends Component {
                   <Grid container spacing={24}>
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
-                        <SearchAutocomplete
-                          id="area_name-search"
-                          onChange={_.partial(
-                            this.updateSearchParam,
-                            'area_name'
-                          )}
-                          selectedItem={this.state.searchParams.area_name}
-                          suggestions={this.state.areas}
-                          placeholderText="Search Areas"
-                          ariaLabel="Clear area input box"
-                        />
+                        <Query query={AREAS_QUERY}>
+                          {({ loading, error, data }) => {
+                            if (error) {
+                              console.error(error);
+                            }
+
+                            // Suggestions take an array of {label: name} objects, so we need to map
+                            // the data to this format
+                            let areas = [];
+                            if (!loading && data) {
+                              areas = data.areas.map(area => {
+                                return {
+                                  label: area.name,
+                                };
+                              });
+                            }
+
+                            return (
+                              <SearchAutocomplete
+                                id="area_name-search"
+                                onChange={_.partial(
+                                  this.updateSearchParam,
+                                  'area_name'
+                                )}
+                                selectedItem={this.state.searchParams.area_name}
+                                suggestions={areas}
+                                placeholderText="Search Areas"
+                                ariaLabel="Clear area input box"
+                              />
+                            );
+                          }}
+                        </Query>
                       </FormControl>
                     </Grid>
                     {this.props.auth.checkPermission(
