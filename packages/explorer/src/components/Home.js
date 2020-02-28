@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { Link as InternalLink } from '@reach/router';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
+import ExternalLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import styles from '../css/home.module.css';
@@ -29,9 +30,9 @@ class Home extends Component {
           <Typography variant="h5" component="body1" gutterBottom>
             Toilet Map Explorer exists to help people who want to know more
             about the data behind the{' '}
-            <Link href="https://www.toiletmap.org.uk">
+            <ExternalLink href="https://www.toiletmap.org.uk">
               The Great British Public Toilet Map
-            </Link>
+            </ExternalLink>
           </Typography>
           <Typography variant="body1" component="body2" gutterBottom>
             You've come to the right place if you want to:
@@ -50,16 +51,16 @@ class Home extends Component {
           </Typography>
           <Typography variant="body1" component="body2" gutterBottom>
             If you're looking for the nearest Loo you're better off using{' '}
-            <Link href="https://www.toiletmap.org.uk">
+            <ExternalLink href="https://www.toiletmap.org.uk">
               The Great British Public Toilet Map
-            </Link>
+            </ExternalLink>
           </Typography>
           <Typography variant="body1" component="body2" gutterBottom>
             If you're looking for information about our software please head on
             over to{' '}
-            <Link href="https://github.com/neontribe/gbptm">
+            <ExternalLink href="https://github.com/neontribe/gbptm">
               our Github repository
-            </Link>
+            </ExternalLink>
           </Typography>
         </div>
         <Grid container spacing={16}>
@@ -70,7 +71,9 @@ class Home extends Component {
               </HeadingTypography>
               <SubTypography variant="body1" component="body2">
                 You can view a selection of high level statistics{' '}
-                <Link href="./statistics">here</Link>
+                <InternalLink className={styles.internalLink} to="statistics">
+                  here
+                </InternalLink>
               </SubTypography>
             </Paper>
           </Grid>
@@ -82,7 +85,9 @@ class Home extends Component {
               </HeadingTypography>
               <SubTypography variant="body1" component="body2">
                 You can search for toilet data using keyword searches{' '}
-                <Link href="./search">here</Link>
+                <InternalLink className={styles.internalLink} to="search">
+                  here
+                </InternalLink>
               </SubTypography>
             </Paper>
           </Grid>
@@ -105,12 +110,20 @@ class Home extends Component {
               </HeadingTypography>
               <SubTypography variant="body1" component="body2">
                 The Toilet Map API is expressed in{' '}
-                <Link href={'https://graphql.org/'}>GraphQL</Link>. The endpoint
-                is served at `https://www.toiletmap.org.uk/graphql`.You can{' '}
-                <Link href={'/voyager'}>visualise the schema</Link>, or{' '}
-                <Link href={'/graphql'}>experiment with queries</Link>. To
-                conduct mutations, or to get un-redacted results for certain
-                fields you'll need to supply some credentials in an
+                <ExternalLink href={'https://graphql.org/'}>
+                  GraphQL
+                </ExternalLink>
+                . The endpoint is served at
+                `https://www.toiletmap.org.uk/graphql`.You can{' '}
+                <ExternalLink href={'/voyager'}>
+                  visualise the schema
+                </ExternalLink>
+                , or{' '}
+                <ExternalLink href={'/graphql'}>
+                  experiment with queries
+                </ExternalLink>
+                . To conduct mutations, or to get un-redacted results for
+                certain fields you'll need to supply some credentials in an
                 `Authorization` header. Please get in touch if you'd like to
                 know how to achieve that. Please familiarize yourself with the
                 terms under which our data is licensed before making use of it.
