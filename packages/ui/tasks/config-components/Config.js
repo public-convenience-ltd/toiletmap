@@ -33,6 +33,11 @@ module.exports = ({ children, dev, ...props }) => (
       )}
     </platform>
     <platform name="ios">
+      {/*
+      // CORDOVA BUG: this breaks the command `yarn`
+      // https://issues.apache.org/jira/browse/CB-13564
+      // https://stackoverflow.com/questions/47404622/edit-config-for-ios-usage-descriptions-doc-find-is-not-a-function
+
       <edit-config
         target="NSLocationWhenInUseUsageDescription"
         file="*-Info.plist"
@@ -40,6 +45,7 @@ module.exports = ({ children, dev, ...props }) => (
       >
         <string>need location access to find toilets nearby</string>
       </edit-config>
+      */}
       <allow-intent href="itms:*" />
       <allow-intent href="itms-apps:*" />
     </platform>

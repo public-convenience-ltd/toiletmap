@@ -22,6 +22,7 @@ const GET_MAP_CONTROLS = gql`
       lng
     }
     mapRadius @client
+    viewMap @client
   }
 `;
 
@@ -56,6 +57,7 @@ const NearestLooMap = function NearestLooMap(props) {
       zoom: mapControlsData.mapZoom,
       center: mapControlsData.mapCenter,
       radius: mapControlsData.mapRadius,
+      viewMap: mapControlsData.viewMap,
     };
 
     if (!localZoom) {
@@ -113,7 +115,10 @@ const NearestLooMap = function NearestLooMap(props) {
               skipped: true,
             }
           : mapControls.center),
-        radius: mapControls.viewMap ? mapControls.radius : config.nearestRadius,
+        radius: Math.ceil(
+          mapControls.viewMap ? mapControls.radius : config.nearestRadius
+        ),
+        time: Date.now(),
       },
       skip: !!props.overrideLoos || loadingMapControls, // this doesn't actually have any effect, Apollo bug?
     }

@@ -30,6 +30,7 @@ const GET_MAP_CONTROLS = gql`
       lng
     }
     viewMap @client
+    mapRadius @client
   }
 `;
 
@@ -65,6 +66,7 @@ const HomePage = function(props) {
     mapControls = {
       center: mapControlsData.mapCenter,
       viewMap: mapControlsData.viewMap,
+      radius: mapControlsData.mapRadius,
     };
   }
 
@@ -84,7 +86,9 @@ const HomePage = function(props) {
   const { loading, data, error } = useQuery(FIND_NEARBY, {
     variables: {
       ...mapControls.center,
-      radius: config.nearestRadius,
+      radius: Math.ceil(
+        mapControls.viewMap ? mapControls.radius : config.nearestRadius
+      ),
     },
     skip: loadingMapControls,
   });

@@ -101,7 +101,7 @@ const initialState = {
     lat: 0,
     lng: 0,
   },
-  mapRadius: 10000,
+  mapRadius: 1000,
   userData: {
     __typename: 'UserData',
     loggedIn: isAuthed,

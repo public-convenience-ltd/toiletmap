@@ -15,7 +15,7 @@ const getGeolocation = (onComplete, onError) => {
       },
       {
         // We need a timeout here for android https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-geolocation/#android-quirks
-        timeout: doTimeout ? 5000 : 0,
+        timeout: doTimeout ? 5000 : Infinity,
       }
     );
   };

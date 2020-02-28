@@ -12,7 +12,11 @@ module.exports = ({ dependencies = {}, config = {} }) =>
     return (
       <plugin name={dep} spec={version}>
         {Object.keys(variables).map(variable => (
-          <variable name={variable} value={variables[variable]} />
+          <variable
+            name={variable}
+            value={variables[variable]}
+            key={variable}
+          />
         ))}
       </plugin>
     );
