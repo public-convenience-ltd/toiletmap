@@ -126,10 +126,7 @@ const HomePage = function(props) {
     if (loos && !loos.length) {
       return (
         <Notification>
-          <p>
-            No toilets found nearby. Try zooming the map out or visiting the
-            list view.
-          </p>
+          <p>No toilets found nearby. Try zooming the map out.</p>
         </Notification>
       );
     }
