@@ -52,7 +52,7 @@
     "start": "node src/index.js"
   },
   "devDependencies": {
-    "apollo": "^2.24.0",
+    "apollo": "2.24.0",
     "dotenv": "8.2.0",
     "nodemon": "2.0.2"
   }
