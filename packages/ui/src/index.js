@@ -84,9 +84,10 @@ const cache = new InMemoryCache({
 });
 
 const client = new ApolloClient({
-  name: 'Toilet Map UI',
+  name: '@toiletmap/ui',
   version: version,
   link: authLink.concat(httpLink),
+  connectToDevTools: true,
   cache,
   ...localSchema,
 });
