@@ -13,7 +13,7 @@
     "apollo-boost": "0.4.7",
     "auth0-js": "9.12.2",
     "chart.js": "2.9.3",
-    "downshift": "3.2.1",
+    "downshift": "5.0.3",
     "graphql.macro": "1.4.2",
     "http-proxy-middleware": "1.0.1",
     "leaflet": "1.5.1",
