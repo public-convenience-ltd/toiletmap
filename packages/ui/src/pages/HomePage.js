@@ -127,8 +127,8 @@ const HomePage = function(props) {
       return (
         <Notification>
           <p>
-            No toilets found within {config.nearestRadius / 1000}
-            km.
+            No toilets found nearby. Try zooming the map out or visiting the
+            list view.
           </p>
         </Notification>
       );

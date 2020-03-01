@@ -12,12 +12,6 @@ before_deploy:
 - curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
 - heroku container:login
 deploy:
-# Deploy branch unity to unity env
-- provider: script
-  skip_cleanup: true
-  script: yarn build && yarn deploy:push --app gbptm-unity && yarn deploy:release --app gbptm-unity
-  on:
-    branch: unity
 # Deploy branch develop to gbptm-stage env
 - provider: script
   skip_cleanup: true
