@@ -1,5 +1,4 @@
-import createHashHistory from 'history/createHashHistory';
-import createBrowserHistory from 'history/createBrowserHistory';
+import { createHashHistory, createBrowserHistory } from 'history';
 import config from './config';
 
 const history = config.isNativeApp()
