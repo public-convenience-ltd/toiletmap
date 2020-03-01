@@ -36,7 +36,7 @@ const styles = theme => ({
     marginRight: '2%',
   },
   paper: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
@@ -115,9 +115,9 @@ class LooView extends Component {
           return (
             <div className={classes.root}>
               <div className={classes.appBarSpacer} />
-              <Grid container spacing={24}>
+              <Grid container spacing={2}>
                 <Grid item md={6} sm={12}>
-                  <Typography variant="display1" gutterBottom>
+                  <Typography variant="h2" gutterBottom>
                     {loo.name}
                   </Typography>
                   {loo.area.map(({ name, type }) => (
@@ -155,7 +155,7 @@ class LooView extends Component {
 
                 <Grid container item sm={12}>
                   <Grid item sm={12}>
-                    <Typography variant="display1" gutterBottom>
+                    <Typography variant="h3" gutterBottom>
                       Toilet Data
                     </Typography>
                     <Typography variant="subtitle1" gutterBottom>

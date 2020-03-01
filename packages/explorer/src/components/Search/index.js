@@ -71,18 +71,18 @@ const styles = theme => ({
     fontWeight: theme.typography.fontWeightRegular,
   },
   searchForm: {
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 3,
-    padding: theme.spacing.unit * 2,
-    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
-      marginTop: theme.spacing.unit * 6,
-      marginBottom: theme.spacing.unit * 6,
-      padding: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    padding: theme.spacing(2),
+    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+      marginTop: theme.spacing(6),
+      marginBottom: theme.spacing(6),
+      padding: theme.spacing(3),
     },
   },
   button: {
-    marginTop: theme.spacing.unit * 3,
-    marginLeft: theme.spacing.unit,
+    marginTop: theme.spacing(3),
+    marginLeft: theme.spacing(1),
   },
 });
 
@@ -100,15 +100,15 @@ const Styled = createStyled(theme => ({
     textDecoration: 'none',
   },
   chip: {
-    marginTop: theme.spacing.unit * 0.2,
-    marginBottom: theme.spacing.unit * 0.2,
-    marginLeft: theme.spacing.unit * 0.2,
+    marginTop: theme.spacing(0.2),
+    marginBottom: theme.spacing(0.2),
+    marginLeft: theme.spacing(0.2),
   },
   chipDetail: {
     verticalAlign: 'bottom',
-    marginTop: theme.spacing.unit * 0.2,
-    marginBottom: theme.spacing.unit * 0.2,
-    marginLeft: theme.spacing.unit * 0.2,
+    marginTop: theme.spacing(0.2),
+    marginBottom: theme.spacing(0.2),
+    marginLeft: theme.spacing(0.2),
   },
 }));
 
@@ -487,7 +487,7 @@ class Search extends Component {
     return (
       <div>
         <div className={classNames(classes.paper, classes.searchForm)}>
-          <Grid container spacing={24}>
+          <Grid container spacing={2}>
             <Grid item xs={12} sm={7} md={9}>
               <FormControl className={classes.formControl} fullWidth>
                 <TextField
@@ -532,7 +532,7 @@ class Search extends Component {
                   </Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                  <Grid container spacing={24}>
+                  <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
                         <Query query={AREAS_QUERY}>

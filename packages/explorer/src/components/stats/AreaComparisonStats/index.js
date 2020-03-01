@@ -73,8 +73,25 @@ class AreaComparisonStats extends Component {
           <TableBody>
             <Query query={AREA_STATS}>
               {({ loading, error, data }) => {
-                if (loading) return <h1>Loading area stats...</h1>;
-                if (error) return <h1>Error fetching area stats: {error}</h1>;
+                if (loading) {
+                  return (
+                    <TableRow>
+                      <TableCell>
+                        <h5>Loading area stats...</h5>
+                      </TableCell>
+                    </TableRow>
+                  );
+                }
+
+                if (error) {
+                  return (
+                    <TableRow>
+                      <TableCell>
+                        <h5>Error fetching area stats: {error}</h5>
+                      </TableCell>
+                    </TableRow>
+                  );
+                }
 
                 return data.areaStats.map((area, index) => (
                   <TableRow key={index}>
