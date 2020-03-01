@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import _ from 'lodash';
 import queryString from 'query-string';
 import TimeAgo from 'timeago-react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/react-components';
 import { loader } from 'graphql.macro';
 
 // Local

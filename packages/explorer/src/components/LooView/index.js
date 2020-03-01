@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/react-components';
 import classNames from 'classnames';
 import LooTile from '../LooTile';
 import LooTable from '../table/LooTable';

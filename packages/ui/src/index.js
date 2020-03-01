@@ -48,22 +48,14 @@ import { version } from '../package.json';
 
 const auth = new Auth();
 
-//
-// Create GraphQL client
-//
-
-const { REACT_APP_BAKED_BACKEND } = process.env;
-
 const httpLink = new HttpLink({
-  uri: REACT_APP_BAKED_BACKEND || '/graphql',
+  uri: process.env.REACT_APP_BAKED_BACKEND || '/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      'apollographql-client-name': 'toiletmap-ui',
-      'apollographql-client-version': `${version}`,
       authorization: auth.isAuthenticated()
         ? `Bearer ${auth.getAccessToken()}`
         : '',

@@ -3,7 +3,7 @@ import { Location } from '@reach/router';
 import _ from 'lodash';
 import moment from 'moment';
 import { loader } from 'graphql.macro';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/react-components';
 
 import Counter from '../Counter';
 import LooIcon from '@material-ui/icons/Wc';

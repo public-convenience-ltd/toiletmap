@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { Link } from '@reach/router';
 import { loader } from 'graphql.macro';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/react-components';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
