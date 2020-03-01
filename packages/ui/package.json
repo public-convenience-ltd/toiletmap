@@ -1,6 +1,6 @@
 {
   "name": "@toiletmap/ui",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "private": true,
   "devDependencies": {
     "cross-env": "6.0.3",
@@ -15,9 +15,9 @@
     "start-server-and-test": "1.7.11"
   },
   "dependencies": {
-    "@toiletmap/api-client": "3.2.0",
-    "@toiletmap/leaflet-control-geocoder": "3.2.0",
-    "@toiletmap/opening-hours": "3.2.0",
+    "@toiletmap/api-client": "3.2.1",
+    "@toiletmap/leaflet-control-geocoder": "3.2.1",
+    "@toiletmap/opening-hours": "3.2.1",
     "auth0-js": "9.10.0",
     "core-js": "2.6.3",
     "js-cookie": "2.2.1",
