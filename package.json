@@ -58,8 +58,5 @@
       "commit-msg": "commitlint -e",
       "pre-commit": "lint-staged"
     }
-  },
-  "resolutions": {
-    "graphql": "14.1.1"
   }
 }

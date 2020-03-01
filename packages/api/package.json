@@ -15,7 +15,6 @@
     "express": "4.17.1",
     "express-jwt": "5.3.1",
     "express-jwt-authz": "2.3.1",
-    "graphql": "14.1.1",
     "graphql-iso-date": "3.6.1",
     "graphql-voyager": "1.0.0-rc.29",
     "hasha": "3.0.0",
