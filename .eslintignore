@@ -4,5 +4,5 @@ build
 coverage
 adobe-digital-data.js
 adobe-digital-data-stage.js
-packages/ui/platform
+packages/ui/platforms
 packages/ui/plugins

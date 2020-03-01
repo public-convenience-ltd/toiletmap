@@ -8,7 +8,7 @@
     "bestzip": "2.1.5",
     "cordova": "9.0.0",
     "cpx": "1.5.0",
-    "cross-env": "6.0.3",
+    "cross-env": "7.0.0",
     "cypress": "3.1.4",
     "cypress-image-snapshot": "3.0.0",
     "env-cmd": "10.1.0",

@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "/explorer",
   "devDependencies": {
-    "cross-env": "6.0.3",
+    "cross-env": "7.0.0",
     "react-scripts": "3.4.0"
   },
   "dependencies": {
