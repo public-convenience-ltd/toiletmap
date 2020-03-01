@@ -10227,13 +10227,6 @@ gensync@^1.0.0-beta.1:
   resolved "https://registry.yarnpkg.com/gensync/-/gensync-1.0.0-beta.1.tgz#58f4361ff987e5ff6e1e7a210827aa371eaac269"
   integrity sha512-r8EC6NO1sngH/zdD9fiRDLdcgnbayXah+mLgManTaIZJqEC1MZstmnox8KpnI2/fxQwrp5OpCOYWLp4rBl4Jcg==
 
-geo-hash@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/geo-hash/-/geo-hash-0.0.2.tgz#b43a81770c998f69da3b8d69a4106a4a8eb1e147"
-  integrity sha1-tDqBdwyZj2naO41ppBBqSo6x4Uc=
-  dependencies:
-    sortable-hash "0.0.0"
-
 get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
@@ -18927,11 +18920,6 @@ sort-keys@^2.0.0:
   integrity sha1-ZYU1WEhh7JfXMNbPQYIuH1ZoQSg=
   dependencies:
     is-plain-obj "^1.0.0"
-
-sortable-hash@0.0.0:
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/sortable-hash/-/sortable-hash-0.0.0.tgz#7a567aa021d37e6abdcd9e3c949d5d81b16b0cdf"
-  integrity sha1-elZ6oCHTfmq9zZ48lJ1dgbFrDN8=
 
 source-list-map@^2.0.0:
   version "2.0.1"
