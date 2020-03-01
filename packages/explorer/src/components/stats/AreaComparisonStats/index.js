@@ -10,8 +10,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-//import Papa from 'papaparse';
-
 const AREA_STATS = loader('./areaStats.graphql');
 
 const cells = [
@@ -51,24 +49,6 @@ class AreaComparisonStats extends Component {
     if (!_.isEqual(props.location.query, this.props.location.query)) {
       // TODO - what do we do when we have a query string?
     }
-  }
-
-  downloadCSV() {
-    // TODO: to get the data for this CSV, use a GraphQL query with `withApollo`
-    /*
-    console.log('Download a csv');
-    var csv = Papa.unparse(this.state.data);
-    console.log(csv);
-    if (!csv.match(/^data:text\/csv/i)) {
-      csv = 'data:text/csv;charset=utf-8,' + csv;
-    }
-    var data = encodeURI(csv);
-
-    var link = document.createElement('a');
-    link.setAttribute('href', data);
-    link.setAttribute('download', 'gbptm.csv');
-    link.click();
-    */
   }
 
   render() {
