@@ -49,7 +49,7 @@
     "react-helmet": "5.2.1",
     "react-leaflet": "2.6.1",
     "react-responsive": "8.0.3",
-    "react-router-dom": "4.3.1",
+    "react-router-dom": "5.1.2",
     "react-router-ga": "1.2.2",
     "react-router-hash-link": "1.2.2",
     "resize-observer-polyfill": "1.5.1"
