@@ -2,7 +2,7 @@
   "name": "@toiletmap/api",
   "private": true,
   "description": "API server for the Great British Public Toilet Map",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "author": "Rupert Redington",
   "bugs": {
     "url": "https://github.com/neontribe/gbptm/issues"
