@@ -1,8 +1,8 @@
 // Polyfills
-import 'core-js/fn/array/find';
-import 'core-js/fn/array/includes';
-import 'core-js/fn/string/repeat';
-import 'core-js/fn/object/entries';
+import 'core-js/features/array/find';
+import 'core-js/features/array/includes';
+import 'core-js/features/string/repeat';
+import 'core-js/features/object/entries';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
