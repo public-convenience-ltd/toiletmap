@@ -40,9 +40,7 @@ const ReportSchema = new Schema(
         // check that it references us as the previous report
         if (!next.previous.equals(this._id)) {
           throw new Error(
-            `'next' report ${value} refers to wrong previous report, ${
-              next.previous
-            }`
+            `'next' report ${value} refers to wrong previous report, ${next.previous}`
           );
         }
 
@@ -171,9 +169,7 @@ async function getAreaData(point) {
   let response = await fetch(url);
   if (!response.ok) {
     console.error(
-      `Failed to fetch area data from ${url} got response (${
-        response.status
-      }) ${response.statusText}`
+      `Failed to fetch area data from ${url} got response (${response.status}) ${response.statusText}`
     );
     return undefined;
   }
@@ -216,11 +212,8 @@ ReportSchema.statics.submit = async function(data, user, from) {
     }
   }
 
-  try {
-    await report.validate();
-  } catch (e) {
-    throw e;
-  }
+  await report.validate();
+
   const savedReport = await report.save();
 
   // Until we have a moderation queue we'll create/update a loo accordingly
