@@ -5,6 +5,7 @@ services:
 sudo: required
 env:
   secure: D2odYxhrbyd4s6jm4MLBkoY/ELXFNLASayQ8hKZfRaqyBmMeisDKEuBrpkbvndOqrplDZ/jKG7nuA4I3qKsdWh5rMmN78VnOpjW75JqxwcqkaUVzQP4qimZm4ZiVDPWbJn6rQr//HMMZLaLROtVHEsZOHQGCgAgB1mZk8+p+vls=
+cache: yarn
 before_deploy:
 - curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
 - heroku container:login
