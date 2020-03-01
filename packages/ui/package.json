@@ -3,7 +3,6 @@
   "version": "3.2.1",
   "private": true,
   "main": "index.js",
-  "homepage": "./",
   "devDependencies": {
     "@babel/node": "7.7.4",
     "bestzip": "2.1.5",
