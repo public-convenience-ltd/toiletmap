@@ -18,13 +18,9 @@ deploy:
   script: yarn build && yarn deploy:push --app gbptm-stage && yarn deploy:release --app gbptm-stage
   on:
     branch: develop
-  env:
-    - REACT_APP_BAKED_BACKEND=https://gbptm-stage.herokuapp.com/graphql
 # Deploy branch master to gbptm env
 - provider: script
   skip_cleanup: true
   script: yarn build && yarn deploy:push --app gbptm && yarn deploy:release --app gbptm
   on:
     branch: master
-  env:
-    - REACT_APP_BAKED_BACKEND=https://www.toiletmap.org.uk/graphql
