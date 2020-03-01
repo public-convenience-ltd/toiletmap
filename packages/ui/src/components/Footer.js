@@ -1,37 +1,56 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
 
 import styles from './css/footer.module.css';
 
 import CookieBoxButton from './Tracking/CookieBoxButton';
 
-class Footer extends Component {
-  render() {
-    return (
-      <footer className={styles.footer}>
-        <ul className={styles.footerList}>
-          <li className={styles.footerListItem}>
-            <Link to="/preferences" className={styles.footerItem}>
-              <span className={styles.footerItemText}>Preferences</span>
-            </Link>
-          </li>
-          <li className={styles.footerListItem}>
-            <Link to="/privacy" className={styles.footerItem}>
-              <span className={styles.footerItemText}>Privacy Policy</span>
-            </Link>
-          </li>
-          <li className={styles.footerListItem}>
-            <Link to="/about" className={styles.footerItem}>
-              <span className={styles.footerItemText}>About</span>
-            </Link>
-          </li>
-          <li className={styles.footerListItem}>
-            <CookieBoxButton onClick={this.props.onCookieBoxButtonClick} />
-          </li>
-        </ul>
-      </footer>
-    );
+const chooseLinkStyle = (location, path) => {
+  if (location.pathname === path) {
+    return styles.footerItemActive;
   }
-}
 
-export default Footer;
+  return styles.footerItem;
+};
+
+const Footer = props => (
+  <footer className={styles.footer}>
+    <ul className={styles.footerList}>
+      <li className={styles.footerListItem}>
+        <Link
+          to="/preferences"
+          className={chooseLinkStyle(props.location, '/preferences')}
+        >
+          <span className={styles.footerItemText}>Preferences</span>
+        </Link>
+      </li>
+      <li className={styles.footerListItem}>
+        <Link
+          to="/privacy"
+          className={chooseLinkStyle(props.location, '/privacy')}
+        >
+          <span className={styles.footerItemText}>Privacy Policy</span>
+        </Link>
+      </li>
+      <li className={styles.footerListItem}>
+        <Link to="/about" className={chooseLinkStyle(props.location, '/about')}>
+          <span className={styles.footerItemText}>About</span>
+        </Link>
+      </li>
+      <li className={styles.footerListItem}>
+        <CookieBoxButton onClick={props.onCookieBoxButtonClick} />
+      </li>
+    </ul>
+  </footer>
+);
+
+Footer.displayName = 'Footer';
+Footer.propTypes = {
+  onCookieBoxButtonClick: PropTypes.func,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }),
+};
+
+export default withRouter(Footer);

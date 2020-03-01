@@ -20,19 +20,35 @@ function humanizeDistance(meters) {
   return `${round(meters / 1000, 1)}km`;
 }
 
+function toRadians(deg) {
+  return (Math.PI * deg) / 180;
+}
+
+/**
+ * Implementation of the Haversine formula.
+ */
+function latLngToDistance(start, end) {
+  let earthRadius = 6371 * 10 ** 3;
+  let dLat = toRadians(end.lat - start.lat);
+  let dLng = toRadians(end.lng - start.lng);
+  let a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRadians(start.lat)) *
+      Math.cos(toRadians(end.lat)) *
+      Math.sin(dLng / 2) ** 2;
+
+  let distance = 2 * earthRadius * Math.asin(Math.sqrt(a));
+  return distance;
+}
+
 class LooListItem extends Component {
   render() {
     var loo = this.props.loo;
 
-    var coords = [
-      this.props.loo.properties.geometry.coordinates[1],
-      this.props.loo.properties.geometry.coordinates[0],
-    ];
-
     return (
       <Link
-        data-testid={`loo:${loo._id}`}
-        to={`/loos/${loo._id}`}
+        data-testid={`loo:${loo.id}`}
+        to={`/loos/${loo.id}`}
         className={styles.container}
         onMouseOver={this.props.onHoverStart}
         onMouseOut={this.props.onHoverEnd}
@@ -44,7 +60,7 @@ class LooListItem extends Component {
           preventZoom={true}
           preventDragging={true}
           loos={[loo]}
-          initialPosition={coords}
+          initialPosition={loo.location}
           activeMarkers={false}
         />
 
@@ -57,7 +73,7 @@ class LooListItem extends Component {
         </div>
 
         <div className={styles.distance + ' distance--zindexfix'}>
-          {humanizeDistance(loo.distance)}
+          {humanizeDistance(latLngToDistance(this.props.center, loo.location))}
         </div>
       </Link>
     );

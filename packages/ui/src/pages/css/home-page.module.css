@@ -26,9 +26,10 @@
 .mobileMap {
   display: flex;
   flex: 1;
+
+  /* To grow outside the parent's padding */
   margin-left: -0.75rem;
   margin-right: -0.75rem;
-  margin-bottom: -0.75rem;
 }
 
 /* Cluster markers */

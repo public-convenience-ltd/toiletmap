@@ -33,7 +33,12 @@
   color: #fff;
 }
 
-.footerItem:hover {
+.footerItemActive {
+  composes: footerItem;
+}
+
+.footerItem:hover,
+.footerItemActive {
   color: #fff;
   background-color: colorLinkActive;
 }

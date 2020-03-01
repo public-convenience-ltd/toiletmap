@@ -1,65 +1,66 @@
 import { definitions } from '@toiletmap/opening-hours';
 
+const facilitiesMappings = [
+  {
+    name: 'Female',
+    value: 'FEMALE',
+  },
+  {
+    name: 'Male',
+    value: 'MALE',
+  },
+  {
+    name: 'Female and Male',
+    value: 'FEMALE_AND_MALE',
+  },
+  {
+    name: 'Unisex',
+    value: 'UNISEX',
+  },
+  {
+    name: 'Male Urinal',
+    value: 'MALE_URINAL',
+  },
+  {
+    name: 'Children Only',
+    value: 'CHILDREN',
+  },
+  {
+    name: 'None',
+    value: 'NONE',
+  },
+];
+
 export default {
   looProps: {
-    canHumanize: [
-      'accessibleType',
-      'attended',
-      'babyChange',
-      'automatic',
-      'radar',
-    ],
+    canHumanize: ['attended', 'babyChange', 'automatic', 'radar', 'fee'],
     definitions: {
       opening: definitions,
-      type: [
-        {
-          name: 'Female',
-          value: 'female',
-        },
-        {
-          name: 'Male',
-          value: 'male',
-        },
-        {
-          name: 'Female and Male',
-          value: 'female and male',
-        },
-        {
-          name: 'Unisex',
-          value: 'unisex',
-        },
-        {
-          name: 'Male Urinal',
-          value: 'male urinal',
-        },
-        {
-          name: 'Children Only',
-          value: 'children only',
-        },
-        {
-          name: 'None',
-          value: 'none',
-        },
-      ],
+      type: facilitiesMappings,
+      accessibleType: facilitiesMappings,
       access: [
         {
           name: 'Public',
-          value: 'public',
+          value: 'PUBLIC',
         },
         {
           name: 'Non-customers permitted',
-          value: 'permissive',
+          value: 'PERMISSIVE',
         },
         {
           name: 'Customers only',
-          value: 'customers only',
+          value: 'CUSTOMERS_ONLY',
+        },
+        {
+          name: 'Private',
+          value: 'PRIVATE',
         },
       ],
     },
   },
   humanizePropertyValue(val, property) {
     if (this.looProps.definitions[property]) {
-      // We may a human readable definition of this property value
+      // We may use a human readable definition of this property value
       let override = this.looProps.definitions[property].find(
         s => s.value === val
       );
@@ -68,19 +69,15 @@ export default {
       }
     }
 
-    // Second condition is for an irregularity in our dataset; do this until we normalise better
-    if (
-      this.looProps.canHumanize.includes(property) ||
-      (property === 'fee' && val === 'false')
-    ) {
+    if (this.looProps.canHumanize.includes(property)) {
       // We can humanize this kind of property to make it more human-readable
-      return this.humanizeAPIValue(val);
+      return this.humanizeAPIValue(val, property);
     }
 
     // This was likely entered as human-readable, leave it be
     return val;
   },
-  humanizeAPIValue(val) {
+  humanizeAPIValue(val, property) {
     // Unknown
     if (val === undefined || val === null) {
       return 'Not known';
@@ -103,8 +100,9 @@ export default {
       val = JSON.parse((val + '').toLowerCase()) ? 'Yes' : 'No';
     }
 
-    // Pricing
-    if (val === '0.00') {
+    // Pricing - use weak type coercian to interpret values like '0'
+    // eslint-disable-next-line eqeqeq
+    if (property === 'fee' && val == 0 && val !== '') {
       val = 'Free';
     }
 

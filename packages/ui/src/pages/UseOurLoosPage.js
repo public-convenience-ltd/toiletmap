@@ -9,6 +9,7 @@ import lists from '../css/lists.module.css';
 import headings from '../css/headings.module.css';
 import layout from '../components/css/layout.module.css';
 import controls from '../css/controls.module.css';
+import history from '../history';
 
 class UseOurLoosPage extends Component {
   renderMain() {
@@ -167,6 +168,12 @@ class UseOurLoosPage extends Component {
 
   renderMap() {
     return <NearestLooMap numberNearest />;
+  }
+
+  componentDidMount() {
+    if (!config.shouldShowSponsor()) {
+      history.push('/');
+    }
   }
 
   render() {
