@@ -41,12 +41,6 @@
   "devDependencies": {
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
-    "eslint": "5.12.1",
-    "eslint-config-react-app": "^3.0.6",
-    "eslint-plugin-flowtype": "3.2.1",
-    "eslint-plugin-import": "2.16.0",
-    "eslint-plugin-jsx-a11y": "6.2.0",
-    "eslint-plugin-react": "7.12.4",
     "husky": "4.2.3",
     "lerna": "3.20.2",
     "lint-staged": "10.0.8",
@@ -67,8 +61,5 @@
   },
   "resolutions": {
     "graphql": "14.1.1"
-  },
-  "dependencies": {
-    "babel-eslint": "10.1.0"
   }
 }
