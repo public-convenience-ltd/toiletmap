@@ -34,10 +34,6 @@ app.use(cors());
 // Add GraphQL endpoint, playground and voyager
 applyGraphqlMiddleware(app);
 
-// Add REST API routes
-const rest = require('./rest');
-app.use('/api', rest);
-
 //redirect admin to explorer
 app.all('/admin', (req, res) => res.redirect(301, '/explorer/'));
 
