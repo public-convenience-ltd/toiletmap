@@ -1,5 +1,4 @@
 node_modules
-packages/leaflet-control-geocoder
 build
 coverage
 adobe-digital-data.js

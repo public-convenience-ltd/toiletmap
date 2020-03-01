@@ -1,6 +1,6 @@
 import L from 'leaflet';
 import { MapControl, withLeaflet } from 'react-leaflet';
-import '@toiletmap/leaflet-control-geocoder/src';
+import 'leaflet-control-geocoder';
 
 class GeolocationMapControl extends MapControl {
   createLeafletElement() {

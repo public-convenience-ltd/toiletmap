@@ -5,11 +5,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "yarn lint && CI=true lerna run test --parallel --ignore=@toiletmap/leaflet-control-geocoder",
+    "test": "yarn lint && CI=true lerna run test --parallel",
     "release": "lerna version --conventional-commits --push --exact -m \"build: release %s\"",
     "lint": "eslint . && stylelint \"packages/{ui,admin}/**/*.css\"",
     "prettify": "prettier --write \"./**/*.{js,json}\"",
-    "postinstall": "lerna run build --scope=@toiletmap/leaflet-control-geocoder",
     "build:ui": "lerna run build --scope=@toiletmap/ui",
     "build:explorer": "lerna run build --scope=@toiletmap/explorer",
     "docker:build": "docker build --network=host -t toiletmap/toiletmap .",
