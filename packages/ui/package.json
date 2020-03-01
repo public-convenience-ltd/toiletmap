@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.js",
   "devDependencies": {
-    "@babel/node": "7.7.4",
+    "@babel/node": "7.8.4",
     "bestzip": "2.1.5",
     "cordova": "9.0.0",
     "cpx": "1.5.0",
@@ -13,10 +13,10 @@
     "env-cmd": "10.1.0",
     "eslint-plugin-cypress": "2.10.3",
     "http-proxy-middleware": "1.0.1",
-    "http-server": "0.11.1",
+    "http-server": "0.12.1",
     "react-app-rewired": "2.1.5",
     "react-scripts": "3.4.0",
-    "serve": "10.1.1",
+    "serve": "11.3.0",
     "start-server-and-test": "1.10.8"
   },
   "dependencies": {
@@ -38,7 +38,7 @@
     "js-cookie": "2.2.1",
     "leaflet": "1.5.1",
     "leaflet-loading": "0.1.24",
-    "leaflet.locatecontrol": "0.67.0",
+    "leaflet.locatecontrol": "0.70.0",
     "leaflet.markercluster": "1.4.1",
     "lodash": "4.17.15",
     "normalize.css": "8.0.1",
@@ -50,7 +50,7 @@
     "react-leaflet": "2.4.0",
     "react-responsive": "6.1.1",
     "react-router-dom": "4.3.1",
-    "react-router-ga": "1.1.0",
+    "react-router-ga": "1.2.2",
     "react-router-hash-link": "1.2.2",
     "resize-observer-polyfill": "1.5.1"
   },
