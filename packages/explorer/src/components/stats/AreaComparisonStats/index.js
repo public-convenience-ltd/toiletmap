@@ -40,11 +40,6 @@ const cells = [
 ];
 
 class AreaComparisonStats extends Component {
-  constructor(props) {
-    super(props);
-    this.downloadCSV = this.downloadCSV.bind(this);
-  }
-
   UNSAFE_componentWillReceiveProps(props) {
     if (!_.isEqual(props.location.query, this.props.location.query)) {
       // TODO - what do we do when we have a query string?
@@ -100,18 +95,6 @@ class AreaComparisonStats extends Component {
             </Query>
           </TableBody>
         </Table>
-        {/* <Toolbar>
-					<ToolbarGroup />
-					<ToolbarGroup lastChild={true}>
-						<ToolbarSeparator/>
-						<RaisedButton
-						  label="Download CSV"
-						  labelPosition="before"
-						  primary={true}
-						  onClick={this.downloadCSV}
-						  />
-					</ToolbarGroup>
-				</Toolbar> */}
       </div>
     );
   }
