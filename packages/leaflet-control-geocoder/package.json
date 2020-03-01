@@ -45,6 +45,6 @@
     "eslint": "6.8.0",
     "eslint-plugin-prettier": "3.1.2",
     "prettier": "1.19.1",
-    "rollup": "0.68.2"
+    "rollup": "1.32.0"
   }
 }
