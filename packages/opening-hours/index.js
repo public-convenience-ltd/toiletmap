@@ -15,7 +15,7 @@ const definitions = [
     name: 'Business hours, Mon-Fri',
     value: 'Mo-Fr 09:00-17:00',
     check: dt =>
-      dt.weekday >= 1 && dt.weekday <= 5 && (dt.hour >= 9 && dt.hour <= 17),
+      dt.weekday >= 1 && dt.weekday <= 5 && dt.hour >= 9 && dt.hour <= 17,
   },
   {
     name: 'Evening only',
