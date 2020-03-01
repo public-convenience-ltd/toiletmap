@@ -1,6 +1,6 @@
 const path = require('path');
 const express = require('express');
-const proxy = require('http-proxy-middleware');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const platformWWW = path.resolve(
   __dirname,
@@ -27,14 +27,16 @@ module.exports = function(app) {
   });
 
   app.use(
-    proxy('/api', {
+    '/api',
+    createProxyMiddleware({
       target: process.env.PROXY || 'https://gbptm-stage.herokuapp.com',
       //secure: false,
       changeOrigin: true,
     })
   );
   app.use(
-    proxy('/graphql', {
+    '/graphql',
+    createProxyMiddleware({
       target: process.env.PROXY || 'https://gbptm-stage.herokuapp.com',
       //secure: false,
       changeOrigin: true,
