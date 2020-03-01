@@ -29,9 +29,6 @@
   },
   "homepage": "https://github.com/neontribe/gbptm#readme",
   "lint-staged": {
-    "*.json": [
-      "prettier --write"
-    ],
     "*.js": [
       "eslint --max-warnings 0",
       "prettier --write"
