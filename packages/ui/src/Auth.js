@@ -110,6 +110,9 @@ export default class Auth {
     });
 
   setSession = authResult => {
+    if (!authResult) {
+      return;
+    }
     // Set the time that the Access Token will expire at
     let expiresAt = JSON.stringify(
       authResult.expiresIn * 1000 + new Date().getTime()
