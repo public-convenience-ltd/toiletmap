@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.1](https://github.com/neontribe/gbptm/compare/v3.2.0...v3.2.1) (2020-03-01)
+
+
+### Bug Fixes
+
+* respect fee filter correctly ([638ba82](https://github.com/neontribe/gbptm/commit/638ba82)), closes [#473](https://github.com/neontribe/gbptm/issues/473)
+
+
+
+
+
 # [3.2.0](https://github.com/neontribe/gbptm/compare/v3.0.0...v3.2.0) (2019-11-28)
 
 **Note:** Version bump only for package @toiletmap/api
