@@ -5,7 +5,7 @@
   "homepage": "/explorer",
   "devDependencies": {
     "cross-env": "6.0.3",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.4.0"
   },
   "dependencies": {
     "@material-ui/core": "3.9.1",
