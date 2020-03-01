@@ -30,13 +30,11 @@
   "homepage": "https://github.com/neontribe/gbptm#readme",
   "lint-staged": {
     "*.json": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.js": [
       "eslint --max-warnings 0",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.css": "stylelint"
   },
