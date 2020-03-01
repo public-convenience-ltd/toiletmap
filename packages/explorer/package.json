@@ -16,7 +16,7 @@
     "downshift": "5.0.3",
     "graphql.macro": "1.4.2",
     "http-proxy-middleware": "1.0.1",
-    "leaflet": "1.5.1",
+    "leaflet": "1.6.0",
     "lodash": "4.17.15",
     "moment": "2.24.0",
     "ospoint": "0.2.1",
@@ -27,7 +27,7 @@
     "react-apollo": "2.4.1",
     "react-chartjs-2": "2.9.0",
     "react-dom": "16.13.0",
-    "react-leaflet": "2.4.0",
+    "react-leaflet": "2.6.1",
     "timeago-react": "3.0.0"
   },
   "scripts": {
