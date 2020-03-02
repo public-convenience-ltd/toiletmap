@@ -73,7 +73,7 @@ const resolvers = {
       ) {
         query.$and = [
           {
-            contributors: { $all: [args.filters.contributors] },
+            contributors: { $all: args.filters.contributors },
           },
         ];
       }

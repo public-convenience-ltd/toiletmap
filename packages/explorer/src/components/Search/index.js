@@ -479,7 +479,7 @@ class Search extends Component {
       contributor: this.state.searchParams.contributors,
     };
 
-    return variables;
+    return _.omitBy(variables, _.isEmpty);
   }
 
   render() {
