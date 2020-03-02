@@ -10,7 +10,7 @@ const WEB_CLIENT_ID = 'sUts4RKy04JcyZ2IVFgMAC0rhPARCQYg';
 const options = {
   domain: 'gbptm.eu.auth0.com',
   responseType: 'token id_token',
-  audience: 'https://www.toiletmap.org.uk/api',
+  audience: 'https://www.toiletmap.org.uk/graphql',
   scope: 'openid profile report:loo',
 };
 

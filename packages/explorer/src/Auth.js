@@ -9,7 +9,7 @@ export default class Auth {
     clientID: 'sUts4RKy04JcyZ2IVFgMAC0rhPARCQYg',
     redirectUri: `${window.location.origin}/explorer/callback`,
     responseType: 'token id_token',
-    audience: 'https://www.toiletmap.org.uk/api',
+    audience: 'https://www.toiletmap.org.uk/graphql',
     scope: 'openid profile report:loo',
   });
 
