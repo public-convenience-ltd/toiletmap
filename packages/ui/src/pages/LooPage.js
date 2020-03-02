@@ -184,7 +184,7 @@ const LooPage = function LooPage(props) {
         loo={data.loo}
         mapProps={{
           showLocation: false,
-          showSearchControl: false,
+          showSearchControl: true,
           showLocateControl: false,
           showCenter: false,
           countLimit: null,

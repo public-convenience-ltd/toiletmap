@@ -100,7 +100,7 @@ const ThanksPage = function(props) {
         loo={looData.loo}
         mapProps={{
           showLocation: false,
-          showSearchControl: false,
+          showSearchControl: true,
           showLocateControl: false,
           showCenter: false,
           countLimit: null,
