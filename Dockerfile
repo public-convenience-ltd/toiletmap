@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:12
 
 # Expose this port for local testing heroku will squash this and pass the port to the app on env.PORT
 EXPOSE 8080
