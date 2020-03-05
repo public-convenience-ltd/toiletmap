@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.js",
   "devDependencies": {
-    "@babel/node": "7.8.4",
+    "@babel/node": "7.8.7",
     "bestzip": "2.1.5",
     "cordova": "9.0.0",
     "cpx": "1.5.0",
