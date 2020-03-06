@@ -7,15 +7,21 @@
   align-items: center;
   justify-content: center;
   color: currentColor;
+  margin-top: 0.2rem;
 }
 
 .sponsorTitle {
-  display: flex;
-  flex-direction: column;
   font-size: 1rem;
+  text-align: center;
 }
 
-.sponsorLogo {
+.sponsorLogoLeft {
+  height: 2.5rem;
+  margin-right: 0.4rem;
+  margin-top: 0.3rem;
+}
+
+.sponsorLogoRight {
   height: 3rem;
 }
 
