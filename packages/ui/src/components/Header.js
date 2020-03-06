@@ -3,6 +3,7 @@ import { HashLink } from 'react-router-hash-link';
 
 import styles from './css/header.module.css';
 import domestosLogo from '../images/domestos_logo3.png';
+import domestosUseLoos from '../images/domestos_use_our_loos_logo.png';
 
 import Logo from '../components/Logo';
 import config from '../config';
@@ -19,11 +20,16 @@ class Header extends Component {
             className={styles.sponsorWrapper}
             scroll={el => el.scrollIntoView(true)}
           >
-            <span className={styles.sponsorTitle}>proudly sponsored by</span>
+            <img
+              src={domestosUseLoos}
+              alt="Domestos use our loos logo"
+              className={styles.sponsorLogoLeft}
+            />
+            <span className={styles.sponsorTitle}>proudly<br />sponsored by</span>
             <img
               src={domestosLogo}
-              alt="Domestos"
-              className={styles.sponsorLogo}
+              alt="Domestos logo"
+              className={styles.sponsorLogoRight}
             />
           </HashLink>
         )}
