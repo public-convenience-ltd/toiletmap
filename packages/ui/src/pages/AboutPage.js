@@ -10,6 +10,8 @@ import headings from '../css/headings.module.css';
 import layout from '../components/css/layout.module.css';
 import controls from '../css/controls.module.css';
 
+import uolLogo from '../images/domestos-use-our-loos-full.png';
+
 class AboutPage extends Component {
   renderMain() {
     return (
@@ -69,6 +71,8 @@ class AboutPage extends Component {
                 <h2 id="use-our-loos" className={headings.regular}>
                   Use Our Loos
                 </h2>
+
+                <img src={uolLogo} alt="Use Our Loos is powered by Domestos" />
 
                 <p>
                   We all need toilets. When you need to go, you need to go. At
