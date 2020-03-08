@@ -11,6 +11,14 @@
       }
     },
     {
+      "src": "packages/explorer/package.json",
+      "use": "@now/static-build",
+      "config": {
+        "distDir": "build",
+        "useBuildUtils": "@now/build-utils"
+      }
+    },
+    {
       "src": "packages/api/src/graphql/index.js",
       "use": "@now/node"
     }
@@ -22,6 +30,21 @@
     {
       "src": "/graphql",
       "dest": "packages/api/src/graphql/index.js"
+    },
+    {
+      "src": "/explorer/static/(.*)",
+      "headers": { "cache-control": "s-maxage=31536000, immutable" },
+      "dest": "packages/explorer/static/$1"
+    },
+    {
+      "src": "/explorer/service-worker.js",
+      "headers": { "cache-control": "s-maxage=0" },
+      "dest": "packages/explorer/service-worker.js"
+    },
+    {
+      "src": "/explorer/(.*)",
+      "headers": { "cache-control": "s-maxage=0" },
+      "dest": "packages/explorer/index.html"
     },
     {
       "src": "/static/(.*)",
