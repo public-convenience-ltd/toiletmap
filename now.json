@@ -11,8 +11,22 @@
       }
     },
     {
-      "src": "packages/api/package.json",
+      "src": "packages/api/src/index.js",
       "use": "@now/node"
+    }
+  ],
+  "env": {
+    "MONGODB_URI": "@mongodb_uri"
+  },
+  "routes": [
+    {
+      "src": "/graphql",
+      "dest": "packages/api/src/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "headers": { "cache-control": "s-maxage=0" },
+      "dest": "packages/ui/build/index.html"
     }
   ]
 }
