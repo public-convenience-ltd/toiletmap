@@ -1,5 +1,4 @@
-const { express: voyagerMiddleware } = require('graphql-voyager/middleware');
-const { ApolloServer } = require('apollo-server-express');
+const { ApolloServer } = require('apollo-server');
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
 
@@ -61,10 +60,13 @@ const apollo = new ApolloServer({
   introspection: true,
 });
 
-const applyMiddleware = app => {
-  apollo.applyMiddleware({ app });
-  // Add voyager for graphql
-  app.use('/voyager', voyagerMiddleware({ endpointUrl: '/graphql' }));
-};
+// auto-init if this app is not being initialised by another module
+if (!module.parent) {
+  apollo
+    .listen({ port: config.app.port })
+    .then(({ url, subscriptionsPath, server }) => {
+      console.log(`Started Apollo Server at ${url}`);
+    });
+}
 
-module.exports = applyMiddleware;
+module.exports = apollo;
