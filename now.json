@@ -24,9 +24,19 @@
       "dest": "packages/api/src/graphql/index.js"
     },
     {
+      "src": "/static/(.*)",
+      "headers": { "cache-control": "s-maxage=31536000, immutable" },
+      "dest": "packages/ui/static/$1"
+    },
+    {
+      "src": "/service-worker.js",
+      "headers": { "cache-control": "s-maxage=0" },
+      "dest": "packages/ui/service-worker.js"
+    },
+    {
       "src": "/(.*)",
       "headers": { "cache-control": "s-maxage=0" },
-      "dest": "packages/ui/build/index.html"
+      "dest": "packages/ui/index.html"
     }
   ]
 }
