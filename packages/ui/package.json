@@ -17,7 +17,7 @@
     "react-app-rewired": "2.1.5",
     "react-scripts": "3.4.0",
     "serve": "11.3.0",
-    "start-server-and-test": "1.10.9"
+    "start-server-and-test": "1.10.10"
   },
   "dependencies": {
     "@apollo/client": "3.0.0-beta.38",
