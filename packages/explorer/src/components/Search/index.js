@@ -114,6 +114,16 @@ const Styled = createStyled(theme => ({
 
 const renderTableRows = ({ data }) => {
   const MISSING_MESSAGE = 'Not Recorded';
+
+  if (data.loos.length === 0) {
+    return <TableRow>
+      <TableCell></TableCell>
+      <TableCell>
+        No results were found for your query.
+      </TableCell>
+    </TableRow>;
+  }
+
   return (
     <Styled>
       {({ classes }) => (
@@ -310,19 +320,23 @@ class Search extends Component {
       limit: 10,
     };
 
+    const initSearchParams = () => ({
+      ...this.searchDefaults,
+      // Apply values from query string.
+      ...parsedQuery,
+      // Apply checked page value.
+      page: pageCheck,
+    });
+
     const parsedQuery = queryString.parse(this.props.location.search);
     const pageCheck = parseInt(parsedQuery.page)
       ? parsedQuery.page
       : this.searchDefaults.page;
     this.state = {
       expanded: false,
-      searchParams: {
-        ...this.searchDefaults,
-        // Apply values from query string.
-        ...parsedQuery,
-        // Apply checked page value.
-        page: pageCheck,
-      },
+      searchParams: initSearchParams(),
+      // the search params that are in the query string
+      fixedSearchParams: initSearchParams(),
     };
 
     // Submit new search with potentially modified search state.
@@ -356,8 +370,8 @@ class Search extends Component {
   /**
    * Getter for the search query string - strips empty fields.
    */
-  get queryString() {
-    const omitEmpty = _.pickBy(this.state.searchParams);
+  queryString(newParams) {
+    const omitEmpty = _.pickBy(newParams);
 
     // If everything is empty, ensure that we at least specify the `text` param.
     if (_.isEmpty(omitEmpty)) {
@@ -374,7 +388,11 @@ class Search extends Component {
    * Omits any empty search parameters from the search.
    */
   async submitSearch() {
-    await navigate(`search?${this.queryString}`);
+    const newParams = _.cloneDeep(this.state.searchParams);
+    await navigate(`search?${this.queryString(newParams)}`);
+    this.setState({
+      fixedSearchParams: newParams,
+    });
   }
 
   /**
@@ -465,21 +483,21 @@ class Search extends Component {
    * Gets the GraphQL query variables
    */
   get queryVariables() {
-    let fromDate = this.parseDate(this.state.searchParams.from_date);
-    let toDate = this.parseDate(this.state.searchParams.to_date);
+    let fromDate = this.parseDate(this.state.fixedSearchParams.from_date);
+    let toDate = this.parseDate(this.state.fixedSearchParams.to_date);
 
     let variables = {
-      rows: parseInt(this.state.searchParams.limit),
-      page: parseInt(this.state.searchParams.page),
-      text: this.state.searchParams.text,
-      order: this.state.searchParams.order,
-      areaName: this.state.searchParams.area_name,
+      rows: parseInt(this.state.fixedSearchParams.limit),
+      page: parseInt(this.state.fixedSearchParams.page),
+      text: this.state.fixedSearchParams.text,
+      order: this.state.fixedSearchParams.order,
+      areaName: this.state.fixedSearchParams.area_name,
       fromDate,
       toDate,
-      contributor: this.state.searchParams.contributors,
+      contributor: this.state.fixedSearchParams.contributors,
     };
 
-    return _.omitBy(variables, _.isEmpty);
+    return _.omitBy(variables, (v) => (v === "" || v == null));
   }
 
   render() {
@@ -671,8 +689,8 @@ class Search extends Component {
                 rowRender={renderTableRows}
                 colRender={renderTableCol}
                 footerRender={renderTableFooter}
-                page={Math.max(0, this.state.searchParams.page - 1)}
-                rowsPerPage={parseInt(this.state.searchParams.limit)}
+                page={data.loos.loos.length === 0 ? 0 : Math.max(0, this.state.fixedSearchParams.page - 1)}
+                rowsPerPage={parseInt(this.state.fixedSearchParams.limit)}
                 handleChangePage={this.handleChangePage}
                 handleChangeRowsPerPage={this.handleChangeRowsPerPage}
               />
