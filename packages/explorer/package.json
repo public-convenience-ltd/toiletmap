@@ -15,7 +15,7 @@
     "apollo-link-context": "1.0.19",
     "auth0-js": "9.12.2",
     "chart.js": "2.9.3",
-    "downshift": "5.0.4",
+    "downshift": "5.0.5",
     "graphql.macro": "1.4.2",
     "http-proxy-middleware": "1.0.1",
     "leaflet": "1.6.0",
