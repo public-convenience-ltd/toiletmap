@@ -81,13 +81,13 @@ const AddEditPage = function (props) {
 
   useEffect(() => {
     if (isEditing || !lat || !lng) {
-      return null;
+      return;
     }
 
     updateStoreCenter({
       variables: {
-        lat,
-        lng,
+        lat: parseFloat(lat),
+        lng: parseFloat(lng),
       },
     });
   }, [lat, lng, isEditing, updateStoreCenter]);
