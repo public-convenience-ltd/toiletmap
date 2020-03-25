@@ -15,7 +15,7 @@
     "http-proxy-middleware": "1.0.2",
     "http-server": "0.12.1",
     "react-app-rewired": "2.1.5",
-    "react-scripts": "3.4.0",
+    "react-scripts": "3.4.1",
     "serve": "11.3.0",
     "start-server-and-test": "1.10.10"
   },
