@@ -19,7 +19,7 @@
       }
     },
     {
-      "src": "packages/api/src/graphql/index.js",
+      "src": "packages/api/src/index.js",
       "use": "@now/node"
     }
   ],
@@ -29,7 +29,7 @@
   "routes": [
     {
       "src": "/graphql",
-      "dest": "packages/api/src/graphql/index.js"
+      "dest": "packages/api/src/index.js"
     },
     {
       "src": "/explorer/static/(.*)",
