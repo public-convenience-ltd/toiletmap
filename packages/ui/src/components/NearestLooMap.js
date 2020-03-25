@@ -87,11 +87,11 @@ const NearestLooMap = function NearestLooMap(props) {
   // Fetch the current geolocation on rerender
   useEffect(() => {
     getGeolocation(
-      response => {
+      (response) => {
         const { longitude, latitude } = response.coords;
         setGeolocation({ lng: longitude, lat: latitude });
       },
-      error => {
+      (error) => {
         setGeolocation({
           error: true,
         });
@@ -191,7 +191,7 @@ const NearestLooMap = function NearestLooMap(props) {
 
       {!loadingMapControls && getInitialPosition() ? (
         <LooMap
-          wrappedComponentRef={it => (looMap = it)}
+          wrappedComponentRef={(it) => (looMap = it)}
           loos={props.overrideLoos || (data ? data.loosByProximity : [])}
           countLimit={props.numberNearest ? 5 : 0}
           showcontributor={true}

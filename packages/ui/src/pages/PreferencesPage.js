@@ -53,12 +53,12 @@ const preferenceMap = [
   },
 ];
 
-const PreferencesPage = function(props) {
+const PreferencesPage = function (props) {
   const [unsavedPreferences, setUnsavedPreferences] = useState({});
   const [savedPreferences] = useState(config.getSettings(PREFERENCES_KEY));
   const [updated, setUpdated] = useState(false);
 
-  const updateSelection = event => {
+  const updateSelection = (event) => {
     // Fallback to `undefined` instead of `false` so we unset the data as opposed to
     // storing a non-truthy value
     var newVal = event.target.checked || undefined;
@@ -116,7 +116,7 @@ const PreferencesPage = function(props) {
 
         <div className={styles.preferences}>
           {/* This checkbox style is also used in the CookieBox component. */}
-          {preferenceMap.map(preference => (
+          {preferenceMap.map((preference) => (
             <label key={preference.name} className={controls.preferenceWrapper}>
               <input
                 className={controls.preferenceInput}

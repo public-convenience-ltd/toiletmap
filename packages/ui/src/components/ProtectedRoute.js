@@ -9,7 +9,7 @@ const ProtectedRoute = ({
 }) => (
   <Route
     {...rest}
-    render={props => {
+    render={(props) => {
       if (auth.isAuthenticated()) {
         return <Component {...props} {...injectProps} />;
       } else {

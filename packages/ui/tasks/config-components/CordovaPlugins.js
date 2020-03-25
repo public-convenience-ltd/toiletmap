@@ -1,9 +1,9 @@
 const React = require('react');
 
-const filterDeps = dependencies =>
+const filterDeps = (dependencies) =>
   Object.keys(dependencies)
-    .filter(depName => depName.startsWith('cordova-plugin'))
-    .map(dep => [dep, dependencies[dep]]);
+    .filter((depName) => depName.startsWith('cordova-plugin'))
+    .map((dep) => [dep, dependencies[dep]]);
 
 module.exports = ({ dependencies = {}, config = {} }) =>
   filterDeps(dependencies).map(([dep, version]) => {
@@ -11,7 +11,7 @@ module.exports = ({ dependencies = {}, config = {} }) =>
 
     return (
       <plugin name={dep} spec={version}>
-        {Object.keys(variables).map(variable => (
+        {Object.keys(variables).map((variable) => (
           <variable
             name={variable}
             value={variables[variable]}

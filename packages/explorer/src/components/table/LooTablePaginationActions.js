@@ -7,7 +7,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 
-const actionsStyles = theme => ({
+const actionsStyles = (theme) => ({
   root: {
     flexShrink: 0,
     color: theme.palette.text.secondary,
@@ -16,19 +16,19 @@ const actionsStyles = theme => ({
 });
 
 class TablePaginationActions extends Component {
-  handleFirstPageButtonClick = event => {
+  handleFirstPageButtonClick = (event) => {
     this.props.onChangePage(event, 0);
   };
 
-  handleBackButtonClick = event => {
+  handleBackButtonClick = (event) => {
     this.props.onChangePage(event, this.props.page - 1);
   };
 
-  handleNextButtonClick = event => {
+  handleNextButtonClick = (event) => {
     this.props.onChangePage(event, this.props.page + 1);
   };
 
-  handleLastPageButtonClick = event => {
+  handleLastPageButtonClick = (event) => {
     this.props.onChangePage(
       event,
       Math.max(0, Math.ceil(this.props.count / this.props.rowsPerPage) - 1)

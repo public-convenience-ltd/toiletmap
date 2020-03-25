@@ -26,10 +26,10 @@ class RequirePermissionDirective extends SchemaDirectiveVisitor {
 
     const fields = objectType.getFields();
 
-    Object.keys(fields).forEach(fieldName => {
+    Object.keys(fields).forEach((fieldName) => {
       const field = fields[fieldName];
       const { resolve = defaultFieldResolver } = field;
-      field.resolve = async function(...args) {
+      field.resolve = async function (...args) {
         // Get the required Role from the field first, falling back
         // to the objectType if no Role is required by the field:
         const requiredRole =

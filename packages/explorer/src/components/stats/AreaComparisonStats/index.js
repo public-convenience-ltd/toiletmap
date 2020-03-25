@@ -64,7 +64,7 @@ class AreaComparisonStats extends Component {
         <Table height={'600px'}>
           <TableHead>
             <TableRow>
-              {_.map(cells, val => {
+              {_.map(cells, (val) => {
                 return <TableCell key={'h_' + val.key}>{val.name}</TableCell>;
               })}
               <TableCell key={'h_listLink'} />
@@ -95,7 +95,7 @@ class AreaComparisonStats extends Component {
 
                 return data.areaStats.map((area, index) => (
                   <TableRow key={index}>
-                    {cells.map(cell => (
+                    {cells.map((cell) => (
                       <TableCell key={cell.key + 'c_' + index}>
                         {_.get(area, cell.key)}
                       </TableCell>

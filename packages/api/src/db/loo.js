@@ -25,7 +25,7 @@ LooSchema.plugin(mongoosePaginate);
 /**
  * Create a Loo from a list of LooReports.
  */
-LooSchema.statics.fromReports = function(reports, idOverride) {
+LooSchema.statics.fromReports = function (reports, idOverride) {
   // generate the loo from the sequence of diffs
   const properties = {};
   for (const rep of reports) {
@@ -41,12 +41,12 @@ LooSchema.statics.fromReports = function(reports, idOverride) {
   }
 
   // Get just the IDs of the report list to populate Loo metadata
-  const reportIds = reports.map(val => val._id);
+  const reportIds = reports.map((val) => val._id);
 
   // Calculate the Loo's creation and update time - we sort the report creation times to do this since
   // early reports were ranked on trust as well...
   const timeline = reports
-    .map(r => r.createdAt)
+    .map((r) => r.createdAt)
     .sort((d1, d2) => {
       if (d1 > d2) return 1;
       if (d1 < d2) return -1;
@@ -63,11 +63,11 @@ LooSchema.statics.fromReports = function(reports, idOverride) {
     reports: reportIds,
     createdAt: timeline[0],
     updatedAt: timeline[timeline.length - 1],
-    contributors: reports.map(r => r.contributor),
+    contributors: reports.map((r) => r.contributor),
   });
 };
 
-LooSchema.statics.findNear = function(lon, lat, radius, complete) {
+LooSchema.statics.findNear = function (lon, lat, radius, complete) {
   let args = [
     {
       $geoNear: {
@@ -105,7 +105,7 @@ LooSchema.statics.findNear = function(lon, lat, radius, complete) {
   return this.aggregate(args);
 };
 
-LooSchema.statics.getCounters = async function() {
+LooSchema.statics.getCounters = async function () {
   const [activeLoos, totalLoos, multipleReports] = await Promise.all([
     this.countDocuments({ 'properties.active': true }).exec(),
     this.countDocuments().exec(),
@@ -123,7 +123,7 @@ LooSchema.statics.getCounters = async function() {
   };
 };
 
-LooSchema.statics.getProportionCounters = async function() {
+LooSchema.statics.getProportionCounters = async function () {
   const [
     publicLoos,
     unknownAccessLoos,
@@ -161,7 +161,7 @@ LooSchema.statics.getProportionCounters = async function() {
 /*
   Returns an array of areas with various statistical counts attached
 */
-LooSchema.statics.getAreasCounters = async function() {
+LooSchema.statics.getAreasCounters = async function () {
   const areas = await this.aggregate([
     {
       $match: {},

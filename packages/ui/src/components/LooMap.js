@@ -38,7 +38,7 @@ L.LooIcon = L.Icon.extend({
     looId: null,
   },
 
-  initialize: function(options) {
+  initialize: function (options) {
     if (options.highlight) {
       // Add highlight properties
       this.options = {
@@ -58,7 +58,7 @@ L.LooIcon = L.Icon.extend({
     L.Util.setOptions(this, options);
   },
 
-  createIcon: function() {
+  createIcon: function () {
     // do we need to be complex to show an index, or are we just a dumb image
     if (!this.options.index) {
       var img = this._createImg(this._getIconUrl('icon'));
@@ -103,7 +103,7 @@ export class LooMap extends Component {
     this.onMarkerClick = this.onMarkerClick.bind(this);
   }
 
-  observe = el => {
+  observe = (el) => {
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
@@ -123,7 +123,7 @@ export class LooMap extends Component {
     }
   }
 
-  setRef = el => {
+  setRef = (el) => {
     if (el) {
       const { leafletElement, container } = el;
       this.leafletElement = leafletElement;
@@ -137,7 +137,7 @@ export class LooMap extends Component {
       const clusterLayer = L.markerClusterGroup({
         showCoverageOnHover: false,
         disableClusteringAtZoom: 15,
-        iconCreateFunction: cluster => {
+        iconCreateFunction: (cluster) => {
           const count = cluster.getChildCount();
 
           return L.divIcon({

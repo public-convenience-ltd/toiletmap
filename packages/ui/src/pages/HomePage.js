@@ -54,7 +54,7 @@ const TOGGLE_VIEW_MODE = gql`
   }
 `;
 
-const HomePage = function(props) {
+const HomePage = function (props) {
   const [highlight, setHighlight] = useState();
 
   const { loading: loadingMapControls, data: mapControlsData } = useQuery(
@@ -98,7 +98,7 @@ const HomePage = function(props) {
     mutateToggleViewMode();
   };
 
-  const renderList = mobile => {
+  const renderList = (mobile) => {
     // Loading - either this is the first query of the user or they are on a
     // mobile and so can't rely on the map's loading spinner to know the loos
     // they see are outdated

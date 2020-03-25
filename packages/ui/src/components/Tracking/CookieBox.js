@@ -43,7 +43,7 @@ class CookieBox extends React.Component {
     };
   }
 
-  handleSubmit = evt => {
+  handleSubmit = (evt) => {
     evt.preventDefault();
 
     this.props.onSubmit({
@@ -69,7 +69,7 @@ class CookieBox extends React.Component {
 
           <form onSubmit={this.handleSubmit}>
             <PreferenceCheckbox
-              onChange={evt =>
+              onChange={(evt) =>
                 this.setState({ gaAccepted: evt.target.checked })
               }
               checked={this.state.gaAccepted}
@@ -88,7 +88,7 @@ class CookieBox extends React.Component {
                 </p>
 
                 <PreferenceCheckbox
-                  onChange={evt =>
+                  onChange={(evt) =>
                     this.setState({ aaAccepted: evt.target.checked })
                   }
                   checked={this.state.aaAccepted}

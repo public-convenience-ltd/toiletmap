@@ -45,7 +45,7 @@ const SEARCH_QUERY = loader('./search.graphql');
 const CONTRIBUTORS = loader('./getContributors.graphql');
 const AREAS_QUERY = loader('./getAreas.graphql');
 
-const styles = theme => ({
+const styles = (theme) => ({
   gridRoot: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -86,7 +86,7 @@ const styles = theme => ({
   },
 });
 
-const Styled = createStyled(theme => ({
+const Styled = createStyled((theme) => ({
   textList: {
     whiteSpace: 'pre-line',
   },
@@ -116,19 +116,19 @@ const renderTableRows = ({ data }) => {
   const MISSING_MESSAGE = 'Not Recorded';
 
   if (data.loos.length === 0) {
-    return <TableRow>
-      <TableCell></TableCell>
-      <TableCell>
-        No results were found for your query.
-      </TableCell>
-    </TableRow>;
+    return (
+      <TableRow>
+        <TableCell></TableCell>
+        <TableCell>No results were found for your query.</TableCell>
+      </TableRow>
+    );
   }
 
   return (
     <Styled>
       {({ classes }) => (
         <>
-          {data.loos.map(loo => {
+          {data.loos.map((loo) => {
             const contributors = loo.reports.reduce((current, next) => {
               current.push(next.contributor);
               return current;
@@ -155,7 +155,7 @@ const renderTableRows = ({ data }) => {
                     </Link>
                   </TableCell>
                   <TableCell>
-                    {area.map(val => {
+                    {area.map((val) => {
                       return (
                         <React.Fragment key={val.name}>
                           <Chip
@@ -168,7 +168,7 @@ const renderTableRows = ({ data }) => {
                             label={val.name}
                             color={val.name ? 'primary' : 'secondary'}
                             variant="default"
-                            onClick={e => {
+                            onClick={(e) => {
                               navigate(`search?area_name=${val.name}`);
                             }}
                             clickable
@@ -216,7 +216,7 @@ const renderTableRows = ({ data }) => {
                           label={attr || MISSING_MESSAGE}
                           color={attr ? 'primary' : 'secondary'}
                           variant="default"
-                          onClick={event => {
+                          onClick={(event) => {
                             navigate(`search?contributors=${attr}`);
                           }}
                           clickable
@@ -237,7 +237,7 @@ const renderTableRows = ({ data }) => {
                       }
                       color={loo.updatedAt ? 'primary' : 'secondary'}
                       variant="default"
-                      onClick={event => {
+                      onClick={(event) => {
                         const dateUpdated = new Date(loo.updatedAt);
                         const year = dateUpdated.getFullYear();
                         const month = (
@@ -282,7 +282,7 @@ const renderTableCol = () => {
   );
 };
 
-const renderTableFooter = props => {
+const renderTableFooter = (props) => {
   const {
     data,
     rowsPerPage,
@@ -399,7 +399,7 @@ class Search extends Component {
    * Pagination page change handler.
    */
   async handleChangePage(event, page) {
-    await this.setState(prevState => ({
+    await this.setState((prevState) => ({
       searchParams: {
         ...prevState.searchParams,
         page: page + 1,
@@ -415,7 +415,7 @@ class Search extends Component {
    * @param {*} event
    */
   async handleChangeRowsPerPage(event) {
-    await this.setState(prevState => ({
+    await this.setState((prevState) => ({
       searchParams: {
         ...prevState.searchParams,
         limit: event.target.value,
@@ -465,7 +465,7 @@ class Search extends Component {
     ];
     return (
       advancedParams.some(
-        advancedParam => this.state.searchParams[advancedParam]
+        (advancedParam) => this.state.searchParams[advancedParam]
       ) || this.state.expanded
     );
   }
@@ -497,7 +497,7 @@ class Search extends Component {
       contributor: this.state.fixedSearchParams.contributors,
     };
 
-    return _.omitBy(variables, (v) => (v === "" || v == null));
+    return _.omitBy(variables, (v) => v === '' || v == null);
   }
 
   render() {
@@ -540,7 +540,7 @@ class Search extends Component {
             <Grid item xs={12}>
               <ExpansionPanel expanded={this.advancedSearch}>
                 <ExpansionPanelSummary
-                  onClick={e =>
+                  onClick={(e) =>
                     this.setState({ expanded: !this.state.expanded })
                   }
                   expandIcon={<ExpandMoreIcon />}
@@ -563,7 +563,7 @@ class Search extends Component {
                             // the data to this format
                             let areas = [];
                             if (!loading && data) {
-                              areas = data.areas.map(area => {
+                              areas = data.areas.map((area) => {
                                 return {
                                   label: area.name,
                                 };
@@ -602,7 +602,7 @@ class Search extends Component {
 
                               // Re-map contributors for search autocomplete
                               let contributors = data.contributors.map(
-                                contributor => ({ label: contributor.name })
+                                (contributor) => ({ label: contributor.name })
                               );
 
                               return (
@@ -689,7 +689,11 @@ class Search extends Component {
                 rowRender={renderTableRows}
                 colRender={renderTableCol}
                 footerRender={renderTableFooter}
-                page={data.loos.loos.length === 0 ? 0 : Math.max(0, this.state.fixedSearchParams.page - 1)}
+                page={
+                  data.loos.loos.length === 0
+                    ? 0
+                    : Math.max(0, this.state.fixedSearchParams.page - 1)
+                }
                 rowsPerPage={parseInt(this.state.fixedSearchParams.limit)}
                 handleChangePage={this.handleChangePage}
                 handleChangeRowsPerPage={this.handleChangeRowsPerPage}

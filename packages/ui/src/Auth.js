@@ -68,13 +68,13 @@ function openUrl(url) {
     return;
   }
 
-  SafariViewController.isAvailable(function(available) {
+  SafariViewController.isAvailable(function (available) {
     if (available) {
       SafariViewController.show(
         {
           url: url,
         },
-        function(result) {
+        function (result) {
           if (result.event === 'opened') {
             console.log('opened');
           } else if (result.event === 'loaded') {
@@ -83,7 +83,7 @@ function openUrl(url) {
             console.log('closed');
           }
         },
-        function(msg) {
+        function (msg) {
           console.log('KO: ' + JSON.stringify(msg));
         }
       );
@@ -109,7 +109,7 @@ export default class Auth {
       });
     });
 
-  setSession = authResult => {
+  setSession = (authResult) => {
     if (!authResult) {
       return;
     }
@@ -149,7 +149,7 @@ export default class Auth {
     };
   };
 
-  redirectOnNextLogin = location => {
+  redirectOnNextLogin = (location) => {
     localStorage.setItem('redirectOnLogin', JSON.stringify(location));
   };
 

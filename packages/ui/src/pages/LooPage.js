@@ -138,7 +138,7 @@ const LooPage = function LooPage(props) {
         </MediaQuery>
 
         <ul className={styles.properties}>
-          {properties.map(name => {
+          {properties.map((name) => {
             var val = mappings.humanizePropertyValue(loo[name], name);
 
             // Filter out useless/unset data

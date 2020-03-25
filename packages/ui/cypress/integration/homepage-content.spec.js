@@ -1,13 +1,13 @@
-describe('homepage content', function() {
-  before(function() {
+describe('homepage content', function () {
+  before(function () {
     cy.server();
     cy.fixture('nearbyLoos.json').as('loos');
     cy.fixture('angliaSquareLoo.json').as('loo');
     cy.route('/api/loos/near/*/*', '@loos');
     cy.route('/api/loos/*', '@loo');
     cy.visit('/', {
-      onBeforeLoad: win => {
-        cy.stub(win.navigator.geolocation, 'getCurrentPosition', success => {
+      onBeforeLoad: (win) => {
+        cy.stub(win.navigator.geolocation, 'getCurrentPosition', (success) => {
           return success({
             coords: {
               longitude: 1.295463,
@@ -28,7 +28,7 @@ describe('homepage content', function() {
   });
 
   it('shows loos on the main map', () => {
-    cy.get('[data-testid="mainMap"]').within($map => {
+    cy.get('[data-testid="mainMap"]').within(($map) => {
       cy.get('[data-testid="looMarker:040992f25ba360e6967b463d"]').should(
         'have.length',
         1
