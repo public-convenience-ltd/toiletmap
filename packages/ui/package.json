@@ -43,6 +43,7 @@
     "lodash": "4.17.15",
     "normalize.css": "8.0.1",
     "prop-types": "15.7.2",
+    "query-string": "5",
     "react": "16.13.0",
     "react-addons-update": "15.6.2",
     "react-dom": "16.13.0",

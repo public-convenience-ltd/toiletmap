@@ -184,7 +184,7 @@ const HomePage = function(props) {
         <div className={layout.controls}>
           {config.allowAddEditLoo && (
             <Link
-              to="/report"
+              to={`/report?lat=${mapControlsData.mapCenter.lat}&lng=${mapControlsData.mapCenter.lng}`}
               className={controls.btn}
               data-testid="add-a-toilet"
             >
