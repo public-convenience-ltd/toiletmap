@@ -17,7 +17,7 @@
     "chart.js": "2.9.3",
     "downshift": "5.0.5",
     "graphql.macro": "1.4.2",
-    "http-proxy-middleware": "1.0.2",
+    "http-proxy-middleware": "1.0.3",
     "leaflet": "1.6.0",
     "lodash": "4.17.15",
     "moment": "2.24.0",
