@@ -26,10 +26,6 @@ After the type and scope there should be a colon.
 
 The "subject" of the commit follows. It should be a short indication of the change. The commit convention prefers that this is written in the present-imperative tense.
 
-### Commitizen
-
-To help with meeting this spec we've installed a [commitizen](http://commitizen.github.io/cz-cli/) adapter. To try it out install commitizen with `npm install -g commitizen` and then run it by usiung `git cz` instead of `git commit`. Commitizen takes all the normal arguments you'd expect for `git commit`
-
 ### Commit linting
 
 Each time you commit the message will be checked against these standards in a pre-commit hook. Additionally all the commits in a PR branch will be linted before it can be merged to master. So don't worry - the :robot: has your back.
