@@ -22,7 +22,7 @@
     "lodash": "4.17.15",
     "mongoose": "5.9.3",
     "mongoose-paginate": "5.0.3",
-    "newrelic": "6.4.2",
+    "newrelic": "6.5.0",
     "node-fetch": "2.6.0"
   },
   "engines": {

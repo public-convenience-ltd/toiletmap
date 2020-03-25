@@ -12026,10 +12026,10 @@ neo-async@^2.5.0, neo-async@^2.6.0, neo-async@^2.6.1:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
-newrelic@6.4.2:
-  version "6.4.2"
-  resolved "https://registry.yarnpkg.com/newrelic/-/newrelic-6.4.2.tgz#8aed38092679a3a41a638688ee293107e75f522b"
-  integrity sha512-/eNuEUehzSU/17YS4kHvONSI78c/WCG1bsnFJpkvlNGnvjVlvPgAsi7fxzq0Oh+zZYQT0qjKqIZhXClbcOO0DA==
+newrelic@6.5.0:
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/newrelic/-/newrelic-6.5.0.tgz#8cfe286aed27e7789fd324eda81f56fafc6ebdef"
+  integrity sha512-1l4ZZJXDvalNUlksjbiN8Fk2KAz11LUa9JHmSUaUja/a2ezj1MirjE7qmOpaYHZnypm5FVBHmcDDHRH4FLKP/w==
   dependencies:
     "@newrelic/aws-sdk" "^1.1.2"
     "@newrelic/koa" "^3.0.0"
