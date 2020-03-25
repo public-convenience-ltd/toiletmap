@@ -4,6 +4,8 @@ import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
+import gql from 'graphql-tag';
+import queryString from 'query-string';
 
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
@@ -28,9 +30,15 @@ import history from '../history';
 const FIND_BY_ID = loader('./findLooById.graphql');
 const UPDATE_LOO = loader('./updateLoo.graphql');
 
-const getLooCachedId = looId => 'Loo:' + looId;
+const SET_MAP_CENTER = gql`
+  mutation SetMapCenter($lat: Number!, $lng: Number!) {
+    updateCenter(lat: $lat, lng: $lng) @client
+  }
+`;
 
-const AddEditPage = function(props) {
+const getLooCachedId = (looId) => 'Loo:' + looId;
+
+const AddEditPage = function (props) {
   const questionnaireMap = [
     {
       question: 'Attended?',
@@ -52,11 +60,8 @@ const AddEditPage = function(props) {
 
   const optionsMap = graphqlMappings.looProps.definitions;
 
-  const isDerived = () => {
-    // Presence of id indicates that we are editing
-    // Conditional expression converts truthy/falsey to boolean
-    return props.match.params.id ? true : false;
-  };
+  // Presence of id indicates that we are editing
+  const isEditing = Boolean(props.match.params.id);
 
   // Find the raw loo data for the given loo
   const { loading: loadingLooData, data: looData, error: looError } = useQuery(
@@ -65,9 +70,27 @@ const AddEditPage = function(props) {
       variables: {
         id: props.match.params.id,
       },
-      skip: !isDerived(),
+      skip: !isEditing,
     }
   );
+
+  // Set map center if lat and lng query parameters are present
+  const [updateStoreCenter] = useMutation(SET_MAP_CENTER);
+
+  const { lat, lng } = queryString.parse(props.location.search);
+
+  useEffect(() => {
+    if (isEditing || !lat || !lng) {
+      return null;
+    }
+
+    updateStoreCenter({
+      variables: {
+        lat,
+        lng,
+      },
+    });
+  }, [lat, lng, isEditing, updateStoreCenter]);
 
   // A temp state for the map center
   // We don't need to fetch this from the cached map state, because nearestLooMap
@@ -79,7 +102,7 @@ const AddEditPage = function(props) {
 
   // Fetch the current geolocation
   useEffect(() => {
-    getGeolocation(response => {
+    getGeolocation((response) => {
       const { longitude, latitude } = response.coords;
       setGeolocation({ lng: longitude, lat: latitude });
     });
@@ -92,12 +115,12 @@ const AddEditPage = function(props) {
   const [original, setOriginal] = useState();
 
   useEffect(() => {
-    if (!looData && isDerived()) {
+    if (!looData && isEditing) {
       return;
     }
 
     let looDataToUse = {};
-    if (isDerived()) {
+    if (isEditing) {
       looDataToUse = looData.loo;
     }
 
@@ -113,7 +136,7 @@ const AddEditPage = function(props) {
     };
 
     // Set questionnaire loo property defaults
-    questionnaireMap.forEach(q => {
+    questionnaireMap.forEach((q) => {
       tempLoo[q.property] = '';
     });
 
@@ -134,7 +157,7 @@ const AddEditPage = function(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadingLooData]);
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     // Avoid state mutation
     let loo = _.cloneDeep(looState);
 
@@ -144,7 +167,7 @@ const AddEditPage = function(props) {
     setLooState(loo);
   };
 
-  const handleTriStateChange = event => {
+  const handleTriStateChange = (event) => {
     let val;
     switch (event.target.value) {
       case 'true':
@@ -187,7 +210,7 @@ const AddEditPage = function(props) {
     // Keep only new or changed data, by comparing to the form's initial state
     const changes = onlyChanges(now, before);
 
-    if (!isDerived()) {
+    if (!isEditing) {
       // If we're a new loo, we always want location, regardless of whether it
       // has changed since the start of the form
       changes.location = now.location;
@@ -196,7 +219,7 @@ const AddEditPage = function(props) {
     return changes;
   };
 
-  const onMapCenterUpdate = newCenter => {
+  const onMapCenterUpdate = (newCenter) => {
     setMapCenter(newCenter);
   };
 
@@ -235,11 +258,11 @@ const AddEditPage = function(props) {
     };
 
     // Set questionnaire options to null before transport.
-    questionnaireMap.forEach(q => {
+    questionnaireMap.forEach((q) => {
       if (changes[q.property] === '') changes[q.property] = null;
     });
 
-    if (isDerived()) {
+    if (isEditing) {
       let id = looData.loo.id;
       changes.id = id;
 
@@ -272,7 +295,7 @@ const AddEditPage = function(props) {
           </div>
         </div>
 
-        {isDerived() ? (
+        {isEditing ? (
           <h2 className={headings.large}>Update This Toilet</h2>
         ) : (
           <h2 className={headings.large}>Add This Toilet</h2>
@@ -498,7 +521,7 @@ const AddEditPage = function(props) {
         )}
 
         <div className={controls.btnStack}>
-          {isDerived() ? (
+          {isEditing ? (
             <input
               type="submit"
               className={controls.btn}
@@ -516,7 +539,7 @@ const AddEditPage = function(props) {
             />
           )}
 
-          {isDerived() && (
+          {isEditing && (
             <Link
               to={`/loos/${props.match.params.id}/remove`}
               className={controls.btnCaution}
@@ -546,7 +569,7 @@ const AddEditPage = function(props) {
     );
   };
 
-  if ((isDerived() && (loadingLooData || !looData)) || !looState) {
+  if ((isEditing && (loadingLooData || !looData)) || !looState) {
     return (
       <PageLayout
         main={<Loading message={'Fetching Toilet Data'} />}

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import HomePage from './HomePage';
 
-const MapPage = function(props) {
+const MapPage = function (props) {
   const pos = {
     lat: props.match.params.lat,
     lng: props.match.params.lng,

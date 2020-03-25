@@ -10,9 +10,9 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import CloseOutlined from '@material-ui/icons/CloseOutlined';
 
-const styles = theme => ({});
+const styles = (theme) => ({});
 
-const renderInput = inputProps => {
+const renderInput = (inputProps) => {
   const { InputProps, classes, ref, ...other } = inputProps;
 
   return (
@@ -69,7 +69,7 @@ class SearchAutocomplete extends Component {
 
     return inputLength === 0
       ? []
-      : data.filter(suggestion => {
+      : data.filter((suggestion) => {
           const keep =
             count < 5 &&
             suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;

@@ -14,7 +14,7 @@ const chooseLinkStyle = (location, path) => {
   return styles.footerItem;
 };
 
-const Footer = props => (
+const Footer = (props) => (
   <footer className={styles.footer}>
     <ul className={styles.footerList}>
       <li className={styles.footerListItem}>

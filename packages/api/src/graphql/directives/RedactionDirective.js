@@ -6,7 +6,7 @@ class RedactionDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field) {
     const { resolve = defaultFieldResolver } = field;
     const { requires, replace } = this.args;
-    field.resolve = async function(...args) {
+    field.resolve = async function (...args) {
       const [, , ctx] = args;
       if (ctx && ctx.user) {
         if (

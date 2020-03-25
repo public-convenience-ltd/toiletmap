@@ -38,16 +38,14 @@ class AppLayout extends Component {
       navOpen: false,
       defaultStatScope: {
         start: '2015-01-23',
-        end: moment()
-          .add(1, 'days')
-          .format('YYYY-MM-DD'),
+        end: moment().add(1, 'days').format('YYYY-MM-DD'),
         areaType: 'All',
         area: 'All',
       },
     };
   }
 
-  toggleDrawer = open => () => {
+  toggleDrawer = (open) => () => {
     this.setState({ drawer: open });
   };
 

@@ -9,7 +9,7 @@ const AllowAPI = require('./config-components/AllowAPI');
 const Config = require('./config-components/Config');
 const CordovaPlugins = require('./config-components/CordovaPlugins');
 
-if (process.argv.slice(2).some(arg => arg.match(/^-?-h/))) {
+if (process.argv.slice(2).some((arg) => arg.match(/^-?-h/))) {
   console.log(
     'Builds config.xml, use with --dev to build a dev version which is useful for running the app locally against localhost:3000'
   );

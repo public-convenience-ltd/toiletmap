@@ -6,7 +6,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import { TableFooter } from '@material-ui/core';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     width: '100%',
     overflowX: 'auto',

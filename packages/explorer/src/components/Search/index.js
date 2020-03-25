@@ -45,7 +45,7 @@ const SEARCH_QUERY = loader('./search.graphql');
 const CONTRIBUTORS = loader('./getContributors.graphql');
 const AREAS_QUERY = loader('./getAreas.graphql');
 
-const styles = theme => ({
+const styles = (theme) => ({
   gridRoot: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -86,7 +86,7 @@ const styles = theme => ({
   },
 });
 
-const Styled = createStyled(theme => ({
+const Styled = createStyled((theme) => ({
   textList: {
     whiteSpace: 'pre-line',
   },
@@ -114,11 +114,21 @@ const Styled = createStyled(theme => ({
 
 const renderTableRows = ({ data }) => {
   const MISSING_MESSAGE = 'Not Recorded';
+
+  if (data.loos.length === 0) {
+    return (
+      <TableRow>
+        <TableCell></TableCell>
+        <TableCell>No results were found for your query.</TableCell>
+      </TableRow>
+    );
+  }
+
   return (
     <Styled>
       {({ classes }) => (
         <>
-          {data.loos.map(loo => {
+          {data.loos.map((loo) => {
             const contributors = loo.reports.reduce((current, next) => {
               current.push(next.contributor);
               return current;
@@ -145,7 +155,7 @@ const renderTableRows = ({ data }) => {
                     </Link>
                   </TableCell>
                   <TableCell>
-                    {area.map(val => {
+                    {area.map((val) => {
                       return (
                         <React.Fragment key={val.name}>
                           <Chip
@@ -158,7 +168,7 @@ const renderTableRows = ({ data }) => {
                             label={val.name}
                             color={val.name ? 'primary' : 'secondary'}
                             variant="default"
-                            onClick={e => {
+                            onClick={(e) => {
                               navigate(`search?area_name=${val.name}`);
                             }}
                             clickable
@@ -206,7 +216,7 @@ const renderTableRows = ({ data }) => {
                           label={attr || MISSING_MESSAGE}
                           color={attr ? 'primary' : 'secondary'}
                           variant="default"
-                          onClick={event => {
+                          onClick={(event) => {
                             navigate(`search?contributors=${attr}`);
                           }}
                           clickable
@@ -227,7 +237,7 @@ const renderTableRows = ({ data }) => {
                       }
                       color={loo.updatedAt ? 'primary' : 'secondary'}
                       variant="default"
-                      onClick={event => {
+                      onClick={(event) => {
                         const dateUpdated = new Date(loo.updatedAt);
                         const year = dateUpdated.getFullYear();
                         const month = (
@@ -272,7 +282,7 @@ const renderTableCol = () => {
   );
 };
 
-const renderTableFooter = props => {
+const renderTableFooter = (props) => {
   const {
     data,
     rowsPerPage,
@@ -310,19 +320,23 @@ class Search extends Component {
       limit: 10,
     };
 
+    const initSearchParams = () => ({
+      ...this.searchDefaults,
+      // Apply values from query string.
+      ...parsedQuery,
+      // Apply checked page value.
+      page: pageCheck,
+    });
+
     const parsedQuery = queryString.parse(this.props.location.search);
     const pageCheck = parseInt(parsedQuery.page)
       ? parsedQuery.page
       : this.searchDefaults.page;
     this.state = {
       expanded: false,
-      searchParams: {
-        ...this.searchDefaults,
-        // Apply values from query string.
-        ...parsedQuery,
-        // Apply checked page value.
-        page: pageCheck,
-      },
+      searchParams: initSearchParams(),
+      // the search params that are in the query string
+      fixedSearchParams: initSearchParams(),
     };
 
     // Submit new search with potentially modified search state.
@@ -356,8 +370,8 @@ class Search extends Component {
   /**
    * Getter for the search query string - strips empty fields.
    */
-  get queryString() {
-    const omitEmpty = _.pickBy(this.state.searchParams);
+  queryString(newParams) {
+    const omitEmpty = _.pickBy(newParams);
 
     // If everything is empty, ensure that we at least specify the `text` param.
     if (_.isEmpty(omitEmpty)) {
@@ -374,14 +388,18 @@ class Search extends Component {
    * Omits any empty search parameters from the search.
    */
   async submitSearch() {
-    await navigate(`search?${this.queryString}`);
+    const newParams = _.cloneDeep(this.state.searchParams);
+    await navigate(`search?${this.queryString(newParams)}`);
+    this.setState({
+      fixedSearchParams: newParams,
+    });
   }
 
   /**
    * Pagination page change handler.
    */
   async handleChangePage(event, page) {
-    await this.setState(prevState => ({
+    await this.setState((prevState) => ({
       searchParams: {
         ...prevState.searchParams,
         page: page + 1,
@@ -397,7 +415,7 @@ class Search extends Component {
    * @param {*} event
    */
   async handleChangeRowsPerPage(event) {
-    await this.setState(prevState => ({
+    await this.setState((prevState) => ({
       searchParams: {
         ...prevState.searchParams,
         limit: event.target.value,
@@ -447,7 +465,7 @@ class Search extends Component {
     ];
     return (
       advancedParams.some(
-        advancedParam => this.state.searchParams[advancedParam]
+        (advancedParam) => this.state.searchParams[advancedParam]
       ) || this.state.expanded
     );
   }
@@ -465,21 +483,21 @@ class Search extends Component {
    * Gets the GraphQL query variables
    */
   get queryVariables() {
-    let fromDate = this.parseDate(this.state.searchParams.from_date);
-    let toDate = this.parseDate(this.state.searchParams.to_date);
+    let fromDate = this.parseDate(this.state.fixedSearchParams.from_date);
+    let toDate = this.parseDate(this.state.fixedSearchParams.to_date);
 
     let variables = {
-      rows: parseInt(this.state.searchParams.limit),
-      page: parseInt(this.state.searchParams.page),
-      text: this.state.searchParams.text,
-      order: this.state.searchParams.order,
-      areaName: this.state.searchParams.area_name,
+      rows: parseInt(this.state.fixedSearchParams.limit),
+      page: parseInt(this.state.fixedSearchParams.page),
+      text: this.state.fixedSearchParams.text,
+      order: this.state.fixedSearchParams.order,
+      areaName: this.state.fixedSearchParams.area_name,
       fromDate,
       toDate,
-      contributor: this.state.searchParams.contributors,
+      contributor: this.state.fixedSearchParams.contributors,
     };
 
-    return _.omitBy(variables, _.isEmpty);
+    return _.omitBy(variables, (v) => v === '' || v == null);
   }
 
   render() {
@@ -522,7 +540,7 @@ class Search extends Component {
             <Grid item xs={12}>
               <ExpansionPanel expanded={this.advancedSearch}>
                 <ExpansionPanelSummary
-                  onClick={e =>
+                  onClick={(e) =>
                     this.setState({ expanded: !this.state.expanded })
                   }
                   expandIcon={<ExpandMoreIcon />}
@@ -545,7 +563,7 @@ class Search extends Component {
                             // the data to this format
                             let areas = [];
                             if (!loading && data) {
-                              areas = data.areas.map(area => {
+                              areas = data.areas.map((area) => {
                                 return {
                                   label: area.name,
                                 };
@@ -584,7 +602,7 @@ class Search extends Component {
 
                               // Re-map contributors for search autocomplete
                               let contributors = data.contributors.map(
-                                contributor => ({ label: contributor.name })
+                                (contributor) => ({ label: contributor.name })
                               );
 
                               return (
@@ -671,8 +689,12 @@ class Search extends Component {
                 rowRender={renderTableRows}
                 colRender={renderTableCol}
                 footerRender={renderTableFooter}
-                page={Math.max(0, this.state.searchParams.page - 1)}
-                rowsPerPage={parseInt(this.state.searchParams.limit)}
+                page={
+                  data.loos.loos.length === 0
+                    ? 0
+                    : Math.max(0, this.state.fixedSearchParams.page - 1)
+                }
+                rowsPerPage={parseInt(this.state.fixedSearchParams.limit)}
                 handleChangePage={this.handleChangePage}
                 handleChangeRowsPerPage={this.handleChangeRowsPerPage}
               />

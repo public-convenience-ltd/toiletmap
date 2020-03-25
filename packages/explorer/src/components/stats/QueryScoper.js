@@ -33,7 +33,7 @@ class QueryScoper extends Component {
     });
   };
 
-  changeArea = value => {
+  changeArea = (value) => {
     this.setState({
       area: value,
     });

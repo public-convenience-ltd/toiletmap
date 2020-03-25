@@ -3,7 +3,7 @@ import React from 'react';
 import Notification from './Notification';
 import styles from './css/loo-map.module.css';
 
-export default props => {
+export default (props) => {
   if (props.fullScreen) {
     return (
       <div className={styles.loading + ' loading--zindexfix'}>

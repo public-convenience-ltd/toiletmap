@@ -17,7 +17,7 @@ class GeolocationMapControl extends MapControl {
       placeholder: 'Placename or postcode...',
     });
 
-    control.markGeocode = function(result) {
+    control.markGeocode = function (result) {
       this._map.setView(result.geocode.center);
 
       return this;

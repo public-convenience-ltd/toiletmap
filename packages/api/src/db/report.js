@@ -13,7 +13,7 @@ const ReportSchema = new Schema(
     previous: {
       type: Schema.Types.ObjectId,
       ref: 'NewReport',
-      validate: async function(value) {
+      validate: async function (value) {
         // "this.constructor" refers to our static model
         const previous = await this.constructor.findById(value).exec();
 
@@ -28,7 +28,7 @@ const ReportSchema = new Schema(
     next: {
       type: Schema.Types.ObjectId,
       ref: 'NewReport',
-      validate: async function(value) {
+      validate: async function (value) {
         // "this.constructor" refers to our static model
         const next = await this.constructor.findById(value).exec();
 
@@ -49,7 +49,7 @@ const ReportSchema = new Schema(
     },
     diff: {
       type: CoreSchema,
-      validate: async function(value) {
+      validate: async function (value) {
         value = value.toObject();
         if (_.isEqual(value, {})) {
           // TODO decide what we want to do with empty reports
@@ -91,7 +91,7 @@ const ReportSchema = new Schema(
 /**
  * Produce an array of all the reports in the current roll preceeding and including the current target
  */
-ReportSchema.methods.unroll = async function() {
+ReportSchema.methods.unroll = async function () {
   let looroll = [];
   let report = this;
 
@@ -107,14 +107,14 @@ ReportSchema.methods.unroll = async function() {
   return looroll;
 };
 
-ReportSchema.methods.generateLoo = async function(idOverride) {
+ReportSchema.methods.generateLoo = async function (idOverride) {
   idOverride = idOverride || null;
   let looroll = await this.unroll();
   let loo = this.model('NewLoo').fromReports(looroll, idOverride);
   return loo;
 };
 
-ReportSchema.methods.deriveFrom = async function(previous) {
+ReportSchema.methods.deriveFrom = async function (previous) {
   const prevLooState = await previous.generateLoo();
   const propsBefore = prevLooState.toObject().properties;
   const propsChange = this.toObject().diff;
@@ -131,7 +131,7 @@ ReportSchema.methods.deriveFrom = async function(previous) {
   return this;
 };
 
-ReportSchema.methods.nameSuccessor = function(next) {
+ReportSchema.methods.nameSuccessor = function (next) {
   this.next = next._id;
 };
 
@@ -140,7 +140,7 @@ ReportSchema.methods.nameSuccessor = function(next) {
  * We use this to create the id of a loo generated from this report so that looids are stable across
  * generation/migration runs.
  */
-ReportSchema.methods.suggestLooId = function() {
+ReportSchema.methods.suggestLooId = function () {
   // Using the timestamp, the diff, and the contributor should be sufficiently unique
   // whilst also being stable
   let input = JSON.stringify({
@@ -156,7 +156,7 @@ ReportSchema.methods.suggestLooId = function() {
  * Find the loo which refers to this report
  * It is an article of faith that there can't be more than one ;-)
  */
-ReportSchema.methods.getLoo = async function() {
+ReportSchema.methods.getLoo = async function () {
   return await this.model('NewLoo').findOne({
     reports: Types.ObjectId(this.id),
   });
@@ -177,7 +177,7 @@ async function getAreaData(point) {
   // Mapit returns an object keyed by numerid area id.
   // We are only looking for the values containing a type_name our config
   // tells us is interesting. We'll extract them and map them into an
-  let area = _.map(data, v => {
+  let area = _.map(data, (v) => {
     if (config.mapit.areaTypes.includes(v.type_name)) {
       return {
         type: v.type_name,
@@ -188,7 +188,7 @@ async function getAreaData(point) {
   return _.compact(area);
 }
 
-ReportSchema.statics.submit = async function(data, user, from) {
+ReportSchema.statics.submit = async function (data, user, from) {
   const area = await getAreaData(data.geometry);
   const reportData = {
     diff: {
@@ -230,7 +230,7 @@ ReportSchema.statics.submit = async function(data, user, from) {
   return [savedReport, savedLoo];
 };
 
-ReportSchema.statics.getCounters = async function() {
+ReportSchema.statics.getCounters = async function () {
   const [totalReports, removalReports] = await Promise.all([
     this.countDocuments({}).exec(),
     this.countDocuments({ 'diff.active': false }).exec(),
