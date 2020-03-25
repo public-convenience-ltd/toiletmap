@@ -39,8 +39,8 @@
     "testEnvironment": "node"
   },
   "scripts": {
-    "dev": "nodemon -r dotenv/config src/graphql/index.js",
-    "start": "nodemon src/graphql/index.js"
+    "dev": "nodemon -r dotenv/config src/index.js",
+    "start": "nodemon src/index.js"
   },
   "devDependencies": {
     "dotenv": "8.2.0"

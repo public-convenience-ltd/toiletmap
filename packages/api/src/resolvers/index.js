@@ -1,5 +1,5 @@
-const config = require('../../config');
-const { Loo, Report } = require('../../db')(config.mongo.url);
+const config = require('../config');
+const { Loo, Report } = require('../db')(config.mongo.url);
 const { GraphQLDateTime } = require('graphql-iso-date');
 const _ = require('lodash');
 

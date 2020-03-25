@@ -2,7 +2,7 @@ const { ApolloServer } = require('apollo-server');
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
 
-const config = require('../config');
+const config = require('./config');
 
 const typeDefs = require('./typeDefs');
 const resolvers = require('./resolvers');
