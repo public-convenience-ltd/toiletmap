@@ -16,7 +16,7 @@
     "graphql-iso-date": "3.6.1",
     "graphql-voyager": "1.0.0-rc.29",
     "hasha": "5.2.0",
-    "helmet": "3.21.3",
+    "helmet": "3.22.0",
     "jsonwebtoken": "8.5.1",
     "jwks-rsa": "1.7.0",
     "lodash": "4.17.15",
