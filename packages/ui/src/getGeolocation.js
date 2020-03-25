@@ -6,10 +6,10 @@ const getGeolocation = (onComplete, onError) => {
     return;
   }
 
-  const getPos = doTimeout => {
+  const getPos = (doTimeout) => {
     navigator.geolocation.getCurrentPosition(
       onComplete,
-      error => {
+      (error) => {
         console.error('Could not find geolocation:', error);
         if (onError) onError(error);
       },

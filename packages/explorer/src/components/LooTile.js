@@ -14,7 +14,7 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const styles = theme => ({
+const styles = (theme) => ({
   looTile: {
     width: '100%',
     height: 300,

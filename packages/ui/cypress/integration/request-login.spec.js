@@ -1,13 +1,13 @@
-describe('homepage content', function() {
-  before(function() {
+describe('homepage content', function () {
+  before(function () {
     cy.server();
     cy.fixture('nearbyLoos.json').as('loos');
     cy.fixture('angliaSquareLoo.json').as('loo');
     cy.route('/api/loos/near/*/*', '@loos');
     cy.route('/api/loos/*', '@loo');
     cy.visit('/', {
-      onBeforeLoad: win => {
-        cy.stub(win.navigator.geolocation, 'getCurrentPosition', success => {
+      onBeforeLoad: (win) => {
+        cy.stub(win.navigator.geolocation, 'getCurrentPosition', (success) => {
           return success({
             coords: {
               longitude: 1.295463,

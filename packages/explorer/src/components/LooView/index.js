@@ -20,7 +20,7 @@ import pickBy from 'lodash/pickBy';
 import { DateTime } from 'luxon';
 const LOO_DETAILS = loader('./looDetails.graphql');
 
-const styles = theme => ({
+const styles = (theme) => ({
   looTile: {
     height: '100%',
     width: 'auto',
@@ -58,11 +58,11 @@ const styles = theme => ({
   },
 });
 
-const TableRowRender = props => {
+const TableRowRender = (props) => {
   const { data } = props;
   return (
     <>
-      {data.docs.map(loo => {
+      {data.docs.map((loo) => {
         return (
           <TableRow key={loo[0]}>
             <TableCell component="th" scope="row">
@@ -97,7 +97,7 @@ class LooView extends Component {
     };
   }
 
-  handleChange = panel => (event, expanded) => {
+  handleChange = (panel) => (event, expanded) => {
     this.setState({
       expanded: expanded ? panel : false,
     });
@@ -111,7 +111,7 @@ class LooView extends Component {
         {({ loading, error, data }) => {
           if (loading) return <p>Loading Loo Info</p>;
           if (error) return <p>Failed to fetch loo :(</p>;
-          let loo = pickBy(data.loo, val => val !== null);
+          let loo = pickBy(data.loo, (val) => val !== null);
           return (
             <div className={classes.root}>
               <div className={classes.appBarSpacer} />
@@ -183,8 +183,8 @@ class LooView extends Component {
                     </Typography>
                   </Grid>
                   <div className={classes.expansionRoot}>
-                    {loo.reports.map(value => {
-                      let report = pickBy(value, val => val !== null);
+                    {loo.reports.map((value) => {
+                      let report = pickBy(value, (val) => val !== null);
                       return (
                         <ExpansionPanel
                           key={report.id}

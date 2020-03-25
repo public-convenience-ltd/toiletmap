@@ -6,7 +6,7 @@ const history = config.isNativeApp()
   : createBrowserHistory();
 
 // Set a function to be called on location change
-history.listen(function(location) {
+history.listen(function (location) {
   // If we havn't opted in, we shouldn't have digitalData on window
   if (window.hasOwnProperty('digitalData') && window.hasOwnProperty('s')) {
     // does not include

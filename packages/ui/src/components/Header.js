@@ -18,14 +18,18 @@ class Header extends Component {
             to="/use-our-loos"
             title="Domestos - Use Our Loos Campaign"
             className={styles.sponsorWrapper}
-            scroll={el => el.scrollIntoView(true)}
+            scroll={(el) => el.scrollIntoView(true)}
           >
             <img
               src={domestosUseLoos}
               alt="Domestos use our loos logo"
               className={styles.sponsorLogoLeft}
             />
-            <span className={styles.sponsorTitle}>proudly<br />sponsored by</span>
+            <span className={styles.sponsorTitle}>
+              proudly
+              <br />
+              sponsored by
+            </span>
             <img
               src={domestosLogo}
               alt="Domestos logo"

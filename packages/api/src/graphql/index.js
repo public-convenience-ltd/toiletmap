@@ -17,7 +17,7 @@ const client = jwksClient({
 });
 
 function getKey(header, cb) {
-  client.getSigningKey(header.kid, function(err, key) {
+  client.getSigningKey(header.kid, function (err, key) {
     var signingKey = key.publicKey || key.rsaPublicKey;
     cb(null, signingKey);
   });
@@ -61,7 +61,7 @@ const apollo = new ApolloServer({
   introspection: true,
 });
 
-const applyMiddleware = app => {
+const applyMiddleware = (app) => {
   apollo.applyMiddleware({ app });
   // Add voyager for graphql
   app.use('/voyager', voyagerMiddleware({ endpointUrl: '/graphql' }));

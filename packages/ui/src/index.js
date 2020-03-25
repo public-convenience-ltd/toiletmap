@@ -123,7 +123,7 @@ const startApp = () => {
               <Route
                 exact
                 path="/"
-                render={props => <HomePage auth={auth} {...props} />}
+                render={(props) => <HomePage auth={auth} {...props} />}
               />
               <Route exact path="/preferences" component={PreferencesPage} />
               <Route exact path="/about" component={AboutPage} />
@@ -132,16 +132,16 @@ const startApp = () => {
               <Route path="/loos/:id" exact component={LooPage} />
               <Route
                 path="/login"
-                render={props => <LoginPage auth={auth} {...props} />}
+                render={(props) => <LoginPage auth={auth} {...props} />}
               />
               <Route
                 path="/map/:lng/:lat"
-                render={props => <MapPage auth={auth} {...props} />}
+                render={(props) => <MapPage auth={auth} {...props} />}
               />
               <Route
                 exact
                 path="/callback"
-                render={props => <AuthCallback auth={auth} {...props} />}
+                render={(props) => <AuthCallback auth={auth} {...props} />}
               />
               <ProtectedRoute
                 exact

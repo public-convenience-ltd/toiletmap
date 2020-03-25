@@ -37,7 +37,7 @@ const GET_USER_DATA = gql`
   }
 `;
 
-const ThanksPage = function(props) {
+const ThanksPage = function (props) {
   const { loading: loadingLoo, data: looData, error: looError } = useQuery(
     FIND_BY_ID,
     {

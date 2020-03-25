@@ -3,9 +3,9 @@ const { Loo, Report } = require('../../db')(config.mongo.url);
 const { GraphQLDateTime } = require('graphql-iso-date');
 const _ = require('lodash');
 
-const subPropertyResolver = property => (parent, args, context, info) =>
+const subPropertyResolver = (property) => (parent, args, context, info) =>
   parent[property][info.fieldName];
-const looInfoResolver = property => {
+const looInfoResolver = (property) => {
   let resolve = subPropertyResolver(property);
   return {
     active: resolve,
@@ -120,7 +120,7 @@ const resolvers = {
         },
       ]);
 
-      const areas = data.map(area => {
+      const areas = data.map((area) => {
         return {
           type: area.type,
           name: area._id,
@@ -186,7 +186,7 @@ const resolvers = {
     areaStats: async (parent, args) => {
       const areas = await Loo.getAreasCounters();
 
-      return areas.map(area => {
+      return areas.map((area) => {
         return {
           area: {
             name: area._id,
@@ -214,7 +214,7 @@ const resolvers = {
         },
       ]).exec();
 
-      return contributors.map(val => ({ name: val._id }));
+      return contributors.map((val) => ({ name: val._id }));
     },
   },
 
@@ -285,25 +285,21 @@ const resolvers = {
   },
 
   Report: {
-    id: r => r._id.toString(),
-    previous: r => Report.findById(r.previous),
-    location: r =>
+    id: (r) => r._id.toString(),
+    previous: (r) => Report.findById(r.previous),
+    location: (r) =>
       r.diff.geometry && {
         lng: r.diff.geometry.coordinates[0],
         lat: r.diff.geometry.coordinates[1],
       },
     ...looInfoResolver('diff'),
-    loo: r => r.getLoo(),
+    loo: (r) => r.getLoo(),
   },
 
   Loo: {
-    id: l => l._id.toString(),
-    reports: l =>
-      Report.find()
-        .where('_id')
-        .in(l.reports)
-        .exec(),
-    location: l => ({
+    id: (l) => l._id.toString(),
+    reports: (l) => Report.find().where('_id').in(l.reports).exec(),
+    location: (l) => ({
       lng: l.properties.geometry.coordinates[0],
       lat: l.properties.geometry.coordinates[1],
     }),

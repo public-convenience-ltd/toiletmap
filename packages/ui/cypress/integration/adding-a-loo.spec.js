@@ -1,5 +1,5 @@
 describe('loo added by a user that is already logged in', () => {
-  before(function() {
+  before(function () {
     cy.server();
     cy.fixture('nearbyLoos.json').as('loos');
     cy.fixture('angliaSquareLoo.json').as('loo');
@@ -14,13 +14,13 @@ describe('loo added by a user that is already logged in', () => {
     });
 
     cy.visit('/report', {
-      onBeforeLoad: win => {
+      onBeforeLoad: (win) => {
         win.localStorage.setItem(
           'expires_at',
           `${new Date().getTime() + 25000}`
         );
         win.localStorage.setItem('access_token', 'imalittleteapot');
-        cy.stub(win.navigator.geolocation, 'getCurrentPosition', success => {
+        cy.stub(win.navigator.geolocation, 'getCurrentPosition', (success) => {
           return success({
             coords: {
               longitude: 1.295463,

@@ -62,7 +62,7 @@ export default {
     if (this.looProps.definitions[property]) {
       // We may use a human readable definition of this property value
       let override = this.looProps.definitions[property].find(
-        s => s.value === val
+        (s) => s.value === val
       );
       if (override) {
         return override.name;
@@ -87,7 +87,7 @@ export default {
     if (typeof val === 'string') {
       val = val
         .replace(/([A-Z])/g, ' $1')
-        .replace(/^./, str => str.toUpperCase())
+        .replace(/^./, (str) => str.toUpperCase())
         .trim();
     }
 

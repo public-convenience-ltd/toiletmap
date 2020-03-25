@@ -13,7 +13,7 @@ const platformWWW = path.resolve(
 //  Copied + configured from cordova-config.js
 const appID = 'uk.org.toiletmap';
 
-module.exports = function(app) {
+module.exports = function (app) {
   const cordovaStaticServer = express.static(platformWWW, {
     fallthrough: true,
   });

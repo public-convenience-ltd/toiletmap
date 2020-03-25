@@ -28,9 +28,9 @@ import history from '../history';
 const FIND_BY_ID = loader('./findLooById.graphql');
 const UPDATE_LOO = loader('./updateLoo.graphql');
 
-const getLooCachedId = looId => 'Loo:' + looId;
+const getLooCachedId = (looId) => 'Loo:' + looId;
 
-const AddEditPage = function(props) {
+const AddEditPage = function (props) {
   const questionnaireMap = [
     {
       question: 'Attended?',
@@ -79,7 +79,7 @@ const AddEditPage = function(props) {
 
   // Fetch the current geolocation
   useEffect(() => {
-    getGeolocation(response => {
+    getGeolocation((response) => {
       const { longitude, latitude } = response.coords;
       setGeolocation({ lng: longitude, lat: latitude });
     });
@@ -113,7 +113,7 @@ const AddEditPage = function(props) {
     };
 
     // Set questionnaire loo property defaults
-    questionnaireMap.forEach(q => {
+    questionnaireMap.forEach((q) => {
       tempLoo[q.property] = '';
     });
 
@@ -134,7 +134,7 @@ const AddEditPage = function(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadingLooData]);
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     // Avoid state mutation
     let loo = _.cloneDeep(looState);
 
@@ -144,7 +144,7 @@ const AddEditPage = function(props) {
     setLooState(loo);
   };
 
-  const handleTriStateChange = event => {
+  const handleTriStateChange = (event) => {
     let val;
     switch (event.target.value) {
       case 'true':
@@ -196,7 +196,7 @@ const AddEditPage = function(props) {
     return changes;
   };
 
-  const onMapCenterUpdate = newCenter => {
+  const onMapCenterUpdate = (newCenter) => {
     setMapCenter(newCenter);
   };
 
@@ -235,7 +235,7 @@ const AddEditPage = function(props) {
     };
 
     // Set questionnaire options to null before transport.
-    questionnaireMap.forEach(q => {
+    questionnaireMap.forEach((q) => {
       if (changes[q.property] === '') changes[q.property] = null;
     });
 

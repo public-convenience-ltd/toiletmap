@@ -16,7 +16,7 @@ import controls from '../css/controls.module.css';
 const FIND_LOO_BY_ID = loader('./findLooLocationById.graphql');
 const REMOVE_LOO_MUTATION = loader('./removeLoo.graphql');
 
-const RemovePage = function(props) {
+const RemovePage = function (props) {
   const [reason, setReason] = useState('');
 
   const { loading: loadingLoo, data: looData, error: looError } = useQuery(
@@ -37,7 +37,7 @@ const RemovePage = function(props) {
     },
   });
 
-  const updateReason = evt => {
+  const updateReason = (evt) => {
     setReason(evt.currentTarget.value);
   };
 

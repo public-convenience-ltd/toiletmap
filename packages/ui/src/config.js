@@ -86,7 +86,7 @@ export default {
       female: ['MALE', 'MALE_URINAL'],
     };
 
-    Object.keys(preferences).forEach(name => {
+    Object.keys(preferences).forEach((name) => {
       var value = loo[map[name]];
 
       if (['', undefined, null].indexOf(value) !== -1) {
