@@ -45,6 +45,7 @@ import {
 import { setContext } from 'apollo-link-context';
 
 import { version } from '../package.json';
+import { gql } from 'graphql.macro';
 
 const auth = new Auth();
 
@@ -85,33 +86,44 @@ const client = new ApolloClient({
 });
 
 // Set the initial cache state
-let isAuthed = auth.isAuthenticated();
-const initialState = {
-  viewMap: true, // whether to view a map or list
-  mapZoom: 16,
-  mapCenter: {
-    __typename: 'Point',
-    lat: 0,
-    lng: 0,
-  },
-  mapRadius: 1000,
-  userData: {
-    __typename: 'UserData',
-    loggedIn: isAuthed,
-    name: isAuthed ? auth.getProfile().name : null,
-  },
-};
-
-const initialize = () => {
-  cache.writeData({
-    data: initialState,
+function writeInitialState() {
+  let isAuthed = auth.isAuthenticated();
+  cache.writeQuery({
+    query: gql`
+      query {
+        viewMap
+        mapZoom
+        mapRadius
+        mapCenter {
+          lat
+          lng
+        }
+        userData {
+          loggedIn
+          name
+        }
+      }
+    `,
+    data: {
+      viewMap: true, // whether to view a map or list
+      mapZoom: 16,
+      mapRadius: 1000,
+      mapCenter: {
+        __typename: 'Point',
+        lat: 0,
+        lng: 0,
+      },
+      userData: {
+        __typename: 'UserData',
+        loggedIn: isAuthed,
+        name: isAuthed ? auth.getProfile().name : null,
+      },
+    },
   });
-};
-
-initialize();
-
+}
+writeInitialState();
 // resetStore isn't used anywhere yet, but just in case...
-client.onResetStore(initialize);
+client.onResetStore(writeInitialState);
 
 const startApp = () => {
   if (typeof document !== 'undefined') {
