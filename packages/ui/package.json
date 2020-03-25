@@ -20,7 +20,7 @@
     "start-server-and-test": "1.10.11"
   },
   "dependencies": {
-    "@apollo/client": "3.0.0-beta.41",
+    "@apollo/client": "3.0.0-beta.38",
     "@auth0/cordova": "0.4.3",
     "@toiletmap/opening-hours": "3.2.1",
     "apollo-link-context": "1.0.19",
@@ -62,7 +62,7 @@
     "cy:open": "cypress open --config baseUrl=http://localhost:3000",
     "cy:run": "cypress run --config baseUrl=http://localhost:5000,video=false",
     "test:integration": "start-server-and-test start http://localhost:5000 cy:run",
-    "postinstall": "yarn configure && cordova prepare",
+    "nopostinstall": "yarn configure && cordova prepare",
     "configure": "env-cmd --silent babel-node --presets @babel/preset-react tasks/cordova-config.js",
     "prebuild-phonegap": "yarn prebuild-cordova",
     "build-phonegap": "yarn configure && bestzip phonegap.zip -r www/* package.json config.xml",
