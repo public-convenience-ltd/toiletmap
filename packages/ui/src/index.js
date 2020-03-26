@@ -24,7 +24,6 @@ import AboutPage from './pages/AboutPage';
 import AddEditPage from './pages/AddEditPage';
 import LoginPage from './pages/LoginPage';
 import PreferencesPage from './pages/PreferencesPage';
-import ThanksPage from './pages/ThanksPage';
 import MapPage from './pages/MapPage';
 import UseOurLoosPage from './pages/UseOurLoosPage';
 import PrivacyPage from './pages/PrivacyPage';
@@ -188,7 +187,7 @@ const startApp = () => {
               />
               <ProtectedRoute
                 path="/loos/:id/thanks"
-                component={ThanksPage}
+                component={LooPage}
                 auth={auth}
               />
               <Route component={NotFound} />
