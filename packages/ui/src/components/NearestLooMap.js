@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import uniqBy from 'lodash/uniqBy';
 
 import LooMap from './LooMap';
 
@@ -65,13 +66,13 @@ const NearestLooMap = function NearestLooMap(props) {
     }
   }
 
-  let loo = props.loo;
-  let looCentre;
-  if (loo) {
-    looCentre = {
-      ...loo.location,
-    };
-  }
+  const loo = props.activeLoo;
+
+  const looCentre = loo
+    ? {
+        ...loo.location,
+      }
+    : undefined;
 
   // A helper function to fire events for the map leaflet
   const updateLoadingStatus = function updateLoadingStatus(isLoading) {
@@ -164,17 +165,35 @@ const NearestLooMap = function NearestLooMap(props) {
     // Work out what the best possible initial position is
     if (looCentre) {
       return looCentre;
-    } else if (mapControls.center.lat !== 0 && mapControls.center.lng !== 0) {
+    }
+
+    if (mapControls.center.lat !== 0 && mapControls.center.lng !== 0) {
       return mapControls.center;
-    } else if (geolocation) {
+    }
+
+    if (geolocation) {
       if (geolocation.error) {
         return config.fallbackLocation;
-      } else {
-        return geolocation;
       }
-    } else {
-      return null;
+      return geolocation;
     }
+
+    return null;
+  };
+
+  // Display activeLoo on the map unless overrideLoos exist
+  const getLoosToDisplay = () => {
+    if (props.overrideLoos) {
+      return props.overrideLoos;
+    }
+
+    const loosByProximity = data ? data.loosByProximity : [];
+
+    if (loo) {
+      return uniqBy([loo, ...loosByProximity], 'id');
+    }
+
+    return loosByProximity;
   };
 
   return (
@@ -182,6 +201,7 @@ const NearestLooMap = function NearestLooMap(props) {
       {loading && (
         <div className={styles.loading}>Fetching toilets&hellip;</div>
       )}
+
       {loosError && (
         <Notification>
           Oops, there was an problem finding toilets. Check your internet
@@ -192,7 +212,7 @@ const NearestLooMap = function NearestLooMap(props) {
       {!loadingMapControls && getInitialPosition() ? (
         <LooMap
           wrappedComponentRef={(it) => (looMap = it)}
-          loos={props.overrideLoos || (data ? data.loosByProximity : [])}
+          loos={getLoosToDisplay()}
           countLimit={props.numberNearest ? 5 : 0}
           showcontributor={true}
           showLocation={true}
