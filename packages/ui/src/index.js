@@ -24,7 +24,6 @@ import AboutPage from './pages/AboutPage';
 import AddEditPage from './pages/AddEditPage';
 import LoginPage from './pages/LoginPage';
 import PreferencesPage from './pages/PreferencesPage';
-import ThanksPage from './pages/ThanksPage';
 import MapPage from './pages/MapPage';
 import UseOurLoosPage from './pages/UseOurLoosPage';
 import PrivacyPage from './pages/PrivacyPage';
@@ -39,11 +38,13 @@ import config from './config';
 import {
   ApolloClient,
   ApolloProvider,
+  ApolloLink,
   HttpLink,
   InMemoryCache,
 } from '@apollo/client';
 
-import { setContext } from 'apollo-link-context';
+import { onError } from '@apollo/link-error';
+import { setContext } from '@apollo/link-context';
 
 import { version } from '../package.json';
 import { gql } from 'graphql.macro';
@@ -65,6 +66,16 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.error(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.error(`[Network error]: ${networkError}`);
+});
+
 const cache = new InMemoryCache({
   typePolicies: {
     Loo: {
@@ -80,7 +91,7 @@ const cache = new InMemoryCache({
 const client = new ApolloClient({
   name: '@toiletmap/ui',
   version: version,
-  link: authLink.concat(httpLink),
+  link: ApolloLink.from([errorLink, authLink, httpLink]),
   connectToDevTools: true,
   cache,
   ...localSchema,
@@ -176,7 +187,7 @@ const startApp = () => {
               />
               <ProtectedRoute
                 path="/loos/:id/thanks"
-                component={ThanksPage}
+                component={LooPage}
                 auth={auth}
               />
               <Route component={NotFound} />

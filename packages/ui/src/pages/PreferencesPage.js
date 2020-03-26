@@ -107,9 +107,13 @@ const PreferencesPage = function (props) {
         <DismissableBox
           persistKey="preferences-intro"
           title="Preferences"
-          content={`Highlight toilet features that matter to you. Toilets with these
-                        features will be indicated for you. Toilets lacking crucial features will
-                        appear in red.`}
+          content={
+            <>
+              Highlight toilet features that matter to you. Toilets with these
+              features will be indicated for you. Toilets lacking crucial
+              features will appear in red.
+            </>
+          }
         />
 
         <h2 className={headings.large}>My Toilet Preferences</h2>
