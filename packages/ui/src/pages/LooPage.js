@@ -8,6 +8,7 @@ import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
 import PreferenceIndicators from '../components/PreferenceIndicators';
 import NearestLooMap from '../components/NearestLooMap';
+import DismissableBox from '../components/DismissableBox';
 
 import styles from './css/loo-page.module.css';
 import layout from '../components/css/layout.module.css';
@@ -20,7 +21,30 @@ import config from '../config';
 import { loader } from 'graphql.macro';
 import { useQuery } from '@apollo/client';
 
+import gql from 'graphql-tag';
+
 const FIND_LOO_QUERY = loader('./findLooById.graphql');
+const GET_USER_DATA = gql`
+  {
+    userData @client {
+      name
+    }
+  }
+`;
+
+function constructCampaignLink(loo, email = '') {
+  let loc = loo.location;
+  let coords = `${loc.lng},${loc.lat}`;
+  let name = loo.name || '';
+  let opening = loo.opening || '';
+  return `https://docs.google.com/forms/d/e/1FAIpQLScMvkjoE68mR1Z-yyVH7YhdndHCd_k8QwbugwfbqgZGUr_DvQ/viewform?emailAddress=${encodeURIComponent(
+    email
+  )}&entry.975653982=${encodeURIComponent(
+    coords
+  )}&entry.688810578=${encodeURIComponent(
+    name
+  )}&entry.1574991632=${encodeURIComponent(opening)}`;
+}
 
 const LooPage = function LooPage(props) {
   // Provides a mapping between loo property names and the values we want to display
@@ -69,6 +93,12 @@ const LooPage = function LooPage(props) {
     },
   });
 
+  const { loading: userLoading, data: userData, error: userError } = useQuery(
+    GET_USER_DATA
+  );
+
+  const isThanksPage = props.match.path === '/loos/:id/thanks';
+
   function getPropertyNames() {
     // All property names in our loo object
     var names = Object.keys(data.loo);
@@ -99,33 +129,61 @@ const LooPage = function LooPage(props) {
 
     return (
       <div>
-        <div>
-          <div className={layout.controls}>
-            {config.showBackButtons && (
-              <button onClick={props.history.goBack} className={controls.btn}>
-                Back
-              </button>
-            )}
+        <div className={layout.controls}>
+          {config.showBackButtons && (
+            <button onClick={props.history.goBack} className={controls.btn}>
+              Back
+            </button>
+          )}
 
-            <a
-              href={
-                'https://maps.apple.com/?dirflg=w&daddr=' +
-                [loo.location.lat, loo.location.lng]
-              }
-              className={controls.btn}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Get Directions
-            </a>
+          <a
+            href={
+              'https://maps.apple.com/?dirflg=w&daddr=' +
+              [loo.location.lat, loo.location.lng]
+            }
+            className={controls.btn}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Get Directions
+          </a>
 
-            {config.allowAddEditLoo && (
-              <Link to={`/loos/${loo.id}/edit`} className={controls.btn}>
-                Edit toilet
-              </Link>
-            )}
-          </div>
+          {config.allowAddEditLoo && (
+            <Link to={`/loos/${loo.id}/edit`} className={controls.btn}>
+              Edit toilet
+            </Link>
+          )}
         </div>
+
+        {isThanksPage && (
+          <DismissableBox
+            title="Thank You!"
+            content={
+              <>
+                <p>Thanks for the information you've provided.</p>
+                <p>
+                  We rely on contributions of data like yours to keep the map
+                  accurate and useful.
+                </p>
+                {config.isNativeApp() && (
+                  <>
+                    <p>
+                      Please consider signing up with our sponsor's campaign.
+                    </p>
+                    <a
+                      className={controls.btnFeatured}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={constructCampaignLink(loo, userData.userData.name)}
+                    >
+                      Join the <strong>Use Our Loos</strong> campaign
+                    </a>
+                  </>
+                )}
+              </>
+            }
+          />
+        )}
 
         <h2 className={headings.large}>{loo.name || 'Toilet'}</h2>
 
@@ -194,9 +252,9 @@ const LooPage = function LooPage(props) {
     );
   }
 
-  if (loading || error || !data.loo) {
+  if (loading || error || userLoading || userError || !data.loo) {
     let msg;
-    if (error) {
+    if (error || userError) {
       msg = 'An error occurred. ';
       console.error(error);
     } else {
