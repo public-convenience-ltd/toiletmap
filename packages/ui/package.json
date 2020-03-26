@@ -21,9 +21,10 @@
   },
   "dependencies": {
     "@apollo/client": "3.0.0-beta.41",
+    "@apollo/link-context": "2.0.0-beta.3",
+    "@apollo/link-error": "2.0.0-beta.3",
     "@auth0/cordova": "0.4.3",
     "@toiletmap/opening-hours": "3.2.1",
-    "apollo-link-context": "1.0.19",
     "auth0-js": "9.12.2",
     "concurrently": "5.1.0",
     "cordova-android": "8.1.0",
