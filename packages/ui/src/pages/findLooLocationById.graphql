@@ -1,9 +1,0 @@
-query findLooById($id: ID) {
-  loo(id: $id) {
-    id
-    location {
-      lat
-      lng
-    }
-  }
-}
