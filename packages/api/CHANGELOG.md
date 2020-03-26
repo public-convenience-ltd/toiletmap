@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/neontribe/gbptm/compare/v3.2.1...v3.3.0) (2020-03-26)
+
+
+### Bug Fixes
+
+* api deps ([39c7c34](https://github.com/neontribe/gbptm/commit/39c7c34d5ac3b0944981a5c4229d87a59de578cf))
+* provide a stub resolver for an interface ([f31f3d1](https://github.com/neontribe/gbptm/commit/f31f3d14a406d275b9f661c4fc2e91f3cae6d31f))
+* update dependencies ([7cb0671](https://github.com/neontribe/gbptm/commit/7cb06711e6ea49f8e18351dd20d19d3a9e13711b))
+* **deps:** update dependency mongoose to v5.9.3 ([858b86c](https://github.com/neontribe/gbptm/commit/858b86c8b279172abb0a0370088d935b490438cc))
+* clean up graphql dependencies ([95bfd67](https://github.com/neontribe/gbptm/commit/95bfd67c01abe45a131040567fb6f9650f3324ed))
+* respect fee filter correctly ([921c344](https://github.com/neontribe/gbptm/commit/921c344d4be217c4b0b34db2c674770a060a1fd3)), closes [#473](https://github.com/neontribe/gbptm/issues/473)
+* solve contributors search ([f01efd1](https://github.com/neontribe/gbptm/commit/f01efd1fe982d439b85565f0f74c92ffaa0da946)), closes [#474](https://github.com/neontribe/gbptm/issues/474)
+* update hasha ([c86ca1e](https://github.com/neontribe/gbptm/commit/c86ca1e838752da57a36007deb428fec10fdb60c))
+
+
+### Features
+
+* graphQL migration ([3acce12](https://github.com/neontribe/gbptm/commit/3acce124d91c6a5c9834f637c33daa4c9dedc53e))
+* remove old rest services ([a3f91ea](https://github.com/neontribe/gbptm/commit/a3f91ea638b8ebe4535e50764ae713a8042be654))
+
+
+
+
+
 ## [3.2.1](https://github.com/neontribe/gbptm/compare/v3.2.0...v3.2.1) (2020-03-01)
 
 
