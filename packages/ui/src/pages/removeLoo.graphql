@@ -1,9 +1,11 @@
 mutation removeLoo($id: ID!, $reason: String!) {
-  submitRemovalReport(report: {
-    edit: $id,
-    reason: $reason
-  }) {
+  submitRemovalReport(report: { edit: $id, reason: $reason }) {
     code
     success
+    loo {
+      id
+      active
+      removalReason
+    }
   }
 }

@@ -9,6 +9,7 @@ import Loading from '../components/Loading';
 import PreferenceIndicators from '../components/PreferenceIndicators';
 import NearestLooMap from '../components/NearestLooMap';
 import DismissableBox from '../components/DismissableBox';
+import Notification from '../components/Notification';
 
 import styles from './css/loo-page.module.css';
 import layout from '../components/css/layout.module.css';
@@ -82,6 +83,7 @@ const LooPage = function LooPage(props) {
     'toObject',
     'updatedAt',
     'createdAt',
+    'removalReason',
     'id',
     '__typename',
   ];
@@ -136,22 +138,26 @@ const LooPage = function LooPage(props) {
             </button>
           )}
 
-          <a
-            href={
-              'https://maps.apple.com/?dirflg=w&daddr=' +
-              [loo.location.lat, loo.location.lng]
-            }
-            className={controls.btn}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Get Directions
-          </a>
+          {loo.active && (
+            <>
+              <a
+                href={
+                  'https://maps.apple.com/?dirflg=w&daddr=' +
+                  [loo.location.lat, loo.location.lng]
+                }
+                className={controls.btn}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Get Directions
+              </a>
 
-          {config.allowAddEditLoo && (
-            <Link to={`/loos/${loo.id}/edit`} className={controls.btn}>
-              Edit toilet
-            </Link>
+              {config.allowAddEditLoo && (
+                <Link to={`/loos/${loo.id}/edit`} className={controls.btn}>
+                  Edit toilet
+                </Link>
+              )}
+            </>
           )}
         </div>
 
@@ -183,6 +189,15 @@ const LooPage = function LooPage(props) {
               </>
             }
           />
+        )}
+
+        {!loo.active && (
+          <Notification>
+            <b>This toilet has been removed.</b>
+            {loo.removalReason && (
+              <div>Removal reason: "{loo.removalReason}"</div>
+            )}
+          </Notification>
         )}
 
         <h2 className={headings.large}>{loo.name || 'Toilet'}</h2>
@@ -239,7 +254,7 @@ const LooPage = function LooPage(props) {
   function renderMap() {
     return (
       <NearestLooMap
-        loo={data.loo}
+        activeLoo={data.loo}
         mapProps={{
           showLocation: false,
           showSearchControl: true,
