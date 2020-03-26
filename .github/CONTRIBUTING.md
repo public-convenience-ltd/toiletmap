@@ -36,7 +36,7 @@ When you commit all the files you touch in your work will be run through `pretti
 
 ## Making a Pull Request
 
-We use github `pull requests` to integrate changes to this codebase. When you've got a set of changes as one or more commits which you'd like to propose you should separate them into a branch made from `develop`. Everyone appreciates it very much if you are able to make the commit history on your branch as clean as possible.
+We use github `pull requests` to integrate changes to this codebase. When you've got a set of changes as one or more commits which you'd like to propose you should separate them into a branch made from `master`. Everyone appreciates it very much if you are able to make the commit history on your branch as clean as possible.
 
 Once you have your branch the way you like it you can push it to the remote. Once it is there you can use the github interface to make a `pull request` targeting the `master` branch.
 
@@ -48,10 +48,11 @@ Once you've submitted the request a few different things will happen. Right away
 * Merge master into it if necessary
 * Run our linters over the whole codebase
 * Run the entire test suite
+* Deploy a preview environment on now.sh
 
 If all that goes well it'll mark your PR with a nice green tick. If a check fails it'll place a red cross and a link where you can find out what went wrong.
 
-You'll also find that folk will add labels to your PR, maybe marking it for a specific release, noting that it still needs review, that it conflicts when trying to merge with develop, etc. After a while you'll get used to adding some of these yourself.
+You'll also find that folk will add labels to your PR, maybe marking it for a specific release, noting that it still needs review, that it conflicts when trying to merge, etc. After a while you'll get used to adding some of these yourself.
 
 Soon people will start to review your code. We do this to help each other find better ways to solve our problems, and also to spread knowledge around the team. In this project our rule is that someone who didn't contribute to the PR must give explicit approval before the branch can merge.
 
