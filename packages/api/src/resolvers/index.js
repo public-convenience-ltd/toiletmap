@@ -218,6 +218,12 @@ const resolvers = {
     },
   },
 
+  MutationResponse: {
+    __resolveType(mutationResponse, context, info) {
+      return null;
+    },
+  },
+
   Mutation: {
     submitReport: async (parent, args, context) => {
       let user = context.user;

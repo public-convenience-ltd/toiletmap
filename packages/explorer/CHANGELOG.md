@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/neontribe/gbptm/compare/v3.2.1...v3.3.0) (2020-03-26)
+
+
+### Bug Fixes
+
+* update dependencies ([7cb0671](https://github.com/neontribe/gbptm/commit/7cb06711e6ea49f8e18351dd20d19d3a9e13711b))
+* **deps:** update dependency downshift to v5.0.5 ([9fb970f](https://github.com/neontribe/gbptm/commit/9fb970f86972308b23f65bc487aef8379d03e0ca))
+* **deps:** update dependency react-leaflet to v2.6.3 ([8939441](https://github.com/neontribe/gbptm/commit/89394417760be2eedbf755802db6f676682f5536))
+* clean up graphql dependencies ([95bfd67](https://github.com/neontribe/gbptm/commit/95bfd67c01abe45a131040567fb6f9650f3324ed))
+* clear up after deprecating download ([6c640aa](https://github.com/neontribe/gbptm/commit/6c640aaa4c69d8eafd99fe2e4531eb8793b9ef7b))
+* explorer search broken in many ways ([bb628fe](https://github.com/neontribe/gbptm/commit/bb628fe017518b4eb1b0050350f3de3315b9f1e3)), closes [#503](https://github.com/neontribe/gbptm/issues/503)
+* minor dep updates ([1881a90](https://github.com/neontribe/gbptm/commit/1881a90284a8d342160f0981fe68c5c6cdfda18c))
+* minor dependency updates ([e27765d](https://github.com/neontribe/gbptm/commit/e27765db63416ef306bc89523539e6afdf073f18))
+* solve contributors search ([f01efd1](https://github.com/neontribe/gbptm/commit/f01efd1fe982d439b85565f0f74c92ffaa0da946)), closes [#474](https://github.com/neontribe/gbptm/issues/474)
+* **deps:** update dependency query-string to v6.11.1 ([dea9ec8](https://github.com/neontribe/gbptm/commit/dea9ec8c66a465e71f29f0436efe2960c82841b1))
+* more api cleanup ([5d6c8dc](https://github.com/neontribe/gbptm/commit/5d6c8dc3849cc7d7c0887e6b02d28f7e9ec64a77))
+* update downshift ([30d8aee](https://github.com/neontribe/gbptm/commit/30d8aee5ef4b6ad69edffc578325721fd90da70e))
+* update leaflet ([a3a27e0](https://github.com/neontribe/gbptm/commit/a3a27e0d2b63ede74dffba9faded8f782b07c74e))
+* update react ([a6c6d89](https://github.com/neontribe/gbptm/commit/a6c6d896abd274acb87d8f9a066cfd95707c7b8d))
+* upgrade material-ui ([2fbed0c](https://github.com/neontribe/gbptm/commit/2fbed0cc7424dbcd494afd9fcabd0d7b9522dfcc))
+
+
+### Features
+
+* add apollo link error ([9ade5cf](https://github.com/neontribe/gbptm/commit/9ade5cfc20036048635cead841bf64865fb8eb18))
+* graphQL migration ([3acce12](https://github.com/neontribe/gbptm/commit/3acce124d91c6a5c9834f637c33daa4c9dedc53e))
+* upgrade explorer to @apollo/client ([1ba42ef](https://github.com/neontribe/gbptm/commit/1ba42efd022eca914cecf1357b77a045d1bef881))
+
+
+
+
+
 ## [3.2.1](https://github.com/neontribe/gbptm/compare/v3.2.0...v3.2.1) (2020-03-01)
 
 

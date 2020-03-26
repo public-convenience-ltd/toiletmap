@@ -555,7 +555,7 @@ const AddEditPage = function (props) {
   const renderMap = () => {
     return (
       <NearestLooMap
-        loo={looData ? looData.loo : null}
+        activeLoo={looData ? looData.loo : null}
         highlight={props.match.params.id}
         mapProps={{
           showLocation: false,
@@ -586,6 +586,11 @@ const AddEditPage = function (props) {
         map={<Loading message={'Error fetching toilet data'} />}
       />
     );
+  }
+
+  // Redirect to index if loo is not active (i.e. removed)
+  if (!looData.loo.active) {
+    history.push(`/`);
   }
 
   return <PageLayout main={renderMain()} map={renderMap()} />;
