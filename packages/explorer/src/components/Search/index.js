@@ -4,11 +4,10 @@ import classNames from 'classnames';
 import _ from 'lodash';
 import queryString from 'query-string';
 import TimeAgo from 'timeago-react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/react-components';
 import { loader } from 'graphql.macro';
 
 // Local
-import api from '@toiletmap/api-client';
 import { createStyled } from '../../lib/utils.js';
 import LooTable from '../table/LooTable';
 import LooTablePaginationActions from '../table/LooTablePaginationActions';
@@ -44,8 +43,9 @@ import ClockIcon from '@material-ui/icons/AccessTime';
 
 const SEARCH_QUERY = loader('./search.graphql');
 const CONTRIBUTORS = loader('./getContributors.graphql');
+const AREAS_QUERY = loader('./getAreas.graphql');
 
-const styles = theme => ({
+const styles = (theme) => ({
   gridRoot: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -71,22 +71,22 @@ const styles = theme => ({
     fontWeight: theme.typography.fontWeightRegular,
   },
   searchForm: {
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 3,
-    padding: theme.spacing.unit * 2,
-    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
-      marginTop: theme.spacing.unit * 6,
-      marginBottom: theme.spacing.unit * 6,
-      padding: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    padding: theme.spacing(2),
+    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+      marginTop: theme.spacing(6),
+      marginBottom: theme.spacing(6),
+      padding: theme.spacing(3),
     },
   },
   button: {
-    marginTop: theme.spacing.unit * 3,
-    marginLeft: theme.spacing.unit,
+    marginTop: theme.spacing(3),
+    marginLeft: theme.spacing(1),
   },
 });
 
-const Styled = createStyled(theme => ({
+const Styled = createStyled((theme) => ({
   textList: {
     whiteSpace: 'pre-line',
   },
@@ -100,25 +100,35 @@ const Styled = createStyled(theme => ({
     textDecoration: 'none',
   },
   chip: {
-    marginTop: theme.spacing.unit * 0.2,
-    marginBottom: theme.spacing.unit * 0.2,
-    marginLeft: theme.spacing.unit * 0.2,
+    marginTop: theme.spacing(0.2),
+    marginBottom: theme.spacing(0.2),
+    marginLeft: theme.spacing(0.2),
   },
   chipDetail: {
     verticalAlign: 'bottom',
-    marginTop: theme.spacing.unit * 0.2,
-    marginBottom: theme.spacing.unit * 0.2,
-    marginLeft: theme.spacing.unit * 0.2,
+    marginTop: theme.spacing(0.2),
+    marginBottom: theme.spacing(0.2),
+    marginLeft: theme.spacing(0.2),
   },
 }));
 
 const renderTableRows = ({ data }) => {
   const MISSING_MESSAGE = 'Not Recorded';
+
+  if (data.loos.length === 0) {
+    return (
+      <TableRow>
+        <TableCell></TableCell>
+        <TableCell>No results were found for your query.</TableCell>
+      </TableRow>
+    );
+  }
+
   return (
     <Styled>
       {({ classes }) => (
         <>
-          {data.loos.map(loo => {
+          {data.loos.map((loo) => {
             const contributors = loo.reports.reduce((current, next) => {
               current.push(next.contributor);
               return current;
@@ -145,7 +155,7 @@ const renderTableRows = ({ data }) => {
                     </Link>
                   </TableCell>
                   <TableCell>
-                    {area.map(val => {
+                    {area.map((val) => {
                       return (
                         <React.Fragment key={val.name}>
                           <Chip
@@ -158,7 +168,7 @@ const renderTableRows = ({ data }) => {
                             label={val.name}
                             color={val.name ? 'primary' : 'secondary'}
                             variant="default"
-                            onClick={e => {
+                            onClick={(e) => {
                               navigate(`search?area_name=${val.name}`);
                             }}
                             clickable
@@ -206,7 +216,7 @@ const renderTableRows = ({ data }) => {
                           label={attr || MISSING_MESSAGE}
                           color={attr ? 'primary' : 'secondary'}
                           variant="default"
-                          onClick={event => {
+                          onClick={(event) => {
                             navigate(`search?contributors=${attr}`);
                           }}
                           clickable
@@ -227,7 +237,7 @@ const renderTableRows = ({ data }) => {
                       }
                       color={loo.updatedAt ? 'primary' : 'secondary'}
                       variant="default"
-                      onClick={event => {
+                      onClick={(event) => {
                         const dateUpdated = new Date(loo.updatedAt);
                         const year = dateUpdated.getFullYear();
                         const month = (
@@ -272,7 +282,7 @@ const renderTableCol = () => {
   );
 };
 
-const renderTableFooter = props => {
+const renderTableFooter = (props) => {
   const {
     data,
     rowsPerPage,
@@ -310,38 +320,33 @@ class Search extends Component {
       limit: 10,
     };
 
+    const initSearchParams = () => ({
+      ...this.searchDefaults,
+      // Apply values from query string.
+      ...parsedQuery,
+      // Apply checked page value.
+      page: pageCheck,
+    });
+
     const parsedQuery = queryString.parse(this.props.location.search);
     const pageCheck = parseInt(parsedQuery.page)
       ? parsedQuery.page
       : this.searchDefaults.page;
     this.state = {
       expanded: false,
-      searchParams: {
-        ...this.searchDefaults,
-        // Apply values from query string.
-        ...parsedQuery,
-        // Apply checked page value.
-        page: pageCheck,
-      },
-      areas: [],
+      searchParams: initSearchParams(),
+      // the search params that are in the query string
+      fixedSearchParams: initSearchParams(),
     };
 
     // Submit new search with potentially modified search state.
     this.submitSearch();
 
     this.submitSearch = this.submitSearch.bind(this);
-    this.fetchAreaData = this.fetchAreaData.bind(this);
     this.updateSearchParam = this.updateSearchParam.bind(this);
     this.updateSearchField = this.updateSearchField.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
-  }
-
-  /**
-   * Fetches essential data upon loading the search route.
-   */
-  componentDidMount() {
-    this.fetchAreaData();
   }
 
   /**
@@ -365,8 +370,8 @@ class Search extends Component {
   /**
    * Getter for the search query string - strips empty fields.
    */
-  get queryString() {
-    const omitEmpty = _.pickBy(this.state.searchParams);
+  queryString(newParams) {
+    const omitEmpty = _.pickBy(newParams);
 
     // If everything is empty, ensure that we at least specify the `text` param.
     if (_.isEmpty(omitEmpty)) {
@@ -383,14 +388,18 @@ class Search extends Component {
    * Omits any empty search parameters from the search.
    */
   async submitSearch() {
-    await navigate(`search?${this.queryString}`);
+    const newParams = _.cloneDeep(this.state.searchParams);
+    await navigate(`search?${this.queryString(newParams)}`);
+    this.setState({
+      fixedSearchParams: newParams,
+    });
   }
 
   /**
    * Pagination page change handler.
    */
   async handleChangePage(event, page) {
-    await this.setState(prevState => ({
+    await this.setState((prevState) => ({
       searchParams: {
         ...prevState.searchParams,
         page: page + 1,
@@ -406,24 +415,13 @@ class Search extends Component {
    * @param {*} event
    */
   async handleChangeRowsPerPage(event) {
-    await this.setState(prevState => ({
+    await this.setState((prevState) => ({
       searchParams: {
         ...prevState.searchParams,
         limit: event.target.value,
       },
     }));
     this.submitSearch();
-  }
-
-  /**
-   * Retreives a flattened list of Areas and Area Types and attaches to state.
-   */
-  async fetchAreaData() {
-    const result = await api.fetchAreaData();
-    result.All = _.uniq(_.flatten(_.values(result))).map(x => ({ label: x }));
-    this.setState({
-      areas: result.All,
-    });
   }
 
   /**
@@ -467,7 +465,7 @@ class Search extends Component {
     ];
     return (
       advancedParams.some(
-        advancedParam => this.state.searchParams[advancedParam]
+        (advancedParam) => this.state.searchParams[advancedParam]
       ) || this.state.expanded
     );
   }
@@ -485,21 +483,21 @@ class Search extends Component {
    * Gets the GraphQL query variables
    */
   get queryVariables() {
-    let fromDate = this.parseDate(this.state.searchParams.from_date);
-    let toDate = this.parseDate(this.state.searchParams.to_date);
+    let fromDate = this.parseDate(this.state.fixedSearchParams.from_date);
+    let toDate = this.parseDate(this.state.fixedSearchParams.to_date);
 
     let variables = {
-      rows: parseInt(this.state.searchParams.limit),
-      page: parseInt(this.state.searchParams.page),
-      text: this.state.searchParams.text,
-      order: this.state.searchParams.order,
-      areaName: this.state.searchParams.area_name,
+      rows: parseInt(this.state.fixedSearchParams.limit),
+      page: parseInt(this.state.fixedSearchParams.page),
+      text: this.state.fixedSearchParams.text,
+      order: this.state.fixedSearchParams.order,
+      areaName: this.state.fixedSearchParams.area_name,
       fromDate,
       toDate,
-      contributor: this.state.searchParams.contributors,
+      contributor: this.state.fixedSearchParams.contributors,
     };
 
-    return variables;
+    return _.omitBy(variables, (v) => v === '' || v == null);
   }
 
   render() {
@@ -507,7 +505,7 @@ class Search extends Component {
     return (
       <div>
         <div className={classNames(classes.paper, classes.searchForm)}>
-          <Grid container spacing={24}>
+          <Grid container spacing={2}>
             <Grid item xs={12} sm={7} md={9}>
               <FormControl className={classes.formControl} fullWidth>
                 <TextField
@@ -542,7 +540,7 @@ class Search extends Component {
             <Grid item xs={12}>
               <ExpansionPanel expanded={this.advancedSearch}>
                 <ExpansionPanelSummary
-                  onClick={e =>
+                  onClick={(e) =>
                     this.setState({ expanded: !this.state.expanded })
                   }
                   expandIcon={<ExpandMoreIcon />}
@@ -552,20 +550,41 @@ class Search extends Component {
                   </Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                  <Grid container spacing={24}>
+                  <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
-                        <SearchAutocomplete
-                          id="area_name-search"
-                          onChange={_.partial(
-                            this.updateSearchParam,
-                            'area_name'
-                          )}
-                          selectedItem={this.state.searchParams.area_name}
-                          suggestions={this.state.areas}
-                          placeholderText="Search Areas"
-                          ariaLabel="Clear area input box"
-                        />
+                        <Query query={AREAS_QUERY}>
+                          {({ loading, error, data }) => {
+                            if (error) {
+                              console.error(error);
+                            }
+
+                            // Suggestions take an array of {label: name} objects, so we need to map
+                            // the data to this format
+                            let areas = [];
+                            if (!loading && data) {
+                              areas = data.areas.map((area) => {
+                                return {
+                                  label: area.name,
+                                };
+                              });
+                            }
+
+                            return (
+                              <SearchAutocomplete
+                                id="area_name-search"
+                                onChange={_.partial(
+                                  this.updateSearchParam,
+                                  'area_name'
+                                )}
+                                selectedItem={this.state.searchParams.area_name}
+                                suggestions={areas}
+                                placeholderText="Search Areas"
+                                ariaLabel="Clear area input box"
+                              />
+                            );
+                          }}
+                        </Query>
                       </FormControl>
                     </Grid>
                     {this.props.auth.checkPermission(
@@ -583,7 +602,7 @@ class Search extends Component {
 
                               // Re-map contributors for search autocomplete
                               let contributors = data.contributors.map(
-                                contributor => ({ label: contributor.name })
+                                (contributor) => ({ label: contributor.name })
                               );
 
                               return (
@@ -670,8 +689,12 @@ class Search extends Component {
                 rowRender={renderTableRows}
                 colRender={renderTableCol}
                 footerRender={renderTableFooter}
-                page={Math.max(0, this.state.searchParams.page - 1)}
-                rowsPerPage={parseInt(this.state.searchParams.limit)}
+                page={
+                  data.loos.loos.length === 0
+                    ? 0
+                    : Math.max(0, this.state.fixedSearchParams.page - 1)
+                }
+                rowsPerPage={parseInt(this.state.fixedSearchParams.limit)}
                 handleChangePage={this.handleChangePage}
                 handleChangeRowsPerPage={this.handleChangeRowsPerPage}
               />

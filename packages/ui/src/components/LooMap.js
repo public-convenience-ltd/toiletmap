@@ -9,6 +9,8 @@ import 'leaflet.markercluster';
 import 'leaflet-loading';
 
 import { Map, TileLayer } from 'react-leaflet';
+import ResizeObserver from 'resize-observer-polyfill';
+
 import GeolocationMapControl from './GeolocationMapControl.js';
 import LocateMapControl from './LocateMapControl.js';
 
@@ -21,6 +23,13 @@ import markerIconRetina from '../images/marker-icon-2x.png';
 import markerIconHighlight from '../images/marker-icon-highlight.png';
 import markerIconRetinaHighlight from '../images/marker-icon-highlight-2x.png';
 
+const getRadius = (map, center) => {
+  const mapBoundNorthEast = map.getBounds().getNorthEast();
+  const mapDistance = mapBoundNorthEast.distanceTo(center);
+
+  return mapDistance;
+};
+
 L.LooIcon = L.Icon.extend({
   options: {
     iconSize: [25, 41],
@@ -29,7 +38,7 @@ L.LooIcon = L.Icon.extend({
     looId: null,
   },
 
-  initialize: function(options) {
+  initialize: function (options) {
     if (options.highlight) {
       // Add highlight properties
       this.options = {
@@ -49,7 +58,7 @@ L.LooIcon = L.Icon.extend({
     L.Util.setOptions(this, options);
   },
 
-  createIcon: function() {
+  createIcon: function () {
     // do we need to be complex to show an index, or are we just a dumb image
     if (!this.options.index) {
       var img = this._createImg(this._getIconUrl('icon'));
@@ -94,31 +103,48 @@ export class LooMap extends Component {
     this.onMarkerClick = this.onMarkerClick.bind(this);
   }
 
-  componentDidMount() {
-    // Diffiult to determine when `ref` is set since we need to wait for the `Map`
-    // child component lifecycle to complete
-    //
-    // `setTimeout, 0` was not sufficient for both tests and browser
-    //
-    // https://github.com/tomchentw/react-google-maps/issues/122
-    // https://github.com/facebook/react/issues/5053
-    if (this.refs.map && this.refs.map.leafletElement) {
-      var map = (this.leafletElement = this.refs.map.leafletElement);
-      var center = map.getCenter();
+  observe = (el) => {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+
+    this.resizeObserver = new ResizeObserver((entries, observer) => {
+      if (this.leafletElement) {
+        this.leafletElement.invalidateSize();
+      }
+    });
+
+    this.resizeObserver.observe(el);
+  };
+
+  componentWillUnmount() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+  }
+
+  setRef = (el) => {
+    if (el) {
+      const { leafletElement, container } = el;
+      this.leafletElement = leafletElement;
+
+      this.observe(container);
+
+      const center = leafletElement.getCenter();
 
       // Create a marker cluster layer which will be reset each time this
       // component receives props
-      var clusterLayer = L.markerClusterGroup({
+      const clusterLayer = L.markerClusterGroup({
         showCoverageOnHover: false,
         disableClusteringAtZoom: 15,
-        iconCreateFunction: cluster => {
-          var count = cluster.getChildCount();
+        iconCreateFunction: (cluster) => {
+          const count = cluster.getChildCount();
 
           return L.divIcon({
             html: `<div class=${styles.cluster}>
-                              <span class=${styles.count}>${count}</span>
-                              toilets
-                          </div>`,
+                      <span class=${styles.count}>${count}</span>
+                      toilets
+                  </div>`,
           });
         },
       });
@@ -130,18 +156,32 @@ export class LooMap extends Component {
         clusterLayer,
         markers: {},
       });
-    }
 
-    this.props.onInitialised(map);
-    this.props.onUpdateCenter(center);
-  }
+      this.props.onInitialised(leafletElement);
+      this.props.onUpdateCenter(center);
+    }
+  };
 
   onMove(event) {
-    var map = this.leafletElement;
-    var center = map.getCenter();
+    const map = this.leafletElement;
+    var center;
 
-    this.props.onUpdateCenter(center);
-    this.props.onMove(center.lng, center.lat);
+    try {
+      // HACK - this can throw a type error when the map resizes a lot
+      center = map.getCenter();
+    } catch (e) {
+      if (e instanceof TypeError && e.message.indexOf('_leaflet_pos') > -1) {
+        console.error(e);
+        return;
+      }
+
+      throw e;
+    }
+
+    const radius = getRadius(map, center);
+
+    this.props.onUpdateCenter(center, radius);
+    this.props.onMove(center.lng, center.lat, radius);
   }
 
   onZoom(event) {
@@ -152,7 +192,7 @@ export class LooMap extends Component {
 
   onMarkerClick(loo) {
     if (this.props.activeMarkers) {
-      this.props.history.push('/loos/' + loo._id);
+      this.props.history.push('/loos/' + loo.id);
     }
   }
 
@@ -160,7 +200,7 @@ export class LooMap extends Component {
     // New cluster layer, we probably remounted
     if (prevState.clusterLayer !== this.state.clusterLayer) {
       // We need to re-add everything
-      this.addRemoveMarkers(_.keyBy(this.props.loos, '_id'), {});
+      this.addRemoveMarkers(_.keyBy(this.props.loos, 'id'), {});
       return;
     }
 
@@ -174,8 +214,8 @@ export class LooMap extends Component {
       return;
     }
 
-    let loosThen = _.keyBy(prevProps.loos, '_id');
-    let loosNow = _.keyBy(this.props.loos, '_id');
+    let loosThen = _.keyBy(prevProps.loos, 'id');
+    let loosNow = _.keyBy(this.props.loos, 'id');
 
     // Remove elements that have unchanged location from both, effectively
     // diff'ing; this will leave us with markers to remove in loosThen and
@@ -184,7 +224,7 @@ export class LooMap extends Component {
       // Can a loo's marker (not including icon) be left untouched?
       if (
         loosThen.hasOwnProperty(id) &&
-        _.isEqual(loosThen[id].geometry, loosNow[id].geometry)
+        _.isEqual(loosThen[id].location, loosNow[id].location)
       ) {
         // Yes, we don't need to update these; same loo in the same place
         delete loosThen[id];
@@ -212,11 +252,10 @@ export class LooMap extends Component {
     const markersToAdd = [];
     for (let [id, loo] of Object.entries(loosToAdd)) {
       // Determine whether to highlight the current loo instance
-      var highlight = this.props.highlight && loo._id === this.props.highlight;
+      var highlight = this.props.highlight && loo.id === this.props.highlight;
 
       var position = {
-        lat: loo.properties.geometry.coordinates[1],
-        lng: loo.properties.geometry.coordinates[0],
+        ...loo.location,
       };
 
       var icon = new L.LooIcon({ highlight, looId: id });
@@ -239,21 +278,21 @@ export class LooMap extends Component {
       }
 
       let highlight = false;
-      if (this.props.highlight && loo._id === this.props.highlight) {
+      if (this.props.highlight && loo.id === this.props.highlight) {
         highlight = true;
       }
 
       // Do we need to change the icon based on properties then and now?
-      const iconOptionsNow = markers[loo._id].options.icon.options;
+      const iconOptionsNow = markers[loo.id].options.icon.options;
       if (
         iconOptionsNow.index !== index ||
         iconOptionsNow.highlight !== highlight
       ) {
-        markers[loo._id].setIcon(
+        markers[loo.id].setIcon(
           new L.LooIcon({
             highlight,
             index,
-            looId: loo._id,
+            looId: loo.id,
           })
         );
       }
@@ -283,7 +322,7 @@ export class LooMap extends Component {
     // `minZoom` and `maxZoom` needed on `Map` Component for clustering and `TileLayer` for `react-leaflet`
     return (
       <Map
-        ref="map"
+        ref={this.setRef}
         center={center}
         zoom={this.props.initialZoom}
         zoomControl={!this.props.preventZoom && this.props.showZoomControls}

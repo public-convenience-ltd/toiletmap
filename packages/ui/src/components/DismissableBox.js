@@ -44,7 +44,7 @@ class DismissableBox extends Component {
     return (
       <div className={styles.container}>
         <h2 className={styles.title}>{this.props.title}</h2>
-        <div dangerouslySetInnerHTML={{ __html: this.props.content }} />
+        <div>{this.props.content}</div>
         <button className={styles.close} onClick={this.onDismiss}>
           ✖
         </button>

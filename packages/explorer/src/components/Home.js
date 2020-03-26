@@ -27,35 +27,32 @@ class Home extends Component {
     return (
       <div className={styles.main}>
         <div className={styles.intro}>
-          <Typography variant="h5" component="body1" gutterBottom>
+          <Typography variant="h5" gutterBottom>
             Toilet Map Explorer exists to help people who want to know more
             about the data behind the{' '}
             <ExternalLink href="https://www.toiletmap.org.uk">
               The Great British Public Toilet Map
             </ExternalLink>
           </Typography>
-          <Typography variant="body1" component="body2" gutterBottom>
+          <Typography variant="body1" gutterBottom>
             You've come to the right place if you want to:
-            <div>
-              <ul>
-                <li>Get a statistical overview of the data</li>
-                <li>Search for specific toilet data</li>
-                <li>Explore the data by UK Administrative Geography</li>
-                <li>Learn how to use our APIs to power your application</li>
-                <li>
-                  Learn about the Licensing terms under which you can use this
-                  data
-                </li>
-              </ul>
-            </div>
           </Typography>
-          <Typography variant="body1" component="body2" gutterBottom>
+          <ul>
+            <li>Get a statistical overview of the data</li>
+            <li>Search for specific toilet data</li>
+            <li>Explore the data by UK Administrative Geography</li>
+            <li>Learn how to use our APIs to power your application</li>
+            <li>
+              Learn about the Licensing terms under which you can use this data
+            </li>
+          </ul>
+          <Typography variant="body1" gutterBottom>
             If you're looking for the nearest Loo you're better off using{' '}
             <ExternalLink href="https://www.toiletmap.org.uk">
               The Great British Public Toilet Map
             </ExternalLink>
           </Typography>
-          <Typography variant="body1" component="body2" gutterBottom>
+          <Typography variant="body1" gutterBottom>
             If you're looking for information about our software please head on
             over to{' '}
             <ExternalLink href="https://github.com/neontribe/gbptm">
@@ -63,13 +60,11 @@ class Home extends Component {
             </ExternalLink>
           </Typography>
         </div>
-        <Grid container spacing={16}>
+        <Grid container spacing={2}>
           <Grid xs={12} md={4} item>
             <Paper elevation={5} square>
-              <HeadingTypography variant="h5" component="body2">
-                Stats
-              </HeadingTypography>
-              <SubTypography variant="body1" component="body2">
+              <HeadingTypography variant="h5">Stats</HeadingTypography>
+              <SubTypography variant="body1">
                 You can view a selection of high level statistics{' '}
                 <InternalLink className={styles.internalLink} to="statistics">
                   here
@@ -77,13 +72,10 @@ class Home extends Component {
               </SubTypography>
             </Paper>
           </Grid>
-
           <Grid xs={12} md={4} item>
             <Paper elevation={5} square>
-              <HeadingTypography variant="h5" component="h3">
-                Search
-              </HeadingTypography>
-              <SubTypography variant="body1" component="body2">
+              <HeadingTypography variant="h5">Search</HeadingTypography>
+              <SubTypography variant="body1">
                 You can search for toilet data using keyword searches{' '}
                 <InternalLink className={styles.internalLink} to="search">
                   here
@@ -91,24 +83,18 @@ class Home extends Component {
               </SubTypography>
             </Paper>
           </Grid>
-
           <Grid xs={12} md={4} item>
             <Paper elevation={5} square>
-              <HeadingTypography variant="h5" component="h3">
-                Licensing
-              </HeadingTypography>
-              <SubTypography variant="body1" component="body2">
+              <HeadingTypography variant="h5">Licensing</HeadingTypography>
+              <SubTypography variant="body1">
                 Licensing information coming soon
               </SubTypography>
             </Paper>
           </Grid>
-
           <Grid xs={12} item>
             <Paper elevation={5} square>
-              <HeadingTypography variant="h5" component="h3">
-                API
-              </HeadingTypography>
-              <SubTypography variant="body1" component="body2">
+              <HeadingTypography variant="h5">API</HeadingTypography>
+              <SubTypography variant="body1">
                 The Toilet Map API is expressed in{' '}
                 <ExternalLink href={'https://graphql.org/'}>
                   GraphQL

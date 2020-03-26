@@ -66,6 +66,7 @@ class PrivacyPage extends Component {
           misuse and to recognise contributions from a user if that user is
           adding unsuitable content, whether intentionally or inadvertently.
         </p>
+        {/* Safer to leave the use our loos campaign in? Can we promise that data collected from the app will be separate? */}
         <p>
           A full list of a contributor’s activities will only be accessible to
           Public Convenience Ltd and the Use Our Loos campaign manager, for

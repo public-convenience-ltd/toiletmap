@@ -1,0 +1,28 @@
+query findLooById($id: ID) {
+  loo(id: $id) {
+    id
+		createdAt
+    updatedAt
+    active
+    location {
+      lat
+      lng
+    }
+	  area {
+      name
+      type
+    }
+    name
+    access
+    opening
+    type
+    accessibleType
+    babyChange
+    radar
+    automatic
+    fee
+    notes
+    removalReason
+    attended
+  }
+}

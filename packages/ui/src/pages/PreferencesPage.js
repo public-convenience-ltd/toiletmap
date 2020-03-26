@@ -1,10 +1,6 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
 
 import config, { PREFERENCES_KEY } from '../config';
-
-/* Note this approach will be deprecated in the future */
-import update from 'react-addons-update';
 
 import PageLayout from '../components/PageLayout';
 import NearestLooMap from '../components/NearestLooMap';
@@ -24,73 +20,61 @@ import maleIcon from '../images/pref-male.svg';
 import femaleIcon from '../images/pref-female.svg';
 import babychangingIcon from '../images/pref-babychanging.svg';
 
-class PreferencesPage extends Component {
-  constructor(props) {
-    super(props);
+const preferenceMap = [
+  {
+    name: 'free',
+    image: freeIcon,
+    label: 'Free',
+  },
+  {
+    name: 'accessible',
+    image: accessibleIcon,
+    label: 'Accessible',
+  },
+  {
+    name: 'open',
+    image: openIcon,
+    label: 'Open Now',
+  },
+  {
+    name: 'male',
+    image: maleIcon,
+    label: 'Male',
+  },
+  {
+    name: 'female',
+    image: femaleIcon,
+    label: 'Female',
+  },
+  {
+    name: 'babychanging',
+    image: babychangingIcon,
+    label: 'Baby Changing',
+  },
+];
 
-    this.state = {
-      unsavedPreferences: {},
-      savedPreferences: config.getSettings(PREFERENCES_KEY),
-    };
+const PreferencesPage = function (props) {
+  const [unsavedPreferences, setUnsavedPreferences] = useState({});
+  const [savedPreferences] = useState(config.getSettings(PREFERENCES_KEY));
+  const [updated, setUpdated] = useState(false);
 
-    this.preferenceMap = [
-      {
-        name: 'free',
-        image: freeIcon,
-        label: 'Free',
-      },
-      {
-        name: 'accessible',
-        image: accessibleIcon,
-        label: 'Accessible',
-      },
-      {
-        name: 'open',
-        image: openIcon,
-        label: 'Open Now',
-      },
-      {
-        name: 'male',
-        image: maleIcon,
-        label: 'Male',
-      },
-      {
-        name: 'female',
-        image: femaleIcon,
-        label: 'Female',
-      },
-      {
-        name: 'babychanging',
-        image: babychangingIcon,
-        label: 'Baby Changing',
-      },
-    ];
-
-    this.save = this.save.bind(this);
-    this.updateSelection = this.updateSelection.bind(this);
-  }
-
-  updateSelection(event) {
+  const updateSelection = (event) => {
     // Fallback to `undefined` instead of `false` so we unset the data as opposed to
     // storing a non-truthy value
     var newVal = event.target.checked || undefined;
 
     // Update state using React's immutable helper addon
-    var newState = update(this.state, {
-      unsavedPreferences: {
-        [event.target.name]: { $set: newVal },
-      },
-
-      // Reset updated state until `save` is called
-      updated: { $set: false },
+    setUnsavedPreferences({
+      ...unsavedPreferences,
+      [event.target.name]: newVal,
     });
 
-    this.setState(newState);
-  }
+    setUpdated(false);
+  };
 
-  save() {
+  const save = () => {
     // `Object.assign` to avoid potentially state mutation
-    var preferences = Object.assign({}, this.state.unsavedPreferences);
+    var preferences = Object.assign({}, unsavedPreferences);
 
     for (let key in preferences) {
       if (preferences.hasOwnProperty(key)) {
@@ -99,26 +83,21 @@ class PreferencesPage extends Component {
     }
 
     // Reset unsaved preferences collection
-    this.setState({
-      unsavedPreferences: {},
-      updated: true,
-    });
-  }
+    setUnsavedPreferences({});
+    setUpdated(true);
+  };
 
-  isDirty() {
-    return Object.keys(this.state.unsavedPreferences).length !== 0;
-  }
+  const isDirty = () => {
+    return Object.keys(unsavedPreferences).length !== 0;
+  };
 
-  renderMain() {
+  const renderMain = () => {
     return (
       <div>
         <div>
           <div className={layout.controls}>
             {config.showBackButtons && (
-              <button
-                onClick={this.props.history.goBack}
-                className={controls.btn}
-              >
+              <button onClick={props.history.goBack} className={controls.btn}>
                 Back
               </button>
             )}
@@ -128,23 +107,27 @@ class PreferencesPage extends Component {
         <DismissableBox
           persistKey="preferences-intro"
           title="Preferences"
-          content={`Highlight toilet features that matter to you. Toilets with these
-                        features will be indicated for you. Toilets lacking crucial features will
-                        appear in red.`}
+          content={
+            <>
+              Highlight toilet features that matter to you. Toilets with these
+              features will be indicated for you. Toilets lacking crucial
+              features will appear in red.
+            </>
+          }
         />
 
         <h2 className={headings.large}>My Toilet Preferences</h2>
 
         <div className={styles.preferences}>
           {/* This checkbox style is also used in the CookieBox component. */}
-          {this.preferenceMap.map(preference => (
+          {preferenceMap.map((preference) => (
             <label key={preference.name} className={controls.preferenceWrapper}>
               <input
                 className={controls.preferenceInput}
                 type="checkbox"
                 name={preference.name}
-                onChange={this.updateSelection}
-                defaultChecked={this.state.savedPreferences[preference.name]}
+                onChange={updateSelection}
+                defaultChecked={savedPreferences[preference.name]}
               />
               <span className={controls.preference}>
                 <img
@@ -158,40 +141,25 @@ class PreferencesPage extends Component {
           ))}
         </div>
 
-        {this.state.updated && (
+        {updated && (
           <Notification>
             <h3 className={helpers.visuallyHidden}>Saved</h3>
             <p>Your preferences have been updated.</p>
           </Notification>
         )}
 
-        <button
-          className={controls.btn}
-          onClick={this.save}
-          disabled={!this.isDirty()}
-        >
+        <button className={controls.btn} onClick={save} disabled={!isDirty()}>
           Save
         </button>
       </div>
     );
-  }
+  };
 
-  renderMap() {
+  const renderMap = () => {
     return <NearestLooMap />;
-  }
+  };
 
-  render() {
-    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
-  }
-}
+  return <PageLayout main={renderMain()} map={renderMap()} />;
+};
 
-var mapStateToProps = state => ({
-  app: state.app,
-});
-
-var mapDispatchToProps = {};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PreferencesPage);
+export default PreferencesPage;

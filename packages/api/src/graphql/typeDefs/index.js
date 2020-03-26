@@ -199,6 +199,10 @@ const typeDefs = gql`
       "A Point from which to begin the search"
       from: ProximityInput!
     ): [Loo!]!
+    "Retrieve a list of areas in existance"
+    areas: [AdminGeo!]!
+    "Retrieve a report by ID"
+    report(id: ID!): Report
     "Retrieve 'counter' statistics"
     counters: Counters!
     "Retrieve proportional statistics"

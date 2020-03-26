@@ -1,5 +1,5 @@
-describe('Individual Loo Page', function() {
-  before(function() {
+describe('Individual Loo Page', function () {
+  before(function () {
     cy.server();
     cy.fixture('nearbyLoos.json').as('loos');
     cy.fixture('angliaSquareLoo.json').as('loo');

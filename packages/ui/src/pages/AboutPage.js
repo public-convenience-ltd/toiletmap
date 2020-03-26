@@ -64,96 +64,98 @@ class AboutPage extends Component {
           </a>{' '}
           (who designed and built it).
         </p>
-        <div className={layout.bandedSection}>
-          <div className={layout.bandedSectionText}>
-            <div className={layout.mainContainer}>
-              <h2 id="use-our-loos" className={headings.regular}>
-                Use Our Loos
-              </h2>
+        {config.shouldShowSponsor() && (
+          <div className={layout.bandedSection}>
+            <div className={layout.bandedSectionText}>
+              <div className={layout.mainContainer}>
+                <h2 id="use-our-loos" className={headings.regular}>
+                  Use Our Loos
+                </h2>
 
-              <img src={uolLogo} alt="Use Our Loos is powered by Domestos" />
+                <img src={uolLogo} alt="Use Our Loos is powered by Domestos" />
 
-              <p>
-                We all need toilets. When you need to go, you need to go. At
-                home or in an office this isn’t a problem. However, out and
-                about, are you sure there’s somewhere to go when the need
-                arises?
-              </p>
+                <p>
+                  We all need toilets. When you need to go, you need to go. At
+                  home or in an office this isn’t a problem. However, out and
+                  about, are you sure there’s somewhere to go when the need
+                  arises?
+                </p>
 
-              <p>
-                Across the UK, more than one in every three public toilets have
-                been closed over the last two decades. Some councils are already
-                without a single free-to-use public convenience.
-              </p>
+                <p>
+                  Across the UK, more than one in every three public toilets
+                  have been closed over the last two decades. Some councils are
+                  already without a single free-to-use public convenience.
+                </p>
 
-              <p>
-                <strong>Use Our Loos</strong> is the first national community
-                toilet scheme, created by the{' '}
-                <a
-                  href="http://www.btaloos.co.uk"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  British Toilet Association
-                </a>
-                ,{' '}
-                <a
-                  href="http://www.domestos.co.uk"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Domestos
-                </a>{' '}
-                and the <strong>Great British Public Toilet Map</strong>, with
-                the ambition to unlock the loos that are hidden in high street
-                cafes, restaurants, coffee shops and bars and open them up to
-                the community.
-              </p>
+                <p>
+                  <strong>Use Our Loos</strong> is the first national community
+                  toilet scheme, created by the{' '}
+                  <a
+                    href="http://www.btaloos.co.uk"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    British Toilet Association
+                  </a>
+                  ,{' '}
+                  <a
+                    href="http://www.domestos.co.uk"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Domestos
+                  </a>{' '}
+                  and the <strong>Great British Public Toilet Map</strong>, with
+                  the ambition to unlock the loos that are hidden in high street
+                  cafes, restaurants, coffee shops and bars and open them up to
+                  the community.
+                </p>
 
-              <p>
-                As more public loos are closed, we’re asking that more loos are
-                made public.
-              </p>
+                <p>
+                  As more public loos are closed, we’re asking that more loos
+                  are made public.
+                </p>
 
-              <p>
-                We’re inviting businesses to sign up and welcome everyone,
-                customers and non-customers, to use their loos. In return, we’re
-                providing them with free Domestos product, directing people to
-                their venues and driving local fame so they will benefit from
-                increased customers and a stronger connection to their
-                community.
-              </p>
+                <p>
+                  We’re inviting businesses to sign up and welcome everyone,
+                  customers and non-customers, to use their loos. In return,
+                  we’re providing them with free Domestos product, directing
+                  people to their venues and driving local fame so they will
+                  benefit from increased customers and a stronger connection to
+                  their community.
+                </p>
 
-              <p>
-                We’re inviting the public to use our map to discover loos near
-                them and to help us improve the service by adding new locations
-                or flagging loos that have closed.
-              </p>
+                <p>
+                  We’re inviting the public to use our map to discover loos near
+                  them and to help us improve the service by adding new
+                  locations or flagging loos that have closed.
+                </p>
 
-              <p>
-                To register your business for the Use Our Loos campaign please
-                contact{' '}
-                <a
-                  href="mailto:useourloos@gmail.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  useourloos@gmail.com
-                </a>
-              </p>
-              <p>
-                You can also register your interest{' '}
-                <a
-                  href="https://goo.gl/forms/JRw6J7yoDe46YIB23"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  here.
-                </a>
-              </p>
+                <p>
+                  To register your business for the Use Our Loos campaign please
+                  contact{' '}
+                  <a
+                    href="mailto:useourloos@gmail.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    useourloos@gmail.com
+                  </a>
+                </p>
+                <p>
+                  You can also register your interest{' '}
+                  <a
+                    href="https://goo.gl/forms/JRw6J7yoDe46YIB23"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    here.
+                  </a>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         <h2 id="contributing" className={headings.regular}>
           Thinking about adding a toilet?

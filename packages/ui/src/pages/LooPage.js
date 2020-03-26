@@ -1,29 +1,55 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 import { DateTime } from 'luxon';
-
-import { actionFindByIdRequest } from '../redux/modules/loos';
-import { actionHighlight } from '../redux/modules/mapControls';
 
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
 import PreferenceIndicators from '../components/PreferenceIndicators';
 import NearestLooMap from '../components/NearestLooMap';
+import DismissableBox from '../components/DismissableBox';
+import Notification from '../components/Notification';
 
 import styles from './css/loo-page.module.css';
 import layout from '../components/css/layout.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
-import { mappings } from '@toiletmap/api-client';
+import mappings from '../graphqlMappings';
 import config from '../config';
 
-class LooPage extends Component {
+import { loader } from 'graphql.macro';
+import { useQuery } from '@apollo/client';
+
+import gql from 'graphql-tag';
+
+const FIND_LOO_QUERY = loader('./findLooById.graphql');
+const GET_USER_DATA = gql`
+  {
+    userData @client {
+      name
+    }
+  }
+`;
+
+function constructCampaignLink(loo, email = '') {
+  let loc = loo.location;
+  let coords = `${loc.lng},${loc.lat}`;
+  let name = loo.name || '';
+  let opening = loo.opening || '';
+  return `https://docs.google.com/forms/d/e/1FAIpQLScMvkjoE68mR1Z-yyVH7YhdndHCd_k8QwbugwfbqgZGUr_DvQ/viewform?emailAddress=${encodeURIComponent(
+    email
+  )}&entry.975653982=${encodeURIComponent(
+    coords
+  )}&entry.688810578=${encodeURIComponent(
+    name
+  )}&entry.1574991632=${encodeURIComponent(opening)}`;
+}
+
+const LooPage = function LooPage(props) {
   // Provides a mapping between loo property names and the values we want to display
-  humanizedPropNames = {
+  const humanizedPropNames = {
     type: 'Facilities',
     accessibleType: 'Accessible facilities',
     babyChange: 'Baby Changing',
@@ -35,7 +61,7 @@ class LooPage extends Component {
   };
 
   // Loo property order (top down by property name)
-  propertiesSort = [
+  const propertiesSort = [
     'access',
     'type',
     'accessibleType',
@@ -49,129 +75,151 @@ class LooPage extends Component {
   ];
 
   // Collection of properties to not display
-  propertiesBlacklist = [
-    'orig',
+  const propertiesBlacklist = [
     'active',
     'area',
     'name',
-    'geocoded',
-    'geocoding_method',
+    'location',
     'toObject',
+    'updatedAt',
+    'createdAt',
+    'removalReason',
+    'id',
+    '__typename',
   ];
 
-  componentDidMount() {
-    if (!this.props.loo) {
-      this.props.actionFindByIdRequest(this.props.match.params.id);
-    }
-    this.props.actionHighlight(this.props.match.params.id);
-  }
+  let looId = props.match.params.id;
+  const { loading, data, error } = useQuery(FIND_LOO_QUERY, {
+    variables: {
+      id: looId,
+    },
+  });
 
-  componentDidUpdate(prevProps) {
-    // Support navigation _between_ loo pages
-    if (this.props.match.params.id !== prevProps.match.params.id) {
-      if (!this.props.loo) {
-        this.props.actionFindByIdRequest(this.props.match.params.id);
-      }
-      this.props.actionHighlight(this.props.match.params.id);
-    }
-  }
+  const { loading: userLoading, data: userData, error: userError } = useQuery(
+    GET_USER_DATA
+  );
 
-  componentWillUnmount() {
-    // Clear any marker highlighting when navigating away
-    this.props.actionHighlight(null);
-  }
+  const isThanksPage = props.match.path === '/loos/:id/thanks';
 
-  getPropertyNames() {
+  function getPropertyNames() {
     // All property names in our loo object
-    var names = Object.keys(this.props.loo.properties);
+    var names = Object.keys(data.loo);
 
     // Pick out contained properties of known order, we'll put them at the front
-    var knownOrder = _.intersection(this.propertiesSort, names);
+    var knownOrder = _.intersection(propertiesSort, names);
 
     // Pick out all other properties that are not blacklisted, we'll put them after
-    var unknownOrder = _.difference(
-      names,
-      knownOrder,
-      this.propertiesBlacklist
-    );
+    var unknownOrder = _.difference(names, knownOrder, propertiesBlacklist);
     unknownOrder.sort();
 
     return knownOrder.concat(unknownOrder);
   }
 
-  // Wrapper to `@toiletmap/api-client.mappings.humanizeAPIValue` which allows mappings between loo property values and the
+  // Wrapper to graphqlMappings which allows mappings between loo property values and the
   // text we want to display
-  humanizePropertyName(val) {
-    if (this.humanizedPropNames[val]) {
-      return this.humanizedPropNames[val];
+  function humanizePropertyName(val) {
+    if (humanizedPropNames[val]) {
+      return humanizedPropNames[val];
     }
 
-    return mappings.humanizeAPIValue(val);
+    return mappings.humanizeAPIValue(val, '');
   }
 
-  renderMain() {
-    var loo = this.props.loo;
-    var properties = this.getPropertyNames();
+  function renderMain() {
+    var loo = data.loo;
+    var properties = getPropertyNames();
 
     return (
       <div>
-        <div>
-          <div className={layout.controls}>
-            {config.showBackButtons && (
-              <button
-                onClick={this.props.history.goBack}
+        <div className={layout.controls}>
+          {config.showBackButtons && (
+            <button onClick={props.history.goBack} className={controls.btn}>
+              Back
+            </button>
+          )}
+
+          {loo.active && (
+            <>
+              <a
+                href={
+                  'https://maps.apple.com/?dirflg=w&daddr=' +
+                  [loo.location.lat, loo.location.lng]
+                }
                 className={controls.btn}
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Back
-              </button>
-            )}
+                Get Directions
+              </a>
 
-            <a
-              href={
-                'https://maps.apple.com/?dirflg=w&daddr=' +
-                [
-                  loo.properties.geometry.coordinates[1],
-                  loo.properties.geometry.coordinates[0],
-                ]
-              }
-              className={controls.btn}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Get Directions
-            </a>
-
-            {config.allowAddEditLoo && (
-              <Link to={`/loos/${loo._id}/edit`} className={controls.btn}>
-                Edit toilet
-              </Link>
-            )}
-          </div>
+              {config.allowAddEditLoo && (
+                <Link to={`/loos/${loo.id}/edit`} className={controls.btn}>
+                  Edit toilet
+                </Link>
+              )}
+            </>
+          )}
         </div>
 
-        <h2 className={headings.large}>{loo.properties.name || 'Toilet'}</h2>
+        {isThanksPage && (
+          <DismissableBox
+            title="Thank You!"
+            content={
+              <>
+                <p>Thanks for the information you've provided.</p>
+                <p>
+                  We rely on contributions of data like yours to keep the map
+                  accurate and useful.
+                </p>
+                {config.isNativeApp() && (
+                  <>
+                    <p>
+                      Please consider signing up with our sponsor's campaign.
+                    </p>
+                    <a
+                      className={controls.btnFeatured}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={constructCampaignLink(loo, userData.userData.name)}
+                    >
+                      Join the <strong>Use Our Loos</strong> campaign
+                    </a>
+                  </>
+                )}
+              </>
+            }
+          />
+        )}
+
+        {!loo.active && (
+          <Notification>
+            <b>This toilet has been removed.</b>
+            {loo.removalReason && (
+              <div>Removal reason: "{loo.removalReason}"</div>
+            )}
+          </Notification>
+        )}
+
+        <h2 className={headings.large}>{loo.name || 'Toilet'}</h2>
 
         <div className={styles.preferenceIndicators}>
           <PreferenceIndicators loo={loo} iconSize={2.5} />
         </div>
 
         <MediaQuery maxWidth={config.viewport.mobile}>
-          <div className={styles.mobileMap}>{this.renderMap()}</div>
+          <div className={styles.mobileMap}>{renderMap()}</div>
         </MediaQuery>
 
         <ul className={styles.properties}>
-          {properties.map(name => {
-            var val = mappings.humanizePropertyValue(
-              loo.properties[name],
-              name
-            );
+          {properties.map((name) => {
+            var val = mappings.humanizePropertyValue(loo[name], name);
 
             // Filter out useless/unset data
             if (val !== 'Not known' && val !== '' && typeof val !== 'object') {
               return (
                 <li className={styles.property} key={name}>
                   <h3 className={styles.propertyName}>
-                    {this.humanizePropertyName(name)}
+                    {humanizePropertyName(name)}
                   </h3>
                   <p className={styles.propertyValue}>{val}</p>
                 </li>
@@ -191,7 +239,7 @@ class LooPage extends Component {
         <p>
           View more detailed data about this Toilet at{' '}
           <a
-            href={`/explorer/loos/${loo._id}`}
+            href={`/explorer/loos/${loo.id}`}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -203,45 +251,39 @@ class LooPage extends Component {
     );
   }
 
-  renderMap() {
+  function renderMap() {
     return (
       <NearestLooMap
-        loo={this.props.loo}
+        activeLoo={data.loo}
         mapProps={{
           showLocation: false,
-          showSearchControl: false,
+          showSearchControl: true,
           showLocateControl: false,
           showCenter: false,
           countLimit: null,
         }}
+        highlight={data.loo.id}
       />
     );
   }
 
-  render() {
-    if (!this.props.loo) {
-      return (
-        <PageLayout
-          main={<Loading message={'Fetching Toilet Data'} />}
-          map={<Loading message={'Fetching Toilet Data'} />}
-        />
-      );
+  if (loading || error || userLoading || userError || !data.loo) {
+    let msg;
+    if (error || userError) {
+      msg = 'An error occurred. ';
+      console.error(error);
+    } else {
+      msg = 'Fetching toilet data';
     }
-    return <PageLayout main={this.renderMain()} map={this.renderMap()} />;
+
+    return (
+      <PageLayout
+        main={<Loading message={msg} />}
+        map={<Loading message={msg} />}
+      />
+    );
   }
-}
-
-var mapStateToProps = (state, ownProps) => ({
-  app: state.app,
-  loo: state.loos.byId[ownProps.match.params.id] || null,
-});
-
-var mapDispatchToProps = {
-  actionFindByIdRequest,
-  actionHighlight,
+  return <PageLayout main={renderMain()} map={renderMap()} />;
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LooPage);
+export default LooPage;

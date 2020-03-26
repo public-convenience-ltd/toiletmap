@@ -6,11 +6,11 @@ import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import { TableFooter } from '@material-ui/core';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     width: '100%',
     overflowX: 'auto',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
   },
   table: {
     minWidth: 500,
@@ -18,7 +18,7 @@ const styles = theme => ({
   actionStyles: {
     flexShrink: 0,
     color: theme.palette.text.secondary,
-    marginLeft: theme.spacing.unit * 2.5,
+    marginLeft: theme.spacing(2.5),
   },
 });
 

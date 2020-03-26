@@ -3,7 +3,7 @@ import { Location } from '@reach/router';
 import _ from 'lodash';
 import moment from 'moment';
 import { loader } from 'graphql.macro';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/react-components';
 
 import Counter from '../Counter';
 import LooIcon from '@material-ui/icons/Wc';
@@ -119,14 +119,14 @@ class HeadlineStats extends Component {
               accessibleLoos,
             } = data.proportions;
 
-            const getNames = proportions => {
-              return proportions.map(chunk => {
+            const getNames = (proportions) => {
+              return proportions.map((chunk) => {
                 return chunk.name;
               });
             };
 
-            const getValues = proportions => {
-              return proportions.map(chunk => {
+            const getValues = (proportions) => {
+              return proportions.map((chunk) => {
                 return chunk.value;
               });
             };
@@ -147,8 +147,9 @@ class HeadlineStats extends Component {
                             'ddd, MMM Do YYYY'
                           )} to ${moment(location.state.end).format(
                             'ddd, MMM Do YYYY'
-                          )} in ${location.state.area ||
-                            location.state.areaType}`}
+                          )} in ${
+                            location.state.area || location.state.areaType
+                          }`}
                         </ListSubheader>
                       )
                     }

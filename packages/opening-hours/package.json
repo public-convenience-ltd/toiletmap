@@ -1,11 +1,11 @@
 {
   "name": "@toiletmap/opening-hours",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "description": "A lightweight provider for checking gbptm opening hours strings",
   "main": "index.js",
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "luxon": "1.10.0"
+    "luxon": "1.22.2"
   }
 }

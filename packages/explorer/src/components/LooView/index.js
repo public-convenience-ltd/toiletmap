@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/react-components';
 import classNames from 'classnames';
 import LooTile from '../LooTile';
 import LooTable from '../table/LooTable';
@@ -20,7 +20,7 @@ import pickBy from 'lodash/pickBy';
 import { DateTime } from 'luxon';
 const LOO_DETAILS = loader('./looDetails.graphql');
 
-const styles = theme => ({
+const styles = (theme) => ({
   looTile: {
     height: '100%',
     width: 'auto',
@@ -36,7 +36,7 @@ const styles = theme => ({
     marginRight: '2%',
   },
   paper: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
@@ -58,11 +58,11 @@ const styles = theme => ({
   },
 });
 
-const TableRowRender = props => {
+const TableRowRender = (props) => {
   const { data } = props;
   return (
     <>
-      {data.docs.map(loo => {
+      {data.docs.map((loo) => {
         return (
           <TableRow key={loo[0]}>
             <TableCell component="th" scope="row">
@@ -97,7 +97,7 @@ class LooView extends Component {
     };
   }
 
-  handleChange = panel => (event, expanded) => {
+  handleChange = (panel) => (event, expanded) => {
     this.setState({
       expanded: expanded ? panel : false,
     });
@@ -111,13 +111,13 @@ class LooView extends Component {
         {({ loading, error, data }) => {
           if (loading) return <p>Loading Loo Info</p>;
           if (error) return <p>Failed to fetch loo :(</p>;
-          let loo = pickBy(data.loo, val => val !== null);
+          let loo = pickBy(data.loo, (val) => val !== null);
           return (
             <div className={classes.root}>
               <div className={classes.appBarSpacer} />
-              <Grid container spacing={24}>
+              <Grid container spacing={2}>
                 <Grid item md={6} sm={12}>
-                  <Typography variant="display1" gutterBottom>
+                  <Typography variant="h2" gutterBottom>
                     {loo.name}
                   </Typography>
                   {loo.area.map(({ name, type }) => (
@@ -155,7 +155,7 @@ class LooView extends Component {
 
                 <Grid container item sm={12}>
                   <Grid item sm={12}>
-                    <Typography variant="display1" gutterBottom>
+                    <Typography variant="h3" gutterBottom>
                       Toilet Data
                     </Typography>
                     <Typography variant="subtitle1" gutterBottom>
@@ -183,8 +183,8 @@ class LooView extends Component {
                     </Typography>
                   </Grid>
                   <div className={classes.expansionRoot}>
-                    {loo.reports.map(value => {
-                      let report = pickBy(value, val => val !== null);
+                    {loo.reports.map((value) => {
+                      let report = pickBy(value, (val) => val !== null);
                       return (
                         <ExpansionPanel
                           key={report.id}

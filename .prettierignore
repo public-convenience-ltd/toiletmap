@@ -6,4 +6,5 @@ dist
 .git
 yarn.lock
 data
-leaflet-control-geocoder
+packages/ui/public/adobe-digital-data-stage.js
+packages/ui/public/adobe-digital-data.js

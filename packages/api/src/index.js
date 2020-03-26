@@ -34,22 +34,18 @@ app.use(cors());
 // Add GraphQL endpoint, playground and voyager
 applyGraphqlMiddleware(app);
 
-// Add REST API routes
-const rest = require('./rest');
-app.use('/api', rest);
-
 //redirect admin to explorer
 app.all('/admin', (req, res) => res.redirect(301, '/explorer/'));
 
 // Serve the built explorer UI from /explorer
 app.use('/explorer', express.static(path.join(__dirname, 'www-explorer')));
-app.get('/explorer/*', function(req, res) {
+app.get('/explorer/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'www-explorer', 'index.html'));
 });
 
 // Serve the built UI from the root
 app.use(express.static(path.join(__dirname, 'www')));
-app.get('/*', function(req, res) {
+app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'www', 'index.html'));
 });
 

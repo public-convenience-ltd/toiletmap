@@ -82,6 +82,12 @@
   cursor: not-allowed;
 }
 
+.textArea {
+  composes: text;
+  min-height: 100px;
+  resize: vertical;
+}
+
 .dropdown {
   composes: text;
 }
