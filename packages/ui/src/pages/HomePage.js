@@ -152,17 +152,24 @@ const HomePage = function (props) {
     );
   };
 
-  const renderWelcome = () => {
-    var content = `
-            <p>The ${config.nearestListLimit} nearest toilets are listed below. Click more info to find out about
-            each toilet's features.</p><p>You can set preferences to highlight toilets that meet your specific
-            needs.</p>
-        `;
-
-    return (
-      <DismissableBox persistKey="home-welcome" title="Hi!" content={content} />
-    );
-  };
+  const renderWelcome = () => (
+    <DismissableBox
+      persistKey="home-welcome"
+      title="Hi!"
+      content={
+        <>
+          <p>
+            The {config.nearestListLimit} nearest toilets are listed below.
+            Click more info to find out about each toilet's features.
+          </p>
+          <p>
+            You can set preferences to highlight toilets that meet your specific
+            needs.
+          </p>
+        </>
+      }
+    />
+  );
 
   const renderMain = () => {
     if (loadingMapControls || loadingUserData) {
