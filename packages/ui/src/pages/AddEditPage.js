@@ -589,7 +589,7 @@ const AddEditPage = function (props) {
   }
 
   // Redirect to index if loo is not active (i.e. removed)
-  if (!looData.loo.active) {
+  if (looData && !looData.loo.active) {
     history.push(`/`);
   }
 
