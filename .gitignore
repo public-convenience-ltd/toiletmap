@@ -9,7 +9,7 @@ node_modules
 
 *.sublime*
 
-# Heroku-derived config
+# Local config
 .env
 # Data Dumps
 packages/api/data
@@ -22,3 +22,5 @@ coverage
 
 # IDE
 .idea
+
+.now
