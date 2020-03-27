@@ -8,14 +8,7 @@
     "test": "yarn lint && CI=true lerna run test --parallel",
     "release": "lerna version --conventional-commits --push --exact -m \"build: release %s\"",
     "lint": "eslint . && stylelint \"packages/{ui,admin}/**/*.css\"",
-    "prettify": "prettier --write \"./**/*.{js,json}\"",
-    "build:ui": "lerna run build --scope=@toiletmap/ui",
-    "build:explorer": "lerna run build --scope=@toiletmap/explorer",
-    "docker:build": "docker build --network=host -t toiletmap/toiletmap .",
-    "docker:run": "docker run --network=host --env-file .env -d toiletmap/toiletmap",
-    "build": "yarn build:ui && yarn build:explorer && yarn docker:build",
-    "deploy:push": "heroku container:push web",
-    "deploy:release": "heroku container:release web"
+    "prettify": "prettier --write \"./**/*.{js,json}\""
   },
   "repository": {
     "type": "git",

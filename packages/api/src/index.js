@@ -1,62 +1,72 @@
-require('newrelic');
+const { ApolloServer } = require('apollo-server');
+const jwt = require('jsonwebtoken');
+const jwksClient = require('jwks-rsa');
+
 const config = require('./config');
-const express = require('express');
-const helmet = require('helmet');
-const compression = require('compression');
-const cors = require('cors');
-const path = require('path');
-const applyGraphqlMiddleware = require('./graphql');
-const app = express();
 
-// we can make some nicer assumptions about security if query values are only
-// ever strings, not arrays or objects
-app.set('query parser', 'simple');
+const typeDefs = require('./typeDefs');
+const resolvers = require('./resolvers');
+const {
+  RequirePermissionDirective,
+  RedactionDirective,
+} = require('./directives');
 
-// Redirect to https in production
-app.use((req, res, next) => {
-  if (process.env.NODE_ENV === 'production') {
-    if (req.hostname !== 'www.toiletmap.org.uk') {
-      res.redirect(301, 'https://www.toiletmap.org.uk' + req.originalUrl);
-    } else if (req.headers['x-forwarded-proto'] !== 'https') {
-      res.redirect(301, 'https://' + req.hostname + req.originalUrl);
-    } else {
-      next();
+const client = jwksClient({
+  jwksUri: config.auth0.jwksUri,
+});
+
+function getKey(header, cb) {
+  client.getSigningKey(header.kid, function (err, key) {
+    var signingKey = key.publicKey || key.rsaPublicKey;
+    cb(null, signingKey);
+  });
+}
+
+const options = {
+  audience: config.auth0.audience,
+  issuer: config.auth0.issuer,
+  algorithms: config.auth0.algorithms,
+};
+
+// Add GraphQL API
+const apollo = new ApolloServer({
+  // These will be defined for both new or existing servers
+  typeDefs,
+  resolvers,
+  schemaDirectives: {
+    auth: RequirePermissionDirective,
+    redact: RedactionDirective,
+  },
+  context: async ({ req }) => {
+    let user = null;
+    const authorization = req.headers.authorization;
+    if (authorization) {
+      const token = authorization.replace('Bearer ', '');
+      user = await new Promise((resolve, reject) => {
+        jwt.verify(token, getKey, options, (err, decoded) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(decoded);
+        });
+      });
     }
-  } else {
-    next();
-  }
-});
-
-app.use(helmet());
-app.use(compression());
-app.use(cors());
-
-// Add GraphQL endpoint, playground and voyager
-applyGraphqlMiddleware(app);
-
-//redirect admin to explorer
-app.all('/admin', (req, res) => res.redirect(301, '/explorer/'));
-
-// Serve the built explorer UI from /explorer
-app.use('/explorer', express.static(path.join(__dirname, 'www-explorer')));
-app.get('/explorer/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'www-explorer', 'index.html'));
-});
-
-// Serve the built UI from the root
-app.use(express.static(path.join(__dirname, 'www')));
-app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'www', 'index.html'));
+    return {
+      user,
+    };
+  },
+  engine: { ...config.graphql.engine },
+  playground: { ...config.graphql.playground },
+  introspection: true,
 });
 
 // auto-init if this app is not being initialised by another module
 if (!module.parent) {
-  app.listen(config.app.port, () => {
-    /* eslint-disable-next-line no-console */
-    console.log(`Listening on port ${config.app.port}`);
-    console.log('Graphql on /graphql');
-    console.log('Graphql voyager on /voyager');
-  });
+  apollo
+    .listen({ port: config.app.port })
+    .then(({ url, subscriptionsPath, server }) => {
+      console.log(`Started Apollo Server at ${url}`);
+    });
 }
 
-module.exports = app;
+module.exports = apollo;
