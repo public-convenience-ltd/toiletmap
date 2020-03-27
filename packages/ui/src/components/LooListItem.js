@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
@@ -7,6 +7,13 @@ import LooMap from './LooMap';
 import PreferenceIndicators from './PreferenceIndicators';
 
 import styles from './css/loo-list-item.module.css';
+
+const propTypes = {
+  loo: PropTypes.object.isRequired,
+  index: PropTypes.number, // a number to show by the loo
+  onHoverStart: PropTypes.func,
+  onHoverEnd: PropTypes.func,
+};
 
 function round(value, precision) {
   var multiplier = Math.pow(10, precision || 0);
@@ -41,55 +48,47 @@ function latLngToDistance(start, end) {
   return distance;
 }
 
-class LooListItem extends Component {
-  render() {
-    var loo = this.props.loo;
+const LooListItem = ({
+  loo,
+  center,
+  index,
+  onHoverStart = Function.prototype,
+  onHoverEnd = Function.prototype,
+}) => {
+  return (
+    <Link
+      data-testid={`loo:${loo.id}`}
+      to={`/loos/${loo.id}`}
+      className={styles.container}
+      onMouseOver={onHoverStart}
+      onMouseOut={onHoverEnd}
+    >
+      <LooMap
+        countFrom={index}
+        countLimit={1}
+        showZoomControls={false}
+        preventZoom={true}
+        preventDragging={true}
+        loos={[loo]}
+        initialPosition={loo.location}
+        activeMarkers={false}
+      />
 
-    return (
-      <Link
-        data-testid={`loo:${loo.id}`}
-        to={`/loos/${loo.id}`}
-        className={styles.container}
-        onMouseOver={this.props.onHoverStart}
-        onMouseOut={this.props.onHoverEnd}
-      >
-        <LooMap
-          countFrom={this.props.index}
-          countLimit={1}
-          showZoomControls={false}
-          preventZoom={true}
-          preventDragging={true}
-          loos={[loo]}
-          initialPosition={loo.location}
-          activeMarkers={false}
-        />
-
-        <div className={styles.link}>
-          <div className={styles.preferenceIndicators}>
-            <PreferenceIndicators loo={loo} iconSize={1.4} />
-          </div>
-
-          <span className={styles.linkText}>More info</span>
+      <div className={styles.link}>
+        <div className={styles.preferenceIndicators}>
+          <PreferenceIndicators loo={loo} iconSize={1.4} />
         </div>
 
-        <div className={styles.distance + ' distance--zindexfix'}>
-          {humanizeDistance(latLngToDistance(this.props.center, loo.location))}
-        </div>
-      </Link>
-    );
-  }
-}
+        <span className={styles.linkText}>More info</span>
+      </div>
 
-LooListItem.propTypes = {
-  loo: PropTypes.object.isRequired,
-  index: PropTypes.number, // a number to show by the loo
-  onHoverStart: PropTypes.func,
-  onHoverEnd: PropTypes.func,
+      <div className={styles.distance + ' distance--zindexfix'}>
+        {humanizeDistance(latLngToDistance(center, loo.location))}
+      </div>
+    </Link>
+  );
 };
 
-LooListItem.defaultProps = {
-  onHoverStart: Function.prototype,
-  onHoverEnd: Function.prototype,
-};
+LooListItem.propTypes = propTypes;
 
 export default LooListItem;

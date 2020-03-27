@@ -1,15 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import styles from './css/notification.module.css';
 
-class Notification extends Component {
-  render() {
-    return (
-      <div className={styles.notification} role="alert" aria-live="assertive">
-        {this.props.children}
-      </div>
-    );
-  }
-}
+const Notification = ({ children }) => {
+  return (
+    <div className={styles.notification} role="alert" aria-live="assertive">
+      {children}
+    </div>
+  );
+};
 
 export default Notification;

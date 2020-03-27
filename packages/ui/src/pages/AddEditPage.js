@@ -38,7 +38,7 @@ const SET_MAP_CENTER = gql`
 
 const getLooCachedId = (looId) => 'Loo:' + looId;
 
-const AddEditPage = function (props) {
+const AddEditPage = (props) => {
   const questionnaireMap = [
     {
       question: 'Attended?',
