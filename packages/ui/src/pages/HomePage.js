@@ -54,7 +54,7 @@ const TOGGLE_VIEW_MODE = gql`
   }
 `;
 
-const HomePage = function (props) {
+const HomePage = (props) => {
   const [highlight, setHighlight] = useState();
 
   const { loading: loadingMapControls, data: mapControlsData } = useQuery(
@@ -120,7 +120,7 @@ const HomePage = function (props) {
       );
     }
 
-    var loos = data.loosByProximity;
+    const loos = data.loosByProximity;
 
     // No results
     if (loos && !loos.length) {
@@ -152,7 +152,7 @@ const HomePage = function (props) {
     );
   };
 
-  const renderWelcome = () => (
+  const welcomFragment = (
     <DismissableBox
       persistKey="home-welcome"
       title="Hi!"
@@ -171,12 +171,29 @@ const HomePage = function (props) {
     />
   );
 
+  const renderMap = () => {
+    let mapProps = props.initialPosition
+      ? {
+          initialPosition: props.initialPosition,
+        }
+      : {};
+
+    return (
+      <NearestLooMap
+        numberNearest
+        highlight={highlight}
+        overrideLoos={data ? data.loosByProximity : []}
+        mapProps={mapProps}
+      />
+    );
+  };
+
   const renderMain = () => {
     if (loadingMapControls || loadingUserData) {
       return <></>;
     }
 
-    var { viewMap } = mapControls;
+    const { viewMap } = mapControls;
 
     return (
       <div className={styles.container}>
@@ -210,7 +227,7 @@ const HomePage = function (props) {
           maxWidth={config.viewport.mobile}
           className={styles.mobileContent}
         >
-          {!viewMap && renderWelcome()}
+          {!viewMap && welcomFragment}
           {!viewMap && renderList(true)}
           {viewMap && (
             <div className={styles.mobileMap}>
@@ -219,27 +236,10 @@ const HomePage = function (props) {
           )}
         </MediaQuery>
         <MediaQuery minWidth={config.viewport.mobile}>
-          {renderWelcome()}
+          {welcomFragment}
           {renderList(false)}
         </MediaQuery>
       </div>
-    );
-  };
-
-  const renderMap = () => {
-    let mapProps = props.initialPosition
-      ? {
-          initialPosition: props.initialPosition,
-        }
-      : {};
-
-    return (
-      <NearestLooMap
-        numberNearest
-        highlight={highlight}
-        overrideLoos={data ? data.loosByProximity : []}
-        mapProps={mapProps}
-      />
     );
   };
 

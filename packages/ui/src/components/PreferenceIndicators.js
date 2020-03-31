@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import config from '../config.js';
@@ -12,6 +12,13 @@ import maleIcon from '../images/pref-male-white.svg';
 import femaleIcon from '../images/pref-female-white.svg';
 import babychangingIcon from '../images/pref-babychanging-white.svg';
 
+const propTypes = {
+  // The loo instance to compare the user's preferences against
+  loo: PropTypes.object.isRequired,
+  // Icon size multiplier (based on 1rem)
+  iconSize: PropTypes.number,
+};
+
 const ICONS = {
   accessible: accessibleIcon,
   free: costIcon,
@@ -21,47 +28,35 @@ const ICONS = {
   babychanging: babychangingIcon,
 };
 
-class PreferenceIndicators extends Component {
-  render() {
-    var comparison = config.checkPreferences(this.props.loo);
+const PreferenceIndicators = ({ loo, iconSize = 1 }) => {
+  const comparison = config.checkPreferences(loo);
 
-    return (
-      <div className={styles.preferenceIndicators}>
-        {Object.keys(comparison).map((preference, index) => {
-          var value = comparison[preference];
+  return (
+    <div className={styles.preferenceIndicators}>
+      {Object.keys(comparison).map((preference, index) => {
+        const value = comparison[preference];
 
-          return [true, false].indexOf(value) !== -1 ? (
-            <img
-              alt={preference}
-              key={index}
-              src={ICONS[preference]}
-              className={
-                value
-                  ? styles.preferenceIndicatorYes
-                  : styles.preferenceIndicatorNo
-              }
-              style={{
-                height: `${this.props.iconSize}rem`,
-                width: `${this.props.iconSize}rem`,
-              }}
-            />
-          ) : null;
-        })}
-      </div>
-    );
-  }
-}
-
-PreferenceIndicators.propTypes = {
-  // The loo instance to compare the user's preferences against
-  loo: PropTypes.object.isRequired,
-
-  // Icon size multiplier (based on 1rem)
-  iconSize: PropTypes.number,
+        return [true, false].indexOf(value) !== -1 ? (
+          <img
+            alt={preference}
+            key={index}
+            src={ICONS[preference]}
+            className={
+              value
+                ? styles.preferenceIndicatorYes
+                : styles.preferenceIndicatorNo
+            }
+            style={{
+              height: `${iconSize}rem`,
+              width: `${iconSize}rem`,
+            }}
+          />
+        ) : null;
+      })}
+    </div>
+  );
 };
 
-PreferenceIndicators.defaultProps = {
-  iconSize: 1,
-};
+PreferenceIndicators.propTypes = propTypes;
 
 export default PreferenceIndicators;
