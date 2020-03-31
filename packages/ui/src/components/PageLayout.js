@@ -9,23 +9,21 @@ import Footer from './Footer';
 import layout from './css/layout.module.css';
 
 import config from '../config';
-import Tracking, {
-  TRACKING_STATE_CHOSEN,
-  CONFIG_NS,
-} from './Tracking/Tracking';
+import { TRACKING_STORAGE_KEY } from './Tracking';
+import TrackingPreferences from './Tracking/TrackingPreferences';
 
 const PageLayout = (props) => {
   const mainRef = React.useRef();
 
-  const [cookieSettingsOpen, setCookieSettingsOpen] = React.useState(
-    config.getSetting(CONFIG_NS, 'trackingState') !== TRACKING_STATE_CHOSEN
+  const [isCookieSettingsOpen, setIsCookieSettingsOpen] = React.useState(
+    !config.getSetting(TRACKING_STORAGE_KEY, 'trackingStateChosen')
   );
 
   React.useEffect(() => {
-    if (mainRef.current && cookieSettingsOpen) {
+    if (mainRef.current && isCookieSettingsOpen) {
       mainRef.current.scrollTop = 0;
     }
-  }, [mainRef, cookieSettingsOpen]);
+  }, [mainRef, isCookieSettingsOpen]);
 
   return (
     <div className={layout.appContainer}>
@@ -34,16 +32,21 @@ const PageLayout = (props) => {
           <Header />
 
           <main ref={mainRef} className={layout.content}>
-            <Tracking
-              analyticsId={config.analyticsId}
-              isOpen={cookieSettingsOpen}
-              onClose={() => setCookieSettingsOpen(false)}
-            >
-              <div>{React.cloneElement(props.main, props)}</div>
-            </Tracking>
+            <div>
+              <TrackingPreferences
+                isOpen={isCookieSettingsOpen}
+                onClose={() => setIsCookieSettingsOpen(false)}
+              />
+              {React.cloneElement(props.main, props)}
+            </div>
           </main>
 
-          <Footer onCookieBoxButtonClick={() => setCookieSettingsOpen(true)} />
+          <Footer
+            onCookieBoxButtonClick={() =>
+              setIsCookieSettingsOpen(!isCookieSettingsOpen)
+            }
+            isCookieSettingsOpen={isCookieSettingsOpen}
+          />
         </div>
       </div>
 

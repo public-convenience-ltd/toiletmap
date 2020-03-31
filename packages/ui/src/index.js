@@ -14,7 +14,6 @@ import * as serviceWorker from './serviceWorker';
 // Global CSS
 import './css/global';
 
-import App from './components/App';
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthCallback from './pages/AuthCallback';
 import LooPage from './pages/LooPage';
@@ -28,6 +27,7 @@ import MapPage from './pages/MapPage';
 import UseOurLoosPage from './pages/UseOurLoosPage';
 import PrivacyPage from './pages/PrivacyPage';
 import NotFound from './pages/404';
+import Tracking from './components/Tracking';
 
 import history from './history';
 import Auth from './Auth';
@@ -142,57 +142,56 @@ const startApp = () => {
     ReactDOM.render(
       <ApolloProvider client={client}>
         <Router history={history} forceRefresh={false}>
-          <App>
-            <Switch>
-              <Route
-                exact
-                path="/"
-                render={(props) => <HomePage auth={auth} {...props} />}
-              />
-              <Route exact path="/preferences" component={PreferencesPage} />
-              <Route exact path="/about" component={AboutPage} />
-              <Route exact path="/privacy" component={PrivacyPage} />
-              <Route exact path="/use-our-loos" component={UseOurLoosPage} />
-              <Route path="/loos/:id" exact component={LooPage} />
-              <Route
-                path="/login"
-                render={(props) => <LoginPage auth={auth} {...props} />}
-              />
-              <Route
-                path="/map/:lng/:lat"
-                render={(props) => <MapPage auth={auth} {...props} />}
-              />
-              <Route
-                exact
-                path="/callback"
-                render={(props) => <AuthCallback auth={auth} {...props} />}
-              />
-              <ProtectedRoute
-                exact
-                path="/report"
-                auth={auth}
-                injectProps={{ cache }}
-                component={AddEditPage}
-              />
-              <ProtectedRoute
-                path="/loos/:id/edit"
-                auth={auth}
-                injectProps={{ cache }}
-                component={AddEditPage}
-              />
-              <ProtectedRoute
-                path="/loos/:id/remove"
-                component={RemovePage}
-                auth={auth}
-              />
-              <ProtectedRoute
-                path="/loos/:id/thanks"
-                component={LooPage}
-                auth={auth}
-              />
-              <Route component={NotFound} />
-            </Switch>
-          </App>
+          <Tracking />
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={(props) => <HomePage auth={auth} {...props} />}
+            />
+            <Route exact path="/preferences" component={PreferencesPage} />
+            <Route exact path="/about" component={AboutPage} />
+            <Route exact path="/privacy" component={PrivacyPage} />
+            <Route exact path="/use-our-loos" component={UseOurLoosPage} />
+            <Route path="/loos/:id" exact component={LooPage} />
+            <Route
+              path="/login"
+              render={(props) => <LoginPage auth={auth} {...props} />}
+            />
+            <Route
+              path="/map/:lng/:lat"
+              render={(props) => <MapPage auth={auth} {...props} />}
+            />
+            <Route
+              exact
+              path="/callback"
+              render={(props) => <AuthCallback auth={auth} {...props} />}
+            />
+            <ProtectedRoute
+              exact
+              path="/report"
+              auth={auth}
+              injectProps={{ cache }}
+              component={AddEditPage}
+            />
+            <ProtectedRoute
+              path="/loos/:id/edit"
+              auth={auth}
+              injectProps={{ cache }}
+              component={AddEditPage}
+            />
+            <ProtectedRoute
+              path="/loos/:id/remove"
+              component={RemovePage}
+              auth={auth}
+            />
+            <ProtectedRoute
+              path="/loos/:id/thanks"
+              component={LooPage}
+              auth={auth}
+            />
+            <Route component={NotFound} />
+          </Switch>
         </Router>
       </ApolloProvider>,
       document.getElementById('root')
