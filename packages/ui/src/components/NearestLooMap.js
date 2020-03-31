@@ -40,13 +40,14 @@ const SET_MAP_ZOOM = gql`
   }
 `;
 
-const NearestLooMap = function NearestLooMap(props) {
+const NearestLooMap = (props) => {
   const [geolocation, setGeolocation] = useState();
   // Local zoom is used to make sure that zooming doesn't ping back to where it came
   // from, which used to happen because it wasn't being updated from the local apollo
   // cache quick enough (probably).
   const [localZoom, setLocalZoom] = useState();
-  let looMap;
+
+  const mapRef = React.useRef();
 
   const { loading: loadingMapControls, data: mapControlsData } = useQuery(
     GET_MAP_CONTROLS
@@ -76,15 +77,14 @@ const NearestLooMap = function NearestLooMap(props) {
 
   // A helper function to fire events for the map leaflet
   const updateLoadingStatus = function updateLoadingStatus(isLoading) {
-    if (!looMap) return;
+    if (!(mapRef && mapRef.current)) return;
 
     if (isLoading) {
-      looMap.leafletElement.fire('dataloading');
+      mapRef.current.leafletElement.fire('dataloading');
     } else {
-      looMap.leafletElement.fire('dataload');
+      mapRef.current.leafletElement.fire('dataload');
     }
   };
-
   // Fetch the current geolocation on rerender
   useEffect(() => {
     getGeolocation(
@@ -125,6 +125,7 @@ const NearestLooMap = function NearestLooMap(props) {
     }
   );
 
+  const [updateStoreCenter] = useMutation(SET_MAP_CENTER);
   // TODO check if still skip bug with latest beta (still is with beta 31)
 
   useEffect(() => {
@@ -132,7 +133,6 @@ const NearestLooMap = function NearestLooMap(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
-  const [updateStoreCenter] = useMutation(SET_MAP_CENTER);
   function onUpdateCenter(coords, radius) {
     updateStoreCenter({
       variables: {
@@ -150,7 +150,6 @@ const NearestLooMap = function NearestLooMap(props) {
       refetch();
     }
   }
-
   const [updateStoreZoom] = useMutation(SET_MAP_ZOOM);
   function onUpdateZoom(zoom) {
     setLocalZoom(zoom);
@@ -211,7 +210,7 @@ const NearestLooMap = function NearestLooMap(props) {
 
       {!loadingMapControls && getInitialPosition() ? (
         <LooMap
-          wrappedComponentRef={(it) => (looMap = it)}
+          wrappedComponentRef={mapRef}
           loos={getLoosToDisplay()}
           countLimit={props.numberNearest ? 5 : 0}
           showcontributor={true}

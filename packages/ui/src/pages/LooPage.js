@@ -47,7 +47,7 @@ function constructCampaignLink(loo, email = '') {
   )}&entry.1574991632=${encodeURIComponent(opening)}`;
 }
 
-const LooPage = function LooPage(props) {
+const LooPage = (props) => {
   // Provides a mapping between loo property names and the values we want to display
   const humanizedPropNames = {
     type: 'Facilities',
@@ -125,148 +125,6 @@ const LooPage = function LooPage(props) {
     return mappings.humanizeAPIValue(val, '');
   }
 
-  function renderMain() {
-    var loo = data.loo;
-    var properties = getPropertyNames();
-
-    return (
-      <div>
-        <div className={layout.controls}>
-          {config.showBackButtons && (
-            <button onClick={props.history.goBack} className={controls.btn}>
-              Back
-            </button>
-          )}
-
-          {loo.active && (
-            <>
-              <a
-                href={
-                  'https://maps.apple.com/?dirflg=w&daddr=' +
-                  [loo.location.lat, loo.location.lng]
-                }
-                className={controls.btn}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Get Directions
-              </a>
-
-              {config.allowAddEditLoo && (
-                <Link to={`/loos/${loo.id}/edit`} className={controls.btn}>
-                  Edit toilet
-                </Link>
-              )}
-            </>
-          )}
-        </div>
-
-        {isThanksPage && (
-          <DismissableBox
-            title="Thank You!"
-            content={
-              <>
-                <p>Thanks for the information you've provided.</p>
-                <p>
-                  We rely on contributions of data like yours to keep the map
-                  accurate and useful.
-                </p>
-                {config.isNativeApp() && (
-                  <>
-                    <p>
-                      Please consider signing up with our sponsor's campaign.
-                    </p>
-                    <a
-                      className={controls.btnFeatured}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={constructCampaignLink(loo, userData.userData.name)}
-                    >
-                      Join the <strong>Use Our Loos</strong> campaign
-                    </a>
-                  </>
-                )}
-              </>
-            }
-          />
-        )}
-
-        {!loo.active && (
-          <Notification>
-            <b>This toilet has been removed.</b>
-            {loo.removalReason && (
-              <div>Removal reason: "{loo.removalReason}"</div>
-            )}
-          </Notification>
-        )}
-
-        <h2 className={headings.large}>{loo.name || 'Toilet'}</h2>
-
-        <div className={styles.preferenceIndicators}>
-          <PreferenceIndicators loo={loo} iconSize={2.5} />
-        </div>
-
-        <MediaQuery maxWidth={config.viewport.mobile}>
-          <div className={styles.mobileMap}>{renderMap()}</div>
-        </MediaQuery>
-
-        <ul className={styles.properties}>
-          {properties.map((name) => {
-            var val = mappings.humanizePropertyValue(loo[name], name);
-
-            // Filter out useless/unset data
-            if (val !== 'Not known' && val !== '' && typeof val !== 'object') {
-              return (
-                <li className={styles.property} key={name}>
-                  <h3 className={styles.propertyName}>
-                    {humanizePropertyName(name)}
-                  </h3>
-                  <p className={styles.propertyValue}>{val}</p>
-                </li>
-              );
-            }
-
-            return null;
-          })}
-        </ul>
-        <h3 className={headings.small}>Data</h3>
-        <p>
-          Last updated:{' '}
-          {DateTime.fromISO(loo.updatedAt).toLocaleString(
-            DateTime.DATETIME_MED
-          )}
-        </p>
-        <p>
-          View more detailed data about this Toilet at{' '}
-          <a
-            href={`/explorer/loos/${loo.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Toilet Map Explorer
-          </a>
-          .
-        </p>
-      </div>
-    );
-  }
-
-  function renderMap() {
-    return (
-      <NearestLooMap
-        activeLoo={data.loo}
-        mapProps={{
-          showLocation: false,
-          showSearchControl: true,
-          showLocateControl: false,
-          showCenter: false,
-          countLimit: null,
-        }}
-        highlight={data.loo.id}
-      />
-    );
-  }
-
   if (loading || error || userLoading || userError || !data.loo) {
     let msg;
     if (error || userError) {
@@ -283,7 +141,142 @@ const LooPage = function LooPage(props) {
       />
     );
   }
-  return <PageLayout main={renderMain()} map={renderMap()} />;
+
+  const loo = data.loo;
+  const properties = getPropertyNames();
+
+  const mapFragment = (
+    <NearestLooMap
+      activeLoo={data.loo}
+      mapProps={{
+        showLocation: false,
+        showSearchControl: true,
+        showLocateControl: false,
+        showCenter: false,
+        countLimit: null,
+      }}
+      highlight={data.loo.id}
+    />
+  );
+
+  const mainFragment = (
+    <div>
+      <div className={layout.controls}>
+        {config.showBackButtons && (
+          <button onClick={props.history.goBack} className={controls.btn}>
+            Back
+          </button>
+        )}
+
+        {loo.active && (
+          <>
+            <a
+              href={
+                'https://maps.apple.com/?dirflg=w&daddr=' +
+                [loo.location.lat, loo.location.lng]
+              }
+              className={controls.btn}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Get Directions
+            </a>
+
+            {config.allowAddEditLoo && (
+              <Link to={`/loos/${loo.id}/edit`} className={controls.btn}>
+                Edit toilet
+              </Link>
+            )}
+          </>
+        )}
+      </div>
+
+      {isThanksPage && (
+        <DismissableBox
+          title="Thank You!"
+          content={
+            <>
+              <p>Thanks for the information you've provided.</p>
+              <p>
+                We rely on contributions of data like yours to keep the map
+                accurate and useful.
+              </p>
+              {config.isNativeApp() && (
+                <>
+                  <p>Please consider signing up with our sponsor's campaign.</p>
+                  <a
+                    className={controls.btnFeatured}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={constructCampaignLink(loo, userData.userData.name)}
+                  >
+                    Join the <strong>Use Our Loos</strong> campaign
+                  </a>
+                </>
+              )}
+            </>
+          }
+        />
+      )}
+
+      {!loo.active && (
+        <Notification>
+          <b>This toilet has been removed.</b>
+          {loo.removalReason && (
+            <div>Removal reason: "{loo.removalReason}"</div>
+          )}
+        </Notification>
+      )}
+
+      <h2 className={headings.large}>{loo.name || 'Toilet'}</h2>
+
+      <div className={styles.preferenceIndicators}>
+        <PreferenceIndicators loo={loo} iconSize={2.5} />
+      </div>
+
+      <MediaQuery maxWidth={config.viewport.mobile}>
+        <div className={styles.mobileMap}>{mapFragment}</div>
+      </MediaQuery>
+
+      <ul className={styles.properties}>
+        {properties.map((name) => {
+          var val = mappings.humanizePropertyValue(loo[name], name);
+
+          // Filter out useless/unset data
+          if (val !== 'Not known' && val !== '' && typeof val !== 'object') {
+            return (
+              <li className={styles.property} key={name}>
+                <h3 className={styles.propertyName}>
+                  {humanizePropertyName(name)}
+                </h3>
+                <p className={styles.propertyValue}>{val}</p>
+              </li>
+            );
+          }
+
+          return null;
+        })}
+      </ul>
+      <h3 className={headings.small}>Data</h3>
+      <p>
+        Last updated:{' '}
+        {DateTime.fromISO(loo.updatedAt).toLocaleString(DateTime.DATETIME_MED)}
+      </p>
+      <p>
+        View more detailed data about this Toilet at{' '}
+        <a
+          href={`/explorer/loos/${loo.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Toilet Map Explorer
+        </a>
+        .
+      </p>
+    </div>
+  );
+
+  return <PageLayout main={mainFragment} map={mapFragment} />;
 };
 
 export default LooPage;
