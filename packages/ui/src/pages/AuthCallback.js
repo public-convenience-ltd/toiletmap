@@ -12,7 +12,7 @@ const MUTATION_LOGIN = gql`
   }
 `;
 
-const Callback = function (props) {
+const Callback = (props) => {
   const [doLogin] = useMutation(MUTATION_LOGIN);
 
   useEffect(() => {

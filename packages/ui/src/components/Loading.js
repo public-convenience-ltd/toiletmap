@@ -11,6 +11,7 @@ export default (props) => {
       </div>
     );
   }
+
   return (
     <Notification>
       <p>{props.message}</p>
