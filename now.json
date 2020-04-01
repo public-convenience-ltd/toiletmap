@@ -44,7 +44,7 @@
     {
       "src": "/explorer/(.*)",
       "headers": { "cache-control": "s-maxage=0" },
-      "dest": "packages/explorer/index.html"
+      "dest": "packages/explorer/$1"
     },
     {
       "src": "/static/(.*)",
@@ -59,7 +59,7 @@
     {
       "src": "/(.*)",
       "headers": { "cache-control": "s-maxage=0" },
-      "dest": "packages/ui/index.html"
+      "dest": "packages/ui/$1"
     }
   ]
 }
