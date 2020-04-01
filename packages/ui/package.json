@@ -59,7 +59,7 @@
   "scripts": {
     "dev": "react-app-rewired start",
     "start": "http-server ./build -p 5000 -a localhost --proxy https://gbptm-stage.herokuapp.com",
-    "build": "REACT_APP_BACKED_BCKEND= react-app-rewired build",
+    "build": "REACT_APP_BAKED_BACKEND= react-app-rewired build",
     "cy:open": "cypress open --config baseUrl=http://localhost:3000",
     "cy:run": "cypress run --config baseUrl=http://localhost:5000,video=false",
     "test:integration": "start-server-and-test start http://localhost:5000 cy:run",
