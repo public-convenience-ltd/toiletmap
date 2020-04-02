@@ -1,65 +1,7 @@
 {
   "scope": "neontribe",
   "version": 2,
-  "builds": [
-    {
-      "src": "packages/ui/package.json",
-      "use": "@now/static-build",
-      "config": {
-        "distDir": "build",
-        "useBuildUtils": "@now/build-utils"
-      }
-    },
-    {
-      "src": "packages/explorer/package.json",
-      "use": "@now/static-build",
-      "config": {
-        "distDir": "build",
-        "useBuildUtils": "@now/build-utils"
-      }
-    },
-    {
-      "src": "packages/api/src/index.js",
-      "use": "@now/node"
-    }
-  ],
   "env": {
     "MONGODB_URI": "@mongodb_uri"
-  },
-  "routes": [
-    {
-      "src": "/graphql",
-      "dest": "packages/api/src/index.js"
-    },
-    {
-      "src": "/explorer/static/(.*)",
-      "headers": { "cache-control": "s-maxage=31536000, immutable" },
-      "dest": "packages/explorer/static/$1"
-    },
-    {
-      "src": "/explorer/service-worker.js",
-      "headers": { "cache-control": "s-maxage=0" },
-      "dest": "packages/explorer/service-worker.js"
-    },
-    {
-      "src": "/explorer/(.*)",
-      "headers": { "cache-control": "s-maxage=0" },
-      "dest": "packages/explorer/index.html"
-    },
-    {
-      "src": "/static/(.*)",
-      "headers": { "cache-control": "s-maxage=31536000, immutable" },
-      "dest": "packages/ui/static/$1"
-    },
-    {
-      "src": "/service-worker.js",
-      "headers": { "cache-control": "s-maxage=0" },
-      "dest": "packages/ui/service-worker.js"
-    },
-    {
-      "src": "/(.*)",
-      "headers": { "cache-control": "s-maxage=0" },
-      "dest": "packages/ui/index.html"
-    }
-  ]
+  }
 }

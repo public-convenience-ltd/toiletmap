@@ -24,3 +24,8 @@ coverage
 .idea
 
 .now
+
+platforms/
+plugins/
+config.xml
+phonegap.zip

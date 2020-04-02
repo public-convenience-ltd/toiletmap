@@ -6,5 +6,5 @@ dist
 .git
 yarn.lock
 data
-packages/ui/public/adobe-digital-data-stage.js
-packages/ui/public/adobe-digital-data.js
+/public/adobe-digital-data-stage.js
+/public/adobe-digital-data.js
