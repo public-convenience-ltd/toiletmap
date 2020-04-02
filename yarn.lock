@@ -10897,10 +10897,10 @@ leaflet-loading@0.1.24:
   resolved "https://registry.yarnpkg.com/leaflet-loading/-/leaflet-loading-0.1.24.tgz#eafdfc188718eb13d3cf7b9226c4c06b16e92919"
   integrity sha1-6v38GIcY6xPTz3uSJsTAaxbpKRk=
 
-leaflet.locatecontrol@0.71.0:
-  version "0.71.0"
-  resolved "https://registry.yarnpkg.com/leaflet.locatecontrol/-/leaflet.locatecontrol-0.71.0.tgz#767a36abcd571f1a2ef15ca4ca0e327fd6fc9382"
-  integrity sha512-AbJIV+fNVsJurLrLknGG4DVByudyjRI0wvnpZJwMdq6ObMpF3NPdNt5czji0hXjXYGNgpiPSAco/UB1iuy1k3w==
+leaflet.locatecontrol@0.71.1:
+  version "0.71.1"
+  resolved "https://registry.yarnpkg.com/leaflet.locatecontrol/-/leaflet.locatecontrol-0.71.1.tgz#3dd8f4222751b820eb142818bdba7b458bf9fd29"
+  integrity sha512-YTZ+75NfdIwq/yFUmi5tNBeXxy4kEbDry84ArFJGdSzvBNddk2cLUa498xZDE41KC00jY23NIbWyYowp0MZOPQ==
 
 leaflet.markercluster@1.4.1:
   version "1.4.1"
