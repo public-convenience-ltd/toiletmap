@@ -6,6 +6,6 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "luxon": "1.22.2"
+    "luxon": "1.23.0"
   }
 }
