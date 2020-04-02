@@ -7,7 +7,7 @@
     "build": "REACT_APP_BAKED_BACKEND= react-app-rewired build",
     "dev": "react-app-rewired start --port $PORT",
     "dev:api": "nodemon -r dotenv/config src/api/index.js",
-    "lint": "eslint . && stylelint \"packages/{ui,admin}/**/*.css\"",
+    "lint": "eslint . && stylelint \"src/**/*.css\"",
     "format": "prettier --write \"./**/*.{js,json}\"",
     "test": "exit 0",
     "cy:open": "cypress open --config baseUrl=http://localhost:3000",
