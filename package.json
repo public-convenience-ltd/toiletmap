@@ -32,7 +32,6 @@
   "bugs": {
     "url": "https://github.com/neontribe/gbptm/issues"
   },
-  "homepage": "https://github.com/neontribe/gbptm#readme",
   "lint-staged": {
     "*.js": [
       "eslint --max-warnings 0",
