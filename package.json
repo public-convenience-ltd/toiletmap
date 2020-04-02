@@ -9,6 +9,7 @@
     "dev:api": "nodemon -r dotenv/config src/api/index.js",
     "lint": "eslint . && stylelint \"packages/{ui,admin}/**/*.css\"",
     "format": "prettier --write \"./**/*.{js,json}\"",
+    "test": "exit 0",
     "cy:open": "cypress open --config baseUrl=http://localhost:3000",
     "cy:run": "cypress run --config baseUrl=http://localhost:5000,video=false",
     "test:integration": "start-server-and-test start http://localhost:5000 cy:run",
