@@ -39,7 +39,7 @@
     "leaflet": "1.6.0",
     "leaflet-control-geocoder": "1.12.1",
     "leaflet-loading": "0.1.24",
-    "leaflet.locatecontrol": "0.71.0",
+    "leaflet.locatecontrol": "0.71.1",
     "leaflet.markercluster": "1.4.1",
     "lodash": "4.17.15",
     "normalize.css": "8.0.1",
