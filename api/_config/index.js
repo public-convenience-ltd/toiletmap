@@ -34,7 +34,7 @@ var base = {
     playground: {
       tabs: [
         {
-          endpoint: '/graphql',
+          endpoint: '/api',
           name: 'Nearby Loos Query',
           query:
             'query loosNearNeontribe {\n\tloosByProximity(from: {lat: 52.6335, lng: 1.2953, maxDistance: 500}) {\n\t\tid\n\t\tname\n\t}\n}',
