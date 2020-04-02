@@ -52,7 +52,7 @@ import { gql } from 'graphql.macro';
 const auth = new Auth();
 
 const httpLink = new HttpLink({
-  uri: process.env.REACT_APP_BAKED_BACKEND || '/graphql',
+  uri: process.env.REACT_APP_BAKED_BACKEND || '/api',
 });
 
 const authLink = setContext((_, { headers }) => {
