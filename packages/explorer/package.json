@@ -17,7 +17,7 @@
     "auth0-js": "9.13.0",
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
-    "downshift": "5.0.5",
+    "downshift": "5.1.0",
     "graphql.macro": "1.4.2",
     "http-proxy-middleware": "1.0.3",
     "leaflet": "1.6.0",
