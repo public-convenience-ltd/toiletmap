@@ -25,7 +25,7 @@
     "moment": "2.24.0",
     "ospoint": "0.2.1",
     "prop-types": "15.7.2",
-    "query-string": "6.11.1",
+    "query-string": "6.12.1",
     "react": "16.13.1",
     "react-animated-number": "0.4.4",
     "react-chartjs-2": "2.9.0",
