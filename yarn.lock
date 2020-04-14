@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@apollo/client@3.0.0-beta.43":
-  version "3.0.0-beta.43"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.0.0-beta.43.tgz#e6707ffc285b906dfb99fd9ac553bb1c9acb6829"
-  integrity sha512-ufE0QubCI6kP/BudcnV3AGZVgsN/ZJNWy70k6ZwcR8fnYWqPfjxW1aATTq8Ud54latHpO83UtKHVOHUQiClQOA==
+"@apollo/client@3.0.0-james.33.0":
+  version "3.0.0-james.33.0"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.0.0-james.33.0.tgz#51fa63f4448137fb2a5ec537bc05d8360c00cd35"
+  integrity sha512-EqdYCEvV/xiNBP8CVPKay4rzNBN4bT58juDZLP0jckXUscdceZ0dCo7ZIdRAR1Oo/tzy9Wd0ENm//eZrz8kSfQ==
   dependencies:
     "@types/zen-observable" "^0.8.0"
     "@wry/equality" "^0.1.9"
     fast-json-stable-stringify "^2.0.0"
-    graphql-tag "^2.10.2"
+    graphql-tag "^2.10.1"
     optimism "^0.11.5"
     symbol-observable "^1.2.0"
     ts-invariant "^0.4.4"
