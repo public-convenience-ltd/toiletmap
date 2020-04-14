@@ -17,7 +17,7 @@
     "mongoose": "5.9.7",
     "mongoose-paginate": "5.0.3",
     "node-fetch": "2.6.0",
-    "nodemon": "2.0.2"
+    "nodemon": "2.0.3"
   },
   "engines": {
     "node": ">=10.0.0",
