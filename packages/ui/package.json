@@ -37,7 +37,7 @@
     "graphql.macro": "1.4.2",
     "js-cookie": "2.2.1",
     "leaflet": "1.6.0",
-    "leaflet-control-geocoder": "1.12.1",
+    "leaflet-control-geocoder": "1.13.0",
     "leaflet-loading": "0.1.24",
     "leaflet.locatecontrol": "0.71.1",
     "leaflet.markercluster": "1.4.1",
