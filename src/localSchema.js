@@ -4,7 +4,7 @@ const resolvers = {
   Mutation: {
     updateCenter: (_root, { lat, lng }, { cache }) => {
       const query = gql`
-        query mapCenter {
+        query {
           mapCenter @client {
             lat
             lng
@@ -26,7 +26,7 @@ const resolvers = {
     },
     updateZoom: (_root, { zoom }, { cache }) => {
       const query = gql`
-        query mapCenter {
+        query {
           mapZoom @client
         }
       `;
@@ -41,7 +41,7 @@ const resolvers = {
     },
     updateRadius: (_root, { radius }, { cache }) => {
       const query = gql`
-        query mapCenter {
+        query {
           mapRadius @client
         }
       `;
