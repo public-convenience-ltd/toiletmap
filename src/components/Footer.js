@@ -39,7 +39,10 @@ const Footer = (props) => (
         </Link>
       </li>
       <li className={styles.footerListItem}>
-        <CookieBoxButton onClick={props.onCookieBoxButtonClick} />
+        <CookieBoxButton
+          onClick={props.onCookieBoxButtonClick}
+          isCookieSettingsOpen={props.isCookieSettingsOpen}
+        />
       </li>
     </ul>
   </footer>
@@ -47,7 +50,8 @@ const Footer = (props) => (
 
 Footer.displayName = 'Footer';
 Footer.propTypes = {
-  onCookieBoxButtonClick: PropTypes.func,
+  onCookieBoxButtonClick: PropTypes.func.isRequired,
+  isCookieSettingsOpen: PropTypes.bool,
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }),
