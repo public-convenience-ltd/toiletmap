@@ -504,21 +504,25 @@ const AddEditPage = (props) => {
 
         {saveLoading && <Loading message={'Saving your changes...'} />}
 
-        {// This message probably won't be seen, but just in case the redirect fails...
-        saveResponse && saveResponse.submitReport.code === '200' && (
-          <Notification>
-            Successfully saved changes! Redirecting&hellip;
-          </Notification>
-        )}
+        {
+          // This message probably won't be seen, but just in case the redirect fails...
+          saveResponse && saveResponse.submitReport.code === '200' && (
+            <Notification>
+              Successfully saved changes! Redirecting&hellip;
+            </Notification>
+          )
+        }
 
-        {// TODO better error message?
-        (saveError ||
-          (saveResponse && saveResponse.submitReport.code !== '200')) && (
-          <Notification>
-            Oops, there was an error saving your changes.
-            {console.log(saveError, saveResponse)}
-          </Notification>
-        )}
+        {
+          // TODO better error message?
+          (saveError ||
+            (saveResponse && saveResponse.submitReport.code !== '200')) && (
+            <Notification>
+              Oops, there was an error saving your changes.
+              {console.log(saveError, saveResponse)}
+            </Notification>
+          )
+        }
 
         <div className={controls.btnStack}>
           {isEditing ? (
