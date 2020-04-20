@@ -108,7 +108,7 @@
     "http-proxy-middleware": "1.0.3",
     "http-server": "0.12.1",
     "husky": "4.2.5",
-    "lint-staged": "10.1.4",
+    "lint-staged": "10.1.6",
     "nodemon": "2.0.3",
     "prettier": "2.0.4",
     "react-app-rewired": "2.1.5",
