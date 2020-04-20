@@ -9,8 +9,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Route, Switch } from 'react-router-dom';
 
-import * as serviceWorker from './serviceWorker';
-
 // Global CSS
 import './css/global';
 
@@ -33,7 +31,6 @@ import history from './history';
 import Auth from './Auth';
 import localSchema from './localSchema';
 import Router from './Router';
-import config from './config';
 
 import {
   ApolloClient,
@@ -199,25 +196,4 @@ const startApp = () => {
   }
 };
 
-if (config.isNativeApp()) {
-  var Auth0Cordova = require('@auth0/cordova');
-
-  const main = () => {
-    function intentHandler(url) {
-      Auth0Cordova.onRedirectUri(url);
-    }
-    window.handleOpenURL = intentHandler;
-
-    startApp();
-  };
-
-  document.addEventListener('deviceready', main, false);
-} else {
-  startApp();
-}
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-
-serviceWorker.unregister();
+startApp();

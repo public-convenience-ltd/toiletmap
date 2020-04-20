@@ -201,19 +201,15 @@ const LooPage = (props) => {
                 We rely on contributions of data like yours to keep the map
                 accurate and useful.
               </p>
-              {config.isNativeApp() && (
-                <>
-                  <p>Please consider signing up with our sponsor's campaign.</p>
-                  <a
-                    className={controls.btnFeatured}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={constructCampaignLink(loo, userData.userData.name)}
-                  >
-                    Join the <strong>Use Our Loos</strong> campaign
-                  </a>
-                </>
-              )}
+              <p>Please consider signing up with our sponsor's campaign.</p>
+              <a
+                className={controls.btnFeatured}
+                target="_blank"
+                rel="noopener noreferrer"
+                href={constructCampaignLink(loo, userData.userData.name)}
+              >
+                Join the <strong>Use Our Loos</strong> campaign
+              </a>
             </>
           }
         />

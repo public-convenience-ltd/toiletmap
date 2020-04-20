@@ -140,15 +140,9 @@ export default {
 
     return result;
   },
-  isNativeApp() {
-    return typeof window.cordova !== 'undefined';
-  },
   shouldShowSponsor() {
     if (REACT_APP_BUNDLE_BRANDING === 'false') {
       return false;
     }
-
-    // this can be toggled with REACT_APP_BUNDLE_BRANDING
-    return !this.isNativeApp() || REACT_APP_BUNDLE_BRANDING === 'true';
   },
 };

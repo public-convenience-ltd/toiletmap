@@ -1,10 +1,6 @@
 package.json
-package-lock.json
-coverage
+.now
 build
-dist
-.git
 yarn.lock
-data
 /public/adobe-digital-data-stage.js
 /public/adobe-digital-data.js

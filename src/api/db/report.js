@@ -2,7 +2,7 @@ const _ = require('lodash');
 const { Schema, Types } = require('mongoose');
 const fetch = require('node-fetch');
 const hasha = require('hasha');
-const config = require('../_config');
+const config = require('../config');
 
 const CoreSchema = require('./core');
 

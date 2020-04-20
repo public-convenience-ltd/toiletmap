@@ -6,6 +6,7 @@ const ReportSchema = require('./report');
 module.exports = exports = function connect(url) {
   mongoose.set('useCreateIndex', true);
   mongoose.set('useNewUrlParser', true);
+  mongoose.set('useUnifiedTopology', true);
   const db = mongoose.createConnection(url);
 
   return {

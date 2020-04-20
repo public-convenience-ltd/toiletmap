@@ -3,7 +3,7 @@ const {
   AuthenticationError,
 } = require('apollo-server');
 const { defaultFieldResolver } = require('graphql');
-const config = require('../_config');
+const config = require('../config');
 
 class RequirePermissionDirective extends SchemaDirectiveVisitor {
   visitObject(type) {
