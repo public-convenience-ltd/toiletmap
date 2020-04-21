@@ -33,7 +33,7 @@
     "husky": "4.2.5",
     "lerna": "3.20.2",
     "lint-staged": "10.1.6",
-    "prettier": "2.0.4",
+    "prettier": "2.0.5",
     "stylelint": "13.3.2",
     "stylelint-config-standard": "20.0.0"
   },
