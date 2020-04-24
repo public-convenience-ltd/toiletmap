@@ -30,7 +30,7 @@ const useNearbyLoos = () => {
         mapPosition.viewMap ? mapPosition.mapRadius : config.nearestRadius
       ),
     },
-    skip: mapPositionLoading,
+    skip: !mapPosition.mapCenter.lat || !mapPosition.mapCenter.lng,
   });
 
   const { geolocation } = useGeolocation();
