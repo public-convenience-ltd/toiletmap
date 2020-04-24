@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 
 import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/NearestLooMap';
+import LooMap from '../components/LooMap';
 import DismissableBox from '../components/DismissableBox';
 import LooListItem from '../components/LooListItem';
 import Notification from '../components/Notification';
@@ -17,22 +17,10 @@ import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
 import { useQuery, useMutation, gql } from '@apollo/client';
-import { loader } from 'graphql.macro';
 
 import config from '../config';
-
-const FIND_NEARBY = loader('../components/findLoosNearby.graphql');
-
-const GET_MAP_CONTROLS = gql`
-  {
-    mapCenter @client {
-      lat
-      lng
-    }
-    viewMap @client
-    mapRadius @client
-  }
-`;
+import useMapPosition from '../components/useMapPosition';
+import useNearbyLoos from '../components/useNearbyLoos';
 
 const GET_AUTH_STATUS = gql`
   {
@@ -55,50 +43,28 @@ const TOGGLE_VIEW_MODE = gql`
 `;
 
 const HomePage = (props) => {
-  const [highlight, setHighlight] = useState();
+  const [highlightedLooId, setHighlightedLooId] = useState();
 
-  const { loading: loadingMapControls, data: mapControlsData } = useQuery(
-    GET_MAP_CONTROLS
-  );
-
-  let mapControls = {};
-  if (!loadingMapControls) {
-    mapControls = {
-      center: mapControlsData.mapCenter,
-      viewMap: mapControlsData.viewMap,
-      radius: mapControlsData.mapRadius,
-    };
-  }
-
-  const { loading: loadingUserData, data: userDataData } = useQuery(
+  // Auth
+  const { loading: loadingAuthStatus, data: authStatusData } = useQuery(
     GET_AUTH_STATUS
   );
 
-  let userData = {};
-  if (!loadingUserData) {
-    userData = userDataData.userData;
-  }
+  const userData = authStatusData ? authStatusData.userData : {};
 
   const [logoutMutation] = useMutation(LOGOUT);
+
   const logout = () =>
     props.auth.reactContextLogout(logoutMutation, props.history);
 
-  const { loading, data, error } = useQuery(FIND_NEARBY, {
-    variables: {
-      ...mapControls.center,
-      radius: Math.ceil(
-        mapControls.viewMap ? mapControls.radius : config.nearestRadius
-      ),
-    },
-    skip: loadingMapControls,
-  });
+  // Map
+  const [mapPosition = {}] = useMapPosition();
 
-  const [mutateToggleViewMode] = useMutation(TOGGLE_VIEW_MODE);
-  const toggleViewMode = () => {
-    mutateToggleViewMode();
-  };
+  const { loading, data: loos, error, mapProps } = useNearbyLoos();
 
-  const renderList = (mobile) => {
+  const [toggleViewMode] = useMutation(TOGGLE_VIEW_MODE);
+
+  const renderList = () => {
     // Loading - either this is the first query of the user or they are on a
     // mobile and so can't rely on the map's loading spinner to know the loos
     // they see are outdated
@@ -110,8 +76,8 @@ const HomePage = (props) => {
       );
     }
 
-    if (error || !data || !data.loosByProximity) {
-      console.error(error || data.loosByProximity);
+    if (error || !loos) {
+      console.error(error);
       return (
         <Notification>
           <p>Oops, there was a problem finding toilets.</p>
@@ -120,10 +86,8 @@ const HomePage = (props) => {
       );
     }
 
-    const loos = data.loosByProximity;
-
     // No results
-    if (loos && !loos.length) {
+    if (!loos.length) {
       return (
         <Notification>
           <p>No toilets found nearby. Try zooming the map out.</p>
@@ -139,11 +103,11 @@ const HomePage = (props) => {
             loos.slice(0, config.nearestListLimit).map((loo, i) => (
               <li key={loo.id} className={styles.looListItem}>
                 <LooListItem
-                  center={mapControls.center}
+                  mapCenter={mapPosition.mapCenter}
                   loo={loo}
-                  onHoverStart={() => setHighlight(loo.id)}
-                  onHoverEnd={() => setHighlight()}
-                  index={i + 1}
+                  onHoverStart={() => setHighlightedLooId(loo.id)}
+                  onHoverEnd={() => setHighlightedLooId()}
+                  markerLabel={i + 1}
                 />
               </li>
             ))}
@@ -171,29 +135,29 @@ const HomePage = (props) => {
     />
   );
 
-  const renderMap = () => {
-    let mapProps = props.initialPosition
-      ? {
-          initialPosition: props.initialPosition,
-        }
-      : {};
+  const loosWithHighlight = loos.map((loo) => ({
+    ...loo,
+    isHighlighted: highlightedLooId === loo.id,
+  }));
 
-    return (
-      <NearestLooMap
-        numberNearest
-        highlight={highlight}
-        overrideLoos={data ? data.loosByProximity : []}
-        mapProps={mapProps}
-      />
-    );
-  };
+  const mapFragment = (
+    <LooMap
+      loos={loosWithHighlight}
+      markerLabel={(index) => (index < 5 ? index + 1 : undefined)}
+      showContributor
+      showCenter
+      showSearchControl
+      showLocateControl
+      {...mapProps}
+    />
+  );
 
   const renderMain = () => {
-    if (loadingMapControls || loadingUserData) {
+    if (loading || loadingAuthStatus) {
       return <></>;
     }
 
-    const { viewMap } = mapControls;
+    const { viewMap } = mapPosition;
 
     return (
       <div className={styles.container}>
@@ -208,7 +172,7 @@ const HomePage = (props) => {
         <div className={layout.controls}>
           {config.allowAddEditLoo && (
             <Link
-              to={`/report?lat=${mapControlsData.mapCenter.lat}&lng=${mapControlsData.mapCenter.lng}`}
+              to={`/report?lat=${mapPosition.mapCenter.lat}&lng=${mapPosition.mapCenter.lng}`}
               className={controls.btn}
               data-testid="add-a-toilet"
             >
@@ -231,7 +195,7 @@ const HomePage = (props) => {
           {!viewMap && renderList(true)}
           {viewMap && (
             <div className={styles.mobileMap}>
-              <div className={toiletMap.map}>{renderMap()}</div>
+              <div className={toiletMap.map}>{mapFragment}</div>
             </div>
           )}
         </MediaQuery>
@@ -243,7 +207,7 @@ const HomePage = (props) => {
     );
   };
 
-  return <PageLayout main={renderMain()} map={renderMap()} />;
+  return <PageLayout main={renderMain()} map={mapFragment} />;
 };
 
 HomePage.propTypes = {

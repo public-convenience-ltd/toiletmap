@@ -3,7 +3,8 @@ import React from 'react';
 import config from '../config';
 
 import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/NearestLooMap';
+import LooMap from '../components/LooMap';
+import useNearbyLoos from '../components/useNearbyLoos';
 
 import lists from '../css/lists.module.css';
 import headings from '../css/headings.module.css';
@@ -14,6 +15,8 @@ import history from '../history';
 import uolLogo from '../images/domestos-use-our-loos-full.png';
 
 const UseOurLoosPage = (props) => {
+  const { data, mapProps } = useNearbyLoos();
+
   const shouldShowSponsor = config.shouldShowSponsor();
 
   React.useEffect(() => {
@@ -171,7 +174,19 @@ const UseOurLoosPage = (props) => {
   );
 
   return (
-    <PageLayout main={mainFragment} map={<NearestLooMap numberNearest />} />
+    <PageLayout
+      main={mainFragment}
+      map={
+        <LooMap
+          loos={data ? data.loosByProximity : []}
+          showContributor
+          showCenter
+          showSearchControl
+          showLocateControl
+          {...mapProps}
+        />
+      }
+    />
   );
 };
 

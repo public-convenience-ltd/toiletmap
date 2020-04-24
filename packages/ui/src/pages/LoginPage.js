@@ -3,13 +3,16 @@ import React from 'react';
 import config from '../config';
 
 import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/NearestLooMap';
+import LooMap from '../components/LooMap';
+import useNearbyLoos from '../components/useNearbyLoos';
 
 import layout from '../components/css/layout.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
 const LoginPage = (props) => {
+  const { data, mapProps } = useNearbyLoos();
+
   const mainFragment = (
     <div>
       <div>
@@ -42,7 +45,21 @@ const LoginPage = (props) => {
     </div>
   );
 
-  return <PageLayout main={mainFragment} map={<NearestLooMap />} />;
+  return (
+    <PageLayout
+      main={mainFragment}
+      map={
+        <LooMap
+          loos={data ? data.loosByProximity : []}
+          showContributor
+          showCenter
+          showSearchControl
+          showLocateControl
+          {...mapProps}
+        />
+      }
+    />
+  );
 };
 
 export default LoginPage;

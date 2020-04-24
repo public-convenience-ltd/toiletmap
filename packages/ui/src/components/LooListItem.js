@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { Link } from 'react-router-dom';
+import L from 'leaflet';
 
 import LooMap from './LooMap';
 import PreferenceIndicators from './PreferenceIndicators';
@@ -10,51 +10,32 @@ import styles from './css/loo-list-item.module.css';
 
 const propTypes = {
   loo: PropTypes.object.isRequired,
-  index: PropTypes.number, // a number to show by the loo
+  markerLabel: PropTypes.number,
   onHoverStart: PropTypes.func,
   onHoverEnd: PropTypes.func,
 };
 
-function round(value, precision) {
-  var multiplier = Math.pow(10, precision || 0);
+function round(value, precision = 0) {
+  const multiplier = Math.pow(10, precision);
   return Math.round(value * multiplier) / multiplier;
-}
-
-function humanizeDistance(meters) {
-  if (meters < 1000) {
-    return `${round(meters, 0)}m`;
-  }
-  return `${round(meters / 1000, 1)}km`;
-}
-
-function toRadians(deg) {
-  return (Math.PI * deg) / 180;
-}
-
-/**
- * Implementation of the Haversine formula.
- */
-function latLngToDistance(start, end) {
-  let earthRadius = 6371 * 10 ** 3;
-  let dLat = toRadians(end.lat - start.lat);
-  let dLng = toRadians(end.lng - start.lng);
-  let a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRadians(start.lat)) *
-      Math.cos(toRadians(end.lat)) *
-      Math.sin(dLng / 2) ** 2;
-
-  let distance = 2 * earthRadius * Math.asin(Math.sqrt(a));
-  return distance;
 }
 
 const LooListItem = ({
   loo,
-  center,
-  index,
+  mapCenter,
+  markerLabel,
   onHoverStart = Function.prototype,
   onHoverEnd = Function.prototype,
 }) => {
+  const mapCenterLatLng = L.latLng(mapCenter.lat, mapCenter.lng);
+  const looLatLng = L.latLng(loo.location.lat, loo.location.lng);
+  const metersToLoo = mapCenterLatLng.distanceTo(looLatLng);
+
+  const distanceToLoo =
+    metersToLoo < 1000
+      ? `${round(metersToLoo, 0)}m`
+      : `${round(metersToLoo / 1000, 1)}km`;
+
   return (
     <Link
       data-testid={`loo:${loo.id}`}
@@ -64,26 +45,23 @@ const LooListItem = ({
       onMouseOut={onHoverEnd}
     >
       <LooMap
-        countFrom={index}
-        countLimit={1}
-        showZoomControls={false}
-        preventZoom={true}
-        preventDragging={true}
+        markerLabel={() => markerLabel}
         loos={[loo]}
-        initialPosition={loo.location}
-        activeMarkers={false}
+        center={loo.location}
+        interactiveMarkers={false}
+        preventZoom
+        preventDragging
       />
 
       <div className={styles.link}>
         <div className={styles.preferenceIndicators}>
           <PreferenceIndicators loo={loo} iconSize={1.4} />
         </div>
-
         <span className={styles.linkText}>More info</span>
       </div>
 
       <div className={styles.distance + ' distance--zindexfix'}>
-        {humanizeDistance(latLngToDistance(center, loo.location))}
+        {distanceToLoo}
       </div>
     </Link>
   );

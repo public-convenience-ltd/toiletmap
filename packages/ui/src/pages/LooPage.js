@@ -7,9 +7,9 @@ import { DateTime } from 'luxon';
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
 import PreferenceIndicators from '../components/PreferenceIndicators';
-import NearestLooMap from '../components/NearestLooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
+import LooMap from '../components/LooMap';
 
 import styles from './css/loo-page.module.css';
 import layout from '../components/css/layout.module.css';
@@ -89,10 +89,12 @@ const LooPage = (props) => {
   ];
 
   let looId = props.match.params.id;
+
   const { loading, data, error } = useQuery(FIND_LOO_QUERY, {
     variables: {
       id: looId,
     },
+    returnPartialData: true,
   });
 
   const { loading: userLoading, data: userData, error: userError } = useQuery(
@@ -125,6 +127,19 @@ const LooPage = (props) => {
     return mappings.humanizeAPIValue(val, '');
   }
 
+  const looToDisplay = {
+    ...data.loo,
+    isHighlighted: true,
+  };
+
+  const mapFragment = (
+    <LooMap
+      loos={data.loo.id ? [looToDisplay] : []}
+      zoom={config.maxZoom}
+      center={data.loo.location}
+    />
+  );
+
   if (loading || error || userLoading || userError || !data.loo) {
     let msg;
     if (error || userError) {
@@ -134,30 +149,11 @@ const LooPage = (props) => {
       msg = 'Fetching toilet data';
     }
 
-    return (
-      <PageLayout
-        main={<Loading message={msg} />}
-        map={<Loading message={msg} />}
-      />
-    );
+    return <PageLayout main={<Loading message={msg} />} map={mapFragment} />;
   }
 
   const loo = data.loo;
   const properties = getPropertyNames();
-
-  const mapFragment = (
-    <NearestLooMap
-      activeLoo={data.loo}
-      mapProps={{
-        showLocation: false,
-        showSearchControl: true,
-        showLocateControl: false,
-        showCenter: false,
-        countLimit: null,
-      }}
-      highlight={data.loo.id}
-    />
-  );
 
   const mainFragment = (
     <div>

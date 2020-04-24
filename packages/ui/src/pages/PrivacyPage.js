@@ -3,13 +3,16 @@ import React from 'react';
 import config from '../config';
 
 import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/NearestLooMap';
+import LooMap from '../components/LooMap';
+import useNearbyLoos from '../components/useNearbyLoos';
 
 import headings from '../css/headings.module.css';
 import layout from '../components/css/layout.module.css';
 import controls from '../css/controls.module.css';
 
 const PrivacyPage = () => {
+  const { data, mapProps } = useNearbyLoos();
+
   const mainFragment = (
     <div>
       <div className={layout.controls}>
@@ -96,7 +99,19 @@ const PrivacyPage = () => {
   );
 
   return (
-    <PageLayout main={mainFragment} map={<NearestLooMap numberNearest />} />
+    <PageLayout
+      main={mainFragment}
+      map={
+        <LooMap
+          loos={data ? data.loosByProximity : []}
+          showContributor
+          showCenter
+          showSearchControl
+          showLocateControl
+          {...mapProps}
+        />
+      }
+    />
   );
 };
 

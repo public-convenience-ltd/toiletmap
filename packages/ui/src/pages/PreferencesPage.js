@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import config, { PREFERENCES_KEY } from '../config';
 
 import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/NearestLooMap';
+import LooMap from '../components/LooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
+import useNearbyLoos from '../components/useNearbyLoos';
 
 import styles from './css/preferences-page.module.css';
 import layout from '../components/css/layout.module.css';
@@ -54,6 +55,8 @@ const preferenceMap = [
 ];
 
 const PreferencesPage = (props) => {
+  const { data, mapProps } = useNearbyLoos();
+
   const [unsavedPreferences, setUnsavedPreferences] = useState({});
   const [savedPreferences] = useState(config.getSettings(PREFERENCES_KEY));
   const [updated, setUpdated] = useState(false);
@@ -153,7 +156,21 @@ const PreferencesPage = (props) => {
     </div>
   );
 
-  return <PageLayout main={mainFragment} map={<NearestLooMap />} />;
+  return (
+    <PageLayout
+      main={mainFragment}
+      map={
+        <LooMap
+          loos={data ? data.loosByProximity : []}
+          showContributor
+          showCenter
+          showSearchControl
+          showLocateControl
+          {...mapProps}
+        />
+      }
+    />
+  );
 };
 
 export default PreferencesPage;

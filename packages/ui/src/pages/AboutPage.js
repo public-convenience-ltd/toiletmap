@@ -3,7 +3,8 @@ import React from 'react';
 import config from '../config';
 
 import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/NearestLooMap';
+import LooMap from '../components/LooMap';
+import useNearbyLoos from '../components/useNearbyLoos';
 
 import lists from '../css/lists.module.css';
 import headings from '../css/headings.module.css';
@@ -13,6 +14,8 @@ import controls from '../css/controls.module.css';
 import uolLogo from '../images/domestos-use-our-loos-full.png';
 
 const AboutPage = (props) => {
+  const { data, mapProps } = useNearbyLoos();
+
   const mainFragment = (
     <div>
       <div className={layout.controls}>
@@ -219,7 +222,19 @@ const AboutPage = (props) => {
   );
 
   return (
-    <PageLayout main={mainFragment} map={<NearestLooMap numberNearest />} />
+    <PageLayout
+      main={mainFragment}
+      map={
+        <LooMap
+          loos={data}
+          showContributor
+          showCenter
+          showSearchControl
+          showLocateControl
+          {...mapProps}
+        />
+      }
+    />
   );
 };
 

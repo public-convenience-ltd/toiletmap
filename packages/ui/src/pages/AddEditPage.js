@@ -9,7 +9,7 @@ import queryString from 'query-string';
 
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
-import NearestLooMap from '../components/NearestLooMap';
+import LooMap from '../components/LooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
 import getGeolocation from '../getGeolocation';
@@ -84,11 +84,15 @@ const AddEditPage = (props) => {
       return;
     }
 
+    const newLocation = {
+      lat: parseFloat(lat),
+      lng: parseFloat(lng),
+    };
+
+    // setMapCenter({ center: newLocation });
+
     updateStoreCenter({
-      variables: {
-        lat: parseFloat(lat),
-        lng: parseFloat(lng),
-      },
+      variables: newLocation,
     });
   }, [lat, lng, isEditing, updateStoreCenter]);
 
@@ -219,8 +223,8 @@ const AddEditPage = (props) => {
     return changes;
   };
 
-  const onMapCenterUpdate = (newCenter) => {
-    setMapCenter(newCenter);
+  const onMapCenterUpdate = ({ center }) => {
+    setMapCenter(center);
   };
 
   // Get the center to use for the loo
@@ -554,17 +558,20 @@ const AddEditPage = (props) => {
 
   const renderMap = () => {
     return (
-      <NearestLooMap
-        activeLoo={looData ? looData.loo : null}
-        highlight={props.match.params.id}
-        mapProps={{
-          showLocation: false,
-          showSearchControl: true,
-          showLocateControl: false,
-          preventDragging: false,
-          minZoom: config.editMinZoom,
-        }}
-        onUpdateCenter={onMapCenterUpdate}
+      <LooMap
+        loos={
+          looData
+            ? [looData.loo].map((loo) => ({
+                ...loo,
+                isHighlighted: true,
+              }))
+            : []
+        }
+        center={getCenter()}
+        minZoom={config.editMinZoom}
+        onMoveEnd={onMapCenterUpdate}
+        showCenter
+        showSearchControl
       />
     );
   };
