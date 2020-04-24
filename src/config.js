@@ -144,5 +144,6 @@ export default {
     if (REACT_APP_BUNDLE_BRANDING === 'false') {
       return false;
     }
+    return true;
   },
 };

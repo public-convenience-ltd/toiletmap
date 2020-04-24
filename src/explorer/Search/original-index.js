@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, navigate } from '@reach/router';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import _ from 'lodash';
 import queryString from 'query-string';
@@ -8,9 +8,8 @@ import { Query } from '@apollo/react-components';
 import { loader } from 'graphql.macro';
 
 // Local
-import { createStyled } from '../../lib/utils.js';
-import LooTable from '../table/LooTable';
-import LooTablePaginationActions from '../table/LooTablePaginationActions';
+import LooTable from './table/LooTable';
+import LooTablePaginationActions from './table/LooTablePaginationActions';
 import SearchAutocomplete from './SearchAutocomplete';
 
 // MUI Core
@@ -41,9 +40,19 @@ import NameIcon from '@material-ui/icons/TextFields';
 import CityIcon from '@material-ui/icons/LocationCity';
 import ClockIcon from '@material-ui/icons/AccessTime';
 
+const navigate = () => alert('implement navigate');
+
 const SEARCH_QUERY = loader('./search.graphql');
 const CONTRIBUTORS = loader('./getContributors.graphql');
 const AREAS_QUERY = loader('./getAreas.graphql');
+
+function createStyled(styles, options) {
+  function Styled(props) {
+    const { children, ...other } = props;
+    return children(other);
+  }
+  return withStyles(styles, options)(Styled);
+}
 
 const styles = (theme) => ({
   gridRoot: {

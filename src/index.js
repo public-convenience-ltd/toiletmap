@@ -5,7 +5,7 @@ import 'core-js/features/string/repeat';
 import 'core-js/features/object/entries';
 import 'core-js/features/object/assign';
 
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
 import { Route, Switch } from 'react-router-dom';
 
@@ -45,6 +45,8 @@ import { setContext } from '@apollo/link-context';
 
 import { version } from '../package.json';
 import { gql } from 'graphql.macro';
+
+const Explorer = lazy(() => import('./explorer'));
 
 const auth = new Auth();
 
@@ -134,66 +136,65 @@ writeInitialState();
 // resetStore isn't used anywhere yet, but just in case...
 client.onResetStore(writeInitialState);
 
-const startApp = () => {
-  if (typeof document !== 'undefined') {
-    ReactDOM.render(
-      <ApolloProvider client={client}>
-        <Router history={history} forceRefresh={false}>
-          <Tracking />
-          <Switch>
-            <Route
-              exact
-              path="/"
-              render={(props) => <HomePage auth={auth} {...props} />}
-            />
-            <Route exact path="/preferences" component={PreferencesPage} />
-            <Route exact path="/about" component={AboutPage} />
-            <Route exact path="/privacy" component={PrivacyPage} />
-            <Route exact path="/use-our-loos" component={UseOurLoosPage} />
-            <Route path="/loos/:id" exact component={LooPage} />
-            <Route
-              path="/login"
-              render={(props) => <LoginPage auth={auth} {...props} />}
-            />
-            <Route
-              path="/map/:lng/:lat"
-              render={(props) => <MapPage auth={auth} {...props} />}
-            />
-            <Route
-              exact
-              path="/callback"
-              render={(props) => <AuthCallback auth={auth} {...props} />}
-            />
-            <ProtectedRoute
-              exact
-              path="/report"
-              auth={auth}
-              injectProps={{ cache }}
-              component={AddEditPage}
-            />
-            <ProtectedRoute
-              path="/loos/:id/edit"
-              auth={auth}
-              injectProps={{ cache }}
-              component={AddEditPage}
-            />
-            <ProtectedRoute
-              path="/loos/:id/remove"
-              component={RemovePage}
-              auth={auth}
-            />
-            <ProtectedRoute
-              path="/loos/:id/thanks"
-              component={LooPage}
-              auth={auth}
-            />
-            <Route component={NotFound} />
-          </Switch>
-        </Router>
-      </ApolloProvider>,
-      document.getElementById('root')
-    );
-  }
-};
-
-startApp();
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <Router history={history} forceRefresh={false}>
+      <Tracking />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Switch>
+        <Route
+          exact
+          path="/"
+          render={(props) => <HomePage auth={auth} {...props} />}
+        />
+        <Route exact path="/preferences" component={PreferencesPage} />
+        <Route exact path="/about" component={AboutPage} />
+        <Route exact path="/privacy" component={PrivacyPage} />
+        <Route exact path="/use-our-loos" component={UseOurLoosPage} />
+        <Route path="/loos/:id" exact component={LooPage} />
+        <Route
+          path="/login"
+          render={(props) => <LoginPage auth={auth} {...props} />}
+        />
+        <Route
+          path="/map/:lng/:lat"
+          render={(props) => <MapPage auth={auth} {...props} />}
+        />
+        <Route
+          exact
+          path="/callback"
+          render={(props) => <AuthCallback auth={auth} {...props} />}
+        />
+        <Route path="/explorer"
+          render={(props) => <Explorer auth={auth} {...props} />}
+        />
+        <ProtectedRoute
+          exact
+          path="/report"
+          auth={auth}
+          injectProps={{ cache }}
+          component={AddEditPage}
+        />
+        <ProtectedRoute
+          path="/loos/:id/edit"
+          auth={auth}
+          injectProps={{ cache }}
+          component={AddEditPage}
+        />
+        <ProtectedRoute
+          path="/loos/:id/remove"
+          component={RemovePage}
+          auth={auth}
+        />
+        <ProtectedRoute
+          path="/loos/:id/thanks"
+          component={LooPage}
+          auth={auth}
+        />
+        <Route component={NotFound} />
+      </Switch>
+      </Suspense>
+    </Router>
+  </ApolloProvider>,
+  document.getElementById('root')
+);

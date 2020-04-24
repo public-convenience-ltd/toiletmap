@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { Location } from '@reach/router';
 import _ from 'lodash';
-import moment from 'moment';
 import { loader } from 'graphql.macro';
 import { Query } from '@apollo/react-components';
 
-import Counter from '../Counter';
+import Counter from './Counter';
 import LooIcon from '@material-ui/icons/Wc';
 import RemoveIcon from '@material-ui/icons/Delete';
 import StatIcon from '@material-ui/icons/Assessment';
@@ -14,7 +12,6 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import { Doughnut } from 'react-chartjs-2';
 
 const ALL_COUNTERS = loader('./counters.graphql');
@@ -138,22 +135,7 @@ class HeadlineStats extends Component {
                   cols={2}
                   style={{ height: 'auto' }}
                 >
-                  <Location>
-                    {({ location }) =>
-                      location.state && (
-                        <ListSubheader component="div">
-                          <h2>Headline Counts</h2>
-                          {`${moment(location.state.start).format(
-                            'ddd, MMM Do YYYY'
-                          )} to ${moment(location.state.end).format(
-                            'ddd, MMM Do YYYY'
-                          )} in ${
-                            location.state.area || location.state.areaType
-                          }`}
-                        </ListSubheader>
-                      )
-                    }
-                  </Location>
+
                 </GridListTile>
                 <GridListTile rows={2} cols={1}>
                   <Doughnut

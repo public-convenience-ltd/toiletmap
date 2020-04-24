@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Link } from '@reach/router';
+import { Link } from 'react-router-dom';
 import { loader } from 'graphql.macro';
 import { Query } from '@apollo/react-components';
 
