@@ -2,62 +2,38 @@ import L from 'leaflet';
 
 import styles from '../css/loo-map.module.css';
 
-import markerIcon from '../../images/marker-icon.png';
-import markerIconRetina from '../../images/marker-icon-2x.png';
-import markerIconHighlight from '../../images/marker-icon-highlight.png';
-import markerIconRetinaHighlight from '../../images/marker-icon-highlight-2x.png';
-
-const LooIcon = L.Icon.extend({
+const LooIcon = L.DivIcon.extend({
   options: {
     iconSize: [25, 41],
     iconAnchor: [12.5, 41],
     highlight: false,
     looId: null,
+    html: '',
   },
 
   initialize: function (options) {
-    if (options.highlight) {
-      // Add highlight properties
-      this.options = {
-        ...this.options,
-        iconUrl: markerIconHighlight,
-        iconRetinaUrl: markerIconRetinaHighlight,
-        className: styles.markerHighlighted,
-      };
-    } else {
-      this.options = {
-        ...this.options,
-        iconUrl: markerIcon,
-        iconRetinaUrl: markerIconRetina,
-      };
-    }
+    this.options = {
+      ...this.options,
+      className: options.highlight ? styles.markerHighlighted : '',
+      html: `
+        <div data-testid="looMarker:${options.looId}">
+          ${
+            options.label
+              ? `<div class="${styles.markerLabel}">${options.label}</div>`
+              : ''
+          }
+          <svg viewBox="0 0 337 478" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path 
+              fill="#000000" 
+              fill-rule="nonzero" 
+              d="M168.556,0 C75.816,0.106 0.662,75.26 0.556,168 C0.556,258.056 155.62,460.32 162.22,468.88 L168.556,477.112 L174.892,468.88 C181.492,460.32 336.556,258.056 336.556,168 C336.45,75.26 261.296,0.106 168.556,0 Z" 
+            />
+          </svg>
+        </div>
+      `,
+    };
 
     L.Util.setOptions(this, options);
-  },
-
-  createIcon: function () {
-    // do we need to be complex to show an index, or are we just a dumb image
-    if (!this.options.label) {
-      var img = this._createImg(this._getIconUrl('icon'));
-      this._setIconStyles(img, 'icon');
-      img.setAttribute('data-testid', 'looMarker:' + this.options.looId);
-      return img;
-    }
-
-    // make the parent with the image
-    var grouper = document.createElement('div');
-    grouper.style.background = `url('${this._getIconUrl('icon')}')`;
-    grouper.style.backgroundSize = '100% 100%';
-    grouper.setAttribute('data-testid', 'looMarker:' + this.options.looId);
-    this._setIconStyles(grouper, 'icon');
-
-    // make an index label
-    var label = document.createElement('div');
-    label.setAttribute('class', styles.index);
-    label.innerHTML = this.options.label;
-    grouper.appendChild(label);
-
-    return grouper;
   },
 });
 
