@@ -12,7 +12,7 @@ import Loading from '../components/Loading';
 import LooMap from '../components/LooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
-import getGeolocation from '../getGeolocation';
+import useGeolocation from '../components/useGeolocation';
 
 import config from '../config';
 import graphqlMappings from '../graphqlMappings';
@@ -102,15 +102,7 @@ const AddEditPage = (props) => {
   // store for us so that we can send off the location with a loo report.
   const [mapCenter, setMapCenter] = useState();
 
-  const [geolocation, setGeolocation] = useState();
-
-  // Fetch the current geolocation
-  useEffect(() => {
-    getGeolocation((response) => {
-      const { longitude, latitude } = response.coords;
-      setGeolocation({ lng: longitude, lat: latitude });
-    });
-  }, []);
+  const { geolocation } = useGeolocation();
 
   // LooState is the temporary loo object that hold's the user's representation of the loo
   const [looState, setLooState] = useState();
@@ -229,12 +221,22 @@ const AddEditPage = (props) => {
 
   // Get the center to use for the loo
   const getCenter = () => {
-    return (
-      mapCenter ||
-      (looData ? looData.loo.location : null) ||
-      geolocation ||
-      config.fallbackLocation
-    );
+    if (mapCenter) {
+      return mapCenter;
+    }
+
+    if (looData) {
+      return looData.loo.location;
+    }
+
+    if (geolocation.latitude && geolocation.longitude) {
+      return {
+        lat: geolocation.latitude,
+        lng: geolocation.longitude,
+      };
+    }
+
+    return config.fallbackLocation;
   };
 
   const [

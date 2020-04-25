@@ -23,7 +23,28 @@ const useGeolocation = () => {
       return;
     }
 
-    geo.getCurrentPosition(onSuccess, onError);
+    const getGeolocation = (options = {}) => {
+      navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+    };
+
+    // Cordova environment expects us to wait for `deviceready`.
+    // If the geolocation request is fired too early we get an ugly message.
+    // http://stackoverflow.com/questions/28891339/fix-cordova-geolocation-ask-for-location-message
+    if (window.cordova) {
+      document.addEventListener(
+        'deviceready',
+        () =>
+          getGeolocation({
+            // We need a timeout here for android.
+            // https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-geolocation/#android-quirks
+            timeout: 5000,
+          }),
+        false
+      );
+      return;
+    }
+
+    getGeolocation();
   }, []);
 
   return {
