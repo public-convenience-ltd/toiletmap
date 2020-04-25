@@ -21,7 +21,8 @@ import LooPage from './pages/LooPage';
 import RemovePage from './pages/RemovePage';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
-import AddEditPage from './pages/AddEditPage';
+import AddPage from './pages/AddPage';
+import EditPage from './pages/EditPage';
 import LoginPage from './pages/LoginPage';
 import PreferencesPage from './pages/PreferencesPage';
 import MapPage from './pages/MapPage';
@@ -173,13 +174,13 @@ const startApp = () => {
                 path="/report"
                 auth={auth}
                 injectProps={{ cache }}
-                component={AddEditPage}
+                component={AddPage}
               />
               <ProtectedRoute
                 path="/loos/:id/edit"
                 auth={auth}
                 injectProps={{ cache }}
-                component={AddEditPage}
+                component={EditPage}
               />
               <ProtectedRoute
                 path="/loos/:id/remove"

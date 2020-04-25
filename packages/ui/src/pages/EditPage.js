@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
 import gql from 'graphql-tag';
-import queryString from 'query-string';
 
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
@@ -38,30 +37,27 @@ const SET_MAP_CENTER = gql`
 
 const getLooCachedId = (looId) => 'Loo:' + looId;
 
-const AddEditPage = (props) => {
-  const questionnaireMap = [
-    {
-      question: 'Attended?',
-      property: 'attended',
-    },
-    {
-      question: 'Baby changing?',
-      property: 'babyChange',
-    },
-    {
-      question: 'Automatic?',
-      property: 'automatic',
-    },
-    {
-      question: 'Radar key?',
-      property: 'radar',
-    },
-  ];
+const questionnaireMap = [
+  {
+    question: 'Attended?',
+    property: 'attended',
+  },
+  {
+    question: 'Baby changing?',
+    property: 'babyChange',
+  },
+  {
+    question: 'Automatic?',
+    property: 'automatic',
+  },
+  {
+    question: 'Radar key?',
+    property: 'radar',
+  },
+];
 
+const EditPage = (props) => {
   const optionsMap = graphqlMappings.looProps.definitions;
-
-  // Presence of id indicates that we are editing
-  const isEditing = Boolean(props.match.params.id);
 
   // Find the raw loo data for the given loo
   const { loading: loadingLooData, data: looData, error: looError } = useQuery(
@@ -70,31 +66,8 @@ const AddEditPage = (props) => {
       variables: {
         id: props.match.params.id,
       },
-      skip: !isEditing,
     }
   );
-
-  // Set map center if lat and lng query parameters are present
-  const [updateStoreCenter] = useMutation(SET_MAP_CENTER);
-
-  const { lat, lng } = queryString.parse(props.location.search);
-
-  useEffect(() => {
-    if (isEditing || !lat || !lng) {
-      return;
-    }
-
-    const newLocation = {
-      lat: parseFloat(lat),
-      lng: parseFloat(lng),
-    };
-
-    // setMapCenter({ center: newLocation });
-
-    updateStoreCenter({
-      variables: newLocation,
-    });
-  }, [lat, lng, isEditing, updateStoreCenter]);
 
   // A temp state for the map center
   // We don't need to fetch this from the cached map state, because nearestLooMap
@@ -111,14 +84,11 @@ const AddEditPage = (props) => {
   const [original, setOriginal] = useState();
 
   useEffect(() => {
-    if (!looData && isEditing) {
+    if (!looData) {
       return;
     }
 
-    let looDataToUse = {};
-    if (isEditing) {
-      looDataToUse = looData.loo;
-    }
+    let looDataToUse = looData.loo;
 
     let tempLoo = {
       active: null,
@@ -147,10 +117,6 @@ const AddEditPage = (props) => {
       loo: _.cloneDeep(newLoo),
       center: getCenter(),
     });
-
-    // Whatever you do, don't listen to eslint here. Putting questionnaireMap as a dependency
-    // of useEffect will lead to infinite rerenders, crashing the app and browser
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadingLooData]);
 
   const handleChange = (event) => {
@@ -205,12 +171,6 @@ const AddEditPage = (props) => {
 
     // Keep only new or changed data, by comparing to the form's initial state
     const changes = onlyChanges(now, before);
-
-    if (!isEditing) {
-      // If we're a new loo, we always want location, regardless of whether it
-      // has changed since the start of the form
-      changes.location = now.location;
-    }
 
     return changes;
   };
@@ -268,17 +228,15 @@ const AddEditPage = (props) => {
       if (changes[q.property] === '') changes[q.property] = null;
     });
 
-    if (isEditing) {
-      let id = looData.loo.id;
-      changes.id = id;
+    let id = looData.loo.id;
+    changes.id = id;
 
-      // Evict the loo from the cache before updating - Apollo
-      // is normally smart and can work out when something's changed, but
-      // in this case it doesn't and stale data can persist without
-      // a cache eviction
-      let cache = props.cache;
-      cache.evict(getLooCachedId(id));
-    }
+    // Evict the loo from the cache before updating - Apollo
+    // is normally smart and can work out when something's changed, but
+    // in this case it doesn't and stale data can persist without
+    // a cache eviction
+    let cache = props.cache;
+    cache.evict(getLooCachedId(id));
 
     updateLoo({
       variables: changes,
@@ -301,11 +259,7 @@ const AddEditPage = (props) => {
           </div>
         </div>
 
-        {isEditing ? (
-          <h2 className={headings.large}>Update This Toilet</h2>
-        ) : (
-          <h2 className={headings.large}>Add This Toilet</h2>
-        )}
+        <h2 className={headings.large}>Update This Toilet</h2>
 
         <MediaQuery maxWidth={config.viewport.mobile}>
           <div className={styles.mobileMap}>{renderMap()}</div>
@@ -527,32 +481,20 @@ const AddEditPage = (props) => {
         )}
 
         <div className={controls.btnStack}>
-          {isEditing ? (
-            <input
-              type="submit"
-              className={controls.btn}
-              onClick={save}
-              value="Update the toilet"
-              disabled={_.isEmpty(getNovelInput())}
-            />
-          ) : (
-            <input
-              type="submit"
-              className={controls.btn}
-              onClick={save}
-              value="Add the toilet"
-              data-testid="add-the-toilet"
-            />
-          )}
+          <input
+            type="submit"
+            className={controls.btn}
+            onClick={save}
+            value="Update the toilet"
+            disabled={_.isEmpty(getNovelInput())}
+          />
 
-          {isEditing && (
-            <Link
-              to={`/loos/${props.match.params.id}/remove`}
-              className={controls.btnCaution}
-            >
-              Remove the toilet
-            </Link>
-          )}
+          <Link
+            to={`/loos/${props.match.params.id}/remove`}
+            className={controls.btnCaution}
+          >
+            Remove the toilet
+          </Link>
         </div>
       </div>
     );
@@ -578,7 +520,7 @@ const AddEditPage = (props) => {
     );
   };
 
-  if ((isEditing && (loadingLooData || !looData)) || !looState) {
+  if (loadingLooData || !looData || !looState) {
     return (
       <PageLayout
         main={<Loading message={'Fetching Toilet Data'} />}
@@ -605,7 +547,7 @@ const AddEditPage = (props) => {
   return <PageLayout main={renderMain()} map={renderMap()} />;
 };
 
-AddEditPage.propTypes = {
+EditPage.propTypes = {
   cache: PropTypes.object,
 };
 
@@ -630,4 +572,4 @@ function onlyChanges(loo, from) {
   });
 }
 
-export default AddEditPage;
+export default EditPage;
