@@ -1,3 +1,4 @@
+import React from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import useGeolocation from './useGeolocation';
 
@@ -32,15 +33,18 @@ const useMapPosition = () => {
 
   const [setMapPositionMutation] = useMutation(SET_MAP_POSITION);
 
-  const setMapPosition = ({ center, zoom, radius }) => {
-    setMapPositionMutation({
-      variables: {
-        ...center,
-        zoom,
-        radius: radius,
-      },
-    });
-  };
+  const setMapPosition = React.useCallback(
+    ({ center, zoom, radius }) => {
+      setMapPositionMutation({
+        variables: {
+          ...center,
+          zoom,
+          radius: radius,
+        },
+      });
+    },
+    [setMapPositionMutation]
+  );
 
   const { geolocation } = useGeolocation();
 

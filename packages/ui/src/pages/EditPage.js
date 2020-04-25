@@ -4,14 +4,12 @@ import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import _ from 'lodash';
-import gql from 'graphql-tag';
 
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
 import LooMap from '../components/LooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
-import useGeolocation from '../components/useGeolocation';
 
 import config from '../config';
 import graphqlMappings from '../graphqlMappings';
@@ -28,12 +26,6 @@ import history from '../history';
 
 const FIND_BY_ID = loader('./findLooById.graphql');
 const UPDATE_LOO = loader('./updateLoo.graphql');
-
-const SET_MAP_CENTER = gql`
-  mutation SetMapCenter($lat: Number!, $lng: Number!) {
-    updateCenter(lat: $lat, lng: $lng) @client
-  }
-`;
 
 const getLooCachedId = (looId) => 'Loo:' + looId;
 
@@ -75,7 +67,8 @@ const EditPage = (props) => {
   // store for us so that we can send off the location with a loo report.
   const [mapCenter, setMapCenter] = useState();
 
-  const { geolocation } = useGeolocation();
+  // Get the center to use for the loo
+  const getCenter = () => mapCenter;
 
   // LooState is the temporary loo object that hold's the user's representation of the loo
   const [looState, setLooState] = useState();
@@ -115,9 +108,9 @@ const EditPage = (props) => {
     // Keep track of defaults so we only submit new information
     setOriginal({
       loo: _.cloneDeep(newLoo),
-      center: getCenter(),
+      center: newLoo.location,
     });
-  }, [loadingLooData]);
+  }, [looData]);
 
   const handleChange = (event) => {
     // Avoid state mutation
@@ -177,26 +170,6 @@ const EditPage = (props) => {
 
   const onMapCenterUpdate = ({ center }) => {
     setMapCenter(center);
-  };
-
-  // Get the center to use for the loo
-  const getCenter = () => {
-    if (mapCenter) {
-      return mapCenter;
-    }
-
-    if (looData) {
-      return looData.loo.location;
-    }
-
-    if (geolocation.latitude && geolocation.longitude) {
-      return {
-        lat: geolocation.latitude,
-        lng: geolocation.longitude,
-      };
-    }
-
-    return config.fallbackLocation;
   };
 
   const [

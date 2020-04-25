@@ -79,7 +79,7 @@ const AddPage = (props) => {
         lng: parseFloat(lng),
       },
     });
-  }, [lat, lng]);
+  }, [lat, lng, setMapPosition]);
 
   // LooState is the temporary loo object that hold's the user's representation of the loo
   const [looState, setLooState] = useState(getInitialLooState());

@@ -107,12 +107,14 @@ const LooPage = (props) => {
     skip: !data.loo.location,
   });
 
+  const looLocation = data && data.loo.location ? data.loo.location : null;
+
   // Set initial center of map
   React.useEffect(() => {
-    if (data && data.loo.location) {
-      setMapPosition({ center: data.loo.location });
+    if (looLocation) {
+      setMapPosition({ center: looLocation });
     }
-  }, [data.loo.location]);
+  }, [looLocation, setMapPosition]);
 
   const { loading: userLoading, data: userData, error: userError } = useQuery(
     GET_USER_DATA
