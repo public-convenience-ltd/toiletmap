@@ -4,6 +4,7 @@ import config from '../config';
 
 import PageLayout from '../components/PageLayout';
 import LooMap from '../components/LooMap';
+import useMapPosition from '../components/useMapPosition';
 import useNearbyLoos from '../components/useNearbyLoos';
 
 import lists from '../css/lists.module.css';
@@ -14,7 +15,13 @@ import controls from '../css/controls.module.css';
 import uolLogo from '../images/domestos-use-our-loos-full.png';
 
 const AboutPage = (props) => {
-  const { data, mapProps } = useNearbyLoos();
+  const [mapPosition, setMapPosition] = useMapPosition();
+
+  const { data } = useNearbyLoos({
+    lat: mapPosition.center.lat,
+    lng: mapPosition.center.lng,
+    radius: mapPosition.radius,
+  });
 
   const mainFragment = (
     <div>
@@ -227,11 +234,13 @@ const AboutPage = (props) => {
       map={
         <LooMap
           loos={data}
+          center={mapPosition.center}
+          zoom={mapPosition.zoom}
+          onMoveEnd={setMapPosition}
           showContributor
           showCenter
           showSearchControl
           showLocateControl
-          {...mapProps}
         />
       }
     />

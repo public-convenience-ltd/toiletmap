@@ -1,4 +1,7 @@
 import { useQuery, useMutation, gql } from '@apollo/client';
+import useGeolocation from './useGeolocation';
+
+import config from '../config';
 
 const MAP_POSITION_QUERY = gql`
   {
@@ -8,7 +11,6 @@ const MAP_POSITION_QUERY = gql`
     }
     mapZoom @client
     mapRadius @client
-    viewMap @client
   }
 `;
 
@@ -26,7 +28,7 @@ const SET_MAP_POSITION = gql`
 `;
 
 const useMapPosition = () => {
-  const { data, loading } = useQuery(MAP_POSITION_QUERY);
+  const { data: mapPosition } = useQuery(MAP_POSITION_QUERY);
 
   const [setMapPositionMutation] = useMutation(SET_MAP_POSITION);
 
@@ -35,12 +37,33 @@ const useMapPosition = () => {
       variables: {
         ...center,
         zoom,
-        radius,
+        radius: radius,
       },
     });
   };
 
-  return [data, setMapPosition, loading];
+  const { geolocation } = useGeolocation();
+
+  const getMapCenter = () => {
+    if (mapPosition.mapCenter.lat && mapPosition.mapCenter.lng) {
+      return mapPosition.mapCenter;
+    }
+
+    if (geolocation.latitude && geolocation.longitude) {
+      return { lat: geolocation.latitude, lng: geolocation.longitude };
+    }
+
+    return config.fallbackLocation;
+  };
+
+  return [
+    {
+      center: getMapCenter(),
+      zoom: mapPosition.mapZoom,
+      radius: mapPosition.mapRadius,
+    },
+    setMapPosition,
+  ];
 };
 
 export default useMapPosition;

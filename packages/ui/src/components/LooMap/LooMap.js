@@ -18,7 +18,7 @@ const LooMap = (props) => {
     const center = event.target.getCenter();
     const zoom = event.target.getZoom();
     const bounds = event.target.getBounds();
-    const radius = bounds.getNorthEast().distanceTo(center);
+    const radius = parseInt(bounds.getNorthEast().distanceTo(center));
 
     props.onMoveEnd({
       center,

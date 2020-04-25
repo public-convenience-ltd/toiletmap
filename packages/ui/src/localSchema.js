@@ -54,22 +54,6 @@ const resolvers = {
 
       return true;
     },
-    toggleViewMode: (_root, vars, { cache }) => {
-      const query = gql`
-        query getViewMap {
-          viewMap @client
-        }
-      `;
-
-      const { viewMap } = cache.readQuery({ query });
-
-      const data = {
-        viewMap: !viewMap,
-      };
-
-      cache.writeQuery({ data, query });
-      return true;
-    },
     loginUser: (_root, { name }, { cache }) => {
       const query = gql`
         query getUserData {
@@ -121,7 +105,6 @@ const typeDefs = gql`
   extend type Query {
     mapCenter: Point!
     mapZoom: Number!
-    viewMap: Boolean!
     userData: UserData!
   }
 

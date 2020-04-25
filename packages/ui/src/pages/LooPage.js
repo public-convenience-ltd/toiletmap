@@ -11,6 +11,9 @@ import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
 import LooMap from '../components/LooMap';
 
+import useMapPosition from '../components/useMapPosition';
+import useNearbyLoos from '../components/useNearbyLoos';
+
 import styles from './css/loo-page.module.css';
 import layout from '../components/css/layout.module.css';
 import headings from '../css/headings.module.css';
@@ -88,14 +91,28 @@ const LooPage = (props) => {
     '__typename',
   ];
 
-  let looId = props.match.params.id;
-
   const { loading, data, error } = useQuery(FIND_LOO_QUERY, {
     variables: {
-      id: looId,
+      id: props.match.params.id,
     },
     returnPartialData: true,
   });
+
+  const [mapPosition, setMapPosition] = useMapPosition();
+
+  const { data: loos } = useNearbyLoos({
+    lat: mapPosition.center.lat,
+    lng: mapPosition.center.lng,
+    radius: mapPosition.radius,
+    skip: !data.loo.location,
+  });
+
+  // Set initial center of map
+  React.useEffect(() => {
+    if (data && data.loo.location) {
+      setMapPosition({ center: data.loo.location });
+    }
+  }, [data.loo.location]);
 
   const { loading: userLoading, data: userData, error: userError } = useQuery(
     GET_USER_DATA
@@ -126,17 +143,23 @@ const LooPage = (props) => {
 
     return mappings.humanizeAPIValue(val, '');
   }
+  const loosToDisplay = loos.map((loo) => {
+    if (loo.id === data.loo.id) {
+      return {
+        ...data.loo,
+        isHighlighted: true,
+      };
+    }
 
-  const looToDisplay = {
-    ...data.loo,
-    isHighlighted: true,
-  };
+    return loo;
+  });
 
   const mapFragment = (
     <LooMap
-      loos={data.loo.id ? [looToDisplay] : []}
-      zoom={config.maxZoom}
-      center={data.loo.location}
+      loos={loosToDisplay}
+      center={mapPosition.center}
+      zoom={mapPosition.zoom}
+      onMoveEnd={setMapPosition}
     />
   );
 

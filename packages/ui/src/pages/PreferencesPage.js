@@ -6,6 +6,7 @@ import PageLayout from '../components/PageLayout';
 import LooMap from '../components/LooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
+import useMapPosition from '../components/useMapPosition';
 import useNearbyLoos from '../components/useNearbyLoos';
 
 import styles from './css/preferences-page.module.css';
@@ -55,7 +56,13 @@ const preferenceMap = [
 ];
 
 const PreferencesPage = (props) => {
-  const { data, mapProps } = useNearbyLoos();
+  const [mapPosition, setMapPosition] = useMapPosition();
+
+  const { data: loos } = useNearbyLoos({
+    lat: mapPosition.center.lat,
+    lng: mapPosition.center.lng,
+    radius: mapPosition.radius,
+  });
 
   const [unsavedPreferences, setUnsavedPreferences] = useState({});
   const [savedPreferences] = useState(config.getSettings(PREFERENCES_KEY));
@@ -161,12 +168,14 @@ const PreferencesPage = (props) => {
       main={mainFragment}
       map={
         <LooMap
-          loos={data ? data.loosByProximity : []}
+          loos={loos}
+          center={mapPosition.center}
+          zoom={mapPosition.zoom}
+          onMoveEnd={setMapPosition}
           showContributor
           showCenter
           showSearchControl
           showLocateControl
-          {...mapProps}
         />
       }
     />

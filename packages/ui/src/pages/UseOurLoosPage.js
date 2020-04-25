@@ -4,6 +4,7 @@ import config from '../config';
 
 import PageLayout from '../components/PageLayout';
 import LooMap from '../components/LooMap';
+import useMapPosition from '../components/useMapPosition';
 import useNearbyLoos from '../components/useNearbyLoos';
 
 import lists from '../css/lists.module.css';
@@ -15,7 +16,13 @@ import history from '../history';
 import uolLogo from '../images/domestos-use-our-loos-full.png';
 
 const UseOurLoosPage = (props) => {
-  const { data, mapProps } = useNearbyLoos();
+  const [mapPosition, setMapPosition] = useMapPosition();
+
+  const { data: loos } = useNearbyLoos({
+    lat: mapPosition.center.lat,
+    lng: mapPosition.center.lng,
+    radius: mapPosition.radius,
+  });
 
   const shouldShowSponsor = config.shouldShowSponsor();
 
@@ -178,12 +185,14 @@ const UseOurLoosPage = (props) => {
       main={mainFragment}
       map={
         <LooMap
-          loos={data ? data.loosByProximity : []}
+          loos={loos}
+          center={mapPosition.center}
+          zoom={mapPosition.zoom}
+          onMoveEnd={setMapPosition}
           showContributor
           showCenter
           showSearchControl
           showLocateControl
-          {...mapProps}
         />
       }
     />

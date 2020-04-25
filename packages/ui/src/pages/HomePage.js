@@ -36,12 +36,6 @@ const LOGOUT = gql`
   }
 `;
 
-const TOGGLE_VIEW_MODE = gql`
-  mutation ToggleViewMode {
-    toggleViewMode @client
-  }
-`;
-
 const HomePage = (props) => {
   const [highlightedLooId, setHighlightedLooId] = useState();
 
@@ -58,11 +52,15 @@ const HomePage = (props) => {
     props.auth.reactContextLogout(logoutMutation, props.history);
 
   // Map
-  const [mapPosition = {}] = useMapPosition();
+  const [showMapView, setShowMapView] = React.useState(true);
 
-  const { loading, data: loos, error, mapProps } = useNearbyLoos();
+  const [mapPosition, setMapPosition] = useMapPosition();
 
-  const [toggleViewMode] = useMutation(TOGGLE_VIEW_MODE);
+  const { data: loos, loading, error } = useNearbyLoos({
+    lat: mapPosition.center.lat,
+    lng: mapPosition.center.lng,
+    radius: Math.ceil(showMapView ? mapPosition.radius : config.nearestRadius),
+  });
 
   const renderList = () => {
     // Loading - either this is the first query of the user or they are on a
@@ -103,7 +101,7 @@ const HomePage = (props) => {
             loos.slice(0, config.nearestListLimit).map((loo, i) => (
               <li key={loo.id} className={styles.looListItem}>
                 <LooListItem
-                  mapCenter={mapPosition.mapCenter}
+                  mapCenter={mapPosition.center}
                   loo={loo}
                   onHoverStart={() => setHighlightedLooId(loo.id)}
                   onHoverEnd={() => setHighlightedLooId()}
@@ -144,11 +142,13 @@ const HomePage = (props) => {
     <LooMap
       loos={loosWithHighlight}
       markerLabel={(index) => (index < 5 ? index + 1 : undefined)}
+      center={mapPosition.center}
+      zoom={mapPosition.zoom}
+      onMoveEnd={setMapPosition}
       showContributor
       showCenter
       showSearchControl
       showLocateControl
-      {...mapProps}
     />
   );
 
@@ -156,8 +156,6 @@ const HomePage = (props) => {
     if (loading || loadingAuthStatus) {
       return <></>;
     }
-
-    const { viewMap } = mapPosition;
 
     return (
       <div className={styles.container}>
@@ -172,7 +170,7 @@ const HomePage = (props) => {
         <div className={layout.controls}>
           {config.allowAddEditLoo && (
             <Link
-              to={`/report?lat=${mapPosition.mapCenter.lat}&lng=${mapPosition.mapCenter.lng}`}
+              to={`/report?lat=${mapPosition.center.lat}&lng=${mapPosition.center.lng}`}
               className={controls.btn}
               data-testid="add-a-toilet"
             >
@@ -181,8 +179,11 @@ const HomePage = (props) => {
           )}
 
           <MediaQuery maxWidth={config.viewport.mobile}>
-            <button className={controls.btn} onClick={toggleViewMode}>
-              {viewMap ? 'View list' : 'View map'}
+            <button
+              className={controls.btn}
+              onClick={() => setShowMapView(!showMapView)}
+            >
+              {showMapView ? 'View list' : 'View map'}
             </button>
           </MediaQuery>
         </div>
@@ -191,17 +192,20 @@ const HomePage = (props) => {
           maxWidth={config.viewport.mobile}
           className={styles.mobileContent}
         >
-          {!viewMap && welcomFragment}
-          {!viewMap && renderList(true)}
-          {viewMap && (
+          {showMapView ? (
             <div className={styles.mobileMap}>
               <div className={toiletMap.map}>{mapFragment}</div>
             </div>
+          ) : (
+            <>
+              {welcomFragment}
+              {renderList()}
+            </>
           )}
         </MediaQuery>
         <MediaQuery minWidth={config.viewport.mobile}>
           {welcomFragment}
-          {renderList(false)}
+          {renderList()}
         </MediaQuery>
       </div>
     );

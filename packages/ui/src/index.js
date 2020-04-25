@@ -106,7 +106,6 @@ function writeInitialState() {
   cache.writeQuery({
     query: gql`
       query {
-        viewMap
         mapZoom
         mapRadius
         mapCenter {
@@ -120,7 +119,6 @@ function writeInitialState() {
       }
     `,
     data: {
-      viewMap: true, // whether to view a map or list
       mapZoom: 16,
       mapRadius: 1000,
       mapCenter: {
