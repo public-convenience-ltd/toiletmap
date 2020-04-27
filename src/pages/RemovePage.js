@@ -131,8 +131,6 @@ const RemovePage = function (props) {
     );
   }
 
-  console.log(looData);
-
   if (!looData.loo.active) {
     history.push('/');
   }

@@ -3,13 +3,23 @@ import React from 'react';
 import config from '../config';
 
 import PageLayout from '../components/PageLayout';
-import NearestLooMap from '../components/NearestLooMap';
+import LooMap from '../components/LooMap';
+import useMapPosition from '../components/useMapPosition';
+import useNearbyLoos from '../components/useNearbyLoos';
 
 import layout from '../components/css/layout.module.css';
 import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
 const LoginPage = (props) => {
+  const [mapPosition, setMapPosition] = useMapPosition();
+
+  const { data: loos } = useNearbyLoos({
+    lat: mapPosition.center.lat,
+    lng: mapPosition.center.lng,
+    radius: mapPosition.radius,
+  });
+
   const mainFragment = (
     <div>
       <div>
@@ -42,7 +52,23 @@ const LoginPage = (props) => {
     </div>
   );
 
-  return <PageLayout main={mainFragment} map={<NearestLooMap />} />;
+  return (
+    <PageLayout
+      main={mainFragment}
+      map={
+        <LooMap
+          loos={loos}
+          center={mapPosition.center}
+          zoom={mapPosition.zoom}
+          onMoveEnd={setMapPosition}
+          showContributor
+          showCenter
+          showSearchControl
+          showLocateControl
+        />
+      }
+    />
+  );
 };
 
 export default LoginPage;

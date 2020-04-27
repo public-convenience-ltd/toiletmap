@@ -7,9 +7,12 @@ import { DateTime } from 'luxon';
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
 import PreferenceIndicators from '../components/PreferenceIndicators';
-import NearestLooMap from '../components/NearestLooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
+import LooMap from '../components/LooMap';
+
+import useMapPosition from '../components/useMapPosition';
+import useNearbyLoos from '../components/useNearbyLoos';
 
 import styles from './css/loo-page.module.css';
 import layout from '../components/css/layout.module.css';
@@ -88,12 +91,30 @@ const LooPage = (props) => {
     '__typename',
   ];
 
-  let looId = props.match.params.id;
   const { loading, data, error } = useQuery(FIND_LOO_QUERY, {
     variables: {
-      id: looId,
+      id: props.match.params.id,
     },
+    returnPartialData: true,
   });
+
+  const [mapPosition, setMapPosition] = useMapPosition();
+
+  const { data: loos } = useNearbyLoos({
+    lat: mapPosition.center.lat,
+    lng: mapPosition.center.lng,
+    radius: mapPosition.radius,
+    skip: !data.loo.location,
+  });
+
+  const looLocation = data && data.loo.location ? data.loo.location : null;
+
+  // Set initial center of map
+  React.useEffect(() => {
+    if (looLocation) {
+      setMapPosition({ center: looLocation });
+    }
+  }, [looLocation, setMapPosition]);
 
   const { loading: userLoading, data: userData, error: userError } = useQuery(
     GET_USER_DATA
@@ -124,6 +145,25 @@ const LooPage = (props) => {
 
     return mappings.humanizeAPIValue(val, '');
   }
+  const loosToDisplay = loos.map((loo) => {
+    if (loo.id === data.loo.id) {
+      return {
+        ...data.loo,
+        isHighlighted: true,
+      };
+    }
+
+    return loo;
+  });
+
+  const mapFragment = (
+    <LooMap
+      loos={loosToDisplay}
+      center={mapPosition.center}
+      zoom={mapPosition.zoom}
+      onMoveEnd={setMapPosition}
+    />
+  );
 
   if (loading || error || userLoading || userError || !data.loo) {
     let msg;
@@ -134,30 +174,11 @@ const LooPage = (props) => {
       msg = 'Fetching toilet data';
     }
 
-    return (
-      <PageLayout
-        main={<Loading message={msg} />}
-        map={<Loading message={msg} />}
-      />
-    );
+    return <PageLayout main={<Loading message={msg} />} map={mapFragment} />;
   }
 
   const loo = data.loo;
   const properties = getPropertyNames();
-
-  const mapFragment = (
-    <NearestLooMap
-      activeLoo={data.loo}
-      mapProps={{
-        showLocation: false,
-        showSearchControl: true,
-        showLocateControl: false,
-        showCenter: false,
-        countLimit: null,
-      }}
-      highlight={data.loo.id}
-    />
-  );
 
   const mainFragment = (
     <div>

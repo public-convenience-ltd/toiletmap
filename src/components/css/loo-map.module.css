@@ -1,6 +1,11 @@
 @keyframes bounce {
-  from { top: 0; }
-  to { top: -0.5rem; }
+  from {
+    top: 0;
+  }
+
+  to {
+    top: -0.5rem;
+  }
 }
 
 .map {
@@ -36,7 +41,7 @@
   background: rgba(0, 0, 0, 0.8);
 }
 
-.index {
+.markerLabel {
   position: absolute;
   top: 0;
   left: 0;
@@ -54,6 +59,10 @@
 .markerHighlighted {
   position: relative;
   animation: bounce 0.5s infinite alternate;
+}
+
+.markerHighlighted svg path {
+  fill: #217821;
 }
 
 .locate {
