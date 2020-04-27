@@ -13,7 +13,7 @@
     "env-cmd": "10.1.0",
     "eslint-plugin-cypress": "2.10.3",
     "http-proxy-middleware": "1.0.3",
-    "http-server": "0.12.1",
+    "http-server": "0.12.3",
     "react-app-rewired": "2.1.5",
     "react-scripts": "3.4.1",
     "serve": "11.3.0",
