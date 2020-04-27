@@ -10,6 +10,7 @@ import Loading from '../components/Loading';
 import LooMap from '../components/LooMap';
 import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
+import useNearbyLoos from '../components/useNearbyLoos';
 
 import config from '../config';
 import graphqlMappings from '../graphqlMappings';
@@ -23,6 +24,7 @@ import controls from '../css/controls.module.css';
 import { useQuery, useMutation } from '@apollo/client';
 import { loader } from 'graphql.macro';
 import history from '../history';
+import useMapPosition from '../components/useMapPosition';
 
 const FIND_BY_ID = loader('./findLooById.graphql');
 const UPDATE_LOO = loader('./updateLoo.graphql');
@@ -61,14 +63,16 @@ const EditPage = (props) => {
     }
   );
 
-  // A temp state for the map center
-  // We don't need to fetch this from the cached map state, because nearestLooMap
-  // does that bit itself, and if it changes it'll tell us with the callback. This is just a
-  // store for us so that we can send off the location with a loo report.
-  const [mapCenter, setMapCenter] = useState();
+  const [mapPosition, setMapPosition] = useMapPosition();
 
-  // Get the center to use for the loo
-  const getCenter = () => mapCenter;
+  const { data } = useNearbyLoos({
+    lat: mapPosition.center.lat,
+    lng: mapPosition.center.lng,
+    radius: mapPosition.radius,
+  });
+
+  // Local state mapCenter to get fix issues with react-leaflet not being stateless and lat lng rounding issues
+  const [mapCenter, setMapCenter] = useState();
 
   // LooState is the temporary loo object that hold's the user's representation of the loo
   const [looState, setLooState] = useState();
@@ -156,7 +160,7 @@ const EditPage = (props) => {
       lat: original.center.lat,
     };
 
-    let center = getCenter();
+    let center = mapCenter;
     now.location = {
       lng: center.lng,
       lat: center.lat,
@@ -166,10 +170,6 @@ const EditPage = (props) => {
     const changes = onlyChanges(now, before);
 
     return changes;
-  };
-
-  const onMapCenterUpdate = ({ center }) => {
-    setMapCenter(center);
   };
 
   const [
@@ -190,7 +190,7 @@ const EditPage = (props) => {
     const changes = getNovelInput();
 
     // Always associate geometry with a report, even if unchanged
-    let center = getCenter();
+    let center = mapCenter;
     changes.location = {
       lng: center.lng,
       lat: center.lat,
@@ -218,7 +218,7 @@ const EditPage = (props) => {
 
   const renderMain = () => {
     const loo = looState;
-    const center = getCenter();
+    const center = mapCenter;
 
     return (
       <div>
@@ -477,20 +477,30 @@ const EditPage = (props) => {
     );
   };
 
+  const getLoosToDisplay = () => {
+    let activeLoo;
+
+    if (looData) {
+      activeLoo = {
+        ...looData.loo,
+        isHighlighted: true,
+      };
+    }
+
+    // Only return the active loos once (activeLoo must be first in array)
+    return _.uniqBy([activeLoo, ...data], 'id').filter(Boolean);
+  };
+
   const renderMap = () => {
     return (
       <LooMap
-        loos={
-          looData
-            ? [looData.loo].map((loo) => ({
-                ...loo,
-                isHighlighted: true,
-              }))
-            : []
-        }
-        center={getCenter()}
+        loos={getLoosToDisplay()}
+        center={mapCenter}
         minZoom={config.editMinZoom}
-        onMoveEnd={onMapCenterUpdate}
+        onMoveEnd={(mapPosition) => {
+          setMapCenter(mapPosition.center);
+          setMapPosition(mapPosition);
+        }}
         showCenter
         showSearchControl
       />
