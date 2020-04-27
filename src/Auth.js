@@ -1,5 +1,7 @@
+import { createContext, useContext } from 'react';
 import auth0 from 'auth0-js';
 import history from './history';
+import isFunction from 'lodash/isFunction';
 
 const CLIENT_ID = 'sUts4RKy04JcyZ2IVFgMAC0rhPARCQYg';
 
@@ -18,7 +20,7 @@ const makeAuth = () => {
   });
 };
 
-export default class Auth {
+class Auth {
   auth0 = makeAuth();
 
   handleAuthentication = () =>
@@ -116,3 +118,19 @@ export default class Auth {
     history.push('/');
   };
 }
+
+export const AuthContext = createContext(new Auth());
+
+const AuthProvider = ({ children }) => {
+  const auth = useContext(AuthContext);
+
+  return isFunction(children) ? children(auth) : children;
+};
+
+export const useAuth = () => {
+  const auth = useContext(AuthContext);
+
+  return auth;
+};
+
+export default AuthProvider;

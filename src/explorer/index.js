@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Switch,
-  Route,
-  useRouteMatch,
-} from "react-router-dom";
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
 
 import Layout from './Layout';
 import Home from './Home';
@@ -12,17 +8,17 @@ import AreaComparisonStats from './AreaComparisonStats';
 import Search from './Search';
 import Loo from './Loo';
 
-export default function Explorer({auth}) {
+export default function Explorer({ auth }) {
   let match = useRouteMatch();
 
   return (
-    <Layout auth={auth}>
+    <Layout>
       <Switch>
         <Route exact path={`${match.path}/`}>
           <Home />
         </Route>
         <Route path={`${match.path}/loo/:id`}>
-          <Loo auth={auth}/>
+          <Loo />
         </Route>
         <Route path={`${match.path}/statistics`}>
           <HeadlineStats />

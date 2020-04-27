@@ -2,6 +2,7 @@ import React from 'react';
 
 import config from '../config';
 
+import { useAuth } from '../Auth';
 import PageLayout from '../components/PageLayout';
 import LooMap from '../components/LooMap';
 import useMapPosition from '../components/useMapPosition';
@@ -12,6 +13,7 @@ import headings from '../css/headings.module.css';
 import controls from '../css/controls.module.css';
 
 const LoginPage = (props) => {
+  const auth = useAuth();
   const [mapPosition, setMapPosition] = useMapPosition();
 
   const { data: loos } = useNearbyLoos({
@@ -42,10 +44,7 @@ const LoginPage = (props) => {
       <p>Login or sign up to let us know you're real.</p>
 
       <div className={controls.btnStack}>
-        <button
-          onClick={() => props.auth.reactContextLogin()}
-          className={controls.btn}
-        >
+        <button onClick={auth.login} className={controls.btn}>
           Log In/Sign Up
         </button>
       </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -16,8 +16,7 @@ import TimeAgo from 'timeago-react';
 const MISSING_MESSAGE = 'Not Recorded';
 const navigate = () => null;
 
-export default function ResultRow({loo}) {
-  const { path } = useRouteMatch();
+export default function ResultRow({ loo }) {
   const { name, type, opening, area } = loo;
   const contributors = loo.reports.reduce((current, next) => {
     current.push(next.contributor);
@@ -115,18 +114,13 @@ export default function ResultRow({loo}) {
               <ClockIcon />
             </Avatar>
           }
-          label={
-            <TimeAgo datetime={loo.updatedAt} /> || MISSING_MESSAGE
-          }
+          label={<TimeAgo datetime={loo.updatedAt} /> || MISSING_MESSAGE}
           color={loo.updatedAt ? 'primary' : 'secondary'}
           variant="default"
           onClick={(event) => {
             const dateUpdated = new Date(loo.updatedAt);
             const year = dateUpdated.getFullYear();
-            const month = (
-              '0' +
-              (dateUpdated.getMonth() + 1)
-            ).slice(-2);
+            const month = ('0' + (dateUpdated.getMonth() + 1)).slice(-2);
             const day = ('0' + dateUpdated.getDate()).slice(-2);
             const updateString = `${year}-${month}-${day}`;
             navigate(`search?from_date=${updateString}`);

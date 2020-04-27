@@ -29,7 +29,7 @@ import NotFound from './pages/404';
 import Tracking from './components/Tracking';
 
 import history from './history';
-import Auth from './Auth';
+import AuthProvider from './Auth';
 import localSchema from './localSchema';
 import Router from './Router';
 
@@ -49,21 +49,8 @@ import { gql } from 'graphql.macro';
 
 const Explorer = lazy(() => import('./explorer'));
 
-const auth = new Auth();
-
 const httpLink = new HttpLink({
   uri: process.env.REACT_APP_BAKED_BACKEND || '/api',
-});
-
-const authLink = setContext((_, { headers }) => {
-  return {
-    headers: {
-      ...headers,
-      authorization: auth.isAuthenticated()
-        ? `Bearer ${auth.getAccessToken()}`
-        : '',
-    },
-  };
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -91,113 +78,126 @@ const cache = new InMemoryCache({
   },
 });
 
-const client = new ApolloClient({
-  name: '@toiletmap/ui',
-  version: version,
-  link: ApolloLink.from([errorLink, authLink, httpLink]),
-  connectToDevTools: true,
-  cache,
-  ...localSchema,
-});
-
-// Set the initial cache state
-function writeInitialState() {
-  let isAuthed = auth.isAuthenticated();
-  cache.writeQuery({
-    query: gql`
-      query {
-        mapZoom
-        mapRadius
-        mapCenter {
-          lat
-          lng
-        }
-        userData {
-          loggedIn
-          name
-        }
-      }
-    `,
-    data: {
-      mapZoom: 16,
-      mapRadius: 1000,
-      mapCenter: {
-        __typename: 'Point',
-        lat: 0,
-        lng: 0,
-      },
-      userData: {
-        __typename: 'UserData',
-        loggedIn: isAuthed,
-        name: isAuthed ? auth.getProfile().name : null,
-      },
-    },
-  });
-}
-writeInitialState();
-// resetStore isn't used anywhere yet, but just in case...
-client.onResetStore(writeInitialState);
-
 ReactDOM.render(
-  <ApolloProvider client={client}>
-    <Router history={history} forceRefresh={false}>
-      <Tracking />
-      <Suspense fallback={<div>Loading...</div>}>
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={(props) => <HomePage auth={auth} {...props} />}
-          />
-          <Route exact path="/preferences" component={PreferencesPage} />
-          <Route exact path="/about" component={AboutPage} />
-          <Route exact path="/privacy" component={PrivacyPage} />
-          <Route exact path="/use-our-loos" component={UseOurLoosPage} />
-          <Route path="/loos/:id" exact component={LooPage} />
-          <Route
-            path="/login"
-            render={(props) => <LoginPage auth={auth} {...props} />}
-          />
-          <Route
-            path="/map/:lng/:lat"
-            render={(props) => <MapPage auth={auth} {...props} />}
-          />
-          <Route
-            exact
-            path="/callback"
-            render={(props) => <AuthCallback auth={auth} {...props} />}
-          />
-          <Route
-            path="/explorer"
-            render={(props) => <Explorer auth={auth} {...props} />}
-          />
-          <ProtectedRoute
-            exact
-            path="/report"
-            auth={auth}
-            injectProps={{ cache }}
-            component={AddPage}
-          />
-          <ProtectedRoute
-            path="/loos/:id/edit"
-            auth={auth}
-            injectProps={{ cache }}
-            component={EditPage}
-          />
-          <ProtectedRoute
-            path="/loos/:id/remove"
-            component={RemovePage}
-            auth={auth}
-          />
-          <ProtectedRoute
-            path="/loos/:id/thanks"
-            component={LooPage}
-            auth={auth}
-          />
-          <Route component={NotFound} />
-        </Switch>
-      </Suspense>
-    </Router>
-  </ApolloProvider>,
+  <AuthProvider>
+    {(auth) => {
+      const authLink = setContext((_, { headers }) => {
+        return {
+          headers: {
+            ...headers,
+            authorization: auth.isAuthenticated()
+              ? `Bearer ${auth.getAccessToken()}`
+              : '',
+          },
+        };
+      });
+
+      const client = new ApolloClient({
+        name: '@toiletmap/ui',
+        version: version,
+        link: ApolloLink.from([errorLink, authLink, httpLink]),
+        connectToDevTools: true,
+        cache,
+        ...localSchema,
+      });
+
+      // set the initial cache state
+      function writeInitialState() {
+        const isAuthenticated = auth.isAuthenticated();
+
+        cache.writeQuery({
+          query: gql`
+            query {
+              mapZoom
+              mapRadius
+              mapCenter {
+                lat
+                lng
+              }
+              userData {
+                loggedIn
+                name
+              }
+            }
+          `,
+          data: {
+            mapZoom: 16,
+            mapRadius: 1000,
+            mapCenter: {
+              __typename: 'Point',
+              lat: 0,
+              lng: 0,
+            },
+            userData: {
+              __typename: 'UserData',
+              loggedIn: isAuthenticated,
+              name: isAuthenticated ? auth.getProfile().name : null,
+            },
+          },
+        });
+      }
+
+      writeInitialState();
+
+      // resetStore isn't used anywhere yet, but just in case...
+      client.onResetStore(writeInitialState);
+
+      return (
+        <ApolloProvider client={client}>
+          <Router history={history} forceRefresh={false}>
+            <Tracking />
+            <Suspense fallback={<div>Loading...</div>}>
+              <Switch>
+                <Route
+                  exact
+                  path="/"
+                  render={(props) => <HomePage {...props} />}
+                />
+                <Route exact path="/preferences" component={PreferencesPage} />
+                <Route exact path="/about" component={AboutPage} />
+                <Route exact path="/privacy" component={PrivacyPage} />
+                <Route exact path="/use-our-loos" component={UseOurLoosPage} />
+                <Route path="/loos/:id" exact component={LooPage} />
+                <Route
+                  path="/login"
+                  render={(props) => <LoginPage {...props} />}
+                />
+                <Route
+                  path="/map/:lng/:lat"
+                  render={(props) => <MapPage {...props} />}
+                />
+                <Route
+                  exact
+                  path="/callback"
+                  render={(props) => <AuthCallback {...props} />}
+                />
+                <Route
+                  path="/explorer"
+                  render={(props) => <Explorer {...props} />}
+                />
+                <ProtectedRoute
+                  exact
+                  path="/report"
+                  injectProps={{ cache }}
+                  component={AddPage}
+                />
+                <ProtectedRoute
+                  path="/loos/:id/edit"
+                  injectProps={{ cache }}
+                  component={EditPage}
+                />
+                <ProtectedRoute
+                  path="/loos/:id/remove"
+                  component={RemovePage}
+                />
+                <ProtectedRoute path="/loos/:id/thanks" component={LooPage} />
+                <Route component={NotFound} />
+              </Switch>
+            </Suspense>
+          </Router>
+        </ApolloProvider>
+      );
+    }}
+  </AuthProvider>,
   document.getElementById('root')
 );

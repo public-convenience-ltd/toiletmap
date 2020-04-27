@@ -21,6 +21,7 @@ import { useQuery, useMutation, gql } from '@apollo/client';
 import config from '../config';
 import useMapPosition from '../components/useMapPosition';
 import useNearbyLoos from '../components/useNearbyLoos';
+import { useAuth } from '../Auth';
 
 const GET_AUTH_STATUS = gql`
   {
@@ -37,6 +38,7 @@ const LOGOUT = gql`
 `;
 
 const HomePage = (props) => {
+  const auth = useAuth();
   const [highlightedLooId, setHighlightedLooId] = useState();
 
   // Auth
@@ -48,8 +50,7 @@ const HomePage = (props) => {
 
   const [logoutMutation] = useMutation(LOGOUT);
 
-  const logout = () =>
-    props.auth.reactContextLogout(logoutMutation, props.history);
+  const logout = () => auth.reactContextLogout(logoutMutation, props.history);
 
   // Map
   const [showMapView, setShowMapView] = React.useState(true);

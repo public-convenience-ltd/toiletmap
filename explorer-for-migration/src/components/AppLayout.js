@@ -22,6 +22,8 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import { Link } from '@reach/router';
 
+import { AuthContext } from '../Auth';
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -51,77 +53,86 @@ class AppLayout extends Component {
 
   render() {
     const { classes } = this.props;
-    return (
-      <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="Menu"
-              onClick={this.toggleDrawer(true)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" className={classes.flex}>
-              Toilet Map Explorer
-            </Typography>
-            {this.props.auth.isAuthenticated() ? (
-              <Button onClick={this.props.auth.logout} color="inherit">
-                Logout
-              </Button>
-            ) : (
-              <Button onClick={this.props.auth.login} color="inherit">
-                Login
-              </Button>
-            )}
-          </Toolbar>
-        </AppBar>
-        <Drawer open={this.state.drawer} onClose={this.toggleDrawer(false)}>
-          <div
-            tabIndex={0}
-            role="button"
-            onClick={this.toggleDrawer(false)}
-            onKeyDown={this.toggleDrawer(false)}
-          >
-            <div className={classes.list}>
-              <List>
-                <ListItem button>
-                  <Link
-                    to="statistics"
-                    state={{ ...this.state.defaultStatScope }}
-                  >
-                    <ListItemIcon>
-                      <StatsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Statistics" />
-                  </Link>
-                </ListItem>
-                <ListItem button>
-                  <Link
-                    to="statistics/areas"
-                    state={{ ...this.state.defaultStatScope }}
-                  >
-                    <ListItemIcon>
-                      <StatsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Statistics by Area" />
-                  </Link>
-                </ListItem>
-                <ListItem button>
-                  <Link to="search">
-                    <ListItemIcon>
-                      <SearchIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Search" />
-                  </Link>
-                </ListItem>
-              </List>
-            </div>
-          </div>
-        </Drawer>
 
-        <div className={classes.childContainer}>{this.props.children}</div>
-      </div>
+    return (
+      <AuthContext.Consumer>
+        {(auth) => (
+          <div className={classes.root}>
+            <AppBar position="static">
+              <Toolbar>
+                <IconButton
+                  color="inherit"
+                  aria-label="Menu"
+                  onClick={this.toggleDrawer(true)}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Typography
+                  variant="h6"
+                  color="inherit"
+                  className={classes.flex}
+                >
+                  Toilet Map Explorer
+                </Typography>
+                {auth.isAuthenticated() ? (
+                  <Button onClick={auth.logout} color="inherit">
+                    Logout
+                  </Button>
+                ) : (
+                  <Button onClick={auth.login} color="inherit">
+                    Login
+                  </Button>
+                )}
+              </Toolbar>
+            </AppBar>
+            <Drawer open={this.state.drawer} onClose={this.toggleDrawer(false)}>
+              <div
+                tabIndex={0}
+                role="button"
+                onClick={this.toggleDrawer(false)}
+                onKeyDown={this.toggleDrawer(false)}
+              >
+                <div className={classes.list}>
+                  <List>
+                    <ListItem button>
+                      <Link
+                        to="statistics"
+                        state={{ ...this.state.defaultStatScope }}
+                      >
+                        <ListItemIcon>
+                          <StatsIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Statistics" />
+                      </Link>
+                    </ListItem>
+                    <ListItem button>
+                      <Link
+                        to="statistics/areas"
+                        state={{ ...this.state.defaultStatScope }}
+                      >
+                        <ListItemIcon>
+                          <StatsIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Statistics by Area" />
+                      </Link>
+                    </ListItem>
+                    <ListItem button>
+                      <Link to="search">
+                        <ListItemIcon>
+                          <SearchIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Search" />
+                      </Link>
+                    </ListItem>
+                  </List>
+                </div>
+              </div>
+            </Drawer>
+
+            <div className={classes.childContainer}>{this.props.children}</div>
+          </div>
+        )}
+      </AuthContext.Consumer>
     );
   }
 }
