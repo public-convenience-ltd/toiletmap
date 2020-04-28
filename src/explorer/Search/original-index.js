@@ -7,6 +7,8 @@ import TimeAgo from 'timeago-react';
 import { Query } from '@apollo/react-components';
 import { loader } from 'graphql.macro';
 
+import { AuthContext } from '../../Auth';
+
 // Local
 import LooTable from './table/LooTable';
 import LooTablePaginationActions from './table/LooTablePaginationActions';
@@ -511,206 +513,219 @@ class Search extends Component {
 
   render() {
     const { classes } = this.props;
+
     return (
-      <div>
-        <div className={classNames(classes.paper, classes.searchForm)}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={7} md={9}>
-              <FormControl className={classes.formControl} fullWidth>
-                <TextField
-                  id="text"
-                  label="Search in all text fields"
-                  name="text"
-                  value={this.state.searchParams.text}
-                  onChange={_.partial(this.updateSearchField, 'text')}
-                />
-              </FormControl>
-            </Grid>
+      <AuthContext.Consumer>
+        {(auth) => (
+          <div>
+            <div className={classNames(classes.paper, classes.searchForm)}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={7} md={9}>
+                  <FormControl className={classes.formControl} fullWidth>
+                    <TextField
+                      id="text"
+                      label="Search in all text fields"
+                      name="text"
+                      value={this.state.searchParams.text}
+                      onChange={_.partial(this.updateSearchField, 'text')}
+                    />
+                  </FormControl>
+                </Grid>
 
-            <Grid item xs={12} sm={5} md={3}>
-              <FormControl className={classes.formControl} fullWidth>
-                <InputLabel htmlFor="order">Search Order</InputLabel>
-                <Select
-                  id="order"
-                  className={classes.input}
-                  value={this.state.searchParams.order}
-                  onChange={_.partial(this.updateSearchField, 'order')}
-                  input={<Input name="order" id="order-helper" />}
-                >
-                  <MenuItem value={'NEWEST_FIRST'} key={0}>
-                    Newest First
-                  </MenuItem>
-                  <MenuItem value={'OLDEST_FIRST'} key={1}>
-                    Oldest First
-                  </MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <ExpansionPanel expanded={this.advancedSearch}>
-                <ExpansionPanelSummary
-                  onClick={(e) =>
-                    this.setState({ expanded: !this.state.expanded })
-                  }
-                  expandIcon={<ExpandMoreIcon />}
-                >
-                  <Typography className={classes.heading}>
-                    Advanced Options
-                  </Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth>
-                        <Query query={AREAS_QUERY}>
-                          {({ loading, error, data }) => {
-                            if (error) {
-                              console.error(error);
-                            }
+                <Grid item xs={12} sm={5} md={3}>
+                  <FormControl className={classes.formControl} fullWidth>
+                    <InputLabel htmlFor="order">Search Order</InputLabel>
+                    <Select
+                      id="order"
+                      className={classes.input}
+                      value={this.state.searchParams.order}
+                      onChange={_.partial(this.updateSearchField, 'order')}
+                      input={<Input name="order" id="order-helper" />}
+                    >
+                      <MenuItem value={'NEWEST_FIRST'} key={0}>
+                        Newest First
+                      </MenuItem>
+                      <MenuItem value={'OLDEST_FIRST'} key={1}>
+                        Oldest First
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <ExpansionPanel expanded={this.advancedSearch}>
+                    <ExpansionPanelSummary
+                      onClick={(e) =>
+                        this.setState({ expanded: !this.state.expanded })
+                      }
+                      expandIcon={<ExpandMoreIcon />}
+                    >
+                      <Typography className={classes.heading}>
+                        Advanced Options
+                      </Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                      <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                          <FormControl fullWidth>
+                            <Query query={AREAS_QUERY}>
+                              {({ loading, error, data }) => {
+                                if (error) {
+                                  console.error(error);
+                                }
 
-                            // Suggestions take an array of {label: name} objects, so we need to map
-                            // the data to this format
-                            let areas = [];
-                            if (!loading && data) {
-                              areas = data.areas.map((area) => {
-                                return {
-                                  label: area.name,
-                                };
-                              });
-                            }
+                                // Suggestions take an array of {label: name} objects, so we need to map
+                                // the data to this format
+                                let areas = [];
+                                if (!loading && data) {
+                                  areas = data.areas.map((area) => {
+                                    return {
+                                      label: area.name,
+                                    };
+                                  });
+                                }
 
-                            return (
-                              <SearchAutocomplete
-                                id="area_name-search"
-                                onChange={_.partial(
-                                  this.updateSearchParam,
-                                  'area_name'
-                                )}
-                                selectedItem={this.state.searchParams.area_name}
-                                suggestions={areas}
-                                placeholderText="Search Areas"
-                                ariaLabel="Clear area input box"
-                              />
-                            );
-                          }}
-                        </Query>
-                      </FormControl>
-                    </Grid>
-                    {this.props.auth.checkPermission(
-                      'VIEW_CONTRIBUTOR_INFO'
-                    ) && (
-                      <Grid item xs={12} sm={6}>
-                        <FormControl fullWidth>
-                          <Query query={CONTRIBUTORS}>
-                            {({ loading, error, data }) => {
-                              if (loading) return null;
-                              if (error) {
-                                console.error(error);
-                                return null;
-                              }
-
-                              // Re-map contributors for search autocomplete
-                              let contributors = data.contributors.map(
-                                (contributor) => ({ label: contributor.name })
-                              );
-
-                              return (
-                                <SearchAutocomplete
-                                  id="contributor-search"
-                                  onChange={_.partial(
-                                    this.updateSearchParam,
-                                    'contributors'
-                                  )}
-                                  selectedItem={
-                                    this.state.searchParams.contributors
+                                return (
+                                  <SearchAutocomplete
+                                    id="area_name-search"
+                                    onChange={_.partial(
+                                      this.updateSearchParam,
+                                      'area_name'
+                                    )}
+                                    selectedItem={
+                                      this.state.searchParams.area_name
+                                    }
+                                    suggestions={areas}
+                                    placeholderText="Search Areas"
+                                    ariaLabel="Clear area input box"
+                                  />
+                                );
+                              }}
+                            </Query>
+                          </FormControl>
+                        </Grid>
+                        {auth.checkPermission('VIEW_CONTRIBUTOR_INFO') && (
+                          <Grid item xs={12} sm={6}>
+                            <FormControl fullWidth>
+                              <Query query={CONTRIBUTORS}>
+                                {({ loading, error, data }) => {
+                                  if (loading) return null;
+                                  if (error) {
+                                    console.error(error);
+                                    return null;
                                   }
-                                  suggestions={contributors}
-                                  placeholderText="Search Contributors"
-                                  ariaLabel="Clear contributor input box"
-                                />
-                              );
-                            }}
-                          </Query>
-                        </FormControl>
+
+                                  // Re-map contributors for search autocomplete
+                                  let contributors = data.contributors.map(
+                                    (contributor) => ({
+                                      label: contributor.name,
+                                    })
+                                  );
+
+                                  return (
+                                    <SearchAutocomplete
+                                      id="contributor-search"
+                                      onChange={_.partial(
+                                        this.updateSearchParam,
+                                        'contributors'
+                                      )}
+                                      selectedItem={
+                                        this.state.searchParams.contributors
+                                      }
+                                      suggestions={contributors}
+                                      placeholderText="Search Contributors"
+                                      ariaLabel="Clear contributor input box"
+                                    />
+                                  );
+                                }}
+                              </Query>
+                            </FormControl>
+                          </Grid>
+                        )}
+
+                        <Grid item xs={12} sm={6}>
+                          <FormControl
+                            className={classes.formControl}
+                            fullWidth
+                          >
+                            <TextField
+                              id="from_date"
+                              label="Updated After"
+                              type="date"
+                              value={this.state.searchParams.from_date}
+                              onChange={_.partial(
+                                this.updateSearchField,
+                                'from_date'
+                              )}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                            />
+                          </FormControl>
+                        </Grid>
+
+                        <Grid item xs={12} sm={6}>
+                          <FormControl
+                            className={classes.formControl}
+                            fullWidth
+                          >
+                            <TextField
+                              id="to_date"
+                              label="Updated Before"
+                              type="date"
+                              value={this.state.searchParams.to_date}
+                              onChange={_.partial(
+                                this.updateSearchField,
+                                'to_date'
+                              )}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                            />
+                          </FormControl>
+                        </Grid>
                       </Grid>
-                    )}
+                    </ExpansionPanelDetails>
+                  </ExpansionPanel>
+                </Grid>
+              </Grid>
+              <div className={classes.buttons}>
+                <RaisedButton
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.submitSearch}
+                >
+                  <SearchIcon className={classes.rightIcon} />
+                  Search
+                </RaisedButton>
+              </div>
+            </div>
+            <Query query={SEARCH_QUERY} variables={this.queryVariables}>
+              {({ loading, error, data }) => {
+                if (loading) return <h1>Loading...</h1>;
+                if (error) return <h1>Error fetching search data: {error}</h1>;
 
-                    <Grid item xs={12} sm={6}>
-                      <FormControl className={classes.formControl} fullWidth>
-                        <TextField
-                          id="from_date"
-                          label="Updated After"
-                          type="date"
-                          value={this.state.searchParams.from_date}
-                          onChange={_.partial(
-                            this.updateSearchField,
-                            'from_date'
-                          )}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                        />
-                      </FormControl>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <FormControl className={classes.formControl} fullWidth>
-                        <TextField
-                          id="to_date"
-                          label="Updated Before"
-                          type="date"
-                          value={this.state.searchParams.to_date}
-                          onChange={_.partial(
-                            this.updateSearchField,
-                            'to_date'
-                          )}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                        />
-                      </FormControl>
-                    </Grid>
-                  </Grid>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-            </Grid>
-          </Grid>
-          <div className={classes.buttons}>
-            <RaisedButton
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={this.submitSearch}
-            >
-              <SearchIcon className={classes.rightIcon} />
-              Search
-            </RaisedButton>
+                return (
+                  <LooTable
+                    data={data.loos}
+                    rowRender={renderTableRows}
+                    colRender={renderTableCol}
+                    footerRender={renderTableFooter}
+                    page={
+                      data.loos.loos.length === 0
+                        ? 0
+                        : Math.max(0, this.state.fixedSearchParams.page - 1)
+                    }
+                    rowsPerPage={parseInt(this.state.fixedSearchParams.limit)}
+                    handleChangePage={this.handleChangePage}
+                    handleChangeRowsPerPage={this.handleChangeRowsPerPage}
+                  />
+                );
+              }}
+            </Query>
           </div>
-        </div>
-        <Query query={SEARCH_QUERY} variables={this.queryVariables}>
-          {({ loading, error, data }) => {
-            if (loading) return <h1>Loading...</h1>;
-            if (error) return <h1>Error fetching search data: {error}</h1>;
-
-            return (
-              <LooTable
-                data={data.loos}
-                rowRender={renderTableRows}
-                colRender={renderTableCol}
-                footerRender={renderTableFooter}
-                page={
-                  data.loos.loos.length === 0
-                    ? 0
-                    : Math.max(0, this.state.fixedSearchParams.page - 1)
-                }
-                rowsPerPage={parseInt(this.state.fixedSearchParams.limit)}
-                handleChangePage={this.handleChangePage}
-                handleChangeRowsPerPage={this.handleChangeRowsPerPage}
-              />
-            );
-          }}
-        </Query>
-      </div>
+        )}
+      </AuthContext.Consumer>
     );
   }
 }

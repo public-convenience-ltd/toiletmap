@@ -1,9 +1,11 @@
+import { createContext, useContext } from 'react';
 import auth0 from 'auth0-js';
 import { navigate } from '@reach/router';
+import isFunction from 'lodash/isFunction';
 
 const permissionsKey = 'https://toiletmap.org.uk/permissions';
 
-export default class Auth {
+class Auth {
   auth0 = new auth0.WebAuth({
     domain: 'gbptm.eu.auth0.com',
     clientID: 'sUts4RKy04JcyZ2IVFgMAC0rhPARCQYg',
@@ -107,3 +109,19 @@ export default class Auth {
     };
   }
 }
+
+export const AuthContext = createContext(new Auth());
+
+const AuthProvider = ({ children }) => {
+  const auth = useContext(AuthContext);
+
+  return isFunction(children) ? children(auth) : children;
+};
+
+export const useAuth = () => {
+  const auth = useContext(AuthContext);
+
+  return auth;
+};
+
+export default AuthProvider;

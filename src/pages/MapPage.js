@@ -10,7 +10,7 @@ const MapPage = (props) => {
     lng: props.match.params.lng,
   };
 
-  return <HomePage auth={props.auth} initialPosition={pos} />;
+  return <HomePage initialPosition={pos} />;
 };
 
 export default withRouter(MapPage);

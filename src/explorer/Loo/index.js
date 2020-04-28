@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { loader } from 'graphql.macro';
-import { useParams, useHistory, useRouteMatch } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import Map from './Map';
 
@@ -12,13 +12,14 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import RaisedButton from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
+// import TableCell from '@material-ui/core/TableCell';
+// import TableRow from '@material-ui/core/TableRow';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { withStyles } from '@material-ui/core/styles';
-import omit from 'lodash/omit';
 import pickBy from 'lodash/pickBy';
 import { DateTime } from 'luxon';
+
+import { useAuth } from '../../Auth';
 
 const LOO_DETAILS = loader('./looDetails.graphql');
 
@@ -60,41 +61,42 @@ const styles = (theme) => ({
   },
 });
 
-const TableRowRender = (props) => {
-  const { data } = props;
-  return (
-    <>
-      {data.docs.map((loo) => {
-        return (
-          <TableRow key={loo[0]}>
-            <TableCell component="th" scope="row">
-              {loo[0]}
-            </TableCell>
-            <TableCell>
-              <div>
-                <pre>{JSON.stringify(loo[1], null, 2)}</pre>
-              </div>
-            </TableCell>
-          </TableRow>
-        );
-      })}
-    </>
-  );
-};
+// const TableRowRender = (props) => {
+//   const { data } = props;
+//   return (
+//     <>
+//       {data.docs.map((loo) => {
+//         return (
+//           <TableRow key={loo[0]}>
+//             <TableCell component="th" scope="row">
+//               {loo[0]}
+//             </TableCell>
+//             <TableCell>
+//               <div>
+//                 <pre>{JSON.stringify(loo[1], null, 2)}</pre>
+//               </div>
+//             </TableCell>
+//           </TableRow>
+//         );
+//       })}
+//     </>
+//   );
+// };
 
-const TableColRender = () => {
-  return (
-    <TableRow>
-      <TableCell>Property</TableCell>
-      <TableCell>Value</TableCell>
-    </TableRow>
-  );
-};
+// const TableColRender = () => {
+//   return (
+//     <TableRow>
+//       <TableCell>Property</TableCell>
+//       <TableCell>Value</TableCell>
+//     </TableRow>
+//   );
+// };
 
-function Loo (props) {
-  let {id} = useParams();
+function Loo(props) {
+  const auth = useAuth();
+  let { id } = useParams();
   let [expanded, setExpanded] = useState(false);
-  const { loading, error, data } = useQuery(LOO_DETAILS, {variables: {id}});
+  const { loading, error, data } = useQuery(LOO_DETAILS, { variables: { id } });
 
   if (loading) return <p>Loading Loo Info</p>;
   if (error) return <p>Failed to fetch loo :(</p>;
@@ -111,8 +113,8 @@ function Loo (props) {
               {name} / {type}
             </Typography>
           ))}
-          {props.auth.isAuthenticated() && (
-            <div >
+          {auth.isAuthenticated() && (
+            <div>
               <RaisedButton
                 variant="contained"
                 color="secondary"
@@ -126,10 +128,8 @@ function Loo (props) {
           )}
         </Grid>
         <Grid container item md={6} sm={12}>
-          <Paper style={{height: '300px', width: '100%'}}>
-            <Map
-              {...loo.location}
-            />
+          <Paper style={{ height: '300px', width: '100%' }}>
+            <Map {...loo.location} />
           </Paper>
         </Grid>
 
@@ -171,17 +171,13 @@ function Loo (props) {
                   expanded={expanded}
                   onChange={() => setExpanded(!expanded)}
                 >
-                  <ExpansionPanelSummary
-                    expandIcon={<ExpandMoreIcon />}
-                  >
-                    <Typography>
-                      Report from: {report.contributor}
-                    </Typography>
+                  <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography>Report from: {report.contributor}</Typography>
                     <Typography>
                       Created:{' '}
-                      {DateTime.fromISO(
-                        report.createdAt
-                      ).toLocaleString(DateTime.DATETIME_MED)}
+                      {DateTime.fromISO(report.createdAt).toLocaleString(
+                        DateTime.DATETIME_MED
+                      )}
                     </Typography>
                   </ExpansionPanelSummary>
 
