@@ -27,6 +27,7 @@ import UseOurLoosPage from './pages/UseOurLoosPage';
 import PrivacyPage from './pages/PrivacyPage';
 import NotFound from './pages/404';
 import Tracking from './components/Tracking';
+import PageLoading from './components/PageLoading';
 
 import history from './history';
 import Router from './Router';
@@ -40,7 +41,7 @@ ReactDOM.render(
     <App>
       <Router history={history} forceRefresh={false}>
         <Tracking />
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<PageLoading />}>
           <Switch>
             <Route exact path="/" render={(props) => <HomePage {...props} />} />
             <Route exact path="/preferences" component={PreferencesPage} />

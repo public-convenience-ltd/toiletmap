@@ -156,7 +156,7 @@ const LooPage = (props) => {
     return loo;
   });
 
-  const mapFragment = (
+  const mapFragment = !looLocation ? null : (
     <LooMap
       loos={loosToDisplay}
       center={mapPosition.center}

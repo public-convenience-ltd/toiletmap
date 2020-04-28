@@ -37,7 +37,7 @@ const PageLayout = (props) => {
                 isOpen={isCookieSettingsOpen}
                 onClose={() => setIsCookieSettingsOpen(false)}
               />
-              {React.cloneElement(props.main, props)}
+              {props.main && React.cloneElement(props.main, props)}
             </div>
           </main>
 
@@ -52,7 +52,7 @@ const PageLayout = (props) => {
 
       <MediaQuery minWidth={config.viewport.mobile}>
         <aside data-testid="mainMap" className={layout.mapContainer}>
-          {React.cloneElement(props.map, props)}
+          {props.map && React.cloneElement(props.map, props)}
         </aside>
       </MediaQuery>
     </div>

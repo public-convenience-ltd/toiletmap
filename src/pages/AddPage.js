@@ -23,6 +23,7 @@ import { useMutation } from '@apollo/client';
 import { loader } from 'graphql.macro';
 import history from '../history';
 import useMapPosition from '../components/useMapPosition';
+import useNearbyLoos from '../components/useNearbyLoos';
 
 const UPDATE_LOO = loader('./updateLoo.graphql');
 
@@ -69,6 +70,12 @@ const AddPage = (props) => {
   const optionsMap = graphqlMappings.looProps.definitions;
 
   const [mapPosition, setMapPosition] = useMapPosition();
+
+  const { data } = useNearbyLoos({
+    lat: mapPosition.center.lat,
+    lng: mapPosition.center.lng,
+    radius: mapPosition.radius,
+  });
 
   const { lat, lng } = queryString.parse(props.location.search);
 
@@ -409,6 +416,7 @@ const AddPage = (props) => {
   const renderMap = () => {
     return (
       <LooMap
+        loos={data}
         center={mapPosition.center}
         minZoom={config.editMinZoom}
         onMoveEnd={setMapPosition}
