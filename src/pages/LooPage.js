@@ -281,14 +281,7 @@ const LooPage = (props) => {
       </p>
       <p>
         View more detailed data about this Toilet at{' '}
-        <a
-          href={`/explorer/loos/${loo.id}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Toilet Map Explorer
-        </a>
-        .
+        <Link to={`/explorer/loos/${loo.id}`}>Toilet Map Explorer</Link>.
       </p>
     </div>
   );

@@ -26,7 +26,7 @@ export default function ResultRow({ loo }) {
   return (
     <TableRow>
       <TableCell component="th" scope="row">
-        <Link to={`./loo/${loo.id}`}>
+        <Link to={`./loos/${loo.id}`}>
           <Chip
             avatar={
               <Avatar>

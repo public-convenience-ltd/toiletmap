@@ -17,7 +17,7 @@ export default function Explorer({ auth }) {
         <Route exact path={`${match.path}/`}>
           <Home />
         </Route>
-        <Route path={`${match.path}/loo/:id`}>
+        <Route path={`${match.path}/loos/:id`}>
           <Loo />
         </Route>
         <Route path={`${match.path}/statistics`}>
