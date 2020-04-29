@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import _ from 'lodash';
 import queryString from 'query-string';
 import TimeAgo from 'timeago-react';
 import { Query } from '@apollo/react-components';
 import { loader } from 'graphql.macro';
+import startCase from 'lodash/startCase';
+import toLower from 'lodash/toLower';
+import uniq from 'lodash/uniq';
+import pickBy from 'lodash/pickBy';
+import isEmpty from 'lodash/isEmpty';
+import cloneDeep from 'lodash/cloneDeep';
+import omitBy from 'lodash/omitBy';
+import partial from 'lodash/partial';
 
 import { AuthContext } from '../../Auth';
 
@@ -204,7 +211,7 @@ const renderTableRows = ({ data }) => {
                       }
                       label={
                         type
-                          ? _.startCase(_.toLower(type.replace(/_/g, ' ')))
+                          ? startCase(toLower(type.replace(/_/g, ' ')))
                           : MISSING_MESSAGE
                       }
                       color={type ? 'primary' : 'secondary'}
@@ -214,7 +221,7 @@ const renderTableRows = ({ data }) => {
                   </TableCell>
 
                   <TableCell className={classes.textList}>
-                    {_.uniq(contributors).map((attr, i) => {
+                    {uniq(contributors).map((attr, i) => {
                       return (
                         <Chip
                           key={attr + i}
@@ -382,10 +389,10 @@ class Search extends Component {
    * Getter for the search query string - strips empty fields.
    */
   queryString(newParams) {
-    const omitEmpty = _.pickBy(newParams);
+    const omitEmpty = pickBy(newParams);
 
     // If everything is empty, ensure that we at least specify the `text` param.
-    if (_.isEmpty(omitEmpty)) {
+    if (isEmpty(omitEmpty)) {
       omitEmpty.text = '';
     }
 
@@ -399,7 +406,7 @@ class Search extends Component {
    * Omits any empty search parameters from the search.
    */
   async submitSearch() {
-    const newParams = _.cloneDeep(this.state.searchParams);
+    const newParams = cloneDeep(this.state.searchParams);
     await navigate(`search?${this.queryString(newParams)}`);
     this.setState({
       fixedSearchParams: newParams,
@@ -508,7 +515,7 @@ class Search extends Component {
       contributor: this.state.fixedSearchParams.contributors,
     };
 
-    return _.omitBy(variables, (v) => v === '' || v == null);
+    return omitBy(variables, (v) => v === '' || v == null);
   }
 
   render() {
@@ -527,7 +534,7 @@ class Search extends Component {
                       label="Search in all text fields"
                       name="text"
                       value={this.state.searchParams.text}
-                      onChange={_.partial(this.updateSearchField, 'text')}
+                      onChange={partial(this.updateSearchField, 'text')}
                     />
                   </FormControl>
                 </Grid>
@@ -539,7 +546,7 @@ class Search extends Component {
                       id="order"
                       className={classes.input}
                       value={this.state.searchParams.order}
-                      onChange={_.partial(this.updateSearchField, 'order')}
+                      onChange={partial(this.updateSearchField, 'order')}
                       input={<Input name="order" id="order-helper" />}
                     >
                       <MenuItem value={'NEWEST_FIRST'} key={0}>
@@ -587,7 +594,7 @@ class Search extends Component {
                                 return (
                                   <SearchAutocomplete
                                     id="area_name-search"
-                                    onChange={_.partial(
+                                    onChange={partial(
                                       this.updateSearchParam,
                                       'area_name'
                                     )}
@@ -624,7 +631,7 @@ class Search extends Component {
                                   return (
                                     <SearchAutocomplete
                                       id="contributor-search"
-                                      onChange={_.partial(
+                                      onChange={partial(
                                         this.updateSearchParam,
                                         'contributors'
                                       )}
@@ -652,7 +659,7 @@ class Search extends Component {
                               label="Updated After"
                               type="date"
                               value={this.state.searchParams.from_date}
-                              onChange={_.partial(
+                              onChange={partial(
                                 this.updateSearchField,
                                 'from_date'
                               )}
@@ -673,7 +680,7 @@ class Search extends Component {
                               label="Updated Before"
                               type="date"
                               value={this.state.searchParams.to_date}
-                              onChange={_.partial(
+                              onChange={partial(
                                 this.updateSearchField,
                                 'to_date'
                               )}

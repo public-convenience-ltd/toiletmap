@@ -1,10 +1,12 @@
 import React from 'react';
-import _ from 'lodash';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { Link } from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
+import startCase from 'lodash/startCase';
+import toLower from 'lodash/toLower';
+import uniq from 'lodash/uniq';
 
 import PeopleIcon from '@material-ui/icons/People';
 import NameIcon from '@material-ui/icons/TextFields';
@@ -75,9 +77,7 @@ export default function ResultRow({ loo }) {
             </Avatar>
           }
           label={
-            type
-              ? _.startCase(_.toLower(type.replace(/_/g, ' ')))
-              : MISSING_MESSAGE
+            type ? startCase(toLower(type.replace(/_/g, ' '))) : MISSING_MESSAGE
           }
           color={type ? 'primary' : 'secondary'}
           variant="default"
@@ -86,7 +86,7 @@ export default function ResultRow({ loo }) {
       </TableCell>
 
       <TableCell>
-        {_.uniq(contributors).map((attr, i) => {
+        {uniq(contributors).map((attr, i) => {
           return (
             <Chip
               key={attr + i}

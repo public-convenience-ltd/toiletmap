@@ -3,7 +3,13 @@ import { PropTypes } from 'prop-types';
 
 import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
-import _ from 'lodash';
+import merge from 'lodash/merge';
+import cloneDeep from 'lodash/cloneDeep';
+import set from 'lodash/set';
+import isEmpty from 'lodash/isEmpty';
+import uniqBy from 'lodash/uniqBy';
+import transform from 'lodash/transform';
+import isObject from 'lodash/isObject';
 
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
@@ -105,23 +111,23 @@ const EditPage = (props) => {
 
     // Deep extend loo state to ensure we get all properties (since we can't guarantee
     // that `looData` will include them all)
-    let newLoo = _.merge({}, tempLoo, looDataToUse);
+    let newLoo = merge({}, tempLoo, looDataToUse);
     setLooState(newLoo);
     setMapCenter(newLoo.location);
 
     // Keep track of defaults so we only submit new information
     setOriginal({
-      loo: _.cloneDeep(newLoo),
+      loo: cloneDeep(newLoo),
       center: newLoo.location,
     });
   }, [looData]);
 
   const handleChange = (event) => {
     // Avoid state mutation
-    let loo = _.cloneDeep(looState);
+    let loo = cloneDeep(looState);
 
     // Sets nested loo property value
-    _.set(loo, event.target.name, event.target.value);
+    set(loo, event.target.name, event.target.value);
 
     setLooState(loo);
   };
@@ -140,16 +146,16 @@ const EditPage = (props) => {
     }
 
     // Avoid state mutation
-    var loo = _.cloneDeep(looState);
+    var loo = cloneDeep(looState);
 
-    _.set(loo, event.target.name, val);
+    set(loo, event.target.name, val);
 
     setLooState(loo);
   };
 
   const getNovelInput = () => {
-    const before = _.cloneDeep(original.loo);
-    const now = _.cloneDeep(looState);
+    const before = cloneDeep(original.loo);
+    const now = cloneDeep(looState);
 
     // Add the active state for which there's no user-facing form control as yet.
     now.active = true;
@@ -463,7 +469,7 @@ const EditPage = (props) => {
             className={controls.btn}
             onClick={save}
             value="Update the toilet"
-            disabled={_.isEmpty(getNovelInput())}
+            disabled={isEmpty(getNovelInput())}
           />
 
           <Link
@@ -488,7 +494,7 @@ const EditPage = (props) => {
     }
 
     // Only return the active loos once (activeLoo must be first in array)
-    return _.uniqBy([activeLoo, ...data], 'id').filter(Boolean);
+    return uniqBy([activeLoo, ...data], 'id').filter(Boolean);
   };
 
   const renderMap = () => {
@@ -545,11 +551,11 @@ EditPage.propTypes = {
  * This is used to only submit novel or differing information in reports.
  */
 function onlyChanges(loo, from) {
-  return _.transform(loo, (acc, value, key) => {
-    if (_.isObject(value)) {
+  return transform(loo, (acc, value, key) => {
+    if (isObject(value)) {
       // Deeply compare
       const nestedChanges = onlyChanges(value, from[key]);
-      if (!_.isEmpty(nestedChanges)) {
+      if (!isEmpty(nestedChanges)) {
         acc[key] = nestedChanges;
       }
     } else if (value !== from[key]) {

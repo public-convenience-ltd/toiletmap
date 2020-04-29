@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import { loader } from 'graphql.macro';
 import { Query } from '@apollo/react-components';
+import isEqual from 'lodash/isEqual';
 
 import Counter from './Counter';
 import LooIcon from '@material-ui/icons/Wc';
@@ -39,7 +39,7 @@ function makeDoughnutData(labels, data) {
 
 class HeadlineStats extends Component {
   UNSAFE_componentWillReceiveProps(props) {
-    if (!_.isEqual(props.location.query, this.props.location.query)) {
+    if (!isEqual(props.location.query, this.props.location.query)) {
       // TODO - what do we do when we have a query string?
     }
   }
@@ -134,9 +134,7 @@ class HeadlineStats extends Component {
                   key="Subheader"
                   cols={2}
                   style={{ height: 'auto' }}
-                >
-
-                </GridListTile>
+                ></GridListTile>
                 <GridListTile rows={2} cols={1}>
                   <Doughnut
                     height={150}

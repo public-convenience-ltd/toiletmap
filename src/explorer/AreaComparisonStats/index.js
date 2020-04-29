@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import { loader } from 'graphql.macro';
 import { Query } from '@apollo/react-components';
+import isEqual from 'lodash/isEqual';
+import map from 'lodash/map';
+import get from 'lodash/get';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -41,7 +43,7 @@ const cells = [
 
 class AreaComparisonStats extends Component {
   UNSAFE_componentWillReceiveProps(props) {
-    if (!_.isEqual(props.location.query, this.props.location.query)) {
+    if (!isEqual(props.location.query, this.props.location.query)) {
       // TODO - what do we do when we have a query string?
     }
   }
@@ -64,7 +66,7 @@ class AreaComparisonStats extends Component {
         <Table height={'600px'}>
           <TableHead>
             <TableRow>
-              {_.map(cells, (val) => {
+              {map(cells, (val) => {
                 return <TableCell key={'h_' + val.key}>{val.name}</TableCell>;
               })}
               <TableCell key={'h_listLink'} />
@@ -97,7 +99,7 @@ class AreaComparisonStats extends Component {
                   <TableRow key={index}>
                     {cells.map((cell) => (
                       <TableCell key={cell.key + 'c_' + index}>
-                        {_.get(area, cell.key)}
+                        {get(area, cell.key)}
                       </TableCell>
                     ))}
 
