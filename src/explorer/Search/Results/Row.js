@@ -14,7 +14,6 @@ import ClockIcon from '@material-ui/icons/AccessTime';
 import TimeAgo from 'timeago-react';
 
 const MISSING_MESSAGE = 'Not Recorded';
-const navigate = () => null;
 
 export default function ResultRow({ loo }) {
   const { name, type, opening, area } = loo;
@@ -53,10 +52,6 @@ export default function ResultRow({ loo }) {
                 label={val.name}
                 color={val.name ? 'primary' : 'secondary'}
                 variant="default"
-                onClick={(e) => {
-                  navigate(`search?area_name=${val.name}`);
-                }}
-                clickable
               />
               <Chip
                 label={val.type}
@@ -81,7 +76,6 @@ export default function ResultRow({ loo }) {
           }
           color={type ? 'primary' : 'secondary'}
           variant="default"
-          clickable
         />
       </TableCell>
 
@@ -98,10 +92,6 @@ export default function ResultRow({ loo }) {
               label={attr || MISSING_MESSAGE}
               color={attr ? 'primary' : 'secondary'}
               variant="default"
-              onClick={(event) => {
-                navigate(`search?contributors=${attr}`);
-              }}
-              clickable
             />
           );
         })}
@@ -117,15 +107,6 @@ export default function ResultRow({ loo }) {
           label={<TimeAgo datetime={loo.updatedAt} /> || MISSING_MESSAGE}
           color={loo.updatedAt ? 'primary' : 'secondary'}
           variant="default"
-          onClick={(event) => {
-            const dateUpdated = new Date(loo.updatedAt);
-            const year = dateUpdated.getFullYear();
-            const month = ('0' + (dateUpdated.getMonth() + 1)).slice(-2);
-            const day = ('0' + dateUpdated.getDate()).slice(-2);
-            const updateString = `${year}-${month}-${day}`;
-            navigate(`search?from_date=${updateString}`);
-          }}
-          clickable
         />
       </TableCell>
       <TableCell>

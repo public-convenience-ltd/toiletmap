@@ -1,0 +1,29 @@
+fragment chunkDetails on Chunk {
+  name
+  value
+}
+
+query headlineStats {
+  counters {
+    activeLoos,
+    inactiveLoos,
+    totalLoos,
+    totalReports,
+    removalReports,
+    multipleReports
+  }
+	proportions {
+    activeLoos {
+      ...chunkDetails
+    }
+    publicLoos {
+      ...chunkDetails
+    }
+    babyChanging {
+      ...chunkDetails
+    }
+    accessibleLoos {
+      ...chunkDetails
+    }
+  }
+}
