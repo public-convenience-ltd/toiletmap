@@ -100,20 +100,8 @@ const EditPage = (props) => {
     history.push(`/loos/${saveResponse.submitReport.loo.id}/thanks`);
   }
 
-  const save = (data, dirtyFields) => {
+  const save = (data) => {
     const id = looData.loo.id;
-
-    let changes = {
-      // always associate geometry with a report, even if unchanged
-      location: data.location,
-    };
-
-    // only include fields which have been modified
-    dirtyFields.forEach((field) => {
-      changes[field] = data[field];
-    });
-
-    changes.id = id;
 
     // Evict the loo from the cache before updating - Apollo
     // is normally smart and can work out when something's changed, but
@@ -122,7 +110,10 @@ const EditPage = (props) => {
     props.cache.evict(`Loo: ${id}`);
 
     updateLoo({
-      variables: changes,
+      variables: {
+        ...data,
+        id,
+      },
     });
   };
 
@@ -191,13 +182,13 @@ const EditPage = (props) => {
       optionsMap={optionsMap}
       onSubmit={save}
     >
-      {({ dirtyFields }) => (
+      {({ hasDirtyFields }) => (
         <>
           <input
             type="submit"
             className={controls.btn}
             value="Update the toilet"
-            disabled={!dirtyFields.size}
+            disabled={!hasDirtyFields}
           />
 
           <Link

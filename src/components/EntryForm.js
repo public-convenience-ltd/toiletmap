@@ -4,6 +4,8 @@ import MediaQuery from 'react-responsive';
 import { useForm } from 'react-hook-form';
 import isFunction from 'lodash/isFunction';
 import omit from 'lodash/omit';
+import pick from 'lodash/pick';
+import intersection from 'lodash/intersection';
 
 import layout from '../components/css/layout.module.css';
 import styles from '../pages/css/edit-loo-page.module.css';
@@ -35,28 +37,39 @@ const EntryForm = ({
   const { dirtyFields } = formState;
 
   const onSubmit = (data) => {
+    const dirtyFieldNames = Array.from(dirtyFields.keys());
+
+    // only include fields which have been modified
+    let transformed = pick(data, dirtyFieldNames);
+
+    // determine which of the questionnaire fields have been modified
+    const dirtyQuestionnaireFields = intersection(
+      dirtyFieldNames,
+      questionnaireMap.map((item) => item.property)
+    );
+
     // transform questionnaire data
-    questionnaireMap.forEach((q) => {
-      const value = data[q.property];
+    dirtyQuestionnaireFields.forEach((property) => {
+      const value = data[property];
 
       if (value === 'true') {
-        data[q.property] = true;
+        transformed[property] = true;
       } else if (value === 'false') {
-        data[q.property] = false;
+        transformed[property] = false;
       } else if (value === '') {
-        data[q.property] = null;
+        transformed[property] = null;
       }
     });
 
     // map geometry data to expected structure
-    data.location = {
+    transformed.location = {
       lat: parseFloat(data.geometry.coordinates[0]),
       lng: parseFloat(data.geometry.coordinates[1]),
     };
 
-    data = omit(data, 'geometry');
+    transformed = omit(transformed, 'geometry');
 
-    props.onSubmit(data, dirtyFields);
+    props.onSubmit(transformed);
   };
 
   useEffect(() => {
@@ -313,7 +326,9 @@ const EntryForm = ({
         }
 
         <div className={controls.btnStack}>
-          {isFunction(children) ? children({ dirtyFields }) : children}
+          {isFunction(children)
+            ? children({ hasDirtyFields: dirtyFields.size })
+            : children}
         </div>
       </form>
     </div>
