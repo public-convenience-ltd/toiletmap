@@ -3,7 +3,15 @@ fragment chunkDetails on Chunk {
   value
 }
 
-query getAllProportions {
+query headlineStats {
+  counters {
+    activeLoos,
+    inactiveLoos,
+    totalLoos,
+    totalReports,
+    removalReports,
+    multipleReports
+  }
 	proportions {
     activeLoos {
       ...chunkDetails

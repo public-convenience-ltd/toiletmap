@@ -1,5 +1,7 @@
 import React from 'react';
-import _ from 'lodash';
+import startCase from 'lodash/startCase';
+import toLower from 'lodash/toLower';
+import uniq from 'lodash/uniq';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { Link } from 'react-router-dom';
@@ -70,9 +72,7 @@ export default function ResultRow({ loo }) {
             </Avatar>
           }
           label={
-            type
-              ? _.startCase(_.toLower(type.replace(/_/g, ' ')))
-              : MISSING_MESSAGE
+            type ? startCase(toLower(type.replace(/_/g, ' '))) : MISSING_MESSAGE
           }
           color={type ? 'primary' : 'secondary'}
           variant="default"
@@ -80,7 +80,7 @@ export default function ResultRow({ loo }) {
       </TableCell>
 
       <TableCell>
-        {_.uniq(contributors).map((attr, i) => {
+        {uniq(contributors).map((attr, i) => {
           return (
             <Chip
               key={attr + i}

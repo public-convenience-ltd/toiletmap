@@ -3,6 +3,8 @@ import { useQuery } from '@apollo/client';
 import { loader } from 'graphql.macro';
 import { Link } from 'react-router-dom';
 
+import get from 'lodash/get';
+
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -13,7 +15,7 @@ const AREA_STATS = loader('./areaStats.graphql');
 
 const cells = [
   {
-    key: 'area.name',
+    key: 'meta.name',
     name: 'Area Name',
   },
   {
@@ -75,12 +77,12 @@ function Areas() {
               <TableRow key={index}>
                 {cells.map((cell) => (
                   <TableCell key={cell.key + 'c_' + index}>
-                    {area[cell.key]}
+                    {get(area, cell.key)}
                   </TableCell>
                 ))}
 
-                <TableCell key={`link_${area.area.name}`}>
-                  <Link to={`./search?areaName=${area.area.name}`}>
+                <TableCell key={`link_${area.meta.name}`}>
+                  <Link to={`./search?areaName=${area.meta.name}`}>
                     view loos
                   </Link>
                 </TableCell>
