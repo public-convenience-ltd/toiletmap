@@ -5,7 +5,7 @@ import { useLocation, useHistory, useRouteMatch } from 'react-router-dom';
 import { parse, stringify } from 'query-string';
 
 import Results from './Results';
-import SearchForm from './SearchForm';
+import SearchForm from './Form/SearchForm';
 
 const SEARCH_QUERY = loader('./search.graphql');
 
@@ -16,12 +16,7 @@ function useSearchVariables() {
     parseBooleans: true,
   });
   let defaults = {
-    text: '',
     order: 'NEWEST_FIRST',
-    to_date: '',
-    from_date: '',
-    contributors: '',
-    area_name: '',
     page: 1,
     limit: 10,
   };
@@ -39,8 +34,6 @@ export default function Search() {
   const { loading, error, data } = useQuery(SEARCH_QUERY, { variables });
 
   function search(params) {
-    console.log(params);
-    console.log({ ...variables, ...params });
     let query = stringify({ ...variables, ...params });
     history.push(`${path}?${query}`);
   }

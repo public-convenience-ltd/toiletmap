@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as InternalLink } from 'react-router-dom';
+import { Link as InternalLink, useRouteMatch } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import ExternalLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
@@ -23,12 +23,13 @@ const SubTypography = withStyles({
 })(Typography);
 
 export default () => {
+  const match = useRouteMatch();
   return (
     <div className={styles.main}>
       <div className={styles.intro}>
         <Typography variant="h5" gutterBottom>
-          Toilet Map Explorer exists to help people who want to know more
-          about the data behind the{' '}
+          Toilet Map Explorer exists to help people who want to know more about
+          the data behind the{' '}
           <ExternalLink href="https://www.toiletmap.org.uk">
             The Great British Public Toilet Map
           </ExternalLink>
@@ -65,7 +66,10 @@ export default () => {
             <HeadingTypography variant="h5">Stats</HeadingTypography>
             <SubTypography variant="body1">
               You can view a selection of high level statistics{' '}
-              <InternalLink className={styles.internalLink} to="statistics">
+              <InternalLink
+                className={styles.internalLink}
+                to={`${match.path}statistics`}
+              >
                 here
               </InternalLink>
             </SubTypography>
@@ -76,7 +80,10 @@ export default () => {
             <HeadingTypography variant="h5">Search</HeadingTypography>
             <SubTypography variant="body1">
               You can search for toilet data using keyword searches{' '}
-              <InternalLink className={styles.internalLink} to="search">
+              <InternalLink
+                className={styles.internalLink}
+                to={`${match.path}search`}
+              >
                 here
               </InternalLink>
             </SubTypography>
@@ -95,11 +102,9 @@ export default () => {
             <HeadingTypography variant="h5">API</HeadingTypography>
             <SubTypography variant="body1">
               The Toilet Map API is expressed in{' '}
-              <ExternalLink href={'https://graphql.org/'}>
-                GraphQL
-              </ExternalLink>
-              . The endpoint is served at
-              `https://www.toiletmap.org.uk/api`.You can{' '}
+              <ExternalLink href={'https://graphql.org/'}>GraphQL</ExternalLink>
+              . The endpoint is served at `https://www.toiletmap.org.uk/api`.You
+              can{' '}
               <ExternalLink href={'/voyager'}>
                 visualise the schema
               </ExternalLink>
@@ -107,15 +112,15 @@ export default () => {
               <ExternalLink href={'/graphql'}>
                 experiment with queries
               </ExternalLink>
-              . To conduct mutations, or to get un-redacted results for
-              certain fields you'll need to supply some credentials in an
-              `Authorization` header. Please get in touch if you'd like to
-              know how to achieve that. Please familiarize yourself with the
-              terms under which our data is licensed before making use of it.
+              . To conduct mutations, or to get un-redacted results for certain
+              fields you'll need to supply some credentials in an
+              `Authorization` header. Please get in touch if you'd like to know
+              how to achieve that. Please familiarize yourself with the terms
+              under which our data is licensed before making use of it.
             </SubTypography>
           </Paper>
         </Grid>
       </Grid>
     </div>
   );
-}
+};

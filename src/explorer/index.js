@@ -4,11 +4,11 @@ import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import Layout from './Layout';
 import Home from './Home';
 import HeadlineStats from './HeadlineStats';
-import AreaComparisonStats from './AreaComparisonStats';
+import Areas from './Areas';
 import Search from './Search';
 import Loo from './Loo';
 
-export default function Explorer({ auth }) {
+export default function Explorer() {
   let match = useRouteMatch();
 
   return (
@@ -24,7 +24,7 @@ export default function Explorer({ auth }) {
           <HeadlineStats />
         </Route>
         <Route path={`${match.path}/areas`}>
-          <AreaComparisonStats />
+          <Areas />
         </Route>
         <Route path={`${match.path}/search`}>
           <Search />

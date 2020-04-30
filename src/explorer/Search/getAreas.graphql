@@ -1,5 +1,0 @@
-query getAreas {
-  areas {
-    name
-  }
-}
