@@ -103,17 +103,15 @@ const EditPage = (props) => {
   const save = (data, dirtyFields) => {
     const id = looData.loo.id;
 
-    let changes = {};
+    let changes = {
+      // always associate geometry with a report, even if unchanged
+      location: data.location,
+    };
+
+    // only include fields which have been modified
     dirtyFields.forEach((field) => {
       changes[field] = data[field];
     });
-
-    // always associate geometry with a report, even if unchanged
-    // omits __typename
-    changes.location = {
-      lat: mapCenter.lat,
-      lng: mapCenter.lng,
-    };
 
     changes.id = id;
 
@@ -167,7 +165,7 @@ const EditPage = (props) => {
     history.push(`/`);
   }
 
-  const MapFragment = () => (
+  const mapFragment = (
     <LooMap
       loos={getLoosToDisplay()}
       center={mapCenter}
@@ -181,9 +179,9 @@ const EditPage = (props) => {
     />
   );
 
-  const MainFragment = () => (
+  const mainFragment = (
     <EntryForm
-      map={<MapFragment />}
+      map={mapFragment}
       loo={initialData.loo}
       center={mapCenter}
       questionnaireMap={questionnaireMap}
@@ -213,7 +211,7 @@ const EditPage = (props) => {
     </EntryForm>
   );
 
-  return <PageLayout main={<MainFragment />} map={<MapFragment />} />;
+  return <PageLayout main={mainFragment} map={mapFragment} />;
 };
 
 EditPage.propTypes = {

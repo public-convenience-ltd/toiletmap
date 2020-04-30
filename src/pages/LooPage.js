@@ -156,14 +156,18 @@ const LooPage = (props) => {
     return loo;
   });
 
-  const mapFragment = !looLocation ? null : (
-    <LooMap
-      loos={loosToDisplay}
-      center={mapPosition.center}
-      zoom={mapPosition.zoom}
-      onMoveEnd={setMapPosition}
-    />
-  );
+  let mapFragment = null;
+
+  if (looLocation) {
+    mapFragment = (
+      <LooMap
+        loos={loosToDisplay}
+        center={mapPosition.center}
+        zoom={mapPosition.zoom}
+        onMoveEnd={setMapPosition}
+      />
+    );
+  }
 
   if (loading || error || userLoading || userError || !data.loo) {
     let msg;

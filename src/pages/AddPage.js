@@ -78,19 +78,12 @@ const AddPage = (props) => {
     // add the active state for which there's no user-facing form control as yet
     data.active = true;
 
-    // always associate geometry with a report, even if unchanged
-    // omits __typename
-    data.location = {
-      lat: mapPosition.center.lat,
-      lng: mapPosition.center.lng,
-    };
-
     updateLoo({
       variables: data,
     });
   };
 
-  const MapFragment = () => (
+  const mapFragment = (
     <LooMap
       loos={data}
       center={mapPosition.center}
@@ -101,9 +94,9 @@ const AddPage = (props) => {
     />
   );
 
-  const MainFragment = () => (
+  const mainFragment = (
     <EntryForm
-      map={<MapFragment />}
+      map={mapFragment}
       loo={getInitialFormState()}
       center={mapPosition.center}
       questionnaireMap={questionnaireMap}
@@ -122,7 +115,7 @@ const AddPage = (props) => {
     </EntryForm>
   );
 
-  return <PageLayout main={<MainFragment />} map={<MapFragment />} />;
+  return <PageLayout main={mainFragment} map={mapFragment} />;
 };
 
 export default AddPage;

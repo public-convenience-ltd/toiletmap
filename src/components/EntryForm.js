@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import MediaQuery from 'react-responsive';
 import { useForm } from 'react-hook-form';
 import isFunction from 'lodash/isFunction';
+import omit from 'lodash/omit';
 
 import layout from '../components/css/layout.module.css';
 import styles from '../pages/css/edit-loo-page.module.css';
@@ -28,7 +29,7 @@ const EntryForm = ({
   children,
   ...props
 }) => {
-  const { register, handleSubmit, formState } = useForm();
+  const { register, handleSubmit, formState, setValue } = useForm();
 
   // read the formState before render to subscribe the form state through Proxy
   const { dirtyFields } = formState;
@@ -47,8 +48,23 @@ const EntryForm = ({
       }
     });
 
+    // map geometry data to expected structure
+    data.location = {
+      lat: parseFloat(data.geometry.coordinates[0]),
+      lng: parseFloat(data.geometry.coordinates[1]),
+    };
+
+    data = omit(data, 'geometry');
+
     props.onSubmit(data, dirtyFields);
   };
+
+  useEffect(() => {
+    // readonly fields won't fire a change event
+    // setValue ensures that the fields will be marked as dirty
+    setValue('geometry.coordinates.0', center.lat);
+    setValue('geometry.coordinates.1', center.lng);
+  }, [center, setValue]);
 
   return (
     <div>
@@ -255,8 +271,8 @@ const EntryForm = ({
               type="text"
               name="geometry.coordinates.0"
               className={controls.text}
-              defaultValue={center.lat}
-              readOnly={true}
+              value={center.lat}
+              readOnly
             />
           </label>
 
@@ -268,8 +284,8 @@ const EntryForm = ({
               name="geometry.coordinates.1"
               className={controls.text}
               data-testid="loo-name"
-              defaultValue={center.lng}
-              readOnly={true}
+              value={center.lng}
+              readOnly
             />
           </label>
         </div>
@@ -347,8 +363,8 @@ EntryForm.propTypes = {
     })
   ),
   saveLoading: PropTypes.bool,
-  saveError: PropTypes.func,
-  saveResponse: PropTypes.func,
+  saveError: PropTypes.object,
+  saveResponse: PropTypes.object,
 };
 
 EntryForm.defaultProps = {
