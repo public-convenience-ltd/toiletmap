@@ -104,7 +104,7 @@ const EntryForm = ({
             name="name"
             type="text"
             className={controls.text}
-            defaultValue={loo.name === null ? '' : loo.name}
+            defaultValue={loo.name || ''}
             data-testid="toilet-name"
           />
         </label>
@@ -115,7 +115,7 @@ const EntryForm = ({
             ref={register}
             name="access"
             className={controls.dropdown}
-            defaultValue={loo.access === null ? '' : loo.access}
+            defaultValue={loo.access || ''}
             data-testid="who-can-access"
           >
             <option value="">Unknown</option>
@@ -133,7 +133,7 @@ const EntryForm = ({
             ref={register}
             name="type"
             className={controls.dropdown}
-            defaultValue={loo.type === null ? '' : loo.type}
+            defaultValue={loo.type || ''}
             data-testid="facilities"
           >
             <option value="">Unknown</option>
@@ -151,7 +151,7 @@ const EntryForm = ({
             ref={register}
             name="accessibleType"
             className={controls.dropdown}
-            defaultValue={loo.accessibleType === null ? '' : loo.accessibleType}
+            defaultValue={loo.accessibleType || ''}
             data-testid="accessible-facilities"
           >
             <option value="">Unknown</option>
@@ -169,7 +169,7 @@ const EntryForm = ({
             ref={register}
             name="opening"
             className={controls.dropdown}
-            defaultValue={loo.opening === null ? '' : loo.opening}
+            defaultValue={loo.opening || ''}
             data-testid="opening-hours"
           >
             <option value="">Unknown</option>
@@ -244,7 +244,7 @@ const EntryForm = ({
             name="fee"
             type="text"
             className={controls.text}
-            defaultValue={loo.fee === null ? '' : loo.fee}
+            defaultValue={loo.fee || ''}
             placeholder="The amount e.g. £0.10"
             data-testid="fee"
           />
@@ -256,7 +256,7 @@ const EntryForm = ({
             ref={register}
             name="notes"
             className={controls.text}
-            defaultValue={loo.notes === null ? '' : loo.notes}
+            defaultValue={loo.notes || ''}
             data-testid="notes"
           />
         </label>
