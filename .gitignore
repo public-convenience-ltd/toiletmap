@@ -11,16 +11,11 @@ node_modules
 
 # Local config
 .env
-# Data Dumps
-packages/api/data
+.now
 
 build
-coverage
 
 # OSX
 .DS_Store
-
 # IDE
 .idea
-
-.now

@@ -1,0 +1,5 @@
+query getContributors {
+  items: contributors {
+    label: name
+  }
+}
