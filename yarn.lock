@@ -2,7 +2,22 @@
 # yarn lockfile v1
 
 
-"@apollo/client@3.0.0-beta.44", "@apollo/client@^3.0.0-beta.23", "@apollo/client@^3.0.0-beta.24":
+"@apollo/client@3.0.0-james.33.0":
+  version "3.0.0-james.33.0"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.0.0-james.33.0.tgz#51fa63f4448137fb2a5ec537bc05d8360c00cd35"
+  integrity sha512-EqdYCEvV/xiNBP8CVPKay4rzNBN4bT58juDZLP0jckXUscdceZ0dCo7ZIdRAR1Oo/tzy9Wd0ENm//eZrz8kSfQ==
+  dependencies:
+    "@types/zen-observable" "^0.8.0"
+    "@wry/equality" "^0.1.9"
+    fast-json-stable-stringify "^2.0.0"
+    graphql-tag "^2.10.1"
+    optimism "^0.11.5"
+    symbol-observable "^1.2.0"
+    ts-invariant "^0.4.4"
+    tslib "^1.10.0"
+    zen-observable "^0.8.14"
+
+"@apollo/client@^3.0.0-beta.23", "@apollo/client@^3.0.0-beta.24":
   version "3.0.0-beta.44"
   resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.0.0-beta.44.tgz#79c6083dc2fe81725ad64398bc78e641ed1c1d84"
   integrity sha512-udNiabIYs9WLHWvj2j6tlsaWPNhgMZsHrZyBTKOh+69fLpmZZ4Vv4mepWq/3WCzyHoWa3n3FPi/ajNljkO/Olg==
