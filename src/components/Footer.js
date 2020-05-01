@@ -19,14 +19,6 @@ const Footer = (props) => (
     <ul className={styles.footerList}>
       <li className={styles.footerListItem}>
         <Link
-          to="/preferences"
-          className={chooseLinkStyle(props.location, '/preferences')}
-        >
-          <span className={styles.footerItemText}>Preferences</span>
-        </Link>
-      </li>
-      <li className={styles.footerListItem}>
-        <Link
           to="/privacy"
           className={chooseLinkStyle(props.location, '/privacy')}
         >

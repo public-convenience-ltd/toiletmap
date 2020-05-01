@@ -1,5 +1,3 @@
-import { isOpen } from './openingHours';
-
 export const PREFERENCES_KEY = 'preferences';
 const { REACT_APP_BUNDLE_BRANDING } = process.env;
 
@@ -54,91 +52,6 @@ export default {
         ...obj,
       })
     );
-  },
-
-  // Compares the user's preferences with properties on the loo to
-  // determine which preferences, if any, are met.
-  checkPreferences(loo) {
-    var preferences = this.getSettings(PREFERENCES_KEY);
-    var result = {};
-
-    if (!Object.keys(preferences).length) {
-      return result;
-    }
-
-    // Map preference names to loo properties
-    var map = {
-      free: 'fee',
-      accessible: 'accessibleType',
-      open: 'opening',
-      male: 'type',
-      female: 'type',
-      babychanging: 'babyChange',
-    };
-
-    let gender = {
-      male: preferences.male,
-      female: preferences.female,
-    };
-
-    const wrongGender = {
-      male: ['FEMALE'],
-      female: ['MALE', 'MALE_URINAL'],
-    };
-
-    Object.keys(preferences).forEach((name) => {
-      var value = loo[map[name]];
-
-      if (['', undefined, null].indexOf(value) !== -1) {
-        return;
-      }
-
-      switch (name) {
-        case 'free':
-          result[name] =
-            value === false ||
-            value === 'false' ||
-            value === 0 ||
-            value === '0.00' ||
-            value.toLowerCase() === 'free' ||
-            value.toLowerCase() === 'none';
-          break;
-
-        case 'accessible':
-          if (gender.male === gender.female) {
-            result[name] = value !== 'NONE';
-          } else if (gender.male) {
-            result[name] = wrongGender.male.indexOf(value) === -1;
-          } else if (gender.female) {
-            result[name] = wrongGender.female.indexOf(value) === -1;
-          }
-          break;
-
-        case 'open':
-          if (value !== '') {
-            result[name] = isOpen(value);
-          }
-          break;
-
-        case 'male':
-          result[name] = wrongGender.male.indexOf(value) === -1;
-          break;
-
-        case 'female':
-          result[name] = wrongGender.female.indexOf(value) === -1;
-          break;
-
-        case 'babychanging':
-          result[name] =
-            value === true || value === 'true' || value !== 'false';
-          break;
-
-        default:
-          break;
-      }
-    });
-
-    return result;
   },
   shouldShowSponsor() {
     if (REACT_APP_BUNDLE_BRANDING === 'false') {

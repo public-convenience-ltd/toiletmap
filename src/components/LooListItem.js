@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import L from 'leaflet';
 
 import LooMap from './LooMap';
-import PreferenceIndicators from './PreferenceIndicators';
 
 import styles from './css/loo-list-item.module.css';
 
@@ -54,9 +53,6 @@ const LooListItem = ({
       />
 
       <div className={styles.link}>
-        <div className={styles.preferenceIndicators}>
-          <PreferenceIndicators loo={loo} iconSize={1.4} />
-        </div>
         <span className={styles.linkText}>More info</span>
       </div>
 

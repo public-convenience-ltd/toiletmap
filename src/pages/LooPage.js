@@ -7,7 +7,6 @@ import difference from 'lodash/difference';
 
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
-import PreferenceIndicators from '../components/PreferenceIndicators';
 import Notification from '../components/Notification';
 import LooMap from '../components/LooMap';
 
@@ -246,10 +245,6 @@ const LooPage = (props) => {
       )}
 
       <h2 className={headings.large}>{loo.name || 'Toilet'}</h2>
-
-      <div className={styles.preferenceIndicators}>
-        <PreferenceIndicators loo={loo} iconSize={2.5} />
-      </div>
 
       <MediaQuery maxWidth={config.viewport.mobile}>
         <div className={styles.mobileMap}>{mapFragment}</div>
