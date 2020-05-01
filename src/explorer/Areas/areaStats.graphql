@@ -1,6 +1,6 @@
 query getAreaStats {
   areaStats {
-    area {
+    meta: area {
       name
     }
     totalLoos

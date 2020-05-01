@@ -5,6 +5,8 @@ import isFunction from 'lodash/isFunction';
 
 const CLIENT_ID = 'sUts4RKy04JcyZ2IVFgMAC0rhPARCQYg';
 
+const permissionsKey = 'https://toiletmap.org.uk/permissions';
+
 const options = {
   domain: 'gbptm.eu.auth0.com',
   responseType: 'token id_token',
@@ -47,6 +49,11 @@ class Auth {
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
+    localStorage.setItem('nickname', authResult.idTokenPayload.nickname);
+    localStorage.setItem(
+      'permissions',
+      JSON.stringify(authResult.idTokenPayload[permissionsKey])
+    );
   };
 
   getAccessToken = () => {
@@ -91,10 +98,11 @@ class Auth {
   logout = () => {
     // Clear Access Token and ID Token from local storage also the cached email
     localStorage.removeItem('name');
-    localStorage.removeItem('access_token');
+    localStorage.removeItem('nickname');
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
+    localStorage.removeItem('permissions');
 
     // navigate to the home route
     history.replace('/');
@@ -106,6 +114,14 @@ class Auth {
     let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
     return new Date().getTime() < expiresAt;
   };
+
+  getPermissions() {
+    return JSON.parse(localStorage.getItem('permissions') || '[]');
+  }
+
+  checkPermission(perm) {
+    return this.getPermissions().includes(perm);
+  }
 
   reactContextLogin = () => {
     this.login();

@@ -1,5 +1,0 @@
-query getContributors {
-  contributors {
-    name
-  }
-}
