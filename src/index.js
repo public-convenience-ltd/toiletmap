@@ -21,7 +21,6 @@ import AboutPage from './pages/AboutPage';
 import AddPage from './pages/AddPage';
 import EditPage from './pages/EditPage';
 import LoginPage from './pages/LoginPage';
-import PreferencesPage from './pages/PreferencesPage';
 import MapPage from './pages/MapPage';
 import UseOurLoosPage from './pages/UseOurLoosPage';
 import PrivacyPage from './pages/PrivacyPage';
@@ -44,7 +43,6 @@ ReactDOM.render(
         <Suspense fallback={<PageLoading />}>
           <Switch>
             <Route exact path="/" render={(props) => <HomePage {...props} />} />
-            <Route exact path="/preferences" component={PreferencesPage} />
             <Route exact path="/about" component={AboutPage} />
             <Route exact path="/privacy" component={PrivacyPage} />
             <Route exact path="/use-our-loos" component={UseOurLoosPage} />

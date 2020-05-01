@@ -40,9 +40,3 @@
   text-decoration: none;
   font-weight: bold;
 }
-
-.preferenceIndicators {
-  float: left;
-  position: relative;
-  left: -4px;
-}
