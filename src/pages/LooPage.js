@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
-import _ from 'lodash';
 import { DateTime } from 'luxon';
+import intersection from 'lodash/intersection';
+import difference from 'lodash/difference';
 
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
-import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
 import LooMap from '../components/LooMap';
 
@@ -126,10 +126,10 @@ const LooPage = (props) => {
     var names = Object.keys(data.loo);
 
     // Pick out contained properties of known order, we'll put them at the front
-    var knownOrder = _.intersection(propertiesSort, names);
+    var knownOrder = intersection(propertiesSort, names);
 
     // Pick out all other properties that are not blacklisted, we'll put them after
-    var unknownOrder = _.difference(names, knownOrder, propertiesBlacklist);
+    var unknownOrder = difference(names, knownOrder, propertiesBlacklist);
     unknownOrder.sort();
 
     return knownOrder.concat(unknownOrder);
@@ -216,27 +216,23 @@ const LooPage = (props) => {
       </div>
 
       {isThanksPage && (
-        <DismissableBox
-          title="Thank You!"
-          content={
-            <>
-              <p>Thanks for the information you've provided.</p>
-              <p>
-                We rely on contributions of data like yours to keep the map
-                accurate and useful.
-              </p>
-              <p>Please consider signing up with our sponsor's campaign.</p>
-              <a
-                className={controls.btnFeatured}
-                target="_blank"
-                rel="noopener noreferrer"
-                href={constructCampaignLink(loo, userData.userData.name)}
-              >
-                Join the <strong>Use Our Loos</strong> campaign
-              </a>
-            </>
-          }
-        />
+        <>
+          <h2 className={headings.large}>Thank You!</h2>
+          <p>Thanks for the information you've provided.</p>
+          <p>
+            We rely on contributions of data like yours to keep the map accurate
+            and useful.
+          </p>
+          <p>Please consider signing up with our sponsor's campaign.</p>
+          <a
+            className={controls.btnFeatured}
+            target="_blank"
+            rel="noopener noreferrer"
+            href={constructCampaignLink(loo, userData.userData.name)}
+          >
+            Join the <strong>Use Our Loos</strong> campaign
+          </a>
+        </>
       )}
 
       {!loo.active && (

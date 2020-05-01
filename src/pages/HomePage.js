@@ -6,7 +6,6 @@ import MediaQuery from 'react-responsive';
 
 import PageLayout from '../components/PageLayout';
 import LooMap from '../components/LooMap';
-import DismissableBox from '../components/DismissableBox';
 import LooListItem from '../components/LooListItem';
 import Notification from '../components/Notification';
 
@@ -115,25 +114,6 @@ const HomePage = (props) => {
     );
   };
 
-  const welcomFragment = (
-    <DismissableBox
-      persistKey="home-welcome"
-      title="Hi!"
-      content={
-        <>
-          <p>
-            The {config.nearestListLimit} nearest toilets are listed below.
-            Click more info to find out about each toilet's features.
-          </p>
-          <p>
-            You can set preferences to highlight toilets that meet your specific
-            needs.
-          </p>
-        </>
-      }
-    />
-  );
-
   const loosWithHighlight = loos.map((loo) => ({
     ...loo,
     isHighlighted: highlightedLooId === loo.id,
@@ -198,14 +178,10 @@ const HomePage = (props) => {
               <div className={toiletMap.map}>{mapFragment}</div>
             </div>
           ) : (
-            <>
-              {welcomFragment}
-              {renderList()}
-            </>
+            renderList()
           )}
         </MediaQuery>
         <MediaQuery minWidth={config.viewport.mobile}>
-          {welcomFragment}
           {renderList()}
         </MediaQuery>
       </div>
