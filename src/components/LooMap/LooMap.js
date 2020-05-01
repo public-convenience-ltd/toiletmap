@@ -14,13 +14,18 @@ import LooIcon from './LooIcon';
 import styles from '../css/loo-map.module.css';
 
 const LooMap = (props) => {
-  const handleMoveEnd = (event) => {
-    const center = event.target.getCenter();
-    const zoom = event.target.getZoom();
-    const bounds = event.target.getBounds();
+  const mapRef = React.useRef();
+
+  const handleViewportChanged = () => {
+    const map = mapRef.current.leafletElement;
+
+    const center = map.getCenter();
+    const zoom = map.getZoom();
+
+    const bounds = map.getBounds();
     const radius = parseInt(bounds.getNorthEast().distanceTo(center));
 
-    props.onMoveEnd({
+    props.onViewportChanged({
       center,
       zoom,
       radius,
@@ -33,13 +38,14 @@ const LooMap = (props) => {
 
   return (
     <Map
+      ref={mapRef}
       className={className}
       center={props.center}
-      dragging={!props.preventDragging}
-      onMoveEnd={handleMoveEnd}
       zoom={props.zoom}
       minZoom={props.minZoom}
       maxZoom={props.maxZoom}
+      onViewportChanged={handleViewportChanged}
+      dragging={!props.preventDragging}
       scrollWheelZoom={!props.preventZoom}
       zoomControl={!props.preventZoom && props.showZoomControls}
       tap={false}
@@ -117,7 +123,7 @@ LooMap.propTypes = {
   showSearchControl: PropTypes.bool,
   showLocateControl: PropTypes.bool,
   showContributor: PropTypes.bool,
-  onMoveEnd: PropTypes.func,
+  onViewportChanged: PropTypes.func,
 
   // Note this also has a dependency on `preventZoom`
   showZoomControls: PropTypes.bool,
@@ -137,7 +143,7 @@ LooMap.defaultProps = {
   zoom: config.initialZoom,
   minZoom: config.minZoom,
   maxZoom: config.maxZoom,
-  onMoveEnd: Function.prototype,
+  onViewportChanged: Function.prototype,
   preventZoom: false,
   preventDragging: false,
   showSearchControl: false,

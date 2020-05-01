@@ -13,13 +13,9 @@ const NEARBY_LOOS_QUERY = gql`
   }
 `;
 
-const useNearbyLoos = ({ lat, lng, radius, skip }) => {
+const useNearbyLoos = ({ variables, skip }) => {
   const { loading, data, error } = useQuery(NEARBY_LOOS_QUERY, {
-    variables: {
-      lat,
-      lng,
-      radius,
-    },
+    variables,
     skip,
   });
 

@@ -15,9 +15,11 @@ const LoginPage = (props) => {
   const [mapPosition, setMapPosition] = useMapPosition();
 
   const { data: loos } = useNearbyLoos({
-    lat: mapPosition.center.lat,
-    lng: mapPosition.center.lng,
-    radius: mapPosition.radius,
+    variables: {
+      lat: mapPosition.center.lat,
+      lng: mapPosition.center.lng,
+      radius: mapPosition.radius,
+    },
   });
 
   const mainFragment = (
@@ -60,7 +62,7 @@ const LoginPage = (props) => {
           loos={loos}
           center={mapPosition.center}
           zoom={mapPosition.zoom}
-          onMoveEnd={setMapPosition}
+          onViewportChanged={setMapPosition}
           showContributor
           showCenter
           showSearchControl

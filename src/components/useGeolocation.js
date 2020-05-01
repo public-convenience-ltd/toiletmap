@@ -1,21 +1,26 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
+import config from '../config';
 
-const useGeolocation = () => {
-  const [latitude, setLatitude] = useState();
-  const [longitude, setLongitude] = useState();
+const useGeolocation = ({ skip } = {}) => {
+  const [latitude, setLatitude] = React.useState();
+  const [longitude, setLongitude] = React.useState();
 
   const onSuccess = ({ coords }) => {
     setLatitude(coords.latitude);
     setLongitude(coords.longitude);
   };
 
-  const [error, setError] = useState(null);
+  const [error, setError] = React.useState(null);
 
   const onError = (error) => {
     setError(error.message);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
+    if (skip) {
+      return;
+    }
+
     const geo = navigator.geolocation;
 
     if (!geo) {
@@ -24,13 +29,20 @@ const useGeolocation = () => {
     }
 
     geo.getCurrentPosition(onSuccess, onError);
-  }, []);
+  }, [skip]);
+
+  const geolocation = React.useMemo(() => {
+    if (!latitude) {
+      return config.fallbackLocation;
+    }
+
+    return { lat: latitude, lng: longitude };
+  }, [latitude, longitude]);
+
+  console.log(geolocation);
 
   return {
-    geolocation: {
-      latitude,
-      longitude,
-    },
+    geolocation,
     error,
   };
 };

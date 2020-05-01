@@ -18,9 +18,11 @@ const AboutPage = (props) => {
   const [mapPosition, setMapPosition] = useMapPosition();
 
   const { data } = useNearbyLoos({
-    lat: mapPosition.center.lat,
-    lng: mapPosition.center.lng,
-    radius: mapPosition.radius,
+    variables: {
+      lat: mapPosition.center.lat,
+      lng: mapPosition.center.lng,
+      radius: mapPosition.radius,
+    },
   });
 
   const mainFragment = (
@@ -236,7 +238,7 @@ const AboutPage = (props) => {
           loos={data}
           center={mapPosition.center}
           zoom={mapPosition.zoom}
-          onMoveEnd={setMapPosition}
+          onViewportChanged={setMapPosition}
           showContributor
           showCenter
           showSearchControl

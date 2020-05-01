@@ -72,20 +72,25 @@ const AddPage = (props) => {
   const [mapPosition, setMapPosition] = useMapPosition();
 
   const { data } = useNearbyLoos({
-    lat: mapPosition.center.lat,
-    lng: mapPosition.center.lng,
-    radius: mapPosition.radius,
+    variables: {
+      lat: mapPosition.center.lat,
+      lng: mapPosition.center.lng,
+      radius: mapPosition.radius,
+    },
   });
 
   const { lat, lng } = queryString.parse(props.location.search);
 
+  // Set the map position if lat and lng query params are present
   React.useEffect(() => {
-    setMapPosition({
-      center: {
-        lat: parseFloat(lat),
-        lng: parseFloat(lng),
-      },
-    });
+    if (lat && lng) {
+      setMapPosition({
+        center: {
+          lat: parseFloat(lat),
+          lng: parseFloat(lng),
+        },
+      });
+    }
   }, [lat, lng, setMapPosition]);
 
   // LooState is the temporary loo object that hold's the user's representation of the loo
@@ -418,8 +423,9 @@ const AddPage = (props) => {
       <LooMap
         loos={data}
         center={mapPosition.center}
+        zoom={mapPosition.zoom}
         minZoom={config.editMinZoom}
-        onMoveEnd={setMapPosition}
+        onViewportChanged={setMapPosition}
         showCenter
         showSearchControl
       />

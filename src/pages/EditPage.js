@@ -65,10 +65,21 @@ const EditPage = (props) => {
 
   const [mapPosition, setMapPosition] = useMapPosition();
 
+  const looLocation = (looData && looData.loo.location) || null;
+
+  // Set the map position to the loo location
+  React.useEffect(() => {
+    if (looLocation) {
+      setMapPosition({ center: looLocation });
+    }
+  }, [looLocation, setMapPosition]);
+
   const { data } = useNearbyLoos({
-    lat: mapPosition.center.lat,
-    lng: mapPosition.center.lng,
-    radius: mapPosition.radius,
+    variables: {
+      lat: mapPosition.center.lat,
+      lng: mapPosition.center.lng,
+      radius: mapPosition.radius,
+    },
   });
 
   // Local state mapCenter to get fix issues with react-leaflet not being stateless and lat lng rounding issues
@@ -495,9 +506,11 @@ const EditPage = (props) => {
     return (
       <LooMap
         loos={getLoosToDisplay()}
-        center={mapCenter}
+        // center={looData.loo.location}
+        center={mapPosition.center}
+        zoom={mapPosition.zoom}
         minZoom={config.editMinZoom}
-        onMoveEnd={(mapPosition) => {
+        onViewportChanged={(mapPosition) => {
           setMapCenter(mapPosition.center);
           setMapPosition(mapPosition);
         }}

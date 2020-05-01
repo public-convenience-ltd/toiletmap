@@ -57,9 +57,13 @@ const HomePage = (props) => {
   const [mapPosition, setMapPosition] = useMapPosition();
 
   const { data: loos, loading, error } = useNearbyLoos({
-    lat: mapPosition.center.lat,
-    lng: mapPosition.center.lng,
-    radius: Math.ceil(showMapView ? mapPosition.radius : config.nearestRadius),
+    variables: {
+      lat: mapPosition.center.lat,
+      lng: mapPosition.center.lng,
+      radius: Math.ceil(
+        showMapView ? mapPosition.radius : config.nearestRadius
+      ),
+    },
   });
 
   const renderList = () => {
@@ -144,7 +148,7 @@ const HomePage = (props) => {
       markerLabel={(index) => (index < 5 ? index + 1 : undefined)}
       center={mapPosition.center}
       zoom={mapPosition.zoom}
-      onMoveEnd={setMapPosition}
+      onViewportChanged={setMapPosition}
       showContributor
       showCenter
       showSearchControl
