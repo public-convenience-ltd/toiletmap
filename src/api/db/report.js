@@ -1,9 +1,11 @@
-const _ = require('lodash');
 const { Schema, Types } = require('mongoose');
 const fetch = require('node-fetch');
 const hasha = require('hasha');
-const config = require('../config');
+const isEqual = require('lodash/isEqual');
+const map = require('lodash/map');
+const compact = require('lodash/compact');
 
+const config = require('../config');
 const CoreSchema = require('./core');
 
 const ReportSchema = new Schema(
@@ -51,7 +53,7 @@ const ReportSchema = new Schema(
       type: CoreSchema,
       validate: async function (value) {
         value = value.toObject();
-        if (_.isEqual(value, {})) {
+        if (isEqual(value, {})) {
           // TODO decide what we want to do with empty reports
           //throw Error('Report must contribute some information');
         }
@@ -72,7 +74,7 @@ const ReportSchema = new Schema(
               }
             }
 
-            if (_.isEqual(value[key], looBefore.toObject().properties[key])) {
+            if (isEqual(value[key], looBefore.toObject().properties[key])) {
               // we can't have a duplicate property value - it gives no further information
               throw Error(
                 `Report sets property '${key}' to the same value it was before`
@@ -121,7 +123,7 @@ ReportSchema.methods.deriveFrom = async function (previous) {
 
   for (const key of Object.keys(propsChange)) {
     if (
-      _.isEqual(propsBefore[key], propsChange[key]) ||
+      isEqual(propsBefore[key], propsChange[key]) ||
       (propsBefore[key] === undefined && propsChange[key] === null)
     ) {
       this.diff[key] = undefined;
@@ -177,7 +179,7 @@ async function getAreaData(point) {
   // Mapit returns an object keyed by numerid area id.
   // We are only looking for the values containing a type_name our config
   // tells us is interesting. We'll extract them and map them into an
-  let area = _.map(data, (v) => {
+  let area = map(data, (v) => {
     if (config.mapit.areaTypes.includes(v.type_name)) {
       return {
         type: v.type_name,
@@ -185,7 +187,7 @@ async function getAreaData(point) {
       };
     }
   });
-  return _.compact(area);
+  return compact(area);
 }
 
 ReportSchema.statics.submit = async function (data, user, from) {
