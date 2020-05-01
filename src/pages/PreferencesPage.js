@@ -4,7 +4,6 @@ import config, { PREFERENCES_KEY } from '../config';
 
 import PageLayout from '../components/PageLayout';
 import LooMap from '../components/LooMap';
-import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
 import useMapPosition from '../components/useMapPosition';
 import useNearbyLoos from '../components/useNearbyLoos';
@@ -112,18 +111,6 @@ const PreferencesPage = (props) => {
           )}
         </div>
       </div>
-
-      <DismissableBox
-        persistKey="preferences-intro"
-        title="Preferences"
-        content={
-          <>
-            Highlight toilet features that matter to you. Toilets with these
-            features will be indicated for you. Toilets lacking crucial features
-            will appear in red.
-          </>
-        }
-      />
 
       <h2 className={headings.large}>My Toilet Preferences</h2>
 

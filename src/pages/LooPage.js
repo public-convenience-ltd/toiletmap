@@ -8,7 +8,6 @@ import difference from 'lodash/difference';
 import PageLayout from '../components/PageLayout';
 import Loading from '../components/Loading';
 import PreferenceIndicators from '../components/PreferenceIndicators';
-import DismissableBox from '../components/DismissableBox';
 import Notification from '../components/Notification';
 import LooMap from '../components/LooMap';
 
@@ -218,27 +217,23 @@ const LooPage = (props) => {
       </div>
 
       {isThanksPage && (
-        <DismissableBox
-          title="Thank You!"
-          content={
-            <>
-              <p>Thanks for the information you've provided.</p>
-              <p>
-                We rely on contributions of data like yours to keep the map
-                accurate and useful.
-              </p>
-              <p>Please consider signing up with our sponsor's campaign.</p>
-              <a
-                className={controls.btnFeatured}
-                target="_blank"
-                rel="noopener noreferrer"
-                href={constructCampaignLink(loo, userData.userData.name)}
-              >
-                Join the <strong>Use Our Loos</strong> campaign
-              </a>
-            </>
-          }
-        />
+        <>
+          <h2 className={headings.large}>Thank You!</h2>
+          <p>Thanks for the information you've provided.</p>
+          <p>
+            We rely on contributions of data like yours to keep the map accurate
+            and useful.
+          </p>
+          <p>Please consider signing up with our sponsor's campaign.</p>
+          <a
+            className={controls.btnFeatured}
+            target="_blank"
+            rel="noopener noreferrer"
+            href={constructCampaignLink(loo, userData.userData.name)}
+          >
+            Join the <strong>Use Our Loos</strong> campaign
+          </a>
+        </>
       )}
 
       {!loo.active && (

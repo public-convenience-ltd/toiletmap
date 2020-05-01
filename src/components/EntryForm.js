@@ -17,7 +17,6 @@ import config from '../config';
 import history from '../history';
 
 import Loading from '../components/Loading';
-import DismissableBox from './DismissableBox';
 import Notification from './Notification';
 
 const EntryForm = ({
@@ -103,12 +102,6 @@ const EntryForm = ({
         <Notification>
           <p>Align the crosshair with where you believe the toilet to be.</p>
         </Notification>
-
-        <DismissableBox
-          persistKey="edit-welcome"
-          title="Welcome Contributor!"
-          content="Please fill in everything you can about the toilet below."
-        />
 
         <label>
           Toilet name
