@@ -38,7 +38,7 @@
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
     "core-js": "3.6.5",
-    "downshift": "5.2.2",
+    "downshift": "5.2.3",
     "graphql-iso-date": "3.6.1",
     "graphql.macro": "1.4.2",
     "hasha": "5.2.0",
