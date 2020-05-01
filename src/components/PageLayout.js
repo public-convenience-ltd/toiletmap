@@ -32,13 +32,7 @@ const PageLayout = (props) => {
           <Header />
 
           <main ref={mainRef} className={layout.content}>
-            <div>
-              <TrackingPreferences
-                isOpen={isCookieSettingsOpen}
-                onClose={() => setIsCookieSettingsOpen(false)}
-              />
-              {props.main && React.cloneElement(props.main, props)}
-            </div>
+            {props.main && React.cloneElement(props.main, props)}
           </main>
 
           <Footer
@@ -55,13 +49,18 @@ const PageLayout = (props) => {
           {props.map && React.cloneElement(props.map, props)}
         </aside>
       </MediaQuery>
+
+      <TrackingPreferences
+        isOpen={isCookieSettingsOpen}
+        onClose={() => setIsCookieSettingsOpen(false)}
+      />
     </div>
   );
 };
 
 PageLayout.propTypes = {
-  main: PropTypes.element.isRequired,
-  map: PropTypes.element.isRequired,
+  main: PropTypes.element,
+  map: PropTypes.element,
 };
 
 export default PageLayout;
