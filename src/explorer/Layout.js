@@ -16,12 +16,15 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import { Link, useRouteMatch } from 'react-router-dom';
 
+import { useAuth } from '../Auth';
+
 function Layout(props) {
-  let match = useRouteMatch();
-  let [isDrawerOpen, setDrawerOpen] = useState(false);
+  const auth = useAuth();
+  const match = useRouteMatch();
+  const [isDrawerOpen, setDrawerOpen] = useState(false);
 
   return (
-    <div style={{flexGrow: 1}}>
+    <div style={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -31,15 +34,15 @@ function Layout(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" color="inherit" style={{flex: 1}}>
+          <Typography variant="h6" color="inherit" style={{ flex: 1 }}>
             Toilet Map Explorer
           </Typography>
-          {props.auth.isAuthenticated() ? (
-            <Button onClick={props.auth.logout} color="inherit">
+          {auth.isAuthenticated() ? (
+            <Button onClick={auth.logout} color="inherit">
               Logout
             </Button>
           ) : (
-            <Button onClick={props.auth.login} color="inherit">
+            <Button onClick={auth.login} color="inherit">
               Login
             </Button>
           )}
@@ -55,9 +58,7 @@ function Layout(props) {
           <div>
             <List>
               <ListItem button>
-                <Link
-                  to={`${match.path}/statistics`}
-                >
+                <Link to={`${match.path}/statistics`}>
                   <ListItemIcon>
                     <StatsIcon />
                   </ListItemIcon>
@@ -65,9 +66,7 @@ function Layout(props) {
                 </Link>
               </ListItem>
               <ListItem button>
-                <Link
-                  to={`${match.path}/areas`}
-                >
+                <Link to={`${match.path}/areas`}>
                   <ListItemIcon>
                     <StatsIcon />
                   </ListItemIcon>

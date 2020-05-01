@@ -2,7 +2,6 @@ import React from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 
 // import useGeolocation from './useGeolocation';
-import config from '../config';
 
 const MAP_POSITION_QUERY = gql`
   {
@@ -35,7 +34,7 @@ const SET_MAP_POSITION = gql`
  * 2. A function used to set the map state.
  */
 
-const useMapPosition = () => {
+const useMapPosition = (fallbackLocation) => {
   const { data } = useQuery(MAP_POSITION_QUERY);
 
   const [setMapPositionMutation] = useMutation(SET_MAP_POSITION);
@@ -57,21 +56,25 @@ const useMapPosition = () => {
 
   // const { geolocation } = useGeolocation({ skip: !withGeolocation });
 
-  const getMapCenter = () => {
-    if (data.mapCenter.lat && data.mapCenter.lng) {
-      return data.mapCenter;
+  const getMapCenter = React.useMemo(() => {
+    if (fallbackLocation) {
+      if (data.mapCenter.lat && data.mapCenter.lng) {
+        return data.mapCenter;
+      }
+
+      return fallbackLocation;
     }
+
+    return data.mapCenter;
 
     // if (geolocation.lat && geolocation.lng) {
     //   return geolocation;
     // }
-
-    return config.fallbackLocation;
-  };
+  }, [fallbackLocation, data.mapCenter]);
 
   return [
     {
-      center: getMapCenter(),
+      center: getMapCenter,
       zoom: data.mapZoom,
       radius: data.mapRadius,
     },

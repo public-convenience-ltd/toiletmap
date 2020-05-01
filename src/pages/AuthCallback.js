@@ -6,6 +6,8 @@ import Notification from '../components/Notification';
 import MediaQuery from 'react-responsive';
 import config from '../config';
 
+import { useAuth } from '../Auth';
+
 const MUTATION_LOGIN = gql`
   mutation LoginUser($name: String!) {
     loginUser(name: $name) @client
@@ -13,24 +15,25 @@ const MUTATION_LOGIN = gql`
 `;
 
 const Callback = (props) => {
+  const auth = useAuth();
   const [doLogin] = useMutation(MUTATION_LOGIN);
 
   useEffect(() => {
     // This is pretty horrible but necessary, since useEffect can't take an async function
     (async () => {
       if (/access_token|id_token|error/.test(props.location.hash)) {
-        await props.auth.handleAuthentication();
-        await props.auth.fetchProfile();
+        await auth.handleAuthentication();
+        await auth.fetchProfile();
       }
     })().then(() => {
-      if (props.auth.isAuthenticated()) {
+      if (auth.isAuthenticated()) {
         // Update state to set logged in
         doLogin({
           variables: {
-            name: props.auth.getProfile().name,
+            name: auth.getProfile().name,
           },
         });
-        props.history.push(props.auth.redirectOnLogin() || '/');
+        props.history.push(auth.redirectOnLogin() || '/');
       } else {
         props.history.push('/login');
       }

@@ -1,8 +1,10 @@
 import React from 'react';
-import _ from 'lodash';
+import startCase from 'lodash/startCase';
+import toLower from 'lodash/toLower';
+import uniq from 'lodash/uniq';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -14,10 +16,8 @@ import ClockIcon from '@material-ui/icons/AccessTime';
 import TimeAgo from 'timeago-react';
 
 const MISSING_MESSAGE = 'Not Recorded';
-const navigate = () => null;
 
-export default function ResultRow({loo}) {
-  const { path } = useRouteMatch();
+export default function ResultRow({ loo }) {
   const { name, type, opening, area } = loo;
   const contributors = loo.reports.reduce((current, next) => {
     current.push(next.contributor);
@@ -27,7 +27,7 @@ export default function ResultRow({loo}) {
   return (
     <TableRow>
       <TableCell component="th" scope="row">
-        <Link to={`./loo/${loo.id}`}>
+        <Link to={`./loos/${loo.id}`}>
           <Chip
             avatar={
               <Avatar>
@@ -54,10 +54,6 @@ export default function ResultRow({loo}) {
                 label={val.name}
                 color={val.name ? 'primary' : 'secondary'}
                 variant="default"
-                onClick={(e) => {
-                  navigate(`search?area_name=${val.name}`);
-                }}
-                clickable
               />
               <Chip
                 label={val.type}
@@ -76,18 +72,15 @@ export default function ResultRow({loo}) {
             </Avatar>
           }
           label={
-            type
-              ? _.startCase(_.toLower(type.replace(/_/g, ' ')))
-              : MISSING_MESSAGE
+            type ? startCase(toLower(type.replace(/_/g, ' '))) : MISSING_MESSAGE
           }
           color={type ? 'primary' : 'secondary'}
           variant="default"
-          clickable
         />
       </TableCell>
 
       <TableCell>
-        {_.uniq(contributors).map((attr, i) => {
+        {uniq(contributors).map((attr, i) => {
           return (
             <Chip
               key={attr + i}
@@ -99,10 +92,6 @@ export default function ResultRow({loo}) {
               label={attr || MISSING_MESSAGE}
               color={attr ? 'primary' : 'secondary'}
               variant="default"
-              onClick={(event) => {
-                navigate(`search?contributors=${attr}`);
-              }}
-              clickable
             />
           );
         })}
@@ -115,23 +104,9 @@ export default function ResultRow({loo}) {
               <ClockIcon />
             </Avatar>
           }
-          label={
-            <TimeAgo datetime={loo.updatedAt} /> || MISSING_MESSAGE
-          }
+          label={<TimeAgo datetime={loo.updatedAt} /> || MISSING_MESSAGE}
           color={loo.updatedAt ? 'primary' : 'secondary'}
           variant="default"
-          onClick={(event) => {
-            const dateUpdated = new Date(loo.updatedAt);
-            const year = dateUpdated.getFullYear();
-            const month = (
-              '0' +
-              (dateUpdated.getMonth() + 1)
-            ).slice(-2);
-            const day = ('0' + dateUpdated.getDate()).slice(-2);
-            const updateString = `${year}-${month}-${day}`;
-            navigate(`search?from_date=${updateString}`);
-          }}
-          clickable
         />
       </TableCell>
       <TableCell>

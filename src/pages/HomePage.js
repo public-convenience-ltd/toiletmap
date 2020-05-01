@@ -6,7 +6,6 @@ import MediaQuery from 'react-responsive';
 
 import PageLayout from '../components/PageLayout';
 import LooMap from '../components/LooMap';
-import DismissableBox from '../components/DismissableBox';
 import LooListItem from '../components/LooListItem';
 import Notification from '../components/Notification';
 
@@ -21,6 +20,7 @@ import { useQuery, useMutation, gql } from '@apollo/client';
 import config from '../config';
 import useMapPosition from '../components/useMapPosition';
 import useNearbyLoos from '../components/useNearbyLoos';
+import { useAuth } from '../Auth';
 
 const GET_AUTH_STATUS = gql`
   {
@@ -37,6 +37,7 @@ const LOGOUT = gql`
 `;
 
 const HomePage = (props) => {
+  const auth = useAuth();
   const [highlightedLooId, setHighlightedLooId] = useState();
 
   // Auth
@@ -48,13 +49,12 @@ const HomePage = (props) => {
 
   const [logoutMutation] = useMutation(LOGOUT);
 
-  const logout = () =>
-    props.auth.reactContextLogout(logoutMutation, props.history);
+  const logout = () => auth.reactContextLogout(logoutMutation, props.history);
 
   // Map
   const [showMapView, setShowMapView] = React.useState(true);
 
-  const [mapPosition, setMapPosition] = useMapPosition();
+  const [mapPosition, setMapPosition] = useMapPosition(config.fallbackLocation);
 
   const { data: loos, loading, error } = useNearbyLoos({
     variables: {
@@ -118,25 +118,6 @@ const HomePage = (props) => {
     );
   };
 
-  const welcomFragment = (
-    <DismissableBox
-      persistKey="home-welcome"
-      title="Hi!"
-      content={
-        <>
-          <p>
-            The {config.nearestListLimit} nearest toilets are listed below.
-            Click more info to find out about each toilet's features.
-          </p>
-          <p>
-            You can set preferences to highlight toilets that meet your specific
-            needs.
-          </p>
-        </>
-      }
-    />
-  );
-
   const loosWithHighlight = loos.map((loo) => ({
     ...loo,
     isHighlighted: highlightedLooId === loo.id,
@@ -157,8 +138,8 @@ const HomePage = (props) => {
   );
 
   const renderMain = () => {
-    if (loading || loadingAuthStatus) {
-      return <></>;
+    if (loadingAuthStatus) {
+      return null;
     }
 
     return (
@@ -201,14 +182,10 @@ const HomePage = (props) => {
               <div className={toiletMap.map}>{mapFragment}</div>
             </div>
           ) : (
-            <>
-              {welcomFragment}
-              {renderList()}
-            </>
+            renderList()
           )}
         </MediaQuery>
         <MediaQuery minWidth={config.viewport.mobile}>
-          {welcomFragment}
           {renderList()}
         </MediaQuery>
       </div>
