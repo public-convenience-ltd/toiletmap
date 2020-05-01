@@ -44,30 +44,31 @@ const AddPage = (props) => {
   const [mapPosition, setMapPosition] = useMapPosition();
 
   const { data } = useNearbyLoos({
-    lat: mapPosition.center.lat,
-    lng: mapPosition.center.lng,
-    radius: mapPosition.radius,
+    variables: {
+      lat: mapPosition.center.lat,
+      lng: mapPosition.center.lng,
+      radius: mapPosition.radius,
+    },
   });
 
   const { lat, lng } = queryString.parse(props.location.search);
 
+  // Set the map position if lat and lng query params are present
   React.useEffect(() => {
-    setMapPosition({
-      center: {
-        lat: parseFloat(lat),
-        lng: parseFloat(lng),
-      },
-    });
+    if (lat && lng) {
+      setMapPosition({
+        center: {
+          lat: parseFloat(lat),
+          lng: parseFloat(lng),
+        },
+      });
+    }
   }, [lat, lng, setMapPosition]);
 
   const [
     updateLoo,
     { loading: saveLoading, data: saveResponse, error: saveError },
   ] = useMutation(UPDATE_LOO);
-
-  if (saveError) {
-    console.error('error saving:', saveError);
-  }
 
   // redirect to thanks page if successfully made changes
   if (saveResponse && saveResponse.submitReport.code === '200') {
@@ -87,8 +88,9 @@ const AddPage = (props) => {
     <LooMap
       loos={data}
       center={mapPosition.center}
+      zoom={mapPosition.zoom}
       minZoom={config.editMinZoom}
-      onMoveEnd={setMapPosition}
+      onViewportChanged={setMapPosition}
       showCenter
       showSearchControl
     />

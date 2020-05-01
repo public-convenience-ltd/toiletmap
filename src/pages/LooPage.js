@@ -99,21 +99,23 @@ const LooPage = (props) => {
 
   const [mapPosition, setMapPosition] = useMapPosition();
 
-  const { data: loos } = useNearbyLoos({
-    lat: mapPosition.center.lat,
-    lng: mapPosition.center.lng,
-    radius: mapPosition.radius,
-    skip: !data.loo.location,
-  });
+  const looLocation = (data && data.loo.location) || null;
 
-  const looLocation = data && data.loo.location ? data.loo.location : null;
-
-  // Set initial center of map
+  // Set the map position to the loo location
   React.useEffect(() => {
     if (looLocation) {
       setMapPosition({ center: looLocation });
     }
   }, [looLocation, setMapPosition]);
+
+  const { data: loos } = useNearbyLoos({
+    variables: {
+      lat: mapPosition.center.lat,
+      lng: mapPosition.center.lng,
+      radius: mapPosition.radius,
+    },
+    skip: !looLocation,
+  });
 
   const { loading: userLoading, data: userData, error: userError } = useQuery(
     GET_USER_DATA
@@ -163,7 +165,7 @@ const LooPage = (props) => {
         loos={loosToDisplay}
         center={mapPosition.center}
         zoom={mapPosition.zoom}
-        onMoveEnd={setMapPosition}
+        onViewportChanged={setMapPosition}
       />
     );
   }
