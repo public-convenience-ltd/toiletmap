@@ -52,7 +52,7 @@
     "lodash": "4.17.15",
     "luxon": "1.23.0",
     "moment": "2.24.0",
-    "mongoose": "5.9.10",
+    "mongoose": "5.9.11",
     "mongoose-paginate": "5.0.3",
     "node-fetch": "2.6.0",
     "normalize.css": "8.0.1",
