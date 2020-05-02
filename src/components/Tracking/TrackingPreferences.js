@@ -15,15 +15,15 @@ const propTypes = {
 };
 
 const PreferenceCheckbox = ({ children, checked, name, onChange }) => (
-  <label className={controls.preferenceWrapper}>
+  <label className={styles.cookieOption}>
     <input
-      className={controls.preferenceInput}
+      className={styles.cookieOptionCheckbox}
       type="checkbox"
       name={name}
       onChange={onChange}
       checked={checked}
     />
-    <span className={controls.preference}>{children}</span>
+    <span className={styles.cookieOptionLabel}>{children}</span>
   </label>
 );
 
@@ -51,56 +51,57 @@ const TrackingPreferences = ({ onClose = Function.prototype, isOpen }) => {
   };
 
   return (
-    <div id="tracking-preferences" aria-hidden={!isOpen}>
+    <aside id="tracking-preferences" aria-hidden={!isOpen}>
       {isOpen && (
         <div className={styles.popupBody}>
-          <p>
-            Opt in to a Google Analytics cookie. This will help us improve your
-            experience with the site, so you can find a loo quicker. By opting
-            in you would be sharing your data with Public Convenience Ltd and
-            tech partners Neontribe as well as Google itself.
-          </p>
-
           <form onSubmit={handleSubmit}>
-            <PreferenceCheckbox
-              onChange={(evt) => setGaAccepted(evt.target.checked)}
-              checked={gaAccepted}
-            >
-              <span>Opt-in to Google Analytics</span>
-            </PreferenceCheckbox>
+            <h1 className={styles.popupHeading}>Cookies and Privacy</h1>
+
+            <p>
+              Opting in to Google Analytics will help us improve your experience
+              with the site. By opting in you would be sharing your data with
+              Public Convenience Ltd, tech partners Neontribe and Google itself.
+            </p>
 
             {config.shouldShowSponsor() && (
-              <>
-                <p>
-                  You can also opt in to additional cookies to support the
-                  project indirectly. By opting in to additional analytics
-                  cookies we can share your data with Unilever via Google and
-                  Adobe Analytics, and benefit from Unilever's continued
-                  sponsorship.
-                </p>
+              <p>
+                Opting in to Adobe Analytcs means we can share your data with
+                Unilever and benefit from Unilever's continued sponsorship.
+              </p>
+            )}
 
+            <p>
+              For more detailed information about the cookies we use, see our{' '}
+              <Link to="/privacy">privacy policy.</Link>
+            </p>
+
+            <div className={styles.cookieOptions}>
+              <PreferenceCheckbox
+                onChange={(evt) => setGaAccepted(evt.target.checked)}
+                checked={gaAccepted}
+              >
+                <span>Opt-in to Google Analytics</span>
+              </PreferenceCheckbox>
+
+              {config.shouldShowSponsor() && (
                 <PreferenceCheckbox
                   onChange={(evt) => setAaAccepted(evt.target.checked)}
                   checked={aaAccepted}
                 >
                   <span>Opt-in to Adobe Analytics</span>
                 </PreferenceCheckbox>
-              </>
-            )}
-
-            <p>
-              Opting in is entirely up to you. For more detailed information
-              about the cookies we use, see our{' '}
-              <Link to="/privacy">Cookies page.</Link>
-            </p>
-
-            <div>
-              <button className={controls.btn}>Save and close</button>
+              )}
             </div>
+
+            <input
+              type="submit"
+              className={controls.btn}
+              value="Save and close"
+            />
           </form>
         </div>
       )}
-    </div>
+    </aside>
   );
 };
 
