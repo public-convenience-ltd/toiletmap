@@ -28,7 +28,7 @@ import PageLoading from './components/PageLoading';
 import history from './history';
 import Router from './Router';
 import AuthProvider from './Auth';
-import App, { cache } from './App';
+import App from './App';
 
 const Explorer = lazy(() => import('./explorer'));
 
@@ -58,17 +58,8 @@ ReactDOM.render(
               path="/explorer"
               render={(props) => <Explorer {...props} />}
             />
-            <ProtectedRoute
-              exact
-              path="/report"
-              injectProps={{ cache }}
-              component={AddPage}
-            />
-            <ProtectedRoute
-              path="/loos/:id/edit"
-              injectProps={{ cache }}
-              component={EditPage}
-            />
+            <ProtectedRoute exact path="/report" component={AddPage} />
+            <ProtectedRoute path="/loos/:id/edit" component={EditPage} />
             <ProtectedRoute path="/loos/:id/remove" component={RemovePage} />
             <ProtectedRoute path="/loos/:id/thanks" component={LooPage} />
             <Route component={NotFound} />

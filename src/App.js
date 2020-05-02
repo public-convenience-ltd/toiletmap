@@ -111,5 +111,4 @@ const App = (props) => {
   return <ApolloProvider client={client} children={props.children} />;
 };
 
-export { cache };
 export default App;
