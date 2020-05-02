@@ -3,6 +3,7 @@
   align-items: flex-start;
   justify-content: center;
   color: currentColor;
+  text-decoration: none;
 
   /* Todo: Should be margin but also avoid percentage padding/margin values */
   padding-top: 2%;
