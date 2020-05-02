@@ -1,9 +1,6 @@
 // Polyfills
-import 'core-js/features/array/find';
-import 'core-js/features/array/includes';
-import 'core-js/features/string/repeat';
-import 'core-js/features/object/entries';
-import 'core-js/features/object/assign';
+import 'react-app-polyfill/ie11';
+import 'react-app-polyfill/stable';
 
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
