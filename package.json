@@ -36,7 +36,7 @@
     "auth0-js": "9.13.2",
     "chart.js": "2.9.3",
     "core-js": "3.6.5",
-    "downshift": "5.2.3",
+    "downshift": "5.2.4",
     "graphql-iso-date": "3.6.1",
     "graphql.macro": "1.4.2",
     "hasha": "5.2.0",
