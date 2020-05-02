@@ -10968,7 +10968,7 @@ react-animated-number@0.4.4:
     prop-types "^15.5.8"
     raf "^3.2.0"
 
-react-app-polyfill@^1.0.6:
+react-app-polyfill@1.0.6, react-app-polyfill@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/react-app-polyfill/-/react-app-polyfill-1.0.6.tgz#890f8d7f2842ce6073f030b117de9130a5f385f0"
   integrity sha512-OfBnObtnGgLGfweORmdZbyEz+3dgVePQBb3zipiaDsMHV1NpWm0rDFYIVXFV/AK+x4VIIfWHhrdMIeoTLyRr2g==
