@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
@@ -115,12 +114,6 @@ const EditPage = (props) => {
   const save = (data) => {
     const id = looData.loo.id;
 
-    // Evict the loo from the cache before updating - Apollo
-    // is normally smart and can work out when something's changed, but
-    // in this case it doesn't and stale data can persist without
-    // a cache eviction
-    props.cache.evict(`Loo: ${id}`);
-
     updateLoo({
       variables: {
         ...data,
@@ -216,12 +209,6 @@ const EditPage = (props) => {
   );
 
   return <PageLayout main={mainFragment} map={mapFragment} />;
-};
-
-EditPage.propTypes = {
-  cache: PropTypes.shape({
-    evict: PropTypes.func.isRequired,
-  }).isRequired,
 };
 
 export default EditPage;
