@@ -7,17 +7,17 @@ import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import intersection from 'lodash/intersection';
 
-import layout from '../components/css/layout.module.css';
-import styles from '../pages/css/edit-loo-page.module.css';
-import helpers from '../css/helpers.module.css';
-import headings from '../css/headings.module.css';
-import controls from '../css/controls.module.css';
+import layout from '../../components/css/layout.module.css';
+import styles from '../../pages/css/edit-loo-page.module.css';
+import helpers from '../../css/helpers.module.css';
+import headings from '../../css/headings.module.css';
+import controls from '../../css/controls.module.css';
 
-import config from '../config';
-import history from '../history';
+import config from '../../config';
+import history from '../../history';
 
-import Loading from '../components/Loading';
-import Notification from './Notification';
+import Loading from '../../components/Loading';
+import Notification from '../Notification';
 
 const EntryForm = ({
   map,
