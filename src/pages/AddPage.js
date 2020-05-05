@@ -93,6 +93,7 @@ const AddPage = (props) => {
       onViewportChanged={setMapPosition}
       showCenter
       showSearchControl
+      onSearchSelectedItemChange={setMapPosition}
     />
   );
 

@@ -107,7 +107,6 @@ const RemovePage = function (props) {
         initialPosition={coords}
         highlight={looData.loo.id}
         showLocation={false}
-        showSearchControl={false}
         showLocateControl={false}
         showCenter={false}
         preventDragging={true}

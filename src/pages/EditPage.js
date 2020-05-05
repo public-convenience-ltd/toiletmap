@@ -172,7 +172,6 @@ const EditPage = (props) => {
         setMapPosition(mapPosition);
       }}
       showCenter
-      showSearchControl
     />
   ) : null;
 

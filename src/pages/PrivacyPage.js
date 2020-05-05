@@ -119,6 +119,7 @@ const PrivacyPage = () => {
           showContributor
           showCenter
           showSearchControl
+          onSearchSelectedItemChange={setMapPosition}
           showLocateControl
         />
       }

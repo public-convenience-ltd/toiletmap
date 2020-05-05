@@ -130,6 +130,7 @@ const HomePage = (props) => {
       center={mapPosition.center}
       zoom={mapPosition.zoom}
       onViewportChanged={setMapPosition}
+      onSearchSelectedItemChange={setMapPosition}
       showContributor
       showCenter
       showSearchControl

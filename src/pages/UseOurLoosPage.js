@@ -194,6 +194,7 @@ const UseOurLoosPage = (props) => {
           showContributor
           showCenter
           showSearchControl
+          onSearchSelectedItemChange={setMapPosition}
           showLocateControl
         />
       }
