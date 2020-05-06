@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import MediaQuery from 'react-responsive';
 import { useForm } from 'react-hook-form';
@@ -30,6 +30,7 @@ const EntryForm = ({
   children,
   ...props
 }) => {
+  const [isFree, setIsFree] = useState(!loo.fee);
   const { register, handleSubmit, formState, setValue } = useForm();
 
   // read the formState before render to subscribe the form state through Proxy
@@ -66,7 +67,11 @@ const EntryForm = ({
       lng: parseFloat(data.geometry.coordinates[1]),
     };
 
-    transformed = omit(transformed, 'geometry');
+    if (dirtyFieldNames.includes('isFree') && data.isFree) {
+      transformed.fee = null;
+    }
+
+    transformed = omit(transformed, ['geometry', 'isFree']);
 
     props.onSubmit(transformed);
   };
@@ -243,18 +248,38 @@ const EntryForm = ({
           ))}
         </div>
 
-        <label>
-          Fee?
-          <input
-            ref={register}
-            name="fee"
-            type="text"
-            className={controls.text}
-            defaultValue={loo.fee || ''}
-            placeholder="The amount e.g. £0.10"
-            data-testid="fee"
-          />
-        </label>
+        <fieldset className={styles.feeGroup}>
+          <legend className={helpers.visuallyHidden}>Fees</legend>
+
+          <label>
+            This toilet is free
+            <input
+              ref={register}
+              name="isFree"
+              type="checkbox"
+              checked={isFree}
+              className={styles.feeToggle}
+              onChange={(event) => setIsFree(event.target.checked)}
+            />
+          </label>
+
+          {!isFree && (
+            <div>
+              <label>
+                Fee
+                <input
+                  ref={register}
+                  name="fee"
+                  type="text"
+                  className={controls.text}
+                  defaultValue={loo.fee || ''}
+                  placeholder="The amount e.g. £0.10"
+                  data-testid="fee"
+                />
+              </label>
+            </div>
+          )}
+        </fieldset>
 
         <label>
           Any notes?
