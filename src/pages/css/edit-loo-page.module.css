@@ -24,3 +24,17 @@
   height: 200px;
   margin-bottom: 1rem;
 }
+
+.feeGroup {
+  border: 0;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.feeGroup > * + * {
+  margin-top: 0.5rem;
+}
+
+.feeToggle {
+  margin-left: 0.5rem;
+}
