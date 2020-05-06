@@ -17,7 +17,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
     }
 
     const result = await getPlaceById(selectedItem.placeId);
-    const { lat, lng } = result[0].geometry.location;
+    const { lat, lng } = result.geometry.location;
 
     onSelectedItemChange({ lat: lat(), lng: lng() });
   };

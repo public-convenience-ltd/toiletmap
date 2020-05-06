@@ -94,18 +94,25 @@ const usePlacesAutocomplete = (input) => {
   }, [input, setPlaces]);
 
   const getPlaceById = (placeId) => {
-    const geocoder = new window.google.maps.Geocoder();
-    const OK = window.google.maps.GeocoderStatus.OK;
+    // PlacesService expects an HTML (normally a map) element
+    // https://developers.google.com/maps/documentation/javascript/reference/places-service#library
+    const placesService = new window.google.maps.places.PlacesService(
+      document.createElement('div')
+    );
 
-    // Create a new session token when session has completed
-    // https://developers.google.com/maps/documentation/javascript/reference/places-autocomplete-service#AutocompleteSessionToken
-    resetSessionToken();
+    const OK = window.google.maps.places.PlacesServiceStatus.OK;
 
     return new Promise((resolve, reject) => {
-      geocoder.geocode({ placeId }, (results, status) => {
+      placesService.getDetails({ placeId, sessionToken }, (results, status) => {
         if (status !== OK) {
           reject(status);
+          return;
         }
+
+        // Create a new session token when session has completed
+        // https://developers.google.com/maps/documentation/javascript/reference/places-autocomplete-service#AutocompleteSessionToken
+        resetSessionToken();
+
         resolve(results);
       });
     });
