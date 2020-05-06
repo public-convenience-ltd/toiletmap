@@ -75,6 +75,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
           <input
             onFocus={() => setInputValue('')}
             placeholder="Search for a location"
+            autoComplete="off"
             className={styles.input}
             style={{
               borderRadius: isOpen ? '5px 5px 0 0' : 5,
