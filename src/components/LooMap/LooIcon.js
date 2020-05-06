@@ -37,4 +37,5 @@ const LooIcon = L.DivIcon.extend({
   },
 });
 
+/** @component */
 export default LooIcon;

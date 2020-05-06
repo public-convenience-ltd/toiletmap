@@ -27,4 +27,5 @@ class GeolocationMapControl extends MapControl {
   }
 }
 
+/** @component */
 export default withLeaflet(GeolocationMapControl);

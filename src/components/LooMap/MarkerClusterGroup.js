@@ -35,4 +35,5 @@ const MarkerClusterGroup = withLeaflet(
   }
 );
 
+/** @component */
 export default MarkerClusterGroup;

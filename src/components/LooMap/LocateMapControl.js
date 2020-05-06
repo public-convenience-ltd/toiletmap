@@ -21,4 +21,5 @@ class LocateMapControl extends MapControl {
   }
 }
 
+/** @component */
 export default withLeaflet(LocateMapControl);
