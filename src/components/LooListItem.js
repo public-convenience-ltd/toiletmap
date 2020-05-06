@@ -48,6 +48,7 @@ const LooListItem = ({
         loos={[loo]}
         center={loo.location}
         interactiveMarkers={false}
+        showZoomControl={false}
         preventZoom
         preventDragging
       />

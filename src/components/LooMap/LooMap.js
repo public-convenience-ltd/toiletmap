@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import L from 'leaflet';
-import { Map, TileLayer, Marker } from 'react-leaflet';
-import 'leaflet-loading';
+import { Map, TileLayer, Marker, ZoomControl } from 'react-leaflet';
+import CustomControl from 'react-leaflet-control';
 
 import config from '../../config.js';
-import GeolocationMapControl from './GeolocationMapControl';
 import LocateMapControl from './LocateMapControl';
 import MarkerClusterGroup from './MarkerClusterGroup';
 import LooIcon from './LooIcon';
+import LocationSearch from '../LocationSearch';
 
 import styles from '../css/loo-map.module.css';
 
@@ -47,9 +47,8 @@ const LooMap = (props) => {
       onViewportChanged={handleViewportChanged}
       dragging={!props.preventDragging}
       scrollWheelZoom={!props.preventZoom}
-      zoomControl={!props.preventZoom && props.showZoomControls}
+      zoomControl={false}
       tap={false}
-      loadingControl
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -97,8 +96,20 @@ const LooMap = (props) => {
         ))}
       </MarkerClusterGroup>
 
-      {props.showSearchControl && <GeolocationMapControl />}
-      {props.showLocateControl && <LocateMapControl />}
+      {props.showSearchControl && (
+        <CustomControl position="topleft">
+          <LocationSearch
+            onSelectedItemChange={(center) =>
+              props.onSearchSelectedItemChange({
+                center,
+              })
+            }
+          />
+        </CustomControl>
+      )}
+
+      {props.showZoomControl && <ZoomControl position="bottomright" />}
+      {props.showLocateControl && <LocateMapControl position="bottomright" />}
     </Map>
   );
 };
@@ -125,8 +136,10 @@ LooMap.propTypes = {
   showContributor: PropTypes.bool,
   onViewportChanged: PropTypes.func,
 
+  onSearchSelectedItemChange: PropTypes.func,
+
   // Note this also has a dependency on `preventZoom`
-  showZoomControls: PropTypes.bool,
+  showZoomControl: PropTypes.bool,
 
   // Draws a crosshair to indicate the center of the map
   showCenter: PropTypes.bool,
@@ -144,11 +157,12 @@ LooMap.defaultProps = {
   minZoom: config.minZoom,
   maxZoom: config.maxZoom,
   onViewportChanged: Function.prototype,
+  onSearchSelectedItemChange: Function.proptypes,
   preventZoom: false,
   preventDragging: false,
   showSearchControl: false,
   showLocateControl: false,
-  showZoomControls: true,
+  showZoomControl: true,
   showContributor: false,
   showCenter: false,
   interactiveMarkers: true,

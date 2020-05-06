@@ -65,6 +65,7 @@ const LoginPage = (props) => {
           showContributor
           showCenter
           showSearchControl
+          onSearchSelectedItemChange={setMapPosition}
           showLocateControl
         />
       }
