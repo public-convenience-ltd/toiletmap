@@ -38,6 +38,26 @@ const LocationSearch = ({ onSelectedItemChange }) => {
     onSelectedItemChange: handleSelectedItemChange,
   });
 
+  const resultsFragment = places.length ? (
+    <ul className={styles.menuList} {...getMenuProps()}>
+      {places.map((item, index) => (
+        <li
+          key={item.id}
+          className={styles.menuListItem}
+          style={{
+            backgroundColor:
+              highlightedIndex === index ? '#eee' : 'transparent',
+          }}
+          {...getItemProps({ item, index })}
+        >
+          <span className={styles.itemLabel}>{item.label}</span> {item.subLabel}
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <div className={styles.emptyState}>No results found</div>
+  );
+
   return (
     <>
       <Helmet>
@@ -64,37 +84,16 @@ const LocationSearch = ({ onSelectedItemChange }) => {
           />
         </div>
 
-        <div {...getMenuProps()}>
-          {isOpen && (
-            <div className={styles.menuContainer}>
-              {places.length ? (
-                <ul className={styles.menuList}>
-                  {places.map((item, index) => (
-                    <li
-                      key={item.id}
-                      className={styles.menuListItem}
-                      style={{
-                        backgroundColor:
-                          highlightedIndex === index ? '#eee' : 'transparent',
-                      }}
-                      {...getItemProps({ item, index })}
-                    >
-                      <span className={styles.itemLabel}>{item.label}</span>{' '}
-                      {item.subLabel}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <div className={styles.emptyState}>No results found</div>
-              )}
-              <img
-                className={styles.poweredByGoogleLogo}
-                src={poweredByGoogle}
-                alt="Powered by Google"
-              />
-            </div>
-          )}
-        </div>
+        {isOpen && (
+          <div className={styles.menuContainer}>
+            {resultsFragment}
+            <img
+              className={styles.poweredByGoogleLogo}
+              src={poweredByGoogle}
+              alt="Powered by Google"
+            />
+          </div>
+        )}
       </div>
     </>
   );
