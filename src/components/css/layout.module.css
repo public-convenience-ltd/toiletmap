@@ -54,12 +54,6 @@
   flex: 1 0 auto;
 }
 
-.mapContainer {
-  display: flex;
-  flex: 1;
-  background-color: #fff;
-}
-
 .controls {
   display: flex;
 }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import MediaQuery from 'react-responsive';
 
+import Box from './Box';
 import Header from './Header';
 import Footer from './Footer';
 
@@ -45,9 +46,9 @@ const PageLayout = (props) => {
       </div>
 
       <MediaQuery minWidth={config.viewport.mobile}>
-        <aside data-testid="mainMap" className={layout.mapContainer}>
+        <Box as="aside" data-testid="mainMap" display="flex" flex="1" bg="#fff">
           {props.map && React.cloneElement(props.map, props)}
-        </aside>
+        </Box>
       </MediaQuery>
 
       <TrackingPreferences
