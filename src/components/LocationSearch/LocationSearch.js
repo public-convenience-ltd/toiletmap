@@ -22,10 +22,39 @@ const LocationSearch = ({ onSelectedItemChange }) => {
     onSelectedItemChange({ lat: lat(), lng: lng() });
   };
 
+  const stateReducer = (state, actionAndChanges) => {
+    switch (actionAndChanges.type) {
+      case useCombobox.stateChangeTypes.InputBlur:
+        // Prevents reset on blur to fix results being closed when iOS keyboard is hidden
+        return {
+          ...actionAndChanges.changes,
+          isOpen: state.isOpen,
+        };
+
+      case useCombobox.stateChangeTypes.FunctionOpenMenu:
+        // Always clear the input when opening the menu
+        return {
+          ...actionAndChanges.changes,
+          inputValue: '',
+        };
+
+      case useCombobox.stateChangeTypes.ToggleButtonClick:
+        // Clear the value when toggle button is clicked unless an item is selected
+        return {
+          ...actionAndChanges.changes,
+          inputValue: state.selectedItem ? state.inputValue : '',
+        };
+
+      default:
+        return actionAndChanges.changes;
+    }
+  };
+
   const {
     isOpen,
     getLabelProps,
-    setInputValue,
+    openMenu,
+    getToggleButtonProps,
     getMenuProps,
     getInputProps,
     getComboboxProps,
@@ -36,6 +65,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
     onInputValueChange: ({ inputValue }) => setQuery(inputValue),
     itemToString: (item) => item.label + ', ' + item.subLabel,
     onSelectedItemChange: handleSelectedItemChange,
+    stateReducer,
   });
 
   const resultsFragment = places.length ? (
@@ -73,15 +103,32 @@ const LocationSearch = ({ onSelectedItemChange }) => {
 
         <div className={styles.controls} {...getComboboxProps()}>
           <input
-            onFocus={() => setInputValue('')}
             placeholder="Search for a location"
             className={styles.input}
             style={{
               borderRadius: isOpen ? '5px 5px 0 0' : 5,
               borderBottom: isOpen ? '1px solid #ccc' : 'none',
             }}
-            {...getInputProps()}
+            autoComplete="off"
+            {...getInputProps({
+              onFocus: () => {
+                if (isOpen) {
+                  return;
+                }
+                openMenu();
+              },
+            })}
           />
+          {isOpen && (
+            <button
+              type="button"
+              aria-label="close menu"
+              className={styles.closeButton}
+              {...getToggleButtonProps()}
+            >
+              Close
+            </button>
+          )}
         </div>
 
         {isOpen && (
