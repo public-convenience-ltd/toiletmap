@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { withRouter } from 'react-router-dom';
-
 import HomePage from './HomePage';
 
 const MapPage = (props) => {
-  const pos = {
-    lat: props.match.params.lat,
-    lng: props.match.params.lng,
-  };
-
-  return <HomePage initialPosition={pos} />;
+  return (
+    <HomePage
+      initialPosition={{
+        lat: parseFloat(props.match.params.lat),
+        lng: parseFloat(props.match.params.lng),
+      }}
+    />
+  );
 };
 
-export default withRouter(MapPage);
+export default MapPage;
