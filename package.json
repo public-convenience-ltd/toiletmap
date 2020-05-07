@@ -81,7 +81,7 @@
     "customize-cra": "0.9.1",
     "http-proxy-middleware": "1.0.3",
     "husky": "4.2.5",
-    "lint-staged": "10.2.1",
+    "lint-staged": "10.2.2",
     "nodemon": "2.0.3",
     "prettier": "2.0.5",
     "react-app-rewired": "2.1.5",
