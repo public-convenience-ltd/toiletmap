@@ -17,6 +17,7 @@ import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import AddPage from './pages/AddPage';
 import EditPage from './pages/EditPage';
+import FiltersPage from './pages/FiltersPage';
 import LoginPage from './pages/LoginPage';
 import MapPage from './pages/MapPage';
 import UseOurLoosPage from './pages/UseOurLoosPage';
@@ -59,6 +60,7 @@ ReactDOM.render(
               render={(props) => <Explorer {...props} />}
             />
             <ProtectedRoute exact path="/report" component={AddPage} />
+            <ProtectedRoute exact path="/filters" component={FiltersPage} />
             <ProtectedRoute path="/loos/:id/edit" component={EditPage} />
             <ProtectedRoute path="/loos/:id/remove" component={RemovePage} />
             <ProtectedRoute path="/loos/:id/thanks" component={LooPage} />
