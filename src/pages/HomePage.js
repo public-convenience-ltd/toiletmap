@@ -66,6 +66,15 @@ const HomePage = (props) => {
     },
   });
 
+  // Set the map position if initialPosition prop exists
+  React.useEffect(() => {
+    if (props.initialPosition) {
+      setMapPosition({
+        center: props.initialPosition,
+      });
+    }
+  }, [props.initialPosition, setMapPosition]);
+
   const renderList = () => {
     // Loading - either this is the first query of the user or they are on a
     // mobile and so can't rely on the map's loading spinner to know the loos
