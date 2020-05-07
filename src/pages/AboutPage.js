@@ -240,7 +240,6 @@ const AboutPage = (props) => {
           zoom={mapPosition.zoom}
           onViewportChanged={setMapPosition}
           showContributor
-          showCenter
           showSearchControl
           showLocateControl
         />

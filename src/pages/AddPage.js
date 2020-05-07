@@ -91,8 +91,8 @@ const AddPage = (props) => {
       zoom={mapPosition.zoom}
       minZoom={config.editMinZoom}
       onViewportChanged={setMapPosition}
-      showCenter
       showSearchControl
+      showCenter
       onSearchSelectedItemChange={setMapPosition}
     />
   );

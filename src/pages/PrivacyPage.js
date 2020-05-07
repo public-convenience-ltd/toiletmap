@@ -117,7 +117,6 @@ const PrivacyPage = () => {
           zoom={mapPosition.zoom}
           onViewportChanged={setMapPosition}
           showContributor
-          showCenter
           showSearchControl
           onSearchSelectedItemChange={setMapPosition}
           showLocateControl

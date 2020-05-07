@@ -192,7 +192,6 @@ const UseOurLoosPage = (props) => {
           zoom={mapPosition.zoom}
           onViewportChanged={setMapPosition}
           showContributor
-          showCenter
           showSearchControl
           onSearchSelectedItemChange={setMapPosition}
           showLocateControl

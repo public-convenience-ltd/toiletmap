@@ -141,7 +141,6 @@ const HomePage = (props) => {
       onViewportChanged={setMapPosition}
       onSearchSelectedItemChange={setMapPosition}
       showContributor
-      showCenter
       showSearchControl
       showLocateControl
     />
