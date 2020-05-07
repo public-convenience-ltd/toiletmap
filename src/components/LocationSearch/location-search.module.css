@@ -16,6 +16,7 @@
 
 .controls {
   width: 300px;
+  position: relative;
 }
 
 .input {
@@ -27,6 +28,19 @@
   font: inherit;
   font-size: 0.9rem;
   background: white;
+}
+
+.closeButton {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: #999;
+  letter-spacing: 0.05em;
 }
 
 .menuContainer {
