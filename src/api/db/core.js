@@ -10,19 +10,19 @@ const { Point } = require('./geojson');
 module.exports = exports = new Schema({
   _id: false,
   geometry: Point,
-  name: { type: String, trim: true, minlength: 1 },
+  name: { type: String, trim: true },
   active: { type: Boolean },
   access: { type: String },
-  opening: { type: String, trim: true, minlength: 1 },
+  opening: { type: String, trim: true },
   type: { type: String },
   accessibleType: { type: String },
   babyChange: { type: Boolean },
   radar: { type: Boolean },
   attended: { type: Boolean },
   automatic: { type: Boolean },
-  fee: { type: String, trim: true, minlength: 1 },
-  notes: { type: String, trim: true, minlength: 1 },
-  removalReason: { type: String, trim: true, minlength: 1 },
+  fee: { type: String, trim: true },
+  notes: { type: String, trim: true },
+  removalReason: { type: String, trim: true },
   area: {
     type: [
       {
