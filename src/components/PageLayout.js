@@ -12,7 +12,6 @@ import config from '../config';
 import { TRACKING_STORAGE_KEY } from './Tracking';
 import TrackingPreferences from './Tracking/TrackingPreferences';
 
-import 'normalize.css/normalize.css';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
 import 'leaflet-loading/src/Control.Loading.css';
