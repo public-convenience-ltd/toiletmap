@@ -6,9 +6,6 @@ import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
 import { Route, Switch } from 'react-router-dom';
 
-// Global CSS
-import './css/global';
-
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthCallback from './pages/AuthCallback';
 import LooPage from './pages/LooPage';
