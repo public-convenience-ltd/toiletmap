@@ -8,9 +8,8 @@ import Header from './Header';
 import Footer from './Footer';
 
 import theme from '../theme';
-import config from '../config';
-import { TRACKING_STORAGE_KEY } from './Tracking';
-import TrackingPreferences from './Tracking/TrackingPreferences';
+// import { TRACKING_STORAGE_KEY } from './Tracking';
+// import TrackingPreferences from './Tracking/TrackingPreferences';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
@@ -127,26 +126,24 @@ const ResetStyles = (
 );
 
 const PageLayout = (props) => {
-  const mainRef = React.useRef();
+  // const mainRef = React.useRef();
 
-  const [isCookieSettingsOpen, setIsCookieSettingsOpen] = React.useState(
-    !config.getSetting(TRACKING_STORAGE_KEY, 'trackingStateChosen')
-  );
+  // const [isCookieSettingsOpen, setIsCookieSettingsOpen] = React.useState(
+  //   !config.getSetting(TRACKING_STORAGE_KEY, 'trackingStateChosen')
+  // );
 
-  React.useEffect(() => {
-    if (mainRef.current && isCookieSettingsOpen) {
-      mainRef.current.scrollTop = 0;
-    }
-  }, [mainRef, isCookieSettingsOpen]);
+  // React.useEffect(() => {
+  //   if (mainRef.current && isCookieSettingsOpen) {
+  //     mainRef.current.scrollTop = 0;
+  //   }
+  // }, [mainRef, isCookieSettingsOpen]);
 
   return (
     <ThemeProvider theme={theme}>
       {ResetStyles}
 
       <Box display="flex" flexDirection="column" height="100%">
-        <Box p={3} bg="#000" color="#fff">
-          <Header />
-        </Box>
+        <Header />
 
         <div>
           {props.main && React.cloneElement(props.main, props)}
@@ -154,19 +151,19 @@ const PageLayout = (props) => {
           {props.map && React.cloneElement(props.map, props)}
         </div>
 
-        <Box p={3} bg="#000" color="#fff" mt="auto">
+        <Box mt="auto">
           <Footer
-            onCookieBoxButtonClick={() =>
-              setIsCookieSettingsOpen(!isCookieSettingsOpen)
-            }
-            isCookieSettingsOpen={isCookieSettingsOpen}
+          // onCookieBoxButtonClick={() =>
+          //   setIsCookieSettingsOpen(!isCookieSettingsOpen)
+          // }
+          // isCookieSettingsOpen={isCookieSettingsOpen}
           />
         </Box>
 
-        <TrackingPreferences
+        {/*<TrackingPreferences
           isOpen={isCookieSettingsOpen}
           onClose={() => setIsCookieSettingsOpen(false)}
-        />
+        />*/}
       </Box>
     </ThemeProvider>
   );
