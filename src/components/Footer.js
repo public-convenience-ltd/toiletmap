@@ -53,7 +53,7 @@ const Footer = (props) => (
       </HashLink>
     )}
 
-    <Box as="ul" display={['block', 'flex']}>
+    <Box as="ul" display={['block', 'flex']} alignItems="center">
       <li>Cookie Policy</li>
       <Box as="li" ml={[0, 4]}>
         <Link to="/privacy">Privacy Policy</Link>
