@@ -37,7 +37,7 @@ const MainMenu = (props) => (
         </Box>
 
         <Box as="li" mt={['auto', 0]} ml={[0, 'auto']}>
-          <Link to="/About">About</Link>
+          <Link to="/about">About</Link>
         </Box>
         <Box as="li" mt={[3, 0]} ml={[0, 4]}>
           <Link to="/use-our-loos">Our Sponsor</Link>
