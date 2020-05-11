@@ -26,7 +26,7 @@ const UseOurLoosLogo = styled((props) => (
 const Footer = (props) => (
   <Box
     as="footer"
-    display="flex"
+    display={['block', 'flex']}
     justifyContent="space-between"
     alignItems="center"
     px={4}
@@ -53,9 +53,9 @@ const Footer = (props) => (
       </HashLink>
     )}
 
-    <Box as="ul" display="flex">
+    <Box as="ul" display={['block', 'flex']}>
       <li>Cookie Policy</li>
-      <Box as="li" ml={4}>
+      <Box as="li" ml={[0, 4]}>
         <Link to="/privacy">Privacy Policy</Link>
       </Box>
     </Box>

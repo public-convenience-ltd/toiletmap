@@ -19,7 +19,7 @@ const Header = () => {
   return (
     <Box
       as="header"
-      display="flex"
+      display={['block', 'flex']}
       alignItems="center"
       px={4}
       py={2}
@@ -33,21 +33,21 @@ const Header = () => {
 
       <Text fontWeight="bold" width="100%">
         <nav>
-          <Box as="ul" display="flex">
-            <Box as="li" ml={4}>
+          <Box as="ul" display={['block', 'flex']}>
+            <Box as="li" ml={[0, 4]}>
               <Link to="/">Find Loo</Link>
             </Box>
-            <Box as="li" ml={4}>
+            <Box as="li" ml={[0, 4]}>
               <Link to="/report">Add Loo</Link>
             </Box>
 
             <Box as="li" ml="auto">
               <Link to="/About">About</Link>
             </Box>
-            <Box as="li" ml={4}>
+            <Box as="li" ml={[0, 4]}>
               <Link to="/use-our-loos">Our Sponsor</Link>
             </Box>
-            <Box as="li" ml={4}>
+            <Box as="li" ml={[0, 4]}>
               <Link to="">Contact</Link>
             </Box>
           </Box>
