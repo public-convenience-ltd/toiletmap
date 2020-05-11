@@ -4,10 +4,12 @@ import { ThemeProvider } from 'emotion-theming';
 import { Global, css } from '@emotion/core';
 
 import Box from './Box';
+import { MediaContextProvider } from './Media';
 import Header from './Header';
 import Footer from './Footer';
 
 import theme from '../theme';
+
 // import { TRACKING_STORAGE_KEY } from './Tracking';
 // import TrackingPreferences from './Tracking/TrackingPreferences';
 
@@ -140,31 +142,33 @@ const PageLayout = (props) => {
 
   return (
     <ThemeProvider theme={theme}>
-      {ResetStyles}
+      <MediaContextProvider>
+        <Box display="flex" flexDirection="column" height="100%">
+          {ResetStyles}
 
-      <Box display="flex" flexDirection="column" height="100%">
-        <Header />
+          <Header />
 
-        <div>
-          {props.main && React.cloneElement(props.main, props)}
+          <div>
+            {props.main && React.cloneElement(props.main, props)}
 
-          {props.map && React.cloneElement(props.map, props)}
-        </div>
+            {props.map && React.cloneElement(props.map, props)}
+          </div>
 
-        <Box mt="auto">
-          <Footer
-          // onCookieBoxButtonClick={() =>
-          //   setIsCookieSettingsOpen(!isCookieSettingsOpen)
-          // }
-          // isCookieSettingsOpen={isCookieSettingsOpen}
-          />
+          <Box mt="auto">
+            <Footer
+            // onCookieBoxButtonClick={() =>
+            //   setIsCookieSettingsOpen(!isCookieSettingsOpen)
+            // }
+            // isCookieSettingsOpen={isCookieSettingsOpen}
+            />
+          </Box>
+
+          {/*<TrackingPreferences
+            isOpen={isCookieSettingsOpen}
+            onClose={() => setIsCookieSettingsOpen(false)}
+          />*/}
         </Box>
-
-        {/*<TrackingPreferences
-          isOpen={isCookieSettingsOpen}
-          onClose={() => setIsCookieSettingsOpen(false)}
-        />*/}
-      </Box>
+      </MediaContextProvider>
     </ThemeProvider>
   );
 };
