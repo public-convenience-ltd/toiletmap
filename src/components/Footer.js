@@ -1,52 +1,65 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
+import styled from '@emotion/styled';
 
-import styles from './css/footer.module.css';
+import Box from './Box';
 
-import CookieBoxButton from './Tracking/CookieBoxButton';
+import config from '../config';
 
-const chooseLinkStyle = (location, path) => {
-  if (location.pathname === path) {
-    return styles.footerItemActive;
-  }
+import domestosLogo from '../images/domestos_logo3.png';
+import domestosUseLoos from '../images/domestos_use_our_loos_logo.png';
 
-  return styles.footerItem;
-};
+const DomestosLogo = styled((props) => (
+  <img {...props} src={domestosLogo} alt="Domestos" />
+))`
+  height: 2rem;
+`;
 
+const UseOurLoosLogo = styled((props) => (
+  <img {...props} src={domestosUseLoos} alt="Domestos: Use our loos" />
+))`
+  height: 2rem;
+`;
+
+// Todo: Link Cookie Policy
 const Footer = (props) => (
-  <footer className={styles.footer}>
-    <ul className={styles.footerList}>
-      <li className={styles.footerListItem}>
-        <Link
-          to="/privacy"
-          className={chooseLinkStyle(props.location, '/privacy')}
-        >
-          <span className={styles.footerItemText}>Privacy Policy</span>
-        </Link>
-      </li>
-      <li className={styles.footerListItem}>
-        <Link to="/about" className={chooseLinkStyle(props.location, '/about')}>
-          <span className={styles.footerItemText}>About</span>
-        </Link>
-      </li>
-      <li className={styles.footerListItem}>
-        <CookieBoxButton
-          onClick={props.onCookieBoxButtonClick}
-          isCookieSettingsOpen={props.isCookieSettingsOpen}
-        />
-      </li>
-    </ul>
-  </footer>
-);
+  <Box
+    as="footer"
+    display={['block', 'flex']}
+    justifyContent="space-between"
+    alignItems="center"
+    px={4}
+    py={2}
+    bg="grey"
+    color="primary"
+    minHeight="60px"
+  >
+    {config.shouldShowSponsor() && (
+      <HashLink
+        to="/use-our-loos"
+        title="Domestos: Use Our Loos Campaign"
+        scroll={(el) => el.scrollIntoView(true)}
+      >
+        <Box display="flex" alignItems="center">
+          Proudly sponsored by Domestos
+          <Box ml={3}>
+            <UseOurLoosLogo />
+          </Box>
+          <Box ml={2}>
+            <DomestosLogo />
+          </Box>
+        </Box>
+      </HashLink>
+    )}
 
-Footer.displayName = 'Footer';
-Footer.propTypes = {
-  onCookieBoxButtonClick: PropTypes.func.isRequired,
-  isCookieSettingsOpen: PropTypes.bool,
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-  }),
-};
+    <Box as="ul" display={['block', 'flex']} alignItems="center">
+      <li>Cookie Policy</li>
+      <Box as="li" ml={[0, 4]}>
+        <Link to="/privacy">Privacy Policy</Link>
+      </Box>
+    </Box>
+  </Box>
+);
 
 export default withRouter(Footer);
