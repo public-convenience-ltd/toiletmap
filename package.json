@@ -39,7 +39,7 @@
     "apollo-server": "2.12.0",
     "auth0-js": "9.13.2",
     "chart.js": "2.9.3",
-    "downshift": "5.2.5",
+    "downshift": "5.2.7",
     "emotion-theming": "10.0.27",
     "graphql-iso-date": "3.6.1",
     "graphql.macro": "1.4.2",
