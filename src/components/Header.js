@@ -31,28 +31,30 @@ const Header = () => {
         <Logo />
       </Link>
 
-      <Text fontWeight="bold" width="100%">
-        <nav>
-          <Box as="ul" display={['block', 'flex']}>
-            <Box as="li" ml={[0, 4]}>
-              <Link to="/">Find Loo</Link>
-            </Box>
-            <Box as="li" ml={[0, 4]}>
-              <Link to="/report">Add Loo</Link>
-            </Box>
+      <Box width="100%">
+        <Text fontWeight="bold">
+          <nav>
+            <Box as="ul" display={['block', 'flex']}>
+              <Box as="li" ml={[0, 4]}>
+                <Link to="/">Find Loo</Link>
+              </Box>
+              <Box as="li" ml={[0, 4]}>
+                <Link to="/report">Add Loo</Link>
+              </Box>
 
-            <Box as="li" ml="auto">
-              <Link to="/About">About</Link>
+              <Box as="li" ml="auto">
+                <Link to="/About">About</Link>
+              </Box>
+              <Box as="li" ml={[0, 4]}>
+                <Link to="/use-our-loos">Our Sponsor</Link>
+              </Box>
+              <Box as="li" ml={[0, 4]}>
+                <Link to="">Contact</Link>
+              </Box>
             </Box>
-            <Box as="li" ml={[0, 4]}>
-              <Link to="/use-our-loos">Our Sponsor</Link>
-            </Box>
-            <Box as="li" ml={[0, 4]}>
-              <Link to="">Contact</Link>
-            </Box>
-          </Box>
-        </nav>
-      </Text>
+          </nav>
+        </Text>
+      </Box>
     </Box>
   );
 };

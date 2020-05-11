@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
-import { compose, color, typography, width } from 'styled-system';
+import { compose, color, typography } from 'styled-system';
 import { createPropTypes } from '@styled-system/prop-types';
 
 const Text = styled.div`
-  ${compose(color, typography, width)}
+  ${compose(color, typography)}
 `;
 
 Text.propTypes = {
