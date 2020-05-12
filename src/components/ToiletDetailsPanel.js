@@ -1,5 +1,6 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import styled from '@emotion/styled';
+
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import {
   faDirections,
@@ -13,19 +14,24 @@ import {
   faGenderless,
   faKey,
   faCog,
+  faQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 
 import Box from './Box';
 import Button from './Button';
 import Text from './Text';
-import styled from '@emotion/styled';
 import Spacer from './Spacer';
+import Icon from './Icon';
 
 const Grid = styled(Box)`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin: -${({ theme }) => theme.space[2]}px;
+  margin: -${({ theme }) => theme.space[3]}px;
+`;
+
+const FeaturesList = styled.ul`
+  list-style: none;
 `;
 
 const ToiletDetailsPanel = ({ data, isLoading }) => {
@@ -64,7 +70,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
 
   const getDirectionsFragment = (
     <Button
-      icon={<FontAwesomeIcon icon={faDirections} />}
+      icon={<Icon icon={faDirections} />}
       as="a"
       href={`https://maps.apple.com/?dirflg=w&daddr=${[
         data.location.lat,
@@ -79,39 +85,39 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
 
   const features = {
     free: {
-      icon: <FontAwesomeIcon icon={faPoundSign} />,
+      icon: <Icon icon={faPoundSign} />,
       label: 'Free',
-      valueIcon: <FontAwesomeIcon icon={faCheck} />,
+      valueIcon: <Icon icon={faCheck} />,
     },
     baby_changing: {
-      icon: <FontAwesomeIcon icon={faBaby} />,
+      icon: <Icon icon={faBaby} />,
       label: 'Baby Changing',
-      valueIcon: <FontAwesomeIcon icon={faCheck} />,
+      valueIcon: <Icon icon={faCheck} />,
     },
     accessible: {
-      icon: <FontAwesomeIcon icon={faWheelchair} />,
+      icon: <Icon icon={faWheelchair} />,
       label: 'Accessible',
-      valueIcon: <FontAwesomeIcon icon={faCheck} />,
+      valueIcon: <Icon icon={faCheck} />,
     },
     radar_key: {
-      icon: <FontAwesomeIcon icon={faKey} />,
+      icon: <Icon icon={faKey} />,
       label: 'RADAR Key',
-      valueIcon: <FontAwesomeIcon icon={faCheck} />,
+      valueIcon: <Icon icon={faCheck} />,
     },
     unisex: {
-      icon: <FontAwesomeIcon icon={faVenusMars} />,
+      icon: <Icon icon={faVenusMars} />,
       label: 'Unisex',
-      valueIcon: <FontAwesomeIcon icon={faCheck} />,
+      valueIcon: <Icon icon={faCheck} />,
     },
     gender_neutral: {
-      icon: <FontAwesomeIcon icon={faGenderless} />,
+      icon: <Icon icon={faGenderless} />,
       label: 'Gender Neutral',
-      valueIcon: <FontAwesomeIcon icon={faCheck} />,
+      valueIcon: <Icon icon={faQuestion} color="tertiary" />,
     },
     automatic: {
-      icon: <FontAwesomeIcon icon={faCog} />,
+      icon: <Icon icon={faCog} />,
       label: 'Automatic',
-      valueIcon: <FontAwesomeIcon icon={faCheck} />,
+      valueIcon: <Icon icon={faTimes} color="tertiary" />,
     },
   };
 
@@ -125,6 +131,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         borderTopLeftRadius={4}
         borderTopRightRadius={4}
         padding={4}
+        paddingRight={5}
         as="section"
       >
         <Grid>
@@ -142,34 +149,47 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
                 justifyContent="center"
                 borderRadius={13}
                 borderColor="primary"
-                borderWidth={2}
+                borderWidth={1}
                 borderStyle="solid"
               >
-                <FontAwesomeIcon icon={faTimes} />
+                <Icon icon={faTimes} />
               </Box>
             </button>
           </Box>
 
-          <Box width={['100%', '50%', '25%']} padding={2}>
+          <Box width={['100%', '50%', '25%']} padding={3}>
             {titleFragment}
             <Spacer mb={2} />
             {getDirectionsFragment}
           </Box>
 
-          <Box width={['100%', '50%', '25%']} padding={2}>
+          <Box width={['100%', '50%', '25%']} padding={3}>
             <h2>
               <Text fontWeight="bold">Features</Text>
             </h2>
-            <ul>
+            <FeaturesList>
               {Object.entries(features).map(([key, feature]) => (
-                <li key={key}>
-                  {feature.icon} {feature.label} {feature.valueIcon}
-                </li>
+                <Box
+                  as="li"
+                  key={key}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Box display="flex" alignItems="center">
+                    <Box width="20px" display="flex" justifyContent="center">
+                      {feature.icon}
+                    </Box>
+                    <Spacer mr={2} />
+                    {feature.label}
+                  </Box>
+                  {feature.valueIcon}
+                </Box>
               ))}
-            </ul>
+            </FeaturesList>
           </Box>
 
-          <Box width={['100%', '50%', '25%']} padding={2}>
+          <Box width={['100%', '50%', '25%']} padding={3}>
             <h2>
               <Text fontWeight="bold">Notes</Text>
             </h2>
@@ -181,9 +201,9 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             </div>
           </Box>
 
-          <Box width={['100%', '50%', '25%']} padding={2}>
+          <Box width={['100%', '50%', '25%']} padding={3}>
             <Box display="flex" alignItems="center">
-              <FontAwesomeIcon icon={faClock} />
+              <Icon icon={faClock} />
               <Spacer mr={1} />
               <h2>
                 <Text fontWeight="bold">Opening Hours</Text>
@@ -208,13 +228,13 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
       as="section"
     >
       <Grid>
-        <Box width={['100%', '50%', '25%']} padding={2}>
+        <Box width={['100%', '50%', '25%']} padding={3}>
           {titleFragment}
         </Box>
 
-        <Box width={['100%', '50%', '25%']} padding={2}>
+        <Box width={['100%', '50%', '25%']} padding={3}>
           <Box display="flex" alignItems="center">
-            <FontAwesomeIcon icon={faClock} />
+            <Icon icon={faClock} />
             <Spacer mr={1} />
             <h2>
               <Text fontWeight="bold">Opening Hours</Text>
@@ -225,7 +245,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
 
         <Box
           width={['100%', '50%']}
-          padding={2}
+          padding={3}
           display="flex"
           justifyContent={['flex-start', 'flex-start', 'flex-end']}
         >
@@ -233,7 +253,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
           <Spacer mr={2} />
           <Button
             variant="secondary"
-            icon={<FontAwesomeIcon icon={faList} />}
+            icon={<Icon icon={faList} />}
             onClick={() => setIsExpanded(true)}
           >
             More details
