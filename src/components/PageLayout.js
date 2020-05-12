@@ -4,7 +4,7 @@ import { ThemeProvider } from 'emotion-theming';
 import { Global, css } from '@emotion/core';
 
 import Box from './Box';
-import { MediaContextProvider } from './Media';
+import { MediaContextProvider, Media } from './Media';
 import Header from './Header';
 import Footer from './Footer';
 
@@ -21,6 +21,8 @@ import 'leaflet-loading/src/Control.Loading.css';
 const ResetStyles = (
   <Global
     styles={css`
+      @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
       *,
       *::before,
       *::after {
@@ -40,8 +42,8 @@ const ResetStyles = (
       h3,
       h4,
       p,
-      ul[class],
-      ol[class],
+      ul,
+      ol,
       li,
       figure,
       figcaption,
@@ -62,12 +64,12 @@ const ResetStyles = (
         scroll-behavior: smooth;
         text-rendering: optimizeSpeed;
         line-height: 1.5;
-        font-family: Cabin, sans-serif;
+        font-family: 'Open Sans', sans-serif;
       }
 
-      /* remove list styles on ul, ol elements with a class attribute */
-      ul[class],
-      ol[class] {
+      /* remove list styles on ul, ol elements */
+      ul,
+      ol {
         list-style: none;
       }
 
@@ -107,7 +109,7 @@ const ResetStyles = (
       }
 
       [hidden] {
-        display: none;
+        display: none !important;
       }
 
       [inert] {
@@ -154,7 +156,7 @@ const PageLayout = (props) => {
             {props.map && React.cloneElement(props.map, props)}
           </div>
 
-          <Box mt="auto">
+          <Box as={Media} greaterThan="sm" mt="auto">
             <Footer
             // onCookieBoxButtonClick={() =>
             //   setIsCookieSettingsOpen(!isCookieSettingsOpen)
