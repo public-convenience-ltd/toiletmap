@@ -31,7 +31,7 @@ const Footer = (props) => (
     alignItems="center"
     px={4}
     py={2}
-    bg="grey"
+    bg="lightGrey"
     color="primary"
     minHeight="60px"
   >

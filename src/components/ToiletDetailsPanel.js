@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '@emotion/styled';
-
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import {
   faDirections,
@@ -16,12 +15,15 @@ import {
   faCog,
   faQuestion,
 } from '@fortawesome/free-solid-svg-icons';
+import { DateTime } from 'luxon';
+import { Link } from 'react-router-dom';
 
 import Box from './Box';
 import Button from './Button';
 import Text from './Text';
 import Spacer from './Spacer';
 import Icon from './Icon';
+import { getOpeningTimes, getIntervalLabel } from '../openingHours';
 
 const Grid = styled(Box)`
   display: flex;
@@ -30,7 +32,7 @@ const Grid = styled(Box)`
   margin: -${({ theme }) => theme.space[3]}px;
 `;
 
-const FeaturesList = styled.ul`
+const UnstyledList = styled.ul`
   list-style: none;
 `;
 
@@ -121,6 +123,9 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
     },
   };
 
+  const openingTimes = getOpeningTimes(data.opening);
+  const todayWeekdayIndex = DateTime.local().weekday - 1;
+
   if (isExpanded) {
     return (
       <Box
@@ -167,7 +172,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             <h2>
               <Text fontWeight="bold">Features</Text>
             </h2>
-            <FeaturesList>
+            <UnstyledList>
               {Object.entries(features).map(([key, feature]) => (
                 <Box
                   as="li"
@@ -186,7 +191,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
                   {feature.valueIcon}
                 </Box>
               ))}
-            </FeaturesList>
+            </UnstyledList>
           </Box>
 
           <Box width={['100%', '50%', '25%']} padding={3}>
@@ -209,7 +214,29 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
                 <Text fontWeight="bold">Opening Hours</Text>
               </h2>
             </Box>
-            {data.opening || 'Unknown'}
+            <UnstyledList>
+              {openingTimes.map((time, i) => (
+                <Box
+                  as="li"
+                  display="flex"
+                  justifyContent="space-between"
+                  key={i}
+                  padding={1}
+                  bg={i === todayWeekdayIndex ? 'ice' : 'white'}
+                >
+                  <span>{time.day}</span>
+                  <span>{getIntervalLabel(time.interval)}</span>
+                </Box>
+              ))}
+            </UnstyledList>
+            <Text fontSize={1} color="grey">
+              Hours may vary with national holidays or seasonalchanges. If you
+              know these hours to be out of date please{' '}
+              <Button as={Link} to="/edit" variant="link">
+                edit this toilet
+              </Button>
+              .
+            </Text>
           </Box>
         </Grid>
       </Box>

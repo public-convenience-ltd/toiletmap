@@ -30,6 +30,14 @@ const StyledButton = styled.button(
       secondary: {
         borderColor: 'primary',
       },
+      link: {
+        border: 'none',
+        height: 'auto',
+        background: 'none',
+        textDecoration: 'underline',
+        fontWeight: 'normal',
+        padding: 0,
+      },
     },
   })
 );
