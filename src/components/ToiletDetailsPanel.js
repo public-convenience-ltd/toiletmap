@@ -19,17 +19,13 @@ import Box from './Box';
 import Button from './Button';
 import Text from './Text';
 import styled from '@emotion/styled';
+import Spacer from './Spacer';
 
 const Grid = styled(Box)`
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: (1fr) [4];
-  grid-template-columns: repeat(4, 1fr);
-`;
-
-const Col = styled(Box)`
-  -ms-grid-column: ${(props) => props.gridColumn};
-  grid-column: ${(props) => props.gridColumn};
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: -${({ theme }) => theme.space[2]}px;
 `;
 
 const ToiletDetailsPanel = ({ data, isLoading }) => {
@@ -47,7 +43,8 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         color="primary"
         bg="white"
         minHeight={100}
-        borderRadius="36px 36px 0 0"
+        borderTopLeftRadius={4}
+        borderTopRightRadius={4}
         padding={4}
         display="flex"
         alignItems="center"
@@ -58,15 +55,11 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
   }
 
   const titleFragment = (
-    <Box display="flex">
-      <h1>
-        <Text fontWeight="bold" fontSize={4}>
-          {data.name || 'Unnamed Toilet'}
-        </Text>
-      </h1>
-      {/* distance */}
-      {/* <button type="button">View address</button> */}
-    </Box>
+    <h1>
+      <Text fontWeight="bold" fontSize={4}>
+        {data.name || 'Unnamed Toilet'}
+      </Text>
+    </h1>
   );
 
   const getDirectionsFragment = (
@@ -129,7 +122,8 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         color="primary"
         bg="white"
         minHeight={100}
-        borderRadius="36px 36px 0 0"
+        borderTopLeftRadius={4}
+        borderTopRightRadius={4}
         padding={4}
         as="section"
       >
@@ -156,12 +150,13 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             </button>
           </Box>
 
-          <Box>
+          <Box width={['100%', '50%', '25%']} padding={2}>
             {titleFragment}
+            <Spacer mb={2} />
             {getDirectionsFragment}
           </Box>
 
-          <Box>
+          <Box width={['100%', '50%', '25%']} padding={2}>
             <h2>
               <Text fontWeight="bold">Features</Text>
             </h2>
@@ -174,7 +169,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             </ul>
           </Box>
 
-          <Box>
+          <Box width={['100%', '50%', '25%']} padding={2}>
             <h2>
               <Text fontWeight="bold">Notes</Text>
             </h2>
@@ -186,10 +181,14 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             </div>
           </Box>
 
-          <Box>
-            <h2>
-              <Text fontWeight="bold">Opening Times</Text>
-            </h2>
+          <Box width={['100%', '50%', '25%']} padding={2}>
+            <Box display="flex" alignItems="center">
+              <FontAwesomeIcon icon={faClock} />
+              <Spacer mr={1} />
+              <h2>
+                <Text fontWeight="bold">Opening Hours</Text>
+              </h2>
+            </Box>
             {data.opening || 'Unknown'}
           </Box>
         </Grid>
@@ -203,27 +202,35 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
       color="primary"
       bg="white"
       minHeight={100}
-      borderRadius="36px 36px 0 0"
+      borderTopLeftRadius={4}
+      borderTopRightRadius={4}
       padding={4}
       as="section"
     >
       <Grid>
-        <Col gridColumn={1}>{titleFragment}</Col>
+        <Box width={['100%', '50%', '25%']} padding={2}>
+          {titleFragment}
+        </Box>
 
-        <Col gridColumn={2}>
-          <Box display="flex">
-            <Box mr={2}>
-              <FontAwesomeIcon icon={faClock} />
-            </Box>
+        <Box width={['100%', '50%', '25%']} padding={2}>
+          <Box display="flex" alignItems="center">
+            <FontAwesomeIcon icon={faClock} />
+            <Spacer mr={1} />
             <h2>
               <Text fontWeight="bold">Opening Hours</Text>
             </h2>
           </Box>
           {data.opening || 'Unknown'}
-        </Col>
+        </Box>
 
-        <Col gridColumn={4} display="flex" justifyContent="flex-end">
-          <Box mr={2}>{getDirectionsFragment}</Box>
+        <Box
+          width={['100%', '50%']}
+          padding={2}
+          display="flex"
+          justifyContent={['flex-start', 'flex-start', 'flex-end']}
+        >
+          {getDirectionsFragment}
+          <Spacer mr={2} />
           <Button
             variant="secondary"
             icon={<FontAwesomeIcon icon={faList} />}
@@ -231,7 +238,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
           >
             More details
           </Button>
-        </Col>
+        </Box>
       </Grid>
     </Box>
   );
