@@ -145,11 +145,7 @@ const PageLayout = (props) => {
       <Box display="flex" flexDirection="column" height="100%">
         <Header />
 
-        <div>
-          {props.main && React.cloneElement(props.main, props)}
-
-          {props.map && React.cloneElement(props.map, props)}
-        </div>
+        {props.children}
 
         <Box mt="auto">
           <Footer
