@@ -36,11 +36,11 @@ ReactDOM.render(
         <Tracking />
         <Suspense fallback={<PageLoading />}>
           <Switch>
-            <Route exact path="/" render={(props) => <HomePage {...props} />} />
+            <Route exact path="/" component={HomePage} />
+            <Route path="/loos/:id" exact component={HomePage} />
             <Route exact path="/about" component={AboutPage} />
             <Route exact path="/privacy" component={PrivacyPage} />
             <Route exact path="/use-our-loos" component={UseOurLoosPage} />
-            <Route path="/loos/:id" exact component={LooPage} />
             <Route path="/login" render={(props) => <LoginPage {...props} />} />
             <Route
               path="/map/:lng/:lat"

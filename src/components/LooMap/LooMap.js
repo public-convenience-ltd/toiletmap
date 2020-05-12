@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import L from 'leaflet';
 import { Map, TileLayer, Marker, ZoomControl } from 'react-leaflet';
-import CustomControl from 'react-leaflet-control';
+// import CustomControl from 'react-leaflet-control';
 
 import config from '../../config.js';
 import LocateMapControl from './LocateMapControl';
 import MarkerClusterGroup from './MarkerClusterGroup';
 import LooIcon from './LooIcon';
-import LocationSearch from '../LocationSearch';
+// import LocationSearch from '../LocationSearch';
 
 import styles from '../css/loo-map.module.css';
 
@@ -96,7 +96,7 @@ const LooMap = (props) => {
         ))}
       </MarkerClusterGroup>
 
-      {props.showSearchControl && (
+      {/*props.showSearchControl && (
         <CustomControl position="topleft">
           <LocationSearch
             onSelectedItemChange={(center) =>
@@ -106,7 +106,7 @@ const LooMap = (props) => {
             }
           />
         </CustomControl>
-      )}
+      )*/}
 
       {props.showZoomControl && <ZoomControl position="bottomright" />}
       {props.showLocateControl && <LocateMapControl position="bottomright" />}

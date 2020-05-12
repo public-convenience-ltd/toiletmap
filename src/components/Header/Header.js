@@ -23,7 +23,6 @@ const Header = () => {
       px={[3, 4]}
       py={2}
       bg="white"
-      color="primary"
       minHeight={60}
     >
       <Box flexShrink={0}>

@@ -7,6 +7,7 @@ import Box from './Box';
 import { MediaContextProvider, Media } from './Media';
 import Header from './Header';
 import Footer from './Footer';
+import Sidebar from './Sidebar';
 
 import theme from '../theme';
 
@@ -30,8 +31,8 @@ const ResetStyles = (
       }
 
       /* remove default padding */
-      ul[class],
-      ol[class] {
+      ul,
+      ol {
         padding: 0;
       }
 
@@ -65,6 +66,7 @@ const ResetStyles = (
         text-rendering: optimizeSpeed;
         line-height: 1.5;
         font-family: 'Open Sans', sans-serif;
+        color: ${theme.colors.primary};
       }
 
       /* remove list styles on ul, ol elements */
@@ -106,6 +108,10 @@ const ResetStyles = (
       h5,
       h6 {
         font: inherit;
+      }
+
+      p + p {
+        margin-top: 1em;
       }
 
       [hidden] {
@@ -150,11 +156,13 @@ const PageLayout = (props) => {
 
           <Header />
 
-          <div>
-            {props.main && React.cloneElement(props.main, props)}
+          <Box position="relative" flexGrow={1}>
+            <Box as="main" height="100%" children={props.children} />
 
-            {props.map && React.cloneElement(props.map, props)}
-          </div>
+            <Media greaterThan="sm">
+              <Sidebar />
+            </Media>
+          </Box>
 
           <Box as={Media} greaterThan="sm" mt="auto">
             <Footer

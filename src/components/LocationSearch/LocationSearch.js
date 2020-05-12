@@ -1,13 +1,43 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useCombobox } from 'downshift';
+import { useTheme } from 'emotion-theming';
+import styled from '@emotion/styled';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+
+import Box from '../Box';
 
 import usePlacesAutocomplete from './usePlacesAutocomplete';
+
 import styles from './location-search.module.css';
 import poweredByGoogle from './powered_by_google.png';
 
+const Input = styled.input(
+  ({ theme }) => `
+  border: 1px solid ${theme.colors.primary};
+  border-radius: ${theme.radii[4]}px;
+  padding: ${theme.space[2]}px 3rem;
+  padding-left: 3rem;
+  width: 100%;
+
+  ::-webkit-input-placeholder {
+    color: ${theme.colors.primary};
+  }
+
+  :-ms-input-placeholder {
+    color: ${theme.colors.primary};
+  }
+
+  ::placeholder {
+    color: ${theme.colors.primary};
+  }
+`
+);
+
 const LocationSearch = ({ onSelectedItemChange }) => {
   const [query, setQuery] = React.useState('');
+  const theme = useTheme();
 
   const { places, getPlaceById } = usePlacesAutocomplete(query);
 
@@ -96,52 +126,70 @@ const LocationSearch = ({ onSelectedItemChange }) => {
         />
       </Helmet>
 
-      <div className={styles.wrapper}>
-        <label className={styles.label} {...getLabelProps()}>
-          Search for a location
-        </label>
+      <label className={styles.label} {...getLabelProps()}>
+        Search for a location
+      </label>
 
-        <div className={styles.controls} {...getComboboxProps()}>
-          <input
-            placeholder="Search for a location"
-            className={styles.input}
-            style={{
-              borderRadius: isOpen ? '5px 5px 0 0' : 5,
-              borderBottom: isOpen ? '1px solid #ccc' : 'none',
-            }}
-            autoComplete="off"
-            {...getInputProps({
-              onFocus: () => {
-                if (isOpen) {
-                  return;
-                }
-                openMenu();
-              },
-            })}
+      <Box position="relative" {...getComboboxProps()}>
+        <Box
+          position="absolute"
+          top="50%"
+          left={3}
+          zIndex={1}
+          css={{
+            transform: 'translateY(-50%)',
+          }}
+        >
+          <FontAwesomeIcon
+            icon={faSearch}
+            fixedWidth
+            color={theme.colors.active}
           />
-          {isOpen && (
+        </Box>
+
+        <Input
+          placeholder="search location…"
+          autoComplete="off"
+          {...getInputProps({
+            onFocus: () => {
+              if (isOpen) {
+                return;
+              }
+              openMenu();
+            },
+          })}
+        />
+
+        {isOpen && (
+          <Box
+            position="absolute"
+            top="50%"
+            right={3}
+            css={{
+              transform: 'translateY(-50%)',
+            }}
+          >
             <button
               type="button"
               aria-label="close menu"
-              className={styles.closeButton}
               {...getToggleButtonProps()}
             >
-              Close
+              <FontAwesomeIcon icon={faTimes} fixedWidth />
             </button>
-          )}
-        </div>
-
-        {isOpen && (
-          <div className={styles.menuContainer}>
-            {resultsFragment}
-            <img
-              className={styles.poweredByGoogleLogo}
-              src={poweredByGoogle}
-              alt="Powered by Google"
-            />
-          </div>
+          </Box>
         )}
-      </div>
+      </Box>
+
+      {isOpen && (
+        <div className={styles.menuContainer}>
+          {resultsFragment}
+          <img
+            className={styles.poweredByGoogleLogo}
+            src={poweredByGoogle}
+            alt="Powered by Google"
+          />
+        </div>
+      )}
     </>
   );
 };
