@@ -20,23 +20,6 @@ import Button from './Button';
 import Text from './Text';
 import styled from '@emotion/styled';
 
-const CloseIcon = () => (
-  <Box
-    height={26}
-    width={26}
-    display="flex"
-    alignItems="center"
-    justifyContent="center"
-    borderRadius={13}
-    borderColor="primary"
-    borderWidth={2}
-    grdiGap={2}
-    borderStyle="solid"
-  >
-    <FontAwesomeIcon icon={faTimes} />
-  </Box>
-);
-
 const Grid = styled(Box)`
   display: -ms-grid;
   display: grid;
@@ -76,9 +59,11 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
 
   const titleFragment = (
     <Box display="flex">
-      <Text fontWeight="bold" fontSize={4}>
-        {data.name || 'Unnamed Toilet'}
-      </Text>
+      <h1>
+        <Text fontWeight="bold" fontSize={4}>
+          {data.name || 'Unnamed Toilet'}
+        </Text>
+      </h1>
       {/* distance */}
       {/* <button type="button">View address</button> */}
     </Box>
@@ -146,11 +131,28 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         minHeight={100}
         borderRadius="36px 36px 0 0"
         padding={4}
+        as="section"
       >
         <Grid>
           <Box position="absolute" top={30} right={30}>
-            <button type="button" onClick={() => setIsExpanded(false)}>
-              <CloseIcon />
+            <button
+              type="button"
+              aria-label="Close toilet details"
+              onClick={() => setIsExpanded(false)}
+            >
+              <Box
+                height={26}
+                width={26}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                borderRadius={13}
+                borderColor="primary"
+                borderWidth={2}
+                borderStyle="solid"
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </Box>
             </button>
           </Box>
 
@@ -160,7 +162,9 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
           </Box>
 
           <Box>
-            <Text fontWeight="bold">Features</Text>
+            <h2>
+              <Text fontWeight="bold">Features</Text>
+            </h2>
             <ul>
               {Object.entries(features).map(([key, feature]) => (
                 <li key={key}>
@@ -171,7 +175,9 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
           </Box>
 
           <Box>
-            <Text fontWeight="bold">Notes</Text>
+            <h2>
+              <Text fontWeight="bold">Notes</Text>
+            </h2>
             <div>
               {data.notes &&
                 data.notes
@@ -181,7 +187,9 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
           </Box>
 
           <Box>
-            <Text fontWeight="bold">Opening Times</Text>
+            <h2>
+              <Text fontWeight="bold">Opening Times</Text>
+            </h2>
             {data.opening || 'Unknown'}
           </Box>
         </Grid>
@@ -197,22 +205,25 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
       minHeight={100}
       borderRadius="36px 36px 0 0"
       padding={4}
+      as="section"
     >
       <Grid>
-        <Col gridColumn="1">{titleFragment}</Col>
+        <Col gridColumn={1}>{titleFragment}</Col>
 
-        <Col gridColumn="2">
+        <Col gridColumn={2}>
           <Box display="flex">
             <Box mr={2}>
               <FontAwesomeIcon icon={faClock} />
             </Box>
-            <Text fontWeight="bold">Opening Hours</Text>
+            <h2>
+              <Text fontWeight="bold">Opening Hours</Text>
+            </h2>
           </Box>
           {data.opening || 'Unknown'}
         </Col>
 
-        <Col gridColumn={4}>
-          {getDirectionsFragment}
+        <Col gridColumn={4} display="flex" justifyContent="flex-end">
+          <Box mr={2}>{getDirectionsFragment}</Box>
           <Button
             variant="secondary"
             icon={<FontAwesomeIcon icon={faList} />}
