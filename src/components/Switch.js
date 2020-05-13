@@ -10,7 +10,7 @@ const OFFSET = 1;
 const LENGTH = HEIGHT - OFFSET * 2;
 
 const Inner = styled(Box)`
-  transition: left 0.5s ease;
+  transition: left 0.2s ease;
 `;
 
 const Switch = ({ checked, ...props }) => (
