@@ -13,8 +13,10 @@ const StyledButton = styled.button(
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
     user-select: none;
-    height: ${BUTTON_HEIGHT}px;
+    min-height: ${BUTTON_HEIGHT}px;
+    max-width: 300px;
     border-radius: ${BUTTON_HEIGHT / 2}px;
     border: none;
     padding: 0 ${props.theme.space[3]}px;
@@ -32,6 +34,7 @@ const StyledButton = styled.button(
       },
       secondary: {
         color: 'primary',
+        bg: 'white',
         fontWeight: 'bold',
         borderColor: 'primary',
       },

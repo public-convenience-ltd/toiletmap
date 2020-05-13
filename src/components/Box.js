@@ -22,7 +22,6 @@ Box.propTypes = {
   ...createPropTypes(space.propNames),
   ...createPropTypes(color.propNames),
   ...createPropTypes(layout.propNames),
-  ...createPropTypes(position.propNames),
   ...createPropTypes(flexbox.propNames),
   ...createPropTypes(position.propNames),
   ...createPropTypes(border.propNames),
