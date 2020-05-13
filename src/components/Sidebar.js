@@ -5,15 +5,8 @@ import isPropValid from '@emotion/is-prop-valid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFilter,
-  faPoundSign,
-  faBaby,
-  faPlusCircle,
-  faWheelchair,
-  faVenusMars,
-  faGenderless,
-  faKey,
-  faCog,
   faAngleRight,
+  faPlusCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
 import VisuallyHidden from './VisuallyHidden';
@@ -22,8 +15,8 @@ import Box from './Box';
 import Text from './Text';
 import Button from './Button';
 import LocationSearch from './LocationSearch';
-import Switch from './Switch';
 import Divider from './Divider';
+import Filters from './Filters';
 
 const Arrow = styled(
   (props) => <FontAwesomeIcon icon={faAngleRight} {...props} />,
@@ -46,77 +39,12 @@ Arrow.propTypes = {
   isExpanded: PropTypes.bool,
 };
 
-// Todo: obtain via query
-const filters = [
-  {
-    id: 'free',
-    label: 'Free',
-    value: false,
-    icon: faPoundSign,
-  },
-  {
-    id: 'baby-changing',
-    label: 'Baby Changing',
-    value: false,
-    icon: faBaby,
-  },
-  {
-    id: 'accessible',
-    label: 'Accessible',
-    value: false,
-    icon: faWheelchair,
-  },
-  {
-    id: 'unisex',
-    label: 'Unisex',
-    value: false,
-    icon: faVenusMars,
-  },
-  {
-    id: 'gender-neutral',
-    label: 'Gender Neutral',
-    value: false,
-    icon: faGenderless,
-  },
-  {
-    id: 'radar-key',
-    label: 'Radar Key',
-    value: false,
-    icon: faKey,
-  },
-  {
-    id: 'automatic',
-    label: 'Automatic',
-    value: false,
-    icon: faCog,
-  },
-];
-
-const Sidebar = () => {
+const Sidebar = ({ filters, onFilterChange }) => {
   const [isAddExpanded, setIsAddExpanded] = useState(false);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
-  // map filter data to state
-  let state = {};
-  filters.forEach((filter) => {
-    state[filter.id] = filter.value;
-  });
-
-  const [filterState, setFilterState] = useState(state);
-
-  const resetFilters = () => {
-    let state = {};
-
-    filters.forEach((filter) => {
-      state[filter.id] = false;
-    });
-
-    setFilterState(state);
-  };
-
   return (
     <Box
-      as="aside"
       position="absolute"
       top={3}
       left={3}
@@ -148,13 +76,15 @@ const Sidebar = () => {
             as="button"
             type="button"
             display="flex"
-            alignItems="flex-end"
+            alignItems="center"
             aria-expanded={isFilterExpanded}
             onClick={() => setIsFilterExpanded(!isFilterExpanded)}
           >
             <FontAwesomeIcon icon={faFilter} fixedWidth size="lg" />
-            <Box as="b" mx={2}>
-              <Text lineHeight={1}>Filter</Text>
+            <Box mx={2}>
+              <Text lineHeight={1}>
+                <b>Filter</b>
+              </Text>
             </Box>
             <Arrow isExpanded={isFilterExpanded} />
           </Box>
@@ -164,7 +94,7 @@ const Sidebar = () => {
               <Box
                 as="button"
                 type="button"
-                onClick={resetFilters}
+                onClick={() => onFilterChange({})}
                 border={0}
                 borderBottom={2}
                 borderStyle="solid"
@@ -176,37 +106,7 @@ const Sidebar = () => {
         </Box>
 
         <Box pt={4} hidden={!isFilterExpanded}>
-          <ul>
-            {filters.map((filter, index) => (
-              <Box
-                as="li"
-                key={filter.id}
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                mt={index ? 3 : undefined}
-              >
-                <Box display="flex" alignItems="center">
-                  <FontAwesomeIcon icon={filter.icon} fixedWidth size="lg" />
-                  <Box ml={3} id={`filter-${filter.id}`}>
-                    {filter.label}
-                  </Box>
-                </Box>
-
-                <Switch
-                  name={filter.id}
-                  checked={filterState[filter.id]}
-                  aria-labelledby={`filter-${filter.id}`}
-                  onClick={() =>
-                    setFilterState({
-                      ...filterState,
-                      [filter.id]: !filterState[filter.id],
-                    })
-                  }
-                />
-              </Box>
-            ))}
-          </ul>
+          <Filters filters={filters} onFilterChange={onFilterChange} />
         </Box>
       </Box>
 
@@ -223,7 +123,7 @@ const Sidebar = () => {
           aria-expanded={isAddExpanded}
           onClick={() => setIsAddExpanded(!isAddExpanded)}
           display="flex"
-          alignItems="flex-end"
+          alignItems="center"
         >
           <FontAwesomeIcon icon={faPlusCircle} fixedWidth size="lg" />
           <Box as="b" mx={2}>
@@ -258,6 +158,11 @@ const Sidebar = () => {
       </Box>
     </Box>
   );
+};
+
+Sidebar.propTypes = {
+  filters: PropTypes.object.isRequired,
+  onFilterChange: PropTypes.func.isRequired,
 };
 
 export default Sidebar;

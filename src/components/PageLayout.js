@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from 'emotion-theming';
 import { Global, css } from '@emotion/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 import Box from './Box';
+import Text from './Text';
+import Button from './Button';
 import { MediaContextProvider, Media } from './Media';
 import Header from './Header';
 import Footer from './Footer';
 import Sidebar from './Sidebar';
+import LocationSearch from './LocationSearch';
+import Drawer from './Drawer';
+import Filters from './Filters';
 
 import theme from '../theme';
+import config, { FILTERS_KEY } from '../config';
 
 // import { TRACKING_STORAGE_KEY } from './Tracking';
 // import TrackingPreferences from './Tracking/TrackingPreferences';
@@ -136,6 +144,7 @@ const ResetStyles = (
 );
 
 const PageLayout = (props) => {
+  const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   // const mainRef = React.useRef();
 
   // const [isCookieSettingsOpen, setIsCookieSettingsOpen] = React.useState(
@@ -148,6 +157,20 @@ const PageLayout = (props) => {
   //   }
   // }, [mainRef, isCookieSettingsOpen]);
 
+  let initialState = config.getSettings(FILTERS_KEY);
+
+  // default any unsaved filters as 'false'
+  config.filters.forEach((filter) => {
+    initialState[filter.id] = initialState[filter.id] || false;
+  });
+
+  const [filters, setFilters] = useState(initialState);
+
+  // keep local storage and state in sync
+  React.useEffect(() => {
+    window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
+  }, [filters]);
+
   return (
     <ThemeProvider theme={theme}>
       <MediaContextProvider>
@@ -159,9 +182,73 @@ const PageLayout = (props) => {
           <Box position="relative" flexGrow={1}>
             <Box as="main" height="100%" children={props.children} />
 
-            <Media greaterThan="sm">
-              <Sidebar />
-            </Media>
+            <aside>
+              <Box
+                as={Media}
+                lessThan="md"
+                position="absolute"
+                top={0}
+                left={0}
+                p={3}
+                width="100%"
+              >
+                <LocationSearch />
+
+                <Box display="flex" justifyContent="center" mt={3}>
+                  <Button
+                    variant="secondary"
+                    icon={<FontAwesomeIcon icon={faFilter} />}
+                    aria-expanded={isFiltersExpanded}
+                    onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
+                  >
+                    Filter Map
+                  </Button>
+                </Box>
+
+                <Drawer visible={isFiltersExpanded}>
+                  <Box display="flex" justifyContent="space-between" mb={4}>
+                    <Box display="flex" alignItems="flex-end">
+                      <FontAwesomeIcon icon={faFilter} fixedWidth size="lg" />
+                      <Box as="h2" mx={2}>
+                        <Text lineHeight={1}>
+                          <b>Filter</b>
+                        </Text>
+                      </Box>
+                    </Box>
+
+                    <Text fontSize={12}>
+                      <Box
+                        as="button"
+                        type="button"
+                        onClick={() => setFilters({})}
+                        border={0}
+                        borderBottom={2}
+                        borderStyle="solid"
+                      >
+                        Reset Filter
+                      </Box>
+                    </Text>
+                  </Box>
+
+                  <Filters filters={filters} onFilterChange={setFilters} />
+
+                  <Box display="flex" justifyContent="center" mt={4}>
+                    <Button
+                      onClick={() => setIsFiltersExpanded(false)}
+                      css={{
+                        width: '100%',
+                      }}
+                    >
+                      Done
+                    </Button>
+                  </Box>
+                </Drawer>
+              </Box>
+
+              <Media greaterThan="sm">
+                <Sidebar filters={filters} onFilterChange={setFilters} />
+              </Media>
+            </aside>
           </Box>
 
           <Box as={Media} greaterThan="sm" mt="auto">

@@ -16,6 +16,7 @@ const StyledButton = styled.button(
     justify-content: center;
     user-select: none;
     min-height: 34px;
+    max-width: 300px;
     border-radius: 25px;
     border: none;
     padding: 0 20px;
@@ -30,6 +31,7 @@ const StyledButton = styled.button(
         borderColor: 'secondary',
       },
       secondary: {
+        bg: 'white',
         borderColor: 'primary',
       },
     },

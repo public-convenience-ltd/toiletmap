@@ -1,10 +1,43 @@
-export const PREFERENCES_KEY = 'preferences';
 const { REACT_APP_BUNDLE_BRANDING } = process.env;
+
+export const FILTERS_KEY = 'filters';
+
+const filters = [
+  {
+    id: 'free',
+    label: 'Free',
+  },
+  {
+    id: 'baby-changing',
+    label: 'Baby Changing',
+  },
+  {
+    id: 'accessible',
+    label: 'Accessible',
+  },
+  {
+    id: 'unisex',
+    label: 'Unisex',
+  },
+  {
+    id: 'gender-neutral',
+    label: 'Gender Neutral',
+  },
+  {
+    id: 'radar-key',
+    label: 'Radar Key',
+  },
+  {
+    id: 'automatic',
+    label: 'Automatic',
+  },
+];
 
 export default {
   viewport: {
     mobile: 567,
   },
+  filters,
   analyticsId:
     process.env.NODE_ENV === 'production' ? 'UA-52513593-1' : 'UA-111111111-1',
   nearestRadius: 20000, // meters
