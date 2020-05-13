@@ -259,7 +259,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             <Text fontSize={1} color="grey">
               Hours may vary with national holidays or seasonalchanges. If you
               know these hours to be out of date please{' '}
-              <Button as={Link} to="/edit" variant="link">
+              <Button as={Link} to={`/loos/${data.id}/edit`} variant="link">
                 edit this toilet
               </Button>
               .
