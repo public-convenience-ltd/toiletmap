@@ -1,13 +1,44 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { useCombobox } from 'downshift';
+import { useTheme } from 'emotion-theming';
+import styled from '@emotion/styled';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+
+import Box from '../Box';
+import VisuallyHidden from '../VisuallyHidden';
 
 import usePlacesAutocomplete from './usePlacesAutocomplete';
-import styles from './location-search.module.css';
+
 import poweredByGoogle from './powered_by_google.png';
+
+const Input = styled.input(
+  ({ theme }) => `
+  border: 1px solid ${theme.colors.primary};
+  border-radius: ${theme.radii[4]}px;
+  padding: ${theme.space[2]}px 3rem;
+  padding-left: 3rem;
+  width: 100%;
+
+  ::-webkit-input-placeholder {
+    color: ${theme.colors.primary};
+  }
+
+  :-ms-input-placeholder {
+    color: ${theme.colors.primary};
+  }
+
+  ::placeholder {
+    color: ${theme.colors.primary};
+  }
+`
+);
 
 const LocationSearch = ({ onSelectedItemChange }) => {
   const [query, setQuery] = React.useState('');
+  const theme = useTheme();
 
   const { places, getPlaceById } = usePlacesAutocomplete(query);
 
@@ -69,23 +100,30 @@ const LocationSearch = ({ onSelectedItemChange }) => {
   });
 
   const resultsFragment = places.length ? (
-    <ul className={styles.menuList} {...getMenuProps()}>
-      {places.map((item, index) => (
-        <li
-          key={item.id}
-          className={styles.menuListItem}
-          style={{
-            backgroundColor:
-              highlightedIndex === index ? '#eee' : 'transparent',
-          }}
-          {...getItemProps({ item, index })}
-        >
-          <span className={styles.itemLabel}>{item.label}</span> {item.subLabel}
-        </li>
-      ))}
-    </ul>
+    <Box marginTop={-2}>
+      <ul {...getMenuProps()}>
+        {places.map((item, index) => (
+          <Box
+            as="li"
+            key={item.id}
+            color={highlightedIndex === index ? 'tertiary' : undefined}
+            py={2}
+            border={0}
+            borderBottom={index !== places.length - 1 ? 1 : undefined}
+            borderStyle="solid"
+            borderColor="lightGrey"
+            css={{
+              cursor: 'pointer',
+            }}
+            {...getItemProps({ item, index })}
+          >
+            <span>{item.label}</span> {item.subLabel}
+          </Box>
+        ))}
+      </ul>
+    </Box>
   ) : (
-    <div className={styles.emptyState}>No results found</div>
+    <div>No results found</div>
   );
 
   return (
@@ -96,54 +134,78 @@ const LocationSearch = ({ onSelectedItemChange }) => {
         />
       </Helmet>
 
-      <div className={styles.wrapper}>
-        <label className={styles.label} {...getLabelProps()}>
-          Search for a location
-        </label>
+      <VisuallyHidden>
+        <label {...getLabelProps()}>Search for a location</label>
+      </VisuallyHidden>
 
-        <div className={styles.controls} {...getComboboxProps()}>
-          <input
-            placeholder="Search for a location"
-            className={styles.input}
-            style={{
-              borderRadius: isOpen ? '5px 5px 0 0' : 5,
-              borderBottom: isOpen ? '1px solid #ccc' : 'none',
-            }}
-            autoComplete="off"
-            {...getInputProps({
-              onFocus: () => {
-                if (isOpen) {
-                  return;
-                }
-                openMenu();
-              },
-            })}
+      <Box position="relative" {...getComboboxProps()}>
+        <Box
+          position="absolute"
+          top="50%"
+          left={3}
+          zIndex={1}
+          css={{
+            transform: 'translateY(-50%)',
+          }}
+        >
+          <FontAwesomeIcon
+            icon={faSearch}
+            fixedWidth
+            color={theme.colors.tertiary}
           />
-          {isOpen && (
+        </Box>
+
+        <Input
+          placeholder="search location…"
+          autoComplete="off"
+          {...getInputProps({
+            onFocus: () => {
+              if (isOpen) {
+                return;
+              }
+              openMenu();
+            },
+          })}
+        />
+
+        {isOpen && (
+          <Box
+            position="absolute"
+            top="50%"
+            right={3}
+            css={{
+              transform: 'translateY(-50%)',
+            }}
+          >
             <button
               type="button"
               aria-label="close menu"
-              className={styles.closeButton}
               {...getToggleButtonProps()}
             >
-              Close
+              <FontAwesomeIcon icon={faTimes} fixedWidth />
             </button>
-          )}
-        </div>
-
-        {isOpen && (
-          <div className={styles.menuContainer}>
-            {resultsFragment}
-            <img
-              className={styles.poweredByGoogleLogo}
-              src={poweredByGoogle}
-              alt="Powered by Google"
-            />
-          </div>
+          </Box>
         )}
-      </div>
+      </Box>
+
+      {isOpen && (
+        <Box p={[3, 0]} mt={3} bg="white" borderRadius={2}>
+          {resultsFragment}
+          <Box
+            as="img"
+            src={poweredByGoogle}
+            alt="Powered by Google"
+            mt={3}
+            maxWidth={120}
+          />
+        </Box>
+      )}
     </>
   );
+};
+
+LocationSearch.propTypes = {
+  onSelectedItemChange: PropTypes.func.isRequired,
 };
 
 export default LocationSearch;
