@@ -20,17 +20,23 @@ const StyledButton = styled.button(
     padding: 0 ${props.theme.space[3]}px;
     border-style: solid;
     border-width: 2px;
+    color: primary;
   `,
   variant({
     variants: {
       primary: {
+        color: 'primary',
+        fontWeight: 'bold',
         bg: 'secondary',
         borderColor: 'secondary',
       },
       secondary: {
+        color: 'primary',
+        fontWeight: 'bold',
         borderColor: 'primary',
       },
       link: {
+        color: 'primary',
         border: 'none',
         height: 'auto',
         background: 'none',
@@ -54,9 +60,7 @@ const Button = ({ children, icon, ...props }) => (
       </Text>
     )}
 
-    <Text fontWeight="bold" color="primary">
-      {children}
-    </Text>
+    <Text>{children}</Text>
   </StyledButton>
 );
 
