@@ -14,6 +14,7 @@ const StyledButton = styled.button(
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    user-select: none;
     min-height: ${BUTTON_HEIGHT}px;
     max-width: 300px;
     border-radius: ${BUTTON_HEIGHT / 2}px;
