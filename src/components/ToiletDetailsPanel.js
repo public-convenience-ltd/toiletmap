@@ -112,43 +112,63 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
     </Button>
   );
 
-  const features = {
-    free: {
+  const crossIconFragment = <Icon icon={faTimes} color="tertiary" />;
+  const questionIconFragment = <Icon icon={faQuestion} color="tertiary" />;
+  const checkIconFragment = <Icon icon={faCheck} />;
+
+  const getFeatureValueIcon = (value, checkFunction) => {
+    if (value === null) {
+      return questionIconFragment;
+    }
+
+    if (checkFunction) {
+      return checkFunction() ? checkIconFragment : crossIconFragment;
+    }
+
+    return value ? checkIconFragment : crossIconFragment;
+  };
+
+  const features = [
+    {
       icon: <Icon icon={faPoundSign} />,
       label: 'Free',
-      valueIcon: <Icon icon={faCheck} />,
+      valueIcon: getFeatureValueIcon(data.fee, () => !data.fee),
     },
-    baby_changing: {
+    {
       icon: <Icon icon={faBaby} />,
       label: 'Baby Changing',
-      valueIcon: <Icon icon={faCheck} />,
+      valueIcon: getFeatureValueIcon(data.babyChange),
     },
-    accessible: {
+    {
       icon: <Icon icon={faWheelchair} />,
       label: 'Accessible',
-      valueIcon: <Icon icon={faCheck} />,
+      valueIcon: getFeatureValueIcon(data.accessibleType),
     },
-    radar_key: {
-      icon: <Icon icon={faKey} />,
-      label: 'RADAR Key',
-      valueIcon: <Icon icon={faCheck} />,
-    },
-    unisex: {
+    ...(data.accessibleType
+      ? [
+          {
+            icon: <Icon icon={faKey} />,
+            label: 'RADAR Key',
+            valueIcon: getFeatureValueIcon(data.radar),
+          },
+        ]
+      : []),
+    {
       icon: <Icon icon={faVenusMars} />,
       label: 'Unisex',
-      valueIcon: <Icon icon={faCheck} />,
+      valueIcon: getFeatureValueIcon(data.type, () => data.type === 'UNISEX'),
     },
-    gender_neutral: {
+    {
       icon: <Icon icon={faGenderless} />,
       label: 'Gender Neutral',
-      valueIcon: <Icon icon={faQuestion} color="tertiary" />,
+      valueIcon: getFeatureValueIcon(data.type, () => data.type === 'UNISEX'),
     },
-    automatic: {
+    {
       icon: <Icon icon={faCog} />,
       label: 'Automatic',
-      valueIcon: <Icon icon={faTimes} color="tertiary" />,
+      valueIcon: getFeatureValueIcon(data.automatic),
     },
-  };
+  ];
 
   const openingTimes = getOpeningTimes(data.opening);
   const todayWeekdayIndex = DateTime.local().weekday - 1;
@@ -199,14 +219,16 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             <h2>
               <Text fontWeight="bold">Features</Text>
             </h2>
+            <Spacer mb={2} />
             <UnstyledList>
-              {Object.entries(features).map(([key, feature]) => (
+              {features.map((feature) => (
                 <Box
                   as="li"
-                  key={key}
+                  key={feature.label}
                   display="flex"
                   alignItems="center"
                   justifyContent="space-between"
+                  mb={1}
                 >
                   <Box display="flex" alignItems="center">
                     <Box width="20px" display="flex" justifyContent="center">
@@ -219,28 +241,44 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
                 </Box>
               ))}
             </UnstyledList>
+
+            {Boolean(data.fee) && (
+              <>
+                <Spacer mb={3} />
+                <h2>
+                  <Text fontWeight="bold">Fee</Text>
+                </h2>
+                <Spacer mb={2} />
+                {data.fee}
+              </>
+            )}
           </Box>
 
           <Box width={['100%', '50%', '25%']} padding={3}>
-            <h2>
-              <Text fontWeight="bold">Notes</Text>
-            </h2>
-            <div>
-              {data.notes &&
-                data.notes
-                  .split('\n')
-                  .map((string, i) => <p key={i}>{string}</p>)}
-            </div>
+            {Boolean(data.notes) && (
+              <>
+                <h2>
+                  <Text fontWeight="bold">Notes</Text>
+                </h2>
+                <Spacer mb={2} />
+                <div>
+                  {data.notes.split('\n').map((string, i) => (
+                    <p key={i}>{string}</p>
+                  ))}
+                </div>
+              </>
+            )}
           </Box>
 
           <Box width={['100%', '50%', '25%']} padding={3}>
             <Box display="flex" alignItems="center">
               <Icon icon={faClock} />
-              <Spacer mr={1} />
+              <Spacer mr={2} />
               <h2>
                 <Text fontWeight="bold">Opening Hours</Text>
               </h2>
             </Box>
+            <Spacer mb={2} />
             <UnstyledList>
               {openingTimes.map((timeRange, i) => (
                 <Box
@@ -256,6 +294,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
                 </Box>
               ))}
             </UnstyledList>
+            <Spacer mb={2} />
             <Text fontSize={1} color="grey">
               Hours may vary with national holidays or seasonal changes. If you
               know these hours to be out of date please{' '}
@@ -289,11 +328,12 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         <Box width={['100%', '50%', '25%']} padding={3}>
           <Box display="flex" alignItems="center">
             <Icon icon={faClock} />
-            <Spacer mr={1} />
+            <Spacer mr={2} />
             <h2>
               <Text fontWeight="bold">Opening Hours</Text>
             </h2>
           </Box>
+          <Spacer mb={2} />
           {getIsOpenLabel(openingTimes)}
         </Box>
 
