@@ -174,9 +174,9 @@ const PageLayout = (props) => {
   return (
     <ThemeProvider theme={theme}>
       <MediaContextProvider>
-        <Box display="flex" flexDirection="column" height="100%">
-          {ResetStyles}
+        {ResetStyles}
 
+        <Box display="flex" flexDirection="column" height="100%">
           <Header />
 
           <Box position="relative" flexGrow={1}>
@@ -259,11 +259,6 @@ const PageLayout = (props) => {
             // isCookieSettingsOpen={isCookieSettingsOpen}
             />
           </Box>
-
-          {/*<TrackingPreferences
-            isOpen={isCookieSettingsOpen}
-            onClose={() => setIsCookieSettingsOpen(false)}
-          />*/}
         </Box>
       </MediaContextProvider>
     </ThemeProvider>

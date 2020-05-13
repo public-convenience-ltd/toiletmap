@@ -33,7 +33,7 @@ const Footer = (props) => (
     alignItems="center"
     px={[3, 4]}
     py={[0, 2]}
-    bg={['transparent', 'grey']}
+    bg={['transparent', 'lightGrey']}
     color="primary"
     minHeight={60}
   >

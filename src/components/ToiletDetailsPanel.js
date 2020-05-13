@@ -1,5 +1,5 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import styled from '@emotion/styled';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import {
   faDirections,
@@ -13,32 +13,63 @@ import {
   faGenderless,
   faKey,
   faCog,
+  faQuestion,
 } from '@fortawesome/free-solid-svg-icons';
+import { DateTime } from 'luxon';
+import { Link } from 'react-router-dom';
 
 import Box from './Box';
 import Button from './Button';
 import Text from './Text';
-import styled from '@emotion/styled';
+import Spacer from './Spacer';
+import Icon from './Icon';
+import {
+  getOpeningTimes,
+  getIsOpen,
+  WEEKDAYS,
+  rangeTypes,
+} from '../openingHours';
 
 const Grid = styled(Box)`
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: (1fr) [4];
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: -${({ theme }) => theme.space[3]}px;
 `;
 
-const Col = styled(Box)`
-  -ms-grid-column: ${(props) => props.gridColumn};
-  grid-column: ${(props) => props.gridColumn};
+const UnstyledList = styled.ul`
+  list-style: none;
 `;
+
+function getTimeRangeLabel(range) {
+  if (range === rangeTypes.CLOSED) {
+    return 'Closed';
+  }
+
+  if (range.length === 2) {
+    return range.join(' - ');
+  }
+
+  return 'Unknown';
+}
+
+function getIsOpenLabel(openingTimes = [], dateTime = DateTime.local()) {
+  const dayToCheckRange = openingTimes[dateTime.weekday - 1];
+
+  if (dayToCheckRange === rangeTypes.UNKNOWN) {
+    return 'Unknown';
+  }
+
+  return getIsOpen(openingTimes, dateTime) ? 'Open now' : 'Closed';
+}
 
 const ToiletDetailsPanel = ({ data, isLoading }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
 
-  // return to default view if isLoading or data changes (e.g. a user has selected a new marker)
-  React.useEffect(() => {
-    setIsExpanded(false);
-  }, [isLoading, data]);
+  // collapse panel if isLoading or data changes (e.g. a user has selected a new marker)
+  // React.useEffect(() => {
+  //   setIsExpanded(false);
+  // }, [isLoading, data]);
 
   if (isLoading) {
     return (
@@ -47,7 +78,8 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         color="primary"
         bg="white"
         minHeight={100}
-        borderRadius="36px 36px 0 0"
+        borderTopLeftRadius={4}
+        borderTopRightRadius={4}
         padding={4}
         display="flex"
         alignItems="center"
@@ -58,20 +90,16 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
   }
 
   const titleFragment = (
-    <Box display="flex">
-      <h1>
-        <Text fontWeight="bold" fontSize={4}>
-          {data.name || 'Unnamed Toilet'}
-        </Text>
-      </h1>
-      {/* distance */}
-      {/* <button type="button">View address</button> */}
-    </Box>
+    <h1>
+      <Text fontWeight="bold" fontSize={4}>
+        {data.name || 'Unnamed Toilet'}
+      </Text>
+    </h1>
   );
 
   const getDirectionsFragment = (
     <Button
-      icon={<FontAwesomeIcon icon={faDirections} />}
+      icon={<Icon icon={faDirections} />}
       as="a"
       href={`https://maps.apple.com/?dirflg=w&daddr=${[
         data.location.lat,
@@ -86,41 +114,44 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
 
   const features = {
     free: {
-      icon: <FontAwesomeIcon icon={faPoundSign} />,
+      icon: <Icon icon={faPoundSign} />,
       label: 'Free',
-      valueIcon: <FontAwesomeIcon icon={faCheck} />,
+      valueIcon: <Icon icon={faCheck} />,
     },
     baby_changing: {
-      icon: <FontAwesomeIcon icon={faBaby} />,
+      icon: <Icon icon={faBaby} />,
       label: 'Baby Changing',
-      valueIcon: <FontAwesomeIcon icon={faCheck} />,
+      valueIcon: <Icon icon={faCheck} />,
     },
     accessible: {
-      icon: <FontAwesomeIcon icon={faWheelchair} />,
+      icon: <Icon icon={faWheelchair} />,
       label: 'Accessible',
-      valueIcon: <FontAwesomeIcon icon={faCheck} />,
+      valueIcon: <Icon icon={faCheck} />,
     },
     radar_key: {
-      icon: <FontAwesomeIcon icon={faKey} />,
+      icon: <Icon icon={faKey} />,
       label: 'RADAR Key',
-      valueIcon: <FontAwesomeIcon icon={faCheck} />,
+      valueIcon: <Icon icon={faCheck} />,
     },
     unisex: {
-      icon: <FontAwesomeIcon icon={faVenusMars} />,
+      icon: <Icon icon={faVenusMars} />,
       label: 'Unisex',
-      valueIcon: <FontAwesomeIcon icon={faCheck} />,
+      valueIcon: <Icon icon={faCheck} />,
     },
     gender_neutral: {
-      icon: <FontAwesomeIcon icon={faGenderless} />,
+      icon: <Icon icon={faGenderless} />,
       label: 'Gender Neutral',
-      valueIcon: <FontAwesomeIcon icon={faCheck} />,
+      valueIcon: <Icon icon={faQuestion} color="tertiary" />,
     },
     automatic: {
-      icon: <FontAwesomeIcon icon={faCog} />,
+      icon: <Icon icon={faCog} />,
       label: 'Automatic',
-      valueIcon: <FontAwesomeIcon icon={faCheck} />,
+      valueIcon: <Icon icon={faTimes} color="tertiary" />,
     },
   };
+
+  const openingTimes = getOpeningTimes(data.opening);
+  const todayWeekdayIndex = DateTime.local().weekday - 1;
 
   if (isExpanded) {
     return (
@@ -129,8 +160,10 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         color="primary"
         bg="white"
         minHeight={100}
-        borderRadius="36px 36px 0 0"
+        borderTopLeftRadius={4}
+        borderTopRightRadius={4}
         padding={4}
+        paddingRight={5}
         as="section"
       >
         <Grid>
@@ -148,33 +181,47 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
                 justifyContent="center"
                 borderRadius={13}
                 borderColor="primary"
-                borderWidth={2}
+                borderWidth={1}
                 borderStyle="solid"
               >
-                <FontAwesomeIcon icon={faTimes} />
+                <Icon icon={faTimes} />
               </Box>
             </button>
           </Box>
 
-          <Box>
+          <Box width={['100%', '50%', '25%']} padding={3}>
             {titleFragment}
+            <Spacer mb={2} />
             {getDirectionsFragment}
           </Box>
 
-          <Box>
+          <Box width={['100%', '50%', '25%']} padding={3}>
             <h2>
               <Text fontWeight="bold">Features</Text>
             </h2>
-            <ul>
+            <UnstyledList>
               {Object.entries(features).map(([key, feature]) => (
-                <li key={key}>
-                  {feature.icon} {feature.label} {feature.valueIcon}
-                </li>
+                <Box
+                  as="li"
+                  key={key}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Box display="flex" alignItems="center">
+                    <Box width="20px" display="flex" justifyContent="center">
+                      {feature.icon}
+                    </Box>
+                    <Spacer mr={2} />
+                    {feature.label}
+                  </Box>
+                  {feature.valueIcon}
+                </Box>
               ))}
-            </ul>
+            </UnstyledList>
           </Box>
 
-          <Box>
+          <Box width={['100%', '50%', '25%']} padding={3}>
             <h2>
               <Text fontWeight="bold">Notes</Text>
             </h2>
@@ -186,11 +233,37 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             </div>
           </Box>
 
-          <Box>
-            <h2>
-              <Text fontWeight="bold">Opening Times</Text>
-            </h2>
-            {data.opening || 'Unknown'}
+          <Box width={['100%', '50%', '25%']} padding={3}>
+            <Box display="flex" alignItems="center">
+              <Icon icon={faClock} />
+              <Spacer mr={1} />
+              <h2>
+                <Text fontWeight="bold">Opening Hours</Text>
+              </h2>
+            </Box>
+            <UnstyledList>
+              {openingTimes.map((timeRange, i) => (
+                <Box
+                  as="li"
+                  display="flex"
+                  justifyContent="space-between"
+                  key={i}
+                  padding={1}
+                  bg={i === todayWeekdayIndex ? 'ice' : 'white'}
+                >
+                  <span>{WEEKDAYS[i]}</span>
+                  <span>{getTimeRangeLabel(timeRange)}</span>
+                </Box>
+              ))}
+            </UnstyledList>
+            <Text fontSize={1} color="grey">
+              Hours may vary with national holidays or seasonalchanges. If you
+              know these hours to be out of date please{' '}
+              <Button as={Link} to={`/loos/${data.id}/edit`} variant="link">
+                edit this toilet
+              </Button>
+              .
+            </Text>
           </Box>
         </Grid>
       </Box>
@@ -203,35 +276,43 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
       color="primary"
       bg="white"
       minHeight={100}
-      borderRadius="36px 36px 0 0"
+      borderTopLeftRadius={4}
+      borderTopRightRadius={4}
       padding={4}
       as="section"
     >
       <Grid>
-        <Col gridColumn={1}>{titleFragment}</Col>
+        <Box width={['100%', '50%', '25%']} padding={3}>
+          {titleFragment}
+        </Box>
 
-        <Col gridColumn={2}>
-          <Box display="flex">
-            <Box mr={2}>
-              <FontAwesomeIcon icon={faClock} />
-            </Box>
+        <Box width={['100%', '50%', '25%']} padding={3}>
+          <Box display="flex" alignItems="center">
+            <Icon icon={faClock} />
+            <Spacer mr={1} />
             <h2>
               <Text fontWeight="bold">Opening Hours</Text>
             </h2>
           </Box>
-          {data.opening || 'Unknown'}
-        </Col>
+          {getIsOpenLabel(openingTimes)}
+        </Box>
 
-        <Col gridColumn={4} display="flex" justifyContent="flex-end">
-          <Box mr={2}>{getDirectionsFragment}</Box>
+        <Box
+          width={['100%', '50%']}
+          padding={3}
+          display="flex"
+          justifyContent={['flex-start', 'flex-start', 'flex-end']}
+        >
+          {getDirectionsFragment}
+          <Spacer mr={2} />
           <Button
             variant="secondary"
-            icon={<FontAwesomeIcon icon={faList} />}
+            icon={<Icon icon={faList} />}
             onClick={() => setIsExpanded(true)}
           >
             More details
           </Button>
-        </Col>
+        </Box>
       </Grid>
     </Box>
   );

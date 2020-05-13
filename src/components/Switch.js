@@ -21,7 +21,7 @@ const Switch = ({ checked, ...props }) => (
     {...props}
     aria-checked={checked}
     position="relative"
-    bg={checked ? 'active' : 'primary'}
+    bg={checked ? 'tertiary' : 'primary'}
     height={HEIGHT}
     width={WIDTH}
     borderRadius={18}
