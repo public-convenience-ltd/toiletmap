@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import Box from '../Box';
@@ -7,7 +8,7 @@ import { Media } from '../Media';
 import Footer from '../Footer';
 
 // Todo: Contact link
-const MainMenu = () => (
+const MainMenu = ({ showTrackingBanner, onShowTrackingBanner }) => (
   <Text
     fontWeight="bold"
     textAlign={['center', 'left']}
@@ -41,11 +42,19 @@ const MainMenu = () => (
 
       <Box as={Media} lessThan="md" mt="auto">
         <Text fontWeight="normal">
-          <Footer />
+          <Footer
+            showTrackingBanner={showTrackingBanner}
+            onShowTrackingBanner={onShowTrackingBanner}
+          />
         </Text>
       </Box>
     </Box>
   </Text>
 );
+
+MainMenu.propTypes = {
+  showTrackingBanner: PropTypes.bool,
+  onShowTrackingBanner: PropTypes.func.isRequired,
+};
 
 export default MainMenu;

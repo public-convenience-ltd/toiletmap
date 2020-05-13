@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import styled from '@emotion/styled';
 
@@ -23,8 +24,7 @@ const UseOurLoosLogo = styled((props) => (
   height: 2rem;
 `;
 
-// Todo: Link Cookie Policy
-const Footer = (props) => (
+const Footer = ({ showTrackingBanner, onShowTrackingBanner, props }) => (
   <Box
     as="footer"
     display="flex"
@@ -65,7 +65,15 @@ const Footer = (props) => (
     <Box order={[-1, 0]} mb={[4, 0]}>
       <Text fontSize={[12, 16]}>
         <Box as="ul" display={['block', 'flex']} alignItems="center">
-          <li>Cookie Policy</li>
+          <li>
+            <button
+              type="button"
+              aria-pressed={showTrackingBanner}
+              onClick={onShowTrackingBanner}
+            >
+              Cookie Preferences
+            </button>
+          </li>
           <Box as="li" ml={[0, 4]}>
             <Link to="/privacy">Privacy Policy</Link>
           </Box>
@@ -75,4 +83,9 @@ const Footer = (props) => (
   </Box>
 );
 
-export default withRouter(Footer);
+Footer.propTypes = {
+  showTrackingBanner: PropTypes.bool,
+  onShowTrackingBanner: PropTypes.func.isRequired,
+};
+
+export default Footer;

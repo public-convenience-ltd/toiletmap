@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import Box from '../Box';
@@ -12,7 +13,7 @@ import menu from './menu.svg';
 
 const MENU_HEIGHT = 60; // px
 
-const Header = () => {
+const Header = ({ showTrackingBanner, onShowTrackingBanner }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   return (
@@ -59,16 +60,27 @@ const Header = () => {
             overflowY="auto"
             hidden={!isMenuVisible}
           >
-            <MainMenu />
+            <MainMenu
+              showTrackingBanner={showTrackingBanner}
+              onShowTrackingBanner={onShowTrackingBanner}
+            />
           </Box>
         </Box>
 
         <Media greaterThan="sm">
-          <MainMenu />
+          <MainMenu
+            showTrackingBanner={showTrackingBanner}
+            onShowTrackingBanner={onShowTrackingBanner}
+          />
         </Media>
       </Box>
     </Box>
   );
+};
+
+Header.propTypes = {
+  showTrackingBanner: PropTypes.bool,
+  onShowTrackingBanner: PropTypes.func.isRequired,
 };
 
 export default Header;

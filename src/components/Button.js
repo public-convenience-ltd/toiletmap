@@ -15,12 +15,14 @@ const StyledButton = styled.button(
     justify-content: center;
     user-select: none;
     height: ${BUTTON_HEIGHT}px;
+    max-width: 300px;
     border-radius: ${BUTTON_HEIGHT / 2}px;
     border: none;
     padding: 0 ${props.theme.space[3]}px;
     border-style: solid;
     border-width: 2px;
     color: primary;
+    box-sizing: border-box;
   `,
   variant({
     variants: {
@@ -54,13 +56,9 @@ const ButtonIcon = ({ icon }) => {
 
 const Button = ({ children, icon, ...props }) => (
   <StyledButton type="button" {...props}>
-    {Boolean(icon) && (
-      <Text color="primary">
-        <ButtonIcon icon={icon} />
-      </Text>
-    )}
+    {Boolean(icon) && <ButtonIcon icon={icon} />}
 
-    <Text>{children}</Text>
+    <Text as="span">{children}</Text>
   </StyledButton>
 );
 

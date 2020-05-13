@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, useRef } from 'react';
 import { ThemeProvider } from 'emotion-theming';
 import { Global, css } from '@emotion/core';
 
@@ -7,11 +6,12 @@ import Box from './Box';
 import { MediaContextProvider, Media } from './Media';
 import Header from './Header';
 import Footer from './Footer';
+import TrackingBanner from './Tracking/TrackingBanner';
 
 import theme from '../theme';
+import config from '../config';
 
-// import { TRACKING_STORAGE_KEY } from './Tracking';
-// import TrackingPreferences from './Tracking/TrackingPreferences';
+import { TRACKING_STORAGE_KEY } from './Tracking';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
@@ -31,7 +31,8 @@ const ResetStyles = (
 
       /* remove default padding */
       ul[class],
-      ol[class] {
+      ol[class],
+      fieldset {
         padding: 0;
       }
 
@@ -49,7 +50,8 @@ const ResetStyles = (
       figcaption,
       blockquote,
       dl,
-      dd {
+      dd,
+      fieldset {
         margin: 0;
       }
 
@@ -108,6 +110,14 @@ const ResetStyles = (
         font: inherit;
       }
 
+      fieldset {
+        border: 0;
+      }
+
+      p + p {
+        margin-top: 1em;
+      }
+
       [hidden] {
         display: none !important;
       }
@@ -130,45 +140,54 @@ const ResetStyles = (
 );
 
 const PageLayout = (props) => {
-  // const mainRef = React.useRef();
+  const trackingRef = useRef(null);
+  const [isTrackingStateChosen, setIsTrackingStateChosen] = useState(
+    config.getSetting(TRACKING_STORAGE_KEY, 'trackingStateChosen')
+  );
 
-  // const [isCookieSettingsOpen, setIsCookieSettingsOpen] = React.useState(
-  //   !config.getSetting(TRACKING_STORAGE_KEY, 'trackingStateChosen')
-  // );
+  // stored indepedently from isTrackingStateChosen state since we should not programmatically
+  // update focus on the initial render
+  const [showTrackingBanner, setShowTrackingBanner] = useState(false);
 
-  // React.useEffect(() => {
-  //   if (mainRef.current && isCookieSettingsOpen) {
-  //     mainRef.current.scrollTop = 0;
-  //   }
-  // }, [mainRef, isCookieSettingsOpen]);
+  useEffect(() => {
+    // programmatically focus the banner header when its presence is initiated by the user
+    if (showTrackingBanner) {
+      setTimeout(() => {
+        trackingRef.current.focus();
+      }, 0);
+    }
+  }, [showTrackingBanner]);
 
   return (
     <ThemeProvider theme={theme}>
       <MediaContextProvider>
         {ResetStyles}
 
-        <Box display="flex" flexDirection="column" height="100%">
-          <Header />
+        {(!isTrackingStateChosen || showTrackingBanner) && (
+          <TrackingBanner
+            ref={trackingRef}
+            onClose={() => setIsTrackingStateChosen(false)}
+          />
+        )}
+
+        <Box as="main" display="flex" flexDirection="column" height="100%">
+          <Header
+            showTrackingBanner={showTrackingBanner}
+            onShowTrackingBanner={() => setShowTrackingBanner(true)}
+          />
 
           {props.children}
 
           <Box as={Media} greaterThan="sm" mt="auto">
             <Footer
-            // onCookieBoxButtonClick={() =>
-            //   setIsCookieSettingsOpen(!isCookieSettingsOpen)
-            // }
-            // isCookieSettingsOpen={isCookieSettingsOpen}
+              showTrackingBanner={showTrackingBanner}
+              onShowTrackingBanner={() => setShowTrackingBanner(true)}
             />
           </Box>
         </Box>
       </MediaContextProvider>
     </ThemeProvider>
   );
-};
-
-PageLayout.propTypes = {
-  main: PropTypes.element,
-  map: PropTypes.element,
 };
 
 export default PageLayout;
