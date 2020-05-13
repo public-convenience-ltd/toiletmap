@@ -145,16 +145,12 @@ const PageLayout = (props) => {
   return (
     <ThemeProvider theme={theme}>
       <MediaContextProvider>
-        <Box display="flex" flexDirection="column" height="100%">
-          {ResetStyles}
+        {ResetStyles}
 
+        <Box display="flex" flexDirection="column" height="100%">
           <Header />
 
-          <div>
-            {props.main && React.cloneElement(props.main, props)}
-
-            {props.map && React.cloneElement(props.map, props)}
-          </div>
+          {props.children}
 
           <Box as={Media} greaterThan="sm" mt="auto">
             <Footer
@@ -164,11 +160,6 @@ const PageLayout = (props) => {
             // isCookieSettingsOpen={isCookieSettingsOpen}
             />
           </Box>
-
-          {/*<TrackingPreferences
-            isOpen={isCookieSettingsOpen}
-            onClose={() => setIsCookieSettingsOpen(false)}
-          />*/}
         </Box>
       </MediaContextProvider>
     </ThemeProvider>
