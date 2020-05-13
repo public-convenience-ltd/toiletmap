@@ -23,7 +23,12 @@ import Button from './Button';
 import Text from './Text';
 import Spacer from './Spacer';
 import Icon from './Icon';
-import { getOpeningTimes, getIntervalLabel } from '../openingHours';
+import {
+  getOpeningTimes,
+  getIsOpen,
+  WEEKDAYS,
+  rangeTypes,
+} from '../openingHours';
 
 const Grid = styled(Box)`
   display: flex;
@@ -36,13 +41,35 @@ const UnstyledList = styled.ul`
   list-style: none;
 `;
 
+function getTimeRangeLabel(range) {
+  if (range === rangeTypes.CLOSED) {
+    return 'Closed';
+  }
+
+  if (range.length === 2) {
+    return range.join(' - ');
+  }
+
+  return 'Unknown';
+}
+
+function getIsOpenLabel(openingTimes = [], dateTime = DateTime.local()) {
+  const dayToCheckRange = openingTimes[dateTime.weekday - 1];
+
+  if (dayToCheckRange === rangeTypes.UNKNOWN) {
+    return 'Unknown';
+  }
+
+  return getIsOpen(openingTimes, dateTime) ? 'Open now' : 'Closed';
+}
+
 const ToiletDetailsPanel = ({ data, isLoading }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
 
-  // return to default view if isLoading or data changes (e.g. a user has selected a new marker)
-  React.useEffect(() => {
-    setIsExpanded(false);
-  }, [isLoading, data]);
+  // collapse panel if isLoading or data changes (e.g. a user has selected a new marker)
+  // React.useEffect(() => {
+  //   setIsExpanded(false);
+  // }, [isLoading, data]);
 
   if (isLoading) {
     return (
@@ -215,7 +242,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
               </h2>
             </Box>
             <UnstyledList>
-              {openingTimes.map((time, i) => (
+              {openingTimes.map((timeRange, i) => (
                 <Box
                   as="li"
                   display="flex"
@@ -224,8 +251,8 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
                   padding={1}
                   bg={i === todayWeekdayIndex ? 'ice' : 'white'}
                 >
-                  <span>{time.day}</span>
-                  <span>{getIntervalLabel(time.interval)}</span>
+                  <span>{WEEKDAYS[i]}</span>
+                  <span>{getTimeRangeLabel(timeRange)}</span>
                 </Box>
               ))}
             </UnstyledList>
@@ -267,7 +294,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
               <Text fontWeight="bold">Opening Hours</Text>
             </h2>
           </Box>
-          {data.opening || 'Unknown'}
+          {getIsOpenLabel(openingTimes)}
         </Box>
 
         <Box
