@@ -90,11 +90,9 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
   }
 
   const titleFragment = (
-    <h1>
-      <Text fontWeight="bold" fontSize={4}>
-        {data.name || 'Unnamed Toilet'}
-      </Text>
-    </h1>
+    <Text fontWeight="bold" fontSize={4}>
+      <h1>{data.name || 'Unnamed Toilet'}</h1>
+    </Text>
   );
 
   const getDirectionsFragment = (
@@ -216,9 +214,9 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
           </Box>
 
           <Box width={['100%', '50%', '25%']} padding={3}>
-            <h2>
-              <Text fontWeight="bold">Features</Text>
-            </h2>
+            <Text fontWeight="bold">
+              <h2>Features</h2>
+            </Text>
             <Spacer mb={2} />
             <UnstyledList>
               {features.map((feature) => (
@@ -245,9 +243,9 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             {Boolean(data.fee) && (
               <>
                 <Spacer mb={3} />
-                <h2>
-                  <Text fontWeight="bold">Fee</Text>
-                </h2>
+                <Text fontWeight="bold">
+                  <h2>Fee</h2>
+                </Text>
                 <Spacer mb={2} />
                 {data.fee}
               </>
@@ -257,9 +255,9 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
           <Box width={['100%', '50%', '25%']} padding={3}>
             {Boolean(data.notes) && (
               <>
-                <h2>
-                  <Text fontWeight="bold">Notes</Text>
-                </h2>
+                <Text fontWeight="bold">
+                  <h2>Notes</h2>
+                </Text>
                 <Spacer mb={2} />
                 <div>
                   {data.notes.split('\n').map((string, i) => (
@@ -274,9 +272,9 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             <Box display="flex" alignItems="center">
               <Icon icon={faClock} />
               <Spacer mr={2} />
-              <h2>
-                <Text fontWeight="bold">Opening Hours</Text>
-              </h2>
+              <Text fontWeight="bold">
+                <h2>Opening Hours</h2>
+              </Text>
             </Box>
             <Spacer mb={2} />
             <UnstyledList>
@@ -329,9 +327,9 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
           <Box display="flex" alignItems="center">
             <Icon icon={faClock} />
             <Spacer mr={2} />
-            <h2>
-              <Text fontWeight="bold">Opening Hours</Text>
-            </h2>
+            <Text fontWeight="bold">
+              <h2>Opening Hours</h2>
+            </Text>
           </Box>
           <Spacer mb={2} />
           {getIsOpenLabel(openingTimes)}
