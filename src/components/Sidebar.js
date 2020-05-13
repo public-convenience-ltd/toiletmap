@@ -39,7 +39,7 @@ Arrow.propTypes = {
   isExpanded: PropTypes.bool,
 };
 
-const Sidebar = ({ filters, onFilterChange }) => {
+const Sidebar = ({ filters, onFilterChange, onSelectedItemChange }) => {
   const [isAddExpanded, setIsAddExpanded] = useState(false);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
@@ -60,7 +60,7 @@ const Sidebar = ({ filters, onFilterChange }) => {
         </h2>
 
         <Box mt={3}>
-          <LocationSearch />
+          <LocationSearch onSelectedItemChange={onSelectedItemChange} />
         </Box>
       </section>
 
@@ -163,6 +163,7 @@ const Sidebar = ({ filters, onFilterChange }) => {
 Sidebar.propTypes = {
   filters: PropTypes.object.isRequired,
   onFilterChange: PropTypes.func.isRequired,
+  onSelectedItemChange: PropTypes.func.isRequired,
 };
 
 export default Sidebar;

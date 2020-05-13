@@ -143,7 +143,7 @@ const ResetStyles = (
   />
 );
 
-const PageLayout = (props) => {
+const PageLayout = ({ onSelectedItemChange, ...props }) => {
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   // const mainRef = React.useRef();
 
@@ -192,7 +192,7 @@ const PageLayout = (props) => {
                 p={3}
                 width="100%"
               >
-                <LocationSearch />
+                <LocationSearch onSelectedItemChange={onSelectedItemChange} />
 
                 <Box display="flex" justifyContent="center" mt={3}>
                   <Button
@@ -246,7 +246,11 @@ const PageLayout = (props) => {
               </Box>
 
               <Media greaterThan="sm">
-                <Sidebar filters={filters} onFilterChange={setFilters} />
+                <Sidebar
+                  filters={filters}
+                  onFilterChange={setFilters}
+                  onSelectedItemChange={onSelectedItemChange}
+                />
               </Media>
             </aside>
           </Box>
@@ -266,8 +270,7 @@ const PageLayout = (props) => {
 };
 
 PageLayout.propTypes = {
-  main: PropTypes.element,
-  map: PropTypes.element,
+  onSelectedItemChange: PropTypes.func.isRequired,
 };
 
 export default PageLayout;
