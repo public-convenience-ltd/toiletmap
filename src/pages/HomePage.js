@@ -44,7 +44,7 @@ const HomePage = ({ initialPosition, ...props }) => {
   });
 
   return (
-    <PageLayout>
+    <PageLayout onSelectedItemChange={(center) => setMapPosition({ center })}>
       <Box height="100%" display="flex" position="relative">
         <LooMap
           loos={loos}
