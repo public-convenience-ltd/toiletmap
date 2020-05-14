@@ -38,6 +38,11 @@ const ResetStyles = (
         box-sizing: border-box;
       }
 
+      *:focus {
+        outline: 1px dotted currentColor;
+        outline-offset: 0.5rem;
+      }
+
       /* remove default padding */
       ul,
       ol {
