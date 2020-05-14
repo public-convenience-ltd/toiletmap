@@ -41,11 +41,11 @@ const StyledButton = styled.button(
       link: {
         color: 'primary',
         border: 'none',
-        height: 'auto',
         background: 'none',
         textDecoration: 'underline',
         fontWeight: 'normal',
         padding: 0,
+        minHeight: 0,
       },
     },
   })
