@@ -5,11 +5,12 @@ import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
 import { Media } from '../Media';
 import Drawer from '../Drawer';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+
+import Icon from '../Icon';
 
 import Logo from './Logo';
 import MainMenu from './MainMenu';
-
-import menu from './menu.svg';
 
 const Header = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -42,7 +43,7 @@ const Header = () => {
             onClick={() => setIsMenuVisible(!isMenuVisible)}
           >
             <VisuallyHidden>Toggle main menu</VisuallyHidden>
-            <img src={menu} alt="" />
+            <Icon icon={faBars} size="2x" />
           </button>
 
           <Drawer visible={isMenuVisible}>
