@@ -46,7 +46,7 @@ const Header = () => {
             <Icon icon={faBars} size="2x" />
           </button>
 
-          <Drawer visible={isMenuVisible}>
+          <Drawer visible={isMenuVisible} zIndex={50}>
             <MainMenu />
           </Drawer>
         </Box>
