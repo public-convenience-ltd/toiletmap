@@ -1,14 +1,15 @@
 query findLooById($id: ID) {
   loo(id: $id) {
     id
-		createdAt
+    createdAt
     updatedAt
+    verifiedAt
     active
     location {
       lat
       lng
     }
-	  area {
+    area {
       name
       type
     }
