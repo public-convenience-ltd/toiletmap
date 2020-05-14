@@ -54,13 +54,13 @@ function getTimeRangeLabel(range) {
 }
 
 function getIsOpenLabel(openingTimes = [], dateTime = DateTime.local()) {
-  const dayToCheckRange = openingTimes[dateTime.weekday - 1];
+  const isOpen = getIsOpen(openingTimes, dateTime);
 
-  if (dayToCheckRange === rangeTypes.UNKNOWN) {
+  if (isOpen === null) {
     return 'Unknown';
   }
 
-  return getIsOpen(openingTimes, dateTime) ? 'Open now' : 'Closed';
+  return isOpen ? 'Open now' : 'Closed';
 }
 
 const ToiletDetailsPanel = ({ data, isLoading }) => {
