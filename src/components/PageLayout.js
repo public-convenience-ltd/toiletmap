@@ -210,7 +210,7 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
                   </Button>
                 </Box>
 
-                <Drawer visible={isFiltersExpanded}>
+                <Drawer visible={isFiltersExpanded} animateFrom="left">
                   <Box display="flex" justifyContent="space-between" mb={4}>
                     <Box display="flex" alignItems="flex-end">
                       <FontAwesomeIcon icon={faFilter} fixedWidth size="lg" />
