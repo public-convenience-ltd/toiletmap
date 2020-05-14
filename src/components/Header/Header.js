@@ -37,7 +37,8 @@ const Header = () => {
 
         <Box as={Media} at="sm" display="flex" justifyContent="flex-end">
           <button
-            aria-pressed={isMenuVisible}
+            type="button"
+            aria-expanded={isMenuVisible}
             onClick={() => setIsMenuVisible(!isMenuVisible)}
           >
             <VisuallyHidden>Toggle main menu</VisuallyHidden>
