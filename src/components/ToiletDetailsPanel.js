@@ -239,20 +239,19 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
                 </Box>
               ))}
             </UnstyledList>
+          </Box>
 
+          <Box width={['100%', '50%', '25%']} padding={3}>
             {Boolean(data.fee) && (
               <>
-                <Spacer mb={3} />
                 <Text fontWeight="bold">
                   <h2>Fee</h2>
                 </Text>
                 <Spacer mb={2} />
                 {data.fee}
+                <Spacer mb={3} />
               </>
             )}
-          </Box>
-
-          <Box width={['100%', '50%', '25%']} padding={3}>
             {Boolean(data.notes) && (
               <>
                 <Text fontWeight="bold">
@@ -261,7 +260,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
                 <Spacer mb={2} />
                 <div>
                   {data.notes.split('\n').map((string, i) => (
-                    <p key={i}>{string}</p>
+                    <div key={i}>{string}</div>
                   ))}
                 </div>
               </>
