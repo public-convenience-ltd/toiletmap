@@ -127,6 +127,14 @@ const ResetStyles = (
         margin-top: 1em;
       }
 
+      a:hover,
+      a:focus,
+      button:hover,
+      button:focus {
+        color: ${theme.colors.tertiary};
+        transition: all 0.2s ease;
+      }
+
       [hidden] {
         display: none !important;
       }
