@@ -23,7 +23,7 @@ const Arrow = styled((props) => <Icon icon={faAngleRight} {...props} />, {
     return isPropValid(prop) && prop !== 'isExpanded';
   },
 })`
-  transition: transform 0.25s ease;
+  transition: transform 0.2s ease;
 
   ${(props) =>
     props.isExpanded &&
