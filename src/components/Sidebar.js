@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
+import { useTheme } from 'emotion-theming';
 import isPropValid from '@emotion/is-prop-valid';
 import {
   faFilter,
@@ -37,6 +38,7 @@ Arrow.propTypes = {
 };
 
 const Sidebar = ({ filters, onFilterChange, onSelectedItemChange }) => {
+  const theme = useTheme();
   const [isAddExpanded, setIsAddExpanded] = useState(false);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
@@ -49,7 +51,9 @@ const Sidebar = ({ filters, onFilterChange, onSelectedItemChange }) => {
       borderRadius={35}
       bg="white"
       width="100%"
+      maxHeight={`calc(100% - ${theme.space[4]}px)`}
       maxWidth={326}
+      overflowY="auto"
     >
       <section aria-labelledby="heading-search">
         <h2 id="heading-search">
