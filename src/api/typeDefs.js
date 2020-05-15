@@ -43,6 +43,7 @@ const typeDefs = gql`
     id: ID
     createdAt: DateTime
     updatedAt: DateTime
+    verifiedAt: DateTime
     reports: [Report]
     active: Boolean
     location: Point
@@ -96,6 +97,7 @@ const typeDefs = gql`
       @redact(requires: VIEW_CONTRIBUTOR_INFO, replace: Anonymous)
     "When the report was added to the system"
     createdAt: DateTime!
+    verifiedAt: DateTime
     """
     A link to the previous report in the chain
     This is nullable since this might be the first report about a particular toilet
@@ -286,9 +288,12 @@ const typeDefs = gql`
     loo: Loo
   }
 
-  type Mutation @auth(requires: SUBMIT_REPORT) {
+  type Mutation {
     submitReport(report: ReportInput): ReportMutationResponse
+      @auth(requires: SUBMIT_REPORT)
     submitRemovalReport(report: RemovalReportInput): ReportMutationResponse
+      @auth(requires: SUBMIT_REPORT)
+    submitVerificationReport(id: ID): ReportMutationResponse
   }
 `;
 

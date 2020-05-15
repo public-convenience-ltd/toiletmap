@@ -22,6 +22,7 @@ const looInfoResolver = (property) => {
     fee: resolve,
     notes: resolve,
     removalReason: resolve,
+    verifiedAt: resolve,
   };
 };
 
@@ -277,6 +278,28 @@ const resolvers = {
           code: '200',
           success: true,
           message: 'Report processed',
+          report: result[0],
+          loo: result[1],
+        };
+      } catch (e) {
+        return {
+          code: '400',
+          success: false,
+          message: e,
+        };
+      }
+    },
+    submitVerificationReport: async (parent, args, context) => {
+      const report = {
+        verifiedAt: new Date(),
+      };
+
+      try {
+        const result = await Report.submit(report, null, args.id);
+        return {
+          code: '200',
+          success: true,
+          message: 'Toilet data verified',
           report: result[0],
           loo: result[1],
         };

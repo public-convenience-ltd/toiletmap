@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { faClock } from '@fortawesome/free-regular-svg-icons';
+import { faClock, faEdit } from '@fortawesome/free-regular-svg-icons';
 import {
   faDirections,
   faList,
@@ -29,6 +29,7 @@ import {
   WEEKDAYS,
   rangeTypes,
 } from '../openingHours';
+import { useMutation, gql } from '@apollo/client';
 
 const Grid = styled(Box)`
   display: flex;
@@ -54,17 +55,33 @@ function getTimeRangeLabel(range) {
 }
 
 function getIsOpenLabel(openingTimes = [], dateTime = DateTime.local()) {
-  const dayToCheckRange = openingTimes[dateTime.weekday - 1];
+  const isOpen = getIsOpen(openingTimes, dateTime);
 
-  if (dayToCheckRange === rangeTypes.UNKNOWN) {
+  if (isOpen === null) {
     return 'Unknown';
   }
 
-  return getIsOpen(openingTimes, dateTime) ? 'Open now' : 'Closed';
+  return isOpen ? 'Open now' : 'Closed';
 }
+
+const SUBMIT_VERIFICATION_REPORT_MUTATION = gql`
+  mutation submitVerificationReportMutation($id: ID) {
+    submitVerificationReport(id: $id) {
+      loo {
+        id
+        verifiedAt
+      }
+    }
+  }
+`;
 
 const ToiletDetailsPanel = ({ data, isLoading }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
+
+  const [
+    submitVerificationReport,
+    { loading: submitVerificationLoading },
+  ] = useMutation(SUBMIT_VERIFICATION_REPORT_MUTATION);
 
   // collapse panel if isLoading or data changes (e.g. a user has selected a new marker)
   // React.useEffect(() => {
@@ -171,13 +188,25 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
   const openingTimes = getOpeningTimes(data.opening);
   const todayWeekdayIndex = DateTime.local().weekday - 1;
 
+  const editUrl = `/loos/${data.id}/edit`;
+
+  const updatedAt = DateTime.fromISO(data.updatedAt);
+  let verifiedOrUpdatedDate = updatedAt;
+  if (data.verifiedAt) {
+    const verifiedAt = DateTime.fromISO(data.verifiedAt);
+    if (updatedAt < verifiedAt) {
+      verifiedOrUpdatedDate = verifiedAt;
+    }
+  }
+
   if (isExpanded) {
     return (
       <Box
         width="100%"
         color="primary"
         bg="white"
-        minHeight={100}
+        maxHeight={400}
+        overflow="auto"
         borderTopLeftRadius={4}
         borderTopRightRadius={4}
         padding={4}
@@ -211,6 +240,72 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             {titleFragment}
             <Spacer mb={2} />
             {getDirectionsFragment}
+            <Spacer mb={4} />
+            <Text fontWeight="bold">
+              <h2>Is this information correct?</h2>
+            </Text>
+            <Spacer mb={2} />
+            <Box display="flex" alignItems="center">
+              <Button
+                onClick={() =>
+                  submitVerificationReport({ variables: { id: data.id } })
+                }
+                disabled={submitVerificationLoading}
+              >
+                Yes
+              </Button>
+              <Spacer mr={4} />
+              <Box display="flex" alignItems="center">
+                No?
+                <Spacer mr={2} />
+                <Button
+                  variant="secondary"
+                  icon={<Icon icon={faEdit} />}
+                  as={Link}
+                  to={editUrl}
+                >
+                  Edit
+                </Button>
+              </Box>
+            </Box>
+            <Spacer mb={2} />
+            Last verified:{' '}
+            {verifiedOrUpdatedDate.toLocaleString(DateTime.DATETIME_SHORT)}
+          </Box>
+
+          <Box width={['100%', '50%', '25%']} padding={3} order={[0, 1]}>
+            <Box display="flex" alignItems="center">
+              <Icon icon={faClock} />
+              <Spacer mr={2} />
+              <Text fontWeight="bold">
+                <h2>Opening Hours</h2>
+              </Text>
+            </Box>
+            <Spacer mb={2} />
+            <UnstyledList>
+              {openingTimes.map((timeRange, i) => (
+                <Box
+                  as="li"
+                  display="flex"
+                  justifyContent="space-between"
+                  key={i}
+                  padding={1}
+                  bg={i === todayWeekdayIndex ? 'ice' : 'white'}
+                >
+                  <span>{WEEKDAYS[i]}</span>
+                  <span>{getTimeRangeLabel(timeRange)}</span>
+                </Box>
+              ))}
+            </UnstyledList>
+            <Spacer mb={2} />
+            <Text fontSize={1} color="grey">
+              Hours may vary with national holidays or seasonal changes. If you
+              know these hours to be out of date please{' '}
+              <Button as={Link} to={editUrl} variant="link">
+                edit this toilet
+              </Button>
+              .
+            </Text>
           </Box>
 
           <Box width={['100%', '50%', '25%']} padding={3}>
@@ -239,20 +334,19 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
                 </Box>
               ))}
             </UnstyledList>
+          </Box>
 
+          <Box width={['100%', '50%', '25%']} padding={3}>
             {Boolean(data.fee) && (
               <>
-                <Spacer mb={3} />
                 <Text fontWeight="bold">
                   <h2>Fee</h2>
                 </Text>
                 <Spacer mb={2} />
                 {data.fee}
+                <Spacer mb={3} />
               </>
             )}
-          </Box>
-
-          <Box width={['100%', '50%', '25%']} padding={3}>
             {Boolean(data.notes) && (
               <>
                 <Text fontWeight="bold">
@@ -261,46 +355,11 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
                 <Spacer mb={2} />
                 <div>
                   {data.notes.split('\n').map((string, i) => (
-                    <p key={i}>{string}</p>
+                    <div key={i}>{string}</div>
                   ))}
                 </div>
               </>
             )}
-          </Box>
-
-          <Box width={['100%', '50%', '25%']} padding={3}>
-            <Box display="flex" alignItems="center">
-              <Icon icon={faClock} />
-              <Spacer mr={2} />
-              <Text fontWeight="bold">
-                <h2>Opening Hours</h2>
-              </Text>
-            </Box>
-            <Spacer mb={2} />
-            <UnstyledList>
-              {openingTimes.map((timeRange, i) => (
-                <Box
-                  as="li"
-                  display="flex"
-                  justifyContent="space-between"
-                  key={i}
-                  padding={1}
-                  bg={i === todayWeekdayIndex ? 'ice' : 'white'}
-                >
-                  <span>{WEEKDAYS[i]}</span>
-                  <span>{getTimeRangeLabel(timeRange)}</span>
-                </Box>
-              ))}
-            </UnstyledList>
-            <Spacer mb={2} />
-            <Text fontSize={1} color="grey">
-              Hours may vary with national holidays or seasonal changes. If you
-              know these hours to be out of date please{' '}
-              <Button as={Link} to={`/loos/${data.id}/edit`} variant="link">
-                edit this toilet
-              </Button>
-              .
-            </Text>
           </Box>
         </Grid>
       </Box>
@@ -340,6 +399,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
           padding={3}
           display="flex"
           justifyContent={['flex-start', 'flex-start', 'flex-end']}
+          alignItems="center"
         >
           {getDirectionsFragment}
           <Spacer mr={2} />
