@@ -17,6 +17,7 @@ import EditPage from './pages/EditPage';
 import LoginPage from './pages/LoginPage';
 import MapPage from './pages/MapPage';
 import UseOurLoosPage from './pages/UseOurLoosPage';
+import CookiesPage from './pages/CookiesPage';
 import PrivacyPage from './pages/PrivacyPage';
 import NotFound from './pages/404';
 import Tracking from './components/Tracking';
@@ -39,6 +40,7 @@ ReactDOM.render(
             <Route exact path="/" component={HomePage} />
             <Route path="/loos/:id" exact component={HomePage} />
             <Route exact path="/about" component={AboutPage} />
+            <Route exact path="/cookies" component={CookiesPage} />
             <Route exact path="/privacy" component={PrivacyPage} />
             <Route exact path="/use-our-loos" component={UseOurLoosPage} />
             <Route path="/login" render={(props) => <LoginPage {...props} />} />

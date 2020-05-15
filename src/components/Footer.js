@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import styled from '@emotion/styled';
 
@@ -23,8 +23,7 @@ const UseOurLoosLogo = styled((props) => (
   height: 2rem;
 `;
 
-// Todo: Link Cookie Policy
-const Footer = (props) => (
+const Footer = ({ children }) => (
   <Box
     as="footer"
     display="flex"
@@ -65,7 +64,10 @@ const Footer = (props) => (
     <Box order={[-1, 0]} mb={[4, 0]}>
       <Text fontSize={[12, 16]}>
         <Box as="ul" display={['block', 'flex']} alignItems="center">
-          <li>Cookie Policy</li>
+          {React.Children.toArray(children, (child, index) => (
+            <li key={index}>{child}</li>
+          ))}
+
           <Box as="li" ml={[0, 4]}>
             <Link to="/privacy">Privacy Policy</Link>
           </Box>
@@ -75,4 +77,4 @@ const Footer = (props) => (
   </Box>
 );
 
-export default withRouter(Footer);
+export default Footer;
