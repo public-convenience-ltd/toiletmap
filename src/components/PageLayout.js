@@ -38,6 +38,11 @@ const ResetStyles = (
         box-sizing: border-box;
       }
 
+      *:focus {
+        outline: 1px dotted currentColor;
+        outline-offset: 0.5rem;
+      }
+
       /* remove default padding */
       ul,
       ol {
@@ -120,6 +125,14 @@ const ResetStyles = (
 
       p + p {
         margin-top: 1em;
+      }
+
+      a:hover,
+      a:focus,
+      button:hover,
+      button:focus {
+        color: ${theme.colors.tertiary};
+        transition: all 0.2s ease;
       }
 
       [hidden] {

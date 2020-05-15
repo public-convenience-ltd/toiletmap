@@ -14,7 +14,7 @@ const Drawer = ({ visible, ...props }) => (
     width="100%"
     bg="white"
     p={3}
-    zIndex={10000}
+    zIndex={10}
     overflowY="auto"
     hidden={!visible}
     {...props}

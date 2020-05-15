@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import isPropValid from '@emotion/is-prop-valid';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFilter,
   faAngleRight,
@@ -14,19 +13,17 @@ import VisuallyHidden from './VisuallyHidden';
 import Box from './Box';
 import Text from './Text';
 import Button from './Button';
+import Icon from './Icon';
 import LocationSearch from './LocationSearch';
 import Divider from './Divider';
 import Filters from './Filters';
 
-const Arrow = styled(
-  (props) => <FontAwesomeIcon icon={faAngleRight} {...props} />,
-  {
-    shouldForwardProp: (prop) => {
-      return isPropValid(prop) && prop !== 'isExpanded';
-    },
-  }
-)`
-  transition: transform 0.25s ease;
+const Arrow = styled((props) => <Icon icon={faAngleRight} {...props} />, {
+  shouldForwardProp: (prop) => {
+    return isPropValid(prop) && prop !== 'isExpanded';
+  },
+})`
+  transition: transform 0.2s ease;
 
   ${(props) =>
     props.isExpanded &&
@@ -80,7 +77,7 @@ const Sidebar = ({ filters, onFilterChange, onSelectedItemChange }) => {
             aria-expanded={isFilterExpanded}
             onClick={() => setIsFilterExpanded(!isFilterExpanded)}
           >
-            <FontAwesomeIcon icon={faFilter} fixedWidth size="lg" />
+            <Icon icon={faFilter} fixedWidth size="lg" />
             <Box mx={2}>
               <Text lineHeight={1}>
                 <b>Filter</b>
@@ -125,7 +122,7 @@ const Sidebar = ({ filters, onFilterChange, onSelectedItemChange }) => {
           display="flex"
           alignItems="center"
         >
-          <FontAwesomeIcon icon={faPlusCircle} fixedWidth size="lg" />
+          <Icon icon={faPlusCircle} fixedWidth size="lg" />
           <Box as="b" mx={2}>
             <Text lineHeight={1}>Add a Loo</Text>
           </Box>
@@ -146,7 +143,6 @@ const Sidebar = ({ filters, onFilterChange, onSelectedItemChange }) => {
 
           <Box mt={3}>
             <Button
-              type="secondary"
               css={{
                 width: '100%',
               }}
