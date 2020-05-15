@@ -44,6 +44,10 @@ function getIsOpen(openingTimes = [], dateTime = DateTime.local()) {
   const weekdayToCheck = dateTime.weekday;
   const timeRangeToCheck = openingTimes[weekdayToCheck - 1];
 
+  if (timeRangeToCheck === rangeTypes.UNKNOWN) {
+    return null;
+  }
+
   if (timeRangeToCheck === rangeTypes.CLOSED) {
     return false;
   }
