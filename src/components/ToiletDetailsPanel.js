@@ -88,6 +88,14 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
   //   setIsExpanded(false);
   // }, [isLoading, data]);
 
+  // programmatically set focus on close button when panel expands
+  const closeButtonRef = React.useRef();
+  React.useEffect(() => {
+    if (isExpanded && closeButtonRef.current) {
+      closeButtonRef.current.focus();
+    }
+  }, [isExpanded]);
+
   if (isLoading) {
     return (
       <Box
@@ -108,7 +116,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
 
   const titleFragment = (
     <Text fontWeight="bold" fontSize={4}>
-      <h1>{data.name || 'Unnamed Toilet'}</h1>
+      <h2 id="toilet-details-heading">{data.name || 'Unnamed Toilet'}</h2>
     </Text>
   );
 
@@ -212,6 +220,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         padding={4}
         paddingRight={5}
         as="section"
+        aria-labelledby="toilet-details-heading"
       >
         <Grid>
           <Box position="absolute" top={30} right={30}>
@@ -219,6 +228,8 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
               type="button"
               aria-label="Close toilet details"
               onClick={() => setIsExpanded(false)}
+              aria-expanded="true"
+              ref={closeButtonRef}
             >
               <Box
                 height={26}
@@ -310,7 +321,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
 
           <Box width={['100%', '50%', '25%']} padding={3}>
             <Text fontWeight="bold">
-              <h2>Features</h2>
+              <h3>Features</h3>
             </Text>
             <Spacer mb={2} />
             <UnstyledList>
@@ -340,7 +351,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             {Boolean(data.fee) && (
               <>
                 <Text fontWeight="bold">
-                  <h2>Fee</h2>
+                  <h3>Fee</h3>
                 </Text>
                 <Spacer mb={2} />
                 {data.fee}
@@ -350,7 +361,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             {Boolean(data.notes) && (
               <>
                 <Text fontWeight="bold">
-                  <h2>Notes</h2>
+                  <h3>Notes</h3>
                 </Text>
                 <Spacer mb={2} />
                 <div>
@@ -376,6 +387,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
       borderTopRightRadius={4}
       padding={4}
       as="section"
+      aria-labelledby="toilet-details-heading"
     >
       <Grid>
         <Box width={['100%', '50%', '25%']} padding={3}>
@@ -387,7 +399,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             <Icon icon={faClock} />
             <Spacer mr={2} />
             <Text fontWeight="bold">
-              <h2>Opening Hours</h2>
+              <h3>Opening Hours</h3>
             </Text>
           </Box>
           <Spacer mb={2} />
@@ -407,6 +419,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             variant="secondary"
             icon={<Icon icon={faList} />}
             onClick={() => setIsExpanded(true)}
+            aria-expanded="false"
           >
             More details
           </Button>
