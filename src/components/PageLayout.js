@@ -1,15 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { ThemeProvider } from 'emotion-theming';
 import { Global, css } from '@emotion/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 import Box from './Box';
+import Text from './Text';
+import Button from './Button';
 import { MediaContextProvider, Media } from './Media';
 import Header from './Header';
 import Footer from './Footer';
 import TrackingBanner from './Tracking/TrackingBanner';
+import Sidebar from './Sidebar';
+import LocationSearch from './LocationSearch';
+import Drawer from './Drawer';
+import Filters from './Filters';
 
 import theme from '../theme';
-import config from '../config';
+import config, { FILTERS_KEY } from '../config';
 
 import { TRACKING_STORAGE_KEY } from './Tracking';
 
@@ -29,9 +38,14 @@ const ResetStyles = (
         box-sizing: border-box;
       }
 
+      *:focus {
+        outline: 1px dotted currentColor;
+        outline-offset: 0.5rem;
+      }
+
       /* remove default padding */
-      ul[class],
-      ol[class],
+      ul,
+      ol,
       fieldset {
         padding: 0;
       }
@@ -67,6 +81,7 @@ const ResetStyles = (
         text-rendering: optimizeSpeed;
         line-height: 1.5;
         font-family: 'Open Sans', sans-serif;
+        color: ${theme.colors.primary};
       }
 
       /* remove list styles on ul, ol elements */
@@ -118,6 +133,14 @@ const ResetStyles = (
         margin-top: 1em;
       }
 
+      a:hover,
+      a:focus,
+      button:hover,
+      button:focus {
+        color: ${theme.colors.tertiary};
+        transition: all 0.2s ease;
+      }
+
       [hidden] {
         display: none !important;
       }
@@ -139,8 +162,9 @@ const ResetStyles = (
   />
 );
 
-const PageLayout = (props) => {
+const PageLayout = ({ onSelectedItemChange, ...props }) => {
   const trackingRef = useRef(null);
+
   const [isTrackingStateChosen, setIsTrackingStateChosen] = useState(
     config.getSetting(TRACKING_STORAGE_KEY, 'trackingStateChosen')
   );
@@ -148,6 +172,8 @@ const PageLayout = (props) => {
   // stored indepedently from isTrackingStateChosen state since we should not programmatically
   // update focus on the initial render
   const [showTrackingBanner, setShowTrackingBanner] = useState(false);
+
+  const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
 
   useEffect(() => {
     // programmatically focus the banner header when its presence is initiated by the user
@@ -157,6 +183,20 @@ const PageLayout = (props) => {
       }, 0);
     }
   }, [showTrackingBanner]);
+
+  let initialState = config.getSettings(FILTERS_KEY);
+
+  // default any unsaved filters as 'false'
+  config.filters.forEach((filter) => {
+    initialState[filter.id] = initialState[filter.id] || false;
+  });
+
+  const [filters, setFilters] = useState(initialState);
+
+  // keep local storage and state in sync
+  React.useEffect(() => {
+    window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
+  }, [filters]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -176,7 +216,81 @@ const PageLayout = (props) => {
             onShowTrackingBanner={() => setShowTrackingBanner(true)}
           />
 
-          {props.children}
+          <Box position="relative" flexGrow={1}>
+            <Box as="main" height="100%" children={props.children} />
+
+            <aside>
+              <Box
+                as={Media}
+                lessThan="md"
+                position="absolute"
+                top={0}
+                left={0}
+                p={3}
+                width="100%"
+              >
+                <LocationSearch onSelectedItemChange={onSelectedItemChange} />
+
+                <Box display="flex" justifyContent="center" mt={3}>
+                  <Button
+                    variant="secondary"
+                    icon={<FontAwesomeIcon icon={faFilter} />}
+                    aria-expanded={isFiltersExpanded}
+                    onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
+                  >
+                    Filter Map
+                  </Button>
+                </Box>
+
+                <Drawer visible={isFiltersExpanded} animateFrom="left">
+                  <Box display="flex" justifyContent="space-between" mb={4}>
+                    <Box display="flex" alignItems="flex-end">
+                      <FontAwesomeIcon icon={faFilter} fixedWidth size="lg" />
+                      <Box as="h2" mx={2}>
+                        <Text lineHeight={1}>
+                          <b>Filter</b>
+                        </Text>
+                      </Box>
+                    </Box>
+
+                    <Text fontSize={12}>
+                      <Box
+                        as="button"
+                        type="button"
+                        onClick={() => setFilters({})}
+                        border={0}
+                        borderBottom={2}
+                        borderStyle="solid"
+                      >
+                        Reset Filter
+                      </Box>
+                    </Text>
+                  </Box>
+
+                  <Filters filters={filters} onFilterChange={setFilters} />
+
+                  <Box display="flex" justifyContent="center" mt={4}>
+                    <Button
+                      onClick={() => setIsFiltersExpanded(false)}
+                      css={{
+                        width: '100%',
+                      }}
+                    >
+                      Done
+                    </Button>
+                  </Box>
+                </Drawer>
+              </Box>
+
+              <Media greaterThan="sm">
+                <Sidebar
+                  filters={filters}
+                  onFilterChange={setFilters}
+                  onSelectedItemChange={onSelectedItemChange}
+                />
+              </Media>
+            </aside>
+          </Box>
 
           <Box as={Media} greaterThan="sm" mt="auto">
             <Footer
@@ -188,6 +302,10 @@ const PageLayout = (props) => {
       </MediaContextProvider>
     </ThemeProvider>
   );
+};
+
+PageLayout.propTypes = {
+  onSelectedItemChange: PropTypes.func.isRequired,
 };
 
 export default PageLayout;

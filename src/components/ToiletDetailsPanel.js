@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { faClock } from '@fortawesome/free-regular-svg-icons';
+import { faClock, faEdit } from '@fortawesome/free-regular-svg-icons';
 import {
   faDirections,
   faList,
@@ -29,6 +29,7 @@ import {
   WEEKDAYS,
   rangeTypes,
 } from '../openingHours';
+import { useMutation, gql } from '@apollo/client';
 
 const Grid = styled(Box)`
   display: flex;
@@ -54,22 +55,46 @@ function getTimeRangeLabel(range) {
 }
 
 function getIsOpenLabel(openingTimes = [], dateTime = DateTime.local()) {
-  const dayToCheckRange = openingTimes[dateTime.weekday - 1];
+  const isOpen = getIsOpen(openingTimes, dateTime);
 
-  if (dayToCheckRange === rangeTypes.UNKNOWN) {
+  if (isOpen === null) {
     return 'Unknown';
   }
 
-  return getIsOpen(openingTimes, dateTime) ? 'Open now' : 'Closed';
+  return isOpen ? 'Open now' : 'Closed';
 }
+
+const SUBMIT_VERIFICATION_REPORT_MUTATION = gql`
+  mutation submitVerificationReportMutation($id: ID) {
+    submitVerificationReport(id: $id) {
+      loo {
+        id
+        verifiedAt
+      }
+    }
+  }
+`;
 
 const ToiletDetailsPanel = ({ data, isLoading }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
+
+  const [
+    submitVerificationReport,
+    { loading: submitVerificationLoading },
+  ] = useMutation(SUBMIT_VERIFICATION_REPORT_MUTATION);
 
   // collapse panel if isLoading or data changes (e.g. a user has selected a new marker)
   // React.useEffect(() => {
   //   setIsExpanded(false);
   // }, [isLoading, data]);
+
+  // programmatically set focus on close button when panel expands
+  const closeButtonRef = React.useRef();
+  React.useEffect(() => {
+    if (isExpanded && closeButtonRef.current) {
+      closeButtonRef.current.focus();
+    }
+  }, [isExpanded]);
 
   if (isLoading) {
     return (
@@ -90,11 +115,9 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
   }
 
   const titleFragment = (
-    <h1>
-      <Text fontWeight="bold" fontSize={4}>
-        {data.name || 'Unnamed Toilet'}
-      </Text>
-    </h1>
+    <Text fontWeight="bold" fontSize={4}>
+      <h2 id="toilet-details-heading">{data.name || 'Unnamed Toilet'}</h2>
+    </Text>
   );
 
   const getDirectionsFragment = (
@@ -112,46 +135,77 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
     </Button>
   );
 
-  const features = {
-    free: {
+  const crossIconFragment = <Icon icon={faTimes} color="tertiary" />;
+  const questionIconFragment = <Icon icon={faQuestion} color="tertiary" />;
+  const checkIconFragment = <Icon icon={faCheck} />;
+
+  const getFeatureValueIcon = (value, checkFunction) => {
+    if (value === null) {
+      return questionIconFragment;
+    }
+
+    if (checkFunction) {
+      return checkFunction() ? checkIconFragment : crossIconFragment;
+    }
+
+    return value ? checkIconFragment : crossIconFragment;
+  };
+
+  const features = [
+    {
       icon: <Icon icon={faPoundSign} />,
       label: 'Free',
-      valueIcon: <Icon icon={faCheck} />,
+      valueIcon: getFeatureValueIcon(data.fee, () => !data.fee),
     },
-    baby_changing: {
+    {
       icon: <Icon icon={faBaby} />,
       label: 'Baby Changing',
-      valueIcon: <Icon icon={faCheck} />,
+      valueIcon: getFeatureValueIcon(data.babyChange),
     },
-    accessible: {
+    {
       icon: <Icon icon={faWheelchair} />,
       label: 'Accessible',
-      valueIcon: <Icon icon={faCheck} />,
+      valueIcon: getFeatureValueIcon(data.accessibleType),
     },
-    radar_key: {
-      icon: <Icon icon={faKey} />,
-      label: 'RADAR Key',
-      valueIcon: <Icon icon={faCheck} />,
-    },
-    unisex: {
+    ...(data.accessibleType
+      ? [
+          {
+            icon: <Icon icon={faKey} />,
+            label: 'RADAR Key',
+            valueIcon: getFeatureValueIcon(data.radar),
+          },
+        ]
+      : []),
+    {
       icon: <Icon icon={faVenusMars} />,
       label: 'Unisex',
-      valueIcon: <Icon icon={faCheck} />,
+      valueIcon: getFeatureValueIcon(data.type, () => data.type === 'UNISEX'),
     },
-    gender_neutral: {
+    {
       icon: <Icon icon={faGenderless} />,
       label: 'Gender Neutral',
-      valueIcon: <Icon icon={faQuestion} color="tertiary" />,
+      valueIcon: getFeatureValueIcon(data.type, () => data.type === 'UNISEX'),
     },
-    automatic: {
+    {
       icon: <Icon icon={faCog} />,
       label: 'Automatic',
-      valueIcon: <Icon icon={faTimes} color="tertiary" />,
+      valueIcon: getFeatureValueIcon(data.automatic),
     },
-  };
+  ];
 
   const openingTimes = getOpeningTimes(data.opening);
   const todayWeekdayIndex = DateTime.local().weekday - 1;
+
+  const editUrl = `/loos/${data.id}/edit`;
+
+  const updatedAt = DateTime.fromISO(data.updatedAt);
+  let verifiedOrUpdatedDate = updatedAt;
+  if (data.verifiedAt) {
+    const verifiedAt = DateTime.fromISO(data.verifiedAt);
+    if (updatedAt < verifiedAt) {
+      verifiedOrUpdatedDate = verifiedAt;
+    }
+  }
 
   if (isExpanded) {
     return (
@@ -159,12 +213,14 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         width="100%"
         color="primary"
         bg="white"
-        minHeight={100}
+        maxHeight={400}
+        overflow="auto"
         borderTopLeftRadius={4}
         borderTopRightRadius={4}
         padding={4}
         paddingRight={5}
         as="section"
+        aria-labelledby="toilet-details-heading"
       >
         <Grid>
           <Box position="absolute" top={30} right={30}>
@@ -172,6 +228,8 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
               type="button"
               aria-label="Close toilet details"
               onClick={() => setIsExpanded(false)}
+              aria-expanded="true"
+              ref={closeButtonRef}
             >
               <Box
                 height={26}
@@ -193,54 +251,48 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             {titleFragment}
             <Spacer mb={2} />
             {getDirectionsFragment}
-          </Box>
-
-          <Box width={['100%', '50%', '25%']} padding={3}>
-            <h2>
-              <Text fontWeight="bold">Features</Text>
-            </h2>
-            <UnstyledList>
-              {Object.entries(features).map(([key, feature]) => (
-                <Box
-                  as="li"
-                  key={key}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
+            <Spacer mb={4} />
+            <Text fontWeight="bold">
+              <h2>Is this information correct?</h2>
+            </Text>
+            <Spacer mb={2} />
+            <Box display="flex" alignItems="center">
+              <Button
+                onClick={() =>
+                  submitVerificationReport({ variables: { id: data.id } })
+                }
+                disabled={submitVerificationLoading}
+              >
+                Yes
+              </Button>
+              <Spacer mr={4} />
+              <Box display="flex" alignItems="center">
+                No?
+                <Spacer mr={2} />
+                <Button
+                  variant="secondary"
+                  icon={<Icon icon={faEdit} />}
+                  as={Link}
+                  to={editUrl}
                 >
-                  <Box display="flex" alignItems="center">
-                    <Box width="20px" display="flex" justifyContent="center">
-                      {feature.icon}
-                    </Box>
-                    <Spacer mr={2} />
-                    {feature.label}
-                  </Box>
-                  {feature.valueIcon}
-                </Box>
-              ))}
-            </UnstyledList>
+                  Edit
+                </Button>
+              </Box>
+            </Box>
+            <Spacer mb={2} />
+            Last verified:{' '}
+            {verifiedOrUpdatedDate.toLocaleString(DateTime.DATETIME_SHORT)}
           </Box>
 
-          <Box width={['100%', '50%', '25%']} padding={3}>
-            <h2>
-              <Text fontWeight="bold">Notes</Text>
-            </h2>
-            <div>
-              {data.notes &&
-                data.notes
-                  .split('\n')
-                  .map((string, i) => <p key={i}>{string}</p>)}
-            </div>
-          </Box>
-
-          <Box width={['100%', '50%', '25%']} padding={3}>
+          <Box width={['100%', '50%', '25%']} padding={3} order={[0, 1]}>
             <Box display="flex" alignItems="center">
               <Icon icon={faClock} />
-              <Spacer mr={1} />
-              <h2>
-                <Text fontWeight="bold">Opening Hours</Text>
-              </h2>
+              <Spacer mr={2} />
+              <Text fontWeight="bold">
+                <h2>Opening Hours</h2>
+              </Text>
             </Box>
+            <Spacer mb={2} />
             <UnstyledList>
               {openingTimes.map((timeRange, i) => (
                 <Box
@@ -256,14 +308,69 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
                 </Box>
               ))}
             </UnstyledList>
+            <Spacer mb={2} />
             <Text fontSize={1} color="grey">
-              Hours may vary with national holidays or seasonalchanges. If you
+              Hours may vary with national holidays or seasonal changes. If you
               know these hours to be out of date please{' '}
-              <Button as={Link} to={`/loos/${data.id}/edit`} variant="link">
+              <Button as={Link} to={editUrl} variant="link">
                 edit this toilet
               </Button>
               .
             </Text>
+          </Box>
+
+          <Box width={['100%', '50%', '25%']} padding={3}>
+            <Text fontWeight="bold">
+              <h3>Features</h3>
+            </Text>
+            <Spacer mb={2} />
+            <UnstyledList>
+              {features.map((feature) => (
+                <Box
+                  as="li"
+                  key={feature.label}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  mb={1}
+                >
+                  <Box display="flex" alignItems="center">
+                    <Box width="20px" display="flex" justifyContent="center">
+                      {feature.icon}
+                    </Box>
+                    <Spacer mr={2} />
+                    {feature.label}
+                  </Box>
+                  {feature.valueIcon}
+                </Box>
+              ))}
+            </UnstyledList>
+          </Box>
+
+          <Box width={['100%', '50%', '25%']} padding={3}>
+            {Boolean(data.fee) && (
+              <>
+                <Text fontWeight="bold">
+                  <h3>Fee</h3>
+                </Text>
+                <Spacer mb={2} />
+                {data.fee}
+                <Spacer mb={3} />
+              </>
+            )}
+            {Boolean(data.notes) && (
+              <>
+                <Text fontWeight="bold">
+                  <h3>Notes</h3>
+                </Text>
+                <Spacer mb={2} />
+                <div>
+                  {data.notes.split('\n').map((string, i) => (
+                    <div key={i}>{string}</div>
+                  ))}
+                </div>
+              </>
+            )}
           </Box>
         </Grid>
       </Box>
@@ -280,6 +387,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
       borderTopRightRadius={4}
       padding={4}
       as="section"
+      aria-labelledby="toilet-details-heading"
     >
       <Grid>
         <Box width={['100%', '50%', '25%']} padding={3}>
@@ -289,11 +397,12 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         <Box width={['100%', '50%', '25%']} padding={3}>
           <Box display="flex" alignItems="center">
             <Icon icon={faClock} />
-            <Spacer mr={1} />
-            <h2>
-              <Text fontWeight="bold">Opening Hours</Text>
-            </h2>
+            <Spacer mr={2} />
+            <Text fontWeight="bold">
+              <h3>Opening Hours</h3>
+            </Text>
           </Box>
+          <Spacer mb={2} />
           {getIsOpenLabel(openingTimes)}
         </Box>
 
@@ -302,6 +411,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
           padding={3}
           display="flex"
           justifyContent={['flex-start', 'flex-start', 'flex-end']}
+          alignItems="center"
         >
           {getDirectionsFragment}
           <Spacer mr={2} />
@@ -309,6 +419,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
             variant="secondary"
             icon={<Icon icon={faList} />}
             onClick={() => setIsExpanded(true)}
+            aria-expanded="false"
           >
             More details
           </Button>

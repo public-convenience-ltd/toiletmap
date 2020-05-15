@@ -18,29 +18,35 @@ const MainMenu = ({ showTrackingBanner, onShowTrackingBanner }) => (
     }}
   >
     <Box
-      as="ul"
       display="flex"
       flexDirection={['column', 'row']}
       height={['100%', 'auto']}
     >
-      <Box as="li" ml={[0, 4]}>
-        <Link to="/">Find Loo</Link>
-      </Box>
-      <Box as="li" mt={[3, 0]} ml={[0, 4]}>
-        <Link to="/report">Add Loo</Link>
+      <Box
+        as="ul"
+        display="flex"
+        flexDirection={['column', 'row']}
+        flexGrow={1}
+      >
+        <Box as="li" ml={[0, 4]}>
+          <Link to="/">Find Loo</Link>
+        </Box>
+        <Box as="li" mt={[3, 0]} ml={[0, 4]}>
+          <Link to="/report">Add Loo</Link>
+        </Box>
+
+        <Box as="li" mt={['auto', 0]} ml={[0, 'auto']}>
+          <Link to="/about">About</Link>
+        </Box>
+        <Box as="li" mt={[3, 0]} ml={[0, 4]}>
+          <Link to="/use-our-loos">Our Sponsor</Link>
+        </Box>
+        <Box as="li" mt={[3, 0]} mb={['auto', 0]} ml={[0, 4]}>
+          <Link to="">Contact</Link>
+        </Box>
       </Box>
 
-      <Box as="li" mt={['auto', 0]} ml={[0, 'auto']}>
-        <Link to="/about">About</Link>
-      </Box>
-      <Box as="li" mt={[3, 0]} ml={[0, 4]}>
-        <Link to="/use-our-loos">Our Sponsor</Link>
-      </Box>
-      <Box as="li" mt={[3, 0]} ml={[0, 4]}>
-        <Link to="">Contact</Link>
-      </Box>
-
-      <Box as={Media} lessThan="md" mt="auto">
+      <Box as={Media} lessThan="md">
         <Text fontWeight="normal">
           <Footer
             showTrackingBanner={showTrackingBanner}

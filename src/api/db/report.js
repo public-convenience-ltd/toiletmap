@@ -191,18 +191,31 @@ async function getAreaData(point) {
 }
 
 ReportSchema.statics.submit = async function (data, user, from) {
-  const area = await getAreaData(data.geometry);
   const reportData = {
     diff: {
       ...data,
-      area,
     },
-    contributorId: user.sub,
-    contributor:
-      user[config.auth0.profileKey].nickname || config.reports.anonContributor,
   };
 
+  if (data.geometry) {
+    const area = await getAreaData(data.geometry);
+    reportData.diff.area = area;
+  }
+
+  reportData.contributor = config.reports.anonContributor;
+
+  if (user) {
+    if (user.sub) {
+      reportData.contributorId = user.sub;
+    }
+
+    if (user[config.auth0.profileKey].nickname) {
+      reportData.contributor = user[config.auth0.profileKey].nickname;
+    }
+  }
+
   let report = new this(reportData);
+
   let looId = null;
   if (from) {
     let oldloo = await this.model('NewLoo').findById(from);
@@ -220,6 +233,7 @@ ReportSchema.statics.submit = async function (data, user, from) {
 
   // Until we have a moderation queue we'll create/update a loo accordingly
   const loo = await savedReport.generateLoo(looId);
+
   const savedLoo = await this.model('NewLoo').findOneAndUpdate(
     { _id: loo._id },
     loo,

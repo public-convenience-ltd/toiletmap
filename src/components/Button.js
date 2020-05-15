@@ -13,8 +13,9 @@ const StyledButton = styled.button(
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
     user-select: none;
-    height: ${BUTTON_HEIGHT}px;
+    min-height: ${BUTTON_HEIGHT}px;
     max-width: 300px;
     border-radius: ${BUTTON_HEIGHT / 2}px;
     border: none;
@@ -31,20 +32,31 @@ const StyledButton = styled.button(
         fontWeight: 'bold',
         bg: 'secondary',
         borderColor: 'secondary',
+        ':hover, :focus': {
+          color: 'aqua',
+          bg: 'primary',
+          borderColor: 'primary',
+        },
       },
       secondary: {
         color: 'primary',
+        bg: 'white',
         fontWeight: 'bold',
         borderColor: 'primary',
+        ':hover, :focus': {
+          color: 'white',
+          bg: 'primary',
+          borderColor: 'primary',
+        },
       },
       link: {
         color: 'primary',
         border: 'none',
-        height: 'auto',
         background: 'none',
         textDecoration: 'underline',
         fontWeight: 'normal',
         padding: 0,
+        minHeight: 0,
       },
     },
   })
