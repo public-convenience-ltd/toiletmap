@@ -5,10 +5,9 @@ import { Link } from 'react-router-dom';
 import Box from '../Box';
 import Text from '../Text';
 import { Media } from '../Media';
-import Footer from '../Footer';
 
 // Todo: Contact link
-const MainMenu = ({ showTrackingBanner, onShowTrackingBanner }) => (
+const MainMenu = ({ children }) => (
   <Text
     fontWeight="bold"
     textAlign={['center', 'left']}
@@ -46,21 +45,18 @@ const MainMenu = ({ showTrackingBanner, onShowTrackingBanner }) => (
         </Box>
       </Box>
 
-      <Box as={Media} lessThan="md">
-        <Text fontWeight="normal">
-          <Footer
-            showTrackingBanner={showTrackingBanner}
-            onShowTrackingBanner={onShowTrackingBanner}
-          />
-        </Text>
-      </Box>
+      {children && (
+        <Box as={Media} lessThan="md">
+          <Text fontWeight="normal">{children}</Text>
+        </Box>
+      )}
     </Box>
   </Text>
 );
 
 MainMenu.propTypes = {
-  showTrackingBanner: PropTypes.bool,
-  onShowTrackingBanner: PropTypes.func.isRequired,
+  // mobile footer
+  children: PropTypes.any,
 };
 
 export default MainMenu;

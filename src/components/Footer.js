@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import styled from '@emotion/styled';
@@ -24,7 +23,7 @@ const UseOurLoosLogo = styled((props) => (
   height: 2rem;
 `;
 
-const Footer = ({ showTrackingBanner, onShowTrackingBanner, props }) => (
+const Footer = ({ children }) => (
   <Box
     as="footer"
     display="flex"
@@ -65,15 +64,10 @@ const Footer = ({ showTrackingBanner, onShowTrackingBanner, props }) => (
     <Box order={[-1, 0]} mb={[4, 0]}>
       <Text fontSize={[12, 16]}>
         <Box as="ul" display={['block', 'flex']} alignItems="center">
-          <li>
-            <button
-              type="button"
-              aria-pressed={showTrackingBanner}
-              onClick={onShowTrackingBanner}
-            >
-              Cookie Preferences
-            </button>
-          </li>
+          {React.Children.toArray(children, (child, index) => (
+            <li key={index}>{child}</li>
+          ))}
+
           <Box as="li" ml={[0, 4]}>
             <Link to="/privacy">Privacy Policy</Link>
           </Box>
@@ -82,10 +76,5 @@ const Footer = ({ showTrackingBanner, onShowTrackingBanner, props }) => (
     </Box>
   </Box>
 );
-
-Footer.propTypes = {
-  showTrackingBanner: PropTypes.bool,
-  onShowTrackingBanner: PropTypes.func.isRequired,
-};
 
 export default Footer;

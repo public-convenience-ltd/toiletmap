@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import Box from '../Box';
@@ -13,7 +12,7 @@ import Icon from '../Icon';
 import Logo from './Logo';
 import MainMenu from './MainMenu';
 
-const Header = ({ showTrackingBanner, onShowTrackingBanner }) => {
+const Header = ({ children }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   return (
@@ -48,27 +47,16 @@ const Header = ({ showTrackingBanner, onShowTrackingBanner }) => {
           </button>
 
           <Drawer visible={isMenuVisible} zIndex={50}>
-            <MainMenu
-              showTrackingBanner={showTrackingBanner}
-              onShowTrackingBanner={onShowTrackingBanner}
-            />
+            <MainMenu children={children} />
           </Drawer>
         </Box>
 
         <Media greaterThan="sm">
-          <MainMenu
-            showTrackingBanner={showTrackingBanner}
-            onShowTrackingBanner={onShowTrackingBanner}
-          />
+          <MainMenu children={children} />
         </Media>
       </Box>
     </Box>
   );
-};
-
-Header.propTypes = {
-  showTrackingBanner: PropTypes.bool,
-  onShowTrackingBanner: PropTypes.func.isRequired,
 };
 
 export default Header;

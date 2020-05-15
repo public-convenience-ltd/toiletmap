@@ -198,6 +198,18 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
     window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
   }, [filters]);
 
+  const footerFragment = (
+    <Footer>
+      <button
+        type="button"
+        aria-pressed={showTrackingBanner}
+        onClick={() => setShowTrackingBanner(true)}
+      >
+        Cookie Preferences
+      </button>
+    </Footer>
+  );
+
   return (
     <ThemeProvider theme={theme}>
       <MediaContextProvider>
@@ -211,10 +223,7 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
         )}
 
         <Box as="main" display="flex" flexDirection="column" height="100%">
-          <Header
-            showTrackingBanner={showTrackingBanner}
-            onShowTrackingBanner={() => setShowTrackingBanner(true)}
-          />
+          <Header>{footerFragment}</Header>
 
           <Box position="relative" flexGrow={1}>
             <Box as="main" height="100%" children={props.children} />
@@ -293,10 +302,7 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
           </Box>
 
           <Box as={Media} greaterThan="sm" mt="auto">
-            <Footer
-              showTrackingBanner={showTrackingBanner}
-              onShowTrackingBanner={() => setShowTrackingBanner(true)}
-            />
+            {footerFragment}
           </Box>
         </Box>
       </MediaContextProvider>
