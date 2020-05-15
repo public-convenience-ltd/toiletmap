@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from 'emotion-theming';
 import { Global, css } from '@emotion/core';
@@ -11,6 +11,7 @@ import Button from './Button';
 import { MediaContextProvider, Media } from './Media';
 import Header from './Header';
 import Footer from './Footer';
+import TrackingBanner from './Tracking/TrackingBanner';
 import Sidebar from './Sidebar';
 import LocationSearch from './LocationSearch';
 import Drawer from './Drawer';
@@ -19,8 +20,7 @@ import Filters from './Filters';
 import theme from '../theme';
 import config, { FILTERS_KEY } from '../config';
 
-// import { TRACKING_STORAGE_KEY } from './Tracking';
-// import TrackingPreferences from './Tracking/TrackingPreferences';
+import { TRACKING_STORAGE_KEY } from './Tracking';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
@@ -45,7 +45,8 @@ const ResetStyles = (
 
       /* remove default padding */
       ul,
-      ol {
+      ol,
+      fieldset {
         padding: 0;
       }
 
@@ -63,7 +64,8 @@ const ResetStyles = (
       figcaption,
       blockquote,
       dl,
-      dd {
+      dd,
+      fieldset {
         margin: 0;
       }
 
@@ -123,6 +125,10 @@ const ResetStyles = (
         font: inherit;
       }
 
+      fieldset {
+        border: 0;
+      }
+
       p + p {
         margin-top: 1em;
       }
@@ -157,18 +163,26 @@ const ResetStyles = (
 );
 
 const PageLayout = ({ onSelectedItemChange, ...props }) => {
+  const trackingRef = useRef(null);
+
+  const [isTrackingStateChosen, setIsTrackingStateChosen] = useState(
+    config.getSetting(TRACKING_STORAGE_KEY, 'trackingStateChosen')
+  );
+
+  // stored indepedently from isTrackingStateChosen state since we should not programmatically
+  // update focus on the initial render
+  const [showTrackingBanner, setShowTrackingBanner] = useState(false);
+
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
-  // const mainRef = React.useRef();
 
-  // const [isCookieSettingsOpen, setIsCookieSettingsOpen] = React.useState(
-  //   !config.getSetting(TRACKING_STORAGE_KEY, 'trackingStateChosen')
-  // );
-
-  // React.useEffect(() => {
-  //   if (mainRef.current && isCookieSettingsOpen) {
-  //     mainRef.current.scrollTop = 0;
-  //   }
-  // }, [mainRef, isCookieSettingsOpen]);
+  useEffect(() => {
+    // programmatically focus the banner header when its presence is initiated by the user
+    if (showTrackingBanner) {
+      setTimeout(() => {
+        trackingRef.current.focus();
+      }, 0);
+    }
+  }, [showTrackingBanner]);
 
   let initialState = config.getSettings(FILTERS_KEY);
 
@@ -184,13 +198,32 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
     window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
   }, [filters]);
 
+  const footerFragment = (
+    <Footer>
+      <button
+        type="button"
+        aria-pressed={showTrackingBanner}
+        onClick={() => setShowTrackingBanner(true)}
+      >
+        Cookie Preferences
+      </button>
+    </Footer>
+  );
+
   return (
     <ThemeProvider theme={theme}>
       <MediaContextProvider>
         {ResetStyles}
 
-        <Box display="flex" flexDirection="column" height="100%">
-          <Header />
+        {(!isTrackingStateChosen || showTrackingBanner) && (
+          <TrackingBanner
+            ref={trackingRef}
+            onClose={() => setIsTrackingStateChosen(false)}
+          />
+        )}
+
+        <Box as="main" display="flex" flexDirection="column" height="100%">
+          <Header>{footerFragment}</Header>
 
           <Box position="relative" flexGrow={1}>
             <Box as="main" height="100%" children={props.children} />
@@ -269,12 +302,7 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
           </Box>
 
           <Box as={Media} greaterThan="sm" mt="auto">
-            <Footer
-            // onCookieBoxButtonClick={() =>
-            //   setIsCookieSettingsOpen(!isCookieSettingsOpen)
-            // }
-            // isCookieSettingsOpen={isCookieSettingsOpen}
-            />
+            {footerFragment}
           </Box>
         </Box>
       </MediaContextProvider>

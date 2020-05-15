@@ -23,6 +23,7 @@ const StyledButton = styled.button(
     border-style: solid;
     border-width: 2px;
     color: primary;
+    box-sizing: border-box;
   `,
   variant({
     variants: {
@@ -69,7 +70,7 @@ const Button = ({ children, icon, ...props }) => (
   <StyledButton type="button" {...props}>
     {Boolean(icon) && <ButtonIcon icon={icon} />}
 
-    <Text>{children}</Text>
+    <Text as="span">{children}</Text>
   </StyledButton>
 );
 
