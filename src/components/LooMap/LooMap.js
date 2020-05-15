@@ -1,15 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import L from 'leaflet';
+import { useHistory } from 'react-router-dom';
 import { Map, TileLayer, Marker, ZoomControl } from 'react-leaflet';
-// import CustomControl from 'react-leaflet-control';
 
 import config from '../../config.js';
 import LocateMapControl from './LocateMapControl';
-import MarkerClusterGroup from './MarkerClusterGroup';
-import LooIcon from './LooIcon';
-// import LocationSearch from '../LocationSearch';
+import ToiletMarkerIcon from './ToiletMarkerIcon';
 
 import styles from '../css/loo-map.module.css';
 
@@ -36,6 +32,30 @@ const LooMap = (props) => {
     ? `${props.className} ${styles['with-crosshair']} map--zindexfix`
     : props.className;
 
+  const { push } = useHistory();
+
+  const toiletMarkers = React.useMemo(
+    () =>
+      props.loos.map((toilet) => (
+        <Marker
+          key={toilet.id}
+          position={toilet.location}
+          icon={
+            new ToiletMarkerIcon({
+              highlight: toilet.isHighlighted,
+              toiletId: toilet.id,
+            })
+          }
+          onClick={() => {
+            if (props.interactiveMarkers) {
+              push('/loos/' + toilet.id);
+            }
+          }}
+        />
+      )),
+    [props.loos, props.interactiveMarkers, push]
+  );
+
   return (
     <Map
       ref={mapRef}
@@ -61,52 +81,7 @@ const LooMap = (props) => {
         }
       />
 
-      <MarkerClusterGroup
-        iconCreateFunction={(cluster) =>
-          L.divIcon({
-            html: `
-              <div class=${styles.cluster}>
-                <span
-                  class=${styles.count}
-                >${cluster.getChildCount()}</span> toilets
-              </div>
-            `,
-          })
-        }
-        showCoverageOnHover={false}
-        disableClusteringAtZoom={15}
-      >
-        {props.loos.map((loo, i) => (
-          <Marker
-            key={loo.id}
-            position={loo.location}
-            icon={
-              new LooIcon({
-                highlight: loo.isHighlighted,
-                looId: loo.id,
-                label: props.markerLabel ? props.markerLabel(i) : undefined,
-              })
-            }
-            onClick={() => {
-              if (props.interactiveMarkers) {
-                props.history.push('/loos/' + loo.id);
-              }
-            }}
-          />
-        ))}
-      </MarkerClusterGroup>
-
-      {/*props.showSearchControl && (
-        <CustomControl position="topleft">
-          <LocationSearch
-            onSelectedItemChange={(center) =>
-              props.onSearchSelectedItemChange({
-                center,
-              })
-            }
-          />
-        </CustomControl>
-      )*/}
+      {toiletMarkers}
 
       {props.showZoomControl && <ZoomControl position="bottomright" />}
       {props.showLocateControl && <LocateMapControl position="bottomright" />}
@@ -168,4 +143,4 @@ LooMap.defaultProps = {
   interactiveMarkers: true,
 };
 
-export default withRouter(LooMap);
+export default LooMap;

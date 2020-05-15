@@ -47,7 +47,15 @@ const HomePage = ({ initialPosition, ...props }) => {
     <PageLayout onSelectedItemChange={(center) => setMapPosition({ center })}>
       <Box height="100%" display="flex" position="relative">
         <LooMap
-          loos={loos}
+          loos={loos.map((loo) => {
+            if (loo.id === selectedLooId) {
+              return {
+                ...loo,
+                isHighlighted: true,
+              };
+            }
+            return loo;
+          })}
           center={mapPosition.center}
           zoom={mapPosition.zoom}
           onViewportChanged={setMapPosition}
