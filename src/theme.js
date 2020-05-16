@@ -11,6 +11,7 @@ const theme = {
     white: '#fff',
     lightGrey: '#f4f4f4',
     grey: '#807f7f',
+    aqua: '#93f9db',
   },
 };
 

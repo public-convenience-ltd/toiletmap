@@ -23,6 +23,7 @@ module.exports = exports = new Schema({
   fee: { type: String, trim: true },
   notes: { type: String, trim: true },
   removalReason: { type: String, trim: true },
+  verifiedAt: { type: Date },
   area: {
     type: [
       {

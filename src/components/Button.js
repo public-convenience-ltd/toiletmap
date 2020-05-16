@@ -23,6 +23,7 @@ const StyledButton = styled.button(
     border-style: solid;
     border-width: 2px;
     color: primary;
+    box-sizing: border-box;
   `,
   variant({
     variants: {
@@ -31,21 +32,31 @@ const StyledButton = styled.button(
         fontWeight: 'bold',
         bg: 'secondary',
         borderColor: 'secondary',
+        ':hover, :focus': {
+          color: 'aqua',
+          bg: 'primary',
+          borderColor: 'primary',
+        },
       },
       secondary: {
         color: 'primary',
         bg: 'white',
         fontWeight: 'bold',
         borderColor: 'primary',
+        ':hover, :focus': {
+          color: 'white',
+          bg: 'primary',
+          borderColor: 'primary',
+        },
       },
       link: {
         color: 'primary',
         border: 'none',
-        height: 'auto',
         background: 'none',
         textDecoration: 'underline',
         fontWeight: 'normal',
         padding: 0,
+        minHeight: 0,
       },
     },
   })
@@ -57,13 +68,9 @@ const ButtonIcon = ({ icon }) => {
 
 const Button = ({ children, icon, ...props }) => (
   <StyledButton type="button" {...props}>
-    {Boolean(icon) && (
-      <Text color="primary">
-        <ButtonIcon icon={icon} />
-      </Text>
-    )}
+    {Boolean(icon) && <ButtonIcon icon={icon} />}
 
-    <Text>{children}</Text>
+    <Text as="span">{children}</Text>
   </StyledButton>
 );
 

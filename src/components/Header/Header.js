@@ -5,13 +5,14 @@ import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
 import { Media } from '../Media';
 import Drawer from '../Drawer';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+
+import Icon from '../Icon';
 
 import Logo from './Logo';
 import MainMenu from './MainMenu';
 
-import menu from './menu.svg';
-
-const Header = () => {
+const Header = ({ children }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   return (
@@ -37,20 +38,21 @@ const Header = () => {
 
         <Box as={Media} at="sm" display="flex" justifyContent="flex-end">
           <button
-            aria-pressed={isMenuVisible}
+            type="button"
+            aria-expanded={isMenuVisible}
             onClick={() => setIsMenuVisible(!isMenuVisible)}
           >
             <VisuallyHidden>Toggle main menu</VisuallyHidden>
-            <img src={menu} alt="" />
+            <Icon icon={faBars} size="2x" />
           </button>
 
-          <Drawer visible={isMenuVisible}>
-            <MainMenu />
+          <Drawer visible={isMenuVisible} zIndex={50}>
+            <MainMenu children={children} />
           </Drawer>
         </Box>
 
         <Media greaterThan="sm">
-          <MainMenu />
+          <MainMenu children={children} />
         </Media>
       </Box>
     </Box>
