@@ -9,6 +9,14 @@ const NEARBY_LOOS_QUERY = gql`
         lat
         lng
       }
+      fee
+      type
+      access
+      attended
+      automatic
+      accessibleType
+      babyChange
+      radar
     }
   }
 `;
