@@ -4,6 +4,10 @@ export default [
     property: 'attended',
   },
   {
+    question: 'Accessible?',
+    property: 'accessible',
+  },
+  {
     question: 'Baby changing?',
     property: 'babyChange',
   },

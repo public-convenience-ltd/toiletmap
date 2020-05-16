@@ -5,7 +5,7 @@ mutation updateLoo(
   $access: AccessPermission
   $opening: String
   $type: Facilities
-  $accessibleType: Facilities
+  $accessible: Boolean
   $babyChange: Boolean
   $radar: Boolean
   $attended: Boolean
@@ -21,7 +21,7 @@ mutation updateLoo(
       access: $access
       opening: $opening
       type: $type
-      accessibleType: $accessibleType
+      accessible: $accessible
       babyChange: $babyChange
       radar: $radar
       attended: $attended
@@ -48,7 +48,7 @@ mutation updateLoo(
       access
       opening
       type
-      accessibleType
+      accessible
       babyChange
       radar
       attended

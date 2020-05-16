@@ -53,7 +53,7 @@ const LooPage = (props) => {
   // Provides a mapping between loo property names and the values we want to display
   const humanizedPropNames = {
     type: 'Facilities',
-    accessibleType: 'Accessible facilities',
+    accessible: 'Accessible facilities',
     babyChange: 'Baby Changing',
     attended: 'Attended',
     access: 'Who can access?',
@@ -66,7 +66,7 @@ const LooPage = (props) => {
   const propertiesSort = [
     'access',
     'type',
-    'accessibleType',
+    'accessible',
     'opening',
     'attended',
     'babyChange',

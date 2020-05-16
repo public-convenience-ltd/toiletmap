@@ -140,9 +140,9 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
     {
       icon: <Icon icon={faWheelchair} />,
       label: 'Accessible',
-      valueIcon: getFeatureValueIcon(data.accessibleType),
+      valueIcon: getFeatureValueIcon(data.accessible),
     },
-    ...(data.accessibleType
+    ...(data.accessible
       ? [
           {
             icon: <Icon icon={faKey} />,

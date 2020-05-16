@@ -94,7 +94,7 @@ LooSchema.statics.findNear = function (lon, lat, radius, complete) {
         properties: {
           geometry: 1,
           fee: 1,
-          accessibleType: 1,
+          accessible: 1,
           opening: 1,
           type: 1,
           babyChange: 1,
@@ -138,9 +138,9 @@ LooSchema.statics.getProportionCounters = async function () {
     this.countDocuments({ 'properties.access': 'none' }).exec(),
     this.countDocuments({ 'properties.babyChange': true }).exec(),
     this.countDocuments({ 'properties.babyChange': null }).exec(),
-    this.countDocuments({ 'properties.accessibleType': 'none' }).exec(),
+    this.countDocuments({ 'properties.accessible': false }).exec(),
     this.countDocuments({
-      'properties.accessibleType': { $exists: false },
+      'properties.accessible': { $exists: false },
     }).exec(),
     this.countDocuments({ 'properties.active': true }).exec(),
     this.countDocuments({}).exec(),

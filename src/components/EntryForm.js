@@ -157,24 +157,6 @@ const EntryForm = ({
         </label>
 
         <label>
-          Accessible facilities
-          <select
-            ref={register}
-            name="accessibleType"
-            className={controls.dropdown}
-            defaultValue={loo.accessibleType || ''}
-            data-testid="accessible-facilities"
-          >
-            <option value="">Unknown</option>
-            {optionsMap.type.map((option, index) => (
-              <option key={index} value={option.value}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label>
           Opening hours
           <select
             ref={register}
@@ -360,7 +342,7 @@ EntryForm.propTypes = {
     name: PropTypes.string,
     access: PropTypes.string,
     type: PropTypes.string,
-    accessibleType: PropTypes.string,
+    accessible: PropTypes.string,
     opening: PropTypes.string,
     fee: PropTypes.string,
     notes: PropTypes.string,

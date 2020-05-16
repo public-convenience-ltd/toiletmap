@@ -16,7 +16,7 @@ query findLooById($id: ID) {
     access
     opening
     type
-    accessibleType
+    accessible
     babyChange
     radar
     automatic

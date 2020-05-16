@@ -24,7 +24,7 @@ const getInitialFormState = () => {
     name: '',
     access: '',
     type: '',
-    accessibleType: '',
+    accessible: '',
     opening: '',
     notes: '',
     fee: '',

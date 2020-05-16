@@ -51,7 +51,7 @@ const typeDefs = gql`
     access: AccessPermission
     opening: String
     type: Facilities
-    accessibleType: Facilities
+    accessible: Boolean
     babyChange: Boolean
     radar: Boolean
     attended: Boolean
@@ -108,7 +108,7 @@ const typeDefs = gql`
     access: AccessPermission
     opening: String
     type: Facilities
-    accessibleType: Facilities
+    accessible: Boolean
     babyChange: Boolean
     radar: Boolean
     attended: Boolean
@@ -264,7 +264,7 @@ const typeDefs = gql`
     access: AccessPermission
     opening: String
     type: Facilities
-    accessibleType: Facilities
+    accessible: Boolean
     babyChange: Boolean
     radar: Boolean
     attended: Boolean

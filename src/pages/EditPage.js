@@ -71,7 +71,7 @@ const EditPage = (props) => {
       name: '',
       access: '',
       type: '',
-      accessibleType: '',
+      accessible: '',
       opening: '',
       notes: '',
       fee: '',

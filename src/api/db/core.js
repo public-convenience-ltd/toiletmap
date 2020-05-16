@@ -15,7 +15,7 @@ module.exports = exports = new Schema({
   access: { type: String },
   opening: { type: String, trim: true },
   type: { type: String },
-  accessibleType: { type: String },
+  accessible: { type: Boolean },
   babyChange: { type: Boolean },
   radar: { type: Boolean },
   attended: { type: Boolean },

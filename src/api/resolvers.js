@@ -14,7 +14,7 @@ const looInfoResolver = (property) => {
     access: resolve,
     opening: resolve,
     type: resolve,
-    accessibleType: resolve,
+    accessible: resolve,
     babyChange: resolve,
     radar: resolve,
     attended: resolve,
