@@ -8,7 +8,9 @@
     "dev": "react-app-rewired start",
     "lint": "eslint . && stylelint \"src/**/*.css\"",
     "format": "prettier --write \"./**/*.{js,json}\"",
-    "test": "exit 0"
+    "test": "exit 0",
+    "migrate": "migrate-mongo up",
+    "generate": "node ./src/api/db/manage/generate/index.js --confirm"
   },
   "repository": {
     "type": "git",
@@ -88,6 +90,7 @@
     "http-proxy-middleware": "1.0.3",
     "husky": "4.2.5",
     "lint-staged": "10.2.2",
+    "migrate-mongo": "7.2.1",
     "nodemon": "2.0.3",
     "prettier": "2.0.5",
     "react-app-rewired": "2.1.6",
