@@ -18,7 +18,6 @@ mutation updateLoo(
       edit: $id
       location: $location
       name: $name
-      access: $access
       opening: $opening
       type: $type
       accessible: $accessible
@@ -45,7 +44,6 @@ mutation updateLoo(
         lng
       }
       active
-      access
       opening
       type
       accessible

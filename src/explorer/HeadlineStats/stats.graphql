@@ -16,9 +16,6 @@ query headlineStats {
     activeLoos {
       ...chunkDetails
     }
-    publicLoos {
-      ...chunkDetails
-    }
     babyChanging {
       ...chunkDetails
     }

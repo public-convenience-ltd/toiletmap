@@ -11,7 +11,6 @@ const looInfoResolver = (property) => {
     active: resolve,
     area: resolve,
     name: resolve,
-    access: resolve,
     opening: resolve,
     type: resolve,
     accessible: resolve,
@@ -145,8 +144,6 @@ const resolvers = {
     },
     proportions: async (parent, args) => {
       const {
-        publicLoos,
-        unknownAccessLoos,
         babyChange,
         babyChangeUnknown,
         inaccessibleLoos,
@@ -160,14 +157,6 @@ const resolvers = {
           { name: 'active', value: activeLoos },
           { name: 'inactive', value: totalLoos - activeLoos },
           { name: 'unknown', value: 0 },
-        ],
-        publicLoos: [
-          { name: 'public', value: publicLoos },
-          {
-            name: 'restricted',
-            value: totalLoos - (publicLoos + unknownAccessLoos),
-          },
-          { name: 'unknown', value: unknownAccessLoos },
         ],
         babyChanging: [
           { name: 'yes', value: babyChange },
@@ -194,8 +183,6 @@ const resolvers = {
           },
           totalLoos: area.looCount,
           activeLoos: area.activeLooCount,
-          publicLoos: area.publicLooCount,
-          permissiveLoos: area.permissiveLooCount,
           babyChangeLoos: area.babyChangeCount,
         };
       });
@@ -336,13 +323,6 @@ const resolvers = {
   },
 
   DateTime: GraphQLDateTime,
-
-  AccessPermission: {
-    PUBLIC: 'public',
-    PERMISSIVE: 'permissive',
-    CUSTOMERS_ONLY: 'customers only',
-    PRIVATE: 'none',
-  },
 
   Facilities: {
     FEMALE: 'female',

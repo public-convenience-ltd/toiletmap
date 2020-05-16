@@ -22,7 +22,6 @@ const getInitialFormState = () => {
   let state = {
     active: null,
     name: '',
-    access: '',
     type: '',
     accessible: '',
     opening: '',

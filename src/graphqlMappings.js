@@ -38,24 +38,6 @@ export default {
       opening: definitions,
       type: facilitiesMappings,
       accessibleType: facilitiesMappings,
-      access: [
-        {
-          name: 'Public',
-          value: 'PUBLIC',
-        },
-        {
-          name: 'Non-customers permitted',
-          value: 'PERMISSIVE',
-        },
-        {
-          name: 'Customers only',
-          value: 'CUSTOMERS_ONLY',
-        },
-        {
-          name: 'Private',
-          value: 'PRIVATE',
-        },
-      ],
     },
   },
   humanizePropertyValue(val, property) {

@@ -14,7 +14,6 @@ query findLooById($id: ID) {
       type
     }
     name
-    access
     opening
     type
     accessible

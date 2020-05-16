@@ -56,7 +56,6 @@ const LooPage = (props) => {
     accessible: 'Accessible facilities',
     babyChange: 'Baby Changing',
     attended: 'Attended',
-    access: 'Who can access?',
     radar: 'Radar key',
     fee: 'Fee',
     removal_reason: 'Removed',
@@ -64,7 +63,6 @@ const LooPage = (props) => {
 
   // Loo property order (top down by property name)
   const propertiesSort = [
-    'access',
     'type',
     'accessible',
     'opening',

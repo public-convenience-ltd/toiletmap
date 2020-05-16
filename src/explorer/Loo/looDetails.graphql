@@ -11,7 +11,6 @@ query fullLooDetails($id: ID) {
       lng
     }
     active
-    access
     opening
     type
     accessible
@@ -26,7 +25,6 @@ query fullLooDetails($id: ID) {
       contributor
       createdAt
       active
-      access
       opening
       type
       accessible

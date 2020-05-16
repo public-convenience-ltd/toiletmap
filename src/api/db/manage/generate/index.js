@@ -31,10 +31,17 @@ async function main() {
         'Please confirm that you want to drop the existing new-schema loos with --confirm.'
       );
     }
-
     // drop existing loo collection
     console.warn('Dropping existing new-schema loo collection');
-    await db.dropCollection('newloos');
+
+    try {
+      await db.dropCollection('newloos');
+    } catch (e) {
+      // 26 is collection not found :-) a fresh db
+      if (e.code !== 26) {
+        throw e;
+      }
+    }
 
     // create set of new loos from new reports
     console.warn('Migrating loos across from new reports');

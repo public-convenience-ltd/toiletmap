@@ -49,7 +49,6 @@ const typeDefs = gql`
     location: Point
     area: [AdminGeo]
     name: String
-    access: AccessPermission
     opening: String
     type: Facilities
     accessible: Boolean
@@ -60,13 +59,6 @@ const typeDefs = gql`
     fee: String
     notes: String
     removalReason: String
-  }
-
-  enum AccessPermission {
-    PUBLIC
-    PERMISSIVE
-    CUSTOMERS_ONLY
-    PRIVATE
   }
 
   enum Facilities {
@@ -107,7 +99,6 @@ const typeDefs = gql`
     location: Point
     area: [AdminGeo]
     name: String
-    access: AccessPermission
     opening: String
     type: Facilities
     accessible: Boolean
@@ -154,8 +145,6 @@ const typeDefs = gql`
   type Proportions {
     "The proportions of loos that are active vs removed"
     activeLoos: [Chunk!]!
-    "The proportions of loos that are public vs restricted access"
-    publicLoos: [Chunk!]!
     "The proportions of loos that have baby changing facilities vs those that don't"
     babyChanging: [Chunk!]!
     "The proportions of loos that are accessible vs not accessible"
@@ -172,10 +161,6 @@ const typeDefs = gql`
     totalLoos: Int!
     "The number of loos marked as active in this area"
     activeLoos: Int!
-    "The number of loos marked as public access in this area"
-    publicLoos: Int!
-    "The number of loos marked with permissive access in this area"
-    permissiveLoos: Int!
     "The number of loos with baby changing facilities in this area"
     babyChangeLoos: Int!
   }
@@ -263,7 +248,6 @@ const typeDefs = gql`
     edit: ID
     location: PointInput!
     name: String
-    access: AccessPermission
     opening: String
     type: Facilities
     accessible: Boolean

@@ -121,24 +121,6 @@ const EntryForm = ({
         </label>
 
         <label>
-          Who can access?
-          <select
-            ref={register}
-            name="access"
-            className={controls.dropdown}
-            defaultValue={loo.access || ''}
-            data-testid="who-can-access"
-          >
-            <option value="">Unknown</option>
-            {optionsMap.access.map((option, index) => (
-              <option key={index} value={option.value}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label>
           Facilities
           <select
             ref={register}
@@ -340,7 +322,6 @@ EntryForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   loo: PropTypes.shape({
     name: PropTypes.string,
-    access: PropTypes.string,
     type: PropTypes.string,
     accessible: PropTypes.string,
     opening: PropTypes.string,
@@ -352,12 +333,6 @@ EntryForm.propTypes = {
     lng: PropTypes.number.isRequired,
   }).isRequired,
   optionsMap: PropTypes.shape({
-    access: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        value: PropTypes.string,
-      })
-    ).isRequired,
     type: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,

@@ -125,8 +125,6 @@ LooSchema.statics.getCounters = async function () {
 
 LooSchema.statics.getProportionCounters = async function () {
   const [
-    publicLoos,
-    unknownAccessLoos,
     babyChange,
     babyChangeUnknown,
     inaccessibleLoos,
@@ -134,8 +132,6 @@ LooSchema.statics.getProportionCounters = async function () {
     activeLoos,
     totalLoos,
   ] = await Promise.all([
-    this.countDocuments({ 'properties.access': 'public' }).exec(),
-    this.countDocuments({ 'properties.access': 'none' }).exec(),
     this.countDocuments({ 'properties.babyChange': true }).exec(),
     this.countDocuments({ 'properties.babyChange': null }).exec(),
     this.countDocuments({ 'properties.accessible': false }).exec(),
@@ -147,8 +143,6 @@ LooSchema.statics.getProportionCounters = async function () {
   ]);
 
   return {
-    publicLoos,
-    unknownAccessLoos,
     babyChange,
     babyChangeUnknown,
     inaccessibleLoos,
@@ -181,24 +175,6 @@ LooSchema.statics.getAreasCounters = async function () {
         active: {
           $cond: ['$properties.active', 1, 0],
         },
-        public: {
-          $cond: [
-            {
-              $eq: ['$properties.access', 'public'],
-            },
-            1,
-            0,
-          ],
-        },
-        permissive: {
-          $cond: [
-            {
-              $eq: ['$properties.access', 'permissive'],
-            },
-            1,
-            0,
-          ],
-        },
         babyChange: {
           $cond: [
             {
@@ -221,12 +197,6 @@ LooSchema.statics.getAreasCounters = async function () {
         },
         activeLooCount: {
           $sum: '$active',
-        },
-        publicLooCount: {
-          $sum: '$public',
-        },
-        permissiveLooCount: {
-          $sum: '$permissive',
         },
         babyChangeCount: {
           $sum: '$babyChange',
