@@ -179,12 +179,12 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
     {
       icon: <Icon icon={faVenusMars} />,
       label: 'Unisex',
-      valueIcon: getFeatureValueIcon(data.type, () => data.type === 'UNISEX'),
+      valueIcon: getFeatureValueIcon(data.allGender),
     },
     {
       icon: <Icon icon={faGenderless} />,
       label: 'Gender Neutral',
-      valueIcon: getFeatureValueIcon(data.type, () => data.type === 'UNISEX'),
+      valueIcon: getFeatureValueIcon(data.allGender),
     },
     {
       icon: <Icon icon={faCog} />,

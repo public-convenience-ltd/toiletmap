@@ -8,6 +8,10 @@ export default [
     property: 'accessible',
   },
   {
+    question: 'All Gender/Unisex?',
+    property: 'allGender',
+  },
+  {
     question: 'Baby changing?',
     property: 'babyChange',
   },

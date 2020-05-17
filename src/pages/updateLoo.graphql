@@ -6,6 +6,7 @@ mutation updateLoo(
   $opening: String
   $type: Facilities
   $accessible: Boolean
+  $allGender: Boolean
   $babyChange: Boolean
   $radar: Boolean
   $attended: Boolean
@@ -21,6 +22,7 @@ mutation updateLoo(
       opening: $opening
       type: $type
       accessible: $accessible
+      allGender: $allGender
       babyChange: $babyChange
       radar: $radar
       attended: $attended
@@ -47,6 +49,7 @@ mutation updateLoo(
       opening
       type
       accessible
+      allGender
       babyChange
       radar
       attended

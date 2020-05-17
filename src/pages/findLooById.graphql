@@ -17,6 +17,7 @@ query findLooById($id: ID) {
     opening
     type
     accessible
+    allGender
     babyChange
     radar
     automatic

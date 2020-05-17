@@ -52,6 +52,7 @@ const typeDefs = gql`
     opening: String
     type: Facilities
     accessible: Boolean
+    allGender: Boolean
     babyChange: Boolean
     radar: Boolean
     attended: Boolean
@@ -102,6 +103,7 @@ const typeDefs = gql`
     opening: String
     type: Facilities
     accessible: Boolean
+    allGender: Boolean
     babyChange: Boolean
     radar: Boolean
     attended: Boolean
@@ -251,6 +253,7 @@ const typeDefs = gql`
     opening: String
     type: Facilities
     accessible: Boolean
+    allGender: Boolean
     babyChange: Boolean
     radar: Boolean
     attended: Boolean
