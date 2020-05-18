@@ -1,13 +1,3 @@
-@keyframes bounce {
-  from {
-    top: 0;
-  }
-
-  to {
-    top: -0.5rem;
-  }
-}
-
 .map {
   position: relative;
   display: flex;
@@ -42,30 +32,6 @@
   background: rgba(0, 0, 0, 0.8);
 }
 
-.markerLabel {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  padding-top: 1px;
-  height: 100%;
-  width: 100%;
-  color: #fff;
-  text-align: center;
-  font-weight: bold;
-  font-size: 1rem;
-}
-
-.markerHighlighted {
-  position: relative;
-  animation: bounce 0.5s infinite alternate;
-}
-
-.markerHighlighted svg path {
-  fill: #217821;
-}
-
 .locate {
   display: block;
   height: 30px;
@@ -92,33 +58,6 @@
 :global(.leaflet-div-icon) {
   border: 0 !important;
   background: none !important;
-}
-
-/* Cluster markers */
-
-.cluster {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  height: 50px;
-  width: 50px;
-  margin: -25px 0 0 -25px; /* Origin center */
-  padding-bottom: 6px;
-  border: 0;
-  border-radius: 50%;
-  color: #fff;
-  text-align: center;
-  font-size: 0.75rem;
-  font-weight: bold;
-  line-height: 1;
-  background-color: #1a1a1a;
-}
-
-.count {
-  display: block;
-  font-weight: normal;
-  font-size: 1.25rem;
 }
 
 /* Override control styles */
