@@ -12,8 +12,9 @@ query fullLooDetails($id: ID) {
     }
     active
     opening
-    type
     accessible
+    male
+    female
     babyChange
     radar
     attended
@@ -26,7 +27,6 @@ query fullLooDetails($id: ID) {
       createdAt
       active
       opening
-      type
       accessible
       babyChange
       radar

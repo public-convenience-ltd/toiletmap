@@ -52,8 +52,7 @@ function constructCampaignLink(loo, email = '') {
 const LooPage = (props) => {
   // Provides a mapping between loo property names and the values we want to display
   const humanizedPropNames = {
-    type: 'Facilities',
-    accessible: 'Accessible facilities',
+    accessible: 'Accessible',
     babyChange: 'Baby Changing',
     attended: 'Attended',
     radar: 'Radar key',
@@ -63,7 +62,6 @@ const LooPage = (props) => {
 
   // Loo property order (top down by property name)
   const propertiesSort = [
-    'type',
     'accessible',
     'opening',
     'attended',

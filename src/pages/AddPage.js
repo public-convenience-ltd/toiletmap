@@ -22,8 +22,6 @@ const getInitialFormState = () => {
   let state = {
     active: null,
     name: '',
-    type: '',
-    accessible: '',
     opening: '',
     notes: '',
     fee: '',

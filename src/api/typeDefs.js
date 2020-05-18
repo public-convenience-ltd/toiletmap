@@ -50,9 +50,12 @@ const typeDefs = gql`
     area: [AdminGeo]
     name: String
     opening: String
-    type: Facilities
     accessible: Boolean
     allGender: Boolean
+    male: Boolean
+    female: Boolean
+    urinalOnly: Boolean
+    childrenOnly: Boolean
     babyChange: Boolean
     radar: Boolean
     attended: Boolean
@@ -60,16 +63,6 @@ const typeDefs = gql`
     fee: String
     notes: String
     removalReason: String
-  }
-
-  enum Facilities {
-    FEMALE
-    MALE
-    FEMALE_AND_MALE
-    UNISEX
-    MALE_URINAL
-    CHILDREN
-    NONE
   }
 
   enum SortOrder {
@@ -101,9 +94,12 @@ const typeDefs = gql`
     area: [AdminGeo]
     name: String
     opening: String
-    type: Facilities
     accessible: Boolean
     allGender: Boolean
+    male: Boolean
+    female: Boolean
+    urinalOnly: Boolean
+    childrenOnly: Boolean
     babyChange: Boolean
     radar: Boolean
     attended: Boolean
@@ -251,9 +247,12 @@ const typeDefs = gql`
     location: PointInput!
     name: String
     opening: String
-    type: Facilities
     accessible: Boolean
     allGender: Boolean
+    male: Boolean
+    female: Boolean
+    urinalOnly: Boolean
+    childrenOnly: Boolean
     babyChange: Boolean
     radar: Boolean
     attended: Boolean

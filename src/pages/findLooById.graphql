@@ -9,16 +9,15 @@ query findLooById($id: ID) {
       lat
       lng
     }
-    area {
-      name
-      type
-    }
     name
     opening
-    type
     accessible
+    male
+    female
     allGender
     babyChange
+    childrenOnly
+    urinalOnly
     radar
     automatic
     fee

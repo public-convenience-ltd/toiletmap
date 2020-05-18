@@ -121,24 +121,6 @@ const EntryForm = ({
         </label>
 
         <label>
-          Facilities
-          <select
-            ref={register}
-            name="type"
-            className={controls.dropdown}
-            defaultValue={loo.type || ''}
-            data-testid="facilities"
-          >
-            <option value="">Unknown</option>
-            {optionsMap.type.map((option, index) => (
-              <option key={index} value={option.value}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label>
           Opening hours
           <select
             ref={register}
@@ -322,7 +304,6 @@ EntryForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   loo: PropTypes.shape({
     name: PropTypes.string,
-    type: PropTypes.string,
     accessible: PropTypes.string,
     opening: PropTypes.string,
     fee: PropTypes.string,
@@ -333,12 +314,6 @@ EntryForm.propTypes = {
     lng: PropTypes.number.isRequired,
   }).isRequired,
   optionsMap: PropTypes.shape({
-    type: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        value: PropTypes.string,
-      })
-    ).isRequired,
     opening: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,

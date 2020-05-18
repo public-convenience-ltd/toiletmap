@@ -12,9 +12,12 @@ const looInfoResolver = (property) => {
     area: resolve,
     name: resolve,
     opening: resolve,
-    type: resolve,
     accessible: resolve,
     allGender: resolve,
+    male: resolve,
+    female: resolve,
+    childrenOnly: resolve,
+    urinalOnly: resolve,
     babyChange: resolve,
     radar: resolve,
     attended: resolve,
@@ -324,16 +327,6 @@ const resolvers = {
   },
 
   DateTime: GraphQLDateTime,
-
-  Facilities: {
-    FEMALE: 'female',
-    MALE: 'male',
-    FEMALE_AND_MALE: 'female and male',
-    UNISEX: 'unisex',
-    MALE_URINAL: 'male urinal',
-    CHILDREN: 'children only',
-    NONE: 'none',
-  },
 
   SortOrder: {
     NEWEST_FIRST: { updatedAt: 'desc' },
