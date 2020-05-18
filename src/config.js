@@ -2,33 +2,29 @@ const { REACT_APP_BUNDLE_BRANDING } = process.env;
 
 export const FILTERS_KEY = 'filters';
 
-// 'field' acts as 'id' unless explicitly defined
 const filters = [
   {
     id: 'free',
-    field: 'fee',
     label: 'Free',
   },
   {
-    id: 'babyChange',
+    id: 'baby-changing',
     label: 'Baby Changing',
   },
   {
-    id: 'accessibleType',
+    id: 'accessible',
     label: 'Accessible',
   },
   {
     id: 'unisex',
-    field: 'type',
     label: 'Unisex',
   },
   {
-    id: 'genderNeutral',
-    field: 'type',
+    id: 'gender-neutral',
     label: 'Gender Neutral',
   },
   {
-    id: 'radar',
+    id: 'radar-key',
     label: 'Radar Key',
   },
   {
