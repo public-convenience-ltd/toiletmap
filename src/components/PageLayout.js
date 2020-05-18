@@ -1,24 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import { ThemeProvider } from 'emotion-theming';
 import { Global, css } from '@emotion/core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 import Box from './Box';
-import Text from './Text';
-import Button from './Button';
 import { MediaContextProvider, Media } from './Media';
 import Header from './Header';
 import Footer from './Footer';
 import TrackingBanner from './Tracking/TrackingBanner';
-import Sidebar from './Sidebar';
-import LocationSearch from './LocationSearch';
-import Drawer from './Drawer';
-import Filters from './Filters';
 
 import theme from '../theme';
-import config, { FILTERS_KEY } from '../config';
+import config from '../config';
 
 import { TRACKING_STORAGE_KEY } from './Tracking';
 
@@ -162,9 +153,8 @@ const ResetStyles = (
   />
 );
 
-const PageLayout = ({ onSelectedItemChange, ...props }) => {
+const PageLayout = (props) => {
   const trackingRef = useRef(null);
-  const filterToggleRef = useRef(null);
 
   const [isTrackingStateChosen, setIsTrackingStateChosen] = useState(
     config.getSetting(TRACKING_STORAGE_KEY, 'trackingStateChosen')
@@ -174,8 +164,6 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
   // update focus on the initial render
   const [showTrackingBanner, setShowTrackingBanner] = useState(false);
 
-  const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
-
   useEffect(() => {
     // programmatically focus the banner header when its presence is initiated by the user
     if (showTrackingBanner) {
@@ -184,20 +172,6 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
       }, 0);
     }
   }, [showTrackingBanner]);
-
-  let initialState = config.getSettings(FILTERS_KEY);
-
-  // default any unsaved filters as 'false'
-  config.filters.forEach((filter) => {
-    initialState[filter.id] = initialState[filter.id] || false;
-  });
-
-  const [filters, setFilters] = useState(initialState);
-
-  // keep local storage and state in sync
-  React.useEffect(() => {
-    window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
-  }, [filters]);
 
   const footerFragment = (
     <Footer>
@@ -223,89 +197,11 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
           />
         )}
 
-        <Box as="main" display="flex" flexDirection="column" height="100%">
+        <Box display="flex" flexDirection="column" height="100%">
           <Header>{footerFragment}</Header>
 
           <Box position="relative" flexGrow={1}>
             <Box as="main" height="100%" children={props.children} />
-
-            <aside>
-              <Box
-                as={Media}
-                lessThan="md"
-                position="absolute"
-                top={0}
-                left={0}
-                p={3}
-                width="100%"
-              >
-                <LocationSearch onSelectedItemChange={onSelectedItemChange} />
-
-                <Box display="flex" justifyContent="center" mt={3}>
-                  <Button
-                    ref={filterToggleRef}
-                    variant="secondary"
-                    icon={<FontAwesomeIcon icon={faFilter} />}
-                    aria-expanded={isFiltersExpanded}
-                    onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
-                  >
-                    Filter Map
-                  </Button>
-                </Box>
-
-                <Drawer visible={isFiltersExpanded} animateFrom="left">
-                  <Box display="flex" justifyContent="space-between" mb={4}>
-                    <Box display="flex" alignItems="flex-end">
-                      <FontAwesomeIcon icon={faFilter} fixedWidth size="lg" />
-                      <Box as="h2" mx={2}>
-                        <Text lineHeight={1}>
-                          <b>Filter</b>
-                        </Text>
-                      </Box>
-                    </Box>
-
-                    <Text fontSize={12}>
-                      <Box
-                        as="button"
-                        type="button"
-                        onClick={() => setFilters({})}
-                        border={0}
-                        borderBottom={2}
-                        borderStyle="solid"
-                      >
-                        Reset Filter
-                      </Box>
-                    </Text>
-                  </Box>
-
-                  <Filters filters={filters} onFilterChange={setFilters} />
-
-                  <Box display="flex" justifyContent="center" mt={4}>
-                    <Button
-                      onClick={() => {
-                        setIsFiltersExpanded(false);
-
-                        // return focus to the control that invoked the filter overlay
-                        filterToggleRef.current.focus();
-                      }}
-                      css={{
-                        width: '100%',
-                      }}
-                    >
-                      Done
-                    </Button>
-                  </Box>
-                </Drawer>
-              </Box>
-
-              <Media greaterThan="sm">
-                <Sidebar
-                  filters={filters}
-                  onFilterChange={setFilters}
-                  onSelectedItemChange={onSelectedItemChange}
-                />
-              </Media>
-            </aside>
           </Box>
 
           <Box as={Media} greaterThan="sm" mt="auto">
@@ -315,10 +211,6 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
       </MediaContextProvider>
     </ThemeProvider>
   );
-};
-
-PageLayout.propTypes = {
-  onSelectedItemChange: PropTypes.func.isRequired,
 };
 
 export default PageLayout;

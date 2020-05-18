@@ -4,11 +4,11 @@ export const FILTERS_KEY = 'filters';
 
 const filters = [
   {
-    id: 'free',
+    id: 'fee',
     label: 'Free',
   },
   {
-    id: 'baby-changing',
+    id: 'babyChange',
     label: 'Baby Changing',
   },
   {
@@ -16,15 +16,11 @@ const filters = [
     label: 'Accessible',
   },
   {
-    id: 'unisex',
+    id: 'allGender',
     label: 'Unisex',
   },
   {
-    id: 'gender-neutral',
-    label: 'Gender Neutral',
-  },
-  {
-    id: 'radar-key',
+    id: 'radar',
     label: 'Radar Key',
   },
   {
