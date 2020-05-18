@@ -18,11 +18,11 @@ import config from '../config';
 
 const iconMap = {
   free: faPoundSign,
-  'baby-changing': faBaby,
-  accessible: faWheelchair,
+  babyChange: faBaby,
+  accessibleType: faWheelchair,
   unisex: faVenusMars,
-  'gender-neutral': faGenderless,
-  'radar-key': faKey,
+  genderNeutral: faGenderless,
+  radar: faKey,
   automatic: faCog,
 };
 

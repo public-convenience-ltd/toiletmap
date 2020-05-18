@@ -18,7 +18,7 @@ import Drawer from './Drawer';
 import Filters from './Filters';
 
 import theme from '../theme';
-import config, { FILTERS_KEY } from '../config';
+import config from '../config';
 
 import { TRACKING_STORAGE_KEY } from './Tracking';
 
@@ -162,7 +162,12 @@ const ResetStyles = (
   />
 );
 
-const PageLayout = ({ onSelectedItemChange, ...props }) => {
+const PageLayout = ({
+  filters,
+  onFilterChange,
+  onSelectedItemChange,
+  ...props
+}) => {
   const trackingRef = useRef(null);
 
   const [isTrackingStateChosen, setIsTrackingStateChosen] = useState(
@@ -183,20 +188,6 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
       }, 0);
     }
   }, [showTrackingBanner]);
-
-  let initialState = config.getSettings(FILTERS_KEY);
-
-  // default any unsaved filters as 'false'
-  config.filters.forEach((filter) => {
-    initialState[filter.id] = initialState[filter.id] || false;
-  });
-
-  const [filters, setFilters] = useState(initialState);
-
-  // keep local storage and state in sync
-  React.useEffect(() => {
-    window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
-  }, [filters]);
 
   const footerFragment = (
     <Footer>
@@ -266,7 +257,7 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
                       <Box
                         as="button"
                         type="button"
-                        onClick={() => setFilters({})}
+                        onClick={() => onFilterChange({})}
                         border={0}
                         borderBottom={2}
                         borderStyle="solid"
@@ -276,7 +267,7 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
                     </Text>
                   </Box>
 
-                  <Filters filters={filters} onFilterChange={setFilters} />
+                  <Filters filters={filters} onFilterChange={onFilterChange} />
 
                   <Box display="flex" justifyContent="center" mt={4}>
                     <Button
@@ -294,7 +285,7 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
               <Media greaterThan="sm">
                 <Sidebar
                   filters={filters}
-                  onFilterChange={setFilters}
+                  onFilterChange={onFilterChange}
                   onSelectedItemChange={onSelectedItemChange}
                 />
               </Media>
@@ -311,6 +302,8 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
 };
 
 PageLayout.propTypes = {
+  filters: PropTypes.object,
+  onFilterChange: PropTypes.func.isRequired,
   onSelectedItemChange: PropTypes.func.isRequired,
 };
 
