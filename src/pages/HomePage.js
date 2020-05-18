@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
+import { useParams, useRouteMatch } from 'react-router-dom';
 import { loader } from 'graphql.macro';
 import { useQuery } from '@apollo/client';
 
@@ -16,15 +16,6 @@ const FIND_BY_ID = loader('./findLooById.graphql');
 
 const HomePage = ({ initialPosition, ...props }) => {
   const [mapPosition, setMapPosition] = useMapPosition(config.fallbackLocation);
-
-  React.useEffect(() => {
-    // Set the map position if initialPosition prop exists
-    if (initialPosition) {
-      setMapPosition({
-        center: initialPosition,
-      });
-    }
-  }, [initialPosition, setMapPosition]);
 
   const { data: loos } = useNearbyLoos({
     variables: {
@@ -42,6 +33,31 @@ const HomePage = ({ initialPosition, ...props }) => {
       skip: !selectedLooId,
     },
   });
+
+  const isLooPage = useRouteMatch('/loos/:id');
+
+  const [shouldCenter, setShouldCenter] = React.useState(isLooPage);
+
+  // set initial map center to toilet if on /loos/:id
+  React.useEffect(() => {
+    if (shouldCenter && data) {
+      setMapPosition({
+        center: data.loo.location,
+      });
+
+      // don't recenter the map each time the id changes
+      setShouldCenter(false);
+    }
+  }, [data, shouldCenter, setMapPosition]);
+
+  // set the map position if initialPosition prop exists
+  React.useEffect(() => {
+    if (initialPosition) {
+      setMapPosition({
+        center: initialPosition,
+      });
+    }
+  }, [initialPosition, setMapPosition]);
 
   return (
     <PageLayout onSelectedItemChange={(center) => setMapPosition({ center })}>
