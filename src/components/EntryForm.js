@@ -121,60 +121,6 @@ const EntryForm = ({
         </label>
 
         <label>
-          Who can access?
-          <select
-            ref={register}
-            name="access"
-            className={controls.dropdown}
-            defaultValue={loo.access || ''}
-            data-testid="who-can-access"
-          >
-            <option value="">Unknown</option>
-            {optionsMap.access.map((option, index) => (
-              <option key={index} value={option.value}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label>
-          Facilities
-          <select
-            ref={register}
-            name="type"
-            className={controls.dropdown}
-            defaultValue={loo.type || ''}
-            data-testid="facilities"
-          >
-            <option value="">Unknown</option>
-            {optionsMap.type.map((option, index) => (
-              <option key={index} value={option.value}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label>
-          Accessible facilities
-          <select
-            ref={register}
-            name="accessibleType"
-            className={controls.dropdown}
-            defaultValue={loo.accessibleType || ''}
-            data-testid="accessible-facilities"
-          >
-            <option value="">Unknown</option>
-            {optionsMap.type.map((option, index) => (
-              <option key={index} value={option.value}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label>
           Opening hours
           <select
             ref={register}
@@ -358,9 +304,7 @@ EntryForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   loo: PropTypes.shape({
     name: PropTypes.string,
-    access: PropTypes.string,
-    type: PropTypes.string,
-    accessibleType: PropTypes.string,
+    accessible: PropTypes.string,
     opening: PropTypes.string,
     fee: PropTypes.string,
     notes: PropTypes.string,
@@ -370,18 +314,6 @@ EntryForm.propTypes = {
     lng: PropTypes.number.isRequired,
   }).isRequired,
   optionsMap: PropTypes.shape({
-    access: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        value: PropTypes.string,
-      })
-    ).isRequired,
-    type: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        value: PropTypes.string,
-      })
-    ).isRequired,
     opening: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,

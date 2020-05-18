@@ -11,10 +11,13 @@ const looInfoResolver = (property) => {
     active: resolve,
     area: resolve,
     name: resolve,
-    access: resolve,
     opening: resolve,
-    type: resolve,
-    accessibleType: resolve,
+    accessible: resolve,
+    allGender: resolve,
+    male: resolve,
+    female: resolve,
+    childrenOnly: resolve,
+    urinalOnly: resolve,
     babyChange: resolve,
     radar: resolve,
     attended: resolve,
@@ -145,8 +148,6 @@ const resolvers = {
     },
     proportions: async (parent, args) => {
       const {
-        publicLoos,
-        unknownAccessLoos,
         babyChange,
         babyChangeUnknown,
         inaccessibleLoos,
@@ -160,14 +161,6 @@ const resolvers = {
           { name: 'active', value: activeLoos },
           { name: 'inactive', value: totalLoos - activeLoos },
           { name: 'unknown', value: 0 },
-        ],
-        publicLoos: [
-          { name: 'public', value: publicLoos },
-          {
-            name: 'restricted',
-            value: totalLoos - (publicLoos + unknownAccessLoos),
-          },
-          { name: 'unknown', value: unknownAccessLoos },
         ],
         babyChanging: [
           { name: 'yes', value: babyChange },
@@ -194,8 +187,6 @@ const resolvers = {
           },
           totalLoos: area.looCount,
           activeLoos: area.activeLooCount,
-          publicLoos: area.publicLooCount,
-          permissiveLoos: area.permissiveLooCount,
           babyChangeLoos: area.babyChangeCount,
         };
       });
@@ -336,23 +327,6 @@ const resolvers = {
   },
 
   DateTime: GraphQLDateTime,
-
-  AccessPermission: {
-    PUBLIC: 'public',
-    PERMISSIVE: 'permissive',
-    CUSTOMERS_ONLY: 'customers only',
-    PRIVATE: 'none',
-  },
-
-  Facilities: {
-    FEMALE: 'female',
-    MALE: 'male',
-    FEMALE_AND_MALE: 'female and male',
-    UNISEX: 'unisex',
-    MALE_URINAL: 'male urinal',
-    CHILDREN: 'children only',
-    NONE: 'none',
-  },
 
   SortOrder: {
     NEWEST_FIRST: { updatedAt: 'desc' },

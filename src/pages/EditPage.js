@@ -69,9 +69,8 @@ const EditPage = (props) => {
     let tempLoo = {
       active: null,
       name: '',
-      access: '',
       type: '',
-      accessibleType: '',
+      accessible: '',
       opening: '',
       notes: '',
       fee: '',

@@ -1,61 +1,10 @@
 import { definitions } from './openingHours';
 
-const facilitiesMappings = [
-  {
-    name: 'Female',
-    value: 'FEMALE',
-  },
-  {
-    name: 'Male',
-    value: 'MALE',
-  },
-  {
-    name: 'Female and Male',
-    value: 'FEMALE_AND_MALE',
-  },
-  {
-    name: 'Unisex',
-    value: 'UNISEX',
-  },
-  {
-    name: 'Male Urinal',
-    value: 'MALE_URINAL',
-  },
-  {
-    name: 'Children Only',
-    value: 'CHILDREN',
-  },
-  {
-    name: 'None',
-    value: 'NONE',
-  },
-];
-
 export default {
   looProps: {
     canHumanize: ['attended', 'babyChange', 'automatic', 'radar', 'fee'],
     definitions: {
       opening: definitions,
-      type: facilitiesMappings,
-      accessibleType: facilitiesMappings,
-      access: [
-        {
-          name: 'Public',
-          value: 'PUBLIC',
-        },
-        {
-          name: 'Non-customers permitted',
-          value: 'PERMISSIVE',
-        },
-        {
-          name: 'Customers only',
-          value: 'CUSTOMERS_ONLY',
-        },
-        {
-          name: 'Private',
-          value: 'PRIVATE',
-        },
-      ],
     },
   },
   humanizePropertyValue(val, property) {

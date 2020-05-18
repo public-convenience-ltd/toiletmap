@@ -5,8 +5,6 @@ query getAreaStats {
     }
     totalLoos
     activeLoos
-    publicLoos
-    permissiveLoos
     babyChangeLoos
   }
 }

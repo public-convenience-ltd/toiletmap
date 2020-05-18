@@ -2,10 +2,13 @@ mutation updateLoo(
   $id: ID
   $location: PointInput!
   $name: String
-  $access: AccessPermission
   $opening: String
-  $type: Facilities
-  $accessibleType: Facilities
+  $accessible: Boolean
+  $allGender: Boolean
+  $male: Boolean
+  $female: Boolean
+  $childrenOnly: Boolean
+  $urinalOnly: Boolean
   $babyChange: Boolean
   $radar: Boolean
   $attended: Boolean
@@ -18,10 +21,13 @@ mutation updateLoo(
       edit: $id
       location: $location
       name: $name
-      access: $access
       opening: $opening
-      type: $type
-      accessibleType: $accessibleType
+      accessible: $accessible
+      male: $male
+      female: $female
+      childrenOnly: $childrenOnly
+      urinalOnly: $urinalOnly
+      allGender: $allGender
       babyChange: $babyChange
       radar: $radar
       attended: $attended
@@ -45,10 +51,13 @@ mutation updateLoo(
         lng
       }
       active
-      access
       opening
-      type
-      accessibleType
+      accessible
+      allGender
+      male
+      female
+      urinalOnly
+      childrenOnly
       babyChange
       radar
       attended

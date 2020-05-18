@@ -41,12 +41,7 @@ function HeadlineStats() {
   if (loading) return null;
   if (error) throw error;
 
-  let {
-    publicLoos,
-    activeLoos,
-    babyChanging,
-    accessibleLoos,
-  } = data.proportions;
+  let { activeLoos, babyChanging, accessibleLoos } = data.proportions;
 
   const getNames = (proportions) => {
     return proportions.map((chunk) => {
@@ -103,17 +98,6 @@ function HeadlineStats() {
           cols={2}
           style={{ height: 'auto' }}
         ></GridListTile>
-        <GridListTile rows={2} cols={1}>
-          <Doughnut
-            height={150}
-            data={makeDoughnutData(getNames(publicLoos), getValues(publicLoos))}
-          />
-          <GridListTileBar
-            titlePosition="bottom"
-            title="Public Loos"
-            subtitle="Loos marked for public use"
-          />
-        </GridListTile>
         <GridListTile rows={2} cols={1}>
           <Doughnut
             height={150}
