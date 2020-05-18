@@ -96,7 +96,7 @@
     "prettier": "2.0.5",
     "react-app-rewired": "2.1.6",
     "react-scripts": "3.4.1",
-    "stylelint": "13.3.3",
+    "stylelint": "13.4.1",
     "stylelint-config-standard": "20.0.0"
   },
   "husky": {
