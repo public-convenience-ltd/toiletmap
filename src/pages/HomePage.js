@@ -67,12 +67,13 @@ const HomePage = ({ initialPosition, ...props }) => {
     applied.every((filter) => {
       const value = toilet[filter.id];
 
-      if (filter.id === 'fee') {
-        return !value;
-      }
-
       if (value === null) {
         return false;
+      }
+
+      // free toilets identified as empty string
+      if (filter.id === 'fee') {
+        return value === '';
       }
 
       return !!value;
