@@ -40,9 +40,10 @@ const LooMap = (props) => {
         <Marker
           key={toilet.id}
           position={toilet.location}
+          zIndexOffset={toilet.isHighlighted ? 1000 : 0}
           icon={
             new ToiletMarkerIcon({
-              highlight: toilet.isHighlighted,
+              isHighlighted: toilet.isHighlighted,
               toiletId: toilet.id,
             })
           }
