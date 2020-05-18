@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { loader } from 'graphql.macro';
 import { useQuery } from '@apollo/client';
 
-import config from '../config';
+import config, { FILTERS_KEY } from '../config';
 import PageLayout from '../components/PageLayout';
 import LooMap from '../components/LooMap';
 import useMapPosition from '../components/useMapPosition';
@@ -17,6 +17,20 @@ const FIND_BY_ID = loader('./findLooById.graphql');
 const HomePage = ({ initialPosition, ...props }) => {
   const [mapPosition, setMapPosition] = useMapPosition(config.fallbackLocation);
 
+  let initialState = config.getSettings(FILTERS_KEY);
+
+  // default any unsaved filters as 'false'
+  config.filters.forEach((filter) => {
+    initialState[filter.id] = initialState[filter.id] || false;
+  });
+
+  const [filters, setFilters] = useState(initialState);
+
+  // keep local storage and state in sync
+  React.useEffect(() => {
+    window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
+  }, [filters]);
+
   React.useEffect(() => {
     // Set the map position if initialPosition prop exists
     if (initialPosition) {
@@ -26,7 +40,7 @@ const HomePage = ({ initialPosition, ...props }) => {
     }
   }, [initialPosition, setMapPosition]);
 
-  const { data: loos } = useNearbyLoos({
+  const { data: toiletData } = useNearbyLoos({
     variables: {
       lat: mapPosition.center.lat,
       lng: mapPosition.center.lng,
@@ -43,18 +57,42 @@ const HomePage = ({ initialPosition, ...props }) => {
     },
   });
 
+  // get the filter objects from config for the filters applied by the user
+  const applied = config.filters.filter((filter) => filters[filter.id]);
+
+  // restrict the results to only those toilets which pass all of our filter requirements
+  const toilets = toiletData.filter((toilet) =>
+    applied.every((filter) => {
+      const value = toilet[filter.id];
+
+      if (filter.id === 'fee') {
+        return !value;
+      }
+
+      if (value === null) {
+        return false;
+      }
+
+      return !!value;
+    })
+  );
+
   return (
-    <PageLayout onSelectedItemChange={(center) => setMapPosition({ center })}>
+    <PageLayout
+      filters={filters}
+      onFilterChange={setFilters}
+      onSelectedItemChange={(center) => setMapPosition({ center })}
+    >
       <Box height="100%" display="flex" position="relative">
         <LooMap
-          loos={loos.map((loo) => {
-            if (loo.id === selectedLooId) {
+          loos={toilets.map((toilet) => {
+            if (toilet.id === selectedLooId) {
               return {
-                ...loo,
+                ...toilet,
                 isHighlighted: true,
               };
             }
-            return loo;
+            return toilet;
           })}
           center={mapPosition.center}
           zoom={mapPosition.zoom}
