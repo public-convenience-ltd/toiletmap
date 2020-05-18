@@ -8,7 +8,6 @@ import { Route, Switch } from 'react-router-dom';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthCallback from './pages/AuthCallback';
-import LooPage from './pages/LooPage';
 import RemovePage from './pages/RemovePage';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
@@ -60,7 +59,6 @@ ReactDOM.render(
             <ProtectedRoute exact path="/report" component={AddPage} />
             <ProtectedRoute path="/loos/:id/edit" component={EditPage} />
             <ProtectedRoute path="/loos/:id/remove" component={RemovePage} />
-            <ProtectedRoute path="/loos/:id/thanks" component={LooPage} />
             <Route component={NotFound} />
           </Switch>
         </Suspense>

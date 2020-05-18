@@ -6,7 +6,6 @@ import {
   faBaby,
   faWheelchair,
   faVenusMars,
-  faGenderless,
   faKey,
   faCog,
 } from '@fortawesome/free-solid-svg-icons';
@@ -17,12 +16,11 @@ import Switch from './Switch';
 import config from '../config';
 
 const iconMap = {
-  free: faPoundSign,
-  'baby-changing': faBaby,
+  fee: faPoundSign,
+  babyChange: faBaby,
   accessible: faWheelchair,
-  unisex: faVenusMars,
-  'gender-neutral': faGenderless,
-  'radar-key': faKey,
+  allGender: faVenusMars,
+  radar: faKey,
   automatic: faCog,
 };
 

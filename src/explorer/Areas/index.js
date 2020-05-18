@@ -27,14 +27,6 @@ const cells = [
     name: 'Active Loos',
   },
   {
-    key: 'publicLoos',
-    name: 'Public Loos',
-  },
-  {
-    key: 'permissiveLoos',
-    name: 'Permissive Loos',
-  },
-  {
     key: 'babyChangeLoos',
     name: 'Baby Changing',
   },

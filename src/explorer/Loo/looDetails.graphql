@@ -11,10 +11,10 @@ query fullLooDetails($id: ID) {
       lng
     }
     active
-    access
     opening
-    type
-    accessibleType
+    accessible
+    male
+    female
     babyChange
     radar
     attended
@@ -26,10 +26,8 @@ query fullLooDetails($id: ID) {
       contributor
       createdAt
       active
-      access
       opening
-      type
-      accessibleType
+      accessible
       babyChange
       radar
       attended

@@ -165,9 +165,9 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
     {
       icon: <Icon icon={faWheelchair} />,
       label: 'Accessible',
-      valueIcon: getFeatureValueIcon(data.accessibleType),
+      valueIcon: getFeatureValueIcon(data.accessible),
     },
-    ...(data.accessibleType
+    ...(data.accessible
       ? [
           {
             icon: <Icon icon={faKey} />,
@@ -179,12 +179,12 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
     {
       icon: <Icon icon={faVenusMars} />,
       label: 'Unisex',
-      valueIcon: getFeatureValueIcon(data.type, () => data.type === 'UNISEX'),
+      valueIcon: getFeatureValueIcon(data.allGender),
     },
     {
       icon: <Icon icon={faGenderless} />,
       label: 'Gender Neutral',
-      valueIcon: getFeatureValueIcon(data.type, () => data.type === 'UNISEX'),
+      valueIcon: getFeatureValueIcon(data.allGender),
     },
     {
       icon: <Icon icon={faCog} />,
