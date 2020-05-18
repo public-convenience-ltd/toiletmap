@@ -164,6 +164,7 @@ const ResetStyles = (
 
 const PageLayout = ({ onSelectedItemChange, ...props }) => {
   const trackingRef = useRef(null);
+  const filterToggleRef = useRef(null);
 
   const [isTrackingStateChosen, setIsTrackingStateChosen] = useState(
     config.getSetting(TRACKING_STORAGE_KEY, 'trackingStateChosen')
@@ -202,7 +203,7 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
     <Footer>
       <button
         type="button"
-        aria-pressed={showTrackingBanner}
+        aria-expanded={showTrackingBanner}
         onClick={() => setShowTrackingBanner(true)}
       >
         Cookie Preferences
@@ -242,6 +243,7 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
 
                 <Box display="flex" justifyContent="center" mt={3}>
                   <Button
+                    ref={filterToggleRef}
                     variant="secondary"
                     icon={<FontAwesomeIcon icon={faFilter} />}
                     aria-expanded={isFiltersExpanded}
@@ -280,7 +282,12 @@ const PageLayout = ({ onSelectedItemChange, ...props }) => {
 
                   <Box display="flex" justifyContent="center" mt={4}>
                     <Button
-                      onClick={() => setIsFiltersExpanded(false)}
+                      onClick={() => {
+                        setIsFiltersExpanded(false);
+
+                        // return focus to the control that invoked the filter overlay
+                        filterToggleRef.current.focus();
+                      }}
                       css={{
                         width: '100%',
                       }}
