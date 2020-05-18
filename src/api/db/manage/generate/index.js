@@ -28,11 +28,11 @@ async function main() {
     // check they're serious
     if (!process.argv.slice(2).includes('--confirm')) {
       throw Error(
-        'Please confirm that you want to drop the existing new-schema loos with --confirm.'
+        'Please confirm that you want to drop the existing loos with --confirm.'
       );
     }
     // drop existing loo collection
-    console.warn('Dropping existing new-schema loo collection');
+    console.warn('Dropping existing loo collection');
 
     try {
       await db.dropCollection('newloos');
@@ -43,11 +43,11 @@ async function main() {
       }
     }
 
-    // create set of new loos from new reports
-    console.warn('Migrating loos across from new reports');
+    // create set of new loos from reports
+    console.log('Generating loos from reports');
     const newLoos = await generateFromReports();
 
-    console.error(newLoos.length + ' loos generated');
+    console.log(newLoos.length + ' loos generated');
   } catch (e) {
     console.error(e);
     process.exitCode = 1;
