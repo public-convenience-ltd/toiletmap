@@ -409,19 +409,19 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
               )}
             </Box>
 
-            <Box
-              as={Media}
-              lessThan="md"
-              display="flex"
-              justifyContent="center"
-              width="100%"
-              padding={2}
-              marginBottom={2}
-            >
-              <Button variant="link" onClick={handleBackToTopClick}>
-                Back to top
-              </Button>
-            </Box>
+            <Media lessThan="md">
+              <Box
+                display="flex"
+                justifyContent="center"
+                width="100%"
+                padding={2}
+                marginBottom={2}
+              >
+                <Button variant="link" onClick={handleBackToTopClick}>
+                  Back to top
+                </Button>
+              </Box>
+            </Media>
           </Grid>
         </Box>
       </Box>
