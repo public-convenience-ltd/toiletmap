@@ -1,15 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+import { css } from '@emotion/core';
 import { Map, TileLayer, Marker, ZoomControl } from 'react-leaflet';
 
 import config from '../../config.js';
 import LocateMapControl from './LocateMapControl';
 import ToiletMarkerIcon from './ToiletMarkerIcon';
 
-import styles from '../css/loo-map.module.css';
-
-const LooMap = (props) => {
+const LooMap = ({
+  center,
+  zoom,
+  minZoom,
+  maxZoom,
+  onViewportChanged,
+  loos,
+  staticMap,
+  controlsOffset,
+}) => {
   const mapRef = React.useRef();
 
   const handleViewportChanged = () => {
@@ -21,22 +29,18 @@ const LooMap = (props) => {
     const bounds = map.getBounds();
     const radius = parseInt(bounds.getNorthEast().distanceTo(center));
 
-    props.onViewportChanged({
+    onViewportChanged({
       center,
       zoom,
       radius,
     });
   };
 
-  const className = props.showCenter
-    ? `${props.className} ${styles['with-crosshair']} map--zindexfix`
-    : props.className;
-
   const { push } = useHistory();
 
-  const toiletMarkers = React.useMemo(
+  const memoizedMarkers = React.useMemo(
     () =>
-      props.loos.map((toilet) => (
+      loos.map((toilet) => (
         <Marker
           key={toilet.id}
           position={toilet.location}
@@ -48,100 +52,72 @@ const LooMap = (props) => {
             })
           }
           onClick={() => {
-            if (props.interactiveMarkers) {
+            if (!staticMap) {
               push('/loos/' + toilet.id);
             }
           }}
         />
       )),
-    [props.loos, props.interactiveMarkers, push]
+    [loos, staticMap, push]
   );
 
   return (
     <Map
       ref={mapRef}
-      className={className}
-      center={props.center}
-      zoom={props.zoom}
-      minZoom={props.minZoom}
-      maxZoom={props.maxZoom}
+      center={center}
+      zoom={zoom}
+      minZoom={minZoom}
+      maxZoom={maxZoom}
       onViewportChanged={handleViewportChanged}
-      dragging={!props.preventDragging}
-      scrollWheelZoom={!props.preventZoom}
+      dragging={!staticMap}
+      scrollWheelZoom={!staticMap}
       zoomControl={false}
       tap={false}
+      css={css`
+        height: 100%;
+        width: 100%;
+        position: relative;
+        z-index: 0;
+
+        .leaflet-bottom {
+          bottom: ${controlsOffset}px;
+        }
+      `}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        minZoom={props.minZoom}
-        maxZoom={props.maxZoom}
-        contributor={
-          props.showContributor
-            ? 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            : ''
-        }
+        minZoom={minZoom}
+        maxZoom={maxZoom}
       />
-
-      {toiletMarkers}
-
-      {props.showZoomControl && <ZoomControl position="bottomright" />}
-      {props.showLocateControl && <LocateMapControl position="bottomright" />}
+      {memoizedMarkers}
+      <ZoomControl position="bottomright" />
+      <LocateMapControl position="bottomright" />
     </Map>
   );
 };
 
 LooMap.propTypes = {
-  // An array of loo instances to be represented as map markers
-  loos: PropTypes.array.isRequired,
-
-  // Optional CSS class name to override the map element styles
-  className: PropTypes.string,
-
+  loos: PropTypes.array,
   center: PropTypes.shape({
     lat: PropTypes.number,
     lng: PropTypes.number,
   }).isRequired,
-
   zoom: PropTypes.number,
   minZoom: PropTypes.number,
   maxZoom: PropTypes.number,
-  preventZoom: PropTypes.bool,
-  preventDragging: PropTypes.bool,
-  showSearchControl: PropTypes.bool,
-  showLocateControl: PropTypes.bool,
-  showContributor: PropTypes.bool,
+  staticMap: PropTypes.bool,
   onViewportChanged: PropTypes.func,
-
-  onSearchSelectedItemChange: PropTypes.func,
-
-  // Note this also has a dependency on `preventZoom`
-  showZoomControl: PropTypes.bool,
-
-  // Draws a crosshair to indicate the center of the map
-  showCenter: PropTypes.bool,
-
-  // Returns the label for markers
-  markerLabel: PropTypes.func,
-
-  interactiveMarkers: PropTypes.bool,
+  controlsOffset: PropTypes.number,
 };
 
 LooMap.defaultProps = {
   loos: [],
-  className: styles.map,
   zoom: config.initialZoom,
   minZoom: config.minZoom,
   maxZoom: config.maxZoom,
+  staticMap: false,
   onViewportChanged: Function.prototype,
-  onSearchSelectedItemChange: Function.proptypes,
-  preventZoom: false,
-  preventDragging: false,
-  showSearchControl: false,
-  showLocateControl: false,
-  showZoomControl: true,
-  showContributor: false,
-  showCenter: false,
-  interactiveMarkers: true,
+  controlsOffset: 0,
 };
 
 export default LooMap;
