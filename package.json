@@ -86,6 +86,7 @@
   "devDependencies": {
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
+    "cli-progress": "3.8.2",
     "customize-cra": "0.9.1",
     "dotenv": "8.2.0",
     "http-proxy-middleware": "1.0.4",
