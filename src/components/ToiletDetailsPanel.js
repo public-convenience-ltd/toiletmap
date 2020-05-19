@@ -14,22 +14,24 @@ import {
   faKey,
   faCog,
   faQuestion,
+  faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { DateTime } from 'luxon';
 import { Link } from 'react-router-dom';
+import { useMutation, gql } from '@apollo/client';
 
 import Box from './Box';
 import Button from './Button';
 import Text from './Text';
 import Spacer from './Spacer';
 import Icon from './Icon';
+import { Media } from './Media';
 import {
   getOpeningTimes,
   getIsOpen,
   WEEKDAYS,
   rangeTypes,
 } from '../openingHours';
-import { useMutation, gql } from '@apollo/client';
 
 const Grid = styled(Box)`
   display: flex;
@@ -89,12 +91,20 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
   // }, [isLoading, data]);
 
   // programmatically set focus on close button when panel expands
-  const closeButtonRef = React.useRef();
+  const closeButtonRef = React.useRef(null);
   React.useEffect(() => {
     if (isExpanded && closeButtonRef.current) {
       closeButtonRef.current.focus();
     }
   }, [isExpanded]);
+
+  const overflowRef = React.useRef(null);
+  const handleBackToTopClick = () => {
+    if (!overflowRef.current) {
+      return;
+    }
+    overflowRef.current.scrollTop = 0;
+  };
 
   if (isLoading) {
     return (
@@ -213,16 +223,12 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         width="100%"
         color="primary"
         bg="white"
-        maxHeight={400}
-        overflow="auto"
         borderTopLeftRadius={4}
         borderTopRightRadius={4}
-        padding={4}
-        paddingRight={5}
         as="section"
         aria-labelledby="toilet-details-heading"
       >
-        <Grid>
+        <Media greaterThanOrEqual="md">
           <Box position="absolute" top={30} right={30}>
             <button
               type="button"
@@ -246,133 +252,173 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
               </Box>
             </button>
           </Box>
+        </Media>
 
-          <Box width={['100%', '50%', '25%']} padding={3}>
-            {titleFragment}
-            <Spacer mb={2} />
-            {getDirectionsFragment}
-            <Spacer mb={4} />
-            <Text fontWeight="bold">
-              <h2>Is this information correct?</h2>
-            </Text>
-            <Spacer mb={2} />
-            <Box display="flex" alignItems="center">
-              <Button
-                onClick={() =>
-                  submitVerificationReport({ variables: { id: data.id } })
-                }
-                disabled={submitVerificationLoading}
-              >
-                Yes
-              </Button>
-              <Spacer mr={4} />
-              <Box display="flex" alignItems="center">
-                No?
-                <Spacer mr={2} />
-                <Button
-                  variant="secondary"
-                  icon={<Icon icon={faEdit} />}
-                  as={Link}
-                  to={editUrl}
-                >
-                  Edit
-                </Button>
-              </Box>
+        <Media lessThan="md">
+          <Box display="flex" justifyContent="center" paddingTop={2}>
+            <Box
+              as="button"
+              type="button"
+              aria-label="Close toilet details"
+              onClick={() => setIsExpanded(false)}
+              aria-expanded="true"
+              padding={2}
+              ref={closeButtonRef}
+            >
+              <Icon icon={faChevronDown} />
             </Box>
-            <Spacer mb={2} />
-            Last verified:{' '}
-            {verifiedOrUpdatedDate.toLocaleString(DateTime.DATETIME_SHORT)}
           </Box>
+        </Media>
 
-          <Box width={['100%', '50%', '25%']} padding={3} order={[0, 1]}>
-            <Box display="flex" alignItems="center">
-              <Icon icon={faClock} />
-              <Spacer mr={2} />
+        <Box
+          ref={overflowRef}
+          maxHeight={400}
+          overflow="auto"
+          padding={4}
+          paddingTop={[0, 4]}
+          paddingRight={[4, 5]}
+        >
+          <Grid>
+            <Box width={['100%', '50%', '25%']} padding={3}>
+              {titleFragment}
+              <Spacer mb={2} />
+              {getDirectionsFragment}
+              <Spacer mb={4} />
               <Text fontWeight="bold">
-                <h2>Opening Hours</h2>
+                <h2>Is this information correct?</h2>
+              </Text>
+              <Spacer mb={2} />
+              <Box display="flex" alignItems="center">
+                <Button
+                  onClick={() =>
+                    submitVerificationReport({ variables: { id: data.id } })
+                  }
+                  disabled={submitVerificationLoading}
+                >
+                  Yes
+                </Button>
+                <Spacer mr={4} />
+                <Box display="flex" alignItems="center">
+                  No?
+                  <Spacer mr={2} />
+                  <Button
+                    variant="secondary"
+                    icon={<Icon icon={faEdit} />}
+                    as={Link}
+                    to={editUrl}
+                  >
+                    Edit
+                  </Button>
+                </Box>
+              </Box>
+              <Spacer mb={2} />
+              Last verified:{' '}
+              {verifiedOrUpdatedDate.toLocaleString(DateTime.DATETIME_SHORT)}
+            </Box>
+
+            <Box width={['100%', '50%', '25%']} padding={3} order={[0, 1]}>
+              <Box display="flex" alignItems="center">
+                <Icon icon={faClock} />
+                <Spacer mr={2} />
+                <Text fontWeight="bold">
+                  <h2>Opening Hours</h2>
+                </Text>
+              </Box>
+              <Spacer mb={2} />
+              <UnstyledList>
+                {openingTimes.map((timeRange, i) => (
+                  <Box
+                    as="li"
+                    display="flex"
+                    justifyContent="space-between"
+                    key={i}
+                    padding={1}
+                    bg={i === todayWeekdayIndex ? 'ice' : 'white'}
+                  >
+                    <span>{WEEKDAYS[i]}</span>
+                    <span>{getTimeRangeLabel(timeRange)}</span>
+                  </Box>
+                ))}
+              </UnstyledList>
+              <Spacer mb={2} />
+              <Text fontSize={1} color="grey">
+                Hours may vary with national holidays or seasonal changes. If
+                you know these hours to be out of date please{' '}
+                <Button as={Link} to={editUrl} variant="link">
+                  edit this toilet
+                </Button>
+                .
               </Text>
             </Box>
-            <Spacer mb={2} />
-            <UnstyledList>
-              {openingTimes.map((timeRange, i) => (
-                <Box
-                  as="li"
-                  display="flex"
-                  justifyContent="space-between"
-                  key={i}
-                  padding={1}
-                  bg={i === todayWeekdayIndex ? 'ice' : 'white'}
-                >
-                  <span>{WEEKDAYS[i]}</span>
-                  <span>{getTimeRangeLabel(timeRange)}</span>
-                </Box>
-              ))}
-            </UnstyledList>
-            <Spacer mb={2} />
-            <Text fontSize={1} color="grey">
-              Hours may vary with national holidays or seasonal changes. If you
-              know these hours to be out of date please{' '}
-              <Button as={Link} to={editUrl} variant="link">
-                edit this toilet
-              </Button>
-              .
-            </Text>
-          </Box>
 
-          <Box width={['100%', '50%', '25%']} padding={3}>
-            <Text fontWeight="bold">
-              <h3>Features</h3>
-            </Text>
-            <Spacer mb={2} />
-            <UnstyledList>
-              {features.map((feature) => (
-                <Box
-                  as="li"
-                  key={feature.label}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  mb={1}
-                >
-                  <Box display="flex" alignItems="center">
-                    <Box width="20px" display="flex" justifyContent="center">
-                      {feature.icon}
+            <Box width={['100%', '50%', '25%']} padding={3}>
+              <Text fontWeight="bold">
+                <h3>Features</h3>
+              </Text>
+              <Spacer mb={2} />
+              <UnstyledList>
+                {features.map((feature) => (
+                  <Box
+                    as="li"
+                    key={feature.label}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    mb={1}
+                  >
+                    <Box display="flex" alignItems="center">
+                      <Box width="20px" display="flex" justifyContent="center">
+                        {feature.icon}
+                      </Box>
+                      <Spacer mr={2} />
+                      {feature.label}
                     </Box>
-                    <Spacer mr={2} />
-                    {feature.label}
+                    {feature.valueIcon}
                   </Box>
-                  {feature.valueIcon}
-                </Box>
-              ))}
-            </UnstyledList>
-          </Box>
+                ))}
+              </UnstyledList>
+            </Box>
+            <Box width={['100%', '50%', '25%']} padding={3}>
+              {Boolean(data.paymentRequired) && (
+                <>
+                  <Text fontWeight="bold">
+                    <h3>Fee</h3>
+                  </Text>
+                  <Spacer mb={2} />
+                  {data.paymentDetails}
+                  <Spacer mb={3} />
+                </>
+              )}
+              {Boolean(data.notes) && (
+                <>
+                  <Text fontWeight="bold">
+                    <h3>Notes</h3>
+                  </Text>
+                  <Spacer mb={2} />
+                  <div>
+                    {data.notes.split('\n').map((string, i) => (
+                      <div key={i}>{string}</div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </Box>
 
-          <Box width={['100%', '50%', '25%']} padding={3}>
-            {Boolean(data.paymentRequired) && (
-              <>
-                <Text fontWeight="bold">
-                  <h3>Payment</h3>
-                </Text>
-                <Spacer mb={2} />
-                {data.paymentDetails}
-                <Spacer mb={3} />
-              </>
-            )}
-            {Boolean(data.notes) && (
-              <>
-                <Text fontWeight="bold">
-                  <h3>Notes</h3>
-                </Text>
-                <Spacer mb={2} />
-                <div>
-                  {data.notes.split('\n').map((string, i) => (
-                    <div key={i}>{string}</div>
-                  ))}
-                </div>
-              </>
-            )}
-          </Box>
-        </Grid>
+            <Box
+              as={Media}
+              lessThan="md"
+              display="flex"
+              justifyContent="center"
+              width="100%"
+              padding={2}
+              marginBottom={2}
+            >
+              <Button variant="link" onClick={handleBackToTopClick}>
+                Back to top
+              </Button>
+            </Box>
+          </Grid>
+        </Box>
       </Box>
     );
   }
