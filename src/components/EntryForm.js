@@ -210,7 +210,7 @@ const EntryForm = ({
               type="checkbox"
               checked={!isPaymentRequired}
               className={styles.feeToggle}
-              onChange={(event) => setIsPaymentRequired(event.target.checked)}
+              onChange={(event) => setIsPaymentRequired(!event.target.checked)}
             />
           </label>
 
