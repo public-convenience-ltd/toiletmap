@@ -11,6 +11,7 @@ import AuthCallback from './pages/AuthCallback';
 import RemovePage from './pages/RemovePage';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
 import AddPage from './pages/AddPage';
 import EditPage from './pages/EditPage';
 import LoginPage from './pages/LoginPage';
@@ -42,6 +43,8 @@ ReactDOM.render(
             <Route exact path="/cookies" component={CookiesPage} />
             <Route exact path="/privacy" component={PrivacyPage} />
             <Route exact path="/use-our-loos" component={UseOurLoosPage} />
+            <Route exact path="/contact" component={ContactPage} />
+
             <Route path="/login" render={(props) => <LoginPage {...props} />} />
             <Route
               path="/map/:lng/:lat"
