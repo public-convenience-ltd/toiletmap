@@ -105,6 +105,8 @@ const HomePage = ({ initialPosition, ...props }) => {
     }
   }, [initialPosition, setMapPosition]);
 
+  const [toiletPanelDimensions, setToiletPanelDimensions] = React.useState({});
+
   return (
     <PageLayout>
       <Box height="100%" display="flex" position="relative">
@@ -121,6 +123,7 @@ const HomePage = ({ initialPosition, ...props }) => {
           center={mapPosition.center}
           zoom={mapPosition.zoom}
           onViewportChanged={setMapPosition}
+          controlsOffset={toiletPanelDimensions.height}
         />
 
         <section>
@@ -205,7 +208,11 @@ const HomePage = ({ initialPosition, ...props }) => {
             width="100%"
             zIndex={100}
           >
-            <ToiletDetailsPanel data={data && data.loo} isLoading={loading} />
+            <ToiletDetailsPanel
+              data={data && data.loo}
+              isLoading={loading}
+              onDimensionsChange={setToiletPanelDimensions}
+            />
           </Box>
         )}
       </Box>
