@@ -1,26 +1,6 @@
 const { Report, db } = require('../../index.js')(process.env.MONGODB_URI);
 const mongoose = require('mongoose');
-
-async function generateFromReports() {
-  // Find all reports that start a list.
-  const tailReports = await Report.find({
-    previous: { $exists: false },
-  }).exec();
-  const newLoos = [];
-  for (const report of tailReports) {
-    let root = report;
-    // Traverse each linked report list to find the root report.
-    while (root.next) {
-      await root.populate('next').execPopulate();
-      root = root.next;
-    }
-    // Generate a loo from each root report and save it.
-    const newLoo = await root.generateLoo();
-    newLoos.push(newLoo);
-    await newLoo.save();
-  }
-  return newLoos;
-}
+const cliProgress = require('cli-progress');
 
 // use a main function so we can have await niceties
 async function main() {
@@ -43,10 +23,35 @@ async function main() {
       }
     }
 
+    // Collect originating reports
+    console.log('Collecting originating reports');
+    const reports = await Report.find({
+      previous: { $exists: false },
+    }).exec();
+
     // create set of new loos from reports
     console.log('Generating loos from reports');
-    const newLoos = await generateFromReports();
+    const bar = new cliProgress.SingleBar({
+      stopOnComplete: true,
+      etaBuffer: 30,
+    });
+    bar.start(reports.length, 0);
+    const newLoos = [];
+    for (const report of reports) {
+      let root = report;
+      // Traverse each linked report list to find the root report.
+      while (root.next) {
+        await root.populate('next').execPopulate();
+        root = root.next;
+      }
+      // Generate a loo from each root report and save it.
+      const newLoo = await root.generateLoo();
+      newLoos.push(newLoo);
+      await newLoo.save();
+      bar.update(newLoos.length);
+    }
 
+    bar.stop();
     console.log(newLoos.length + ' loos generated');
   } catch (e) {
     console.error(e);
