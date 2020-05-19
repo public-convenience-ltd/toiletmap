@@ -200,8 +200,8 @@ const PageLayout = (props) => {
         <Box display="flex" flexDirection="column" height="100%">
           <Header>{footerFragment}</Header>
 
-          <Box position="relative" flexGrow={1}>
-            <Box as="main" height="100%" children={props.children} />
+          <Box position="relative" display="flex" flexGrow={1}>
+            <Box as="main" flexGrow={1} children={props.children} />
           </Box>
 
           <Box as={Media} greaterThan="sm" mt="auto">

@@ -64,7 +64,7 @@ const Footer = ({ children }) => (
     <Box order={[-1, 0]} mb={[4, 0]}>
       <Text fontSize={[12, 16]}>
         <Box as="ul" display={['block', 'flex']} alignItems="center">
-          {React.Children.toArray(children, (child, index) => (
+          {React.Children.map(children, (child, index) => (
             <li key={index}>{child}</li>
           ))}
 
