@@ -62,7 +62,7 @@
     "leaflet.locatecontrol": "0.72.0",
     "lodash": "4.17.15",
     "luxon": "1.24.1",
-    "mongoose": "5.9.14",
+    "mongoose": "5.9.15",
     "mongoose-paginate": "5.0.3",
     "node-fetch": "2.6.0",
     "prop-types": "15.7.2",
@@ -86,6 +86,7 @@
   "devDependencies": {
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
+    "cli-progress": "3.8.2",
     "customize-cra": "0.9.1",
     "dotenv": "8.2.0",
     "http-proxy-middleware": "1.0.4",
@@ -96,7 +97,7 @@
     "prettier": "2.0.5",
     "react-app-rewired": "2.1.6",
     "react-scripts": "3.4.1",
-    "stylelint": "13.3.3",
+    "stylelint": "13.4.1",
     "stylelint-config-standard": "20.0.0"
   },
   "husky": {
