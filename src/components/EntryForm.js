@@ -30,7 +30,9 @@ const EntryForm = ({
   children,
   ...props
 }) => {
-  const [isFree, setIsFree] = useState(!loo.fee);
+  const [isPaymentRequired, setIsPaymentRequired] = useState(
+    loo.paymentRequired
+  );
   const { register, handleSubmit, formState, setValue } = useForm();
 
   // read the formState before render to subscribe the form state through Proxy
@@ -67,11 +69,14 @@ const EntryForm = ({
       lng: parseFloat(data.geometry.coordinates[1]),
     };
 
-    if (dirtyFieldNames.includes('isFree') && data.isFree) {
-      transformed.fee = null;
+    if (
+      dirtyFieldNames.includes('isPaymentRequired') &&
+      data.isPaymentRequired
+    ) {
+      transformed.paymentDetails = null;
     }
 
-    transformed = omit(transformed, ['geometry', 'isFree']);
+    transformed = omit(transformed, ['geometry', 'isPaymentRequired']);
 
     props.onSubmit(transformed);
   };
@@ -195,7 +200,7 @@ const EntryForm = ({
         </div>
 
         <fieldset className={styles.feeGroup}>
-          <legend className={helpers.visuallyHidden}>Fees</legend>
+          <legend className={helpers.visuallyHidden}>Payment</legend>
 
           <label>
             This toilet is free
@@ -203,24 +208,24 @@ const EntryForm = ({
               ref={register}
               name="isFree"
               type="checkbox"
-              checked={isFree}
+              checked={!isPaymentRequired}
               className={styles.feeToggle}
-              onChange={(event) => setIsFree(event.target.checked)}
+              onChange={(event) => setIsPaymentRequired(event.target.checked)}
             />
           </label>
 
-          {!isFree && (
+          {isPaymentRequired && (
             <div>
               <label>
-                Fee
+                Payment Details
                 <input
                   ref={register}
-                  name="fee"
+                  name="paymentDetails"
                   type="text"
                   className={controls.text}
-                  defaultValue={loo.fee || ''}
-                  placeholder="The amount e.g. £0.10"
-                  data-testid="fee"
+                  defaultValue={loo.paymentDetails || ''}
+                  placeholder="The amount e.g. 20p"
+                  data-testid="paymentDetails"
                 />
               </label>
             </div>
@@ -306,7 +311,8 @@ EntryForm.propTypes = {
     name: PropTypes.string,
     accessible: PropTypes.string,
     opening: PropTypes.string,
-    fee: PropTypes.string,
+    paymentRequired: PropTypes.bool,
+    paymentDetails: PropTypes.string,
     notes: PropTypes.string,
   }),
   center: PropTypes.shape({

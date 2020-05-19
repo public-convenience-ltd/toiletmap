@@ -71,9 +71,9 @@ const HomePage = ({ initialPosition, ...props }) => {
         return false;
       }
 
-      // free toilets identified as empty string
-      if (filter.id === 'fee') {
-        return value === '';
+      // free toilets identified as not requiring payment
+      if (filter.id === 'paymentRequired') {
+        return !value;
       }
 
       return !!value;

@@ -2,7 +2,13 @@ import { definitions } from './openingHours';
 
 export default {
   looProps: {
-    canHumanize: ['attended', 'babyChange', 'automatic', 'radar', 'fee'],
+    canHumanize: [
+      'attended',
+      'babyChange',
+      'automatic',
+      'radar',
+      'paymentRequired',
+    ],
     definitions: {
       opening: definitions,
     },
@@ -51,7 +57,7 @@ export default {
 
     // Pricing - use weak type coercian to interpret values like '0'
     // eslint-disable-next-line eqeqeq
-    if (property === 'fee' && val == 0 && val !== '') {
+    if (property === 'paymentRequired' && val == 0 && val !== '') {
       val = 'Free';
     }
 

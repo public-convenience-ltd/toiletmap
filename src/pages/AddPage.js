@@ -24,7 +24,6 @@ const getInitialFormState = () => {
     name: '',
     opening: '',
     notes: '',
-    fee: '',
   };
 
   // set questionnaire loo property defaults

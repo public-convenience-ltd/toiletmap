@@ -73,7 +73,6 @@ const EditPage = (props) => {
       accessible: '',
       opening: '',
       notes: '',
-      fee: '',
     };
 
     // set questionnaire loo property defaults

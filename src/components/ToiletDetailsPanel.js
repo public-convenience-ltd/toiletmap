@@ -155,7 +155,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
     {
       icon: <Icon icon={faPoundSign} />,
       label: 'Free',
-      valueIcon: getFeatureValueIcon(data.fee, () => !data.fee),
+      valueIcon: getFeatureValueIcon(!data.paymentRequired),
     },
     {
       icon: <Icon icon={faBaby} />,
@@ -348,13 +348,13 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
           </Box>
 
           <Box width={['100%', '50%', '25%']} padding={3}>
-            {Boolean(data.fee) && (
+            {Boolean(data.paymentRequired) && (
               <>
                 <Text fontWeight="bold">
-                  <h3>Fee</h3>
+                  <h3>Payment</h3>
                 </Text>
                 <Spacer mb={2} />
-                {data.fee}
+                {data.paymentDetails}
                 <Spacer mb={3} />
               </>
             )}
