@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, useRouteMatch } from 'react-router-dom';
 import { loader } from 'graphql.macro';
@@ -27,6 +27,7 @@ const FIND_BY_ID = loader('./findLooById.graphql');
 const HomePage = ({ initialPosition, ...props }) => {
   const [mapPosition, setMapPosition] = useMapPosition(config.fallbackLocation);
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
+  const filterToggleRef = useRef(null);
 
   let initialState = config.getSettings(FILTERS_KEY);
 
@@ -137,6 +138,7 @@ const HomePage = ({ initialPosition, ...props }) => {
 
             <Box display="flex" justifyContent="center" mt={3}>
               <Button
+                ref={filterToggleRef}
                 variant="secondary"
                 icon={<FontAwesomeIcon icon={faFilter} />}
                 aria-expanded={isFiltersExpanded}
@@ -175,7 +177,12 @@ const HomePage = ({ initialPosition, ...props }) => {
 
               <Box display="flex" justifyContent="center" mt={4}>
                 <Button
-                  onClick={() => setIsFiltersExpanded(false)}
+                  onClick={() => {
+                    setIsFiltersExpanded(false);
+
+                    // return focus to the control that invoked the filter overlay
+                    filterToggleRef.current.focus();
+                  }}
                   css={{
                     width: '100%',
                   }}
