@@ -35,6 +35,51 @@ const Textarea = styled.textarea`
   border: 1px solid ${(props) => props.theme.colors.primary};
 `;
 
+const RadioInput = styled.input`
+  /* visually hidden */
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+
+  + span {
+    position: relative;
+    display: block;
+    height: 1.5rem;
+    width: 1.5rem;
+    margin: 0 auto;
+    border: 1px solid ${(props) => props.theme.colors.primary};
+    border-radius: 50%;
+  }
+
+  :checked + span:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: calc(100% - 8px);
+    width: calc(100% - 8px);
+    background-color: ${(props) => props.theme.colors.primary};
+    border-radius: 50%;
+  }
+
+  :focus + span {
+    outline: 1px dotted currentColor;
+    outline-offset: 0.5rem;
+  }
+`;
+
+const Radio = React.forwardRef((props, ref) => (
+  <>
+    <RadioInput type="radio" ref={ref} {...props} />
+    <span />
+  </>
+));
+
 const Section = ({ register, id, title, questions, children }) => (
   <div role="group" aria-labelledby={`heading-${id}`}>
     <table
@@ -78,10 +123,9 @@ const Section = ({ register, id, title, questions, children }) => (
               {label}
             </Box>
             <Text as="td" textAlign="center" css={{ width: '16%' }}>
-              <input
+              <Radio
                 ref={register}
                 name={field}
-                type="radio"
                 value={true}
                 aria-labelledby={`${field}-yes`}
                 defaultChecked={value === true}
@@ -90,10 +134,9 @@ const Section = ({ register, id, title, questions, children }) => (
             </Text>
 
             <Text as="td" textAlign="center" css={{ width: '16%' }}>
-              <input
+              <Radio
                 ref={register}
                 name={field}
-                type="radio"
                 value={false}
                 aria-labelledby={`${field}-no`}
                 defaultChecked={value === false}
@@ -102,10 +145,9 @@ const Section = ({ register, id, title, questions, children }) => (
             </Text>
 
             <Text as="td" textAlign="center" css={{ width: '16%' }}>
-              <input
+              <Radio
                 ref={register}
                 name={field}
-                type="radio"
                 value=""
                 aria-labelledby={`${field}-no`}
                 defaultChecked={value !== true && value !== false}
