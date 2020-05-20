@@ -1,25 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPoundSign,
   faBaby,
-  faWheelchair,
-  faVenusMars,
   faKey,
   faCog,
+  faToilet,
 } from '@fortawesome/free-solid-svg-icons';
+import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 
 import Box from './Box';
 import Switch from './Switch';
+import Icon from './Icon';
 
 import config from '../config';
 
 const iconMap = {
   noPayment: faPoundSign,
   babyChange: faBaby,
-  accessible: faWheelchair,
-  allGender: faVenusMars,
+  accessible: faAccessibleIcon,
+  allGender: faToilet,
   radar: faKey,
   automatic: faCog,
 };
@@ -36,7 +36,7 @@ const Filters = ({ filters, onFilterChange }) => (
         mt={index ? 3 : undefined}
       >
         <Box display="flex" alignItems="center">
-          <FontAwesomeIcon icon={iconMap[id]} fixedWidth size="lg" />
+          <Icon icon={iconMap[id]} fixedWidth size="lg" />
           <Box ml={3} id={`filter-${id}`}>
             {label}
           </Box>
