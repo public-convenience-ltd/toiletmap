@@ -75,13 +75,13 @@ const ButtonIcon = ({ icon }) => {
   return <Box mr={2}>{icon}</Box>;
 };
 
-const Button = ({ children, icon, ...props }) => (
-  <StyledButton type="button" {...props}>
+const Button = React.forwardRef(({ children, icon, ...props }, ref) => (
+  <StyledButton ref={ref} type="button" {...props}>
     {Boolean(icon) && <ButtonIcon icon={icon} />}
 
     <Text as="span">{children}</Text>
   </StyledButton>
-);
+));
 
 Button.defaultProps = {
   variant: 'primary',
