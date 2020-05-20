@@ -17,7 +17,7 @@ const filters = [
   },
   {
     id: 'allGender',
-    label: 'Unisex',
+    label: 'Gender Neutral',
   },
   {
     id: 'radar',
