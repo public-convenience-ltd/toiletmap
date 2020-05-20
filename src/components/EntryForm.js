@@ -305,7 +305,9 @@ const EntryForm = ({
               <label>
                 Payment Details
                 <Input
-                  ref={register}
+                  ref={register({
+                    required: true,
+                  })}
                   name="paymentDetails"
                   type="text"
                   defaultValue={loo.paymentDetails || ''}
