@@ -21,7 +21,7 @@ const UPDATE_LOO = loader('./updateLoo.graphql');
 
 const initialFormState = {
   active: null,
-  paymentRequired: false,
+  noPayment: true,
 };
 
 const AddPage = (props) => {
