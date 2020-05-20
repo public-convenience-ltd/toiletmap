@@ -98,11 +98,11 @@ const Section = ({ register, id, title, questions, children }) => (
           </th>
 
           <Text as="th" id={`${id}-yes`} textAlign="center" fontSize={[14, 16]}>
-            Yes
+            <span aria-hidden="true">Yes</span>
           </Text>
 
           <Text as="th" id={`${id}-no`} textAlign="center" fontSize={[14, 16]}>
-            No
+            <span aria-hidden="true">No</span>
           </Text>
 
           <Text
@@ -111,7 +111,7 @@ const Section = ({ register, id, title, questions, children }) => (
             textAlign="center"
             fontSize={[14, 16]}
           >
-            Don't know
+            <span aria-hidden="true">Don't know</span>
           </Text>
         </tr>
       </thead>
@@ -123,36 +123,44 @@ const Section = ({ register, id, title, questions, children }) => (
               {label}
             </Box>
             <Text as="td" textAlign="center" css={{ width: '16%' }}>
-              <Radio
-                ref={register}
-                name={field}
-                value={true}
-                aria-labelledby={`${field}-yes`}
-                defaultChecked={value === true}
-                data-testid={`${field}:no`}
-              />
+              <label>
+                <VisuallyHidden>Yes</VisuallyHidden>
+                <Radio
+                  ref={register}
+                  name={field}
+                  value={true}
+                  defaultChecked={value === true}
+                  data-testid={`${field}:no`}
+                />
+              </label>
             </Text>
 
             <Text as="td" textAlign="center" css={{ width: '16%' }}>
-              <Radio
-                ref={register}
-                name={field}
-                value={false}
-                aria-labelledby={`${field}-no`}
-                defaultChecked={value === false}
-                data-testid={`${field}:no`}
-              />
+              <label>
+                <VisuallyHidden>No</VisuallyHidden>
+                <Radio
+                  ref={register}
+                  name={field}
+                  value={false}
+                  aria-labelledby={`${id}-no`}
+                  defaultChecked={value === false}
+                  data-testid={`${field}:no`}
+                />
+              </label>
             </Text>
 
             <Text as="td" textAlign="center" css={{ width: '16%' }}>
-              <Radio
-                ref={register}
-                name={field}
-                value=""
-                aria-labelledby={`${field}-no`}
-                defaultChecked={value !== true && value !== false}
-                data-testid={`${field}:no`}
-              />
+              <label>
+                <VisuallyHidden>Don't know</VisuallyHidden>
+                <Radio
+                  ref={register}
+                  name={field}
+                  value=""
+                  aria-labelledby={`${id}-no`}
+                  defaultChecked={value !== true && value !== false}
+                  data-testid={`${field}:no`}
+                />
+              </label>
             </Text>
           </Box>
         ))}

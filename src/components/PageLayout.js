@@ -107,6 +107,10 @@ const ResetStyles = (
         font: inherit;
       }
 
+      label {
+        cursor: pointer;
+      }
+
       h1,
       h2,
       h3,
