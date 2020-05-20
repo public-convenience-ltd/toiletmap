@@ -408,7 +408,12 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
               )}
             </Box>
 
-            <Media lessThan="md">
+            <Media
+              lessThan="md"
+              css={css`
+                width: 100%;
+              `}
+            >
               <Box
                 display="flex"
                 justifyContent="center"
