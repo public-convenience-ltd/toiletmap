@@ -2,6 +2,7 @@ const { gql } = require('apollo-server');
 
 const typeDefs = gql`
   scalar DateTime
+  scalar OpeningTimes
 
   directive @auth(requires: Permission) on OBJECT | FIELD_DEFINITION
   directive @redact(requires: Permission, replace: String) on FIELD_DEFINITION
@@ -49,7 +50,7 @@ const typeDefs = gql`
     location: Point
     area: [AdminGeo]
     name: String
-    opening: String
+    opening: OpeningTimes
     accessible: Boolean
     allGender: Boolean
     male: Boolean
@@ -94,7 +95,7 @@ const typeDefs = gql`
     location: Point
     area: [AdminGeo]
     name: String
-    opening: String
+    opening: OpeningTimes
     accessible: Boolean
     allGender: Boolean
     male: Boolean
@@ -248,7 +249,7 @@ const typeDefs = gql`
     edit: ID
     location: PointInput!
     name: String
-    opening: String
+    opening: OpeningTimes
     accessible: Boolean
     allGender: Boolean
     male: Boolean

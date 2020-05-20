@@ -2,6 +2,7 @@ const config = require('./config');
 const { Loo, Report } = require('./db')(process.env.MONGODB_URI);
 const { GraphQLDateTime } = require('graphql-iso-date');
 const without = require('lodash/without');
+const OpeningTimesScalar = require('./OpeningTimesScalar');
 
 const subPropertyResolver = (property) => (parent, args, context, info) =>
   parent[property][info.fieldName];
@@ -333,6 +334,8 @@ const resolvers = {
     NEWEST_FIRST: { updatedAt: 'desc' },
     OLDEST_FIRST: { updatedAt: 'asc' },
   },
+
+  OpeningTimes: OpeningTimesScalar,
 };
 
 module.exports = resolvers;
