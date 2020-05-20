@@ -46,7 +46,7 @@ const TrackingBanner = React.forwardRef((props, ref) => {
       py={[3, 4]}
       bg="primary"
       color="white"
-      zIndex={100}
+      zIndex={300}
     >
       <Container>
         <form onSubmit={handleSubmit(onSubmit)}>
