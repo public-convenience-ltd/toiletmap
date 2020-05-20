@@ -17,3 +17,17 @@ exports.Point = new Schema({
   },
   _id: false,
 });
+
+// Not just Polygon, but MultiPolygon too!
+exports.Polygon = new Schema({
+  type: {
+    type: String,
+    enum: ['MultiPolygon', 'Polygon'],
+    required: () => this.geometry,
+  },
+  coordinates: {
+    type: Schema.Types.Mixed,
+    required: () => this.geometry,
+  },
+  _id: false,
+});

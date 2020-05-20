@@ -25,7 +25,7 @@ LooSchema.plugin(mongoosePaginate);
 /**
  * Create a Loo from a list of LooReports.
  */
-LooSchema.statics.fromReports = function (reports, idOverride) {
+LooSchema.statics.fromReports = async function (reports, idOverride) {
   // generate the loo from the sequence of diffs
   const properties = {};
   for (const rep of reports) {
@@ -52,6 +52,20 @@ LooSchema.statics.fromReports = function (reports, idOverride) {
       if (d1 < d2) return -1;
       return 0;
     });
+
+  // Work out which area the loo lies in
+  let areas = await this.model('Area').containing(
+    properties.geometry.coordinates
+  );
+  if (areas.length === 0) {
+    areas = [
+      {
+        name: 'Unknown area',
+        type: 'Unknown',
+      },
+    ];
+  }
+  properties.area = areas;
 
   // Use id given or calculate a persistent id for this loo from the first of its reports
   const id = idOverride || reports[0].suggestLooId();
