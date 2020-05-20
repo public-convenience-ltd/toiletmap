@@ -122,6 +122,7 @@ const Section = ({ register, id, title, questions, children }) => (
 );
 
 const EntryForm = ({
+  title,
   loo,
   center,
   optionsMap,
@@ -146,20 +147,18 @@ const EntryForm = ({
 
     transformed = omit(transformed, ['geometry']);
 
-    console.log('transformed', transformed);
+    // transform data
+    Object.keys(transformed).forEach((property) => {
+      const value = transformed[property];
 
-    // transform questionnaire data
-    // dirtyQuestionnaireFields.forEach((property) => {
-    //   const value = data[property];
-
-    //   if (value === 'true') {
-    //     transformed[property] = true;
-    //   } else if (value === 'false') {
-    //     transformed[property] = false;
-    //   } else if (value === '') {
-    //     transformed[property] = null;
-    //   }
-    // });
+      if (value === 'true') {
+        transformed[property] = true;
+      } else if (value === 'false') {
+        transformed[property] = false;
+      } else if (value === '') {
+        transformed[property] = null;
+      }
+    });
 
     // map geometry data to expected structure
     transformed.location = {
@@ -174,7 +173,9 @@ const EntryForm = ({
       transformed.paymentDetails = null;
     }
 
-    // props.onSubmit(transformed);
+    console.log('transformed', transformed);
+
+    props.onSubmit(transformed);
   };
 
   useEffect(() => {
@@ -189,7 +190,7 @@ const EntryForm = ({
       <Text fontSize={[16, 18]}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Text fontWeight="bold" fontSize={30} textAlign="center">
-            <h1>Edit This Toilet</h1>
+            <h1>{title}</h1>
           </Text>
 
           <Spacer mt={4} />
@@ -261,7 +262,7 @@ const EntryForm = ({
             questions={[
               {
                 field: 'allGender',
-                label: 'An all gender/ unisex toilet?',
+                label: 'An all gender toilet?',
                 value: loo['allGender'],
               },
               {
@@ -429,6 +430,7 @@ const EntryForm = ({
 };
 
 EntryForm.propTypes = {
+  title: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   loo: PropTypes.shape({
     name: PropTypes.string,

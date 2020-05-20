@@ -85,12 +85,7 @@ const EditPage = (props) => {
   ] = useMutation(UPDATE_LOO);
 
   if (saveError) {
-    console.error('error saving:', saveError);
-  }
-
-  // redirect to thanks page if successfully made changes
-  if (saveResponse && saveResponse.submitReport.code === '200') {
-    history.push(`/loos/${saveResponse.submitReport.loo.id}/thanks`);
+    console.error('saving', saveError);
   }
 
   const save = (data) => {
@@ -149,13 +144,8 @@ const EditPage = (props) => {
           center={mapPosition.center}
           zoom={mapPosition.zoom}
           minZoom={config.editMinZoom}
-          onViewportChanged={(mapPosition) => {
-            setMapCenter(mapPosition.center);
-            setMapPosition(mapPosition);
-          }}
           showCenter
           showContributor
-          showSearchControl
           showLocateControl
         />
       </Box>
@@ -163,6 +153,7 @@ const EditPage = (props) => {
       <Spacer mt={4} />
 
       <EntryForm
+        title="Edit This Toilet"
         loo={initialData.loo}
         center={mapCenter}
         saveLoading={saveLoading}
