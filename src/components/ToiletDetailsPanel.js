@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { css } from '@emotion/core';
 import { faClock, faEdit } from '@fortawesome/free-regular-svg-icons';
 import {
   faDirections,
@@ -93,14 +94,6 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
       closeButtonRef.current.focus();
     }
   }, [isExpanded]);
-
-  const overflowRef = React.useRef(null);
-  const handleBackToTopClick = () => {
-    if (!overflowRef.current) {
-      return;
-    }
-    overflowRef.current.scrollTop = 0;
-  };
 
   // call onDimensionsChange whenever the dimensions of the container change
   const containerRef = React.useRef(null);
@@ -276,15 +269,21 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
         </Media>
 
         <Box
-          ref={overflowRef}
           maxHeight={400}
           overflow="auto"
           padding={4}
           paddingTop={[0, 4]}
           paddingRight={[4, 5]}
+          css={css`
+            scroll-behavior: smooth;
+          `}
         >
           <Grid>
-            <Box width={['100%', '50%', '25%']} padding={3}>
+            <Box
+              width={['100%', '50%', '25%']}
+              padding={3}
+              id="#toilet-details-heading"
+            >
               {titleFragment}
               <Spacer mb={2} />
               {getDirectionsFragment}
@@ -409,7 +408,12 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
               )}
             </Box>
 
-            <Media lessThan="md">
+            <Media
+              lessThan="md"
+              css={css`
+                width: 100%;
+              `}
+            >
               <Box
                 display="flex"
                 justifyContent="center"
@@ -417,7 +421,7 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
                 padding={2}
                 marginBottom={2}
               >
-                <Button variant="link" onClick={handleBackToTopClick}>
+                <Button as="a" variant="link" href="#toilet-details-heading">
                   Back to top
                 </Button>
               </Box>
