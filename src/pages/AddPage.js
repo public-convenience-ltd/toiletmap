@@ -9,6 +9,7 @@ import EntryForm from '../components/EntryForm';
 import Box from '../components/Box';
 import Spacer from '../components/Spacer';
 import Button from '../components/Button';
+import LocationSearch from '../components/LocationSearch';
 
 import useMapPosition from '../components/useMapPosition';
 import useNearbyLoos from '../components/useNearbyLoos';
@@ -70,7 +71,7 @@ const AddPage = (props) => {
 
   return (
     <PageLayout>
-      <Box display="flex" height={300} maxHeight="40vh">
+      <Box position="relative" display="flex" height={300} maxHeight="40vh">
         <LooMap
           loos={data}
           center={mapPosition.center}
@@ -81,6 +82,12 @@ const AddPage = (props) => {
           showSearchControl
           showLocateControl
         />
+
+        <Box position="absolute" top={0} left={0} m={3}>
+          <LocationSearch
+            onSelectedItemChange={(center) => setMapPosition({ center })}
+          />
+        </Box>
       </Box>
 
       <Spacer mt={4} />
