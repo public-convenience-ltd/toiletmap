@@ -1,10 +1,10 @@
 // In this file you can configure migrate-mongo
-
+require('dotenv').config();
 const config = {
   mongodb: {
-    url: 'mongodb://localhost:27017',
+    url: process.env.MONGODB_URI,
 
-    databaseName: 'gbptm',
+    databaseName: process.env.DATABASE_NAME,
 
     options: {
       useNewUrlParser: true, // removes a deprecation warning when connecting

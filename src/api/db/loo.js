@@ -93,7 +93,7 @@ LooSchema.statics.findNear = function (lon, lat, radius, complete) {
         distance: 1,
         properties: {
           geometry: 1,
-          fee: 1,
+          noPayment: 1,
           accessible: 1,
           opening: 1,
           type: 1,

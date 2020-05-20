@@ -60,7 +60,8 @@ const typeDefs = gql`
     radar: Boolean
     attended: Boolean
     automatic: Boolean
-    fee: String
+    noPayment: Boolean
+    paymentDetails: String
     notes: String
     removalReason: String
   }
@@ -104,7 +105,8 @@ const typeDefs = gql`
     radar: Boolean
     attended: Boolean
     automatic: Boolean
-    fee: String
+    noPayment: Boolean
+    paymentDetails: String
     notes: String
     removalReason: String
     "The Loo which uses the data submitted in this report"
@@ -201,7 +203,7 @@ const typeDefs = gql`
   "Include or Exclude Loos from search results based on whether they satisfy a filter condition"
   input LooFilter {
     active: Boolean = true
-    fee: Boolean
+    noPayment: Boolean
     text: String
     fromDate: DateTime
     toDate: DateTime
@@ -257,7 +259,8 @@ const typeDefs = gql`
     radar: Boolean
     attended: Boolean
     automatic: Boolean
-    fee: String
+    noPayment: Boolean
+    paymentDetails: String
     notes: String
   }
 

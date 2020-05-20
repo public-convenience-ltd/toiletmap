@@ -2,10 +2,13 @@ module.exports = {
   async up(db, client) {
     await db.collection('newreports').updateMany(
       {
-        'diff.type': 'unisex',
+        'diff.fee': { $exists: true },
       },
       {
-        $set: { 'diff.allGender': true },
+        $set: {
+          'diff.paymentRequired': true,
+        },
+        $rename: { 'diff.fee': 'diff.paymentDetails' },
       }
     );
   },
