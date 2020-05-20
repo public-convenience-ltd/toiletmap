@@ -81,6 +81,7 @@ const AddPage = (props) => {
           showContributor
           showSearchControl
           showLocateControl
+          showCrosshair
         />
 
         <Box position="absolute" top={0} left={0} m={3}>

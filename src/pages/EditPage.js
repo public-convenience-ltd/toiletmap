@@ -147,6 +147,7 @@ const EditPage = (props) => {
           showCenter
           showContributor
           showLocateControl
+          showCrosshair
         />
       </Box>
 
