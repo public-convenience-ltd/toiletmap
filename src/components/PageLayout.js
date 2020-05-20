@@ -177,7 +177,7 @@ const PageLayout = (props) => {
     <Footer>
       <button
         type="button"
-        aria-pressed={showTrackingBanner}
+        aria-expanded={showTrackingBanner}
         onClick={() => setShowTrackingBanner(true)}
       >
         Cookie Preferences
