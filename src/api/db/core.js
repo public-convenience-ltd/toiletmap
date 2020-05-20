@@ -23,7 +23,7 @@ module.exports = exports = new Schema({
   radar: { type: Boolean },
   attended: { type: Boolean },
   automatic: { type: Boolean },
-  paymentRequired: { type: Boolean },
+  noPayment: { type: Boolean },
   paymentDetails: { type: String, trim: true },
   notes: { type: String, trim: true },
   removalReason: { type: String, trim: true },

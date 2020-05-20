@@ -22,7 +22,7 @@ const looInfoResolver = (property) => {
     radar: resolve,
     attended: resolve,
     automatic: resolve,
-    paymentRequired: resolve,
+    noPayment: resolve,
     paymentDetails: resolve,
     notes: resolve,
     removalReason: resolve,
@@ -41,8 +41,8 @@ const resolvers = {
         'properties.active': args.filters.active,
       };
 
-      if (args.filters.paymentRequired) {
-        query['properties.paymentRequired'] = true;
+      if (args.filters.noPayment) {
+        query['properties.noPayment'] = true;
       }
 
       if (args.filters.areaName) {

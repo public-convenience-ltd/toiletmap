@@ -2,13 +2,7 @@ import { definitions } from './openingHours';
 
 export default {
   looProps: {
-    canHumanize: [
-      'attended',
-      'babyChange',
-      'automatic',
-      'radar',
-      'paymentRequired',
-    ],
+    canHumanize: ['attended', 'babyChange', 'automatic', 'radar'],
     definitions: {
       opening: definitions,
     },
@@ -53,12 +47,6 @@ export default {
         ['true', 'false'].indexOf(val.toLowerCase()) !== -1)
     ) {
       val = JSON.parse((val + '').toLowerCase()) ? 'Yes' : 'No';
-    }
-
-    // Pricing - use weak type coercian to interpret values like '0'
-    // eslint-disable-next-line eqeqeq
-    if (property === 'paymentRequired' && val == 0 && val !== '') {
-      val = 'Free';
     }
 
     return val;
