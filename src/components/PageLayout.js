@@ -120,6 +120,12 @@ const ResetStyles = (
         border: 0;
       }
 
+      th {
+        text-align: left;
+        font-weight: normal;
+        vertical-align: bottom;
+      }
+
       p + p {
         margin-top: 1em;
       }
@@ -138,6 +144,18 @@ const ResetStyles = (
 
       [inert] {
         opacity: 0.25;
+      }
+
+      ::-webkit-input-placeholder {
+        color: ${theme.colors.primary};
+      }
+
+      :-ms-input-placeholder {
+        color: ${theme.colors.primary};
+      }
+
+      ::placeholder {
+        color: ${theme.colors.primary};
       }
 
       /* remove all animations and transitions for people that prefer not to see them */

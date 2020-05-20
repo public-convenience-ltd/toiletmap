@@ -12,7 +12,6 @@ import useNearbyLoos from '../components/useNearbyLoos';
 import config from '../config';
 import graphqlMappings from '../graphqlMappings';
 import history from '../history';
-import questionnaireMap from '../questionnaireMap';
 
 import controls from '../css/controls.module.css';
 
@@ -27,9 +26,9 @@ const getInitialFormState = () => {
   };
 
   // set questionnaire loo property defaults
-  questionnaireMap.forEach((q) => {
-    state[q.property] = '';
-  });
+  // questionnaireMap.forEach((q) => {
+  //   state[q.property] = '';
+  // });
 
   return state;
 };
@@ -98,7 +97,6 @@ const AddPage = (props) => {
       map={mapFragment}
       loo={getInitialFormState()}
       center={mapPosition.center}
-      questionnaireMap={questionnaireMap}
       saveLoading={saveLoading}
       saveResponse={saveResponse}
       saveError={saveError}

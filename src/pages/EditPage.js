@@ -7,18 +7,19 @@ import { loader } from 'graphql.macro';
 import { useQuery, useMutation } from '@apollo/client';
 
 import PageLayout from '../components/PageLayout';
+import Button from '../components/Button';
+import Spacer from '../components/Spacer';
 import Loading from '../components/Loading';
-import LooMap from '../components/LooMap';
 import EntryForm from '../components/EntryForm';
+import LooMap from '../components/LooMap';
+import Box from '../components/Box';
+
 import useNearbyLoos from '../components/useNearbyLoos';
 import useMapPosition from '../components/useMapPosition';
 
 import config from '../config';
 import graphqlMappings from '../graphqlMappings';
 import history from '../history';
-import questionnaireMap from '../questionnaireMap';
-
-import controls from '../css/controls.module.css';
 
 const FIND_BY_ID = loader('./findLooById.graphql');
 const UPDATE_LOO = loader('./updateLoo.graphql');
@@ -40,10 +41,9 @@ const EditPage = (props) => {
 
   const looLocation = (looData && looData.loo.location) || null;
 
-  // Set the map position to the loo location
+  // set the map position to the loo location
   React.useEffect(() => {
     if (looLocation) {
-      console.log('setting initial location:', looLocation);
       setMapPosition({ center: looLocation });
     }
   }, [looLocation, setMapPosition]);
@@ -66,31 +66,15 @@ const EditPage = (props) => {
       return;
     }
 
-    let tempLoo = {
-      active: null,
-      name: '',
-      type: '',
-      accessible: '',
-      opening: '',
-      notes: '',
-    };
-
-    // set questionnaire loo property defaults
-    questionnaireMap.forEach((q) => {
-      tempLoo[q.property] = '';
-    });
-
-    // deep extend loo state to ensure we get all properties (since we can't guarantee
-    // that `looData` will include them all)
-    const newLoo = cloneDeep(merge({}, tempLoo, looData.loo));
-    setMapCenter(newLoo.location);
+    const toilet = cloneDeep(merge({}, { active: null }, looData.loo));
+    setMapCenter(toilet.location);
 
     // keep track of defaults so we only submit new information
     setInitialData({
-      loo: newLoo,
+      loo: toilet,
       center: {
-        lat: newLoo.location.lat,
-        lng: newLoo.location.lng,
+        lat: toilet.location.lat,
+        lng: toilet.location.lng,
       },
     });
   }, [looData]);
@@ -120,6 +104,29 @@ const EditPage = (props) => {
     });
   };
 
+  if (loadingLooData || !looData || !initialData) {
+    return (
+      <PageLayout>
+        <Loading message="Fetching Toilet Data" />
+      </PageLayout>
+    );
+  }
+
+  if (looError) {
+    console.error(looError);
+
+    return (
+      <PageLayout>
+        <Loading message="Error fetching toilet data" />
+      </PageLayout>
+    );
+  }
+
+  // redirect to index if loo is not active (i.e. removed)
+  if (looData && !looData.loo.active) {
+    history.push('/');
+  }
+
   const getLoosToDisplay = () => {
     let activeLoo;
 
@@ -134,78 +141,66 @@ const EditPage = (props) => {
     return uniqBy([activeLoo, ...data], 'id').filter(Boolean);
   };
 
-  if (loadingLooData || !looData || !initialData) {
-    return (
-      <PageLayout
-        main={<Loading message="Fetching Toilet Data" />}
-        map={<Loading message="Fetching Toilet Data" />}
-      />
-    );
-  }
+  return (
+    <PageLayout>
+      <Box display="flex" height={300} maxHeight="40vh">
+        <LooMap
+          loos={getLoosToDisplay()}
+          center={mapPosition.center}
+          zoom={mapPosition.zoom}
+          minZoom={config.editMinZoom}
+          onViewportChanged={(mapPosition) => {
+            setMapCenter(mapPosition.center);
+            setMapPosition(mapPosition);
+          }}
+          showCenter
+          showContributor
+          showSearchControl
+          showLocateControl
+        />
+      </Box>
 
-  if (looError) {
-    console.error(looError);
+      <Spacer mt={4} />
 
-    return (
-      <PageLayout
-        main={<Loading message="Error fetching toilet data" />}
-        map={<Loading message="Error fetching toilet data" />}
-      />
-    );
-  }
+      <EntryForm
+        loo={initialData.loo}
+        center={mapCenter}
+        saveLoading={saveLoading}
+        saveResponse={saveResponse}
+        saveError={saveError}
+        optionsMap={optionsMap}
+        onSubmit={save}
+      >
+        {({ hasDirtyFields }) => (
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Button
+              type="submit"
+              disabled={!hasDirtyFields}
+              css={{
+                width: '100%',
+              }}
+            >
+              Update the toilet
+            </Button>
 
-  // redirect to index if loo is not active (i.e. removed)
-  if (looData && !looData.loo.active) {
-    history.push(`/`);
-  }
+            <Spacer mt={2} />
 
-  const mapFragment = looLocation ? (
-    <LooMap
-      loos={getLoosToDisplay()}
-      center={mapPosition.center}
-      zoom={mapPosition.zoom}
-      minZoom={config.editMinZoom}
-      onViewportChanged={(mapPosition) => {
-        setMapCenter(mapPosition.center);
-        setMapPosition(mapPosition);
-      }}
-      showCenter
-    />
-  ) : null;
+            <Button
+              as={Link}
+              to={`/loos/${props.match.params.id}/remove`}
+              css={{
+                width: '100%',
+              }}
+            >
+              Remove the toilet
+            </Button>
+          </Box>
+        )}
+      </EntryForm>
 
-  const mainFragment = (
-    <EntryForm
-      map={mapFragment}
-      loo={initialData.loo}
-      center={mapCenter}
-      questionnaireMap={questionnaireMap}
-      saveLoading={saveLoading}
-      saveResponse={saveResponse}
-      saveError={saveError}
-      optionsMap={optionsMap}
-      onSubmit={save}
-    >
-      {({ hasDirtyFields }) => (
-        <>
-          <input
-            type="submit"
-            className={controls.btn}
-            value="Update the toilet"
-            disabled={!hasDirtyFields}
-          />
-
-          <Link
-            to={`/loos/${props.match.params.id}/remove`}
-            className={controls.btnCaution}
-          >
-            Remove the toilet
-          </Link>
-        </>
-      )}
-    </EntryForm>
+      <Spacer mt={4} />
+    </PageLayout>
   );
-
-  return <PageLayout main={mainFragment} map={mapFragment} />;
 };
 
 export default EditPage;
