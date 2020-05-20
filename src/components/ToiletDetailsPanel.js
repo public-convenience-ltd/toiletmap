@@ -20,6 +20,7 @@ import {
 import { DateTime } from 'luxon';
 import { Link } from 'react-router-dom';
 import { useMutation, gql } from '@apollo/client';
+import useComponentSize from '@rehooks/component-size';
 
 import Box from './Box';
 import Button from './Button';
@@ -78,18 +79,13 @@ const SUBMIT_VERIFICATION_REPORT_MUTATION = gql`
   }
 `;
 
-const ToiletDetailsPanel = ({ data, isLoading }) => {
+const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
 
   const [
     submitVerificationReport,
     { loading: submitVerificationLoading },
   ] = useMutation(SUBMIT_VERIFICATION_REPORT_MUTATION);
-
-  // collapse panel if isLoading or data changes (e.g. a user has selected a new marker)
-  // React.useEffect(() => {
-  //   setIsExpanded(false);
-  // }, [isLoading, data]);
 
   // programmatically set focus on close button when panel expands
   const closeButtonRef = React.useRef(null);
@@ -98,6 +94,13 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
       closeButtonRef.current.focus();
     }
   }, [isExpanded]);
+
+  // call onDimensionsChange whenever the dimensions of the container change
+  const containerRef = React.useRef(null);
+  const size = useComponentSize(containerRef);
+  React.useEffect(() => {
+    onDimensionsChange(size);
+  }, [size, onDimensionsChange]);
 
   if (isLoading) {
     return (
@@ -111,6 +114,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         padding={4}
         display="flex"
         alignItems="center"
+        ref={containerRef}
       >
         Loading toilet...
       </Box>
@@ -220,6 +224,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         borderTopRightRadius={4}
         as="section"
         aria-labelledby="toilet-details-heading"
+        ref={containerRef}
       >
         <Media greaterThanOrEqual="md">
           <Box position="absolute" top={30} right={30}>
@@ -403,19 +408,19 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
               )}
             </Box>
 
-            <Box
-              as={Media}
-              lessThan="md"
-              display="flex"
-              justifyContent="center"
-              width="100%"
-              padding={2}
-              marginBottom={2}
-            >
-              <Button as="a" variant="link" href="#toilet-details-heading">
-                Back to top
-              </Button>
-            </Box>
+            <Media lessThan="md">
+              <Box
+                display="flex"
+                justifyContent="center"
+                width="100%"
+                padding={2}
+                marginBottom={2}
+              >
+                <Button as="a" variant="link" href="#toilet-details-heading">
+                  Back to top
+                </Button>
+              </Box>
+            </Media>
           </Grid>
         </Box>
       </Box>
@@ -433,6 +438,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
       padding={4}
       as="section"
       aria-labelledby="toilet-details-heading"
+      ref={containerRef}
     >
       <Grid>
         <Box width={['100%', '50%', '25%']} padding={3}>
