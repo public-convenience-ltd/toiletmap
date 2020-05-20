@@ -20,7 +20,7 @@ query findLooById($id: ID) {
     urinalOnly
     radar
     automatic
-    paymentRequired
+    noPayment
     paymentDetails
     notes
     removalReason

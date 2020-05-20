@@ -16,7 +16,7 @@ import Switch from './Switch';
 import config from '../config';
 
 const iconMap = {
-  paymentRequired: faPoundSign,
+  noPayment: faPoundSign,
   babyChange: faBaby,
   accessible: faWheelchair,
   allGender: faVenusMars,

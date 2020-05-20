@@ -18,7 +18,7 @@ query fullLooDetails($id: ID) {
     babyChange
     radar
     attended
-    paymentRequired
+    noPayment
     paymentDetails
     notes
     removalReason
@@ -32,7 +32,7 @@ query fullLooDetails($id: ID) {
       babyChange
       radar
       attended
-      paymentRequired
+      noPayment
       paymentDetails
       notes
       removalReason

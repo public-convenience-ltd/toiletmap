@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { css } from '@emotion/core';
 import { faClock, faEdit } from '@fortawesome/free-regular-svg-icons';
 import {
   faDirections,
@@ -19,6 +20,7 @@ import {
 import { DateTime } from 'luxon';
 import { Link } from 'react-router-dom';
 import { useMutation, gql } from '@apollo/client';
+import useComponentSize from '@rehooks/component-size';
 
 import Box from './Box';
 import Button from './Button';
@@ -77,18 +79,13 @@ const SUBMIT_VERIFICATION_REPORT_MUTATION = gql`
   }
 `;
 
-const ToiletDetailsPanel = ({ data, isLoading }) => {
+const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
 
   const [
     submitVerificationReport,
     { loading: submitVerificationLoading },
   ] = useMutation(SUBMIT_VERIFICATION_REPORT_MUTATION);
-
-  // collapse panel if isLoading or data changes (e.g. a user has selected a new marker)
-  // React.useEffect(() => {
-  //   setIsExpanded(false);
-  // }, [isLoading, data]);
 
   // programmatically set focus on close button when panel expands
   const closeButtonRef = React.useRef(null);
@@ -98,13 +95,12 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
     }
   }, [isExpanded]);
 
-  const overflowRef = React.useRef(null);
-  const handleBackToTopClick = () => {
-    if (!overflowRef.current) {
-      return;
-    }
-    overflowRef.current.scrollTop = 0;
-  };
+  // call onDimensionsChange whenever the dimensions of the container change
+  const containerRef = React.useRef(null);
+  const size = useComponentSize(containerRef);
+  React.useEffect(() => {
+    onDimensionsChange(size);
+  }, [size, onDimensionsChange]);
 
   if (isLoading) {
     return (
@@ -118,6 +114,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         padding={4}
         display="flex"
         alignItems="center"
+        ref={containerRef}
       >
         Loading toilet...
       </Box>
@@ -149,13 +146,9 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
   const questionIconFragment = <Icon icon={faQuestion} color="tertiary" />;
   const checkIconFragment = <Icon icon={faCheck} />;
 
-  const getFeatureValueIcon = (value, checkFunction) => {
+  const getFeatureValueIcon = (value) => {
     if (value === null) {
       return questionIconFragment;
-    }
-
-    if (checkFunction) {
-      return checkFunction() ? checkIconFragment : crossIconFragment;
     }
 
     return value ? checkIconFragment : crossIconFragment;
@@ -165,7 +158,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
     {
       icon: <Icon icon={faPoundSign} />,
       label: 'Free',
-      valueIcon: getFeatureValueIcon(!data.paymentRequired),
+      valueIcon: getFeatureValueIcon(data.noPayment),
     },
     {
       icon: <Icon icon={faBaby} />,
@@ -227,6 +220,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         borderTopRightRadius={4}
         as="section"
         aria-labelledby="toilet-details-heading"
+        ref={containerRef}
       >
         <Media greaterThanOrEqual="md">
           <Box position="absolute" top={30} right={30}>
@@ -271,15 +265,21 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
         </Media>
 
         <Box
-          ref={overflowRef}
           maxHeight={400}
           overflow="auto"
           padding={4}
           paddingTop={[0, 4]}
           paddingRight={[4, 5]}
+          css={css`
+            scroll-behavior: smooth;
+          `}
         >
           <Grid>
-            <Box width={['100%', '50%', '25%']} padding={3}>
+            <Box
+              width={['100%', '50%', '25%']}
+              padding={3}
+              id="#toilet-details-heading"
+            >
               {titleFragment}
               <Spacer mb={2} />
               {getDirectionsFragment}
@@ -379,13 +379,13 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
               </UnstyledList>
             </Box>
             <Box width={['100%', '50%', '25%']} padding={3}>
-              {Boolean(data.paymentRequired) && (
+              {data.noPayment === false && (
                 <>
                   <Text fontWeight="bold">
                     <h3>Fee</h3>
                   </Text>
                   <Spacer mb={2} />
-                  {data.paymentDetails}
+                  {data.paymentDetails || 'Unknown'}
                   <Spacer mb={3} />
                 </>
               )}
@@ -404,19 +404,24 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
               )}
             </Box>
 
-            <Box
-              as={Media}
+            <Media
               lessThan="md"
-              display="flex"
-              justifyContent="center"
-              width="100%"
-              padding={2}
-              marginBottom={2}
+              css={css`
+                width: 100%;
+              `}
             >
-              <Button variant="link" onClick={handleBackToTopClick}>
-                Back to top
-              </Button>
-            </Box>
+              <Box
+                display="flex"
+                justifyContent="center"
+                width="100%"
+                padding={2}
+                marginBottom={2}
+              >
+                <Button as="a" variant="link" href="#toilet-details-heading">
+                  Back to top
+                </Button>
+              </Box>
+            </Media>
           </Grid>
         </Box>
       </Box>
@@ -434,6 +439,7 @@ const ToiletDetailsPanel = ({ data, isLoading }) => {
       padding={4}
       as="section"
       aria-labelledby="toilet-details-heading"
+      ref={containerRef}
     >
       <Grid>
         <Box width={['100%', '50%', '25%']} padding={3}>

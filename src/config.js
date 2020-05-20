@@ -4,7 +4,7 @@ export const FILTERS_KEY = 'filters';
 
 const filters = [
   {
-    id: 'paymentRequired',
+    id: 'noPayment',
     label: 'Free',
   },
   {

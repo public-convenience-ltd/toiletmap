@@ -13,7 +13,7 @@ mutation updateLoo(
   $radar: Boolean
   $attended: Boolean
   $automatic: Boolean
-  $paymentRequired: Boolean
+  $noPayment: Boolean
   $paymentDetails: String
   $notes: String
 ) {
@@ -33,7 +33,7 @@ mutation updateLoo(
       radar: $radar
       attended: $attended
       automatic: $automatic
-      paymentRequired: $paymentRequired
+      noPayment: $noPayment
       paymentDetails: $paymentDetails
       notes: $notes
     }
@@ -63,7 +63,7 @@ mutation updateLoo(
       babyChange
       radar
       attended
-      paymentRequired
+      noPayment
       paymentDetails
       notes
       removalReason

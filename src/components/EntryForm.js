@@ -131,9 +131,7 @@ const EntryForm = ({
   children,
   ...props
 }) => {
-  const [isPaymentRequired, setIsPaymentRequired] = useState(
-    loo.paymentRequired
-  );
+  const [noPayment, setNoPayment] = useState(loo.noPayment);
   const { register, handleSubmit, formState, setValue } = useForm();
 
   // read the formState before render to subscribe the form state through Proxy
@@ -166,14 +164,11 @@ const EntryForm = ({
       lng: parseFloat(data.geometry.coordinates[1]),
     };
 
-    if (
-      dirtyFieldNames.includes('paymentRequired') &&
-      !data.isPaymentRequired
-    ) {
+    if (dirtyFieldNames.includes('noPayment') && data.noPayment) {
       transformed.paymentDetails = null;
     }
 
-    console.log('transformed', transformed);
+    transformed = omit(transformed, ['geometry', 'noPayment']);
 
     props.onSubmit(transformed);
   };
@@ -296,17 +291,17 @@ const EntryForm = ({
             title="5. Is this toilet free?"
             questions={[
               {
-                field: 'paymentRequired',
+                field: 'isFree',
                 label: <VisuallyHidden>Is this toilet free?</VisuallyHidden>,
-                value: isPaymentRequired === null ? '' : !isPaymentRequired,
+                value: noPayment === null ? '' : noPayment,
                 onChange: ({ target: { value } }) => {
                   // payment is required if the toilet is not free
-                  setIsPaymentRequired(value === '' ? null : value === 'false');
+                  setNoPayment(value === '' ? null : value === 'true');
                 },
               },
             ]}
           >
-            {isPaymentRequired && (
+            {noPayment === false && (
               <label>
                 Payment Details
                 <Input
@@ -436,7 +431,7 @@ EntryForm.propTypes = {
     name: PropTypes.string,
     accessible: PropTypes.bool,
     opening: PropTypes.string,
-    paymentRequired: PropTypes.bool,
+    noPayment: PropTypes.bool,
     paymentDetails: PropTypes.string,
     notes: PropTypes.string,
   }),
