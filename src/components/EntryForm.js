@@ -30,9 +30,7 @@ const EntryForm = ({
   children,
   ...props
 }) => {
-  const [isPaymentRequired, setIsPaymentRequired] = useState(
-    loo.paymentRequired
-  );
+  const [noPayment, setNoPayment] = useState(loo.noPayment);
   const { register, handleSubmit, formState, setValue } = useForm();
 
   // read the formState before render to subscribe the form state through Proxy
@@ -69,14 +67,11 @@ const EntryForm = ({
       lng: parseFloat(data.geometry.coordinates[1]),
     };
 
-    if (
-      dirtyFieldNames.includes('isPaymentRequired') &&
-      data.isPaymentRequired
-    ) {
+    if (dirtyFieldNames.includes('noPayment') && data.noPayment) {
       transformed.paymentDetails = null;
     }
 
-    transformed = omit(transformed, ['geometry', 'isPaymentRequired']);
+    transformed = omit(transformed, ['geometry', 'noPayment']);
 
     props.onSubmit(transformed);
   };
@@ -208,13 +203,13 @@ const EntryForm = ({
               ref={register}
               name="isFree"
               type="checkbox"
-              checked={!isPaymentRequired}
+              checked={noPayment}
               className={styles.feeToggle}
-              onChange={(event) => setIsPaymentRequired(!event.target.checked)}
+              onChange={(event) => setNoPayment(event.target.checked)}
             />
           </label>
 
-          {isPaymentRequired && (
+          {!noPayment && (
             <div>
               <label>
                 Payment Details
@@ -311,7 +306,7 @@ EntryForm.propTypes = {
     name: PropTypes.string,
     accessible: PropTypes.string,
     opening: PropTypes.string,
-    paymentRequired: PropTypes.bool,
+    noPayment: PropTypes.bool,
     paymentDetails: PropTypes.string,
     notes: PropTypes.string,
   }),

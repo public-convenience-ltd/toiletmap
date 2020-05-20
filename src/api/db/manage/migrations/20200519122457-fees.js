@@ -1,6 +1,6 @@
 module.exports = {
   async up(db, client) {
-    db.collection('newreports').updateMany(
+    await db.collection('newreports').updateMany(
       {
         'diff.fee': { $exists: true },
       },

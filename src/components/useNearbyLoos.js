@@ -9,7 +9,7 @@ const NEARBY_LOOS_QUERY = gql`
         lat
         lng
       }
-      paymentRequired
+      noPayment
       allGender
       automatic
       accessible

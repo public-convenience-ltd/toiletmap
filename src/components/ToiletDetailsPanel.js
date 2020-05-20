@@ -146,13 +146,9 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
   const questionIconFragment = <Icon icon={faQuestion} color="tertiary" />;
   const checkIconFragment = <Icon icon={faCheck} />;
 
-  const getFeatureValueIcon = (value, checkFunction) => {
+  const getFeatureValueIcon = (value) => {
     if (value === null) {
       return questionIconFragment;
-    }
-
-    if (checkFunction) {
-      return checkFunction() ? checkIconFragment : crossIconFragment;
     }
 
     return value ? checkIconFragment : crossIconFragment;
@@ -162,7 +158,7 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
     {
       icon: <Icon icon={faPoundSign} />,
       label: 'Free',
-      valueIcon: getFeatureValueIcon(!data.paymentRequired),
+      valueIcon: getFeatureValueIcon(data.noPayment),
     },
     {
       icon: <Icon icon={faBaby} />,
@@ -383,13 +379,13 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
               </UnstyledList>
             </Box>
             <Box width={['100%', '50%', '25%']} padding={3}>
-              {Boolean(data.paymentRequired) && (
+              {data.noPayment === false && (
                 <>
                   <Text fontWeight="bold">
                     <h3>Fee</h3>
                   </Text>
                   <Spacer mb={2} />
-                  {data.paymentDetails}
+                  {data.paymentDetails || 'Unknown'}
                   <Spacer mb={3} />
                 </>
               )}
