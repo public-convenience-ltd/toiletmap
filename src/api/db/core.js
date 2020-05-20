@@ -12,7 +12,10 @@ module.exports = exports = new Schema({
   geometry: Point,
   name: { type: String, trim: true },
   active: { type: Boolean },
-  opening: { type: String, trim: true },
+  opening: {
+    type: [],
+    default: undefined,
+  },
   accessible: { type: Boolean },
   male: { type: Boolean },
   female: { type: Boolean },
