@@ -196,7 +196,7 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
     },
   ];
 
-  const openingTimes = getOpeningTimes(data.opening);
+  const openingTimes = getOpeningTimes(data.openingTimes);
   const todayWeekdayIndex = DateTime.local().weekday - 1;
 
   const editUrl = `/loos/${data.id}/edit`;

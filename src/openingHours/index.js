@@ -77,14 +77,12 @@ function getIsOpen(openingTimes = [], dateTime = DateTime.local()) {
   return false;
 }
 
-const getOpeningTimes = (definitionValue) => {
-  const definition = definitions.find((d) => d.value === definitionValue);
-
-  if (!definition) {
+const getOpeningTimes = (openingTimes) => {
+  if (!openingTimes) {
     return WEEKDAYS.map(() => rangeTypes.UNKNOWN);
   }
 
-  return definition.openingTimes;
+  return openingTimes;
 };
 
 module.exports = {

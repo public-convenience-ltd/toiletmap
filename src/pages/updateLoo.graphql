@@ -2,7 +2,7 @@ mutation updateLoo(
   $id: ID
   $location: PointInput!
   $name: String
-  $opening: String
+  $openingTimes: OpeningTimes
   $accessible: Boolean
   $allGender: Boolean
   $male: Boolean
@@ -22,7 +22,7 @@ mutation updateLoo(
       edit: $id
       location: $location
       name: $name
-      opening: $opening
+      openingTimes: $openingTimes
       accessible: $accessible
       male: $male
       female: $female
