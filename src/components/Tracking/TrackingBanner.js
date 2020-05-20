@@ -97,7 +97,7 @@ const TrackingBanner = React.forwardRef((props, ref) => {
                       width="100%"
                     >
                       <b>Opt in to Google Analytics</b>
-                      <Spacer ml={5} />
+                      <Spacer ml={[1, 5]} />
                       <input
                         ref={register}
                         name="ga"
@@ -121,7 +121,7 @@ const TrackingBanner = React.forwardRef((props, ref) => {
                       width="100%"
                     >
                       <b>Opt in to Adobe Analytics</b>
-                      <Spacer ml={5} />
+                      <Spacer ml={[1, 5]} />
                       <input
                         ref={register}
                         name="aa"
