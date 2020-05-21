@@ -34,7 +34,7 @@ const Footer = ({ children }) => (
     py={[0, 2]}
     bg={['transparent', 'lightGrey']}
     color="primary"
-    minHeight={60}
+    height={['auto', 60]}
   >
     {config.shouldShowSponsor() && (
       <HashLink
