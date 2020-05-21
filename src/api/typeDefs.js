@@ -50,7 +50,7 @@ const typeDefs = gql`
     location: Point
     area: [AdminGeo]
     name: String
-    opening: OpeningTimes
+    openingTimes: OpeningTimes
     accessible: Boolean
     allGender: Boolean
     male: Boolean
@@ -95,7 +95,7 @@ const typeDefs = gql`
     location: Point
     area: [AdminGeo]
     name: String
-    opening: OpeningTimes
+    openingTimes: OpeningTimes
     accessible: Boolean
     allGender: Boolean
     male: Boolean
@@ -249,7 +249,7 @@ const typeDefs = gql`
     edit: ID
     location: PointInput!
     name: String
-    opening: OpeningTimes
+    openingTimes: OpeningTimes
     accessible: Boolean
     allGender: Boolean
     male: Boolean
