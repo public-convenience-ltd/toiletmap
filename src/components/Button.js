@@ -22,8 +22,17 @@ const StyledButton = styled.button(
     padding: 0 ${props.theme.space[3]}px;
     border-style: solid;
     border-width: 2px;
-    color: primary;
+    color: ${props.theme.colors.primary};
     box-sizing: border-box;
+
+    &:disabled {
+      border-color: ${props.theme.colors.lightGrey};
+      background-color: ${props.theme.colors.lightGrey};
+    }
+
+    &:disabled:hover {
+      color: ${props.theme.colors.primary};
+    }
   `,
   variant({
     variants: {
@@ -32,7 +41,7 @@ const StyledButton = styled.button(
         fontWeight: 'bold',
         bg: 'secondary',
         borderColor: 'secondary',
-        ':hover, :focus': {
+        ':not(:disabled):hover, :not(:disabled):focus': {
           color: 'aqua',
           bg: 'primary',
           borderColor: 'primary',
@@ -43,7 +52,7 @@ const StyledButton = styled.button(
         bg: 'white',
         fontWeight: 'bold',
         borderColor: 'primary',
-        ':hover, :focus': {
+        ':not(:disabled):hover, :not(:disabled):focus': {
           color: 'white',
           bg: 'primary',
           borderColor: 'primary',

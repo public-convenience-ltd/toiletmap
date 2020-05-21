@@ -8,6 +8,10 @@ import config from '../../config.js';
 import LocateMapControl from './LocateMapControl';
 import ToiletMarkerIcon from './ToiletMarkerIcon';
 
+import Box from '../Box';
+
+import crosshair from '../../images/crosshair.svg';
+
 const LooMap = ({
   center,
   zoom,
@@ -17,6 +21,7 @@ const LooMap = ({
   loos,
   staticMap,
   controlsOffset,
+  showCrosshair,
 }) => {
   const mapRef = React.useRef();
 
@@ -62,37 +67,59 @@ const LooMap = ({
   );
 
   return (
-    <Map
-      ref={mapRef}
-      center={center}
-      zoom={zoom}
-      minZoom={minZoom}
-      maxZoom={maxZoom}
-      onViewportChanged={handleViewportChanged}
-      dragging={!staticMap}
-      scrollWheelZoom={!staticMap}
-      zoomControl={false}
-      tap={false}
-      css={css`
-        height: 100%;
-        width: 100%;
-        position: relative;
-        z-index: 0;
-
-        .leaflet-bottom {
-          bottom: ${controlsOffset}px;
-        }
-      `}
+    <Box
+      position="relative"
+      height="100%"
+      width="100%"
+      css={
+        showCrosshair
+          ? css`
+              &:after {
+                content: url(${crosshair});
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                display: block;
+                height: 53px;
+                width: 52px;
+                transform: translate(-50%, -50%);
+              }
+            `
+          : undefined
+      }
     >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      <Map
+        ref={mapRef}
+        center={center}
+        zoom={zoom}
         minZoom={minZoom}
         maxZoom={maxZoom}
-      />
-      {memoizedMarkers}
-      <ZoomControl position="bottomright" />
-      <LocateMapControl position="bottomright" />
-    </Map>
+        onViewportChanged={handleViewportChanged}
+        dragging={!staticMap}
+        scrollWheelZoom={!staticMap}
+        zoomControl={false}
+        tap={false}
+        css={css`
+          height: 100%;
+          width: 100%;
+          position: relative;
+          z-index: 0;
+
+          .leaflet-bottom {
+            bottom: ${controlsOffset}px;
+          }
+        `}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          minZoom={minZoom}
+          maxZoom={maxZoom}
+        />
+        {memoizedMarkers}
+        <ZoomControl position="bottomright" />
+        <LocateMapControl position="bottomright" />
+      </Map>
+    </Box>
   );
 };
 
@@ -108,6 +135,7 @@ LooMap.propTypes = {
   staticMap: PropTypes.bool,
   onViewportChanged: PropTypes.func,
   controlsOffset: PropTypes.number,
+  showCrosshair: PropTypes.bool,
 };
 
 LooMap.defaultProps = {
