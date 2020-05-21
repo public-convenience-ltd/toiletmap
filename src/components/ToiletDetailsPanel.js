@@ -27,12 +27,7 @@ import Text from './Text';
 import Spacer from './Spacer';
 import Icon from './Icon';
 import { Media } from './Media';
-import {
-  getOpeningTimes,
-  getIsOpen,
-  WEEKDAYS,
-  rangeTypes,
-} from '../openingHours';
+import { getIsOpen, WEEKDAYS, rangeTypes } from '../openingTimes';
 
 const Grid = styled(Box)`
   display: flex;
@@ -50,7 +45,11 @@ function getTimeRangeLabel(range) {
     return 'Closed';
   }
 
-  if (range.length === 2) {
+  if (range && range.length === 2) {
+    if (range[0] === range[1]) {
+      return '24 Hours';
+    }
+
     return range.join(' - ');
   }
 
@@ -190,7 +189,8 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
     },
   ];
 
-  const openingTimes = getOpeningTimes(data.openingTimes);
+  const openingTimes = data.openingTimes || WEEKDAYS.map(() => null);
+
   const todayWeekdayIndex = DateTime.local().weekday - 1;
 
   const editUrl = `/loos/${data.id}/edit`;
