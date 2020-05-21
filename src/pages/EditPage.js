@@ -18,15 +18,12 @@ import useNearbyLoos from '../components/useNearbyLoos';
 import useMapPosition from '../components/useMapPosition';
 
 import config from '../config';
-import graphqlMappings from '../graphqlMappings';
 import history from '../history';
 
 const FIND_BY_ID = loader('./findLooById.graphql');
 const UPDATE_LOO = loader('./updateLoo.graphql');
 
 const EditPage = (props) => {
-  const optionsMap = graphqlMappings.looProps.definitions;
-
   // find the raw loo data for the given loo
   const { loading: loadingLooData, data: looData, error: looError } = useQuery(
     FIND_BY_ID,
@@ -160,7 +157,6 @@ const EditPage = (props) => {
         saveLoading={saveLoading}
         saveResponse={saveResponse}
         saveError={saveError}
-        optionsMap={optionsMap}
         onSubmit={save}
       >
         {({ hasDirtyFields }) => (
