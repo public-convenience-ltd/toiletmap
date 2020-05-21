@@ -9,14 +9,13 @@ import {
   faCheck,
   faPoundSign,
   faBaby,
-  faWheelchair,
-  faVenusMars,
-  faGenderless,
+  faToilet,
   faKey,
   faCog,
   faQuestion,
   faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
+import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 import { DateTime } from 'luxon';
 import { Link } from 'react-router-dom';
 import { useMutation, gql } from '@apollo/client';
@@ -166,7 +165,7 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
       valueIcon: getFeatureValueIcon(data.babyChange),
     },
     {
-      icon: <Icon icon={faWheelchair} />,
+      icon: <Icon icon={faAccessibleIcon} />,
       label: 'Accessible',
       valueIcon: getFeatureValueIcon(data.accessible),
     },
@@ -180,12 +179,7 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
         ]
       : []),
     {
-      icon: <Icon icon={faVenusMars} />,
-      label: 'Unisex',
-      valueIcon: getFeatureValueIcon(data.allGender),
-    },
-    {
-      icon: <Icon icon={faGenderless} />,
+      icon: <Icon icon={faToilet} />,
       label: 'Gender Neutral',
       valueIcon: getFeatureValueIcon(data.allGender),
     },

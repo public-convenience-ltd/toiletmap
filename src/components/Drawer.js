@@ -35,7 +35,7 @@ const Drawer = ({ visible, animateFrom, ...props }) => {
       width="100%"
       bg="white"
       p={3}
-      zIndex={10}
+      zIndex={150}
       overflowY="auto"
       {...props}
       // motion props
