@@ -66,7 +66,10 @@ module.exports = {
           },
           {
             $set: {
-              'diff.opening': opening,
+              'diff.openingTimes': opening,
+            },
+            $unset: {
+              'diff.opening': '',
             },
           }
         );
