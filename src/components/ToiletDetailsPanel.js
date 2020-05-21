@@ -33,6 +33,7 @@ const Grid = styled(Box)`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
   margin: -${({ theme }) => theme.space[3]}px;
 `;
 
@@ -398,12 +399,7 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
               )}
             </Box>
 
-            <Media
-              lessThan="md"
-              css={css`
-                width: 100%;
-              `}
-            >
+            <Media lessThan="md">
               <Box
                 display="flex"
                 justifyContent="center"
