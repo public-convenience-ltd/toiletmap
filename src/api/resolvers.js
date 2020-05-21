@@ -1,5 +1,5 @@
 const config = require('./config');
-const { Loo, Report } = require('./db')(process.env.MONGODB_URI);
+const { Loo, Report } = require('./db');
 const { GraphQLDateTime } = require('graphql-iso-date');
 const without = require('lodash/without');
 const OpeningTimesScalar = require('./OpeningTimesScalar');

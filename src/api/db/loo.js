@@ -1,15 +1,15 @@
-const { Schema, Types } = require('mongoose');
+const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 const CoreSchema = require('./core');
 
-const LooSchema = new Schema(
+const LooSchema = new mongoose.Schema(
   {
-    _id: { type: Schema.Types.ObjectId },
+    _id: { type: mongoose.Schema.Types.ObjectId },
     properties: CoreSchema,
-    reports: [{ type: Schema.Types.ObjectId, ref: 'NewReport' }],
-    createdAt: { type: Schema.Types.Date },
-    updatedAt: { type: Schema.Types.Date },
-    contributors: [{ type: Schema.Types.String }],
+    reports: [{ type: mongoose.Schema.Types.ObjectId, ref: 'NewReport' }],
+    createdAt: { type: mongoose.Schema.Types.Date },
+    updatedAt: { type: mongoose.Schema.Types.Date },
+    contributors: [{ type: mongoose.Schema.Types.String }],
   },
   { minimize: false }
 );
@@ -58,7 +58,7 @@ LooSchema.statics.fromReports = function (reports, idOverride) {
 
   // "this" refers to our static model
   return new this({
-    _id: Types.ObjectId(id),
+    _id: mongoose.Types.ObjectId(id),
     properties,
     reports: reportIds,
     createdAt: timeline[0],
@@ -213,4 +213,4 @@ LooSchema.statics.getAreasCounters = async function () {
   return areas;
 };
 
-module.exports = exports = LooSchema;
+module.exports = new mongoose.model('NewLoo', LooSchema);
