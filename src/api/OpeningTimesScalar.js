@@ -61,4 +61,4 @@ const OpeningTimesScalar = new GraphQLScalarType({
   parseLiteral: (ast) => validateOpeningTimes(astToOpeningTimes(ast)),
 });
 
-export default OpeningTimesScalar;
+module.exports = OpeningTimesScalar;

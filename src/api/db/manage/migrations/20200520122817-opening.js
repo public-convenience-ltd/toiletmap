@@ -76,7 +76,6 @@ module.exports = {
         updates += 1;
       } else {
         skips += 1;
-        console.log(rep._id);
         await db.collection('newreports').findOneAndUpdate(
           {
             _id: rep._id,

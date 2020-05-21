@@ -12,7 +12,7 @@ const looInfoResolver = (property) => {
     active: resolve,
     area: resolve,
     name: resolve,
-    opening: resolve,
+    openingTimes: resolve,
     accessible: resolve,
     allGender: resolve,
     male: resolve,
