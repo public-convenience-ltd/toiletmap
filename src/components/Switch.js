@@ -13,7 +13,12 @@ const Inner = styled(Box)`
   transition: left 0.2s ease;
 `;
 
-const Switch = ({ checked, ...props }) => (
+const Switch = ({
+  checked,
+  onClick = Function.prototype,
+  onChange = Function.prototype,
+  ...props
+}) => (
   <Box
     as="button"
     type="button"
@@ -25,6 +30,10 @@ const Switch = ({ checked, ...props }) => (
     height={HEIGHT}
     width={WIDTH}
     borderRadius={18}
+    onClick={() => {
+      onClick();
+      onChange(!checked);
+    }}
   >
     <Inner
       position="absolute"
