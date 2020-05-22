@@ -175,7 +175,6 @@ const EntryForm = ({
   title,
   loo,
   center,
-  optionsMap,
   saveResponse,
   saveError,
   children,
@@ -490,14 +489,6 @@ EntryForm.propTypes = {
   center: PropTypes.shape({
     lat: PropTypes.number.isRequired,
     lng: PropTypes.number.isRequired,
-  }).isRequired,
-  optionsMap: PropTypes.shape({
-    opening: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        value: PropTypes.string,
-      })
-    ).isRequired,
   }).isRequired,
   saveLoading: PropTypes.bool,
   saveError: PropTypes.object,
