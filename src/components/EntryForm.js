@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import isFunction from 'lodash/isFunction';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
@@ -13,8 +13,18 @@ import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 import VisuallyHidden from '../components/VisuallyHidden';
 import Switch from '../components/Switch';
+import ConditionalWrap from '../components/ConditionalWrap';
+import { WEEKDAYS, rangeTypes } from '../openingTimes';
 
 import crosshair from '../images/crosshair-small.svg';
+
+const openingTimesFields = WEEKDAYS.flatMap((day) => {
+  return [
+    `${day.toLowerCase()}-is-open`,
+    `${day.toLowerCase()}-opens`,
+    `${day.toLowerCase()}-closes`,
+  ];
+});
 
 const Input = styled.input`
   display: block;
@@ -181,7 +191,21 @@ const EntryForm = ({
   ...props
 }) => {
   const [noPayment, setNoPayment] = useState(loo.noPayment);
-  const { register, handleSubmit, formState, setValue } = useForm();
+
+  const hasOpeningTimes = Boolean(loo.openingTimes);
+
+  const isOpen = loo.openingTimes
+    ? loo.openingTimes.map((x) => x !== rangeTypes.CLOSED)
+    : WEEKDAYS.map(() => false);
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState,
+    setValue,
+    getValues,
+  } = useForm();
 
   // read the formState before render to subscribe the form state through Proxy
   const { dirtyFields } = formState;
@@ -217,7 +241,36 @@ const EntryForm = ({
       transformed.paymentDetails = null;
     }
 
-    transformed = omit(transformed, ['geometry', 'noPayment']);
+    // construct expected opening times structure if relevant fields have changed
+    if (
+      [...openingTimesFields, 'has-opening-times'].some(
+        (field) => dirtyFieldNames.indexOf(field) >= 0
+      )
+    ) {
+      if (data['has-opening-times']) {
+        const openingTimes = WEEKDAYS.map((day, index) => {
+          if (!data[`${day.toLowerCase()}-is-open`]) {
+            return rangeTypes.CLOSED;
+          }
+
+          return [
+            data[`${day.toLowerCase()}-opens`],
+            data[`${day.toLowerCase()}-closes`],
+          ];
+        });
+
+        transformed.openingTimes = openingTimes;
+      } else {
+        transformed.openingTimes = null;
+      }
+    }
+
+    transformed = omit(transformed, [
+      'geometry',
+      'noPayment',
+      'has-opening-times',
+      ...openingTimesFields,
+    ]);
 
     props.onSubmit(transformed);
   };
@@ -372,57 +425,95 @@ const EntryForm = ({
 
           <Spacer mt={4} />
 
-          <h2>6. What are the opening hours?</h2>
+          <h2 id="opening-hours-heading">6. Do you know the opening hours?</h2>
+
+          <Controller
+            as={Switch}
+            aria-labelledby="opening-hours-heading"
+            name="has-opening-times"
+            control={control}
+            valueName="checked"
+            defaultValue={hasOpeningTimes}
+          />
 
           <Spacer mt={3} />
 
-          <ol>
-            {['Monday', 'Tuesday'].map((day, index) => {
-              const id = `heading-${day.toLowerCase()}`;
+          <ConditionalWrap
+            condition={!getValues('has-opening-times')}
+            wrap={(children) => <VisuallyHidden>{children}</VisuallyHidden>}
+          >
+            <>
+              <ol>
+                {WEEKDAYS.map((day, index) => {
+                  const id = `heading-${day.toLowerCase()}`;
 
-              return (
-                <Box
-                  as="li"
-                  key={day}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  mt={index === 0 ? undefined : 2}
-                >
-                  <h3 id={id}>{day}</h3>
+                  return (
+                    <Box
+                      as="li"
+                      key={day}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      mt={index === 0 ? undefined : 2}
+                    >
+                      <h3 id={id}>{day}</h3>
 
-                  <Box display="flex" alignItems="center">
-                    <Switch
-                      name="monday"
-                      checked={false}
-                      aria-labelledby={id}
-                      onClick={Function.prototype}
-                    />
-                    <Spacer ml={2} />
-                    Open
-                  </Box>
+                      <Box display="flex" alignItems="center">
+                        <Controller
+                          as={Switch}
+                          aria-labelledby={id}
+                          name={`${day.toLowerCase()}-is-open`}
+                          control={control}
+                          valueName="checked"
+                          defaultValue={isOpen[index]}
+                        />
+                      </Box>
 
-                  <Box display="flex" alignItems="center">
-                    <select>
-                      <option>9:00am</option>
-                    </select>
+                      {getValues(`${day.toLowerCase()}-is-open`) ? (
+                        <Box display="flex" alignItems="center">
+                          <input
+                            type="time"
+                            defaultValue={
+                              loo.openingTimes
+                                ? loo.openingTimes[index][0]
+                                : undefined
+                            }
+                            name={`${day.toLowerCase()}-opens`}
+                            ref={register({
+                              required: true,
+                            })}
+                          />
 
-                    <Spacer ml={2} />
+                          <Spacer ml={2} />
 
-                    <span>to</span>
+                          <span>to</span>
 
-                    <Spacer ml={2} />
+                          <Spacer ml={2} />
 
-                    <select>
-                      <option>5:00pm</option>
-                    </select>
-                  </Box>
-                </Box>
-              );
-            })}
-          </ol>
+                          <input
+                            type="time"
+                            defaultValue={
+                              loo.openingTimes
+                                ? loo.openingTimes[index][1]
+                                : undefined
+                            }
+                            name={`${day.toLowerCase()}-closes`}
+                            ref={register({
+                              required: true,
+                            })}
+                          />
+                        </Box>
+                      ) : (
+                        'Closed'
+                      )}
+                    </Box>
+                  );
+                })}
+              </ol>
 
-          <Spacer mt={4} />
+              <Spacer mt={4} />
+            </>
+          </ConditionalWrap>
 
           <label>
             7. Notes
@@ -485,6 +576,10 @@ EntryForm.propTypes = {
     noPayment: PropTypes.bool,
     paymentDetails: PropTypes.string,
     notes: PropTypes.string,
+    openingTimes: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.oneOf([null]),
+    ]),
   }),
   center: PropTypes.shape({
     lat: PropTypes.number.isRequired,
