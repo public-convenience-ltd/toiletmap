@@ -58,10 +58,19 @@ const App = (props) => {
     };
   });
 
+  let link;
+  if (process.env.REACT_APP_MOCKS) {
+    let { SchemaLink } = require('apollo-link-schema');
+    let schema = require('./api/mockedSchema').default;
+    link = new SchemaLink({ schema });
+  } else {
+    link = ApolloLink.from([errorLink, authLink, httpLink]);
+  }
+
   const client = new ApolloClient({
     name: '@toiletmap/ui',
     version,
-    link: ApolloLink.from([errorLink, authLink, httpLink]),
+    link,
     connectToDevTools: true,
     cache,
     ...localSchema,
