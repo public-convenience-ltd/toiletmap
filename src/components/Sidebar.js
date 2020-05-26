@@ -8,15 +8,14 @@ import {
   faAngleRight,
   faPlusCircle,
 } from '@fortawesome/free-solid-svg-icons';
+import { NavLink } from 'react-router-dom';
 
 import VisuallyHidden from './VisuallyHidden';
 
 import Box from './Box';
 import Text from './Text';
-import Button from './Button';
 import Icon from './Icon';
 import LocationSearch from './LocationSearch';
-import Divider from './Divider';
 import Filters from './Filters';
 
 const Arrow = styled((props) => <Icon icon={faAngleRight} {...props} />, {
@@ -39,7 +38,6 @@ Arrow.propTypes = {
 
 const Sidebar = ({ filters, onFilterChange, onSelectedItemChange }) => {
   const theme = useTheme();
-  const [isAddExpanded, setIsAddExpanded] = useState(false);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
   return (
@@ -64,8 +62,6 @@ const Sidebar = ({ filters, onFilterChange, onSelectedItemChange }) => {
           <LocationSearch onSelectedItemChange={onSelectedItemChange} />
         </Box>
       </section>
-
-      {isFilterExpanded && <Divider />}
 
       <Box as="section" my={4} aria-labelledby="heading-filters">
         <h2 id="heading-filters">
@@ -111,49 +107,19 @@ const Sidebar = ({ filters, onFilterChange, onSelectedItemChange }) => {
         </Box>
       </Box>
 
-      {(isFilterExpanded || isAddExpanded) && <Divider />}
-
       <Box as="section" mt={4} aria-labelledby="heading-add">
         <h2 id="heading-add">
           <VisuallyHidden>Add a Loo</VisuallyHidden>
         </h2>
 
-        <Box
-          as="button"
-          type="button"
-          aria-expanded={isAddExpanded}
-          onClick={() => setIsAddExpanded(!isAddExpanded)}
-          display="flex"
-          alignItems="center"
-        >
+        <Box as={NavLink} to="/report" display="flex" alignItems="center">
           <Icon icon={faPlusCircle} fixedWidth size="lg" />
-          <Box as="b" mx={2}>
-            <Text lineHeight={1}>Add a Loo</Text>
+          <Box mx={2}>
+            <Text lineHeight={1}>
+              <b>Add a Loo</b>
+            </Text>
           </Box>
-          <Arrow isExpanded={isAddExpanded} />
-        </Box>
-
-        <Box px={2} pt={4} hidden={!isAddExpanded}>
-          <Text fontSize={14}>
-            <p>
-              Before you can contribute data we'll need to know who to thank.
-            </p>
-            <p>
-              We'll only store the first part of the email address you give us
-              against the data you contribute.
-            </p>
-            <p>Login or sign up to let us know you're real.</p>
-          </Text>
-
-          <Box mt={3}>
-            <Button
-              css={{
-                width: '100%',
-              }}
-            >
-              Login / Sign Up
-            </Button>
-          </Box>
+          <Arrow />
         </Box>
       </Box>
     </Box>
