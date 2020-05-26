@@ -112,7 +112,7 @@ const Sidebar = ({ filters, onFilterChange, onSelectedItemChange }) => {
           <VisuallyHidden>Add a Loo</VisuallyHidden>
         </h2>
 
-        <Box as={NavLink} to="/report" display="flex" alignItems="center">
+        <Box as={NavLink} to="/loos/add" display="flex" alignItems="center">
           <Icon icon={faPlusCircle} fixedWidth size="lg" />
           <Box mx={2}>
             <Text lineHeight={1}>

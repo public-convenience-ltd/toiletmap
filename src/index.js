@@ -39,6 +39,7 @@ ReactDOM.render(
         <Suspense fallback={<PageLoading />}>
           <Switch>
             <Route exact path="/" component={HomePage} />
+            <ProtectedRoute path="/loos/add" component={AddPage} />
             <Route path="/loos/:id" exact component={HomePage} />
             <Route exact path="/about" component={AboutPage} />
             <Route exact path="/cookies" component={CookiesPage} />
@@ -60,7 +61,6 @@ ReactDOM.render(
               path="/explorer"
               render={(props) => <Explorer {...props} />}
             />
-            <ProtectedRoute exact path="/report" component={AddPage} />
             <ProtectedRoute path="/loos/:id/edit" component={EditPage} />
             <ProtectedRoute path="/loos/:id/remove" component={RemovePage} />
             <Route component={NotFound} />

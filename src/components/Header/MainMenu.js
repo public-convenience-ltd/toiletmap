@@ -41,7 +41,7 @@ const MainMenu = ({ children }) => (
           </StyledNavLink>
         </Box>
         <Box as="li" mt={[3, 0]} ml={[0, 4]}>
-          <StyledNavLink to="/report">Add Loo</StyledNavLink>
+          <StyledNavLink to="/loos/add">Add Loo</StyledNavLink>
         </Box>
 
         <Box as="li" mt={['auto', 0]} ml={[0, 'auto']}>
