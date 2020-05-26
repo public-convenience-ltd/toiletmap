@@ -15,7 +15,7 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import AddPage from './pages/AddPage';
 import EditPage from './pages/EditPage';
-import LoginPage from './pages/LoginPage';
+import ContributePage from './pages/ContributePage';
 import MapPage from './pages/MapPage';
 import UseOurLoosPage from './pages/UseOurLoosPage';
 import CookiesPage from './pages/CookiesPage';
@@ -46,8 +46,10 @@ ReactDOM.render(
             <Route exact path="/privacy" component={PrivacyPage} />
             <Route exact path="/use-our-loos" component={UseOurLoosPage} />
             <Route exact path="/contact" component={ContactPage} />
-
-            <Route path="/login" render={(props) => <LoginPage {...props} />} />
+            <Route
+              path="/contribute"
+              render={(props) => <ContributePage {...props} />}
+            />
             <Route
               path="/map/:lng/:lat"
               render={(props) => <MapPage {...props} />}
