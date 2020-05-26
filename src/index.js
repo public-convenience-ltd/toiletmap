@@ -5,7 +5,7 @@ import 'resize-observer-polyfill';
 
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthCallback from './pages/AuthCallback';
@@ -49,6 +49,10 @@ ReactDOM.render(
             <Route
               path="/contribute"
               render={(props) => <ContributePage {...props} />}
+            />
+            <Router
+              path="/login"
+              render={() => <Redirect to="/contribute" />}
             />
             <Route
               path="/map/:lng/:lat"
