@@ -1,4 +1,4 @@
-const { Schema, Types } = require('mongoose');
+const mongoose = require('mongoose');
 const fetch = require('node-fetch');
 const hasha = require('hasha');
 const isEqual = require('lodash/isEqual');
@@ -8,12 +8,12 @@ const compact = require('lodash/compact');
 const config = require('../config');
 const CoreSchema = require('./core');
 
-const ReportSchema = new Schema(
+const ReportSchema = new mongoose.Schema(
   {
     contributorId: { type: String },
     contributor: { type: String },
     previous: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'NewReport',
       validate: async function (value) {
         // "this.constructor" refers to our static model
@@ -28,7 +28,7 @@ const ReportSchema = new Schema(
       },
     },
     next: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'NewReport',
       validate: async function (value) {
         // "this.constructor" refers to our static model
@@ -160,7 +160,7 @@ ReportSchema.methods.suggestLooId = function () {
  */
 ReportSchema.methods.getLoo = async function () {
   return await this.model('NewLoo').findOne({
-    reports: Types.ObjectId(this.id),
+    reports: mongoose.Types.ObjectId(this.id),
   });
 };
 
@@ -259,4 +259,4 @@ ReportSchema.statics.getCounters = async function () {
   };
 };
 
-module.exports = exports = ReportSchema;
+module.exports = new mongoose.model('NewReport', ReportSchema);
