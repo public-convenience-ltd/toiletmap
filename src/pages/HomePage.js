@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, useRouteMatch } from 'react-router-dom';
+import queryString from 'query-string';
 import { loader } from 'graphql.macro';
 import { useQuery } from '@apollo/client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,6 +20,7 @@ import Drawer from '../components/Drawer';
 import Filters from '../components/Filters';
 import Text from '../components/Text';
 import Sidebar from '../components/Sidebar';
+import Notification from '../components/Notification';
 
 import config, { FILTERS_KEY } from '../config';
 
@@ -38,6 +40,8 @@ const HomePage = ({ initialPosition, ...props }) => {
 
   const [filters, setFilters] = useState(initialState);
 
+  const selectedLooId = useParams().id;
+
   // keep local storage and state in sync
   React.useEffect(() => {
     window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
@@ -51,14 +55,14 @@ const HomePage = ({ initialPosition, ...props }) => {
     },
   });
 
-  const selectedLooId = useParams().id;
-
   const { data, loading } = useQuery(FIND_BY_ID, {
     variables: {
       id: selectedLooId,
       skip: !selectedLooId,
     },
   });
+
+  const { message } = queryString.parse(props.location.search);
 
   // get the filter objects from config for the filters applied by the user
   const applied = config.filters.filter((filter) => filters[filter.id]);
@@ -122,87 +126,81 @@ const HomePage = ({ initialPosition, ...props }) => {
           controlsOffset={toiletPanelDimensions.height}
         />
 
-        <section>
-          <Box
-            as={Media}
-            lessThan="md"
-            position="absolute"
-            top={0}
-            left={0}
-            p={3}
-            width="100%"
-          >
-            <LocationSearch
-              onSelectedItemChange={(center) => setMapPosition({ center })}
-            />
+        <Media lessThan="md">
+          <section>
+            <Box position="absolute" top={0} left={0} p={3} width="100%">
+              <LocationSearch
+                onSelectedItemChange={(center) => setMapPosition({ center })}
+              />
 
-            <Box display="flex" justifyContent="center" mt={3}>
-              <Button
-                ref={filterToggleRef}
-                variant="secondary"
-                icon={<FontAwesomeIcon icon={faFilter} />}
-                aria-expanded={isFiltersExpanded}
-                onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
-              >
-                Filter Map
-              </Button>
-            </Box>
-
-            <Drawer visible={isFiltersExpanded} animateFrom="left">
-              <Box display="flex" justifyContent="space-between" mb={4}>
-                <Box display="flex" alignItems="flex-end">
-                  <FontAwesomeIcon icon={faFilter} fixedWidth size="lg" />
-                  <Box as="h2" mx={2}>
-                    <Text lineHeight={1}>
-                      <b>Filter</b>
-                    </Text>
-                  </Box>
-                </Box>
-
-                <Text fontSize={12}>
-                  <Box
-                    as="button"
-                    type="button"
-                    onClick={() => setFilters({})}
-                    border={0}
-                    borderBottom={2}
-                    borderStyle="solid"
-                  >
-                    Reset Filter
-                  </Box>
-                </Text>
-              </Box>
-
-              <Filters filters={filters} onFilterChange={setFilters} />
-
-              <Box display="flex" justifyContent="center" mt={4}>
+              <Box display="flex" justifyContent="center" mt={3}>
                 <Button
-                  onClick={() => {
-                    setIsFiltersExpanded(false);
-
-                    // return focus to the control that invoked the filter overlay
-                    filterToggleRef.current.focus();
-                  }}
-                  css={{
-                    width: '100%',
-                  }}
+                  ref={filterToggleRef}
+                  variant="secondary"
+                  icon={<FontAwesomeIcon icon={faFilter} />}
+                  aria-expanded={isFiltersExpanded}
+                  onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
                 >
-                  Done
+                  Filter Map
                 </Button>
               </Box>
-            </Drawer>
-          </Box>
 
-          <Media greaterThan="sm">
-            <Sidebar
-              filters={filters}
-              onFilterChange={setFilters}
-              onSelectedItemChange={(center) => setMapPosition({ center })}
-            />
-          </Media>
-        </section>
+              <Drawer visible={isFiltersExpanded} animateFrom="left">
+                <Box display="flex" justifyContent="space-between" mb={4}>
+                  <Box display="flex" alignItems="flex-end">
+                    <FontAwesomeIcon icon={faFilter} fixedWidth size="lg" />
+                    <Box as="h2" mx={2}>
+                      <Text lineHeight={1}>
+                        <b>Filter</b>
+                      </Text>
+                    </Box>
+                  </Box>
 
-        {Boolean(selectedLooId) && (
+                  <Text fontSize={12}>
+                    <Box
+                      as="button"
+                      type="button"
+                      onClick={() => setFilters({})}
+                      border={0}
+                      borderBottom={2}
+                      borderStyle="solid"
+                    >
+                      Reset Filter
+                    </Box>
+                  </Text>
+                </Box>
+
+                <Filters filters={filters} onFilterChange={setFilters} />
+
+                <Box display="flex" justifyContent="center" mt={4}>
+                  <Button
+                    onClick={() => {
+                      setIsFiltersExpanded(false);
+
+                      // return focus to the control that invoked the filter overlay
+                      filterToggleRef.current.focus();
+                    }}
+                    css={{
+                      width: '100%',
+                    }}
+                  >
+                    Done
+                  </Button>
+                </Box>
+              </Drawer>
+            </Box>
+
+            <Media greaterThan="sm">
+              <Sidebar
+                filters={filters}
+                onFilterChange={setFilters}
+                onSelectedItemChange={(center) => setMapPosition({ center })}
+              />
+            </Media>
+          </section>
+        </Media>
+
+        {Boolean(selectedLooId) && data && (
           <Box
             position="absolute"
             left={0}
@@ -211,10 +209,31 @@ const HomePage = ({ initialPosition, ...props }) => {
             zIndex={100}
           >
             <ToiletDetailsPanel
-              data={data && data.loo}
+              data={data.loo}
               isLoading={loading}
+              startExpanded={!!message}
               onDimensionsChange={setToiletPanelDimensions}
-            />
+            >
+              {config.messages[message] && (
+                <Box
+                  position="absolute"
+                  left={0}
+                  right={0}
+                  bottom={0}
+                  display="flex"
+                  justifyContent="center"
+                  p={4}
+                  pt={1}
+                  pb={[4, 3, 4]}
+                  bg={['white', 'white', 'transparent']}
+                >
+                  <Notification
+                    allowClose
+                    children={config.messages[message]}
+                  />
+                </Box>
+              )}
+            </ToiletDetailsPanel>
           </Box>
         )}
       </Box>

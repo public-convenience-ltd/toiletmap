@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
 import uniqBy from 'lodash/uniqBy';
+import { css } from '@emotion/core';
 import { loader } from 'graphql.macro';
 import { useQuery, useMutation } from '@apollo/client';
 
 import PageLayout from '../components/PageLayout';
 import Button from '../components/Button';
 import Spacer from '../components/Spacer';
-import Loading from '../components/Loading';
+import Notification from '../components/Notification';
 import EntryForm from '../components/EntryForm';
 import LooMap from '../components/LooMap';
 import Box from '../components/Box';
@@ -96,20 +97,21 @@ const EditPage = (props) => {
     });
   };
 
-  if (loadingLooData || !looData || !initialData) {
+  if (loadingLooData || !looData || !initialData || looError) {
     return (
       <PageLayout>
-        <Loading message="Fetching Toilet Data" />
-      </PageLayout>
-    );
-  }
-
-  if (looError) {
-    console.error(looError);
-
-    return (
-      <PageLayout>
-        <Loading message="Error fetching toilet data" />
+        <Box
+          my={4}
+          mx="auto"
+          css={css`
+            max-width: 360px; /* fallback */
+            max-width: fit-content;
+          `}
+        >
+          <Notification>
+            {looError ? 'Error fetching toilet data' : 'Fetching Toilet Data'}
+          </Notification>
+        </Box>
       </PageLayout>
     );
   }
@@ -117,6 +119,11 @@ const EditPage = (props) => {
   // redirect to index if loo is not active (i.e. removed)
   if (looData && !looData.loo.active) {
     history.push('/');
+  }
+
+  // redirect to new toilet entry page on successful addition
+  if (saveResponse && saveResponse.submitReport.code === '200') {
+    history.push(`/loos/${saveResponse.submitReport.loo.id}?message=updated`);
   }
 
   const getLoosToDisplay = () => {
