@@ -9,7 +9,7 @@
     "api": "node -r dotenv/config ./api/index.js",
     "lint": "eslint . && stylelint \"src/**/*.css\"",
     "format": "prettier --write \"./**/*.{js,json}\"",
-    "test": "exit 0",
+    "test": "jest",
     "migrate": "migrate-mongo up",
     "generate": "node -r dotenv/config ./src/api/db/manage/generate/index.js --confirm"
   },
@@ -88,6 +88,8 @@
   "devDependencies": {
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
+    "@shelf/jest-mongodb": "1.1.5",
+    "apollo-server-testing": "2.13.1",
     "cli-progress": "3.8.2",
     "customize-cra": "0.9.1",
     "dotenv": "8.2.0",
