@@ -11,7 +11,6 @@ import {
 import { NavLink } from 'react-router-dom';
 
 import VisuallyHidden from './VisuallyHidden';
-
 import Box from './Box';
 import Text from './Text';
 import Icon from './Icon';
@@ -36,7 +35,12 @@ Arrow.propTypes = {
   isExpanded: PropTypes.bool,
 };
 
-const Sidebar = ({ filters, onFilterChange, onSelectedItemChange }) => {
+const Sidebar = ({
+  filters,
+  onFilterChange,
+  onSelectedItemChange,
+  mapCenter,
+}) => {
   const theme = useTheme();
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
@@ -111,8 +115,12 @@ const Sidebar = ({ filters, onFilterChange, onSelectedItemChange }) => {
         <h2 id="heading-add">
           <VisuallyHidden>Add a Loo</VisuallyHidden>
         </h2>
-
-        <Box as={NavLink} to="/loos/add" display="flex" alignItems="center">
+        <Box
+          as={NavLink}
+          to={`/loos/add?lat=${mapCenter.lat}&lng=${mapCenter.lng}`}
+          display="flex"
+          alignItems="center"
+        >
           <Icon icon={faPlusCircle} fixedWidth size="lg" />
           <Box mx={2}>
             <Text lineHeight={1}>

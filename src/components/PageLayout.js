@@ -175,7 +175,7 @@ const ResetStyles = (
   />
 );
 
-const PageLayout = (props) => {
+const PageLayout = ({ mapCenter, children }) => {
   const trackingRef = useRef(null);
 
   const [isTrackingStateChosen, setIsTrackingStateChosen] = useState(
@@ -220,10 +220,10 @@ const PageLayout = (props) => {
         )}
 
         <Box display="flex" flexDirection="column" height="100%">
-          <Header>{footerFragment}</Header>
+          <Header mapCenter={mapCenter}>{footerFragment}</Header>
 
           <Box position="relative" display="flex" flexGrow={1}>
-            <Box as="main" flexGrow={1} children={props.children} />
+            <Box as="main" flexGrow={1} children={children} />
           </Box>
 
           <Box as={Media} greaterThan="sm" mt="auto">
