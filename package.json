@@ -10,6 +10,7 @@
     "lint": "eslint . && stylelint \"src/**/*.css\"",
     "format": "prettier --write \"./**/*.{js,json}\"",
     "test": "jest",
+    "build:testable": "REACT_APP_MOCKS=true yarn build",
     "migrate": "migrate-mongo up",
     "generate": "node -r dotenv/config ./src/api/db/manage/generate/index.js --confirm"
   },
@@ -97,12 +98,15 @@
     "dotenv": "8.2.0",
     "http-proxy-middleware": "1.0.4",
     "husky": "4.2.5",
+    "jest-puppeteer": "4.4.0",
     "lint-staged": "10.2.6",
     "migrate-mongo": "7.2.1",
     "nodemon": "2.0.4",
     "prettier": "2.0.5",
+    "puppeteer": "3.1.0",
     "react-app-rewired": "2.1.6",
     "react-scripts": "3.4.1",
+    "serve": "11.3.1",
     "stylelint": "13.5.0",
     "stylelint-config-standard": "20.0.0",
     "uuid": "8.1.0"
