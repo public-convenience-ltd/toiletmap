@@ -1,9 +1,10 @@
-const { Report, db } = require('../../index.js')(process.env.MONGODB_URI);
+const { Report, connect } = require('../../index.js');
 const mongoose = require('mongoose');
 const cliProgress = require('cli-progress');
 
 // use a main function so we can have await niceties
 async function main() {
+  await connect(process.env.MONGODB_URI);
   try {
     // check they're serious
     if (!process.argv.slice(2).includes('--confirm')) {
@@ -15,7 +16,7 @@ async function main() {
     console.warn('Dropping existing loo collection');
 
     try {
-      await db.dropCollection('newloos');
+      await mongoose.connection.dropCollection('newloos');
     } catch (e) {
       // 26 is collection not found :-) a fresh db
       if (e.code !== 26) {
@@ -60,7 +61,6 @@ async function main() {
 
   // tidy
   await mongoose.disconnect();
-  db.close();
 }
 
 main();
