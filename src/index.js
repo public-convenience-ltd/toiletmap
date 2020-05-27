@@ -5,7 +5,7 @@ import 'resize-observer-polyfill';
 
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthCallback from './pages/AuthCallback';
@@ -15,7 +15,7 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import AddPage from './pages/AddPage';
 import EditPage from './pages/EditPage';
-import LoginPage from './pages/LoginPage';
+import ContributePage from './pages/ContributePage';
 import MapPage from './pages/MapPage';
 import UseOurLoosPage from './pages/UseOurLoosPage';
 import CookiesPage from './pages/CookiesPage';
@@ -39,14 +39,21 @@ ReactDOM.render(
         <Suspense fallback={<PageLoading />}>
           <Switch>
             <Route exact path="/" component={HomePage} />
+            <ProtectedRoute path="/loos/add" component={AddPage} />
             <Route path="/loos/:id" exact component={HomePage} />
             <Route exact path="/about" component={AboutPage} />
             <Route exact path="/cookies" component={CookiesPage} />
             <Route exact path="/privacy" component={PrivacyPage} />
             <Route exact path="/use-our-loos" component={UseOurLoosPage} />
             <Route exact path="/contact" component={ContactPage} />
-
-            <Route path="/login" render={(props) => <LoginPage {...props} />} />
+            <Route
+              path="/contribute"
+              render={(props) => <ContributePage {...props} />}
+            />
+            <Router
+              path="/login"
+              render={() => <Redirect to="/contribute" />}
+            />
             <Route
               path="/map/:lng/:lat"
               render={(props) => <MapPage {...props} />}
@@ -60,7 +67,6 @@ ReactDOM.render(
               path="/explorer"
               render={(props) => <Explorer {...props} />}
             />
-            <ProtectedRoute exact path="/report" component={AddPage} />
             <ProtectedRoute path="/loos/:id/edit" component={EditPage} />
             <ProtectedRoute path="/loos/:id/remove" component={RemovePage} />
             <Route component={NotFound} />
