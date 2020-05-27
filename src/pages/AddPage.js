@@ -68,7 +68,7 @@ const AddPage = (props) => {
 
   return (
     <PageLayout>
-      <Box position="relative" display="flex" height={300} maxHeight="40vh">
+      <Box position="relative" display="flex" height={332} maxHeight="40vh">
         <LooMap
           loos={data}
           center={mapPosition.center}
@@ -79,6 +79,7 @@ const AddPage = (props) => {
           showSearchControl
           showLocateControl
           showCrosshair
+          controlsOffset={20}
         />
 
         <Box position="absolute" top={0} left={0} m={3}>
@@ -88,23 +89,23 @@ const AddPage = (props) => {
         </Box>
       </Box>
 
-      <Spacer mt={4} />
-
-      <EntryForm
-        title="Add This Toilet"
-        loo={initialFormState}
-        center={mapPosition.center}
-        saveLoading={saveLoading}
-        saveResponse={saveResponse}
-        saveError={saveError}
-        onSubmit={save}
-      >
-        <Box display="flex" flexDirection="column" alignItems="center">
-          <Button type="submit" data-testid="add-the-toilet">
-            Save toilet
-          </Button>
-        </Box>
-      </EntryForm>
+      <Box position="relative" mt={-3} pt={4} borderRadius={35} bg="white">
+        <EntryForm
+          title="Add This Toilet"
+          loo={initialFormState}
+          center={mapPosition.center}
+          saveLoading={saveLoading}
+          saveResponse={saveResponse}
+          saveError={saveError}
+          onSubmit={save}
+        >
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Button type="submit" data-testid="add-the-toilet">
+              Save toilet
+            </Button>
+          </Box>
+        </EntryForm>
+      </Box>
 
       <Spacer mt={4} />
     </PageLayout>
