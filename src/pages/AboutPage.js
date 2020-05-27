@@ -76,48 +76,45 @@ const AboutPage = (props) => {
           </Button>
           , private companies and organisations.
         </p>
-
         <Spacer mb={4} />
         <Text fontSize={3} fontWeight="bold">
           <h2>Publicly Accessible Toilets</h2>
         </Text>
         <Spacer mb={3} />
-
         <p>
           The project aims to map all publicly-accessible toilets - that means
           all toilets that the public can access without needing to be a
           customer.
         </p>
-        <p>
-          This includes:
-          <List>
-            <ListItem>public toilets</ListItem>
-            <ListItem>
-              toilets in train stations, bus stations, service/petrol stations,
-              tube stations, ferry terminals, airports and other transport
-              networks
-            </ListItem>
-            <ListItem>shopping centre toilets</ListItem>
-            <ListItem>
-              toilets in public buildings, such as town halls, libraries,
-              hospitals, museums and leisure centres
-            </ListItem>
-            <ListItem>
-              toilets in other businesses where the business agrees that the
-              public can use their toilets without having to buy anything. These
-              are often part of Community Toilet Schemes (run by councils) and
-              can include shops, cafes, supermarkets, restaurants, hotels and
-              pubs.
-            </ListItem>
-            <ListItem>
-              We try not to show toilets where you need to ask permission to use
-              it, such as those that are for customers-only. The exception is
-              platform-side toilets at stations. These are only accessible to
-              ticket-holders but we feel it is still useful information,
-              particularly when many trains don’t have toilets onboard.
-            </ListItem>
-          </List>
-        </p>
+        <Spacer mb={3} />
+        This includes:
+        <List>
+          <ListItem>public toilets</ListItem>
+          <ListItem>
+            toilets in train stations, bus stations, service/petrol stations,
+            tube stations, ferry terminals, airports and other transport
+            networks
+          </ListItem>
+          <ListItem>shopping centre toilets</ListItem>
+          <ListItem>
+            toilets in public buildings, such as town halls, libraries,
+            hospitals, museums and leisure centres
+          </ListItem>
+          <ListItem>
+            toilets in other businesses where the business agrees that the
+            public can use their toilets without having to buy anything. These
+            are often part of Community Toilet Schemes (run by councils) and can
+            include shops, cafes, supermarkets, restaurants, hotels and pubs.
+          </ListItem>
+          <ListItem>
+            We try not to show toilets where you need to ask permission to use
+            it, such as those that are for customers-only. The exception is
+            platform-side toilets at stations. These are only accessible to
+            ticket-holders but we feel it is still useful information,
+            particularly when many trains don’t have toilets onboard.
+          </ListItem>
+        </List>
+        <Spacer mb={3} />
         <p>
           If you have any problems updating the toilets, or wish to send us
           toilet details or comments, please contact{' '}
