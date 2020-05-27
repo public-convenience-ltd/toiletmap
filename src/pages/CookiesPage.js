@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import PageLayout from '../components/PageLayout';
 import Container from '../components/Container';
@@ -7,8 +8,14 @@ import Spacer from '../components/Spacer';
 import Button from '../components/Button';
 import Text from '../components/Text';
 
+import config from '../config';
+
 const CookiesPage = () => (
   <PageLayout>
+    <Helmet>
+      <title>{config.getTitle('Cookies')}</title>
+    </Helmet>
+
     <Container maxWidth={845}>
       <Spacer mb={5} />
       <Text fontSize={6} fontWeight="bold" textAlign="center">

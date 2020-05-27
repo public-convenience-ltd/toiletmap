@@ -29,12 +29,11 @@ query search(
         name
         type
       }
-      type
       reports {
         contributor
       }
       updatedAt
-      opening
+      openingTimes
     }
     total
     page
