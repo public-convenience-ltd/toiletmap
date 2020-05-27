@@ -10,7 +10,7 @@ const looInfoResolver = (property) => {
   let resolve = subPropertyResolver(property);
   return {
     active: resolve,
-    // area: resolve,
+    area: resolve,
     name: resolve,
     openingTimes: resolve,
     accessible: resolve,
