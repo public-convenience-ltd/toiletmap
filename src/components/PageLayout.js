@@ -223,7 +223,13 @@ const PageLayout = ({ mapCenter, children }) => {
           <Header mapCenter={mapCenter}>{footerFragment}</Header>
 
           <Box position="relative" display="flex" flexGrow={1}>
-            <Box as="main" flexGrow={1} children={children} />
+            <Box
+              as="main"
+              flexGrow={1}
+              children={children}
+              // support screen readers in ie11
+              role="main"
+            />
           </Box>
 
           <Box as={Media} greaterThan="sm" mt="auto">
