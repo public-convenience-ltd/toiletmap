@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import queryString from 'query-string';
 import { useMutation } from '@apollo/client';
 import { loader } from 'graphql.macro';
@@ -68,6 +69,10 @@ const AddPage = (props) => {
 
   return (
     <PageLayout>
+      <Helmet>
+        <title>{config.getTitle('Add Toilet')}</title>
+      </Helmet>
+
       <Box position="relative" display="flex" height={300} maxHeight="40vh">
         <LooMap
           loos={data}

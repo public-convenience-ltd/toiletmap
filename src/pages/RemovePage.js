@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { Helmet } from 'react-helmet';
 import { useQuery, useMutation } from '@apollo/client';
 import { loader } from 'graphql.macro';
 
@@ -56,6 +56,10 @@ const RemovePage = function (props) {
   const renderMain = () => {
     return (
       <div>
+        <Helmet>
+          <title>{config.getTitle('Remove Toilet')}</title>
+        </Helmet>
+
         <div className={layout.controls}>
           {config.showBackButtons && (
             <button onClick={props.history.goBack} className={controls.btn}>

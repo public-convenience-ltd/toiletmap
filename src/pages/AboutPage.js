@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import styled from '@emotion/styled';
 
 import PageLayout from '../components/PageLayout';
@@ -8,6 +9,8 @@ import Button from '../components/Button';
 import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 import Box from '../components/Box';
+
+import config from '../config';
 
 const List = styled.ul`
   list-style: initial;
@@ -20,6 +23,10 @@ const ListItem = (props) => (
 const AboutPage = (props) => {
   return (
     <PageLayout>
+      <Helmet>
+        <title>{config.getTitle('About')}</title>
+      </Helmet>
+
       <Container maxWidth={845}>
         <Spacer mb={5} />
         <Text fontSize={6} fontWeight="bold" textAlign="center">
