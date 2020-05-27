@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
@@ -135,6 +136,10 @@ const EditPage = (props) => {
 
   return (
     <PageLayout>
+      <Helmet>
+        <title>{config.getTitle('Edit Toilet')}</title>
+      </Helmet>
+
       <Box display="flex" height={300} maxHeight="40vh">
         <LooMap
           loos={getLoosToDisplay()}

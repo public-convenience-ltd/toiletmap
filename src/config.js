@@ -29,6 +29,8 @@ const filters = [
   },
 ];
 
+const title = 'The Great British Toilet Map';
+
 export default {
   viewport: {
     mobile: 567,
@@ -87,5 +89,12 @@ export default {
       return false;
     }
     return true;
+  },
+  getTitle(appendText) {
+    if (appendText) {
+      return `${title}: ${appendText}`;
+    }
+
+    return title;
   },
 };

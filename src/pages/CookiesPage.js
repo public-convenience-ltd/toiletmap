@@ -1,14 +1,21 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 import PageLayout from '../components/PageLayout';
 import Container from '../components/Container';
 import Box from '../components/Box';
 
+import config from '../config';
+
 const CookiesPage = () => (
   <PageLayout>
+    <Helmet>
+      <title>{config.getTitle('Cookies')}</title>
+    </Helmet>
+
     <Container maxWidth={845}>
       <Box py={4}>
-        <h2>Cookies</h2>
+        <h1>Cookies</h1>
 
         <p>
           Opting in to Google Analytics will help us improve your experience

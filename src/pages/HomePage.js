@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, useRouteMatch } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { loader } from 'graphql.macro';
 import { useQuery } from '@apollo/client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,6 +20,7 @@ import Drawer from '../components/Drawer';
 import Filters from '../components/Filters';
 import Text from '../components/Text';
 import Sidebar from '../components/Sidebar';
+import VisuallyHidden from '../components/VisuallyHidden';
 
 import config, { FILTERS_KEY } from '../config';
 
@@ -103,8 +105,20 @@ const HomePage = ({ initialPosition, ...props }) => {
 
   const [toiletPanelDimensions, setToiletPanelDimensions] = React.useState({});
 
+  const pageTitle = config.getTitle(
+    isLooPage && data ? data.loo.name || 'Unnamed Toilet' : 'Find Toilet'
+  );
+
   return (
     <PageLayout mapCenter={mapPosition.center}>
+      <Helmet>
+        <title>{pageTitle}</title>
+      </Helmet>
+
+      <VisuallyHidden>
+        <h1>{pageTitle}</h1>
+      </VisuallyHidden>
+
       <Box height="100%" display="flex" position="relative">
         <LooMap
           loos={toilets.map((toilet) => {
