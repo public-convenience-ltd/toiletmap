@@ -6,38 +6,25 @@ import { loader } from 'graphql.macro';
 import PageLayout from '../components/PageLayout';
 import LooMap from '../components/LooMap';
 import EntryForm from '../components/EntryForm';
+import Box from '../components/Box';
+import Spacer from '../components/Spacer';
+import Button from '../components/Button';
+import LocationSearch from '../components/LocationSearch';
+
 import useMapPosition from '../components/useMapPosition';
 import useNearbyLoos from '../components/useNearbyLoos';
 
 import config from '../config';
-import graphqlMappings from '../graphqlMappings';
-import history from '../history';
-import questionnaireMap from '../questionnaireMap';
-
-import controls from '../css/controls.module.css';
 
 const UPDATE_LOO = loader('./updateLoo.graphql');
 
-const getInitialFormState = () => {
-  let state = {
-    active: null,
-    name: '',
-    opening: '',
-    notes: '',
-  };
-
-  // set questionnaire loo property defaults
-  questionnaireMap.forEach((q) => {
-    state[q.property] = '';
-  });
-
-  return state;
+const initialFormState = {
+  active: null,
+  noPayment: true,
 };
 
 const AddPage = (props) => {
-  const optionsMap = graphqlMappings.looProps.definitions;
-
-  const [mapPosition, setMapPosition] = useMapPosition();
+  const [mapPosition, setMapPosition] = useMapPosition(config.fallbackLocation);
 
   const { data } = useNearbyLoos({
     variables: {
@@ -49,7 +36,7 @@ const AddPage = (props) => {
 
   const { lat, lng } = queryString.parse(props.location.search);
 
-  // Set the map position if lat and lng query params are present
+  // set the map position if lat and lng query params are present
   React.useEffect(() => {
     if (lat && lng) {
       setMapPosition({
@@ -66,9 +53,8 @@ const AddPage = (props) => {
     { loading: saveLoading, data: saveResponse, error: saveError },
   ] = useMutation(UPDATE_LOO);
 
-  // redirect to thanks page if successfully made changes
-  if (saveResponse && saveResponse.submitReport.code === '200') {
-    history.push(`/loos/${saveResponse.submitReport.loo.id}/thanks`);
+  if (saveError) {
+    console.error('saving', saveError);
   }
 
   const save = (data) => {
@@ -80,41 +66,49 @@ const AddPage = (props) => {
     });
   };
 
-  const mapFragment = (
-    <LooMap
-      loos={data}
-      center={mapPosition.center}
-      zoom={mapPosition.zoom}
-      minZoom={config.editMinZoom}
-      onViewportChanged={setMapPosition}
-      showCenter
-      showSearchControl
-      onSearchSelectedItemChange={setMapPosition}
-    />
-  );
+  return (
+    <PageLayout>
+      <Box position="relative" display="flex" height={300} maxHeight="40vh">
+        <LooMap
+          loos={data}
+          center={mapPosition.center}
+          zoom={mapPosition.zoom}
+          minZoom={config.editMinZoom}
+          showCenter
+          showContributor
+          showSearchControl
+          showLocateControl
+          showCrosshair
+        />
 
-  const mainFragment = (
-    <EntryForm
-      map={mapFragment}
-      loo={getInitialFormState()}
-      center={mapPosition.center}
-      questionnaireMap={questionnaireMap}
-      saveLoading={saveLoading}
-      saveResponse={saveResponse}
-      saveError={saveError}
-      optionsMap={optionsMap}
-      onSubmit={save}
-    >
-      <input
-        type="submit"
-        className={controls.btn}
-        value="Add the toilet"
-        data-testid="add-the-toilet"
-      />
-    </EntryForm>
-  );
+        <Box position="absolute" top={0} left={0} m={3}>
+          <LocationSearch
+            onSelectedItemChange={(center) => setMapPosition({ center })}
+          />
+        </Box>
+      </Box>
 
-  return <PageLayout main={mainFragment} map={mapFragment} />;
+      <Spacer mt={4} />
+
+      <EntryForm
+        title="Add This Toilet"
+        loo={initialFormState}
+        center={mapPosition.center}
+        saveLoading={saveLoading}
+        saveResponse={saveResponse}
+        saveError={saveError}
+        onSubmit={save}
+      >
+        <Box display="flex" flexDirection="column" alignItems="center">
+          <Button type="submit" data-testid="add-the-toilet">
+            Save toilet
+          </Button>
+        </Box>
+      </EntryForm>
+
+      <Spacer mt={4} />
+    </PageLayout>
+  );
 };
 
 export default AddPage;

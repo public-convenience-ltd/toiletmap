@@ -10,7 +10,7 @@ query findLooById($id: ID) {
       lng
     }
     name
-    opening
+    openingTimes
     accessible
     male
     female

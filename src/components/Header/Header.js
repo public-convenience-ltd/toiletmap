@@ -12,7 +12,7 @@ import Icon from '../Icon';
 import Logo from './Logo';
 import MainMenu from './MainMenu';
 
-const Header = ({ children }) => {
+const Header = ({ mapCenter, children }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   return (
@@ -47,12 +47,12 @@ const Header = ({ children }) => {
           </button>
 
           <Drawer visible={isMenuVisible} zIndex={200}>
-            <MainMenu children={children} />
+            <MainMenu mapCenter={mapCenter} children={children} />
           </Drawer>
         </Box>
 
         <Media greaterThan="sm">
-          <MainMenu children={children} />
+          <MainMenu mapCenter={mapCenter} children={children} />
         </Media>
       </Box>
     </Box>

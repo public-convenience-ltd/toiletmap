@@ -117,6 +117,10 @@ const ResetStyles = (
         font: inherit;
       }
 
+      label {
+        cursor: pointer;
+      }
+
       h1,
       h2,
       h3,
@@ -128,6 +132,12 @@ const ResetStyles = (
 
       fieldset {
         border: 0;
+      }
+
+      th {
+        text-align: left;
+        font-weight: normal;
+        vertical-align: bottom;
       }
 
       p + p {
@@ -150,6 +160,18 @@ const ResetStyles = (
         opacity: 0.25;
       }
 
+      ::-webkit-input-placeholder {
+        color: ${theme.colors.primary};
+      }
+
+      :-ms-input-placeholder {
+        color: ${theme.colors.primary};
+      }
+
+      ::placeholder {
+        color: ${theme.colors.primary};
+      }
+
       /* remove all animations and transitions for people that prefer not to see them */
       @media (prefers-reduced-motion: reduce) {
         * {
@@ -163,7 +185,7 @@ const ResetStyles = (
   />
 );
 
-const PageLayout = (props) => {
+const PageLayout = ({ mapCenter, children }) => {
   const trackingRef = useRef(null);
 
   const [isTrackingStateChosen, setIsTrackingStateChosen] = useState(
@@ -208,10 +230,16 @@ const PageLayout = (props) => {
         )}
 
         <Box display="flex" flexDirection="column" height="100%">
-          <Header>{footerFragment}</Header>
+          <Header mapCenter={mapCenter}>{footerFragment}</Header>
 
           <Box position="relative" display="flex" flexGrow={1} overflowY="auto">
-            <Box as="main" flexGrow={1} children={props.children} />
+            <Box
+              as="main"
+              flexGrow={1}
+              children={children}
+              // support screen readers in ie11
+              role="main"
+            />
           </Box>
 
           <Box mt="auto">

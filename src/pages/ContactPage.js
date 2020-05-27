@@ -9,7 +9,7 @@ import Spacer from '../components/Spacer';
 const ContactPage = (props) => {
   return (
     <PageLayout>
-      <Container>
+      <Container maxWidth={845}>
         <Spacer mb={5} />
         <Text fontSize={6} fontWeight="bold" textAlign="center">
           <h1>Contact Us</h1>

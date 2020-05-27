@@ -6,7 +6,7 @@ import Box from '../components/Box';
 
 const CookiesPage = () => (
   <PageLayout>
-    <Container>
+    <Container maxWidth={845}>
       <Box py={4}>
         <h2>Cookies</h2>
 

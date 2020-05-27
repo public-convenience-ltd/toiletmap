@@ -1,4 +1,5 @@
 const { ApolloServer } = require('apollo-server');
+
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
 
@@ -14,6 +15,9 @@ const {
 const client = jwksClient({
   jwksUri: config.auth0.jwksUri,
 });
+
+const { connect } = require('./db');
+connect(process.env.MONGODB_URI);
 
 function getKey(header, cb) {
   client.getSigningKey(header.kid, function (err, key) {

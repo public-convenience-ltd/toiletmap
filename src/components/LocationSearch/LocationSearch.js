@@ -21,18 +21,6 @@ const Input = styled.input(
   padding: ${theme.space[2]}px 3rem;
   padding-left: 3rem;
   width: 100%;
-
-  ::-webkit-input-placeholder {
-    color: ${theme.colors.primary};
-  }
-
-  :-ms-input-placeholder {
-    color: ${theme.colors.primary};
-  }
-
-  ::placeholder {
-    color: ${theme.colors.primary};
-  }
 `
 );
 

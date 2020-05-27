@@ -27,17 +27,13 @@ import Text from './Text';
 import Spacer from './Spacer';
 import Icon from './Icon';
 import { Media } from './Media';
-import {
-  getOpeningTimes,
-  getIsOpen,
-  WEEKDAYS,
-  rangeTypes,
-} from '../openingHours';
+import { getIsOpen, WEEKDAYS, rangeTypes } from '../openingTimes';
 
 const Grid = styled(Box)`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
   margin: -${({ theme }) => theme.space[3]}px;
 `;
 
@@ -50,7 +46,11 @@ function getTimeRangeLabel(range) {
     return 'Closed';
   }
 
-  if (range.length === 2) {
+  if (range && range.length === 2) {
+    if (range[0] === range[1]) {
+      return '24 Hours';
+    }
+
     return range.join(' - ');
   }
 
@@ -190,7 +190,8 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
     },
   ];
 
-  const openingTimes = getOpeningTimes(data.opening);
+  const openingTimes = data.openingTimes || WEEKDAYS.map(() => null);
+
   const todayWeekdayIndex = DateTime.local().weekday - 1;
 
   const editUrl = `/loos/${data.id}/edit`;
@@ -398,12 +399,7 @@ const ToiletDetailsPanel = ({ data, isLoading, onDimensionsChange }) => {
               )}
             </Box>
 
-            <Media
-              lessThan="md"
-              css={css`
-                width: 100%;
-              `}
-            >
+            <Media lessThan="md">
               <Box
                 display="flex"
                 justifyContent="center"

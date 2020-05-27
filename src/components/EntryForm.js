@@ -1,37 +1,211 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import MediaQuery from 'react-responsive';
-import { useForm } from 'react-hook-form';
+import styled from '@emotion/styled';
+import { useForm, Controller } from 'react-hook-form';
 import isFunction from 'lodash/isFunction';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
-import intersection from 'lodash/intersection';
 
-import layout from '../components/css/layout.module.css';
-import styles from '../pages/css/edit-loo-page.module.css';
-import helpers from '../css/helpers.module.css';
-import headings from '../css/headings.module.css';
-import controls from '../css/controls.module.css';
-
-import config from '../config';
-import history from '../history';
-
+import Container from '../components/Container';
 import Loading from '../components/Loading';
-import Notification from './Notification';
+import Box from '../components/Box';
+import Text from '../components/Text';
+import Spacer from '../components/Spacer';
+import VisuallyHidden from '../components/VisuallyHidden';
+import Switch from '../components/Switch';
+import ConditionalWrap from '../components/ConditionalWrap';
+import { WEEKDAYS, rangeTypes } from '../openingTimes';
+
+import crosshair from '../images/crosshair-small.svg';
+
+const openingTimesFields = WEEKDAYS.flatMap((day) => {
+  return [
+    `${day.toLowerCase()}-is-open`,
+    `${day.toLowerCase()}-opens`,
+    `${day.toLowerCase()}-closes`,
+  ];
+});
+
+const Input = styled.input`
+  display: block;
+  width: 100%;
+  margin-top: ${(props) => props.theme.space[1]}px;
+  padding: ${(props) => props.theme.space[2]}px;
+  color: ${(props) => props.theme.colors.primary};
+  border: 1px solid ${(props) => props.theme.colors.primary};
+`;
+
+const Textarea = styled.textarea`
+  display: block;
+  height: 10rem;
+  width: 100%;
+  margin-top: ${(props) => props.theme.space[1]}px;
+  padding: ${(props) => props.theme.space[2]}px;
+  color: ${(props) => props.theme.colors.primary};
+  border: 1px solid ${(props) => props.theme.colors.primary};
+`;
+
+const RadioInput = styled.input`
+  /* visually hidden */
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+
+  + span {
+    position: relative;
+    display: block;
+    height: 1.5rem;
+    width: 1.5rem;
+    margin: 0 auto;
+    border: 1px solid ${(props) => props.theme.colors.primary};
+    border-radius: 50%;
+  }
+
+  :checked + span:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: calc(100% - 8px);
+    width: calc(100% - 8px);
+    background-color: ${(props) => props.theme.colors.primary};
+    border-radius: 50%;
+  }
+
+  :focus + span {
+    outline: 1px dotted currentColor;
+    outline-offset: 0.5rem;
+  }
+`;
+
+const Radio = React.forwardRef((props, ref) => (
+  <>
+    <RadioInput type="radio" ref={ref} {...props} />
+    <span />
+  </>
+));
+
+const Section = ({ register, id, title, questions, children }) => (
+  <div role="group" aria-labelledby={`heading-${id}`}>
+    <table
+      role="presentation"
+      css={{
+        width: '100%',
+        borderCollapse: 'separate',
+        borderSpacing: '0 1em',
+        margin: '-1em 0',
+      }}
+    >
+      <thead>
+        <tr>
+          <th>
+            <h2 id={`heading-${id}`}>{title}</h2>
+          </th>
+
+          <Text as="th" id={`${id}-yes`} textAlign="center" fontSize={[14, 16]}>
+            <span aria-hidden="true">Yes</span>
+          </Text>
+
+          <Text as="th" id={`${id}-no`} textAlign="center" fontSize={[14, 16]}>
+            <span aria-hidden="true">No</span>
+          </Text>
+
+          <Text
+            as="th"
+            id={`${id}-unknown`}
+            textAlign="center"
+            fontSize={[14, 16]}
+          >
+            <span aria-hidden="true">Don't know</span>
+          </Text>
+        </tr>
+      </thead>
+
+      <Box as="tbody" pl={[2, 4]}>
+        {questions.map(({ field, label, value, onChange }) => (
+          <Box as="tr" key={field} mt={3} onChange={onChange}>
+            <Box as="td" width="52%" pl={[2, 4]}>
+              {label}
+            </Box>
+            <Text as="td" textAlign="center" css={{ width: '16%' }}>
+              <label>
+                <VisuallyHidden>Yes</VisuallyHidden>
+                <Radio
+                  ref={register}
+                  name={field}
+                  value={true}
+                  defaultChecked={value === true}
+                  data-testid={`${field}:no`}
+                />
+              </label>
+            </Text>
+
+            <Text as="td" textAlign="center" css={{ width: '16%' }}>
+              <label>
+                <VisuallyHidden>No</VisuallyHidden>
+                <Radio
+                  ref={register}
+                  name={field}
+                  value={false}
+                  aria-labelledby={`${id}-no`}
+                  defaultChecked={value === false}
+                  data-testid={`${field}:no`}
+                />
+              </label>
+            </Text>
+
+            <Text as="td" textAlign="center" css={{ width: '16%' }}>
+              <label>
+                <VisuallyHidden>Don't know</VisuallyHidden>
+                <Radio
+                  ref={register}
+                  name={field}
+                  value=""
+                  aria-labelledby={`${id}-no`}
+                  defaultChecked={value !== true && value !== false}
+                  data-testid={`${field}:no`}
+                />
+              </label>
+            </Text>
+          </Box>
+        ))}
+      </Box>
+    </table>
+
+    {children}
+  </div>
+);
 
 const EntryForm = ({
-  map,
+  title,
   loo,
   center,
-  questionnaireMap,
-  optionsMap,
   saveResponse,
   saveError,
   children,
   ...props
 }) => {
   const [noPayment, setNoPayment] = useState(loo.noPayment);
-  const { register, handleSubmit, formState, setValue } = useForm();
+
+  const hasOpeningTimes = Boolean(loo.openingTimes);
+
+  const isOpen = loo.openingTimes
+    ? loo.openingTimes.map((x) => x !== rangeTypes.CLOSED)
+    : WEEKDAYS.map(() => false);
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState,
+    setValue,
+    getValues,
+  } = useForm();
 
   // read the formState before render to subscribe the form state through Proxy
   const { dirtyFields } = formState;
@@ -42,15 +216,11 @@ const EntryForm = ({
     // only include fields which have been modified
     let transformed = pick(data, dirtyFieldNames);
 
-    // determine which of the questionnaire fields have been modified
-    const dirtyQuestionnaireFields = intersection(
-      dirtyFieldNames,
-      questionnaireMap.map((item) => item.property)
-    );
+    transformed = omit(transformed, ['geometry']);
 
-    // transform questionnaire data
-    dirtyQuestionnaireFields.forEach((property) => {
-      const value = data[property];
+    // transform data
+    Object.keys(transformed).forEach((property) => {
+      const value = transformed[property];
 
       if (value === 'true') {
         transformed[property] = true;
@@ -71,7 +241,36 @@ const EntryForm = ({
       transformed.paymentDetails = null;
     }
 
-    transformed = omit(transformed, ['geometry', 'noPayment']);
+    // construct expected opening times structure if relevant fields have changed
+    if (
+      [...openingTimesFields, 'has-opening-times'].some(
+        (field) => dirtyFieldNames.indexOf(field) >= 0
+      )
+    ) {
+      if (data['has-opening-times']) {
+        const openingTimes = WEEKDAYS.map((day, index) => {
+          if (!data[`${day.toLowerCase()}-is-open`]) {
+            return rangeTypes.CLOSED;
+          }
+
+          return [
+            data[`${day.toLowerCase()}-opens`],
+            data[`${day.toLowerCase()}-closes`],
+          ];
+        });
+
+        transformed.openingTimes = openingTimes;
+      } else {
+        transformed.openingTimes = null;
+      }
+    }
+
+    transformed = omit(transformed, [
+      'geometry',
+      'noPayment',
+      'has-opening-times',
+      ...openingTimesFields,
+    ]);
 
     props.onSubmit(transformed);
   };
@@ -84,250 +283,308 @@ const EntryForm = ({
   }, [center, setValue]);
 
   return (
-    <div>
-      <div className={layout.controls}>
-        {config.showBackButtons && (
-          <button
-            type="button"
-            onClick={history.goBack}
-            className={controls.btn}
-          >
-            Back
-          </button>
-        )}
-      </div>
+    <Container maxWidth={846}>
+      <Text fontSize={[16, 18]}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Text fontWeight="bold" fontSize={30} textAlign="center">
+            <h1>{title}</h1>
+          </Text>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <h2 className={headings.large}>Add This Toilet</h2>
+          <Spacer mt={4} />
 
-        <MediaQuery maxWidth={config.viewport.mobile}>
-          <div className={styles.mobileMap}>{map}</div>
-        </MediaQuery>
+          <Box display="flex" alignItems="center" flexWrap="wrap">
+            <span>1. Align the crosshair&nbsp;</span>
+            <Box as="span" display="flex" css={{ whiteSpace: 'nowrap' }}>
+              (&nbsp;
+              <img src={crosshair} alt="crosshair" css={{ height: '1.5em' }} />
+              &nbsp;)
+            </Box>
+            &nbsp;
+            <span>with where you believe the toilet to be</span>
+          </Box>
 
-        <Notification>
-          <p>Align the crosshair with where you believe the toilet to be.</p>
-        </Notification>
-
-        <label>
-          Toilet name
-          <input
-            ref={register}
-            name="name"
-            type="text"
-            className={controls.text}
-            defaultValue={loo.name || ''}
-            data-testid="toilet-name"
-          />
-        </label>
-
-        <label>
-          Opening hours
-          <select
-            ref={register}
-            name="opening"
-            className={controls.dropdown}
-            defaultValue={loo.opening || ''}
-            data-testid="opening-hours"
-          >
-            <option value="">Unknown</option>
-            {optionsMap.opening.map((option, index) => (
-              <option key={index} value={option.value}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <div className={styles.questionnaire}>
-          <div>
-            <span className={styles.questionnaireCol} />
-            <span className={styles.questionnaireCol} id="yes">
-              Yes
-            </span>
-            <span className={styles.questionnaireCol} id="no">
-              No
-            </span>
-            <span className={styles.questionnaireCol} id="unknown">
-              Don't know
-            </span>
-          </div>
-
-          {questionnaireMap.map((q, index) => (
-            <fieldset key={index} className={styles.questionnaireGroup}>
-              <legend className={helpers.visuallyHidden}>{q.question}</legend>
-
-              <span className={styles.questionnaireCol}>{q.question}</span>
-
-              <input
-                ref={register}
-                name={q.property}
-                className={styles.questionnaireCol}
-                type="radio"
-                value={true}
-                aria-labelledby="yes"
-                defaultChecked={loo[q.property] === true}
-                data-testid={`${q.property}:yes`}
-              />
-
-              <input
-                ref={register}
-                name={q.property}
-                className={styles.questionnaireCol}
-                type="radio"
-                value={false}
-                aria-labelledby="no"
-                defaultChecked={loo[q.property] === false}
-                data-testid={`${q.property}:no`}
-              />
-
-              <input
-                ref={register}
-                name={q.property}
-                className={styles.questionnaireCol}
-                type="radio"
-                value=""
-                aria-labelledby="unknown"
-                defaultChecked={loo[q.property] === ''}
-                data-testid={`${q.property}:unknown`}
-              />
-            </fieldset>
-          ))}
-        </div>
-
-        <fieldset className={styles.feeGroup}>
-          <legend className={helpers.visuallyHidden}>Payment</legend>
+          <Spacer mt={4} />
 
           <label>
-            This toilet is free
-            <input
+            2. Add a toilet name
+            <Input
               ref={register}
-              name="isFree"
-              type="checkbox"
-              checked={noPayment}
-              className={styles.feeToggle}
-              onChange={(event) => setNoPayment(event.target.checked)}
+              name="name"
+              type="text"
+              defaultValue={loo.name || ''}
+              placeholder="e.g. Sainsburys or street name"
+              data-testid="toilet-name"
+              css={{
+                maxWidth: '400px',
+              }}
             />
           </label>
 
-          {!noPayment && (
-            <div>
+          <Spacer mt={4} />
+
+          <Section
+            register={register}
+            id="who"
+            title="3. Who can use these toilets?"
+            questions={[
+              {
+                field: 'female',
+                label: 'Women?',
+                value: loo['female'],
+              },
+              {
+                field: 'male',
+                label: 'Men?',
+                value: loo['male'],
+              },
+              {
+                field: 'accessible',
+                label: 'Is there disabled access?',
+                value: loo['accessible'],
+              },
+              {
+                field: 'radar',
+                label: 'Does this toilet have a RADAR lock?',
+                value: loo['radar'],
+              },
+            ]}
+          />
+
+          <Spacer mt={4} />
+
+          <Section
+            register={register}
+            id="what"
+            title="4. At this toilet is there ..."
+            questions={[
+              {
+                field: 'allGender',
+                label: 'An all gender toilet?',
+                value: loo['allGender'],
+              },
+              {
+                field: 'childrenOnly',
+                label: 'A children’s toilet?',
+                value: loo['childrenOnly'],
+              },
+              {
+                field: 'babyChange',
+                label: 'Baby Changing?',
+                value: loo['babyChange'],
+              },
+              {
+                field: 'urinalOnly',
+                label: 'Only a urinal?',
+                value: loo['urinalOnly'],
+              },
+              {
+                field: 'automatic',
+                label: 'An automatic / self-cleaning toilet?',
+                value: loo['automatic'],
+              },
+            ]}
+          />
+
+          <Spacer mt={4} />
+
+          <Section
+            register={register}
+            id="payment"
+            title="5. Is this toilet free?"
+            questions={[
+              {
+                field: 'isFree',
+                label: <VisuallyHidden>Is this toilet free?</VisuallyHidden>,
+                value: noPayment === null ? '' : noPayment,
+                onChange: ({ target: { value } }) => {
+                  // payment is required if the toilet is not free
+                  setNoPayment(value === '' ? null : value === 'true');
+                },
+              },
+            ]}
+          >
+            {noPayment === false && (
               <label>
                 Payment Details
-                <input
-                  ref={register}
+                <Input
+                  ref={register({
+                    required: true,
+                  })}
                   name="paymentDetails"
                   type="text"
-                  className={controls.text}
                   defaultValue={loo.paymentDetails || ''}
                   placeholder="The amount e.g. 20p"
                   data-testid="paymentDetails"
+                  css={{
+                    maxWidth: '200px',
+                  }}
                 />
               </label>
-            </div>
-          )}
-        </fieldset>
+            )}
+          </Section>
 
-        <label>
-          Any notes?
-          <textarea
-            ref={register}
-            name="notes"
-            className={controls.text}
-            defaultValue={loo.notes || ''}
-            data-testid="notes"
+          <Spacer mt={4} />
+
+          <h2 id="opening-hours-heading">6. Do you know the opening hours?</h2>
+
+          <Controller
+            as={Switch}
+            aria-labelledby="opening-hours-heading"
+            name="has-opening-times"
+            control={control}
+            valueName="checked"
+            defaultValue={hasOpeningTimes}
           />
-        </label>
 
-        <h3 className={headings.regular}>Data for this toilet</h3>
+          <Spacer mt={3} />
 
-        <div className={styles.data}>
+          <ConditionalWrap
+            condition={!getValues('has-opening-times')}
+            wrap={(children) => <VisuallyHidden>{children}</VisuallyHidden>}
+          >
+            <>
+              <ol>
+                {WEEKDAYS.map((day, index) => {
+                  const id = `heading-${day.toLowerCase()}`;
+
+                  return (
+                    <Box
+                      as="li"
+                      key={day}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      mt={index === 0 ? undefined : 2}
+                    >
+                      <h3 id={id}>{day}</h3>
+
+                      <Box display="flex" alignItems="center">
+                        <Controller
+                          as={Switch}
+                          aria-labelledby={id}
+                          name={`${day.toLowerCase()}-is-open`}
+                          control={control}
+                          valueName="checked"
+                          defaultValue={isOpen[index]}
+                        />
+                      </Box>
+
+                      {getValues(`${day.toLowerCase()}-is-open`) ? (
+                        <Box display="flex" alignItems="center">
+                          <input
+                            type="time"
+                            defaultValue={
+                              loo.openingTimes
+                                ? loo.openingTimes[index][0]
+                                : undefined
+                            }
+                            name={`${day.toLowerCase()}-opens`}
+                            ref={register({
+                              required: true,
+                            })}
+                          />
+
+                          <Spacer ml={2} />
+
+                          <span>to</span>
+
+                          <Spacer ml={2} />
+
+                          <input
+                            type="time"
+                            defaultValue={
+                              loo.openingTimes
+                                ? loo.openingTimes[index][1]
+                                : undefined
+                            }
+                            name={`${day.toLowerCase()}-closes`}
+                            ref={register({
+                              required: true,
+                            })}
+                          />
+                        </Box>
+                      ) : (
+                        'Closed'
+                      )}
+                    </Box>
+                  );
+                })}
+              </ol>
+
+              <Spacer mt={4} />
+            </>
+          </ConditionalWrap>
+
           <label>
-            Latitude
-            <input
+            7. Notes
+            <Textarea
               ref={register}
-              type="text"
-              name="geometry.coordinates.0"
-              className={controls.text}
-              value={center.lat}
-              readOnly
+              name="notes"
+              defaultValue={loo.notes || ''}
+              data-testid="notes"
+              placeholder="Add any other useful information about the toilet here"
             />
           </label>
 
-          <label>
-            Longitude
-            <input
-              ref={register}
-              type="text"
-              name="geometry.coordinates.1"
-              className={controls.text}
-              data-testid="loo-name"
-              value={center.lng}
-              readOnly
-            />
-          </label>
-        </div>
+          <Spacer mt={3} />
 
-        {props.saveLoading && <Loading message="Saving your changes..." />}
+          <VisuallyHidden>
+            <label>
+              Latitude
+              <Input
+                ref={register}
+                type="text"
+                name="geometry.coordinates.0"
+                value={center.lat}
+                readOnly
+              />
+            </label>
 
-        {
-          // This message probably won't be seen, but just in case the redirect fails...
-          saveResponse && saveResponse.submitReport.code === '200' && (
-            <Notification>
-              Successfully saved changes! Redirecting&hellip;
-            </Notification>
-          )
-        }
+            <label>
+              Longitude
+              <Input
+                ref={register}
+                type="text"
+                name="geometry.coordinates.1"
+                data-testid="loo-name"
+                value={center.lng}
+                readOnly
+              />
+            </label>
+          </VisuallyHidden>
 
-        {
-          // TODO better error message?
-          (saveError ||
-            (saveResponse && saveResponse.submitReport.code !== '200')) && (
-            <Notification>
-              Oops, there was an error saving your changes.
-              {console.log(saveError, saveResponse)}
-            </Notification>
-          )
-        }
+          {props.saveLoading && <Loading message="Saving your changes..." />}
 
-        <div className={controls.btnStack}>
+          <Spacer mt={4} />
+
           {isFunction(children)
             ? children({ hasDirtyFields: dirtyFields.size })
             : children}
-        </div>
-      </form>
-    </div>
+        </form>
+      </Text>
+    </Container>
   );
 };
 
 EntryForm.propTypes = {
-  map: PropTypes.element.isRequired,
+  title: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   loo: PropTypes.shape({
     name: PropTypes.string,
-    accessible: PropTypes.string,
+    accessible: PropTypes.bool,
     opening: PropTypes.string,
     noPayment: PropTypes.bool,
     paymentDetails: PropTypes.string,
     notes: PropTypes.string,
+    openingTimes: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.oneOf([null]),
+    ]),
   }),
   center: PropTypes.shape({
     lat: PropTypes.number.isRequired,
     lng: PropTypes.number.isRequired,
   }).isRequired,
-  optionsMap: PropTypes.shape({
-    opening: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        value: PropTypes.string,
-      })
-    ).isRequired,
-  }).isRequired,
-  questionnaireMap: PropTypes.arrayOf(
-    PropTypes.shape({
-      question: PropTypes.string.isRequired,
-      property: PropTypes.string.isRequired,
-    })
-  ),
   saveLoading: PropTypes.bool,
   saveError: PropTypes.object,
   saveResponse: PropTypes.object,
@@ -335,7 +592,6 @@ EntryForm.propTypes = {
 
 EntryForm.defaultProps = {
   loo: {},
-  questionnaireMap: [],
 };
 
 export default EntryForm;
