@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import PageLayout from '../components/PageLayout';
 import Container from '../components/Container';
 import Spacer from '../components/Spacer';
+import Button from '../components/Button';
 import Text from '../components/Text';
 
 const CookiesPage = () => (
@@ -23,8 +25,10 @@ const CookiesPage = () => (
         and benefit from Unilever's continued sponsorship.
       </p>
       <p>
-        For more detailed information about the cookies we use, see our privacy
-        policy.
+        For more detailed information about the cookies we use, see our{' '}
+        <Button as={Link} variant="link" to="/privacy">
+          privacy policy.
+        </Button>
       </p>
     </Container>
   </PageLayout>
