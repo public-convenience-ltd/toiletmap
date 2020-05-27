@@ -20,6 +20,9 @@ const client = jwksClient({
   jwksUri: config.auth0.jwksUri,
 });
 
+const { connect } = require('./db');
+connect(process.env.MONGODB_URI);
+
 function getKey(header, cb) {
   client.getSigningKey(header.kid, function (err, key) {
     var signingKey = key.publicKey || key.rsaPublicKey;

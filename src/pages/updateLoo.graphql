@@ -53,7 +53,7 @@ mutation updateLoo(
         lng
       }
       active
-      opening
+      openingTimes
       accessible
       allGender
       male
