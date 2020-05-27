@@ -16,7 +16,7 @@ import TimeAgo from 'timeago-react';
 const MISSING_MESSAGE = 'Not Recorded';
 
 export default function ResultRow({ loo }) {
-  const { name, area = [] } = loo;
+  const { name, area } = loo;
   const contributors = loo.reports.reduce((current, next) => {
     current.push(next.contributor);
     return current;
@@ -40,27 +40,29 @@ export default function ResultRow({ loo }) {
         </Link>
       </TableCell>
       <TableCell>
-        {area.map((val) => {
-          return (
-            <React.Fragment key={val.name}>
-              <Chip
-                avatar={
-                  <Avatar>
-                    <CityIcon />
-                  </Avatar>
-                }
-                label={val.name}
-                color={val.name ? 'primary' : 'secondary'}
-                variant="default"
-              />
-              <Chip
-                label={val.type}
-                color={val.type ? 'primary' : 'secondary'}
-                variant="outlined"
-              />
-            </React.Fragment>
-          );
-        })}
+        {area
+          ? area.map((val) => {
+              return (
+                <React.Fragment key={val.name}>
+                  <Chip
+                    avatar={
+                      <Avatar>
+                        <CityIcon />
+                      </Avatar>
+                    }
+                    label={val.name}
+                    color={val.name ? 'primary' : 'secondary'}
+                    variant="default"
+                  />
+                  <Chip
+                    label={val.type}
+                    color={val.type ? 'primary' : 'secondary'}
+                    variant="outlined"
+                  />
+                </React.Fragment>
+              );
+            })
+          : null}
       </TableCell>
 
       <TableCell>
