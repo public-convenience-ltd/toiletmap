@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 import PageLayout from '../components/PageLayout';
 import Container from '../components/Container';
@@ -6,9 +7,15 @@ import Button from '../components/Button';
 import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 
+import config from '../config';
+
 const ContactPage = (props) => {
   return (
     <PageLayout>
+      <Helmet>
+        <title>{config.getTitle('Contact Us')}</title>
+      </Helmet>
+
       <Container maxWidth={845}>
         <Spacer mb={5} />
         <Text fontSize={6} fontWeight="bold" textAlign="center">

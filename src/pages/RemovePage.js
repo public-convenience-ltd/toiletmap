@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-
+import { Helmet } from 'react-helmet';
 import { useQuery, useMutation } from '@apollo/client';
 import { loader } from 'graphql.macro';
 
+import config from '../config';
 import history from '../history';
 
 import PageLayout from '../components/PageLayout';
@@ -67,6 +68,10 @@ const RemovePage = function (props) {
 
   return (
     <PageLayout>
+      <Helmet>
+        <title>{config.getTitle('Remove Toilet')}</title>
+      </Helmet>
+
       <div>
         <h2>Toilet Remover</h2>
 
