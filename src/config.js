@@ -29,6 +29,12 @@ const filters = [
   },
 ];
 
+const messages = {
+  created: 'Thank you, toilet added!',
+  updated: 'Thank you, details updated!',
+  removed: 'Thank you, toilet removed!',
+};
+
 const title = 'The Great British Toilet Map';
 
 export default {
@@ -36,6 +42,7 @@ export default {
     mobile: 567,
   },
   filters,
+  messages,
   analyticsId:
     process.env.NODE_ENV === 'production' ? 'UA-52513593-1' : 'UA-111111111-1',
   nearestRadius: 20000, // meters

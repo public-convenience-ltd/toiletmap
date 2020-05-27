@@ -1,23 +1,45 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styles from './css/notfound.module.css';
-import Logo from '../components/Logo';
 
-export default () => {
-  return (
-    <>
-      <div className={styles.bg} />
-      <div className={styles.main}>
-        <Logo />
-        <h1 className={styles.title}>Page not found</h1>
-        <p className={styles.info}>
+import PageLayout from '../components/PageLayout';
+import Box from '../components/Box';
+import Spacer from '../components/Spacer';
+import Text from '../components/Text';
+import Button from '../components/Button';
+
+const NotFound = () => (
+  <PageLayout>
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      height="100%"
+      width="100%"
+      p={3}
+    >
+      <div>
+        <Spacer mt={4} />
+
+        <Text fontSize={20} fontWeight="bold">
+          <h1>Page not found</h1>
+        </Text>
+
+        <Spacer mt={3} />
+
+        <p>
           This could be because the page has moved, or you typed an address
           wrong.
         </p>
-        <Link to="/">
-          <button className={styles.homeBtn}>Take me back home!</button>
-        </Link>
+
+        <Spacer mt={4} />
+
+        <Button as={Link} to="/">
+          Take me back home!
+        </Button>
       </div>
-    </>
-  );
-};
+    </Box>
+  </PageLayout>
+);
+
+export default NotFound;
