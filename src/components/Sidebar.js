@@ -35,6 +35,11 @@ Arrow.propTypes = {
   isExpanded: PropTypes.bool,
 };
 
+const StyledNavLink = styled(NavLink)`
+  display: flex;
+  align-items: center;
+`;
+
 const Sidebar = ({
   filters,
   onFilterChange,
@@ -115,11 +120,8 @@ const Sidebar = ({
         <h2 id="heading-add">
           <VisuallyHidden>Add a toilet</VisuallyHidden>
         </h2>
-        <Box
-          as={NavLink}
+        <StyledNavLink
           to={`/loos/add?lat=${mapCenter.lat}&lng=${mapCenter.lng}`}
-          display="flex"
-          alignItems="center"
         >
           <Icon icon={faPlusCircle} fixedWidth size="lg" />
           <Box mx={2}>
@@ -128,7 +130,7 @@ const Sidebar = ({
             </Text>
           </Box>
           <Arrow />
-        </Box>
+        </StyledNavLink>
       </Box>
     </Box>
   );

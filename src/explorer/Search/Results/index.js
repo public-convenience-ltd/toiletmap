@@ -23,14 +23,14 @@ function Results(props) {
         <TableRow>
           <TableCell>Name</TableCell>
           <TableCell>Area</TableCell>
-          <TableCell>Type</TableCell>
           <TableCell>Contributors</TableCell>
           <TableCell>Date Updated</TableCell>
-          <TableCell>Opening</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.loos.map((loo) => <ResultRow loo={loo} key={loo.id} />)}
+        {data.loos.map((loo) => (
+          <ResultRow loo={loo} key={loo.id} />
+        ))}
       </TableBody>
       <TableFooter>
         <TableRow>
