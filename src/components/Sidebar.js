@@ -118,7 +118,7 @@ const Sidebar = ({
 
       <Box as="section" mt={4} aria-labelledby="heading-add">
         <h2 id="heading-add">
-          <VisuallyHidden>Add a Loo</VisuallyHidden>
+          <VisuallyHidden>Add a toilet</VisuallyHidden>
         </h2>
         <StyledNavLink
           to={`/loos/add?lat=${mapCenter.lat}&lng=${mapCenter.lng}`}
@@ -126,7 +126,7 @@ const Sidebar = ({
           <Icon icon={faPlusCircle} fixedWidth size="lg" />
           <Box mx={2}>
             <Text lineHeight={1}>
-              <b>Add a Loo</b>
+              <b>Add a Toilet</b>
             </Text>
           </Box>
           <Arrow />
