@@ -18,7 +18,7 @@ import TimeAgo from 'timeago-react';
 const MISSING_MESSAGE = 'Not Recorded';
 
 export default function ResultRow({ loo }) {
-  const { name, type, opening, area } = loo;
+  const { name, type, opening, area = [] } = loo;
   const contributors = loo.reports.reduce((current, next) => {
     current.push(next.contributor);
     return current;
