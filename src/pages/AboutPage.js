@@ -20,7 +20,7 @@ const ListItem = (props) => (
 const AboutPage = (props) => {
   return (
     <PageLayout>
-      <Container>
+      <Container maxWidth={845}>
         <Spacer mb={5} />
         <Text fontSize={6} fontWeight="bold" textAlign="center">
           <h1>About the Toilet Map</h1>
@@ -119,12 +119,12 @@ const AboutPage = (props) => {
           </List>
         </p>
         <p>
-          If you have any problems updating the toilet information through the
-          website, or wish to send us corrections, missing info or comments,
-          please{' '}
+          If you have any problems updating the toilets, or wish to send us
+          toilet details or comments, please contact{' '}
           <Button variant="link" as="a" href="mailto:gbtoiletmap@gmail.com">
-            contact us
+            gbtoiletmap@gmail.com
           </Button>
+          .
         </p>
       </Container>
     </PageLayout>

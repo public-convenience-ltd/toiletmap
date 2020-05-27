@@ -24,7 +24,7 @@ const initialFormState = {
 };
 
 const AddPage = (props) => {
-  const [mapPosition, setMapPosition] = useMapPosition();
+  const [mapPosition, setMapPosition] = useMapPosition(config.fallbackLocation);
 
   const { data } = useNearbyLoos({
     variables: {

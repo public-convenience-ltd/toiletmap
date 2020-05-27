@@ -9,7 +9,7 @@ import Button from '../components/Button';
 const PrivacyPage = () => {
   return (
     <PageLayout>
-      <Container>
+      <Container maxWidth={845}>
         <Spacer mb={5} />
         <Text fontSize={6} fontWeight="bold" textAlign="center">
           <h1>Privacy Policy</h1>
