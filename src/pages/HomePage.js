@@ -104,7 +104,7 @@ const HomePage = ({ initialPosition, ...props }) => {
   const [toiletPanelDimensions, setToiletPanelDimensions] = React.useState({});
 
   return (
-    <PageLayout>
+    <PageLayout mapCenter={mapPosition.center}>
       <Box height="100%" display="flex" position="relative">
         <LooMap
           loos={toilets.map((toilet) => {
@@ -198,6 +198,7 @@ const HomePage = ({ initialPosition, ...props }) => {
               filters={filters}
               onFilterChange={setFilters}
               onSelectedItemChange={(center) => setMapPosition({ center })}
+              mapCenter={mapPosition.center}
             />
           </Media>
         </section>
