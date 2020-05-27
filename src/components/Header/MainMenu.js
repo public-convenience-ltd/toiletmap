@@ -15,7 +15,7 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 // Todo: Contact link
-const MainMenu = ({ children }) => (
+const MainMenu = ({ mapCenter, children }) => (
   <Text
     fontWeight="bold"
     textAlign={['center', 'left']}
@@ -41,7 +41,15 @@ const MainMenu = ({ children }) => (
           </StyledNavLink>
         </Box>
         <Box as="li" mt={[3, 0]} ml={[0, 4]}>
-          <StyledNavLink to="/report">Add Loo</StyledNavLink>
+          <StyledNavLink
+            to={
+              mapCenter
+                ? `/loos/add?lat=${mapCenter.lat}&lng=${mapCenter.lng}`
+                : `/loos/add`
+            }
+          >
+            Add Loo
+          </StyledNavLink>
         </Box>
 
         <Box as="li" mt={['auto', 0]} ml={[0, 'auto']}>
@@ -63,7 +71,6 @@ const MainMenu = ({ children }) => (
     </Box>
   </Text>
 );
-
 MainMenu.propTypes = {
   // mobile footer
   children: PropTypes.any,

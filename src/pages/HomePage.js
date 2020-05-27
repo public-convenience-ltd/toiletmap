@@ -40,8 +40,6 @@ const HomePage = ({ initialPosition, ...props }) => {
 
   const [filters, setFilters] = useState(initialState);
 
-  const selectedLooId = useParams().id;
-
   // keep local storage and state in sync
   React.useEffect(() => {
     window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
@@ -54,6 +52,8 @@ const HomePage = ({ initialPosition, ...props }) => {
       radius: Math.ceil(mapPosition.radius),
     },
   });
+
+  const selectedLooId = useParams().id;
 
   const { data, loading } = useQuery(FIND_BY_ID, {
     variables: {
@@ -108,7 +108,7 @@ const HomePage = ({ initialPosition, ...props }) => {
   const [toiletPanelDimensions, setToiletPanelDimensions] = React.useState({});
 
   return (
-    <PageLayout>
+    <PageLayout mapCenter={mapPosition.center}>
       <Box height="100%" display="flex" position="relative">
         <LooMap
           loos={toilets.map((toilet) => {
@@ -126,8 +126,8 @@ const HomePage = ({ initialPosition, ...props }) => {
           controlsOffset={toiletPanelDimensions.height}
         />
 
-        <Media lessThan="md">
-          <section>
+        <section>
+          <Media lessThan="md">
             <Box position="absolute" top={0} left={0} p={3} width="100%">
               <LocationSearch
                 onSelectedItemChange={(center) => setMapPosition({ center })}
@@ -189,16 +189,17 @@ const HomePage = ({ initialPosition, ...props }) => {
                 </Box>
               </Drawer>
             </Box>
+          </Media>
 
-            <Media greaterThan="sm">
-              <Sidebar
-                filters={filters}
-                onFilterChange={setFilters}
-                onSelectedItemChange={(center) => setMapPosition({ center })}
-              />
-            </Media>
-          </section>
-        </Media>
+          <Media greaterThan="sm">
+            <Sidebar
+              filters={filters}
+              onFilterChange={setFilters}
+              onSelectedItemChange={(center) => setMapPosition({ center })}
+              mapCenter={mapPosition.center}
+            />
+          </Media>
+        </section>
 
         {Boolean(selectedLooId) && data && (
           <Box

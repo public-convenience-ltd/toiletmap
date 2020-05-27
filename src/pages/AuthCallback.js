@@ -35,7 +35,7 @@ const Callback = (props) => {
         });
         props.history.push(auth.redirectOnLogin() || '/');
       } else {
-        props.history.push('/login');
+        props.history.push('/contribute');
       }
     });
   });

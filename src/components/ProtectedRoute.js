@@ -14,7 +14,7 @@ const ProtectedRoute = ({ component: Component, injectProps, ...rest }) => {
           return <Component {...props} {...injectProps} />;
         } else {
           auth.redirectOnNextLogin(props.location);
-          return <Redirect to="/login" />;
+          return <Redirect to="/contribute" />;
         }
       }}
     />
