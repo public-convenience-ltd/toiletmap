@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { css } from '@emotion/core';
-import { useTheme } from 'emotion-theming';
 import { Map, TileLayer, ZoomControl } from 'react-leaflet';
 
 import config from '../../config.js';
@@ -27,7 +26,6 @@ const LooMap = ({
   controlsOffset,
   showCrosshair,
 }) => {
-  const theme = useTheme();
   const mapRef = React.useRef();
 
   useEffect(() => {
@@ -124,7 +122,7 @@ const LooMap = ({
         scrollWheelZoom={!staticMap}
         zoomControl={false}
         tap={false}
-        css={css`
+        css={(theme) => css`
           height: 100%;
           width: 100%;
           position: relative;
@@ -132,6 +130,27 @@ const LooMap = ({
 
           .leaflet-bottom {
             bottom: ${controlsOffset}px;
+          }
+
+          .leaflet-bar {
+            box-shadow: none;
+          }
+
+          a.leaflet-bar-part,
+          a.leaflet-control-zoom-in,
+          a.leaflet-control-zoom-out {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            color: ${theme.colors.primary};
+            border: 1px solid ${theme.colors.primary};
+            border-radius: 20px;
+
+            &:not(:first-child) {
+              margin-top: 10px;
+            }
           }
 
           :focus,
