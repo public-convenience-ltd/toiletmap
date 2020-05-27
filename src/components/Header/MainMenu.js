@@ -37,7 +37,7 @@ const MainMenu = ({ mapCenter, children }) => (
       >
         <Box as="li" ml={[0, 4]}>
           <StyledNavLink to="/" exact>
-            Find Loo
+            Find Toilet
           </StyledNavLink>
         </Box>
         <Box as="li" mt={[3, 0]} ml={[0, 4]}>
@@ -48,7 +48,7 @@ const MainMenu = ({ mapCenter, children }) => (
                 : `/loos/add`
             }
           >
-            Add Loo
+            Add Toilet
           </StyledNavLink>
         </Box>
 
