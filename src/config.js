@@ -29,11 +29,20 @@ const filters = [
   },
 ];
 
+const messages = {
+  created: 'Thank you, toilet added!',
+  updated: 'Thank you, details updated!',
+  removed: 'Thank you, toilet removed!',
+};
+
+const title = 'The Great British Toilet Map';
+
 export default {
   viewport: {
     mobile: 567,
   },
   filters,
+  messages,
   analyticsId:
     process.env.NODE_ENV === 'production' ? 'UA-52513593-1' : 'UA-111111111-1',
   nearestRadius: 20000, // meters
@@ -87,5 +96,12 @@ export default {
       return false;
     }
     return true;
+  },
+  getTitle(appendText) {
+    if (appendText) {
+      return `${title}: ${appendText}`;
+    }
+
+    return title;
   },
 };
