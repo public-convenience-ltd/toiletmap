@@ -1,8 +1,0 @@
-.message {
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-.message p:last-child {
-  margin-bottom: 0;
-}

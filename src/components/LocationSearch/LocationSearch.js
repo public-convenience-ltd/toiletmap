@@ -87,33 +87,6 @@ const LocationSearch = ({ onSelectedItemChange }) => {
     stateReducer,
   });
 
-  const resultsFragment = places.length ? (
-    <Box marginTop={-2}>
-      <ul {...getMenuProps()}>
-        {places.map((item, index) => (
-          <Box
-            as="li"
-            key={item.id}
-            color={highlightedIndex === index ? 'tertiary' : undefined}
-            py={2}
-            border={0}
-            borderBottom={index !== places.length - 1 ? 1 : undefined}
-            borderStyle="solid"
-            borderColor="lightGrey"
-            css={{
-              cursor: 'pointer',
-            }}
-            {...getItemProps({ item, index })}
-          >
-            <span>{item.label}</span> {item.subLabel}
-          </Box>
-        ))}
-      </ul>
-    </Box>
-  ) : (
-    <div>No results found</div>
-  );
-
   return (
     <>
       <Helmet>
@@ -176,18 +149,46 @@ const LocationSearch = ({ onSelectedItemChange }) => {
         )}
       </Box>
 
-      {isOpen && (
-        <Box p={[3, 0]} mt={3} bg="white" borderRadius={2}>
-          {resultsFragment}
-          <Box
-            as="img"
-            src={poweredByGoogle}
-            alt="Powered by Google"
-            mt={3}
-            maxWidth={120}
-          />
-        </Box>
-      )}
+      <Box
+        p={[3, 0]}
+        mt={3}
+        bg="white"
+        borderRadius={2}
+        display={isOpen ? undefined : 'none'}
+        {...getMenuProps()}
+      >
+        {isOpen && (
+          <>
+            {places.length
+              ? places.map((item, index) => (
+                  <Box
+                    key={item.id}
+                    color={highlightedIndex === index ? 'tertiary' : undefined}
+                    py={2}
+                    border={0}
+                    borderBottom={index !== places.length - 1 ? 1 : undefined}
+                    borderStyle="solid"
+                    borderColor="lightGrey"
+                    css={{
+                      cursor: 'pointer',
+                    }}
+                    {...getItemProps({ item, index })}
+                  >
+                    <span>{item.label}</span> {item.subLabel}
+                  </Box>
+                ))
+              : 'No results found'}
+
+            <Box
+              as="img"
+              src={poweredByGoogle}
+              alt="Powered by Google"
+              mt={3}
+              maxWidth={120}
+            />
+          </>
+        )}
+      </Box>
     </>
   );
 };
