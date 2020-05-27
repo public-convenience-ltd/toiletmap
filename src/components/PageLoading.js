@@ -1,14 +1,30 @@
 import React from 'react';
 
-import styles from './css/app.module.css';
+import PageLayout from './PageLayout';
+import Box from './Box';
+import Spacer from './Spacer';
+import Text from './Text';
+import Logo from './Logo';
 
-import logo from '../images/logo.svg';
-
-const PageLoading = (props) => (
-  <div className={styles.pageLoading}>
-    <img src={logo} alt="'The Great British Toilet Map' logo" />
-    <div>Please wait&hellip;</div>
-  </div>
+const PageLoading = () => (
+  <PageLayout>
+    <Box
+      role="alert"
+      aria-live="assertive"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      height="100%"
+      width="100%"
+    >
+      <Logo />
+      <Spacer mt={3} />
+      <Text fontSize={20} fontWeight="bold" color="tertiary">
+        Please wait&hellip;
+      </Text>
+    </Box>
+  </PageLayout>
 );
 
 export default PageLoading;

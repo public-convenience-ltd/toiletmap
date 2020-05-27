@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
 import { Media } from '../Media';
 import Drawer from '../Drawer';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-
 import Icon from '../Icon';
+import Logo from '../Logo';
 
-import Logo from './Logo';
 import MainMenu from './MainMenu';
 
 const Header = ({ mapCenter, children }) => {
