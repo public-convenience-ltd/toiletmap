@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { css } from '@emotion/core';
-import { Map, TileLayer, Marker, ZoomControl } from 'react-leaflet';
+import { useTheme } from 'emotion-theming';
+import { Map, TileLayer, ZoomControl } from 'react-leaflet';
 
 import config from '../../config.js';
 import LocateMapControl from './LocateMapControl';
 import ToiletMarkerIcon from './ToiletMarkerIcon';
 
 import Box from '../Box';
+import Marker from './Marker';
 
 import crosshair from '../../images/crosshair.svg';
+
+const KEY_ENTER = 13;
 
 const LooMap = ({
   center,
@@ -23,11 +27,25 @@ const LooMap = ({
   controlsOffset,
   showCrosshair,
 }) => {
+  const theme = useTheme();
   const mapRef = React.useRef();
+
+  useEffect(() => {
+    const map = mapRef.current.leafletElement.getContainer();
+
+    // when focused on the map container, Leaflet allows the user to pan the map by using the arrow keys
+    // without the application role screen reader software overrides these controls
+    // this also avoid the entire main region being announced
+    map.setAttribute('role', 'application');
+    map.setAttribute('aria-label', 'use arrow keys to pan the map');
+    map.setAttribute(
+      'aria-keyshortcuts',
+      'ArrowUp ArrowDown ArrowLeft ArrowRight'
+    );
+  }, []);
 
   const handleViewportChanged = () => {
     const map = mapRef.current.leafletElement;
-
     const center = map.getCenter();
     const zoom = map.getZoom();
 
@@ -56,11 +74,18 @@ const LooMap = ({
               toiletId: toilet.id,
             })
           }
+          label={toilet.name || 'Unnamed toilet'}
           onClick={() => {
             if (!staticMap) {
-              push('/loos/' + toilet.id);
+              push(`/loos/${toilet.id}`);
             }
           }}
+          onKeyDown={(event) => {
+            if (!staticMap && event.originalEvent.keyCode === KEY_ENTER) {
+              push(`/loos/${toilet.id}`);
+            }
+          }}
+          keyboard={!staticMap}
         />
       )),
     [loos, staticMap, push]
@@ -107,6 +132,16 @@ const LooMap = ({
 
           .leaflet-bottom {
             bottom: ${controlsOffset}px;
+          }
+
+          :focus,
+          .leaflet-marker-icon:focus {
+            outline: 2px solid ${theme.colors.tertiary} !important;
+            outline-offset: 0.5rem;
+          }
+
+          :focus {
+            outline-offset: 0;
           }
         `}
       >
