@@ -35,11 +35,13 @@ function Loo(props) {
       <Grid container spacing={2}>
         <Grid item md={6} sm={12}>
           <Typography variant="h2">{loo.name}</Typography>
-          {loo.area.map(({ name, type }) => (
-            <Typography key={name} variant="subtitle1">
-              {name} / {type}
-            </Typography>
-          ))}
+          {loo.area
+            ? loo.area.map(({ name, type }) => (
+                <Typography key={name} variant="subtitle1">
+                  {name} / {type}
+                </Typography>
+              ))
+            : null}
           {auth.isAuthenticated() && (
             <div>
               <RaisedButton
