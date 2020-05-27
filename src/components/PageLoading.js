@@ -17,6 +17,7 @@ const PageLoading = () => (
       alignItems="center"
       height="100%"
       width="100%"
+      p={3}
     >
       <Logo />
       <Spacer mt={3} />
