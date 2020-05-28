@@ -10,14 +10,9 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthCallback from './pages/AuthCallback';
 import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactPage';
-import ContributePage from './pages/ContributePage';
 import MapPage from './pages/MapPage';
-import UseOurLoosPage from './pages/UseOurLoosPage';
-import CookiesPage from './pages/CookiesPage';
-import PrivacyPage from './pages/PrivacyPage';
 import NotFound from './pages/404';
+
 import Tracking from './components/Tracking';
 import PageLoading from './components/PageLoading';
 
@@ -26,10 +21,37 @@ import Router from './Router';
 import AuthProvider from './Auth';
 import App from './App';
 
-const Explorer = lazy(() => import('./explorer'));
-const AddPage = lazy(() => import('./pages/AddPage'));
-const EditPage = lazy(() => import('./pages/EditPage'));
-const RemovePage = lazy(() => import('./pages/RemovePage'));
+const Explorer = lazy(() =>
+  import(/*webpackChunkName: 'explorer'*/ './explorer')
+);
+const AddPage = lazy(() =>
+  import(/*webpackChunkName: 'add'*/ './pages/AddPage')
+);
+const EditPage = lazy(() =>
+  import(/*webpackChunkName: 'edit'*/ './pages/EditPage')
+);
+const RemovePage = lazy(() =>
+  import(/*webpackChunkName: 'remove'*/ './pages/RemovePage')
+);
+
+const AboutPage = lazy(() =>
+  import(/*webpackChunkName: 'about'*/ './pages/AboutPage')
+);
+const ContactPage = lazy(() =>
+  import(/*webpackChunkName: 'contact'*/ './pages/ContactPage')
+);
+const ContributePage = lazy(() =>
+  import(/*webpackChunkName: 'contribute'*/ './pages/ContributePage')
+);
+const UseOurLoosPage = lazy(() =>
+  import(/*webpackChunkName: 'uol'*/ './pages/UseOurLoosPage')
+);
+const PrivacyPage = lazy(() =>
+  import(/*webpackChunkName: 'privacy'*/ './pages/PrivacyPage')
+);
+const CookiesPage = lazy(() =>
+  import(/*webpackChunkName: 'cookies'*/ './pages/CookiesPage')
+);
 
 ReactDOM.render(
   <AuthProvider>
