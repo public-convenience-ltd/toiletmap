@@ -114,6 +114,29 @@ const HomePage = ({ initialPosition, ...props }) => {
       </VisuallyHidden>
 
       <Box height="100%" display="flex" position="relative">
+        <Box
+          position="absolute"
+          zIndex={1}
+          top={0}
+          left={[0, 3]}
+          right={0}
+          bottom={0}
+          m={3}
+          maxWidth={326}
+          maxHeight="100%"
+          overflowY="auto"
+          // center on small viewports
+          mx={['auto', 0]}
+        >
+          <Sidebar
+            filters={filters}
+            onFilterChange={setFilters}
+            onSelectedItemChange={(center) => setMapPosition({ center })}
+            onUpdateMapPosition={setMapPosition}
+            mapCenter={mapPosition.center}
+          />
+        </Box>
+
         <LooMap
           loos={toilets.map((toilet) => {
             if (toilet.id === selectedLooId) {
@@ -128,14 +151,6 @@ const HomePage = ({ initialPosition, ...props }) => {
           zoom={mapPosition.zoom}
           onViewportChanged={setMapPosition}
           controlsOffset={toiletPanelDimensions.height}
-        />
-
-        <Sidebar
-          filters={filters}
-          onFilterChange={setFilters}
-          onSelectedItemChange={(center) => setMapPosition({ center })}
-          onUpdateMapPosition={setMapPosition}
-          mapCenter={mapPosition.center}
         />
 
         {Boolean(selectedLooId) && data && (

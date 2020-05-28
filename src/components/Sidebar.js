@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import { useTheme } from 'emotion-theming';
 import isPropValid from '@emotion/is-prop-valid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -51,7 +50,6 @@ const Sidebar = ({
   onUpdateMapPosition,
   mapCenter,
 }) => {
-  const theme = useTheme();
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   const filterToggleRef = useRef(null);
@@ -63,82 +61,69 @@ const Sidebar = ({
           <h2 id="heading-search">Search</h2>
         </VisuallyHidden>
 
-        <Box position="absolute" top={0} left={0} p={3} width="100%">
-          <LocationSearch
-            onSelectedItemChange={(center) => onUpdateMapPosition({ center })}
-          />
+        <LocationSearch
+          onSelectedItemChange={(center) => onUpdateMapPosition({ center })}
+        />
 
-          <Box display="flex" justifyContent="center" mt={3}>
-            <Button
-              ref={filterToggleRef}
-              variant="secondary"
-              icon={<FontAwesomeIcon icon={faFilter} />}
-              aria-expanded={isFiltersExpanded}
-              onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
-            >
-              Filter Map
-            </Button>
+        <Box display="flex" justifyContent="center" mt={3}>
+          <Button
+            ref={filterToggleRef}
+            variant="secondary"
+            icon={<FontAwesomeIcon icon={faFilter} />}
+            aria-expanded={isFiltersExpanded}
+            onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
+          >
+            Filter Map
+          </Button>
+        </Box>
+
+        <Drawer visible={isFiltersExpanded} animateFrom="left">
+          <Box display="flex" justifyContent="space-between" mb={4}>
+            <Box display="flex" alignItems="flex-end">
+              <FontAwesomeIcon icon={faFilter} fixedWidth size="lg" />
+              <Box as="h2" mx={2}>
+                <Text lineHeight={1}>
+                  <b>Filter</b>
+                </Text>
+              </Box>
+            </Box>
+
+            <Text fontSize={12}>
+              <Box
+                as="button"
+                type="button"
+                onClick={() => onFilterChange({})}
+                border={0}
+                borderBottom={2}
+                borderStyle="solid"
+              >
+                Reset Filter
+              </Box>
+            </Text>
           </Box>
 
-          <Drawer visible={isFiltersExpanded} animateFrom="left">
-            <Box display="flex" justifyContent="space-between" mb={4}>
-              <Box display="flex" alignItems="flex-end">
-                <FontAwesomeIcon icon={faFilter} fixedWidth size="lg" />
-                <Box as="h2" mx={2}>
-                  <Text lineHeight={1}>
-                    <b>Filter</b>
-                  </Text>
-                </Box>
-              </Box>
+          <Filters filters={filters} onFilterChange={onFilterChange} />
 
-              <Text fontSize={12}>
-                <Box
-                  as="button"
-                  type="button"
-                  onClick={() => onFilterChange({})}
-                  border={0}
-                  borderBottom={2}
-                  borderStyle="solid"
-                >
-                  Reset Filter
-                </Box>
-              </Text>
-            </Box>
+          <Box display="flex" justifyContent="center" mt={4}>
+            <Button
+              onClick={() => {
+                setIsFiltersExpanded(false);
 
-            <Filters filters={filters} onFilterChange={onFilterChange} />
-
-            <Box display="flex" justifyContent="center" mt={4}>
-              <Button
-                onClick={() => {
-                  setIsFiltersExpanded(false);
-
-                  // return focus to the control that invoked the filter overlay
-                  filterToggleRef.current.focus();
-                }}
-                css={{
-                  width: '100%',
-                }}
-              >
-                Done
-              </Button>
-            </Box>
-          </Drawer>
-        </Box>
+                // return focus to the control that invoked the filter overlay
+                filterToggleRef.current.focus();
+              }}
+              css={{
+                width: '100%',
+              }}
+            >
+              Done
+            </Button>
+          </Box>
+        </Drawer>
       </Media>
 
       <Media greaterThan="sm">
-        <Box
-          position="absolute"
-          top={3}
-          left={3}
-          p={4}
-          borderRadius={35}
-          bg="white"
-          width="100%"
-          maxHeight={`calc(100% - ${theme.space[4]}px)`}
-          maxWidth={326}
-          overflowY="auto"
-        >
+        <Box p={4} borderRadius={35} bg="white" width="100%">
           <h2 id="heading-search">
             <b>Search</b>
           </h2>
