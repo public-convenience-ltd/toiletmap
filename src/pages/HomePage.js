@@ -1,25 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, useRouteMatch } from 'react-router-dom';
 import queryString from 'query-string';
 import { Helmet } from 'react-helmet';
 import { loader } from 'graphql.macro';
 import { useQuery } from '@apollo/client';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
-import { Media } from '../components/Media';
 import PageLayout from '../components/PageLayout';
 import LooMap from '../components/LooMap';
 import useMapPosition from '../components/useMapPosition';
 import useNearbyLoos from '../components/useNearbyLoos';
 import Box from '../components/Box';
 import ToiletDetailsPanel from '../components/ToiletDetailsPanel';
-import LocationSearch from '../components/LocationSearch';
-import Button from '../components/Button';
-import Drawer from '../components/Drawer';
-import Filters from '../components/Filters';
-import Text from '../components/Text';
 import Sidebar from '../components/Sidebar';
 import Notification from '../components/Notification';
 import VisuallyHidden from '../components/VisuallyHidden';
@@ -30,8 +22,6 @@ const FIND_BY_ID = loader('./findLooById.graphql');
 
 const HomePage = ({ initialPosition, ...props }) => {
   const [mapPosition, setMapPosition] = useMapPosition(config.fallbackLocation);
-  const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
-  const filterToggleRef = useRef(null);
 
   let initialState = config.getSettings(FILTERS_KEY);
 
@@ -124,6 +114,29 @@ const HomePage = ({ initialPosition, ...props }) => {
       </VisuallyHidden>
 
       <Box height="100%" display="flex" position="relative">
+        <Box
+          position="absolute"
+          zIndex={1}
+          top={0}
+          left={[0, 3]}
+          right={0}
+          bottom={0}
+          m={3}
+          maxWidth={326}
+          maxHeight="100%"
+          overflowY="auto"
+          // center on small viewports
+          mx={['auto', 0]}
+        >
+          <Sidebar
+            filters={filters}
+            onFilterChange={setFilters}
+            onSelectedItemChange={(center) => setMapPosition({ center })}
+            onUpdateMapPosition={setMapPosition}
+            mapCenter={mapPosition.center}
+          />
+        </Box>
+
         <LooMap
           loos={toilets.map((toilet) => {
             if (toilet.id === selectedLooId) {
@@ -139,81 +152,6 @@ const HomePage = ({ initialPosition, ...props }) => {
           onViewportChanged={setMapPosition}
           controlsOffset={toiletPanelDimensions.height}
         />
-
-        <section>
-          <Media lessThan="md">
-            <Box position="absolute" top={0} left={0} p={3} width="100%">
-              <LocationSearch
-                onSelectedItemChange={(center) => setMapPosition({ center })}
-              />
-
-              <Box display="flex" justifyContent="center" mt={3}>
-                <Button
-                  ref={filterToggleRef}
-                  variant="secondary"
-                  icon={<FontAwesomeIcon icon={faFilter} />}
-                  aria-expanded={isFiltersExpanded}
-                  onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
-                >
-                  Filter Map
-                </Button>
-              </Box>
-
-              <Drawer visible={isFiltersExpanded} animateFrom="left">
-                <Box display="flex" justifyContent="space-between" mb={4}>
-                  <Box display="flex" alignItems="flex-end">
-                    <FontAwesomeIcon icon={faFilter} fixedWidth size="lg" />
-                    <Box as="h2" mx={2}>
-                      <Text lineHeight={1}>
-                        <b>Filter</b>
-                      </Text>
-                    </Box>
-                  </Box>
-
-                  <Text fontSize={12}>
-                    <Box
-                      as="button"
-                      type="button"
-                      onClick={() => setFilters({})}
-                      border={0}
-                      borderBottom={2}
-                      borderStyle="solid"
-                    >
-                      Reset Filter
-                    </Box>
-                  </Text>
-                </Box>
-
-                <Filters filters={filters} onFilterChange={setFilters} />
-
-                <Box display="flex" justifyContent="center" mt={4}>
-                  <Button
-                    onClick={() => {
-                      setIsFiltersExpanded(false);
-
-                      // return focus to the control that invoked the filter overlay
-                      filterToggleRef.current.focus();
-                    }}
-                    css={{
-                      width: '100%',
-                    }}
-                  >
-                    Done
-                  </Button>
-                </Box>
-              </Drawer>
-            </Box>
-          </Media>
-
-          <Media greaterThan="sm">
-            <Sidebar
-              filters={filters}
-              onFilterChange={setFilters}
-              onSelectedItemChange={(center) => setMapPosition({ center })}
-              mapCenter={mapPosition.center}
-            />
-          </Media>
-        </section>
 
         {Boolean(selectedLooId) && data && (
           <Box
