@@ -148,7 +148,7 @@ const LooMap = ({
             border: 1px solid ${theme.colors.primary};
             border-radius: 20px;
 
-            &:not(:first-child) {
+            &:not(:first-of-type) {
               margin-top: 10px;
             }
           }
