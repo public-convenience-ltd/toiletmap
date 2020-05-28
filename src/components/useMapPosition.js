@@ -1,8 +1,6 @@
 import React from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 
-// import useGeolocation from './useGeolocation';
-
 const MAP_POSITION_QUERY = gql`
   {
     mapCenter @client {
@@ -54,8 +52,6 @@ const useMapPosition = (fallbackLocation) => {
     [setMapPositionMutation]
   );
 
-  // const { geolocation } = useGeolocation({ skip: !withGeolocation });
-
   const getMapCenter = React.useMemo(() => {
     if (fallbackLocation) {
       if (data.mapCenter.lat && data.mapCenter.lng) {
@@ -66,10 +62,6 @@ const useMapPosition = (fallbackLocation) => {
     }
 
     return data.mapCenter;
-
-    // if (geolocation.lat && geolocation.lng) {
-    //   return geolocation;
-    // }
   }, [fallbackLocation, data.mapCenter]);
 
   return [
