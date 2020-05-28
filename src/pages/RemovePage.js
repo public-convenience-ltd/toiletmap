@@ -7,6 +7,10 @@ import config from '../config';
 import history from '../history';
 
 import PageLayout from '../components/PageLayout';
+import Container from '../components/Container';
+import Spacer from '../components/Spacer';
+import Text from '../components/Text';
+import Button from '../components/Button';
 import Notification from '../components/Notification';
 
 const FIND_LOO_BY_ID = loader('./findLooById.graphql');
@@ -72,27 +76,41 @@ const RemovePage = function (props) {
         <title>{config.getTitle('Remove Toilet')}</title>
       </Helmet>
 
-      <div>
-        <h2>Toilet Remover</h2>
+      <Container maxWidth={845}>
+        <Spacer mb={5} />
+
+        <Text fontSize={6} fontWeight="bold" textAlign="center">
+          <h1>Toilet Remover</h1>
+        </Text>
+
+        <Spacer mb={5} />
 
         <p>
           Please let us know why you're removing this toilet from the map using
           the form below.
         </p>
 
+        <Spacer mb={3} />
+
         <form onSubmit={onSubmit}>
           <label>
-            Reason for removal
+            <b>Reason for removal</b>
             <textarea
               type="text"
               name="reason"
               value={reason}
               onChange={updateReason}
               required
+              css={{
+                height: '100px',
+                width: '100%',
+              }}
             />
           </label>
 
-          <button type="submit">Remove</button>
+          <Spacer mb={3} />
+
+          <Button type="submit">Remove</Button>
         </form>
 
         {loadingRemove && (
@@ -104,7 +122,7 @@ const RemovePage = function (props) {
             Oops. We can't submit your report at this time. Try again later.
           </Notification>
         )}
-      </div>
+      </Container>
     </PageLayout>
   );
 };
