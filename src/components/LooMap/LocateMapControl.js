@@ -28,9 +28,9 @@ export default () => (
       <LeafletControl
         className={css`
           display: block;
-          height: 30px;
-          background: center 2px no-repeat;
-          background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAABqQAAAakBDAYwoQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAHMSURBVEiJtZW9alRREMd/sxs1Gq0sAnfuSoS18iOVBARBSCE+QgKCpVZ5AN/AFzAINjaCYiGCdYpUgUACsYlfgd0TghI7NwF3z1g4i8nN3c0x1x0YDszc//zmzOHcg5mR6kC92Wye+RdNjURT1UtZln3sdDp7eZ4/TNUlA0TkDnAZEDO7/98B9Xr9HbALYGavkxvz2Q61RqOhwBUzmwDOich3oNNqtVYqA7Isuysib4CJkvTLEML8MP2xIxKRxwOKA8zleT5dCQBcNLOlkvgygJlNVQWcrdVq68ChWYrIZ1+vVgKIiHnxQwAz2/L8WiWAmcUY4xGAiPQAYozdSgAgiki3CAB6DqoMeAusHgD0fN0zs/fA5jBx0kUDUNV9ABFZNLMFEXnUbrcXj9Ml/ypKLKmzEwP84EcHYNQ78PsxOgCJOxgrBlR1DJgBrgHXfV0u0eaqug58ADbcV0IIOwMBqnobeAFMFYp9PdB1v/Nx4IZ7336p6tMQwkI/UBzRzZLiALeAZ8CTGOMnEXkOTJZ8dwq4p6rj/cCRi6aqs8ADhylw3lP7wGlv6id/34gusAN8AV7x5xH6MRBQNFW9AGQOy7zwtnsAvoUQ4iD9b2no3IQoAzLEAAAAAElFTkSuQmCC');
+          height: 35px;
+          width: 35px;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E %3Cg fill='none' fill-rule='evenodd'%3E %3Cpath stroke='%230A165F' stroke-linecap='square' stroke-width='2' d='M20.5 10.5L20.5 5.5M11.5 19.5L6.5 19.5M20.5 29.5L20.5 33.5'/%3E %3Cg transform='translate(11 11)'%3E %3Ccircle cx='9' cy='9' r='8' fill='%23FFF' stroke='%230BB5FB' stroke-width='2'/%3E %3Ccircle cx='9' cy='9' r='4' fill='%230BB5FB'/%3E %3C/g%3E %3Cpath stroke='%230A165F' stroke-linecap='square' stroke-width='2' d='M29.5 19.5L33.5 19.5'/%3E %3C/g%3E %3C/svg%3E");
         `}
       />
     )}

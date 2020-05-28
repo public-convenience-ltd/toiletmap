@@ -40,27 +40,29 @@ export default function ResultRow({ loo }) {
         </Link>
       </TableCell>
       <TableCell>
-        {area.map((val) => {
-          return (
-            <React.Fragment key={val.name}>
-              <Chip
-                avatar={
-                  <Avatar>
-                    <CityIcon />
-                  </Avatar>
-                }
-                label={val.name}
-                color={val.name ? 'primary' : 'secondary'}
-                variant="default"
-              />
-              <Chip
-                label={val.type}
-                color={val.type ? 'primary' : 'secondary'}
-                variant="outlined"
-              />
-            </React.Fragment>
-          );
-        })}
+        {area
+          ? area.map((val) => {
+              return (
+                <React.Fragment key={val.name}>
+                  <Chip
+                    avatar={
+                      <Avatar>
+                        <CityIcon />
+                      </Avatar>
+                    }
+                    label={val.name}
+                    color={val.name ? 'primary' : 'secondary'}
+                    variant="default"
+                  />
+                  <Chip
+                    label={val.type}
+                    color={val.type ? 'primary' : 'secondary'}
+                    variant="outlined"
+                  />
+                </React.Fragment>
+              );
+            })
+          : null}
       </TableCell>
 
       <TableCell>
