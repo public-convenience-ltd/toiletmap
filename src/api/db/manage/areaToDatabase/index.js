@@ -6,7 +6,7 @@ const config = require('./config.json');
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
-const { connect, Area } = require('../../../db/');
+const { connect, Area, Loo } = require('../../../db/');
 const cliProgress = require('cli-progress');
 
 const bar = new cliProgress.SingleBar({
@@ -20,6 +20,7 @@ const bar = new cliProgress.SingleBar({
 function loadJSON(src, log) {
   return new Promise((resolve) => {
     if (!src.remote) {
+      // Local file
       fs.readFile(src.url, 'utf-8', (error, res) => {
         if (error) {
           log(`Error reading file: ${error.message}`);
@@ -29,6 +30,7 @@ function loadJSON(src, log) {
         return resolve(geo);
       });
     } else {
+      // Internet resource
       const url = new URL(src.url);
       let moduleToUse;
       if (url.protocol === 'https:') {
@@ -39,6 +41,7 @@ function loadJSON(src, log) {
         log(`Unrecognised protocol '${url.protocol}'`);
         return resolve(false);
       }
+
       moduleToUse.get(url, (res) => {
         if (res.statusCode !== 200) {
           log(`Response failed: code ${res.statusCode} recieved`);
@@ -120,7 +123,7 @@ async function updateDataset(dataset, dryrun) {
       return false;
     }
 
-    // Get rid of stale data
+    // Get rid of stale data i.e. areas which have the same datasetId but a different version number
     log('Deleting stale data...');
     await new Promise((resolve) =>
       Area.deleteMany(
@@ -139,11 +142,18 @@ async function updateDataset(dataset, dryrun) {
     log('Deleted successfully, now writing new area data...');
   }
 
-  // Actually write the areas to the database
+  // Actually write the new areas to the database
   let count = bounds.features.length;
   let saved = 0;
   bar.start(count, 0);
   const res = await new Promise((resolve) => {
+    if (bounds.features[0].properties[dataset.areaNameField] === undefined) {
+      bar.stop();
+      log(
+        `WARNING: Area name field ${dataset.areaNameField} does not exist in dataset! Skipping...`
+      );
+      return resolve(false);
+    }
     for (let feature of bounds.features) {
       const name = feature.properties[dataset.areaNameField];
       const geometry = feature.geometry;
@@ -178,6 +188,49 @@ async function updateDataset(dataset, dryrun) {
   return res;
 }
 
+/**
+ * Update loos to be within new areas
+ */
+async function updateLoos(dryrun) {
+  if (dryrun) {
+    console.log('Would update loos with new areas');
+    return true;
+  }
+
+  console.log('Updating loos with new areas...');
+  const loos = await Loo.find({}).exec();
+
+  const total = loos.length;
+  let saved = 0;
+  bar.start(total, 0);
+  for (const loo of loos) {
+    let areas = await Area.containing(loo.properties.geometry.coordinates);
+    if (areas.length === 0) {
+      areas = [
+        {
+          name: 'Unknown area',
+          type: 'Unknown',
+        },
+      ];
+    }
+
+    loo.properties.area = areas;
+    await loo.save((err) => {
+      if (err) {
+        console.error(`Error updating loo: ${err.message}`);
+      }
+    });
+    bar.update(++saved);
+  }
+
+  bar.stop();
+  console.log(`${saved} loos updated`);
+  return true;
+}
+
+/**
+ * Make sure the configuration is valid
+ */
 function sanityCheck(datasets) {
   const ids = [];
 
@@ -212,19 +265,25 @@ async function run() {
   let count = config.datasets.length;
   let saved = 0;
   let success = 0;
-  config.datasets.forEach(async (dataset) => {
-    const res = await updateDataset(dataset, dryrun);
-    saved += 1;
-    success += res ? 1 : 0;
-    if (saved === count) {
-      console.log(`Saved all saveable areas, ${success} successes`);
-      finish();
-    }
+  await new Promise((doneAreas) => {
+    config.datasets.forEach(async (dataset) => {
+      const res = await updateDataset(dataset, dryrun);
+      saved += 1;
+      success += res ? 1 : 0;
+      if (saved === count) {
+        console.log(`Saved all saveable areas, ${success} successes`);
+        return doneAreas();
+      }
+    });
   });
+
+  await updateLoos(dryrun);
 
   if (dryrun) {
     console.log(`Would have added ${count} areas`);
   }
+
+  finish();
 }
 
 run();
