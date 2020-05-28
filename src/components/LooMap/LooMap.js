@@ -133,6 +133,7 @@ const LooMap = ({
           }
 
           .leaflet-bar {
+            border: none;
             box-shadow: none;
           }
 
@@ -148,8 +149,13 @@ const LooMap = ({
             border: 1px solid ${theme.colors.primary};
             border-radius: 20px;
 
-            &:not(:first-child) {
+            &:not(:first-of-type) {
               margin-top: 10px;
+            }
+
+            &:first-of-type,
+            &:last-of-type {
+              border-radius: 20px;
             }
           }
 
