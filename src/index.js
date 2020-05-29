@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import ProtectedRoute from './components/ProtectedRoute';
-import AuthCallback from './pages/AuthCallback';
+// import AuthCallback from './pages/AuthCallback';
 import HomePage from './pages/HomePage';
 import MapPage from './pages/MapPage';
 import NotFound from './pages/404';
@@ -74,11 +74,11 @@ ReactDOM.render(
             path="/map/:lng/:lat"
             render={(props) => <MapPage {...props} />}
           />
-          <Route
+          {/*<Route
             exact
             path="/callback"
             render={(props) => <AuthCallback {...props} />}
-          />
+          />*/}
           <Route
             path="/explorer"
             render={(props) => <Explorer {...props} />}
