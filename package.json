@@ -30,7 +30,7 @@
     "*.css": "stylelint"
   },
   "dependencies": {
-    "@apollo/client": "3.0.0-beta.50",
+    "@apollo/client": "3.0.0-beta.52",
     "@apollo/link-context": "2.0.0-beta.3",
     "@apollo/link-error": "2.0.0-beta.3",
     "@artsy/fresnel": "1.1.0",
@@ -47,7 +47,7 @@
     "@material-ui/icons": "4.9.1",
     "@rehooks/component-size": "1.0.3",
     "@styled-system/prop-types": "5.1.5",
-    "apollo-server": "2.14.0",
+    "apollo-server": "2.14.1",
     "auth0-js": "9.13.2",
     "chart.js": "2.9.3",
     "downshift": "5.4.2",
@@ -89,7 +89,7 @@
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
     "@shelf/jest-mongodb": "1.1.5",
-    "apollo-server-testing": "2.14.0",
+    "apollo-server-testing": "2.14.1",
     "cli-progress": "3.8.2",
     "customize-cra": "0.9.1",
     "dotenv": "8.2.0",
