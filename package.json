@@ -53,6 +53,7 @@
     "chart.js": "2.9.3",
     "downshift": "5.4.2",
     "emotion-theming": "10.0.27",
+    "focus-visible": "5.1.0",
     "framer-motion": "1.11.0",
     "graphql-iso-date": "3.6.1",
     "graphql.macro": "1.4.2",

@@ -30,6 +30,10 @@ const ResetStyles = (
       }
 
       *:focus {
+        outline: none;
+      }
+
+      [data-focus-visible-added] {
         outline: 1px dotted currentColor;
         outline-offset: 0.5rem;
       }

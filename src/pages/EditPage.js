@@ -158,6 +158,7 @@ const EditPage = (props) => {
           showLocateControl
           showCrosshair
           controlsOffset={20}
+          withAccessibilityOverlays={false}
         />
       </Box>
 
