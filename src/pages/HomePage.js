@@ -7,7 +7,7 @@ import { loader } from 'graphql.macro';
 import { useQuery } from '@apollo/client';
 
 import PageLayout from '../components/PageLayout';
-import LooMap from '../components/LooMap';
+// import LooMap from '../components/LooMap';
 import useMapPosition from '../components/useMapPosition';
 import useNearbyLoos from '../components/useNearbyLoos';
 import Box from '../components/Box';
@@ -72,6 +72,8 @@ const HomePage = ({ initialPosition, ...props }) => {
     })
   );
 
+  console.log(toilets);
+
   const isLooPage = useRouteMatch('/loos/:id');
 
   const [shouldCenter, setShouldCenter] = React.useState(isLooPage);
@@ -97,7 +99,7 @@ const HomePage = ({ initialPosition, ...props }) => {
     }
   }, [initialPosition, setMapPosition]);
 
-  const [toiletPanelDimensions, setToiletPanelDimensions] = React.useState({});
+  // const [toiletPanelDimensions, setToiletPanelDimensions] = React.useState({});
 
   const pageTitle = config.getTitle(
     isLooPage && data ? data.loo.name || 'Unnamed Toilet' : 'Find Toilet'
@@ -137,7 +139,7 @@ const HomePage = ({ initialPosition, ...props }) => {
           />
         </Box>
 
-        <LooMap
+        {/* <LooMap
           loos={toilets.map((toilet) => {
             if (toilet.id === selectedLooId) {
               return {
@@ -151,7 +153,7 @@ const HomePage = ({ initialPosition, ...props }) => {
           zoom={mapPosition.zoom}
           onViewportChanged={setMapPosition}
           controlsOffset={toiletPanelDimensions.height}
-        />
+        /> */}
 
         {Boolean(selectedLooId) && data && (
           <Box
@@ -165,7 +167,7 @@ const HomePage = ({ initialPosition, ...props }) => {
               data={data.loo}
               isLoading={loading}
               startExpanded={!!message}
-              onDimensionsChange={setToiletPanelDimensions}
+              // onDimensionsChange={setToiletPanelDimensions}
             >
               {config.messages[message] && (
                 <Box
