@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { lazy } from 'react';
 
 import config from '../../config';
-import GoogleAnalytics from './GoogleAnalytics';
 import AdobeTracking from './AdobeTracking';
 import { TRACKING_STORAGE_KEY } from './';
+
+const GoogleAnalytics = lazy(() => import('./GoogleAnalytics'));
 
 const Tracking = () => {
   const isAaAccepted = config.getSetting(TRACKING_STORAGE_KEY, 'aaAccepted');

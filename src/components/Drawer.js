@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 
 import Box from './Box';
 
@@ -25,7 +25,7 @@ const Drawer = ({ visible, animateFrom, ...props }) => {
 
   return (
     <Box
-      as={motion.div}
+      // as={motion.div}
       position="fixed"
       top={MENU_HEIGHT}
       {...{

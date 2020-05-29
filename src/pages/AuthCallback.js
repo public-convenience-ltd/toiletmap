@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import PageLayout from '../components/PageLayout';
 import Notification from '../components/Notification';
-import MediaQuery from 'react-responsive';
 import config from '../config';
 
 import { useAuth } from '../Auth';
@@ -41,22 +40,9 @@ const Callback = (props) => {
   });
 
   return (
-    <PageLayout
-      main={
-        <MediaQuery minWidth={config.viewport.mobile}>
-          <Notification>
-            <p>Updating credentials</p>
-          </Notification>
-        </MediaQuery>
-      }
-      map={
-        <MediaQuery minWidth={config.viewport.mobile}>
-          <Notification>
-            <p>Updating credentials</p>
-          </Notification>
-        </MediaQuery>
-      }
-    />
+    <Notification>
+      Updating credentials
+    </Notification>
   );
 };
 

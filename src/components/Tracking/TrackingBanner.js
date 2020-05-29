@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+// import { useForm } from 'react-hook-form';
 
 import Container from '../Container';
 import Box from '../Box';
@@ -14,7 +14,7 @@ import { TRACKING_STORAGE_KEY } from './';
 import config from '../../config';
 
 const TrackingBanner = React.forwardRef((props, ref) => {
-  const { register, handleSubmit } = useForm();
+  // const { /*register, handleSubmit } = useForm()*/;
 
   const onSubmit = (data, event) => {
     event.preventDefault();
@@ -49,7 +49,7 @@ const TrackingBanner = React.forwardRef((props, ref) => {
       zIndex={300}
     >
       <Container>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form /*onSubmit={handleSubmit(onSubmit)}*/>
           <h2
             ref={ref}
             id="heading-tracking"
@@ -99,7 +99,7 @@ const TrackingBanner = React.forwardRef((props, ref) => {
                       <b>Opt in to Google Analytics</b>
                       <Spacer ml={[1, 5]} />
                       <input
-                        ref={register}
+                        // ref={register}
                         name="ga"
                         type="checkbox"
                         defaultChecked={
@@ -123,7 +123,7 @@ const TrackingBanner = React.forwardRef((props, ref) => {
                       <b>Opt in to Adobe Analytics</b>
                       <Spacer ml={[1, 5]} />
                       <input
-                        ref={register}
+                        // ref={register}
                         name="aa"
                         type="checkbox"
                         defaultChecked={
