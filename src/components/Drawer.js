@@ -31,6 +31,7 @@ const Drawer = ({ visible, animateFrom, ...props }) => {
       {...{
         [animateTo]: 0,
       }}
+      left="100%"
       height={`calc(100vh - ${MENU_HEIGHT}px)`}
       width="100%"
       bg="white"
