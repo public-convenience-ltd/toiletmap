@@ -16,10 +16,10 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import { Link, useRouteMatch } from 'react-router-dom';
 
-import { useAuth } from '../Auth';
+// import { useAuth } from '../Auth';
 
 function Layout(props) {
-  const auth = useAuth();
+  // const auth = useAuth();
   const match = useRouteMatch();
   const [isDrawerOpen, setDrawerOpen] = useState(false);
 
@@ -37,7 +37,7 @@ function Layout(props) {
           <Typography variant="h6" color="inherit" style={{ flex: 1 }}>
             Toilet Map Explorer
           </Typography>
-          {auth.isAuthenticated() ? (
+          {/*auth.isAuthenticated() ? (
             <Button onClick={auth.logout} color="inherit">
               Logout
             </Button>
@@ -45,7 +45,10 @@ function Layout(props) {
             <Button onClick={auth.login} color="inherit">
               Login
             </Button>
-          )}
+          )*/}
+          <Button onClick={auth.login} color="inherit">
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer open={isDrawerOpen} onClose={() => setDrawerOpen(false)}>
