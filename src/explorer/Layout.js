@@ -46,9 +46,6 @@ function Layout(props) {
               Login
             </Button>
           )*/}
-          <Button onClick={auth.login} color="inherit">
-            Login
-          </Button>
         </Toolbar>
       </AppBar>
       <Drawer open={isDrawerOpen} onClose={() => setDrawerOpen(false)}>
