@@ -18,8 +18,9 @@ import {
 import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 import { DateTime } from 'luxon';
 import { Link } from 'react-router-dom';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation, useQuery, gql } from '@apollo/client';
 import useComponentSize from '@rehooks/component-size';
+import L from 'leaflet';
 
 import Box from './Box';
 import Button from './Button';
@@ -67,6 +68,15 @@ function getIsOpenLabel(openingTimes = [], dateTime = DateTime.local()) {
   return isOpen ? 'Open now' : 'Closed';
 }
 
+const GEOLOCATION_QUERY = gql`
+  query geolocation {
+    geolocation {
+      lat
+      lng
+    }
+  }
+`;
+
 const SUBMIT_VERIFICATION_REPORT_MUTATION = gql`
   mutation submitVerificationReportMutation($id: ID) {
     submitVerificationReport(id: $id) {
@@ -77,6 +87,29 @@ const SUBMIT_VERIFICATION_REPORT_MUTATION = gql`
     }
   }
 `;
+
+function round(value, precision = 0) {
+  const multiplier = Math.pow(10, precision);
+  return Math.round(value * multiplier) / multiplier;
+}
+
+const DistanceTo = ({ from, to }) => {
+  const fromLatLng = L.latLng(from.lat, from.lng);
+
+  const toLatLng = L.latLng(to.lat, to.lng);
+  const metersToLoo = fromLatLng.distanceTo(toLatLng);
+
+  const distance =
+    metersToLoo < 1000
+      ? `${round(metersToLoo, 0)}m`
+      : `${round(metersToLoo / 1000, 1)}km`;
+
+  return (
+    <Text as="span" fontSize="3" fontWeight="bold">
+      {distance}
+    </Text>
+  );
+};
 
 const ToiletDetailsPanel = ({
   data,
@@ -91,6 +124,8 @@ const ToiletDetailsPanel = ({
     submitVerificationReport,
     { loading: submitVerificationLoading },
   ] = useMutation(SUBMIT_VERIFICATION_REPORT_MUTATION);
+
+  const { data: geolocationData } = useQuery(GEOLOCATION_QUERY);
 
   // programmatically set focus on close button when panel expands
   const closeButtonRef = React.useRef(null);
@@ -127,9 +162,16 @@ const ToiletDetailsPanel = ({
   }
 
   const titleFragment = (
-    <Text fontWeight="bold" fontSize={4}>
-      <h2 id="toilet-details-heading">{data.name || 'Unnamed Toilet'}</h2>
-    </Text>
+    <Box display="flex" justifyContent="space-between">
+      <Text fontWeight="bold" fontSize={4}>
+        <h2 id="toilet-details-heading">{data.name || 'Unnamed Toilet'}</h2>
+      </Text>
+      {geolocationData.geolocation && (
+        <Box ml={5}>
+          <DistanceTo from={geolocationData.geolocation} to={data.location} />
+        </Box>
+      )}
+    </Box>
   );
 
   const getDirectionsFragment = (

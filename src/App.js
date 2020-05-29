@@ -80,6 +80,10 @@ const App = (props) => {
             lat
             lng
           }
+          geolocation {
+            lat
+            lng
+          }
           userData {
             loggedIn
             name
@@ -94,6 +98,7 @@ const App = (props) => {
           lat: 0,
           lng: 0,
         },
+        geolocation: null,
         userData: {
           __typename: 'UserData',
           loggedIn: isAuthenticated,
