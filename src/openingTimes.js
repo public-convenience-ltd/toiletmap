@@ -1,4 +1,4 @@
-const { DateTime, Info, Interval } = require('luxon');
+import { DateTime, Info, Interval } from 'luxon';
 
 const rangeTypes = {
   CLOSED: 'CLOSED',
@@ -48,7 +48,7 @@ function getIsOpen(openingTimes = [], dateTime = DateTime.local()) {
   return false;
 }
 
-module.exports = {
+export {
   rangeTypes,
   WEEKDAYS,
   getIsOpen,
