@@ -91,7 +91,7 @@
     "@shelf/jest-mongodb": "1.1.5",
     "apollo-server-testing": "2.14.1",
     "cli-progress": "3.8.2",
-    "customize-cra": "0.9.1",
+    "customize-cra": "1.0.0",
     "dotenv": "8.2.0",
     "http-proxy-middleware": "1.0.4",
     "husky": "4.2.5",
