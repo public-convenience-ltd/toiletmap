@@ -11,7 +11,7 @@ import { onError } from '@apollo/link-error';
 import { setContext } from '@apollo/link-context';
 import { gql } from 'graphql.macro';
 
-import { useAuth } from './Auth';
+// import { useAuth } from './Auth';
 import localSchema from './localSchema';
 import { version } from '../package.json';
 
@@ -45,23 +45,23 @@ const httpLink = new HttpLink({
 });
 
 const App = (props) => {
-  const auth = useAuth();
+  // const auth = useAuth();
 
-  const authLink = setContext((_, { headers }) => {
-    return {
-      headers: {
-        ...headers,
-        authorization: auth.isAuthenticated()
-          ? `Bearer ${auth.getAccessToken()}`
-          : '',
-      },
-    };
-  });
+  // const authLink = setContext((_, { headers }) => {
+  //   return {
+  //     headers: {
+  //       ...headers,
+  //       authorization: auth.isAuthenticated()
+  //         ? `Bearer ${auth.getAccessToken()}`
+  //         : '',
+  //     },
+  //   };
+  // });
 
   const client = new ApolloClient({
     name: '@toiletmap/ui',
     version,
-    link: ApolloLink.from([errorLink, authLink, httpLink]),
+    link: ApolloLink.from([errorLink, /*authLink, */httpLink]),
     connectToDevTools: true,
     cache,
     ...localSchema,
@@ -69,7 +69,7 @@ const App = (props) => {
 
   // set the initial cache state
   function writeInitialState() {
-    const isAuthenticated = auth.isAuthenticated();
+    const isAuthenticated = false; // auth.isAuthenticated();
 
     cache.writeQuery({
       query: gql`
@@ -102,7 +102,8 @@ const App = (props) => {
         userData: {
           __typename: 'UserData',
           loggedIn: isAuthenticated,
-          name: isAuthenticated ? auth.getProfile().name : null,
+          // name: isAuthenticated ? auth.getProfile().name : null,
+          name: null,
         },
       },
     });
