@@ -160,6 +160,7 @@ const LooMap = ({
           }
 
           :focus,
+          .leaflet-control a:focus,
           .leaflet-marker-icon:focus {
             outline: 2px solid ${theme.colors.tertiary} !important;
             outline-offset: 0.5rem;
