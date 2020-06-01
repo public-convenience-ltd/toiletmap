@@ -11,7 +11,8 @@
     "format": "prettier --write \"./**/*.{js,json}\"",
     "test": "jest",
     "migrate": "migrate-mongo up",
-    "generate": "node -r dotenv/config ./src/api/db/manage/generate/index.js --confirm"
+    "generate": "node -r dotenv/config ./src/api/db/manage/generate/index.js --confirm",
+    "areas": "node -r dotenv/config ./src/api/db/manage/areaToDatabase/index.js"
   },
   "repository": {
     "type": "git",

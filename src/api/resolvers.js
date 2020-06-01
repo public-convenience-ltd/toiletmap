@@ -1,5 +1,5 @@
 const config = require('./config');
-const { Loo, Report } = require('./db');
+const { Loo, Report, Area } = require('./db');
 const { GraphQLDateTime } = require('graphql-iso-date');
 const without = require('lodash/without');
 const OpeningTimesScalar = require('./OpeningTimesScalar');
@@ -106,30 +106,12 @@ const resolvers = {
         'complete'
       ),
     areas: async (parent, args) => {
-      const data = await Loo.aggregate([
-        {
-          $match: {
-            'properties.area.name': { $exists: true },
-            'properties.area.type': { $exists: true },
-          },
-        },
-        {
-          $unwind: '$properties.area',
-        },
-        {
-          $group: {
-            _id: '$properties.area.name',
-            type: {
-              $first: '$properties.area.type',
-            },
-          },
-        },
-      ]);
+      const data = await Area.find({}, { name: 1, type: 1 }).exec();
 
       const areas = data.map((area) => {
         return {
           type: area.type,
-          name: area._id,
+          name: area.name,
         };
       });
 
