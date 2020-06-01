@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import queryString from 'query-string';
 import { useMutation } from '@apollo/client';
 import { loader } from 'graphql.macro';
@@ -15,6 +16,7 @@ import useMapPosition from '../components/useMapPosition';
 import useNearbyLoos from '../components/useNearbyLoos';
 
 import config from '../config';
+import history from '../history';
 
 const UPDATE_LOO = loader('./updateLoo.graphql');
 
@@ -57,6 +59,11 @@ const AddPage = (props) => {
     console.error('saving', saveError);
   }
 
+  // redirect to new toilet entry page on successful addition
+  if (saveResponse && saveResponse.submitReport.code === '200') {
+    history.push(`/loos/${saveResponse.submitReport.loo.id}?message=created`);
+  }
+
   const save = (data) => {
     // add the active state for which there's no user-facing form control as yet
     data.active = true;
@@ -68,7 +75,11 @@ const AddPage = (props) => {
 
   return (
     <PageLayout>
-      <Box position="relative" display="flex" height={300} maxHeight="40vh">
+      <Helmet>
+        <title>{config.getTitle('Add Toilet')}</title>
+      </Helmet>
+
+      <Box position="relative" display="flex" height={332} maxHeight="40vh">
         <LooMap
           loos={data}
           center={mapPosition.center}
@@ -79,6 +90,7 @@ const AddPage = (props) => {
           showSearchControl
           showLocateControl
           showCrosshair
+          controlsOffset={20}
         />
 
         <Box position="absolute" top={0} left={0} m={3}>
@@ -88,23 +100,23 @@ const AddPage = (props) => {
         </Box>
       </Box>
 
-      <Spacer mt={4} />
-
-      <EntryForm
-        title="Add This Toilet"
-        loo={initialFormState}
-        center={mapPosition.center}
-        saveLoading={saveLoading}
-        saveResponse={saveResponse}
-        saveError={saveError}
-        onSubmit={save}
-      >
-        <Box display="flex" flexDirection="column" alignItems="center">
-          <Button type="submit" data-testid="add-the-toilet">
-            Save toilet
-          </Button>
-        </Box>
-      </EntryForm>
+      <Box position="relative" mt={-3} pt={4} borderRadius={35} bg="white">
+        <EntryForm
+          title="Add This Toilet"
+          loo={initialFormState}
+          center={mapPosition.center}
+          saveLoading={saveLoading}
+          saveResponse={saveResponse}
+          saveError={saveError}
+          onSubmit={save}
+        >
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Button type="submit" data-testid="add-the-toilet">
+              Save toilet
+            </Button>
+          </Box>
+        </EntryForm>
+      </Box>
 
       <Spacer mt={4} />
     </PageLayout>

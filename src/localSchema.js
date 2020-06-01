@@ -39,6 +39,33 @@ const resolvers = {
 
       return true;
     },
+    updateGeolocation: (_root, { lat, lng }, { cache }) => {
+      const query = gql`
+        query {
+          geolocation @client {
+            lat
+            lng
+          }
+        }
+      `;
+
+      if (!lat || !lng) {
+        cache.writeQuery({ query, data: { geolocation: null } });
+        return true;
+      }
+
+      const data = {
+        geolocation: {
+          __typename: 'Point',
+          lat,
+          lng,
+        },
+      };
+
+      cache.writeQuery({ query, data });
+
+      return true;
+    },
     updateRadius: (_root, { radius }, { cache }) => {
       const query = gql`
         query {
@@ -105,12 +132,14 @@ const typeDefs = gql`
   extend type Query {
     mapCenter: Point!
     mapZoom: Number!
+    geolocation: Point
     userData: UserData!
   }
 
   extend type Mutation {
     updateCenter(lat: Number!, lng: Number!): Boolean
     updateZoom(zoom: Number!): Boolean
+    updateGeolocation(lat: Number, lng: Number): Boolean
     toggleViewMode: Boolean
     loginUser(name: String!): Boolean
     logoutUser: Boolean

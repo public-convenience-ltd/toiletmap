@@ -9,7 +9,7 @@ const Logo = (props) => (
     as="img"
     src={logo}
     alt="The Great British Toilet Map"
-    height={[30, 36]}
+    width={154}
     {...props}
   />
 );

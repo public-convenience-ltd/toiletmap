@@ -1,6 +1,4 @@
 import React from 'react';
-import startCase from 'lodash/startCase';
-import toLower from 'lodash/toLower';
 import uniq from 'lodash/uniq';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,7 +16,7 @@ import TimeAgo from 'timeago-react';
 const MISSING_MESSAGE = 'Not Recorded';
 
 export default function ResultRow({ loo }) {
-  const { name, type, opening, area } = loo;
+  const { name, area } = loo;
   const contributors = loo.reports.reduce((current, next) => {
     current.push(next.contributor);
     return current;
@@ -42,41 +40,29 @@ export default function ResultRow({ loo }) {
         </Link>
       </TableCell>
       <TableCell>
-        {area.map((val) => {
-          return (
-            <React.Fragment key={val.name}>
-              <Chip
-                avatar={
-                  <Avatar>
-                    <CityIcon />
-                  </Avatar>
-                }
-                label={val.name}
-                color={val.name ? 'primary' : 'secondary'}
-                variant="default"
-              />
-              <Chip
-                label={val.type}
-                color={val.type ? 'primary' : 'secondary'}
-                variant="outlined"
-              />
-            </React.Fragment>
-          );
-        })}
-      </TableCell>
-      <TableCell>
-        <Chip
-          avatar={
-            <Avatar>
-              <PeopleIcon />
-            </Avatar>
-          }
-          label={
-            type ? startCase(toLower(type.replace(/_/g, ' '))) : MISSING_MESSAGE
-          }
-          color={type ? 'primary' : 'secondary'}
-          variant="default"
-        />
+        {area
+          ? area.map((val) => {
+              return (
+                <React.Fragment key={val.name}>
+                  <Chip
+                    avatar={
+                      <Avatar>
+                        <CityIcon />
+                      </Avatar>
+                    }
+                    label={val.name}
+                    color={val.name ? 'primary' : 'secondary'}
+                    variant="default"
+                  />
+                  <Chip
+                    label={val.type}
+                    color={val.type ? 'primary' : 'secondary'}
+                    variant="outlined"
+                  />
+                </React.Fragment>
+              );
+            })
+          : null}
       </TableCell>
 
       <TableCell>
@@ -107,13 +93,6 @@ export default function ResultRow({ loo }) {
           label={<TimeAgo datetime={loo.updatedAt} /> || MISSING_MESSAGE}
           color={loo.updatedAt ? 'primary' : 'secondary'}
           variant="default"
-        />
-      </TableCell>
-      <TableCell>
-        <Chip
-          label={opening || MISSING_MESSAGE}
-          color={opening ? 'primary' : 'secondary'}
-          variant="outlined"
         />
       </TableCell>
     </TableRow>

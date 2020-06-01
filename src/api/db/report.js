@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
-const fetch = require('node-fetch');
 const hasha = require('hasha');
 const isEqual = require('lodash/isEqual');
-const map = require('lodash/map');
-const compact = require('lodash/compact');
 
 const config = require('../config');
 const CoreSchema = require('./core');
@@ -112,7 +109,7 @@ ReportSchema.methods.unroll = async function () {
 ReportSchema.methods.generateLoo = async function (idOverride) {
   idOverride = idOverride || null;
   let looroll = await this.unroll();
-  let loo = this.model('NewLoo').fromReports(looroll, idOverride);
+  let loo = await this.model('NewLoo').fromReports(looroll, idOverride);
   return loo;
 };
 
@@ -164,43 +161,12 @@ ReportSchema.methods.getLoo = async function () {
   });
 };
 
-async function getAreaData(point) {
-  let url = `${config.mapit.endpoint}${point.coordinates.join(',')}?apiKey=${
-    config.mapit.apiKey
-  }`;
-  let response = await fetch(url);
-  if (!response.ok) {
-    console.error(
-      `Failed to fetch area data from ${url} got response (${response.status}) ${response.statusText}`
-    );
-    return undefined;
-  }
-  let data = await response.json();
-  // Mapit returns an object keyed by numerid area id.
-  // We are only looking for the values containing a type_name our config
-  // tells us is interesting. We'll extract them and map them into an
-  let area = map(data, (v) => {
-    if (config.mapit.areaTypes.includes(v.type_name)) {
-      return {
-        type: v.type_name,
-        name: v.name,
-      };
-    }
-  });
-  return compact(area);
-}
-
 ReportSchema.statics.submit = async function (data, user, from) {
   const reportData = {
     diff: {
       ...data,
     },
   };
-
-  if (data.geometry) {
-    const area = await getAreaData(data.geometry);
-    reportData.diff.area = area;
-  }
 
   reportData.contributor = config.reports.anonContributor;
 

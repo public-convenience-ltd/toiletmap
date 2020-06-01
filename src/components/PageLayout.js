@@ -37,6 +37,7 @@ const ResetStyles = (
       /* remove default padding */
       ul,
       ol,
+      button,
       fieldset {
         padding: 0;
       }
@@ -84,8 +85,17 @@ const ResetStyles = (
       /* have link and buttons be indistinguishable */
       a,
       button {
-        all: unset;
+        color: inherit;
         cursor: pointer;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      button {
+        border: none;
+        background: none;
       }
 
       /* make images easier to work with */
@@ -222,7 +232,7 @@ const PageLayout = ({ mapCenter, children }) => {
         <Box display="flex" flexDirection="column" height="100%">
           <Header mapCenter={mapCenter}>{footerFragment}</Header>
 
-          <Box position="relative" display="flex" flexGrow={1}>
+          <Box position="relative" display="flex" flexGrow={1} overflowY="auto">
             <Box
               as="main"
               flexGrow={1}
@@ -232,8 +242,8 @@ const PageLayout = ({ mapCenter, children }) => {
             />
           </Box>
 
-          <Box as={Media} greaterThan="sm" mt="auto">
-            {footerFragment}
+          <Box mt="auto">
+            <Media greaterThan="sm">{footerFragment}</Media>
           </Box>
         </Box>
       </MediaContextProvider>
