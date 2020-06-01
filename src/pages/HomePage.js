@@ -48,9 +48,9 @@ const HomePage = ({ initialPosition, ...props }) => {
   const selectedLooId = useParams().id;
 
   const { data, loading } = useQuery(FIND_BY_ID, {
+    skip: !selectedLooId,
     variables: {
       id: selectedLooId,
-      skip: !selectedLooId,
     },
   });
 
