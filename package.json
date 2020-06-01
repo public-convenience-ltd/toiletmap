@@ -4,6 +4,7 @@
   "version": "2.0.0",
   "description": "",
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "build": "react-app-rewired build",
     "dev": "react-app-rewired start",
     "api": "node -r dotenv/config ./api/index.js",
@@ -83,6 +84,7 @@
     "react-router-dom": "5.2.0",
     "react-router-hash-link": "1.2.2",
     "resize-observer-polyfill": "1.5.1",
+    "source-map-explorer": "2.4.2",
     "styled-system": "5.1.5",
     "timeago-react": "3.0.0"
   },
