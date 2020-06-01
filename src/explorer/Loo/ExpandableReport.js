@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import omit from 'lodash/omit';
 import pickBy from 'lodash/pickBy';
-import { DateTime } from 'luxon';
+import parseISO from 'date-fns/parseISO';
+import lightFormat from 'date-fns/lightFormat';
 
 import Typography from '@material-ui/core/Typography';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -30,9 +31,7 @@ export default function ExpandableReport(props) {
         <Typography>Report from: {report.contributor}</Typography>
         <Typography>
           Created:{' '}
-          {DateTime.fromISO(report.createdAt).toLocaleString(
-            DateTime.DATETIME_MED
-          )}
+          {lightFormat(parseISO(report.createdAt), 'DD/LL/YYYY, hh:mm a..aaa')}
         </Typography>
       </ExpansionPanelSummary>
 

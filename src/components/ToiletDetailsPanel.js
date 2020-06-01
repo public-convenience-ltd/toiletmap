@@ -16,7 +16,9 @@ import {
   faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
-import { DateTime } from 'luxon';
+import lightFormat from 'date-fns/lightFormat';
+import getISODay from 'date-fns/getISODay';
+import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
 import { useMutation, useQuery, gql } from '@apollo/client';
 import useComponentSize from '@rehooks/component-size';
@@ -43,6 +45,7 @@ const UnstyledList = styled.ul`
 `;
 
 function getTimeRangeLabel(range) {
+  console.log(range);
   if (range === rangeTypes.CLOSED) {
     return 'Closed';
   }
@@ -58,7 +61,7 @@ function getTimeRangeLabel(range) {
   return 'Unknown';
 }
 
-function getIsOpenLabel(openingTimes = [], dateTime = DateTime.local()) {
+function getIsOpenLabel(openingTimes = [], dateTime = new Date()) {
   const isOpen = getIsOpen(openingTimes, dateTime);
 
   if (isOpen === null) {
@@ -238,16 +241,18 @@ const ToiletDetailsPanel = ({
     },
   ];
 
+  console.log(data);
+
   const openingTimes = data.openingTimes || WEEKDAYS.map(() => null);
 
-  const todayWeekdayIndex = DateTime.local().weekday - 1;
+  const todayWeekdayIndex = getISODay(new Date());
 
   const editUrl = `/loos/${data.id}/edit`;
 
-  const updatedAt = DateTime.fromISO(data.updatedAt);
+  const updatedAt = parseISO(data.updatedAt);
   let verifiedOrUpdatedDate = updatedAt;
   if (data.verifiedAt) {
-    const verifiedAt = DateTime.fromISO(data.verifiedAt);
+    const verifiedAt = parseISO(data.verifiedAt);
     if (updatedAt < verifiedAt) {
       verifiedOrUpdatedDate = verifiedAt;
     }
@@ -356,7 +361,7 @@ const ToiletDetailsPanel = ({
               </Box>
               <Spacer mb={2} />
               Last verified:{' '}
-              {verifiedOrUpdatedDate.toLocaleString(DateTime.DATETIME_SHORT)}
+              {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
             </Box>
 
             <Box width={['100%', '50%', '25%']} padding={3} order={[0, 1]}>
