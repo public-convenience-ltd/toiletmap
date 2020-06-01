@@ -80,7 +80,6 @@
     "react-hook-form": "5.7.2",
     "react-leaflet": "2.7.0",
     "react-leaflet-control": "2.1.2",
-    "react-responsive": "8.0.3",
     "react-router-dom": "5.2.0",
     "react-router-hash-link": "1.2.2",
     "resize-observer-polyfill": "1.5.1",
