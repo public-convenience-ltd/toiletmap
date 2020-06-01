@@ -45,7 +45,6 @@ const UnstyledList = styled.ul`
 `;
 
 function getTimeRangeLabel(range) {
-  console.log(range);
   if (range === rangeTypes.CLOSED) {
     return 'Closed';
   }
@@ -240,8 +239,6 @@ const ToiletDetailsPanel = ({
       valueIcon: getFeatureValueIcon(data.automatic),
     },
   ];
-
-  console.log(data);
 
   const openingTimes = data.openingTimes || WEEKDAYS.map(() => null);
 

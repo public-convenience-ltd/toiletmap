@@ -13,10 +13,6 @@ import config from '../config';
 
 import { TRACKING_STORAGE_KEY } from './Tracking';
 
-import 'leaflet/dist/leaflet.css';
-import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
-import 'leaflet-loading/src/Control.Loading.css';
-
 // based on https://hankchizljaw.com/wrote/a-modern-css-reset
 const ResetStyles = (
   <Global
