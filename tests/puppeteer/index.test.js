@@ -8,7 +8,7 @@ describe('Homepage', () => {
 
   it('is correctly titled', async () => {
     await expect(page.title()).resolves.toMatch(
-      'The Great British Public Toilet Map'
+      'The Great British Toilet Map: Find Toilet'
     );
   });
 });

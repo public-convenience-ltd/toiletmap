@@ -10,7 +10,7 @@
     "lint": "eslint . && stylelint \"src/**/*.css\"",
     "format": "prettier --write \"./**/*.{js,json}\"",
     "test": "jest",
-    "build:testable": "REACT_APP_MOCKS=true yarn build",
+    "build:testable": "CI= REACT_APP_MOCKS=true yarn build",
     "migrate": "migrate-mongo up",
     "generate": "node -r dotenv/config ./src/api/db/manage/generate/index.js --confirm",
     "areas": "node -r dotenv/config ./src/api/db/manage/areaToDatabase/index.js"
@@ -90,7 +90,7 @@
   "devDependencies": {
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
-    "@lola-tech/graphql-kimera": "0.10.0-alpha.4",
+    "@lola-tech/graphql-kimera": "0.10.0-alpha.7",
     "@shelf/jest-mongodb": "1.1.5",
     "apollo-link-schema": "1.2.5",
     "apollo-server-testing": "2.14.1",
@@ -104,7 +104,7 @@
     "migrate-mongo": "7.2.1",
     "nodemon": "2.0.4",
     "prettier": "2.0.5",
-    "puppeteer": "3.1.0",
+    "puppeteer": "3.3.0",
     "react-app-rewired": "2.1.6",
     "react-scripts": "3.4.1",
     "serve": "11.3.1",
