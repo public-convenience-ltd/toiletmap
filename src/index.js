@@ -24,7 +24,7 @@ import PageLoading from './components/PageLoading';
 import history from './history';
 import Router from './Router';
 import AuthProvider from './Auth';
-import App from './App';
+import ApolloProvider from './Apollo';
 
 const Explorer = lazy(() =>
   import(/*webpackChunkName: 'explorer'*/ './explorer')
@@ -41,7 +41,7 @@ const RemovePage = lazy(() =>
 
 ReactDOM.render(
   <AuthProvider>
-    <App>
+    <ApolloProvider>
       <Router history={history} forceRefresh={false}>
         <Tracking />
         <Suspense fallback={<PageLoading />}>
@@ -81,7 +81,7 @@ ReactDOM.render(
           </Switch>
         </Suspense>
       </Router>
-    </App>
+    </ApolloProvider>
   </AuthProvider>,
   document.getElementById('root')
 );
