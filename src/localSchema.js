@@ -81,48 +81,6 @@ const resolvers = {
 
       return true;
     },
-    loginUser: (_root, { name }, { cache }) => {
-      const query = gql`
-        query getUserData {
-          userData @client {
-            name
-            loggedIn
-          }
-        }
-      `;
-
-      const data = {
-        userData: {
-          __typename: 'UserData',
-          name,
-          loggedIn: true,
-        },
-      };
-
-      cache.writeQuery({ data, query });
-      return true;
-    },
-    logoutUser: (_root, vars, { cache }) => {
-      const query = gql`
-        query getUserData {
-          userData @client {
-            name
-            loggedIn
-          }
-        }
-      `;
-
-      const data = {
-        userData: {
-          __typename: 'UserData',
-          name: null,
-          loggedIn: false,
-        },
-      };
-
-      cache.writeQuery({ data, query });
-      return true;
-    },
   },
 };
 
@@ -133,7 +91,6 @@ const typeDefs = gql`
     mapCenter: Point!
     mapZoom: Number!
     geolocation: Point
-    userData: UserData!
   }
 
   extend type Mutation {
@@ -141,18 +98,11 @@ const typeDefs = gql`
     updateZoom(zoom: Number!): Boolean
     updateGeolocation(lat: Number, lng: Number): Boolean
     toggleViewMode: Boolean
-    loginUser(name: String!): Boolean
-    logoutUser: Boolean
   }
 
   type Point {
     lat: Number!
     lng: Number!
-  }
-
-  type UserData {
-    loggedIn: Boolean!
-    name: String
   }
 `;
 

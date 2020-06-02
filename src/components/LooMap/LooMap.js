@@ -13,6 +13,8 @@ import Marker from './Marker';
 
 import crosshair from '../../images/crosshair.svg';
 
+import 'leaflet/dist/leaflet.css';
+
 const KEY_ENTER = 13;
 
 const LooMap = ({
