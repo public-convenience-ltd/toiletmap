@@ -77,7 +77,7 @@ const RadioInput = styled.input`
     border-radius: 50%;
   }
 
-  :focus + span {
+  &[data-focus-visible-added] + span {
     outline: 1px dotted currentColor;
     outline-offset: 0.5rem;
   }

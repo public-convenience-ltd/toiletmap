@@ -33,7 +33,7 @@
     "*.css": "stylelint"
   },
   "dependencies": {
-    "@apollo/client": "3.0.0-beta.54",
+    "@apollo/client": "3.0.0-rc.0",
     "@apollo/link-context": "2.0.0-beta.3",
     "@apollo/link-error": "2.0.0-beta.3",
     "@artsy/fresnel": "1.1.0",
@@ -56,6 +56,7 @@
     "date-fns": "2.14.0",
     "downshift": "5.4.2",
     "emotion-theming": "10.0.27",
+    "focus-visible": "5.1.0",
     "framer-motion": "1.11.0",
     "graphql-iso-date": "3.6.1",
     "graphql.macro": "1.4.2",
