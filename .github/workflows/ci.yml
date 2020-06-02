@@ -15,11 +15,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '10.x'
-    - name: Install Dependencies  
-      run: yarn install
+    - name: Yarn install (with caching)
+      uses: bahmutov/npm-install@v1.1.0
     - name: Build Test Client
       run: yarn build:testable
     - name: Test
