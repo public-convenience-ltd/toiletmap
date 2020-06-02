@@ -3,13 +3,17 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { css } from '@emotion/core';
 import { Map, TileLayer, ZoomControl } from 'react-leaflet';
+import 'focus-visible';
 
 import config from '../../config.js';
 import LocateMapControl from './LocateMapControl';
 import ToiletMarkerIcon from './ToiletMarkerIcon';
+import AccessibilityIntersection from './AccessibilityIntersection';
+import AccessibilityList from './AccessibilityList';
 
 import Box from '../Box';
 import Marker from './Marker';
+import VisuallyHidden from '../VisuallyHidden';
 
 import crosshair from '../../images/crosshair.svg';
 
@@ -27,21 +31,25 @@ const LooMap = ({
   staticMap,
   controlsOffset,
   showCrosshair,
+  withAccessibilityOverlays,
 }) => {
   const mapRef = React.useRef();
+  const [intersectingToilets, setIntersectingToilets] = React.useState([]);
+  const [
+    renderAccessibilityOverlays,
+    setRenderAccessibilityOverlays,
+  ] = React.useState(false);
+  const [announcement, setAnnouncement] = React.useState(null);
 
   useEffect(() => {
     const map = mapRef.current.leafletElement.getContainer();
 
     // when focused on the map container, Leaflet allows the user to pan the map by using the arrow keys
     // without the application role screen reader software overrides these controls
-    // this also avoid the entire main region being announced
+    //
+    // this also avoids the entire main region being announced
     map.setAttribute('role', 'application');
-    map.setAttribute('aria-label', 'use arrow keys to pan the map');
-    map.setAttribute(
-      'aria-keyshortcuts',
-      'ArrowUp ArrowDown ArrowLeft ArrowRight'
-    );
+    map.setAttribute('aria-label', 'Map');
   }, []);
 
   const handleViewportChanged = () => {
@@ -85,11 +93,54 @@ const LooMap = ({
               push(`/loos/${toilet.id}`);
             }
           }}
-          keyboard={!staticMap}
+          keyboard={false}
         />
       )),
     [loos, staticMap, push]
   );
+
+  const keyboardSelectionHandler = React.useCallback(
+    (selectionIndex) => {
+      const toilet = intersectingToilets[selectionIndex];
+
+      if (!toilet) {
+        return;
+      }
+
+      setAnnouncement(`${toilet.name || 'Unnamed toilet'} selected`);
+
+      push(`/loos/${toilet.id}`);
+    },
+    [intersectingToilets, push]
+  );
+
+  React.useEffect(() => {
+    if (withAccessibilityOverlays && mapRef.current) {
+      const map = mapRef.current.leafletElement.getContainer();
+
+      const callback = function (mutationsList) {
+        for (let mutation of mutationsList) {
+          const focusVisible = mutation.target.dataset.focusVisibleAdded === '';
+
+          if (focusVisible !== renderAccessibilityOverlays) {
+            setRenderAccessibilityOverlays(focusVisible);
+          }
+        }
+      };
+
+      const observer = new MutationObserver(callback);
+
+      // only render accessibility overlays when [data="focus-visible-added"] is applied
+      //
+      // we conditionally render instead of toggling CSS display since we want to avoid AccessibilityList being announced
+      // before the map is keyboard focused
+      observer.observe(map, { attributes: true });
+
+      return () => {
+        observer.disconnect();
+      };
+    }
+  }, [withAccessibilityOverlays, mapRef, renderAccessibilityOverlays]);
 
   return (
     <Box
@@ -161,14 +212,16 @@ const LooMap = ({
             }
           }
 
-          :focus,
-          .leaflet-control a:focus,
-          .leaflet-marker-icon:focus {
-            outline: 2px solid ${theme.colors.tertiary} !important;
-            outline-offset: 0.5rem;
+          &[data-focus-visible-added] {
+            border: 2px solid ${theme.colors.tertiary};
           }
 
-          :focus {
+          .leaflet-control [data-focus-visible-added] {
+            outline: 2px solid ${theme.colors.tertiary} !important;
+            outline-offset: 3px;
+          }
+
+          &[data-focus-visible-added] {
             outline-offset: 0;
           }
         `}
@@ -181,6 +234,33 @@ const LooMap = ({
         {memoizedMarkers}
         <ZoomControl position="bottomright" />
         <LocateMapControl position="bottomright" />
+
+        {renderAccessibilityOverlays && (
+          <>
+            <AccessibilityIntersection
+              className="accessibility-box"
+              toilets={loos}
+              bounds={mapRef.current.leafletElement.getBounds().pad(-0.4)}
+              onIntersection={setIntersectingToilets}
+              onSelection={keyboardSelectionHandler}
+              center={center}
+            />
+
+            <AccessibilityList
+              toilets={intersectingToilets.map((toilet) => toilet.name)}
+            />
+
+            <VisuallyHidden>
+              <div
+                role="status"
+                aria-atomic="true"
+                aria-live="polite"
+                aria-relevant="additions text"
+                children={announcement}
+              />
+            </VisuallyHidden>
+          </>
+        )}
       </Map>
     </Box>
   );
@@ -199,6 +279,7 @@ LooMap.propTypes = {
   onViewportChanged: PropTypes.func,
   controlsOffset: PropTypes.number,
   showCrosshair: PropTypes.bool,
+  withAccessibilityOverlays: PropTypes.bool,
 };
 
 LooMap.defaultProps = {
@@ -209,6 +290,7 @@ LooMap.defaultProps = {
   staticMap: false,
   onViewportChanged: Function.prototype,
   controlsOffset: 0,
+  withAccessibilityOverlays: true,
 };
 
 export default LooMap;

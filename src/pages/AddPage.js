@@ -91,6 +91,7 @@ const AddPage = (props) => {
           showLocateControl
           showCrosshair
           controlsOffset={20}
+          withAccessibilityOverlays={false}
         />
 
         <Box position="absolute" top={0} left={0} m={3}>
