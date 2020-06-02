@@ -13,8 +13,11 @@ import AccessibilityList from './AccessibilityList';
 
 import Box from '../Box';
 import Marker from './Marker';
+import VisuallyHidden from '../VisuallyHidden';
 
 import crosshair from '../../images/crosshair.svg';
+
+import 'leaflet/dist/leaflet.css';
 
 const KEY_ENTER = 13;
 
@@ -36,6 +39,7 @@ const LooMap = ({
     renderAccessibilityOverlays,
     setRenderAccessibilityOverlays,
   ] = React.useState(false);
+  const [announcement, setAnnouncement] = React.useState(null);
 
   useEffect(() => {
     const map = mapRef.current.leafletElement.getContainer();
@@ -95,27 +99,48 @@ const LooMap = ({
     [loos, staticMap, push]
   );
 
-  if (withAccessibilityOverlays && mapRef.current) {
-    const map = mapRef.current.leafletElement.getContainer();
+  const keyboardSelectionHandler = React.useCallback(
+    (selectionIndex) => {
+      const toilet = intersectingToilets[selectionIndex];
 
-    const callback = function (mutationsList) {
-      for (let mutation of mutationsList) {
-        const focusVisible = mutation.target.dataset.focusVisibleAdded === '';
-
-        if (focusVisible !== renderAccessibilityOverlays) {
-          setRenderAccessibilityOverlays(focusVisible);
-        }
+      if (!toilet) {
+        return;
       }
-    };
 
-    const observer = new MutationObserver(callback);
+      setAnnouncement(`${toilet.name || 'Unnamed toilet'} selected`);
 
-    // only render accessibility overlays when [data="focus-visible-added"] is applied
-    //
-    // we conditionally render instead of toggling CSS display since we want to avoid AccessibilityList being announced
-    // before the map is keyboard focused
-    observer.observe(map, { attributes: true });
-  }
+      push(`/loos/${toilet.id}`);
+    },
+    [intersectingToilets, push]
+  );
+
+  React.useEffect(() => {
+    if (withAccessibilityOverlays && mapRef.current) {
+      const map = mapRef.current.leafletElement.getContainer();
+
+      const callback = function (mutationsList) {
+        for (let mutation of mutationsList) {
+          const focusVisible = mutation.target.dataset.focusVisibleAdded === '';
+
+          if (focusVisible !== renderAccessibilityOverlays) {
+            setRenderAccessibilityOverlays(focusVisible);
+          }
+        }
+      };
+
+      const observer = new MutationObserver(callback);
+
+      // only render accessibility overlays when [data="focus-visible-added"] is applied
+      //
+      // we conditionally render instead of toggling CSS display since we want to avoid AccessibilityList being announced
+      // before the map is keyboard focused
+      observer.observe(map, { attributes: true });
+
+      return () => {
+        observer.disconnect();
+      };
+    }
+  }, [withAccessibilityOverlays, mapRef, renderAccessibilityOverlays]);
 
   return (
     <Box
@@ -217,19 +242,23 @@ const LooMap = ({
               toilets={loos}
               bounds={mapRef.current.leafletElement.getBounds().pad(-0.4)}
               onIntersection={setIntersectingToilets}
-              onSelection={(selectionIndex) => {
-                const toilet = intersectingToilets[selectionIndex];
-
-                if (toilet) {
-                  push(`/loos/${toilet.id}`);
-                }
-              }}
+              onSelection={keyboardSelectionHandler}
               center={center}
             />
 
             <AccessibilityList
               toilets={intersectingToilets.map((toilet) => toilet.name)}
             />
+
+            <VisuallyHidden>
+              <div
+                role="status"
+                aria-atomic="true"
+                aria-live="polite"
+                aria-relevant="additions text"
+                children={announcement}
+              />
+            </VisuallyHidden>
           </>
         )}
       </Map>

@@ -13,6 +13,7 @@ const Key = ({ children, ...props }) => (
     display="inline-flex"
     alignItems="center"
     justifyContent="center"
+    flexShrink={0}
     height="1.5rem"
     width="1.5rem"
     borderRadius="5px"

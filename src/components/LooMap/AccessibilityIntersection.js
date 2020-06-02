@@ -40,7 +40,7 @@ const AccessibilityIntersection = ({
     return () => {
       document.removeEventListener('keydown', keyDownHandler);
     };
-  });
+  }, [onSelection]);
 
   return <Rectangle ref={rectangleRef} {...props} />;
 };
