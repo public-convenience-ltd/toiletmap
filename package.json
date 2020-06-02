@@ -45,7 +45,7 @@
     "@fortawesome/free-brands-svg-icons": "5.13.0",
     "@fortawesome/free-regular-svg-icons": "5.13.0",
     "@fortawesome/free-solid-svg-icons": "5.13.0",
-    "@fortawesome/react-fontawesome": "0.1.9",
+    "@fortawesome/react-fontawesome": "0.1.10",
     "@material-ui/core": "4.10.1",
     "@material-ui/icons": "4.9.1",
     "@rehooks/component-size": "1.0.3",
