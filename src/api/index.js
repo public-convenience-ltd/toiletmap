@@ -1,11 +1,15 @@
-const { ApolloServer } = require('apollo-server');
-
+const { ApolloServer, gql } = require('apollo-server');
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
 
 const config = require('./config');
 
-const typeDefs = require('./typeDefs');
+const fs = require('fs');
+const path = require('path');
+const typeDefs = gql(
+  fs.readFileSync(path.join(__dirname, 'typeDefs.graphql'), 'utf-8')
+);
+
 const resolvers = require('./resolvers');
 const {
   RequirePermissionDirective,
@@ -35,7 +39,7 @@ const options = {
 // Add GraphQL API
 const apollo = new ApolloServer({
   // These will be defined for both new or existing servers
-  typeDefs,
+  typeDefs: typeDefs,
   resolvers,
   schemaDirectives: {
     auth: RequirePermissionDirective,
