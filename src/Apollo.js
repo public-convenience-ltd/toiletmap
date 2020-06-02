@@ -1,19 +1,18 @@
 import React from 'react';
-
 import {
   ApolloClient,
   ApolloProvider,
   ApolloLink,
   HttpLink,
   InMemoryCache,
+  gql,
 } from '@apollo/client';
 import { onError } from '@apollo/link-error';
 import { setContext } from '@apollo/link-context';
-import { gql } from 'graphql.macro';
 
-import { useAuth } from './Auth';
 import localSchema from './localSchema';
 import { version } from '../package.json';
+import { isAuthenticated, getAccessToken } from './Auth';
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -30,6 +29,35 @@ const cache = new InMemoryCache({
   },
 });
 
+const writeInitialState = () => {
+  cache.writeQuery({
+    query: gql`
+      query {
+        mapZoom
+        mapRadius
+        mapCenter {
+          lat
+          lng
+        }
+        geolocation {
+          lat
+          lng
+        }
+      }
+    `,
+    data: {
+      mapZoom: 16,
+      mapRadius: 1000,
+      mapCenter: {
+        __typename: 'Point',
+        lat: 0,
+        lng: 0,
+      },
+      geolocation: null,
+    },
+  });
+};
+
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }) =>
@@ -44,65 +72,29 @@ const httpLink = new HttpLink({
   uri: process.env.REACT_APP_BAKED_BACKEND || '/api',
 });
 
-const CustomApolloProvider = (props) => {
-  const auth = useAuth();
+const authLink = setContext((_, { headers }) => {
+  return {
+    headers: {
+      ...headers,
+      authorization: isAuthenticated() ? `Bearer ${getAccessToken()}` : '',
+    },
+  };
+});
 
-  const authLink = setContext((_, { headers }) => {
-    return {
-      headers: {
-        ...headers,
-        authorization: auth.isAuthenticated()
-          ? `Bearer ${auth.getAccessToken()}`
-          : '',
-      },
-    };
-  });
+const client = new ApolloClient({
+  name: '@toiletmap/ui',
+  version,
+  link: ApolloLink.from([errorLink, authLink, httpLink]),
+  connectToDevTools: true,
+  cache,
+  ...localSchema,
+});
 
-  const client = new ApolloClient({
-    name: '@toiletmap/ui',
-    version,
-    link: ApolloLink.from([errorLink, authLink, httpLink]),
-    connectToDevTools: true,
-    cache,
-    ...localSchema,
-  });
+writeInitialState();
+client.onResetStore(writeInitialState);
 
-  // set the initial cache state
-  function writeInitialState() {
-    cache.writeQuery({
-      query: gql`
-        query {
-          mapZoom
-          mapRadius
-          mapCenter {
-            lat
-            lng
-          }
-          geolocation {
-            lat
-            lng
-          }
-        }
-      `,
-      data: {
-        mapZoom: 16,
-        mapRadius: 1000,
-        mapCenter: {
-          __typename: 'Point',
-          lat: 0,
-          lng: 0,
-        },
-        geolocation: null,
-      },
-    });
-  }
-
-  writeInitialState();
-
-  // resetStore isn't used anywhere yet, but just in case...
-  client.onResetStore(writeInitialState);
-
-  return <ApolloProvider client={client} children={props.children} />;
-};
+const CustomApolloProvider = (props) => (
+  <ApolloProvider client={client} {...props} />
+);
 
 export default CustomApolloProvider;
