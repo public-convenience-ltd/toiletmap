@@ -3,7 +3,12 @@ const { createTestClient } = require('apollo-server-testing');
 const mongoose = require('mongoose');
 const { connect } = require('../db');
 
-const typeDefs = require('../typeDefs');
+const fs = require('fs');
+const path = require('path');
+const typeDefs = gql(
+  fs.readFileSync(path.join(__dirname, '..', 'typeDefs.graphql'), 'utf-8')
+);
+
 const resolvers = require('../resolvers');
 const {
   RequirePermissionDirective,
