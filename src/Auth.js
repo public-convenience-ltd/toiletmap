@@ -8,6 +8,53 @@ const permissionsKey = 'https://toiletmap.org.uk/permissions';
 export const AuthContext = React.createContext();
 export const useAuth = () => React.useContext(AuthContext);
 
+export const isAuthenticated = () => {
+  // Check whether the current time is past the
+  // Access Token's expiry time
+  let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+  return new Date().getTime() < expiresAt;
+};
+
+export const getAccessToken = () => {
+  const accessToken = localStorage.getItem('access_token');
+  if (!accessToken) {
+    throw new Error('No access token found');
+  }
+  return accessToken;
+};
+
+const getProfile = () => {
+  return {
+    name: localStorage.getItem('name'),
+  };
+};
+
+const redirectOnNextLogin = (location) => {
+  localStorage.setItem('redirectOnLogin', JSON.stringify(location));
+};
+
+const redirectOnLogin = () => {
+  return JSON.parse(localStorage.getItem('redirectOnLogin'));
+};
+
+const logout = () => {
+  // Clear Access Token and ID Token from local storage also the cached email
+  localStorage.removeItem('name');
+  localStorage.removeItem('nickname');
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('id_token');
+  localStorage.removeItem('expires_at');
+  localStorage.removeItem('permissions');
+
+  // navigate to the home route
+  history.push('/');
+};
+
+const checkPermission = (perm) => {
+  const permissions = JSON.parse(localStorage.getItem('permissions') || '[]');
+  return permissions.includes(perm);
+};
+
 const AuthProvider = ({ children }) => {
   const auth0Ref = React.useRef(
     new auth0.WebAuth({
@@ -51,14 +98,6 @@ const AuthProvider = ({ children }) => {
       });
     });
 
-  const getAccessToken = () => {
-    const accessToken = localStorage.getItem('access_token');
-    if (!accessToken) {
-      throw new Error('No access token found');
-    }
-    return accessToken;
-  };
-
   const fetchProfile = () =>
     new Promise((resolve, reject) => {
       const accessToken = getAccessToken();
@@ -72,47 +111,8 @@ const AuthProvider = ({ children }) => {
       });
     });
 
-  const getProfile = () => {
-    return {
-      name: localStorage.getItem('name'),
-    };
-  };
-
-  const redirectOnNextLogin = (location) => {
-    localStorage.setItem('redirectOnLogin', JSON.stringify(location));
-  };
-
-  const redirectOnLogin = () => {
-    return JSON.parse(localStorage.getItem('redirectOnLogin'));
-  };
-
   const login = () => {
     auth0Ref.current.authorize();
-  };
-
-  const logout = () => {
-    // Clear Access Token and ID Token from local storage also the cached email
-    localStorage.removeItem('name');
-    localStorage.removeItem('nickname');
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('id_token');
-    localStorage.removeItem('expires_at');
-    localStorage.removeItem('permissions');
-
-    // navigate to the home route
-    history.push('/');
-  };
-
-  const isAuthenticated = () => {
-    // Check whether the current time is past the
-    // Access Token's expiry time
-    let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    return new Date().getTime() < expiresAt;
-  };
-
-  const checkPermission = (perm) => {
-    const permissions = JSON.parse(localStorage.getItem('permissions') || '[]');
-    return permissions.includes(perm);
   };
 
   return (
