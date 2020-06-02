@@ -1,12 +1,9 @@
 import React, { useEffect } from 'react';
-
+import { useHistory, useLocation } from 'react-router-dom';
 import { useMutation, gql } from '@apollo/client';
-import PageLayout from '../components/PageLayout';
-import Notification from '../components/Notification';
-import MediaQuery from 'react-responsive';
-import config from '../config';
 
 import { useAuth } from '../Auth';
+import PageLayout from '../components/PageLayout';
 
 const MUTATION_LOGIN = gql`
   mutation LoginUser($name: String!) {
@@ -14,18 +11,20 @@ const MUTATION_LOGIN = gql`
   }
 `;
 
-const Callback = (props) => {
+const Callback = () => {
   const auth = useAuth();
   const [doLogin] = useMutation(MUTATION_LOGIN);
 
+  const location = useLocation();
+  const history = useHistory();
+
   useEffect(() => {
-    // This is pretty horrible but necessary, since useEffect can't take an async function
-    (async () => {
-      if (/access_token|id_token|error/.test(props.location.hash)) {
+    const checkAuth = async () => {
+      if (/access_token|id_token|error/.test(location.hash)) {
         await auth.handleAuthentication();
         await auth.fetchProfile();
       }
-    })().then(() => {
+
       if (auth.isAuthenticated()) {
         // Update state to set logged in
         doLogin({
@@ -33,30 +32,19 @@ const Callback = (props) => {
             name: auth.getProfile().name,
           },
         });
-        props.history.push(auth.redirectOnLogin() || '/');
+        history.push(auth.redirectOnLogin() || '/');
       } else {
-        props.history.push('/contribute');
+        history.push('/contribute');
       }
-    });
-  });
+    };
+
+    checkAuth();
+  }, [auth, doLogin, history, location.hash]);
 
   return (
-    <PageLayout
-      main={
-        <MediaQuery minWidth={config.viewport.mobile}>
-          <Notification>
-            <p>Updating credentials</p>
-          </Notification>
-        </MediaQuery>
-      }
-      map={
-        <MediaQuery minWidth={config.viewport.mobile}>
-          <Notification>
-            <p>Updating credentials</p>
-          </Notification>
-        </MediaQuery>
-      }
-    />
+    <PageLayout>
+      <p>Updating credentials</p>
+    </PageLayout>
   );
 };
 

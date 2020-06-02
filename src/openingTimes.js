@@ -1,13 +1,40 @@
-const { DateTime, Info, Interval } = require('luxon');
+import getISODay from 'date-fns/getISODay';
+import set from 'date-fns/set';
+import setISODay from 'date-fns/setISODay';
+import isWithinInterval from 'date-fns/isWithinInterval';
 
 const rangeTypes = {
   CLOSED: 'CLOSED',
 };
 
-const WEEKDAYS = Info.weekdays();
+const WEEKDAYS = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
+];
 
-function getIsOpen(openingTimes = [], dateTime = DateTime.local()) {
-  const weekdayToCheck = dateTime.weekday;
+function getDateFromTime(timeRangeString, weekdayToCheck) {
+  const [hours, minutes] = timeRangeString.split(':');
+
+  const weekday =
+    timeRangeString === '00:00' ? weekdayToCheck + 1 : weekdayToCheck;
+
+  return setISODay(
+    set(new Date(), {
+      hours: hours,
+      minutes: minutes,
+      seconds: 0,
+    }),
+    weekday
+  );
+}
+
+function getIsOpen(openingTimes = [], dateTime = new Date()) {
+  const weekdayToCheck = getISODay(dateTime);
   const timeRangeToCheck = openingTimes[weekdayToCheck - 1];
 
   if (timeRangeToCheck === rangeTypes.CLOSED) {
@@ -23,33 +50,23 @@ function getIsOpen(openingTimes = [], dateTime = DateTime.local()) {
     return true;
   }
 
-  const genericDate = DateTime.local();
+  const startDateTime = getDateFromTime(timeRangeToCheck[0], weekdayToCheck);
+  const endDateTime = getDateFromTime(timeRangeToCheck[1], weekdayToCheck);
 
-  const startHoursAndMinutes = timeRangeToCheck[0].split(':');
-  const startDateTime = genericDate.set({
-    hours: startHoursAndMinutes[0],
-    minutes: startHoursAndMinutes[1],
-    weekday: weekdayToCheck,
+  const isDateWithinInterval = isWithinInterval(dateTime, {
+    start: startDateTime,
+    end: endDateTime,
   });
 
-  const endHoursAndMinutes = timeRangeToCheck[1].split(':');
-  const endDateTime = genericDate.set({
-    hours: endHoursAndMinutes[0],
-    minutes: endHoursAndMinutes[1],
-    weekday: weekdayToCheck,
-  });
-
-  const interval = Interval.fromDateTimes(startDateTime, endDateTime);
-
-  if (interval.contains(dateTime)) {
+  if (isDateWithinInterval) {
     return true;
   }
 
   return false;
 }
 
-module.exports = {
-  rangeTypes,
-  WEEKDAYS,
-  getIsOpen,
-};
+export { rangeTypes };
+
+export { WEEKDAYS };
+
+export { getIsOpen };

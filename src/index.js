@@ -9,12 +9,9 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthCallback from './pages/AuthCallback';
-import RemovePage from './pages/RemovePage';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
-import AddPage from './pages/AddPage';
-import EditPage from './pages/EditPage';
 import ContributePage from './pages/ContributePage';
 import MapPage from './pages/MapPage';
 import UseOurLoosPage from './pages/UseOurLoosPage';
@@ -27,13 +24,24 @@ import PageLoading from './components/PageLoading';
 import history from './history';
 import Router from './Router';
 import AuthProvider from './Auth';
-import App from './App';
+import ApolloProvider from './Apollo';
 
-const Explorer = lazy(() => import('./explorer'));
+const Explorer = lazy(() =>
+  import(/*webpackChunkName: 'explorer'*/ './explorer')
+);
+const AddPage = lazy(() =>
+  import(/*webpackChunkName: 'add'*/ './pages/AddPage')
+);
+const EditPage = lazy(() =>
+  import(/*webpackChunkName: 'edit'*/ './pages/EditPage')
+);
+const RemovePage = lazy(() =>
+  import(/*webpackChunkName: 'remove'*/ './pages/RemovePage')
+);
 
 ReactDOM.render(
   <AuthProvider>
-    <App>
+    <ApolloProvider>
       <Router history={history} forceRefresh={false}>
         <Tracking />
         <Suspense fallback={<PageLoading />}>
@@ -73,7 +81,7 @@ ReactDOM.render(
           </Switch>
         </Suspense>
       </Router>
-    </App>
+    </ApolloProvider>
   </AuthProvider>,
   document.getElementById('root')
 );
