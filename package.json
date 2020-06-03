@@ -67,7 +67,7 @@
     "leaflet-control-geocoder": "1.13.0",
     "leaflet-loading": "0.1.24",
     "lodash": "4.17.15",
-    "mongoose": "5.9.16",
+    "mongoose": "5.9.17",
     "mongoose-paginate": "5.0.3",
     "node-fetch": "2.6.0",
     "prop-types": "15.7.2",
