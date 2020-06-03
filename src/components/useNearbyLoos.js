@@ -15,6 +15,7 @@ const NEARBY_LOOS_QUERY = gql`
       accessible
       babyChange
       radar
+      campaignUOL
     }
   }
 `;

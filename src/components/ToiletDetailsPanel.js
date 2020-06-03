@@ -32,6 +32,25 @@ import Icon from './Icon';
 import { Media } from './Media';
 import { getIsOpen, WEEKDAYS, rangeTypes } from '../openingTimes';
 
+import uolLogo from '../images/uol-logo.svg';
+
+const uolFragment = (
+  <Box display="flex" alignItems="center">
+    <img
+      src={uolLogo}
+      alt=""
+      css={{
+        height: '1.25em',
+      }}
+    />
+    <Spacer ml={2} />
+    <Button as={Link} to="/use-our-loos" variant="link">
+      Use Our Loos
+    </Button>
+    &nbsp;Member
+  </Box>
+);
+
 const Grid = styled(Box)`
   display: flex;
   flex-direction: row;
@@ -362,6 +381,14 @@ const ToiletDetailsPanel = ({
             >
               {titleFragment}
               <Spacer mb={2} />
+
+              {data.campaignUOL && (
+                <>
+                  {uolFragment}
+                  <Spacer mb={3} />
+                </>
+              )}
+
               {getDirectionsFragment}
               <Media greaterThanOrEqual="md">
                 <Spacer mb={4} />
@@ -500,6 +527,8 @@ const ToiletDetailsPanel = ({
       <Grid>
         <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
           {titleFragment}
+          <Spacer mb={2} />
+          {data.campaignUOL && uolFragment}
         </Box>
 
         <Box width={['100%', '50%', '25%']} padding={[3, 4]}>

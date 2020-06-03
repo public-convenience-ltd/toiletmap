@@ -25,5 +25,6 @@ query findLooById($id: ID) {
     notes
     removalReason
     attended
+    campaignUOL
   }
 }
