@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import queryString from 'query-string';
 import { useMutation } from '@apollo/client';
 import { loader } from 'graphql.macro';
+import { Redirect } from 'react-router-dom';
 
 import PageLayout from '../components/PageLayout';
 import LooMap from '../components/LooMap';
@@ -16,7 +17,6 @@ import useMapPosition from '../components/useMapPosition';
 import useNearbyLoos from '../components/useNearbyLoos';
 
 import config from '../config';
-import history from '../history';
 
 const UPDATE_LOO = loader('./updateLoo.graphql');
 
@@ -61,7 +61,11 @@ const AddPage = (props) => {
 
   // redirect to new toilet entry page on successful addition
   if (saveResponse && saveResponse.submitReport.code === '200') {
-    history.push(`/loos/${saveResponse.submitReport.loo.id}?message=created`);
+    return (
+      <Redirect
+        to={`/loos/${saveResponse.submitReport.loo.id}?message=created`}
+      />
+    );
   }
 
   const save = (data) => {
