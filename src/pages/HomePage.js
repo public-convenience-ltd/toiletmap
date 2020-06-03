@@ -120,7 +120,6 @@ const HomePage = ({ initialPosition, ...props }) => {
           top={0}
           left={[0, 3]}
           right={0}
-          bottom={['auto', 0]}
           m={3}
           maxWidth={326}
           maxHeight="100%"
