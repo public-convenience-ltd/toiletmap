@@ -6,8 +6,6 @@ import styled from '@emotion/styled';
 import Box from './Box';
 import Text from './Text';
 
-import config from '../config';
-
 import domestosLogo from '../images/domestos_logo3.png';
 import domestosUseLoos from '../images/domestos_use_our_loos_logo.png';
 
@@ -36,30 +34,24 @@ const Footer = ({ children }) => (
     color="primary"
     height={['auto', 60]}
   >
-    {config.shouldShowSponsor() && (
-      <HashLink
-        to="/use-our-loos"
-        title="Domestos: Use Our Loos Campaign"
-        scroll={(el) => el.scrollIntoView(true)}
-      >
-        <Box
-          display="flex"
-          flexDirection={['column', 'row']}
-          alignItems="center"
-        >
-          <Text fontSize={14}>
-            <small>Proudly sponsored by Domestos</small>
-          </Text>
+    <HashLink
+      to="/use-our-loos"
+      title="Domestos: Use Our Loos Campaign"
+      scroll={(el) => el.scrollIntoView(true)}
+    >
+      <Box display="flex" flexDirection={['column', 'row']} alignItems="center">
+        <Text fontSize={14}>
+          <small>Proudly sponsored by Domestos</small>
+        </Text>
 
-          <Box display="flex" ml={[0, 3]} mb={[3, 0]} order={[-1, 0]}>
-            <UseOurLoosLogo />
-            <Box ml={2}>
-              <DomestosLogo />
-            </Box>
+        <Box display="flex" ml={[0, 3]} mb={[3, 0]} order={[-1, 0]}>
+          <UseOurLoosLogo />
+          <Box ml={2}>
+            <DomestosLogo />
           </Box>
         </Box>
-      </HashLink>
-    )}
+      </Box>
+    </HashLink>
 
     <Box order={[-1, 0]} mb={[4, 0]}>
       <Text fontSize={[12, 16]}>
