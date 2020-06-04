@@ -20,7 +20,7 @@ import lightFormat from 'date-fns/lightFormat';
 import getISODay from 'date-fns/getISODay';
 import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
-import { useMutation, useQuery, gql } from '@apollo/client';
+import { useMutation, gql } from '@apollo/client';
 import useComponentSize from '@rehooks/component-size';
 import L from 'leaflet';
 
@@ -31,6 +31,7 @@ import Spacer from './Spacer';
 import Icon from './Icon';
 import { Media } from './Media';
 import { getIsOpen, WEEKDAYS, rangeTypes } from '../openingTimes';
+import { useMapState } from './MapState';
 
 const Grid = styled(Box)`
   display: flex;
@@ -69,15 +70,6 @@ function getIsOpenLabel(openingTimes = [], dateTime = new Date()) {
 
   return isOpen ? 'Open now' : 'Closed';
 }
-
-const GEOLOCATION_QUERY = gql`
-  query geolocation {
-    geolocation {
-      lat
-      lng
-    }
-  }
-`;
 
 const SUBMIT_VERIFICATION_REPORT_MUTATION = gql`
   mutation submitVerificationReportMutation($id: ID) {
@@ -127,7 +119,7 @@ const ToiletDetailsPanel = ({
     { loading: submitVerificationLoading },
   ] = useMutation(SUBMIT_VERIFICATION_REPORT_MUTATION);
 
-  const { data: geolocationData } = useQuery(GEOLOCATION_QUERY);
+  const [mapState] = useMapState();
 
   // programmatically set focus on close button when panel expands
   const closeButtonRef = React.useRef(null);
@@ -168,9 +160,9 @@ const ToiletDetailsPanel = ({
       <Text fontWeight="bold" fontSize={4}>
         <h2 id="toilet-details-heading">{data.name || 'Unnamed Toilet'}</h2>
       </Text>
-      {geolocationData.geolocation && (
+      {mapState.geolocation && (
         <Box ml={5}>
-          <DistanceTo from={geolocationData.geolocation} to={data.location} />
+          <DistanceTo from={mapState.geolocation} to={data.location} />
         </Box>
       )}
     </Box>

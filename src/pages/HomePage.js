@@ -8,20 +8,20 @@ import { useQuery } from '@apollo/client';
 
 import PageLayout from '../components/PageLayout';
 import LooMap from '../components/LooMap';
-import useMapPosition from '../components/useMapPosition';
 import useNearbyLoos from '../components/useNearbyLoos';
 import Box from '../components/Box';
 import ToiletDetailsPanel from '../components/ToiletDetailsPanel';
 import Sidebar from '../components/Sidebar';
 import Notification from '../components/Notification';
 import VisuallyHidden from '../components/VisuallyHidden';
+import { useMapState } from '../components/MapState';
 
 import config, { FILTERS_KEY } from '../config';
 
 const FIND_BY_ID = loader('./findLooById.graphql');
 
 const HomePage = ({ initialPosition, ...props }) => {
-  const [mapPosition, setMapPosition] = useMapPosition(config.fallbackLocation);
+  const [mapState, setMapState] = useMapState();
 
   let initialState = config.getSettings(FILTERS_KEY);
 
@@ -39,9 +39,9 @@ const HomePage = ({ initialPosition, ...props }) => {
 
   const { data: toiletData } = useNearbyLoos({
     variables: {
-      lat: mapPosition.center.lat,
-      lng: mapPosition.center.lng,
-      radius: Math.ceil(mapPosition.radius),
+      lat: mapState.center.lat,
+      lng: mapState.center.lng,
+      radius: Math.ceil(mapState.radius),
     },
   });
 
@@ -79,23 +79,23 @@ const HomePage = ({ initialPosition, ...props }) => {
   // set initial map center to toilet if on /loos/:id
   React.useEffect(() => {
     if (shouldCenter && data) {
-      setMapPosition({
+      setMapState({
         center: data.loo.location,
       });
 
       // don't recenter the map each time the id changes
       setShouldCenter(false);
     }
-  }, [data, shouldCenter, setMapPosition]);
+  }, [data, shouldCenter, setMapState]);
 
   // set the map position if initialPosition prop exists
   React.useEffect(() => {
     if (initialPosition) {
-      setMapPosition({
+      setMapState({
         center: initialPosition,
       });
     }
-  }, [initialPosition, setMapPosition]);
+  }, [initialPosition, setMapState]);
 
   const [toiletPanelDimensions, setToiletPanelDimensions] = React.useState({});
 
@@ -104,7 +104,7 @@ const HomePage = ({ initialPosition, ...props }) => {
   );
 
   return (
-    <PageLayout mapCenter={mapPosition.center}>
+    <PageLayout mapCenter={mapState.center}>
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
@@ -131,9 +131,9 @@ const HomePage = ({ initialPosition, ...props }) => {
           <Sidebar
             filters={filters}
             onFilterChange={setFilters}
-            onSelectedItemChange={(center) => setMapPosition({ center })}
-            onUpdateMapPosition={setMapPosition}
-            mapCenter={mapPosition.center}
+            onSelectedItemChange={(center) => setMapState({ center })}
+            onUpdateMapPosition={setMapState}
+            mapCenter={mapState.center}
           />
         </Box>
 
@@ -147,9 +147,9 @@ const HomePage = ({ initialPosition, ...props }) => {
             }
             return toilet;
           })}
-          center={mapPosition.center}
-          zoom={mapPosition.zoom}
-          onViewportChanged={setMapPosition}
+          center={mapState.center}
+          zoom={mapState.zoom}
+          onViewportChanged={setMapState}
           controlsOffset={toiletPanelDimensions.height}
         />
 

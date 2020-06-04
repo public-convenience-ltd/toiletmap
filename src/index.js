@@ -25,6 +25,7 @@ import history from './history';
 import Router from './Router';
 import AuthProvider from './Auth';
 import ApolloProvider from './Apollo';
+import { MapStateProvider } from './components/MapState';
 
 const Explorer = lazy(() =>
   import(/*webpackChunkName: 'explorer'*/ './explorer')
@@ -41,6 +42,7 @@ const RemovePage = lazy(() =>
 
 ReactDOM.render(
   <AuthProvider>
+      <MapStateProvider>
     <ApolloProvider>
       <Router history={history} forceRefresh={false}>
         <Tracking />
@@ -82,6 +84,7 @@ ReactDOM.render(
         </Suspense>
       </Router>
     </ApolloProvider>
+      </MapStateProvider>
   </AuthProvider>,
   document.getElementById('root')
 );
