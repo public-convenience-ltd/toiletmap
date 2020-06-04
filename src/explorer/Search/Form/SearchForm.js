@@ -1,4 +1,6 @@
 import React from 'react';
+import { loader } from 'graphql.macro';
+import { print } from 'graphql/language/printer';
 
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -13,10 +15,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { useAuth } from '../../../Auth';
 import Autocomplete from './Autocomplete';
 
-import { loader } from 'graphql.macro';
-
-const AREAS_QUERY = loader('./areas.graphql');
-const CONTRIBUTORS_QUERY = loader('./contributors.graphql');
+const AREAS_QUERY = print(loader('./areas.graphql'));
+const CONTRIBUTORS_QUERY = print(loader('./contributors.graphql'));
 
 export default function SearchForm({ onSubmit, defaultValues }) {
   const auth = useAuth();

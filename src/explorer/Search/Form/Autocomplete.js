@@ -1,7 +1,8 @@
 import React from 'react';
-import { useQuery } from '@apollo/client';
+import useSWR from 'swr';
 import Downshift from 'downshift';
 import deburr from 'lodash/deburr';
+
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -80,7 +81,8 @@ function Autocomplete(props) {
     ...others
   } = props;
 
-  const { data } = useQuery(query);
+  const { data } = useSWR(query);
+
   const items = data?.items?.map((i) => i.label) || [];
 
   return (

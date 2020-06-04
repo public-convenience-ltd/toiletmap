@@ -1,5 +1,6 @@
 import React from 'react';
 import auth0 from 'auth0-js';
+import { setAuthHeader } from './graphql/fetcher';
 
 const CLIENT_ID = 'sUts4RKy04JcyZ2IVFgMAC0rhPARCQYg';
 const permissionsKey = 'https://toiletmap.org.uk/permissions';
@@ -44,6 +45,8 @@ const logout = () => {
   localStorage.removeItem('id_token');
   localStorage.removeItem('expires_at');
   localStorage.removeItem('permissions');
+
+  setAuthHeader(null);
 };
 
 const checkPermission = (perm) => {
@@ -89,6 +92,8 @@ const AuthProvider = ({ children }) => {
           'permissions',
           JSON.stringify(authResult.idTokenPayload[permissionsKey])
         );
+
+        setAuthHeader(localStorage.getItem(authResult.accessToken));
 
         resolve();
       });

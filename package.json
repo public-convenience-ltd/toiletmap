@@ -34,9 +34,6 @@
     "*.css": "stylelint"
   },
   "dependencies": {
-    "@apollo/client": "3.0.0-beta.54",
-    "@apollo/link-context": "2.0.0-beta.3",
-    "@apollo/link-error": "2.0.0-beta.3",
     "@artsy/fresnel": "1.1.0",
     "@emotion/babel-preset-css-prop": "10.0.27",
     "@emotion/core": "10.0.28",
@@ -60,6 +57,7 @@
     "focus-visible": "5.1.0",
     "framer-motion": "1.11.0",
     "graphql-iso-date": "3.6.1",
+    "graphql-request": "2.0.0",
     "graphql.macro": "1.4.2",
     "hasha": "5.2.0",
     "jsonwebtoken": "8.5.1",
@@ -87,6 +85,7 @@
     "react-router-hash-link": "1.2.2",
     "resize-observer-polyfill": "1.5.1",
     "styled-system": "5.1.5",
+    "swr": "0.2.2",
     "timeago-react": "3.0.0"
   },
   "devDependencies": {

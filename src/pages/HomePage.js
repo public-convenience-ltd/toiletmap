@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { useParams, useRouteMatch } from 'react-router-dom';
 import queryString from 'query-string';
 import { Helmet } from 'react-helmet';
+import useSWR from 'swr';
 import { loader } from 'graphql.macro';
-import { useQuery } from '@apollo/client';
+import { print } from 'graphql/language/printer';
 
 import PageLayout from '../components/PageLayout';
 import LooMap from '../components/LooMap';
@@ -18,7 +19,7 @@ import { useMapState } from '../components/MapState';
 
 import config, { FILTERS_KEY } from '../config';
 
-const FIND_BY_ID = loader('./findLooById.graphql');
+const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
@@ -40,21 +41,18 @@ const HomePage = ({ initialPosition, ...props }) => {
   }, [filters]);
 
   const { data: toiletData } = useNearbyLoos({
-    variables: {
-      lat: mapState.center.lat,
-      lng: mapState.center.lng,
-      radius: Math.ceil(mapState.radius),
-    },
+    lat: mapState.center.lat,
+    lng: mapState.center.lng,
+    radius: Math.ceil(mapState.radius),
   });
 
   const selectedLooId = useParams().id;
 
-  const { data, loading } = useQuery(FIND_BY_ID, {
-    skip: !selectedLooId,
-    variables: {
-      id: selectedLooId,
-    },
-  });
+  const { isValidating: loading, data } = useSWR(
+    selectedLooId
+      ? [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: selectedLooId })]
+      : null
+  );
 
   const { message } = queryString.parse(props.location.search);
 
@@ -166,7 +164,7 @@ const HomePage = ({ initialPosition, ...props }) => {
           >
             <ToiletDetailsPanel
               data={data.loo}
-              isLoading={loading}
+              isLoading={loading || !data}
               startExpanded={!!message}
               onDimensionsChange={setToiletPanelDimensions}
             >
