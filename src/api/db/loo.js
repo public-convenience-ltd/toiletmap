@@ -81,7 +81,7 @@ LooSchema.statics.fromReports = async function (reports, idOverride) {
   });
 };
 
-LooSchema.statics.findNear = function (lon, lat, radius, complete) {
+LooSchema.statics.findNear = function (lon, lat, radius) {
   let args = [
     {
       $geoNear: {
@@ -92,7 +92,6 @@ LooSchema.statics.findNear = function (lon, lat, radius, complete) {
         distanceField: 'distance',
         maxDistance: radius,
         spherical: true,
-        limit: 2 ** 62, // infeasibly large number
       },
     },
     {
@@ -101,21 +100,6 @@ LooSchema.statics.findNear = function (lon, lat, radius, complete) {
       },
     },
   ];
-  if (!complete) {
-    args.push({
-      $project: {
-        distance: 1,
-        properties: {
-          geometry: 1,
-          noPayment: 1,
-          accessible: 1,
-          openingTimes: 1,
-          type: 1,
-          babyChange: 1,
-        },
-      },
-    });
-  }
   return this.aggregate(args);
 };
 

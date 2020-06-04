@@ -99,12 +99,7 @@ const resolvers = {
       };
     },
     loosByProximity: (parent, args) =>
-      Loo.findNear(
-        args.from.lng,
-        args.from.lat,
-        args.from.maxDistance,
-        'complete'
-      ),
+      Loo.findNear(args.from.lng, args.from.lat, args.from.maxDistance),
     areas: async (parent, args) => {
       const data = await Area.find({}, { name: 1, type: 1 }).exec();
 
