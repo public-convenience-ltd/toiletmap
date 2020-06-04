@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
 import uniqBy from 'lodash/uniqBy';
@@ -20,7 +20,7 @@ import useNearbyLoos from '../components/useNearbyLoos';
 import useMapPosition from '../components/useMapPosition';
 
 import config from '../config';
-import history from '../history';
+// import history from '../history';
 
 const FIND_BY_ID = loader('./findLooById.graphql');
 const UPDATE_LOO = loader('./updateLoo.graphql');
@@ -119,12 +119,16 @@ const EditPage = (props) => {
 
   // redirect to index if loo is not active (i.e. removed)
   if (looData && !looData.loo.active) {
-    history.push('/');
+    return <Redirect to="/" />;
   }
 
   // redirect to new toilet entry page on successful addition
   if (saveResponse && saveResponse.submitReport.code === '200') {
-    history.push(`/loos/${saveResponse.submitReport.loo.id}?message=updated`);
+    return (
+      <Redirect
+        to={`/loos/${saveResponse.submitReport.loo.id}?message=updated`}
+      />
+    );
   }
 
   const getLoosToDisplay = () => {

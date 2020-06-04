@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQuery, useMutation } from '@apollo/client';
 import { loader } from 'graphql.macro';
+import { Redirect } from 'react-router-dom';
 
 import config from '../config';
-import history from '../history';
 
 import PageLayout from '../components/PageLayout';
 import Container from '../components/Container';
@@ -67,7 +67,7 @@ const RemovePage = function (props) {
   }
 
   if (!looData.loo.active) {
-    history.push('/');
+    return <Redirect to="/" />;
   }
 
   return (
