@@ -17,7 +17,7 @@ import LooMap from '../components/LooMap';
 import Box from '../components/Box';
 
 import useNearbyLoos from '../components/useNearbyLoos';
-import useMapPosition from '../components/useMapPosition';
+import { useMapState } from '../components/MapState';
 
 import config from '../config';
 
@@ -35,22 +35,22 @@ const EditPage = (props) => {
     }
   );
 
-  const [mapPosition, setMapPosition] = useMapPosition();
+  const [mapState, setMapState] = useMapState();
 
   const looLocation = (looData && looData.loo.location) || null;
 
   // set the map position to the loo location
   React.useEffect(() => {
     if (looLocation) {
-      setMapPosition({ center: looLocation });
+      setMapState({ center: looLocation });
     }
-  }, [looLocation, setMapPosition]);
+  }, [looLocation, setMapState]);
 
   const { data } = useNearbyLoos({
     variables: {
-      lat: mapPosition.center.lat,
-      lng: mapPosition.center.lng,
-      radius: mapPosition.radius,
+      lat: mapState.center.lat,
+      lng: mapState.center.lng,
+      radius: mapState.radius,
     },
   });
 
@@ -153,8 +153,8 @@ const EditPage = (props) => {
       <Box display="flex" height="40vh">
         <LooMap
           loos={getLoosToDisplay()}
-          center={mapPosition.center}
-          zoom={mapPosition.zoom}
+          center={mapState.center}
+          zoom={mapState.zoom}
           minZoom={config.editMinZoom}
           showCenter
           showContributor

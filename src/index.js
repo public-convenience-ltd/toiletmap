@@ -24,6 +24,7 @@ import PageLoading from './components/PageLoading';
 
 import AuthProvider from './Auth';
 import ApolloProvider from './Apollo';
+import { MapStateProvider } from './components/MapState';
 
 const history = createBrowserHistory();
 
@@ -42,6 +43,7 @@ const RemovePage = lazy(() =>
 
 ReactDOM.render(
   <AuthProvider>
+      <MapStateProvider>
     <ApolloProvider>
       <Router history={history}>
         <Tracking />
@@ -83,6 +85,7 @@ ReactDOM.render(
         </Suspense>
       </Router>
     </ApolloProvider>
+      </MapStateProvider>
   </AuthProvider>,
   document.getElementById('root')
 );

@@ -13,7 +13,7 @@ import Spacer from '../components/Spacer';
 import Button from '../components/Button';
 import LocationSearch from '../components/LocationSearch';
 
-import useMapPosition from '../components/useMapPosition';
+import { useMapState } from '../components/MapState';
 import useNearbyLoos from '../components/useNearbyLoos';
 
 import config from '../config';
@@ -26,13 +26,13 @@ const initialFormState = {
 };
 
 const AddPage = (props) => {
-  const [mapPosition, setMapPosition] = useMapPosition(config.fallbackLocation);
+  const [mapState, setMapState] = useMapState();
 
   const { data } = useNearbyLoos({
     variables: {
-      lat: mapPosition.center.lat,
-      lng: mapPosition.center.lng,
-      radius: mapPosition.radius,
+      lat: mapState.center.lat,
+      lng: mapState.center.lng,
+      radius: mapState.radius,
     },
   });
 
@@ -41,14 +41,14 @@ const AddPage = (props) => {
   // set the map position if lat and lng query params are present
   React.useEffect(() => {
     if (lat && lng) {
-      setMapPosition({
+      setMapState({
         center: {
           lat: parseFloat(lat),
           lng: parseFloat(lng),
         },
       });
     }
-  }, [lat, lng, setMapPosition]);
+  }, [lat, lng, setMapState]);
 
   const [
     updateLoo,
@@ -86,8 +86,8 @@ const AddPage = (props) => {
       <Box position="relative" display="flex" height="40vh">
         <LooMap
           loos={data}
-          center={mapPosition.center}
-          zoom={mapPosition.zoom}
+          center={mapState.center}
+          zoom={mapState.zoom}
           minZoom={config.editMinZoom}
           showCenter
           showContributor
@@ -101,7 +101,7 @@ const AddPage = (props) => {
 
         <Box position="absolute" top={0} left={0} m={3}>
           <LocationSearch
-            onSelectedItemChange={(center) => setMapPosition({ center })}
+            onSelectedItemChange={(center) => setMapState({ center })}
           />
         </Box>
       </Box>
