@@ -159,6 +159,9 @@ const EditPage = (props) => {
           showCrosshair
           controlsOffset={20}
           withAccessibilityOverlays={false}
+          onViewportChanged={(mapPosition) => {
+            setMapCenter(mapPosition.center);
+          }}
         />
       </Box>
 
