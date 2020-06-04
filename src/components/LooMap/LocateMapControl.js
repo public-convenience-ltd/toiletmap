@@ -67,7 +67,7 @@ const LocateMapControl = ({ position }) => {
       <ControlButton
         type="button"
         onClick={() => (isActive ? stopLocate() : startLocate())}
-        aria-label=""
+        aria-label="Locate my position"
         variant={isActive && 'active'}
       >
         <svg
