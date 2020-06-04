@@ -2,8 +2,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { variant } from 'styled-system';
 
-import Box from './Box';
-import Text from './Text';
+import Box from '../Box';
+import Text from '../Text';
 
 const BUTTON_HEIGHT = 34;
 
@@ -88,4 +88,5 @@ Button.defaultProps = {
   as: 'button',
 };
 
+/** @component */
 export default Button;

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 
+/** @visibleName Visually Hidden */
 const VisuallyHidden = styled.div`
   position: absolute;
   clip: rect(1px, 1px, 1px, 1px);
@@ -10,4 +11,5 @@ const VisuallyHidden = styled.div`
   overflow: hidden;
 `;
 
+/** @component */
 export default VisuallyHidden;
