@@ -229,9 +229,13 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
       lng: parseFloat(data.geometry.coordinates[1]),
     };
 
-    if (dirtyFieldNames.includes('noPayment') && data.noPayment) {
+    // remove payment details if the isFree field value has changed and is now
+    // either Yes or Don't know
+    if (dirtyFieldNames.includes('isFree') && data.isFree !== 'false') {
       transformed.paymentDetails = null;
     }
+
+    transformed.noPayment = data.isFree;
 
     // construct expected opening times structure if relevant fields have changed
     if (
@@ -240,7 +244,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
       )
     ) {
       if (data['has-opening-times']) {
-        const openingTimes = WEEKDAYS.map((day, index) => {
+        const openingTimes = WEEKDAYS.map((day) => {
           if (!data[`${day.toLowerCase()}-is-open`]) {
             return rangeTypes.CLOSED;
           }
@@ -259,7 +263,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
 
     transformed = omit(transformed, [
       'geometry',
-      'noPayment',
+      'isFree',
       'has-opening-times',
       ...openingTimesFields,
     ]);

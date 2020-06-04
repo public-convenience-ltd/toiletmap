@@ -20,6 +20,8 @@ import config, { FILTERS_KEY } from '../config';
 
 const FIND_BY_ID = loader('./findLooById.graphql');
 
+const SIDEBAR_BOTTOM_MARGIN = 32;
+
 const HomePage = ({ initialPosition, ...props }) => {
   const [mapPosition, setMapPosition] = useMapPosition(config.fallbackLocation);
 
@@ -120,10 +122,11 @@ const HomePage = ({ initialPosition, ...props }) => {
           top={0}
           left={[0, 3]}
           right={0}
-          bottom={['auto', 0]}
           m={3}
           maxWidth={326}
-          maxHeight="100%"
+          maxHeight={`calc(100% - ${
+            toiletPanelDimensions.height || 0
+          }px - ${SIDEBAR_BOTTOM_MARGIN}px)`}
           overflowY="auto"
           // center on small viewports
           mx={['auto', 0]}
