@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { useQuery, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import useSWR from 'swr';
 import { loader } from 'graphql.macro';
 
 import config from '../config';
@@ -13,19 +14,41 @@ import Text from '../components/Text';
 import Button from '../components/Button';
 import Notification from '../components/Notification';
 
-const FIND_LOO_BY_ID = loader('./findLooById.graphql');
 const REMOVE_LOO_MUTATION = loader('./removeLoo.graphql');
 
 const RemovePage = function (props) {
   const [reason, setReason] = useState('');
 
-  const { loading: loadingLoo, data: looData, error: looError } = useQuery(
-    FIND_LOO_BY_ID,
-    {
-      variables: {
-        id: props.match.params.id,
-      },
-    }
+  const { loading: loadingLooData, data: looData, error: looError } = useSWR(
+    `{
+      loo(id: "${props.match.params.id}") {
+        id
+        createdAt
+        updatedAt
+        verifiedAt
+        active
+        location {
+          lat
+          lng
+        }
+        name
+        openingTimes
+        accessible
+        male
+        female
+        allGender
+        babyChange
+        childrenOnly
+        urinalOnly
+        radar
+        automatic
+        noPayment
+        paymentDetails
+        notes
+        removalReason
+        attended
+      }
+    }`
   );
 
   const [
@@ -56,11 +79,11 @@ const RemovePage = function (props) {
     console.error(removeError || looError);
   }
 
-  if (loadingLoo || looError) {
+  if (loadingLooData || looError) {
     return (
       <PageLayout>
         <Notification>
-          {loadingLoo ? 'Fetching Toilet Data' : 'Error finding toilet.'}
+          {loadingLooData ? 'Fetching Toilet Data' : 'Error finding toilet.'}
         </Notification>
       </PageLayout>
     );

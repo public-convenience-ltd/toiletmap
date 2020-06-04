@@ -6,7 +6,8 @@ import cloneDeep from 'lodash/cloneDeep';
 import uniqBy from 'lodash/uniqBy';
 import { css } from '@emotion/core';
 import { loader } from 'graphql.macro';
-import { useQuery, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import useSWR from 'swr';
 
 import PageLayout from '../components/PageLayout';
 import Button from '../components/Button';
@@ -22,18 +23,39 @@ import { useMapState } from '../components/MapState';
 import config from '../config';
 import history from '../history';
 
-const FIND_BY_ID = loader('./findLooById.graphql');
 const UPDATE_LOO = loader('./updateLoo.graphql');
 
 const EditPage = (props) => {
-  // find the raw loo data for the given loo
-  const { loading: loadingLooData, data: looData, error: looError } = useQuery(
-    FIND_BY_ID,
-    {
-      variables: {
-        id: props.match.params.id,
-      },
-    }
+  const { loading: loadingLooData, data: looData, error: looError } = useSWR(
+    `{
+      loo(id: "${props.match.params.id}") {
+        id
+        createdAt
+        updatedAt
+        verifiedAt
+        active
+        location {
+          lat
+          lng
+        }
+        name
+        openingTimes
+        accessible
+        male
+        female
+        allGender
+        babyChange
+        childrenOnly
+        urinalOnly
+        radar
+        automatic
+        noPayment
+        paymentDetails
+        notes
+        removalReason
+        attended
+      }
+    }`
   );
 
   const [mapState, setMapState] = useMapState();
@@ -42,17 +64,16 @@ const EditPage = (props) => {
 
   // set the map position to the loo location
   React.useEffect(() => {
+    console.log('setting loo location', setMapState, looLocation);
     if (looLocation) {
       setMapState({ center: looLocation });
     }
   }, [looLocation, setMapState]);
 
   const { data } = useNearbyLoos({
-    variables: {
-      lat: mapState.center.lat,
-      lng: mapState.center.lng,
-      radius: mapState.radius,
-    },
+    lat: mapState.center.lat,
+    lng: mapState.center.lng,
+    radius: mapState.radius,
   });
 
   // local state mapCenter to get fix issues with react-leaflet not being stateless and lat lng rounding issues
@@ -77,6 +98,8 @@ const EditPage = (props) => {
       },
     });
   }, [looData]);
+
+  console.log(mapState, mapCenter, initialData);
 
   const [
     updateLoo,
@@ -153,6 +176,10 @@ const EditPage = (props) => {
           center={mapState.center}
           zoom={mapState.zoom}
           minZoom={config.editMinZoom}
+          onViewportChanged={(mapPosition) => {
+            setMapCenter(mapPosition.center);
+            setMapState(mapPosition);
+          }}
           showCenter
           showContributor
           showLocateControl

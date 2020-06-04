@@ -20,9 +20,9 @@ import lightFormat from 'date-fns/lightFormat';
 import getISODay from 'date-fns/getISODay';
 import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
-import { useMutation, gql } from '@apollo/client';
 import useComponentSize from '@rehooks/component-size';
 import L from 'leaflet';
+import fetcher from '../fetcher';
 
 import Box from './Box';
 import Button from './Button';
@@ -32,6 +32,9 @@ import Icon from './Icon';
 import { Media } from './Media';
 import { getIsOpen, WEEKDAYS, rangeTypes } from '../openingTimes';
 import { useMapState } from './MapState';
+
+import FIND_LOO_BY_ID_QUERY from '../pages/findLooById';
+import { mutate } from 'swr';
 
 const Grid = styled(Box)`
   display: flex;
@@ -71,7 +74,7 @@ function getIsOpenLabel(openingTimes = [], dateTime = new Date()) {
   return isOpen ? 'Open now' : 'Closed';
 }
 
-const SUBMIT_VERIFICATION_REPORT_MUTATION = gql`
+const SUBMIT_VERIFICATION_REPORT_MUTATION = `
   mutation submitVerificationReportMutation($id: ID) {
     submitVerificationReport(id: $id) {
       loo {
@@ -114,10 +117,10 @@ const ToiletDetailsPanel = ({
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(startExpanded);
 
-  const [
-    submitVerificationReport,
-    { loading: submitVerificationLoading },
-  ] = useMutation(SUBMIT_VERIFICATION_REPORT_MUTATION);
+  const submitVerificationReport = async (variables) => {
+    await fetcher(SUBMIT_VERIFICATION_REPORT_MUTATION, variables);
+    mutate([FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: data.id })]);
+  };
 
   const [mapState] = useMapState();
 
@@ -327,10 +330,8 @@ const ToiletDetailsPanel = ({
               <Spacer mb={2} />
               <Box display="flex" alignItems="center">
                 <Button
-                  onClick={() =>
-                    submitVerificationReport({ variables: { id: data.id } })
-                  }
-                  disabled={submitVerificationLoading}
+                  onClick={() => submitVerificationReport({ id: data.id })}
+                  // disabled={submitVerificationLoading}
                 >
                   Yes
                 </Button>

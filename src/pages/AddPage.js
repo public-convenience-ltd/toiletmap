@@ -29,11 +29,9 @@ const AddPage = (props) => {
   const [mapState, setMapState] = useMapState();
 
   const { data } = useNearbyLoos({
-    variables: {
-      lat: mapState.center.lat,
-      lng: mapState.center.lng,
-      radius: mapState.radius,
-    },
+    lat: mapState.center.lat,
+    lng: mapState.center.lng,
+    radius: mapState.radius,
   });
 
   const { lat, lng } = queryString.parse(props.location.search);

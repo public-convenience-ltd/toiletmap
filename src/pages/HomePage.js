@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { useParams, useRouteMatch } from 'react-router-dom';
 import queryString from 'query-string';
 import { Helmet } from 'react-helmet';
-import { loader } from 'graphql.macro';
-import { useQuery } from '@apollo/client';
+import useSWR from 'swr';
 
 import PageLayout from '../components/PageLayout';
 import LooMap from '../components/LooMap';
@@ -17,8 +16,7 @@ import VisuallyHidden from '../components/VisuallyHidden';
 import { useMapState } from '../components/MapState';
 
 import config, { FILTERS_KEY } from '../config';
-
-const FIND_BY_ID = loader('./findLooById.graphql');
+import FIND_LOO_BY_ID_QUERY from './findLooById';
 
 const HomePage = ({ initialPosition, ...props }) => {
   const [mapState, setMapState] = useMapState();
@@ -38,21 +36,47 @@ const HomePage = ({ initialPosition, ...props }) => {
   }, [filters]);
 
   const { data: toiletData } = useNearbyLoos({
-    variables: {
-      lat: mapState.center.lat,
-      lng: mapState.center.lng,
-      radius: Math.ceil(mapState.radius),
-    },
+    lat: mapState.center.lat,
+    lng: mapState.center.lng,
+    radius: Math.ceil(mapState.radius),
   });
 
   const selectedLooId = useParams().id;
 
-  const { data, loading } = useQuery(FIND_BY_ID, {
-    skip: !selectedLooId,
-    variables: {
-      id: selectedLooId,
-    },
-  });
+  const { loading, data } = useSWR(
+    selectedLooId
+      ? [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: selectedLooId })]
+      : null
+  );
+  // `{
+  //   loo(id: "${selectedLooId}") {
+  //     id
+  //     createdAt
+  //     updatedAt
+  //     verifiedAt
+  //     active
+  //     location {
+  //       lat
+  //       lng
+  //     }
+  //     name
+  //     openingTimes
+  //     accessible
+  //     male
+  //     female
+  //     allGender
+  //     babyChange
+  //     childrenOnly
+  //     urinalOnly
+  //     radar
+  //     automatic
+  //     noPayment
+  //     paymentDetails
+  //     notes
+  //     removalReason
+  //     attended
+  //   }
+  // }`
 
   const { message } = queryString.parse(props.location.search);
 
