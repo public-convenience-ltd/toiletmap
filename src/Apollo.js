@@ -69,7 +69,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const httpLink = new HttpLink({
-  uri: process.env.REACT_APP_BAKED_BACKEND || '/api',
+  uri: '/api',
 });
 
 const authLink = setContext((_, { headers }) => {
