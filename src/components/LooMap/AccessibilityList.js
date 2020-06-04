@@ -40,7 +40,7 @@ const Content = ({ toilets }) => {
       p={3}
       bg="white"
     >
-      <Text fontSize={16}>Use number keys to show a toilets details.</Text>
+      <Text fontSize={16}>Use number keys to show a toilet's details.</Text>
 
       <Spacer mt={3} />
 
