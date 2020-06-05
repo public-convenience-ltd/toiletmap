@@ -210,6 +210,8 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
 
     transformed = omit(transformed, ['geometry']);
 
+    transformed.noPayment = data.isFree;
+
     // transform data
     Object.keys(transformed).forEach((property) => {
       const value = transformed[property];
@@ -234,8 +236,6 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
     if (dirtyFieldNames.includes('isFree') && data.isFree !== 'false') {
       transformed.paymentDetails = null;
     }
-
-    transformed.noPayment = data.isFree;
 
     // construct expected opening times structure if relevant fields have changed
     if (
