@@ -1,7 +1,5 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-
-import config from '../../config';
 import useOnLocationChange from './useOnLocationChange';
 
 const AdobeTracking = () => {
@@ -22,7 +20,7 @@ const AdobeTracking = () => {
     <Helmet>
       <script
         src={
-          config.getStage() === 'production'
+          window.location.hostname.match(/toiletmap\.org\.uk/)
             ? `${process.env.PUBLIC_URL}/adobe-digital-data.js`
             : `${process.env.PUBLIC_URL}/adobe-digital-data-stage.js`
         }
