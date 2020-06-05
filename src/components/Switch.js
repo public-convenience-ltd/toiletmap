@@ -36,6 +36,7 @@ const Switch = ({
     }}
   >
     <Inner
+      as="span"
       position="absolute"
       top="1px"
       left={checked ? `calc(100% - ${LENGTH}px - ${OFFSET}px)` : `${OFFSET}px`}
