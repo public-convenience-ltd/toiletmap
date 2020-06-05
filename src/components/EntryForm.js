@@ -282,11 +282,9 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
     <Container maxWidth={846}>
       <Text fontSize={[16, 18]}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Text fontWeight="bold" fontSize={30} textAlign="center">
+          <VisuallyHidden>
             <h1>{title}</h1>
-          </Text>
-
-          <Spacer mt={4} />
+          </VisuallyHidden>
 
           <Box display="flex" alignItems="center" flexWrap="wrap">
             <span>1. Align the crosshair&nbsp;</span>
