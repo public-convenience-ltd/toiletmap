@@ -454,7 +454,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                     <Box
                       display="flex"
                       justifyContent="space-between"
-                      width={['75%', '50%']}
+                      width={['auto', '50%']}
                     >
                       <Box display="flex" alignItems="center">
                         <Controller
@@ -466,6 +466,8 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                           defaultValue={isOpen[index]}
                         />
                       </Box>
+
+                      <Spacer ml={2} />
 
                       {getValues(`${day.toLowerCase()}-is-open`) ? (
                         <Box display="flex" alignItems="center">
