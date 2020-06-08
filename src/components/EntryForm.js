@@ -13,7 +13,6 @@ import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 import VisuallyHidden from '../components/VisuallyHidden';
 import Switch from '../components/Switch';
-import ConditionalWrap from '../components/ConditionalWrap';
 import { WEEKDAYS, rangeTypes } from '../openingTimes';
 
 import crosshair from '../images/crosshair-small.svg';
@@ -434,26 +433,29 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
 
           <Spacer mt={3} />
 
-          <ConditionalWrap
-            condition={!getValues('has-opening-times')}
-            wrap={(children) => <VisuallyHidden>{children}</VisuallyHidden>}
-          >
-            <>
-              <ol>
-                {WEEKDAYS.map((day, index) => {
-                  const id = `heading-${day.toLowerCase()}`;
+          <div hidden={!getValues('has-opening-times')}>
+            <ol>
+              {WEEKDAYS.map((day, index) => {
+                const id = `heading-${day.toLowerCase()}`;
 
-                  return (
+                return (
+                  <Box
+                    as="li"
+                    key={day}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    mt={index === 0 ? undefined : 2}
+                  >
+                    <h3 id={id}>{day}</h3>
+
+                    <Spacer ml={2} />
+
                     <Box
-                      as="li"
-                      key={day}
                       display="flex"
-                      alignItems="center"
                       justifyContent="space-between"
-                      mt={index === 0 ? undefined : 2}
+                      width={['auto', '50%']}
                     >
-                      <h3 id={id}>{day}</h3>
-
                       <Box display="flex" alignItems="center">
                         <Controller
                           as={Switch}
@@ -464,6 +466,8 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                           defaultValue={isOpen[index]}
                         />
                       </Box>
+
+                      <Spacer ml={2} />
 
                       {getValues(`${day.toLowerCase()}-is-open`) ? (
                         <Box display="flex" alignItems="center">
@@ -503,13 +507,13 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                         'Closed'
                       )}
                     </Box>
-                  );
-                })}
-              </ol>
+                  </Box>
+                );
+              })}
+            </ol>
 
-              <Spacer mt={4} />
-            </>
-          </ConditionalWrap>
+            <Spacer mt={4} />
+          </div>
 
           <label>
             7. Notes
