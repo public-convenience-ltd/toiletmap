@@ -187,7 +187,7 @@ const ToiletDetailsPanel = ({
       target="_blank"
       rel="noopener noreferrer"
     >
-      Get directions
+      Directions
     </Button>
   );
 
@@ -529,7 +529,7 @@ const ToiletDetailsPanel = ({
             onClick={() => setIsExpanded(true)}
             aria-expanded="false"
           >
-            More details
+            Details
           </Button>
         </Box>
       </Grid>
