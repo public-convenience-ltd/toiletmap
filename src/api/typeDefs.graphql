@@ -32,6 +32,42 @@ type AdminGeo {
   type: String
 }
 
+
+"""
+A whole load of TopoJSON stuff follows
+"""
+type TopoTransform {
+  scale: [Float!]!
+  translate: [Float!]!
+}
+
+type TopoGeometry {
+  type: String!
+  arcs: [[[Float!]!]!]!
+  "JSON-encoded properties string"
+  properties: String!
+}
+
+type TopoObject {
+  type: String!
+  geometries: [TopoGeometry!]!
+}
+
+type TopoObjectContainer {
+  name: String!
+  value: TopoObject!
+}
+
+"""
+Main TopoJSON type. Contains various objects and arcs.
+"""
+type TopoGeo {
+  type: String!
+  transform: TopoTransform
+  objects: [TopoObjectContainer!]!
+  arcs: [[[Float!]!]!]!
+}
+
 """
 A Toilet
 
@@ -184,8 +220,10 @@ type Query {
     "A Point from which to begin the search"
     from: ProximityInput!
   ): [Loo!]!
-  "Retrieve a list of areas in existance"
+  "Retrieve a list of areas in existance, name and type only"
   areas: [AdminGeo!]!
+  "Retrieve the explorer map TopoJSON data"
+  mapAreas(areaType: String): TopoGeo
   "Retrieve a report by ID"
   report(id: ID!): Report
   "Retrieve 'counter' statistics"

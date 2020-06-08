@@ -1,0 +1,11 @@
+query getStats {
+  areaStats {
+    area {
+      name
+      type
+    }
+    totalLoos
+    activeLoos
+    babyChangeLoos
+  }
+}

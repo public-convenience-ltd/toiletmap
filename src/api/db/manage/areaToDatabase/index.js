@@ -6,8 +6,12 @@ const config = require('./config.json');
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
-const { connect, Area, Loo } = require('../../../db/');
+const { connect, Area, Loo, MapGeo } = require('../../../db/');
 const cliProgress = require('cli-progress');
+const topojson = require('topojson-server');
+const toposimplify = require('topojson-simplify');
+const geojsonPrecision = require('geojson-precision');
+const rewind = require('@mapbox/geojson-rewind');
 
 const bar = new cliProgress.SingleBar({
   stopOnComplete: true,
@@ -133,12 +137,28 @@ async function updateDataset(dataset, dryrun) {
         (err, res) => {
           if (err) {
             log('Error deleting:', err);
-            return false;
+            return resolve(false);
           }
-          return resolve();
+          return resolve(true);
         }
       )
     );
+
+    // Remove old MapGeo
+    await new Promise((resolve) => {
+      MapGeo.deleteMany(
+        {
+          datasetId: dataset.id,
+        },
+        (err, res) => {
+          if (err) {
+            log('Error deleting MapGeo:', err);
+            return resolve(false);
+          }
+          return resolve(true);
+        }
+      );
+    });
     log('Deleted successfully, now writing new area data...');
   }
 
@@ -185,6 +205,54 @@ async function updateDataset(dataset, dryrun) {
       }
     }
   });
+
+  /**
+   * Set up TopoJSON geography
+   * This is a fairly complex pipeline involving, in this order:
+   *   - winding bounds correctly (i.e. exterior polygon rings clockwise, interior anticlockwise)
+   *   - removing unnecessary precision from the bound position values
+   *   - converting GeoJSON to TopoJSON to preserve boundaries when simplifying
+   *   - simplifying the TopoJSON using an arbitrary 'weight' value. A smaller weight value does less simplification,
+   *       and leaves the data closer to the original. The value is, for this data, very small.
+   *   - format the TopoJSON for the database. This involves making the key-value `objects` object into an array
+   *       of objects so that it can be verified by Mongoose. At this stage we also sanitize the GeoJSON object properties.
+   *   - write it to the database!
+   */
+  log('Creating MapGeo from GeoJSON...');
+  const correctedBounds = rewind(bounds, true);
+  const simpleBounds = geojsonPrecision.parse(correctedBounds, 6);
+  const fullMapGeoGeometry = topojson.topology({ areas: simpleBounds });
+  const mapGeoGeometry = toposimplify.simplify(
+    toposimplify.presimplify(fullMapGeoGeometry),
+    0.0000025
+  );
+  const newObjects = Object.keys(mapGeoGeometry.objects).map((objName) => {
+    const obj = mapGeoGeometry.objects[objName];
+
+    // Sanitize object properties
+    obj.geometries.forEach((geom) => {
+      geom.properties = {
+        objectid: geom.properties.objectid,
+        name: geom.properties[dataset.areaNameField],
+      };
+    });
+
+    return {
+      name: objName,
+      value: mapGeoGeometry.objects[objName],
+    };
+  });
+  mapGeoGeometry.objects = newObjects;
+  const newMapGeo = new MapGeo();
+  newMapGeo.datasetId = dataset.id;
+  newMapGeo.version = dataset.version;
+  newMapGeo.areaType = dataset.type;
+  newMapGeo.geometry = mapGeoGeometry;
+
+  log('Saving MapGeo...');
+  await newMapGeo.save();
+  log('MapGeo saved');
+
   return res;
 }
 
@@ -231,7 +299,8 @@ async function updateLoos(dryrun) {
 /**
  * Make sure the configuration is valid
  */
-function sanityCheck(datasets) {
+function sanityCheck(config) {
+  const { datasets } = config;
   const ids = [];
 
   datasets.forEach((dataset) => {
@@ -243,6 +312,7 @@ function sanityCheck(datasets) {
     }
     ids.push(dataset.id);
   });
+
   return true;
 }
 
@@ -253,7 +323,7 @@ async function run() {
   const args = process.argv.slice(2);
   const dryrun = args.includes('--dry-run') || args.includes('-n');
 
-  if (!sanityCheck(config.datasets)) {
+  if (!sanityCheck(config)) {
     console.log('Sanity check failed');
     return finish();
   }
