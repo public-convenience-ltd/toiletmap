@@ -14,6 +14,7 @@ import AccessibilityList from './AccessibilityList';
 import Box from '../Box';
 import Marker from './Marker';
 import VisuallyHidden from '../VisuallyHidden';
+import { Media } from '../Media';
 
 import crosshair from '../../images/crosshair.svg';
 
@@ -231,8 +232,13 @@ const LooMap = ({
           minZoom={minZoom}
           maxZoom={maxZoom}
         />
+
         {memoizedMarkers}
-        <ZoomControl position="bottomright" />
+
+        <Media greaterThan="md">
+          <ZoomControl position="bottomright" />
+        </Media>
+
         <LocateMapControl position="bottomright" />
 
         {renderAccessibilityOverlays && (
