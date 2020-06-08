@@ -38,9 +38,11 @@ const MainMenu = ({
         height={['100%', 'auto']}
       >
         <Box
+          as="ul"
           display="flex"
           flexDirection={['column', 'row']}
           height={['100%', 'auto']}
+          width="100%"
         >
           <Box as="li" ml={[0, 4]}>
             <StyledNavLink to="/" onClick={onMenuItemClick} exact>
