@@ -27,4 +27,5 @@ Box.propTypes = {
   ...createPropTypes(border.propNames),
 };
 
+/** @component */
 export default Box;

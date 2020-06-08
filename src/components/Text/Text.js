@@ -11,4 +11,5 @@ Text.propTypes = {
   ...createPropTypes(typography.propNames),
 };
 
+/** @component */
 export default Text;

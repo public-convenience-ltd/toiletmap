@@ -14,7 +14,8 @@
     "build:testable": "CI= REACT_APP_MOCKS=true yarn build",
     "migrate": "migrate-mongo up",
     "generate": "node -r dotenv/config ./src/api/db/manage/generate/index.js --confirm",
-    "areas": "node -r dotenv/config ./src/api/db/manage/areaToDatabase/index.js"
+    "areas": "node -r dotenv/config ./src/api/db/manage/areaToDatabase/index.js",
+    "styleguide": "styleguidist server"
   },
   "repository": {
     "type": "git",
@@ -108,6 +109,7 @@
     "puppeteer": "3.3.0",
     "react-app-rewired": "2.1.6",
     "react-scripts": "3.4.1",
+    "react-styleguidist": "11.0.8",
     "serve": "11.3.1",
     "source-map-explorer": "2.4.2",
     "stylelint": "13.6.0",

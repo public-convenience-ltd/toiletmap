@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 
-import Box from './Box';
-import Portal from './Portal';
+import Box from '../Box';
+import Portal from '../Portal';
 
 const MENU_HEIGHT = 60; // px
 
@@ -54,7 +54,9 @@ const Drawer = ({ visible, animateFrom, ...props }) => {
 };
 
 Drawer.propTypes = {
+  /** Determines whether the drawer is on screen */
   visible: PropTypes.bool,
+  /** Direction to animate from */
   animateFrom: PropTypes.oneOf(['left', 'right']),
 };
 
@@ -62,4 +64,5 @@ Drawer.defaultProps = {
   animateFrom: 'right',
 };
 
+/** @component */
 export default Drawer;

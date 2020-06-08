@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-import Box from './Box';
+import Box from '../Box';
 
 const HEIGHT = 16;
 const WIDTH = 27;
@@ -49,7 +49,9 @@ const Switch = ({
 );
 
 Switch.propTypes = {
+  /** Determines whether the switch is on */
   checked: PropTypes.bool.isRequired,
 };
 
+/** @component */
 export default Switch;

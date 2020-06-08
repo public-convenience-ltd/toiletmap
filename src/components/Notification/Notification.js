@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-import Box from './Box';
-import Text from './Text';
-import Icon from './Icon';
-import Spacer from './Spacer';
+import Box from '../Box';
+import Text from '../Text';
+import Icon from '../Icon';
+import Spacer from '../Spacer';
 
 const Notification = ({ allowClose, children }) => {
   const [isVisible, setIsVisible] = useState(true);
@@ -47,7 +47,11 @@ const Notification = ({ allowClose, children }) => {
 };
 
 Notification.propTypes = {
+  /** Allow the notification to be closed */
   allowClose: PropTypes.bool,
+  /** The notification message */
+  children: PropTypes.node,
 };
 
+/** @component */
 export default Notification;
