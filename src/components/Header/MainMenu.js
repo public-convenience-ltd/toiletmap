@@ -15,7 +15,11 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 // Todo: Contact link
-const MainMenu = ({ mapCenter, children }) => (
+const MainMenu = ({
+  mapCenter,
+  onMenuItemClick = Function.prototype,
+  children,
+}) => (
   <Text
     fontWeight="bold"
     textAlign={['center', 'left']}
@@ -36,7 +40,7 @@ const MainMenu = ({ mapCenter, children }) => (
         flexGrow={1}
       >
         <Box as="li" ml={[0, 4]}>
-          <StyledNavLink to="/" exact>
+          <StyledNavLink to="/" onClick={onMenuItemClick} exact>
             Find Toilet
           </StyledNavLink>
         </Box>
@@ -47,19 +51,26 @@ const MainMenu = ({ mapCenter, children }) => (
                 ? `/loos/add?lat=${mapCenter.lat}&lng=${mapCenter.lng}`
                 : `/loos/add`
             }
+            onClick={onMenuItemClick}
           >
             Add Toilet
           </StyledNavLink>
         </Box>
 
         <Box as="li" mt={['auto', 0]} ml={[0, 'auto']}>
-          <StyledNavLink to="/about">About</StyledNavLink>
+          <StyledNavLink to="/about" onClick={onMenuItemClick}>
+            About
+          </StyledNavLink>
         </Box>
         <Box as="li" mt={[3, 0]} ml={[0, 4]}>
-          <StyledNavLink to="/use-our-loos">Our Sponsor</StyledNavLink>
+          <StyledNavLink to="/use-our-loos" onClick={onMenuItemClick}>
+            Our Sponsor
+          </StyledNavLink>
         </Box>
         <Box as="li" mt={[3, 0]} mb={['auto', 0]} ml={[0, 4]}>
-          <StyledNavLink to="/contact">Contact</StyledNavLink>
+          <StyledNavLink to="/contact" onClick={onMenuItemClick}>
+            Contact
+          </StyledNavLink>
         </Box>
       </Box>
 

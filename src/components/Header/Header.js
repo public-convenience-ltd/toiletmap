@@ -46,7 +46,11 @@ const Header = ({ mapCenter, children }) => {
           </button>
 
           <Drawer visible={isMenuVisible} zIndex={200}>
-            <MainMenu mapCenter={mapCenter} children={children} />
+            <MainMenu
+              mapCenter={mapCenter}
+              onMenuItemClick={() => setIsMenuVisible(false)}
+              children={children}
+            />
           </Drawer>
         </Box>
 
