@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 
 import Box from './Box';
+import Portal from './Portal';
 
 const MENU_HEIGHT = 60; // px
 
@@ -24,29 +25,31 @@ const Drawer = ({ visible, animateFrom, ...props }) => {
   };
 
   return (
-    <Box
-      as={motion.div}
-      position="fixed"
-      top={MENU_HEIGHT}
-      {...{
-        [animateTo]: 0,
-      }}
-      height={`calc(100vh - ${MENU_HEIGHT}px)`}
-      width="100%"
-      bg="white"
-      p={3}
-      zIndex={150}
-      overflowY="auto"
-      {...props}
-      // motion props
-      variants={variants}
-      animate={visible ? 'open' : 'closed'}
-      transition={{
-        ease: 'easeInOut',
-        duration: 0.3,
-      }}
-      initial={false}
-    />
+    <Portal>
+      <Box
+        as={motion.div}
+        position="fixed"
+        top={MENU_HEIGHT}
+        {...{
+          [animateTo]: 0,
+        }}
+        height={`calc(100vh - ${MENU_HEIGHT}px)`}
+        width="100%"
+        bg="white"
+        p={3}
+        zIndex={150}
+        overflowY="auto"
+        {...props}
+        // motion props
+        variants={variants}
+        animate={visible ? 'open' : 'closed'}
+        transition={{
+          ease: 'easeInOut',
+          duration: 0.3,
+        }}
+        initial={false}
+      />
+    </Portal>
   );
 };
 
