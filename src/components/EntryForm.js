@@ -13,7 +13,6 @@ import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 import VisuallyHidden from '../components/VisuallyHidden';
 import Switch from '../components/Switch';
-import ConditionalWrap from '../components/ConditionalWrap';
 import { WEEKDAYS, rangeTypes } from '../openingTimes';
 
 import crosshair from '../images/crosshair-small.svg';
@@ -210,6 +209,8 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
 
     transformed = omit(transformed, ['geometry']);
 
+    transformed.noPayment = data.isFree;
+
     // transform data
     Object.keys(transformed).forEach((property) => {
       const value = transformed[property];
@@ -234,8 +235,6 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
     if (dirtyFieldNames.includes('isFree') && data.isFree !== 'false') {
       transformed.paymentDetails = null;
     }
-
-    transformed.noPayment = data.isFree;
 
     // construct expected opening times structure if relevant fields have changed
     if (
@@ -282,11 +281,9 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
     <Container maxWidth={846}>
       <Text fontSize={[16, 18]}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Text fontWeight="bold" fontSize={30} textAlign="center">
+          <VisuallyHidden>
             <h1>{title}</h1>
-          </Text>
-
-          <Spacer mt={4} />
+          </VisuallyHidden>
 
           <Box display="flex" alignItems="center" flexWrap="wrap">
             <span>1. Align the crosshair&nbsp;</span>
@@ -434,26 +431,29 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
 
           <Spacer mt={3} />
 
-          <ConditionalWrap
-            condition={!getValues('has-opening-times')}
-            wrap={(children) => <VisuallyHidden>{children}</VisuallyHidden>}
-          >
-            <>
-              <ol>
-                {WEEKDAYS.map((day, index) => {
-                  const id = `heading-${day.toLowerCase()}`;
+          <div hidden={!getValues('has-opening-times')}>
+            <ol>
+              {WEEKDAYS.map((day, index) => {
+                const id = `heading-${day.toLowerCase()}`;
 
-                  return (
+                return (
+                  <Box
+                    as="li"
+                    key={day}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    mt={index === 0 ? undefined : 2}
+                  >
+                    <h3 id={id}>{day}</h3>
+
+                    <Spacer ml={2} />
+
                     <Box
-                      as="li"
-                      key={day}
                       display="flex"
-                      alignItems="center"
                       justifyContent="space-between"
-                      mt={index === 0 ? undefined : 2}
+                      width={['auto', '50%']}
                     >
-                      <h3 id={id}>{day}</h3>
-
                       <Box display="flex" alignItems="center">
                         <Controller
                           as={Switch}
@@ -464,6 +464,8 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                           defaultValue={isOpen[index]}
                         />
                       </Box>
+
+                      <Spacer ml={2} />
 
                       {getValues(`${day.toLowerCase()}-is-open`) ? (
                         <Box display="flex" alignItems="center">
@@ -503,13 +505,13 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                         'Closed'
                       )}
                     </Box>
-                  );
-                })}
-              </ol>
+                  </Box>
+                );
+              })}
+            </ol>
 
-              <Spacer mt={4} />
-            </>
-          </ConditionalWrap>
+            <Spacer mt={4} />
+          </div>
 
           <label>
             7. Notes
