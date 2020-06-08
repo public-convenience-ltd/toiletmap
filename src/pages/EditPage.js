@@ -151,7 +151,7 @@ const EditPage = (props) => {
         <title>{config.getTitle('Edit Toilet')}</title>
       </Helmet>
 
-      <Box display="flex" height={332} maxHeight="40vh">
+      <Box display="flex" height="40vh">
         <LooMap
           loos={getLoosToDisplay()}
           center={mapPosition.center}
@@ -169,43 +169,43 @@ const EditPage = (props) => {
         />
       </Box>
 
-      <Box position="relative" mt={-3} pt={4} borderRadius={35} bg="white">
-        <EntryForm
-          title="Edit This Toilet"
-          loo={initialData.loo}
-          center={mapCenter}
-          saveLoading={saveLoading}
-          saveResponse={saveResponse}
-          saveError={saveError}
-          onSubmit={save}
-        >
-          {({ hasDirtyFields }) => (
-            <Box display="flex" flexDirection="column" alignItems="center">
-              <Button
-                type="submit"
-                disabled={!hasDirtyFields}
-                css={{
-                  width: '100%',
-                }}
-              >
-                Update the toilet
-              </Button>
+      <Spacer mt={4} />
 
-              <Spacer mt={2} />
+      <EntryForm
+        title="Edit This Toilet"
+        loo={initialData.loo}
+        center={mapCenter}
+        saveLoading={saveLoading}
+        saveResponse={saveResponse}
+        saveError={saveError}
+        onSubmit={save}
+      >
+        {({ hasDirtyFields }) => (
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Button
+              type="submit"
+              disabled={!hasDirtyFields}
+              css={{
+                width: '100%',
+              }}
+            >
+              Update the toilet
+            </Button>
 
-              <Button
-                as={Link}
-                to={`/loos/${props.match.params.id}/remove`}
-                css={{
-                  width: '100%',
-                }}
-              >
-                Remove the toilet
-              </Button>
-            </Box>
-          )}
-        </EntryForm>
-      </Box>
+            <Spacer mt={2} />
+
+            <Button
+              as={Link}
+              to={`/loos/${props.match.params.id}/remove`}
+              css={{
+                width: '100%',
+              }}
+            >
+              Remove the toilet
+            </Button>
+          </Box>
+        )}
+      </EntryForm>
 
       <Spacer mt={4} />
     </PageLayout>

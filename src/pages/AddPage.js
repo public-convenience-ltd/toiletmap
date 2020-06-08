@@ -83,7 +83,7 @@ const AddPage = (props) => {
         <title>{config.getTitle('Add Toilet')}</title>
       </Helmet>
 
-      <Box position="relative" display="flex" height={332} maxHeight="40vh">
+      <Box position="relative" display="flex" height="40vh">
         <LooMap
           loos={data}
           center={mapPosition.center}
@@ -106,23 +106,23 @@ const AddPage = (props) => {
         </Box>
       </Box>
 
-      <Box position="relative" mt={-3} pt={4} borderRadius={35} bg="white">
-        <EntryForm
-          title="Add This Toilet"
-          loo={initialFormState}
-          center={mapPosition.center}
-          saveLoading={saveLoading}
-          saveResponse={saveResponse}
-          saveError={saveError}
-          onSubmit={save}
-        >
-          <Box display="flex" flexDirection="column" alignItems="center">
-            <Button type="submit" data-testid="add-the-toilet">
-              Save toilet
-            </Button>
-          </Box>
-        </EntryForm>
-      </Box>
+      <Spacer mt={4} />
+
+      <EntryForm
+        title="Add This Toilet"
+        loo={initialFormState}
+        center={mapPosition.center}
+        saveLoading={saveLoading}
+        saveResponse={saveResponse}
+        saveError={saveError}
+        onSubmit={save}
+      >
+        <Box display="flex" flexDirection="column" alignItems="center">
+          <Button type="submit" data-testid="add-the-toilet">
+            Save toilet
+          </Button>
+        </Box>
+      </EntryForm>
 
       <Spacer mt={4} />
     </PageLayout>
