@@ -165,7 +165,7 @@ const ToiletDetailsPanel = ({
 
   const titleFragment = (
     <Box display="flex" justifyContent="space-between">
-      <Text fontWeight="bold" fontSize={4}>
+      <Text fontWeight="bold" fontSize={[3, 4]} lineHeight={1.2}>
         <h2 id="toilet-details-heading">{data.name || 'Unnamed Toilet'}</h2>
       </Text>
       {geolocationData.geolocation && (
@@ -187,7 +187,7 @@ const ToiletDetailsPanel = ({
       target="_blank"
       rel="noopener noreferrer"
     >
-      Get directions
+      Directions
     </Button>
   );
 
@@ -255,14 +255,49 @@ const ToiletDetailsPanel = ({
     }
   }
 
+  const lastVerifiedFragment = (
+    <Box>
+      <Text fontWeight="bold">
+        <h2>Is this information correct?</h2>
+      </Text>
+      <Spacer mb={2} />
+      <Box display="flex" alignItems="center">
+        <Button
+          onClick={() =>
+            submitVerificationReport({ variables: { id: data.id } })
+          }
+          disabled={submitVerificationLoading}
+        >
+          Yes
+        </Button>
+        <Spacer mr={4} />
+        <Box display="flex" alignItems="center">
+          No?
+          <Spacer mr={2} />
+          <Button
+            variant="secondary"
+            icon={<Icon icon={faEdit} />}
+            as={Link}
+            to={editUrl}
+          >
+            Edit
+          </Button>
+        </Box>
+      </Box>
+      <Spacer mb={[0, 2]} />
+      Last verified:{' '}
+      {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
+    </Box>
+  );
+
   if (isExpanded) {
     return (
       <Box
         width="100%"
         color="primary"
         bg="white"
-        borderTopLeftRadius={4}
-        borderTopRightRadius={4}
+        borderTopLeftRadius={[3, 4]}
+        borderTopRightRadius={[3, 4]}
         as="section"
         aria-labelledby="toilet-details-heading"
         ref={containerRef}
@@ -310,9 +345,9 @@ const ToiletDetailsPanel = ({
         </Media>
 
         <Box
-          maxHeight={400}
+          maxHeight={[325, 400]}
           overflow="auto"
-          padding={4}
+          padding={[3, 4]}
           paddingTop={[0, 4]}
           paddingRight={[4, 5]}
           css={css`
@@ -328,72 +363,10 @@ const ToiletDetailsPanel = ({
               {titleFragment}
               <Spacer mb={2} />
               {getDirectionsFragment}
-              <Spacer mb={4} />
-              <Text fontWeight="bold">
-                <h2>Is this information correct?</h2>
-              </Text>
-              <Spacer mb={2} />
-              <Box display="flex" alignItems="center">
-                <Button
-                  onClick={() =>
-                    submitVerificationReport({ variables: { id: data.id } })
-                  }
-                  disabled={submitVerificationLoading}
-                >
-                  Yes
-                </Button>
-                <Spacer mr={4} />
-                <Box display="flex" alignItems="center">
-                  No?
-                  <Spacer mr={2} />
-                  <Button
-                    variant="secondary"
-                    icon={<Icon icon={faEdit} />}
-                    as={Link}
-                    to={editUrl}
-                  >
-                    Edit
-                  </Button>
-                </Box>
-              </Box>
-              <Spacer mb={2} />
-              Last verified:{' '}
-              {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
-            </Box>
-
-            <Box width={['100%', '50%', '25%']} padding={3} order={[0, 1]}>
-              <Box display="flex" alignItems="center">
-                <Icon icon={faClock} />
-                <Spacer mr={2} />
-                <Text fontWeight="bold">
-                  <h2>Opening Hours</h2>
-                </Text>
-              </Box>
-              <Spacer mb={2} />
-              <UnstyledList>
-                {openingTimes.map((timeRange, i) => (
-                  <Box
-                    as="li"
-                    display="flex"
-                    justifyContent="space-between"
-                    key={i}
-                    padding={1}
-                    bg={i === todayWeekdayIndex ? 'ice' : 'white'}
-                  >
-                    <span>{WEEKDAYS[i]}</span>
-                    <span>{getTimeRangeLabel(timeRange)}</span>
-                  </Box>
-                ))}
-              </UnstyledList>
-              <Spacer mb={2} />
-              <Text fontSize={1} color="grey">
-                Hours may vary with national holidays or seasonal changes. If
-                you know these hours to be out of date please{' '}
-                <Button as={Link} to={editUrl} variant="link">
-                  edit this toilet
-                </Button>
-                .
-              </Text>
+              <Media greaterThanOrEqual="md">
+                <Spacer mb={4} />
+                {lastVerifiedFragment}
+              </Media>
             </Box>
 
             <Box width={['100%', '50%', '25%']} padding={3}>
@@ -450,6 +423,46 @@ const ToiletDetailsPanel = ({
               )}
             </Box>
 
+            <Box width={['100%', '50%', '25%']} padding={3}>
+              <Box display="flex" alignItems="center">
+                <Icon icon={faClock} />
+                <Spacer mr={2} />
+                <Text fontWeight="bold">
+                  <h2>Opening Hours</h2>
+                </Text>
+              </Box>
+              <Spacer mb={[0, 2]} />
+              <UnstyledList>
+                {openingTimes.map((timeRange, i) => (
+                  <Box
+                    as="li"
+                    display="flex"
+                    justifyContent="space-between"
+                    key={i}
+                    padding={1}
+                    bg={i === todayWeekdayIndex ? 'ice' : 'white'}
+                  >
+                    <span>{WEEKDAYS[i]}</span>
+                    <span>{getTimeRangeLabel(timeRange)}</span>
+                  </Box>
+                ))}
+              </UnstyledList>
+              <Spacer mb={2} />
+              <Text fontSize={1} color="grey">
+                Hours may vary with national holidays or seasonal changes. If
+                you know these hours to be out of date please{' '}
+                <Button as={Link} to={editUrl} variant="link">
+                  edit this toilet
+                </Button>
+                .
+              </Text>
+
+              <Media lessThan="md">
+                <Spacer mb={4} />
+                {lastVerifiedFragment}
+              </Media>
+            </Box>
+
             <Media lessThan="md">
               <Box
                 display="flex"
@@ -477,19 +490,19 @@ const ToiletDetailsPanel = ({
       color="primary"
       bg="white"
       minHeight={100}
-      borderTopLeftRadius={4}
-      borderTopRightRadius={4}
-      padding={4}
+      borderTopLeftRadius={[3, 4]}
+      borderTopRightRadius={[3, 4]}
+      padding={[3, 4]}
       as="section"
       aria-labelledby="toilet-details-heading"
       ref={containerRef}
     >
       <Grid>
-        <Box width={['100%', '50%', '25%']} padding={3}>
+        <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
           {titleFragment}
         </Box>
 
-        <Box width={['100%', '50%', '25%']} padding={3}>
+        <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
           <Box display="flex" alignItems="center">
             <Icon icon={faClock} />
             <Spacer mr={2} />
@@ -497,7 +510,7 @@ const ToiletDetailsPanel = ({
               <h3>Opening Hours</h3>
             </Text>
           </Box>
-          <Spacer mb={2} />
+          <Spacer mb={[0, 2]} />
           {getIsOpenLabel(openingTimes)}
         </Box>
 
@@ -516,7 +529,7 @@ const ToiletDetailsPanel = ({
             onClick={() => setIsExpanded(true)}
             aria-expanded="false"
           >
-            More details
+            Details
           </Button>
         </Box>
       </Grid>
