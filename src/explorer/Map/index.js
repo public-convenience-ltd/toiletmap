@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import Chloropleth from './Chloropleth';
 import ReactTooltip from 'react-tooltip';
-import { Grid, Select, MenuItem, InputLabel } from '@material-ui/core';
+import { Paper, Grid, Select, MenuItem, InputLabel } from '@material-ui/core';
 
 const DEFAULT_OPTIONS = {
   statistic: 'activeLoos',
-  display: 'number',
+  display: 'density',
 };
 
 function Options(props) {
@@ -14,12 +14,10 @@ function Options(props) {
   };
 
   return (
-    <Grid container spacing={4}>
-      <Grid item container spacing={1}>
+    <div style={{ padding: '1rem' }}>
+      <Grid container spacing={4}>
         <Grid item>
           <InputLabel htmlFor="statistic">Statistic: </InputLabel>
-        </Grid>
-        <Grid item>
           <Select
             name={'statistic'}
             onChange={getCallback('statistic')}
@@ -33,12 +31,8 @@ function Options(props) {
             </MenuItem>
           </Select>
         </Grid>
-      </Grid>
-      <Grid item container spacing={1}>
         <Grid item>
           <InputLabel htmlFor="display">Display: </InputLabel>
-        </Grid>
-        <Grid item>
           <Select
             name="display"
             onChange={getCallback('display')}
@@ -53,7 +47,7 @@ function Options(props) {
           </Select>
         </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 }
 
@@ -73,15 +67,19 @@ function Map(props) {
     <div style={{ margin: '1rem' }}>
       <Grid container>
         <Grid item xs>
-          <Chloropleth
-            width={800}
-            height={750}
-            options={options}
-            setTooltipContent={setContent}
-          />
+          <Paper elevation={1} style={{ width: 800, height: 750 }}>
+            <Chloropleth
+              width={800}
+              height={750}
+              options={options}
+              setTooltipContent={setContent}
+            />
+          </Paper>
         </Grid>
         <Grid item xs>
-          <Options onOptionChange={updateOptions} />
+          <Paper elevation={0} variant="outlined">
+            <Options onOptionChange={updateOptions} />
+          </Paper>
         </Grid>
       </Grid>
       <ReactTooltip html={true}>{content}</ReactTooltip>

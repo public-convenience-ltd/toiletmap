@@ -14,14 +14,51 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import StatsIcon from '@material-ui/icons/Assessment';
 import SearchIcon from '@material-ui/icons/Search';
+import HomeIcon from '@material-ui/icons/Home';
+import MapIcon from '@material-ui/icons/Map';
+import { withStyles } from '@material-ui/core';
 
 import { useAuth } from '../Auth';
+import styles from './layout.module.css';
+
+const NewListItemText = withStyles({
+  primary: {
+    color: '#222',
+  },
+  root: {
+    display: 'inline-block',
+  },
+})(ListItemText);
+
+const CentredListItem = withStyles({
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    paddingRight: '2rem',
+  },
+})(ListItem);
+
+function SidebarItem(props) {
+  const match = useRouteMatch();
+
+  return (
+    <CentredListItem button>
+      <Link
+        to={`${match.path}/${props.pathName}`}
+        style={{ textDecoration: 'none' }}
+      >
+        <div className={styles.centredLink}>
+          <ListItemIcon>{props.icon}</ListItemIcon>
+          <NewListItemText primary={props.name} />
+        </div>
+      </Link>
+    </CentredListItem>
+  );
+}
 
 function Layout(props) {
   const { login, logout, isAuthenticated } = useAuth();
   const history = useHistory();
-
-  const match = useRouteMatch();
   const [isDrawerOpen, setDrawerOpen] = useState(false);
 
   const handleLogout = () => {
@@ -63,30 +100,23 @@ function Layout(props) {
         >
           <div>
             <List>
-              <ListItem button>
-                <Link to={`${match.path}/statistics`}>
-                  <ListItemIcon>
-                    <StatsIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Statistics" />
-                </Link>
-              </ListItem>
-              <ListItem button>
-                <Link to={`${match.path}/areas`}>
-                  <ListItemIcon>
-                    <StatsIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Statistics by Area" />
-                </Link>
-              </ListItem>
-              <ListItem button>
-                <Link to={`${match.path}/search`}>
-                  <ListItemIcon>
-                    <SearchIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Search" />
-                </Link>
-              </ListItem>
+              <SidebarItem name="Home" pathName="" icon={<HomeIcon />} />
+              <SidebarItem
+                name="Statistics"
+                pathName="statistics"
+                icon={<StatsIcon />}
+              />
+              <SidebarItem
+                name="Statistics by Area"
+                pathName="areas"
+                icon={<StatsIcon />}
+              />
+              <SidebarItem
+                name="Search"
+                pathName="search"
+                icon={<SearchIcon />}
+              />
+              <SidebarItem name="Area Map" pathName="map" icon={<MapIcon />} />
             </List>
           </div>
         </div>
