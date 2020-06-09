@@ -20,7 +20,6 @@ import useNearbyLoos from '../components/useNearbyLoos';
 import useMapPosition from '../components/useMapPosition';
 
 import config from '../config';
-// import history from '../history';
 
 const FIND_BY_ID = loader('./findLooById.graphql');
 const UPDATE_LOO = loader('./updateLoo.graphql');
