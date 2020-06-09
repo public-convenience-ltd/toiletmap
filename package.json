@@ -87,6 +87,7 @@
     "react-router-dom": "5.2.0",
     "react-router-hash-link": "1.2.2",
     "react-simple-maps": "2.1.2",
+    "react-tooltip": "4.2.6",
     "resize-observer-polyfill": "1.5.1",
     "styled-system": "5.1.5",
     "swr": "0.2.3",
@@ -96,12 +97,14 @@
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
     "@lola-tech/graphql-kimera": "0.10.0-alpha.8",
+    "@mapbox/geojson-area": "0.2.2",
     "@shelf/jest-mongodb": "1.1.5",
     "apollo-link-schema": "1.2.5",
     "apollo-server-testing": "2.15.0",
     "cli-progress": "3.8.2",
     "customize-cra": "1.0.0",
     "dotenv": "8.2.0",
+    "geojson-precision": "1.0.0",
     "http-proxy-middleware": "1.0.4",
     "husky": "4.2.5",
     "jest-puppeteer": "4.4.0",
@@ -117,10 +120,9 @@
     "source-map-explorer": "2.4.2",
     "stylelint": "13.6.1",
     "stylelint-config-standard": "20.0.0",
-    "uuid": "8.1.0",
     "topojson-server": "3.0.1",
     "topojson-simplify": "3.0.3",
-    "geojson-precision": "1.0.0"
+    "uuid": "8.1.0"
   },
   "husky": {
     "hooks": {

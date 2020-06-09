@@ -12,6 +12,7 @@ const topojson = require('topojson-server');
 const toposimplify = require('topojson-simplify');
 const geojsonPrecision = require('geojson-precision');
 const rewind = require('@mapbox/geojson-rewind');
+const geojsonArea = require('@mapbox/geojson-area');
 
 const bar = new cliProgress.SingleBar({
   stopOnComplete: true,
@@ -166,6 +167,7 @@ async function updateDataset(dataset, dryrun) {
   let count = bounds.features.length;
   let saved = 0;
   bar.start(count, 0);
+  const areaSizes = {};
   const res = await new Promise((resolve) => {
     if (bounds.features[0].properties[dataset.areaNameField] === undefined) {
       bar.stop();
@@ -185,6 +187,9 @@ async function updateDataset(dataset, dryrun) {
       newArea.priority = dataset.priority;
       newArea.version = dataset.version;
       newArea.type = dataset.type;
+
+      // Save area
+      areaSizes[name] = geojsonArea.geometry(geometry);
 
       if (dryrun) {
         log(`Would save area ${name}`);
@@ -224,16 +229,18 @@ async function updateDataset(dataset, dryrun) {
   const fullMapGeoGeometry = topojson.topology({ areas: simpleBounds });
   const mapGeoGeometry = toposimplify.simplify(
     toposimplify.presimplify(fullMapGeoGeometry),
-    0.0000025
+    0.00014
   );
   const newObjects = Object.keys(mapGeoGeometry.objects).map((objName) => {
     const obj = mapGeoGeometry.objects[objName];
 
     // Sanitize object properties
     obj.geometries.forEach((geom) => {
+      const areaName = geom.properties[dataset.areaNameField];
       geom.properties = {
         objectid: geom.properties.objectid,
-        name: geom.properties[dataset.areaNameField],
+        name: areaName,
+        areaSize: areaSizes[areaName],
       };
     });
 
