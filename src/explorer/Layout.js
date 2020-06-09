@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useRouteMatch, useHistory } from 'react-router-dom';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -14,14 +15,19 @@ import ListItemText from '@material-ui/core/ListItemText';
 import StatsIcon from '@material-ui/icons/Assessment';
 import SearchIcon from '@material-ui/icons/Search';
 
-import { Link, useRouteMatch } from 'react-router-dom';
-
 import { useAuth } from '../Auth';
 
 function Layout(props) {
-  const auth = useAuth();
+  const { login, logout, isAuthenticated } = useAuth();
+  const history = useHistory();
+
   const match = useRouteMatch();
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    history.push('/');
+  };
 
   return (
     <div style={{ flexGrow: 1 }}>
@@ -37,12 +43,12 @@ function Layout(props) {
           <Typography variant="h6" color="inherit" style={{ flex: 1 }}>
             Toilet Map Explorer
           </Typography>
-          {auth.isAuthenticated() ? (
-            <Button onClick={auth.logout} color="inherit">
+          {isAuthenticated() ? (
+            <Button onClick={handleLogout} color="inherit">
               Logout
             </Button>
           ) : (
-            <Button onClick={auth.login} color="inherit">
+            <Button onClick={login} color="inherit">
               Login
             </Button>
           )}

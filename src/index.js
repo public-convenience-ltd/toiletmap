@@ -5,7 +5,8 @@ import 'resize-observer-polyfill';
 
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthCallback from './pages/AuthCallback';
@@ -21,10 +22,10 @@ import NotFound from './pages/404';
 import Tracking from './components/Tracking';
 import PageLoading from './components/PageLoading';
 
-import history from './history';
-import Router from './Router';
 import AuthProvider from './Auth';
 import ApolloProvider from './Apollo';
+
+const history = createBrowserHistory();
 
 const Explorer = lazy(() =>
   import(/*webpackChunkName: 'explorer'*/ './explorer')
@@ -42,7 +43,7 @@ const RemovePage = lazy(() =>
 ReactDOM.render(
   <AuthProvider>
     <ApolloProvider>
-      <Router history={history} forceRefresh={false}>
+      <Router history={history}>
         <Tracking />
         <Suspense fallback={<PageLoading />}>
           <Switch>
