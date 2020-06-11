@@ -105,13 +105,14 @@ export default () => {
               <ExternalLink href={'https://graphql.org/'}>GraphQL</ExternalLink>
               . The endpoint is served at `https://www.toiletmap.org.uk/api`.You
               can{' '}
-              <ExternalLink href={'/voyager'}>
+              <InternalLink
+                className={styles.internalLink}
+                to={`${match.path}voyager`}
+              >
                 visualise the schema
-              </ExternalLink>
+              </InternalLink>
               , or{' '}
-              <ExternalLink href={'/graphql'}>
-                experiment with queries
-              </ExternalLink>
+              <ExternalLink href={'/api'}>experiment with queries</ExternalLink>
               . To conduct mutations, or to get un-redacted results for certain
               fields you'll need to supply some credentials in an
               `Authorization` header. Please get in touch if you'd like to know

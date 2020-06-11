@@ -7,6 +7,7 @@ import HeadlineStats from './HeadlineStats';
 import Areas from './Areas';
 import Search from './Search';
 import Loo from './Loo';
+import Voyager from './Voyager';
 
 export default function Explorer() {
   let match = useRouteMatch();
@@ -28,6 +29,9 @@ export default function Explorer() {
         </Route>
         <Route path={`${match.path}/search`}>
           <Search />
+        </Route>
+        <Route path={`${match.path}/voyager`}>
+          <Voyager />
         </Route>
       </Switch>
     </Layout>
