@@ -20,9 +20,11 @@ import lightFormat from 'date-fns/lightFormat';
 import getISODay from 'date-fns/getISODay';
 import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
-import { useMutation, useQuery, gql } from '@apollo/client';
 import useComponentSize from '@rehooks/component-size';
 import L from 'leaflet';
+import { mutate } from 'swr';
+import { loader } from 'graphql.macro';
+import { print } from 'graphql/language/printer';
 
 import Box from './Box';
 import Button from './Button';
@@ -31,6 +33,10 @@ import Spacer from './Spacer';
 import Icon from './Icon';
 import { Media } from './Media';
 import { getIsOpen, WEEKDAYS, rangeTypes } from '../openingTimes';
+import { useMapState } from './MapState';
+import { useMutation } from '../graphql/fetcher';
+
+const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
 
 const Grid = styled(Box)`
   display: flex;
@@ -70,16 +76,7 @@ function getIsOpenLabel(openingTimes = [], dateTime = new Date()) {
   return isOpen ? 'Open now' : 'Closed';
 }
 
-const GEOLOCATION_QUERY = gql`
-  query geolocation {
-    geolocation {
-      lat
-      lng
-    }
-  }
-`;
-
-const SUBMIT_VERIFICATION_REPORT_MUTATION = gql`
+const SUBMIT_VERIFICATION_REPORT_MUTATION = `
   mutation submitVerificationReportMutation($id: ID) {
     submitVerificationReport(id: $id) {
       loo {
@@ -123,11 +120,27 @@ const ToiletDetailsPanel = ({
   const [isExpanded, setIsExpanded] = React.useState(startExpanded);
 
   const [
-    submitVerificationReport,
+    submitVerificationMutation,
     { loading: submitVerificationLoading },
   ] = useMutation(SUBMIT_VERIFICATION_REPORT_MUTATION);
 
-  const { data: geolocationData } = useQuery(GEOLOCATION_QUERY);
+  const submitVerificationReport = async (variables) => {
+    const responseData = await submitVerificationMutation(variables);
+
+    // update the local cache with the new data
+    mutate(
+      [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: data.id })],
+      {
+        loo: {
+          ...data,
+          verifiedAt: responseData.submitVerificationReport.loo.verifiedAt,
+        },
+      },
+      false
+    );
+  };
+
+  const [mapState] = useMapState();
 
   // programmatically set focus on close button when panel expands
   const closeButtonRef = React.useRef(null);
@@ -168,9 +181,9 @@ const ToiletDetailsPanel = ({
       <Text fontWeight="bold" fontSize={[3, 4]} lineHeight={1.2}>
         <h2 id="toilet-details-heading">{data.name || 'Unnamed Toilet'}</h2>
       </Text>
-      {geolocationData.geolocation && (
+      {mapState.geolocation && (
         <Box ml={5}>
-          <DistanceTo from={geolocationData.geolocation} to={data.location} />
+          <DistanceTo from={mapState.geolocation} to={data.location} />
         </Box>
       )}
     </Box>
@@ -263,9 +276,7 @@ const ToiletDetailsPanel = ({
       <Spacer mb={2} />
       <Box display="flex" alignItems="center">
         <Button
-          onClick={() =>
-            submitVerificationReport({ variables: { id: data.id } })
-          }
+          onClick={() => submitVerificationReport({ id: data.id })}
           disabled={submitVerificationLoading}
         >
           Yes

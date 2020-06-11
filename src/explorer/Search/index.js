@@ -1,13 +1,14 @@
 import React from 'react';
-import { useQuery } from '@apollo/client';
-import { loader } from 'graphql.macro';
+import useSWR from 'swr';
 import { useLocation, useHistory, useRouteMatch } from 'react-router-dom';
 import { parse, stringify } from 'query-string';
+import { loader } from 'graphql.macro';
+import { print } from 'graphql/language/printer';
 
 import Results from './Results';
 import SearchForm from './Form/SearchForm';
 
-const SEARCH_QUERY = loader('./search.graphql');
+const SEARCH_QUERY = print(loader('./search.graphql'));
 
 function useSearchVariables() {
   let { search } = useLocation();
@@ -31,14 +32,18 @@ export default function Search() {
   let history = useHistory();
   let { path } = useRouteMatch();
   let variables = useSearchVariables();
-  const { loading, error, data } = useQuery(SEARCH_QUERY, { variables });
+
+  const { isValidating: loading, data, error } = useSWR([
+    SEARCH_QUERY,
+    JSON.stringify(variables),
+  ]);
 
   function search(params) {
     let query = stringify({ ...variables, ...params });
     history.push(`${path}?${query}`);
   }
 
-  if (loading) return <p>Loading ...</p>;
+  if (loading || !data) return <p>Loading ...</p>;
   if (error) throw error;
   return (
     <>

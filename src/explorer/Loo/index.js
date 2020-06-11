@@ -1,7 +1,8 @@
 import React from 'react';
-import { useQuery } from '@apollo/client';
-import { loader } from 'graphql.macro';
+import useSWR from 'swr';
 import { useParams } from 'react-router-dom';
+import { loader } from 'graphql.macro';
+import { print } from 'graphql/language/printer';
 
 import Map from './Map';
 import PropertyTable from './PropertyTable';
@@ -17,14 +18,18 @@ import omit from 'lodash/omit';
 
 import { useAuth } from '../../Auth';
 
-const LOO_DETAILS = loader('./looDetails.graphql');
+const LOO_DETAILS = print(loader('./looDetails.graphql'));
 
 function Loo(props) {
   const auth = useAuth();
   let { id } = useParams();
-  const { loading, error, data } = useQuery(LOO_DETAILS, { variables: { id } });
 
-  if (loading) return <p>Loading Loo Info</p>;
+  const { isValidating: loading, data, error } = useSWR([
+    LOO_DETAILS,
+    JSON.stringify({ id }),
+  ]);
+
+  if (loading || !data) return <p>Loading Loo Info</p>;
   if (error) return <p>Failed to fetch loo :(</p>;
 
   let loo = pickBy(data.loo, (val) => val !== null);

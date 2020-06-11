@@ -1,9 +1,10 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import queryString from 'query-string';
-import { useMutation } from '@apollo/client';
-import { loader } from 'graphql.macro';
 import { Redirect } from 'react-router-dom';
+import { mutate } from 'swr';
+import { loader } from 'graphql.macro';
+import { print } from 'graphql/language/printer';
 
 import PageLayout from '../components/PageLayout';
 import LooMap from '../components/LooMap';
@@ -13,12 +14,14 @@ import Spacer from '../components/Spacer';
 import Button from '../components/Button';
 import LocationSearch from '../components/LocationSearch';
 
-import useMapPosition from '../components/useMapPosition';
+import { useMapState } from '../components/MapState';
 import useNearbyLoos from '../components/useNearbyLoos';
 
 import config from '../config';
+import { useMutation } from '../graphql/fetcher';
 
-const UPDATE_LOO = loader('./updateLoo.graphql');
+const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
+const UPDATE_LOO_MUTATION = print(loader('../graphql/updateLoo.graphql'));
 
 const initialFormState = {
   active: null,
@@ -26,14 +29,12 @@ const initialFormState = {
 };
 
 const AddPage = (props) => {
-  const [mapPosition, setMapPosition] = useMapPosition(config.fallbackLocation);
+  const [mapState, setMapState] = useMapState();
 
   const { data } = useNearbyLoos({
-    variables: {
-      lat: mapPosition.center.lat,
-      lng: mapPosition.center.lng,
-      radius: mapPosition.radius,
-    },
+    lat: mapState.center.lat,
+    lng: mapState.center.lng,
+    radius: mapState.radius,
   });
 
   const { lat, lng } = queryString.parse(props.location.search);
@@ -41,41 +42,47 @@ const AddPage = (props) => {
   // set the map position if lat and lng query params are present
   React.useEffect(() => {
     if (lat && lng) {
-      setMapPosition({
+      setMapState({
         center: {
           lat: parseFloat(lat),
           lng: parseFloat(lng),
         },
       });
     }
-  }, [lat, lng, setMapPosition]);
+  }, [lat, lng, setMapState]);
 
   const [
     updateLoo,
-    { loading: saveLoading, data: saveResponse, error: saveError },
-  ] = useMutation(UPDATE_LOO);
+    { data: saveData, loading: saveLoading, error: saveError },
+  ] = useMutation(UPDATE_LOO_MUTATION);
 
-  if (saveError) {
-    console.error('saving', saveError);
-  }
+  const save = async (formData) => {
+    // add the active state for which there's no user-facing form control as yet
+    formData.active = true;
+
+    try {
+      const data = await updateLoo(formData);
+
+      mutate(
+        [
+          FIND_LOO_BY_ID_QUERY,
+          JSON.stringify({ id: data.submitReport.loo.id }),
+        ],
+        {
+          loo: data.submitReport.loo,
+        }
+      );
+    } catch (err) {
+      console.error('save error', err);
+    }
+  };
 
   // redirect to new toilet entry page on successful addition
-  if (saveResponse && saveResponse.submitReport.code === '200') {
+  if (saveData) {
     return (
-      <Redirect
-        to={`/loos/${saveResponse.submitReport.loo.id}?message=created`}
-      />
+      <Redirect to={`/loos/${saveData.submitReport.loo.id}?message=created`} />
     );
   }
-
-  const save = (data) => {
-    // add the active state for which there's no user-facing form control as yet
-    data.active = true;
-
-    updateLoo({
-      variables: data,
-    });
-  };
 
   return (
     <PageLayout>
@@ -86,8 +93,8 @@ const AddPage = (props) => {
       <Box position="relative" display="flex" height="40vh">
         <LooMap
           loos={data}
-          center={mapPosition.center}
-          zoom={mapPosition.zoom}
+          center={mapState.center}
+          zoom={mapState.zoom}
           minZoom={config.editMinZoom}
           showCenter
           showContributor
@@ -96,12 +103,12 @@ const AddPage = (props) => {
           showCrosshair
           controlsOffset={20}
           withAccessibilityOverlays={false}
-          onViewportChanged={setMapPosition}
+          onViewportChanged={setMapState}
         />
 
         <Box position="absolute" top={0} left={0} m={3}>
           <LocationSearch
-            onSelectedItemChange={(center) => setMapPosition({ center })}
+            onSelectedItemChange={(center) => setMapState({ center })}
           />
         </Box>
       </Box>
@@ -111,9 +118,8 @@ const AddPage = (props) => {
       <EntryForm
         title="Add This Toilet"
         loo={initialFormState}
-        center={mapPosition.center}
+        center={mapState.center}
         saveLoading={saveLoading}
-        saveResponse={saveResponse}
         saveError={saveError}
         onSubmit={save}
       >

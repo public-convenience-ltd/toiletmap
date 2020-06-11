@@ -2,15 +2,9 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { variant } from 'styled-system';
 import Control from 'react-leaflet-control';
-import { useMutation, gql } from '@apollo/client';
 
+import { useMapState } from '../MapState';
 import useLocateMapControl from './useLocateMapControl';
-
-const UPDATE_GEOLOCATION_MUTATION = gql`
-  mutation updateGeolocation($lat: Number, $lng: Number) {
-    updateGeolocation(lat: $lat, lng: $lng) @client
-  }
-`;
 
 const ControlButton = styled.button(
   ({ theme }) => `
@@ -42,11 +36,11 @@ const ControlButton = styled.button(
 );
 
 const LocateMapControl = ({ position }) => {
-  const [updateGeolocationMutation] = useMutation(UPDATE_GEOLOCATION_MUTATION);
+  const [, setMapState] = useMapState();
 
   const onLocationFound = (event) => {
-    updateGeolocationMutation({
-      variables: {
+    setMapState({
+      geolocation: {
         lat: event.latitude,
         lng: event.longitude,
       },
@@ -54,7 +48,9 @@ const LocateMapControl = ({ position }) => {
   };
 
   const onStopLocation = () => {
-    updateGeolocationMutation();
+    setMapState({
+      geolocation: null,
+    });
   };
 
   const { isActive, startLocate, stopLocate } = useLocateMapControl({

@@ -1,3 +1,5 @@
+#import "./looFragment.graphql"
+
 mutation updateLoo(
   $id: ID
   $location: PointInput!
@@ -42,31 +44,7 @@ mutation updateLoo(
     success
     message
     loo {
-      id
-      name
-      area {
-        name
-        type
-      }
-      location {
-        lat
-        lng
-      }
-      active
-      openingTimes
-      accessible
-      allGender
-      male
-      female
-      urinalOnly
-      childrenOnly
-      babyChange
-      radar
-      attended
-      noPayment
-      paymentDetails
-      notes
-      removalReason
+      ...LooFragment
     }
   }
 }

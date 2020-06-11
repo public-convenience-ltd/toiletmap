@@ -1,8 +1,9 @@
 import React from 'react';
-import { useQuery } from '@apollo/client';
+import useSWR from 'swr';
+import { Doughnut } from 'react-chartjs-2';
 import { loader } from 'graphql.macro';
+import { print } from 'graphql/language/printer';
 
-import Counter from './Counter';
 import LooIcon from '@material-ui/icons/Wc';
 import RemoveIcon from '@material-ui/icons/Delete';
 import StatIcon from '@material-ui/icons/Assessment';
@@ -11,9 +12,10 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-import { Doughnut } from 'react-chartjs-2';
 
-const STATS = loader('./stats.graphql');
+import Counter from './Counter';
+
+const STATS = print(loader('./stats.graphql'));
 
 const RED = '#FF6384';
 const GREEN = '#36A2EB';
@@ -36,9 +38,9 @@ function makeDoughnutData(labels, data) {
 }
 
 function HeadlineStats() {
-  const { loading, error, data } = useQuery(STATS);
+  const { isValidating: loading, error, data } = useSWR(STATS);
 
-  if (loading) return null;
+  if (loading || !data) return null;
   if (error) throw error;
 
   let { activeLoos, babyChanging, accessibleLoos } = data.proportions;

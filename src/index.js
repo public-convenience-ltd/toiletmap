@@ -7,6 +7,7 @@ import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
+import { SWRConfig } from 'swr';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthCallback from './pages/AuthCallback';
@@ -23,7 +24,8 @@ import Tracking from './components/Tracking';
 import PageLoading from './components/PageLoading';
 
 import AuthProvider from './Auth';
-import ApolloProvider from './Apollo';
+import fetcher from './graphql/fetcher';
+import { MapStateProvider } from './components/MapState';
 
 const history = createBrowserHistory();
 
@@ -42,47 +44,53 @@ const RemovePage = lazy(() =>
 
 ReactDOM.render(
   <AuthProvider>
-    <ApolloProvider>
-      <Router history={history}>
-        <Tracking />
-        <Suspense fallback={<PageLoading />}>
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-            <ProtectedRoute path="/loos/add" component={AddPage} />
-            <Route path="/loos/:id" exact component={HomePage} />
-            <Route exact path="/about" component={AboutPage} />
-            <Route exact path="/cookies" component={CookiesPage} />
-            <Route exact path="/privacy" component={PrivacyPage} />
-            <Route exact path="/use-our-loos" component={UseOurLoosPage} />
-            <Route exact path="/contact" component={ContactPage} />
-            <Route
-              path="/contribute"
-              render={(props) => <ContributePage {...props} />}
-            />
-            <Router
-              path="/login"
-              render={() => <Redirect to="/contribute" />}
-            />
-            <Route
-              path="/map/:lng/:lat"
-              render={(props) => <MapPage {...props} />}
-            />
-            <Route
-              exact
-              path="/callback"
-              render={(props) => <AuthCallback {...props} />}
-            />
-            <Route
-              path="/explorer"
-              render={(props) => <Explorer {...props} />}
-            />
-            <ProtectedRoute path="/loos/:id/edit" component={EditPage} />
-            <ProtectedRoute path="/loos/:id/remove" component={RemovePage} />
-            <Route component={NotFound} />
-          </Switch>
-        </Suspense>
-      </Router>
-    </ApolloProvider>
+    <SWRConfig
+      value={{
+        fetcher,
+      }}
+    >
+      <MapStateProvider>
+        <Router history={history}>
+          <Tracking />
+          <Suspense fallback={<PageLoading />}>
+            <Switch>
+              <Route exact path="/" component={HomePage} />
+              <ProtectedRoute path="/loos/add" component={AddPage} />
+              <Route path="/loos/:id" exact component={HomePage} />
+              <Route exact path="/about" component={AboutPage} />
+              <Route exact path="/cookies" component={CookiesPage} />
+              <Route exact path="/privacy" component={PrivacyPage} />
+              <Route exact path="/use-our-loos" component={UseOurLoosPage} />
+              <Route exact path="/contact" component={ContactPage} />
+              <Route
+                path="/contribute"
+                render={(props) => <ContributePage {...props} />}
+              />
+              <Router
+                path="/login"
+                render={() => <Redirect to="/contribute" />}
+              />
+              <Route
+                path="/map/:lng/:lat"
+                render={(props) => <MapPage {...props} />}
+              />
+              <Route
+                exact
+                path="/callback"
+                render={(props) => <AuthCallback {...props} />}
+              />
+              <Route
+                path="/explorer"
+                render={(props) => <Explorer {...props} />}
+              />
+              <ProtectedRoute path="/loos/:id/edit" component={EditPage} />
+              <ProtectedRoute path="/loos/:id/remove" component={RemovePage} />
+              <Route component={NotFound} />
+            </Switch>
+          </Suspense>
+        </Router>
+      </MapStateProvider>
+    </SWRConfig>
   </AuthProvider>,
   document.getElementById('root')
 );
