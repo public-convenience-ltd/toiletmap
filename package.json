@@ -76,7 +76,7 @@
     "react-app-polyfill": "1.0.6",
     "react-chartjs-2": "2.9.0",
     "react-dom": "16.13.1",
-    "react-ga": "2.7.0",
+    "react-ga": "3.0.0",
     "react-helmet": "6.1.0",
     "react-hook-form": "5.7.2",
     "react-leaflet": "2.7.0",
