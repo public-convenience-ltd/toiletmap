@@ -10,6 +10,9 @@ import {
   faPoundSign,
   faBaby,
   faToilet,
+  faMale,
+  faFemale,
+  faChild,
   faKey,
   faCog,
   faQuestion,
@@ -245,6 +248,26 @@ const ToiletDetailsPanel = ({
       icon: <Icon icon={faToilet} />,
       label: 'Gender Neutral',
       valueIcon: getFeatureValueIcon(data.allGender),
+    },
+    {
+      icon: <Icon icon={faFemale} />,
+      label: 'Female Toilets',
+      valueIcon: getFeatureValueIcon(data.female),
+    },
+    {
+      icon: <Icon icon={faMale} />,
+      label: 'Male Toilets',
+      valueIcon: getFeatureValueIcon(data.male),
+    },
+    {
+      icon: <Icon icon={faChild} />,
+      label: 'Children Only',
+      valueIcon: getFeatureValueIcon(data.childrenOnly),
+    },
+    {
+      icon: <Icon icon={faToilet} />,
+      label: 'Urinal Only',
+      valueIcon: getFeatureValueIcon(data.urinalOnly),
     },
     {
       icon: <Icon icon={faCog} />,
