@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import Box from '../Box';
@@ -22,6 +22,13 @@ const MainMenu = ({
   children,
 }) => {
   const { isAuthenticated, logout } = useAuth();
+  const history = useHistory();
+
+  const handleLogout = () => {
+    logout();
+    onMenuItemClick();
+    history.push('/');
+  };
 
   return (
     <Text
@@ -80,13 +87,7 @@ const MainMenu = ({
 
           {isAuthenticated() && (
             <Box as="li" mt={[3, 0]} mb={['auto', 0]} ml={[0, 4]}>
-              <button
-                type="button"
-                onClick={() => {
-                  logout();
-                  onMenuItemClick();
-                }}
-              >
+              <button type="button" onClick={handleLogout}>
                 Logout
               </button>
             </Box>

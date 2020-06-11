@@ -31,7 +31,7 @@ export default function ExpandableReport(props) {
         <Typography>Report from: {report.contributor}</Typography>
         <Typography>
           Created:{' '}
-          {lightFormat(parseISO(report.createdAt), 'DD/LL/YYYY, hh:mm a..aaa')}
+          {lightFormat(parseISO(report.createdAt), 'dd/MM/yyyy, hh:mm aa')}
         </Typography>
       </ExpansionPanelSummary>
 

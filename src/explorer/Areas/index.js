@@ -1,9 +1,9 @@
 import React from 'react';
-import { useQuery } from '@apollo/client';
-import { loader } from 'graphql.macro';
+import useSWR from 'swr';
 import { Link } from 'react-router-dom';
-
 import get from 'lodash/get';
+import { loader } from 'graphql.macro';
+import { print } from 'graphql/language/printer';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,7 +11,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-const AREA_STATS = loader('./areaStats.graphql');
+const AREA_STATS = print(loader('./areaStats.graphql'));
 
 const cells = [
   {
@@ -33,7 +33,7 @@ const cells = [
 ];
 
 function Areas() {
-  const { loading, error, data } = useQuery(AREA_STATS);
+  const { isValidating: loading, error, data } = useSWR(AREA_STATS);
 
   return (
     <div>
@@ -47,13 +47,14 @@ function Areas() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {loading && (
-            <TableRow>
-              <TableCell>
-                <h5>Loading area stats...</h5>
-              </TableCell>
-            </TableRow>
-          )}
+          {loading ||
+            (!data && (
+              <TableRow>
+                <TableCell>
+                  <h5>Loading area stats...</h5>
+                </TableCell>
+              </TableRow>
+            ))}
 
           {error && (
             <TableRow>
@@ -65,6 +66,7 @@ function Areas() {
 
           {!error &&
             !loading &&
+            data &&
             data.areaStats.map((area, index) => (
               <TableRow key={index}>
                 {cells.map((cell) => (
