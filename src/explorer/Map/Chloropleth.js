@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { useQuery } from '@apollo/client';
+import useSWR from 'swr';
 import {
   ComposableMap,
   ZoomableGroup,
@@ -7,12 +7,13 @@ import {
   Geography,
 } from 'react-simple-maps';
 import { loader } from 'graphql.macro';
+import { print } from 'graphql/language/printer';
 import cloneDeep from 'lodash/cloneDeep';
 import { scaleQuantile } from 'd3-scale';
 import ReactTooltip from 'react-tooltip';
 
-const GET_AREAS = loader('./getAreas.graphql');
-const GET_STATS = loader('./getStats.graphql');
+const GET_AREAS = print(loader('./getAreas.graphql'));
+const GET_STATS = print(loader('./getStats.graphql'));
 
 const SCALE = [
   '#4A1B5F',
@@ -34,8 +35,12 @@ function Chloropleth(props) {
   const [transformedStats, setTransformedStats] = useState();
   const [geography, setGeography] = useState();
   const [areaSizes, setAreaSizes] = useState();
-  const { loading: loadingAreas, data: areasData } = useQuery(GET_AREAS);
-  const { data: statsData } = useQuery(GET_STATS);
+  const { isValidating: loadingAreas, data: areasData } = useSWR(GET_AREAS, {
+    revalidateOnFocus: false,
+  });
+  const { data: statsData } = useSWR(GET_STATS, {
+    revalidateOnFocus: false,
+  });
   const { options: opts } = props;
 
   useEffect(() => {

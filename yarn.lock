@@ -4855,7 +4855,7 @@ combined-stream@^1.0.6, combined-stream@^1.0.8, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@2, commander@^2.11.0, commander@^2.20.0:
+commander@2, commander@^2.11.0, commander@^2.19.0, commander@^2.20.0:
   version "2.20.3"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
@@ -4871,6 +4871,7 @@ commander@5.0.0:
   integrity sha512-JrDGPAKjMGSP1G0DUoaceEJ3DZgAfr/q6X7FVk4+U5KxUSKviYGM2k6zWkfyyBHy5rAtzgYJFa1ro2O9PtoxwQ==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 commander@^2.11.0, commander@^2.19.0, commander@^2.20.0, commander@^2.20.3:
 =======
 <<<<<<< HEAD
@@ -4882,6 +4883,8 @@ commander@^2.11.0, commander@^2.19.0, commander@^2.20.0:
 
 =======
 >>>>>>> feat: add map page to explorer, initial chloropleth work
+=======
+>>>>>>> chore: make compatible with previous refactor
 commander@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/commander/-/commander-3.0.2.tgz#6837c3fb677ad9933d1cfba42dd14d5117d6b39e"
@@ -13399,11 +13402,20 @@ react-side-effect@^2.1.0:
   resolved "https://registry.yarnpkg.com/react-side-effect/-/react-side-effect-2.1.0.tgz#1ce4a8b4445168c487ed24dab886421f74d380d3"
   integrity sha512-IgmcegOSi5SNX+2Snh1vqmF0Vg/CbkycU9XZbOHJlZ6kMzTmi3yc254oB1WCkgA7OQtIAoLmcSFuHTc/tlcqXg==
 
-<<<<<<< HEAD
 react-simple-code-editor@^0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/react-simple-code-editor/-/react-simple-code-editor-0.10.0.tgz#73e7ac550a928069715482aeb33ccba36efe2373"
   integrity sha512-bL5W5mAxSW6+cLwqqVWY47Silqgy2DKDTR4hDBrLrUqC5BXc29YVx17l2IZk5v36VcDEq1Bszu2oHm1qBwKqBA==
+
+react-simple-maps@2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/react-simple-maps/-/react-simple-maps-2.1.2.tgz#4c6531733b9eeb0003c10ddcd822a9414a86acab"
+  integrity sha512-CuwuOomMmf/3zMtMqG9w8IKxpPUDhXHuF1p/8/8G6EMiRdYUJDysmDFGUIxD30CfkR4+9ItE0NV1pI/fZC/1cw==
+  dependencies:
+    d3-geo "^1.11.9"
+    d3-selection "^1.4.1"
+    d3-zoom "^1.8.3"
+    topojson-client "^3.0.0"
 
 react-styleguidist@11.0.8:
   version "11.0.8"
@@ -13472,6 +13484,14 @@ react-styleguidist@11.0.8:
     webpack-dev-server "^3.9.0"
     webpack-merge "^4.2.2"
 
+react-tooltip@4.2.6:
+  version "4.2.6"
+  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-4.2.6.tgz#a3d5f0d1b0c597c0852ba09c5e2af0019b7cfc70"
+  integrity sha512-KX/zCsPFCI8RuulzBX86U+Ur7FvgGNRBdb7dUu0ndo8Urinn48nANq9wfq4ABlehweQjPzLl7XdNAtLKza+I3w==
+  dependencies:
+    prop-types "^15.7.2"
+    uuid "^7.0.3"
+
 react-transition-group@^2.2.1:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.9.0.tgz#df9cdb025796211151a436c69a8f3b97b5b07c8d"
@@ -13481,25 +13501,6 @@ react-transition-group@^2.2.1:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
-=======
-react-simple-maps@2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/react-simple-maps/-/react-simple-maps-2.1.2.tgz#4c6531733b9eeb0003c10ddcd822a9414a86acab"
-  integrity sha512-CuwuOomMmf/3zMtMqG9w8IKxpPUDhXHuF1p/8/8G6EMiRdYUJDysmDFGUIxD30CfkR4+9ItE0NV1pI/fZC/1cw==
-  dependencies:
-    d3-geo "^1.11.9"
-    d3-selection "^1.4.1"
-    d3-zoom "^1.8.3"
-    topojson-client "^3.0.0"
->>>>>>> feat: add map page to explorer, initial chloropleth work
-
-react-tooltip@4.2.6:
-  version "4.2.6"
-  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-4.2.6.tgz#a3d5f0d1b0c597c0852ba09c5e2af0019b7cfc70"
-  integrity sha512-KX/zCsPFCI8RuulzBX86U+Ur7FvgGNRBdb7dUu0ndo8Urinn48nANq9wfq4ABlehweQjPzLl7XdNAtLKza+I3w==
-  dependencies:
-    prop-types "^15.7.2"
-    uuid "^7.0.3"
 
 react-transition-group@^4.4.0:
   version "4.4.1"
