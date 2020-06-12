@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Chloropleth from './Chloropleth';
 import ReactTooltip from 'react-tooltip';
 import { Paper, Grid, Select, MenuItem, InputLabel } from '@material-ui/core';
+
+function convertRemToPixels(rem) {
+  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+}
 
 const DEFAULT_OPTIONS = {
   statistic: 'activeLoos',
@@ -54,6 +58,7 @@ function Options(props) {
 function Map(props) {
   const [content, setContent] = useState('');
   const [options, setOptions] = useState(DEFAULT_OPTIONS);
+  const [mapWidth, setMapWidth] = useState(640);
 
   const updateOptions = (opt, newVal) => {
     setOptions((prevOptions) => {
@@ -63,13 +68,30 @@ function Map(props) {
     });
   };
 
+  useEffect(() => {
+    const resizeListener = () => {
+      if (window.innerWidth < 640) {
+        setMapWidth(window.innerWidth - 2 * convertRemToPixels(1));
+      } else {
+        setMapWidth(
+          Math.ceil((window.innerWidth - 2 * convertRemToPixels(1)) / 2)
+        );
+      }
+    };
+    resizeListener();
+    window.addEventListener('resize', resizeListener);
+    return () => window.removeEventListener('resize', resizeListener);
+  }, []);
+
+  const mapHeight = 600;
+
   return (
     <div style={{ margin: '1rem' }}>
       <Grid container>
         <Grid item xs>
-          <Paper elevation={1} style={{ width: 800, height: 750 }}>
+          <Paper elevation={1} style={{ width: mapWidth, height: mapHeight }}>
             <Chloropleth
-              width={800}
+              width={mapWidth}
               height={750}
               options={options}
               setTooltipContent={setContent}

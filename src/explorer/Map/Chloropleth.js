@@ -102,7 +102,6 @@ function Chloropleth(props) {
       colourScale = scaleQuantile()
         .domain(
           statsData.areaStats.map((s) => {
-            console.log(s[opts.statistic] / areaSizes[s.area.name]);
             return s[opts.statistic] / areaSizes[s.area.name];
           })
         )
@@ -115,10 +114,6 @@ function Chloropleth(props) {
   }
 
   const renderMap = () => {
-    if (!geography) {
-      return <></>;
-    }
-
     return (
       <div
         style={{
@@ -129,7 +124,7 @@ function Chloropleth(props) {
       >
         <ComposableMap
           projectionConfig={{
-            rotate: [0.0, -55.0, 0],
+            rotate: [2, -54.5, 0],
             scale: 2800,
           }}
           width={props.width}
@@ -183,7 +178,7 @@ function Chloropleth(props) {
 
   return (
     <>
-      {loadingAreas || !areasData || !transformedStats ? (
+      {loadingAreas || !areasData || !transformedStats || !geography ? (
         <h1>Loading...</h1>
       ) : (
         renderMap()
