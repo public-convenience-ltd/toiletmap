@@ -17,6 +17,8 @@ function Options(props) {
     return (e) => props.onOptionChange(optionName, e.target.value);
   };
 
+  const year = new Date().getFullYear();
+
   return (
     <div style={{ padding: '1rem' }}>
       <Grid container spacing={4}>
@@ -51,6 +53,20 @@ function Options(props) {
           </Select>
         </Grid>
       </Grid>
+      <p
+        className="disclaimer"
+        style={{
+          fontSize: '0.7rem',
+          color: '#666',
+          marginTop: '5rem',
+          fontFamily: 'sans-serif',
+        }}
+      >
+        Contains National Statistics data © Crown copyright and database right{' '}
+        {year}
+        <br />
+        Contains OS data © Crown copyright and database right {year}
+      </p>
     </div>
   );
 }

@@ -86,6 +86,7 @@ function Chloropleth(props) {
       return;
     }
 
+    // Cache the area sizes in their own object for easy access
     let areaSizes = {};
     Object.keys(geography.objects).forEach((objName) => {
       const obj = geography.objects[objName];
@@ -96,21 +97,17 @@ function Chloropleth(props) {
     setAreaSizes(areaSizes);
   }, [opts, geography, statsData]);
 
+  // The function used to map the stats data into values
+  let statsFunc = (s) => s[opts.statistic];
+  if (opts.display === 'density') {
+    statsFunc = (s) => s[opts.statistic] / areaSizes[s.area.name];
+  }
+
   let colourScale;
-  if (statsData) {
-    if (areaSizes && opts.display === 'density') {
-      colourScale = scaleQuantile()
-        .domain(
-          statsData.areaStats.map((s) => {
-            return s[opts.statistic] / areaSizes[s.area.name];
-          })
-        )
-        .range(SCALE);
-    } else {
-      colourScale = scaleQuantile()
-        .domain(statsData.areaStats.map((s) => s[opts.statistic]))
-        .range(SCALE);
-    }
+  if (statsData && areaSizes) {
+    colourScale = scaleQuantile()
+      .domain(statsData.areaStats.map(statsFunc))
+      .range(SCALE);
   }
 
   const renderMap = () => {
@@ -125,7 +122,7 @@ function Chloropleth(props) {
         <ComposableMap
           projectionConfig={{
             rotate: [2, -54.5, 0],
-            scale: 2800,
+            scale: 3000,
           }}
           width={props.width}
           height={props.height}
@@ -143,15 +140,23 @@ function Chloropleth(props) {
 
                   let value;
                   let unit;
-                  if (opts.display === 'number') {
-                    value = transformedStats[name][opts.statistic];
-                    unit = 'loos';
-                  } else if (opts.display === 'density') {
-                    value = (
-                      transformedStats[name][opts.statistic] /
-                      (areaSize / 1000000)
-                    ).toFixed(5);
-                    unit = 'loos/km<sup>2</sup>';
+                  switch (opts.display) {
+                    case 'number':
+                      value = transformedStats[name][opts.statistic];
+                      unit = 'loos';
+                      break;
+                    case 'density':
+                      value = (
+                        transformedStats[name][opts.statistic] /
+                        (areaSize / 1000000)
+                      ).toFixed(5);
+                      unit = 'loos/km<sup>2</sup>';
+                      break;
+                    default:
+                      console.error(
+                        `Unrecognised display format ${opts.display}`
+                      );
+                      break;
                   }
 
                   return (
@@ -179,7 +184,7 @@ function Chloropleth(props) {
   return (
     <>
       {loadingAreas || !areasData || !transformedStats || !geography ? (
-        <h1>Loading...</h1>
+        <h1>Loading map data, please wait...</h1>
       ) : (
         renderMap()
       )}
