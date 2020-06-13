@@ -86,7 +86,7 @@
     "react-router-hash-link": "1.2.2",
     "resize-observer-polyfill": "1.5.1",
     "styled-system": "5.1.5",
-    "swr": "0.2.2",
+    "swr": "0.2.3",
     "timeago-react": "3.0.0"
   },
   "devDependencies": {
