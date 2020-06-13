@@ -35,10 +35,14 @@ function Chloropleth(props) {
   const [transformedStats, setTransformedStats] = useState();
   const [geography, setGeography] = useState();
   const [areaSizes, setAreaSizes] = useState();
-  const { isValidating: loadingAreas, data: areasData } = useSWR(GET_AREAS, {
+  const {
+    isValidating: loadingAreas,
+    data: areasData,
+    error: areasError,
+  } = useSWR(GET_AREAS, {
     revalidateOnFocus: false,
   });
-  const { data: statsData } = useSWR(GET_STATS, {
+  const { data: statsData, error: statsError } = useSWR(GET_STATS, {
     revalidateOnFocus: false,
   });
   const { options: opts } = props;
@@ -57,7 +61,7 @@ function Chloropleth(props) {
 
   // We need to do some transforms when we finally recieve the TopoJSON data
   useEffect(() => {
-    if (!areasData) {
+    if (!areasData || !areasData.mapAreas) {
       return;
     }
 
@@ -181,15 +185,20 @@ function Chloropleth(props) {
     );
   };
 
-  return (
-    <>
-      {loadingAreas || !areasData || !transformedStats || !geography ? (
-        <h1>Loading map data, please wait...</h1>
-      ) : (
-        renderMap()
-      )}
-    </>
-  );
+  if (
+    loadingAreas ||
+    !areasData ||
+    !transformedStats ||
+    (!geography && areasData.mapAreas)
+  ) {
+    return <h1>Loading map data, please wait...</h1>;
+  } else if (!areasData.mapAreas || areasError) {
+    return <h1>Error fetching map.</h1>;
+  } else if (statsError) {
+    return <h1>Error fetching stats.</h1>;
+  }
+
+  return renderMap();
 }
 
 export default memo(Chloropleth);

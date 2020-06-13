@@ -85,6 +85,9 @@ function Map(props) {
   };
 
   useEffect(() => {
+    // We need to resize like this due to the svg viewBox attribute. It's not the prettiest thing ever, but
+    // it does the job. Magic numbers: 640px is an arbitrary width below which we should probably make the map
+    // take up all of the screen. 1rem because that's the margin on the main div. 2 because it's a margin on both sides.
     const resizeListener = () => {
       if (window.innerWidth < 640) {
         setMapWidth(window.innerWidth - 2 * convertRemToPixels(1));
