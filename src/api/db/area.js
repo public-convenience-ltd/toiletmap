@@ -37,4 +37,4 @@ AreaSchema.statics.containing = async function (coords) {
   return areas.sort((a, b) => b.priority - a.priority);
 };
 
-module.exports = new mongoose.model('Area', AreaSchema);
+module.exports = mongoose.models.Area || mongoose.model('Area', AreaSchema);

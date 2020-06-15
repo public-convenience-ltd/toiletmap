@@ -1,16 +1,11 @@
-const { ApolloServer, gql } = require('apollo-server');
+import { ApolloServer } from 'apollo-server-micro';
+import typeDefs from './typeDefs.graphql';
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
 
 const config = require('./config');
-
-const fs = require('fs');
-const path = require('path');
-const typeDefs = gql(
-  fs.readFileSync(path.join(__dirname, 'typeDefs.graphql'), 'utf-8')
-);
-
 const resolvers = require('./resolvers');
+
 const {
   RequirePermissionDirective,
   RedactionDirective,

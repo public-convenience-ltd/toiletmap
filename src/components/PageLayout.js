@@ -7,7 +7,6 @@ import Header from './Header';
 import Footer from './Footer';
 import TrackingBanner from './Tracking/TrackingBanner';
 
-import globalStyles from '../globalStyles';
 import theme from '../theme';
 import config from '../config';
 
@@ -48,8 +47,6 @@ const PageLayout = ({ mapCenter, children }) => {
   return (
     <ThemeProvider theme={theme}>
       <MediaContextProvider>
-        {globalStyles}
-
         {(!isTrackingStateChosen || showTrackingBanner) && (
           <TrackingBanner
             ref={trackingRef}

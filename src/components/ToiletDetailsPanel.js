@@ -15,15 +15,14 @@ import {
   faQuestion,
   faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
+import dynamic from 'next/dynamic';
 import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 import lightFormat from 'date-fns/lightFormat';
 import getISODay from 'date-fns/getISODay';
 import parseISO from 'date-fns/parseISO';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import useComponentSize from '@rehooks/component-size';
-import L from 'leaflet';
 import { mutate } from 'swr';
-import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';
 
 import Box from './Box';
@@ -35,8 +34,9 @@ import { Media } from './Media';
 import { getIsOpen, WEEKDAYS, rangeTypes } from '../openingTimes';
 import { useMapState } from './MapState';
 import { useMutation } from '../graphql/fetcher';
+import FIND_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';
 
-const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
+const L = dynamic(() => import('leaflet'), { ssr: false });
 
 const Grid = styled(Box)`
   display: flex;
@@ -93,6 +93,10 @@ function round(value, precision = 0) {
 }
 
 const DistanceTo = ({ from, to }) => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
   const fromLatLng = L.latLng(from.lat, from.lng);
 
   const toLatLng = L.latLng(to.lat, to.lng);
@@ -129,7 +133,7 @@ const ToiletDetailsPanel = ({
 
     // update the local cache with the new data
     mutate(
-      [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: data.id })],
+      [print(FIND_LOO_BY_ID_QUERY), JSON.stringify({ id: data.id })],
       {
         loo: {
           ...data,
@@ -289,9 +293,9 @@ const ToiletDetailsPanel = ({
             variant="secondary"
             icon={<Icon icon={faEdit} />}
             as={Link}
-            to={editUrl}
+            href={editUrl}
           >
-            Edit
+            <a>Edit</a>
           </Button>
         </Box>
       </Box>
@@ -462,8 +466,8 @@ const ToiletDetailsPanel = ({
               <Text fontSize={1} color="grey">
                 Hours may vary with national holidays or seasonal changes. If
                 you know these hours to be out of date please{' '}
-                <Button as={Link} to={editUrl} variant="link">
-                  edit this toilet
+                <Button as={Link} href={editUrl} variant="link">
+                  <a>edit this toilet</a>
                 </Button>
                 .
               </Text>

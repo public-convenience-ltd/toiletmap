@@ -1,15 +1,25 @@
 import React from 'react';
 import { GraphQLClient } from 'graphql-request';
 
-import { isAuthenticated } from '../Auth';
+const getIsAuthenticated = () => {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  // Check whether the current time is past the
+  // Access Token's expiry time
+  let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+  return new Date().getTime() < expiresAt;
+};
 
 const API_ENDPOINT = '/api';
 
-const accessToken = localStorage.getItem('access_token');
+const accessToken =
+  typeof window !== 'undefined' ? localStorage.getItem('access_token') : '';
 
 const graphQLClient = new GraphQLClient(API_ENDPOINT, {
   headers: {
-    authorization: isAuthenticated ? `Bearer ${accessToken}` : '',
+    authorization: getIsAuthenticated() ? `Bearer ${accessToken}` : '',
   },
 });
 

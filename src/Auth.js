@@ -9,6 +9,10 @@ export const AuthContext = React.createContext();
 export const useAuth = () => React.useContext(AuthContext);
 
 export const isAuthenticated = () => {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
   // Check whether the current time is past the
   // Access Token's expiry time
   let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
@@ -62,7 +66,7 @@ const AuthProvider = ({ children }) => {
       audience: 'https://www.toiletmap.org.uk/graphql',
       scope: 'openid profile report:loo',
       clientID: CLIENT_ID,
-      redirectUri: `${window.location.origin}/callback`,
+      redirectUri: `/callback`,
     })
   );
 

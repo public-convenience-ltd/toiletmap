@@ -53,6 +53,10 @@ export default {
     lng: -0.127758,
   },
   getSettings(namespace) {
+    if (typeof window === 'undefined') {
+      return {};
+    }
+
     return JSON.parse(localStorage.getItem(namespace) || '{}');
   },
   getSetting(namespace, key, defaultVal) {

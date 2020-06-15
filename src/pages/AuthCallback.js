@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useRouter } from 'next/router';
 
 import { useAuth } from '../Auth';
 import PageLayout from '../components/PageLayout';
@@ -7,25 +7,26 @@ import PageLayout from '../components/PageLayout';
 const Callback = () => {
   const auth = useAuth();
 
-  const location = useLocation();
-  const history = useHistory();
+  const { push } = useRouter();
+
+  const hash = window?.location?.hash || '';
 
   useEffect(() => {
     const checkAuth = async () => {
-      if (/access_token|id_token|error/.test(location.hash)) {
+      if (/access_token|id_token|error/.test(hash)) {
         await auth.handleAuthentication();
         await auth.fetchProfile();
       }
 
       if (auth.isAuthenticated()) {
-        history.push(auth.redirectOnLogin() || '/');
+        push(auth.redirectOnLogin() || '/');
       } else {
-        history.push('/contribute');
+        push('/contribute');
       }
     };
 
     checkAuth();
-  }, [auth, history, location.hash]);
+  }, [auth, push, hash]);
 
   return (
     <PageLayout>

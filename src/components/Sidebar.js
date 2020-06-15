@@ -8,7 +8,7 @@ import {
   faAngleRight,
   faPlusCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import { NavLink } from 'react-router-dom';
+import Link from 'next/link';
 
 import { Media } from '../components/Media';
 import VisuallyHidden from './VisuallyHidden';
@@ -38,7 +38,7 @@ Arrow.propTypes = {
   isExpanded: PropTypes.bool,
 };
 
-const StyledNavLink = styled(NavLink)`
+const StyledNavLink = styled(Link)`
   display: flex;
   align-items: center;
 `;
@@ -181,15 +181,17 @@ const Sidebar = ({
               <VisuallyHidden>Add a toilet</VisuallyHidden>
             </h2>
             <StyledNavLink
-              to={`/loos/add?lat=${mapCenter.lat}&lng=${mapCenter.lng}`}
+              href={`/loos/add?lat=${mapCenter.lat}&lng=${mapCenter.lng}`}
             >
-              <Icon icon={faPlusCircle} fixedWidth size="lg" />
-              <Box mx={2}>
-                <Text lineHeight={1}>
-                  <b>Add a Toilet</b>
-                </Text>
-              </Box>
-              <Arrow />
+              <a>
+                <Icon icon={faPlusCircle} fixedWidth size="lg" />
+                <Box mx={2}>
+                  <Text lineHeight={1}>
+                    <b>Add a Toilet</b>
+                  </Text>
+                </Box>
+                <Arrow />
+              </a>
             </StyledNavLink>
           </Box>
         </Box>

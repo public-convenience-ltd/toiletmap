@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { HashLink } from 'react-router-hash-link';
+import Link from 'next/link';
 import styled from '@emotion/styled';
 
 import Box from './Box';
@@ -34,12 +33,13 @@ const Footer = ({ children }) => (
     color="primary"
     height={['auto', 60]}
   >
-    <HashLink
-      to="/use-our-loos"
-      title="Domestos: Use Our Loos Campaign"
-      scroll={(el) => el.scrollIntoView(true)}
-    >
-      <Box display="flex" flexDirection={['column', 'row']} alignItems="center">
+    <Link href="/use-our-loos" title="Domestos: Use Our Loos Campaign">
+      <Box
+        display="flex"
+        flexDirection={['column', 'row']}
+        alignItems="center"
+        as="a"
+      >
         <Text fontSize={14}>
           <small>Proudly sponsored by Domestos</small>
         </Text>
@@ -51,7 +51,7 @@ const Footer = ({ children }) => (
           </Box>
         </Box>
       </Box>
-    </HashLink>
+    </Link>
 
     <Box order={[-1, 0]} mb={[4, 0]}>
       <Text fontSize={[12, 16]}>
@@ -61,7 +61,9 @@ const Footer = ({ children }) => (
           ))}
 
           <Box as="li" ml={[0, 4]}>
-            <Link to="/privacy">Privacy Policy</Link>
+            <Link href="/privacy">
+              <a>Privacy Policy</a>
+            </Link>
           </Box>
         </Box>
       </Text>
