@@ -93,7 +93,7 @@ const AuthProvider = ({ children }) => {
           JSON.stringify(authResult.idTokenPayload[permissionsKey])
         );
 
-        setAuthHeader(localStorage.getItem(authResult.accessToken));
+        setAuthHeader(authResult.accessToken);
 
         resolve();
       });
