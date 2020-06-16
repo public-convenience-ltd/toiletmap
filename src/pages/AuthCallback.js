@@ -14,7 +14,6 @@ const Callback = () => {
     const checkAuth = async () => {
       if (/access_token|id_token|error/.test(location.hash)) {
         await auth.handleAuthentication();
-        await auth.fetchProfile();
       }
 
       if (auth.isAuthenticated()) {

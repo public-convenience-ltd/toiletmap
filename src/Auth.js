@@ -1,6 +1,5 @@
 import React from 'react';
 import auth0 from 'auth0-js';
-import { setAuthHeader } from './graphql/fetcher';
 
 const CLIENT_ID = 'sUts4RKy04JcyZ2IVFgMAC0rhPARCQYg';
 const permissionsKey = 'https://toiletmap.org.uk/permissions';
@@ -16,17 +15,7 @@ export const isAuthenticated = () => {
 };
 
 export const getAccessToken = () => {
-  const accessToken = localStorage.getItem('access_token');
-  if (!accessToken) {
-    throw new Error('No access token found');
-  }
-  return accessToken;
-};
-
-const getProfile = () => {
-  return {
-    name: localStorage.getItem('name'),
-  };
+  return localStorage.getItem('access_token');
 };
 
 const redirectOnNextLogin = (location) => {
@@ -45,8 +34,6 @@ const logout = () => {
   localStorage.removeItem('id_token');
   localStorage.removeItem('expires_at');
   localStorage.removeItem('permissions');
-
-  setAuthHeader(null);
 };
 
 const checkPermission = (perm) => {
@@ -93,22 +80,7 @@ const AuthProvider = ({ children }) => {
           JSON.stringify(authResult.idTokenPayload[permissionsKey])
         );
 
-        setAuthHeader(authResult.accessToken);
-
         resolve();
-      });
-    });
-
-  const fetchProfile = () =>
-    new Promise((resolve, reject) => {
-      const accessToken = getAccessToken();
-      auth0Ref.current.client.userInfo(accessToken, (err, profile) => {
-        if (profile) {
-          localStorage.setItem('name', profile.name);
-          resolve(profile);
-        } else if (err) {
-          reject(err);
-        }
       });
     });
 
@@ -127,8 +99,6 @@ const AuthProvider = ({ children }) => {
         logout,
         checkPermission,
         handleAuthentication,
-        fetchProfile,
-        getProfile,
       }}
     >
       {children}
