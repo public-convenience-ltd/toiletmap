@@ -92,7 +92,7 @@
   "devDependencies": {
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
-    "@lola-tech/graphql-kimera": "0.10.0-alpha.7",
+    "@lola-tech/graphql-kimera": "0.10.0-alpha.8",
     "@shelf/jest-mongodb": "1.1.5",
     "apollo-link-schema": "1.2.5",
     "apollo-server-testing": "2.14.4",
