@@ -1,22 +1,17 @@
 import React from 'react';
 import { GraphQLClient } from 'graphql-request';
 
-import { isAuthenticated } from '../Auth';
+import { isAuthenticated, getAccessToken } from '../Auth';
 
 const API_ENDPOINT = '/api';
 
-const accessToken = localStorage.getItem('access_token');
-
-const graphQLClient = new GraphQLClient(API_ENDPOINT, {
-  headers: {
-    authorization: isAuthenticated ? `Bearer ${accessToken}` : '',
-  },
-});
-
-const fetcher = (query, variables) => graphQLClient.request(query, variables);
-
-export const setAuthHeader = (token) => {
-  graphQLClient.setHeader('authorization', token ? `Bearer ${token}` : '');
+const fetcher = (query, variables) => {
+  const graphQLClient = new GraphQLClient(API_ENDPOINT);
+  if (isAuthenticated()) {
+    const token = getAccessToken();
+    graphQLClient.setHeader('authorization', token ? `Bearer ${token}` : '');
+  }
+  return graphQLClient.request(query, variables);
 };
 
 export const useMutation = (mutation) => {

@@ -66,7 +66,7 @@ ReactDOM.render(
                 path="/contribute"
                 render={(props) => <ContributePage {...props} />}
               />
-              <Router
+              <Route
                 path="/login"
                 render={() => <Redirect to="/contribute" />}
               />
