@@ -22,6 +22,7 @@ import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 import lightFormat from 'date-fns/lightFormat';
 import getISODay from 'date-fns/getISODay';
 import parseISO from 'date-fns/parseISO';
+import add from 'date-fns/add';
 import { Link } from 'react-router-dom';
 import useComponentSize from '@rehooks/component-size';
 import L from 'leaflet';
@@ -286,10 +287,13 @@ const ToiletDetailsPanel = ({
 
   const updatedAt = parseISO(data.updatedAt);
   let verifiedOrUpdatedDate = updatedAt;
+  let verifiedOrUpdated = 'updated';
   if (data.verifiedAt) {
     const verifiedAt = parseISO(data.verifiedAt);
-    if (updatedAt < verifiedAt) {
+    // Add a minute for the comparison to account for the fact that verification causes updatedAt to update :-(
+    if (updatedAt < add(verifiedAt, { minutes: 1 })) {
       verifiedOrUpdatedDate = verifiedAt;
+      verifiedOrUpdated = 'verified';
     }
   }
 
@@ -321,8 +325,10 @@ const ToiletDetailsPanel = ({
         </Box>
       </Box>
       <Spacer mb={[0, 2]} />
-      Last verified:{' '}
-      {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
+      Last {verifiedOrUpdated}:{' '}
+      <Link to={`/explorer/loos/${data.id}`}>
+        {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
+      </Link>
     </Box>
   );
 
