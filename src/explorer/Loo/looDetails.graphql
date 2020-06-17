@@ -13,8 +13,9 @@ query fullLooDetails($id: ID) {
     active
     openingTimes
     accessible
-    male
-    female
+    men
+    women
+    children
     babyChange
     radar
     attended

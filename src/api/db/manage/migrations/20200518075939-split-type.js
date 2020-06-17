@@ -39,7 +39,7 @@ module.exports = {
         'diff.type': 'female and male',
       },
       {
-        $set: { 'diff.female': true, 'diff.male': true },
+        $set: { 'diff.women': true, 'diff.men': true },
         $unset: { 'diff.type': '' },
       }
     );
@@ -48,7 +48,7 @@ module.exports = {
         'diff.type': 'female',
       },
       {
-        $set: { 'diff.female': true },
+        $set: { 'diff.women': true },
         $unset: { 'diff.type': '' },
       }
     );
@@ -57,7 +57,7 @@ module.exports = {
         'diff.type': 'male',
       },
       {
-        $set: { 'diff.male': true },
+        $set: { 'diff.men': true },
         $unset: { 'diff.type': '' },
       }
     );
@@ -67,9 +67,9 @@ module.exports = {
       },
       {
         $set: {
-          'diff.childrenOnly': true,
-          'diff.male': false,
-          'diff.female': false,
+          'diff.children': true,
+          'diff.men': false,
+          'diff.women': false,
         },
         $unset: { 'diff.type': '' },
       }
@@ -81,8 +81,8 @@ module.exports = {
       {
         $set: {
           'diff.urinalOnly': true,
-          'diff.male': true,
-          'diff.female': false,
+          'diff.men': true,
+          'diff.women': false,
         },
         $unset: { 'diff.type': '' },
       }

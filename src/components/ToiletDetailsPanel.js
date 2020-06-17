@@ -254,18 +254,18 @@ const ToiletDetailsPanel = ({
     },
     {
       icon: <Icon icon={faFemale} />,
-      label: 'Female Toilets',
-      valueIcon: getFeatureValueIcon(data.female),
+      label: 'Women',
+      valueIcon: getFeatureValueIcon(data.women),
     },
     {
       icon: <Icon icon={faMale} />,
-      label: 'Male Toilets',
-      valueIcon: getFeatureValueIcon(data.male),
+      label: 'Men',
+      valueIcon: getFeatureValueIcon(data.men),
     },
     {
       icon: <Icon icon={faChild} />,
-      label: 'Children Only',
-      valueIcon: getFeatureValueIcon(data.childrenOnly),
+      label: 'Children',
+      valueIcon: getFeatureValueIcon(data.children),
     },
     {
       icon: <Icon icon={faToilet} />,
