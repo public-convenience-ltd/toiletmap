@@ -112,7 +112,7 @@
     "react-styleguidist": "11.0.8",
     "serve": "11.3.2",
     "source-map-explorer": "2.4.2",
-    "stylelint": "13.6.0",
+    "stylelint": "13.6.1",
     "stylelint-config-standard": "20.0.0",
     "uuid": "8.1.0"
   },
