@@ -53,7 +53,7 @@ const MainMenu = ({
         >
           <Box as="li" ml={[0, 4]}>
             <StyledNavLink to="/" onClick={onMenuItemClick} exact>
-              Find Toilet
+              Find a Toilet
             </StyledNavLink>
           </Box>
           <Box as="li" mt={[3, 0]} ml={[0, 4]}>
@@ -65,7 +65,7 @@ const MainMenu = ({
               }
               onClick={onMenuItemClick}
             >
-              Add Toilet
+              Add a Toilet
             </StyledNavLink>
           </Box>
 

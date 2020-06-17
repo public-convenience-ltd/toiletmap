@@ -332,7 +332,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
               },
               {
                 field: 'accessible',
-                label: 'Is there disabled access?',
+                label: 'Is there a disabled toilet?',
                 value: loo['accessible'],
               },
               {
