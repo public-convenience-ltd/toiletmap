@@ -35,7 +35,8 @@ import Text from './Text';
 import Spacer from './Spacer';
 import Icon from './Icon';
 import { Media } from './Media';
-import { getIsOpen, WEEKDAYS, rangeTypes } from '../openingTimes';
+// Suppress Opening Hours Heading during COVID-19
+import { /* getIsOpen, */ WEEKDAYS, rangeTypes } from '../openingTimes';
 import { useMapState } from './MapState';
 import { useMutation } from '../graphql/fetcher';
 
@@ -69,15 +70,16 @@ function getTimeRangeLabel(range) {
   return 'Unknown';
 }
 
-function getIsOpenLabel(openingTimes = [], dateTime = new Date()) {
-  const isOpen = getIsOpen(openingTimes, dateTime);
+// Suppress Opening Hours heading during COVID-19
+// function getIsOpenLabel(openingTimes = [], dateTime = new Date()) {
+//   const isOpen = getIsOpen(openingTimes, dateTime);
 
-  if (isOpen === null) {
-    return 'Unknown';
-  }
+//   if (isOpen === null) {
+//     return 'Unknown';
+//   }
 
-  return isOpen ? 'Open now' : 'Closed';
-}
+//   return isOpen ? 'Open now' : 'Closed';
+// }
 
 const SUBMIT_VERIFICATION_REPORT_MUTATION = `
   mutation submitVerificationReportMutation($id: ID) {
@@ -537,6 +539,7 @@ const ToiletDetailsPanel = ({
         </Box>
 
         <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
+          {/* Supress opening hours heading during COVID-19
           <Box display="flex" alignItems="center">
             <Icon icon={faClock} />
             <Spacer mr={2} />
@@ -545,7 +548,7 @@ const ToiletDetailsPanel = ({
             </Text>
           </Box>
           <Spacer mb={[0, 2]} />
-          {getIsOpenLabel(openingTimes)}
+          {getIsOpenLabel(openingTimes)} */}
         </Box>
 
         <Box
