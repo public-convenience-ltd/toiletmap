@@ -50,10 +50,10 @@ type Loo {
   openingTimes: OpeningTimes
   accessible: Boolean
   allGender: Boolean
-  male: Boolean
-  female: Boolean
+  men: Boolean
+  women: Boolean
   urinalOnly: Boolean
-  childrenOnly: Boolean
+  children: Boolean
   babyChange: Boolean
   radar: Boolean
   attended: Boolean
@@ -95,10 +95,10 @@ type Report {
   openingTimes: OpeningTimes
   accessible: Boolean
   allGender: Boolean
-  male: Boolean
-  female: Boolean
+  men: Boolean
+  women: Boolean
   urinalOnly: Boolean
-  childrenOnly: Boolean
+  children: Boolean
   babyChange: Boolean
   radar: Boolean
   attended: Boolean
@@ -249,10 +249,10 @@ input ReportInput {
   openingTimes: OpeningTimes
   accessible: Boolean
   allGender: Boolean
-  male: Boolean
-  female: Boolean
+  men: Boolean
+  women: Boolean
   urinalOnly: Boolean
-  childrenOnly: Boolean
+  children: Boolean
   babyChange: Boolean
   radar: Boolean
   attended: Boolean

@@ -11,11 +11,11 @@ fragment LooFragment on Loo {
   name
   openingTimes
   accessible
-  male
-  female
+  men
+  women
   allGender
   babyChange
-  childrenOnly
+  children
   urinalOnly
   radar
   automatic

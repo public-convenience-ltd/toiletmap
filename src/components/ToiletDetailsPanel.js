@@ -224,14 +224,14 @@ const ToiletDetailsPanel = ({
 
   const features = [
     {
-      icon: <Icon icon={faPoundSign} />,
-      label: 'Free',
-      valueIcon: getFeatureValueIcon(data.noPayment),
+      icon: <Icon icon={faFemale} />,
+      label: 'Women',
+      valueIcon: getFeatureValueIcon(data.women),
     },
     {
-      icon: <Icon icon={faBaby} />,
-      label: 'Baby Changing',
-      valueIcon: getFeatureValueIcon(data.babyChange),
+      icon: <Icon icon={faMale} />,
+      label: 'Men',
+      valueIcon: getFeatureValueIcon(data.men),
     },
     {
       icon: <Icon icon={faAccessibleIcon} />,
@@ -253,19 +253,14 @@ const ToiletDetailsPanel = ({
       valueIcon: getFeatureValueIcon(data.allGender),
     },
     {
-      icon: <Icon icon={faFemale} />,
-      label: 'Female Toilets',
-      valueIcon: getFeatureValueIcon(data.female),
-    },
-    {
-      icon: <Icon icon={faMale} />,
-      label: 'Male Toilets',
-      valueIcon: getFeatureValueIcon(data.male),
-    },
-    {
       icon: <Icon icon={faChild} />,
-      label: 'Children Only',
-      valueIcon: getFeatureValueIcon(data.childrenOnly),
+      label: 'Children',
+      valueIcon: getFeatureValueIcon(data.children),
+    },
+    {
+      icon: <Icon icon={faBaby} />,
+      label: 'Baby Changing',
+      valueIcon: getFeatureValueIcon(data.babyChange),
     },
     {
       icon: <Icon icon={faToilet} />,
@@ -276,6 +271,11 @@ const ToiletDetailsPanel = ({
       icon: <Icon icon={faCog} />,
       label: 'Automatic',
       valueIcon: getFeatureValueIcon(data.automatic),
+    },
+    {
+      icon: <Icon icon={faPoundSign} />,
+      label: 'Free',
+      valueIcon: getFeatureValueIcon(data.noPayment),
     },
   ];
 
