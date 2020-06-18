@@ -1,0 +1,17 @@
+query getAreas($areaType: String) {
+  mapAreas(areaType: $areaType) {
+    type
+    objects {
+      name
+      value {
+        type
+        geometries {
+          type
+          arcs
+          properties
+        }
+      }
+    }
+    arcs
+  }
+}

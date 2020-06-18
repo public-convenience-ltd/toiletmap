@@ -1,5 +1,5 @@
 const config = require('./config');
-const { Loo, Report, Area } = require('./db');
+const { Loo, Report, Area, MapGeo } = require('./db');
 const { GraphQLDateTime } = require('graphql-iso-date');
 const without = require('lodash/without');
 const OpeningTimesScalar = require('./OpeningTimesScalar');
@@ -111,6 +111,31 @@ const resolvers = {
       });
 
       return areas;
+    },
+    mapAreas: async (parent, args) => {
+      let query = {};
+      if (args.areaType) {
+        query = { areaType: args.areaType };
+      }
+      const geo = await MapGeo.findOne(query).exec();
+
+      if (!geo) {
+        return null;
+      }
+
+      let geometry = geo.geometry;
+
+      geometry.objects.forEach((obj) => {
+        obj.value.geometries.forEach((geom) => {
+          geom.properties = JSON.stringify(geom.properties);
+          if (typeof geom.arcs[0][0] === 'number') {
+            geom.arcs = [geom.arcs];
+          }
+          geom.type = 'MultiPolygon';
+        });
+      });
+
+      return geometry;
     },
     report: async (parent, args) => {
       const id = args.id;
