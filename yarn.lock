@@ -1707,10 +1707,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@lola-tech/graphql-kimera@0.10.0-alpha.7":
-  version "0.10.0-alpha.7"
-  resolved "https://registry.yarnpkg.com/@lola-tech/graphql-kimera/-/graphql-kimera-0.10.0-alpha.7.tgz#ef0dc34eb37e3e03d3d01f8566f021790978e11d"
-  integrity sha512-RwDmB2viisbP/izxafI7XntGV9X8AG3GCXuM0hjHkpLsvWSHmdl+ibYyGqx8N17+w+6twOpfno+G32a6VhStBQ==
+"@lola-tech/graphql-kimera@0.10.0-alpha.8":
+  version "0.10.0-alpha.8"
+  resolved "https://registry.yarnpkg.com/@lola-tech/graphql-kimera/-/graphql-kimera-0.10.0-alpha.8.tgz#e15adbd3c4a8a7f5d9052099c963a36d1ac74463"
+  integrity sha512-XcF2QzBAz7/lV0yMF6kL4HZ4NKxE9p+kmX9D1qHc4E7URuTpSgM+F+meK4ZdOOWKErJU1PtECNxPRtdWwsgkCA==
   dependencies:
     easygraphql-parser "0.0.12"
     graphql "14.1.1"
