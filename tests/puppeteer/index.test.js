@@ -11,4 +11,8 @@ describe('Homepage', () => {
       'The Great British Toilet Map: Find Toilet'
     );
   });
+
+  it('shows a marker for a loo', async () => {
+    await expect(page).toMatchElement('[data-testid^=toiletMarker]');
+  });
 });
