@@ -1,10 +1,12 @@
+import { setupWorker, rest } from 'msw';
+import { graphql } from 'graphql';
 import { getExecutableSchema, mockResolver } from '@lola-tech/graphql-kimera';
 import { v4 as uuid } from 'uuid';
 import { loader } from 'graphql.macro';
 
-const typeDefs = loader('./typeDefs.graphql');
+const typeDefs = loader('./api/typeDefs.graphql');
 
-const executableSchema = getExecutableSchema({
+const schema = getExecutableSchema({
   typeDefs,
   mockProvidersFn: () => ({
     scenario: {
@@ -31,4 +33,15 @@ const executableSchema = getExecutableSchema({
   }),
 });
 
-export default executableSchema;
+const mocks = [
+  rest.post('/api', async (req, res, ctx) => {
+    let result  = await graphql(schema, req.body.query, null, null, JSON.parse(req.body.variables));
+
+    return res(
+      ctx.json(result)
+    );
+  })
+];
+
+const worker = setupWorker(...mocks);
+worker.start();

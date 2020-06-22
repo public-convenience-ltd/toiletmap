@@ -27,6 +27,10 @@ import AuthProvider from './Auth';
 import fetcher from './graphql/fetcher';
 import { MapStateProvider } from './components/MapState';
 
+if (process.env.REACT_APP_MOCKS) {
+  require('./mocks');
+}
+
 const history = createBrowserHistory();
 
 const Explorer = lazy(() =>
