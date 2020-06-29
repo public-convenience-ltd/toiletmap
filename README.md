@@ -11,7 +11,7 @@ This documentation is oriented towards developers, if you'd like to learn more a
 
 * [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) (or a node version matching the one specified in [.nvmrc](./nvmrc))
 * [yarn](https://yarnpkg.com/getting-started/install)
-* now (optional)
+* Vercel CLI (optional)
 * mongodb (optional)
 
 ### Installation
@@ -20,7 +20,7 @@ This documentation is oriented towards developers, if you'd like to learn more a
 ```
 nvm install && nvm use
 npm install -g yarn
-yarn && yarn configure
+yarn
 ```
 
 ### Run, Toiletmap, Run
@@ -37,6 +37,6 @@ If you'd like to make contributions to the project this is a good time to read o
 
 ### Development
 
-The toiletmap UI is built with [create-react-app](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md). The API is written in GraphQL with [Apollo Server](https://www.npmjs.com/package/apollo-server) and data is stored in a MongoDB instance vian [mongoose](https://mongoosejs.com/). Authentication is handled by [Auth0](https://auth0.com/) and the site is deployed to [now.sh](https://zeit.co/home)
+The toiletmap UI is built with [create-react-app](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md). The API is written in GraphQL with [Apollo Server](https://www.npmjs.com/package/apollo-server) and data is stored in a MongoDB instance via [mongoose](https://mongoosejs.com/). Authentication is handled by [Auth0](https://auth0.com/) and the site is deployed to [vercel](https://vercel.com)
 
 
