@@ -1713,13 +1713,12 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@lola-tech/graphql-kimera@0.10.0-alpha.8":
-  version "0.10.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/@lola-tech/graphql-kimera/-/graphql-kimera-0.10.0-alpha.8.tgz#e15adbd3c4a8a7f5d9052099c963a36d1ac74463"
-  integrity sha512-XcF2QzBAz7/lV0yMF6kL4HZ4NKxE9p+kmX9D1qHc4E7URuTpSgM+F+meK4ZdOOWKErJU1PtECNxPRtdWwsgkCA==
+"@lola-tech/graphql-kimera@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@lola-tech/graphql-kimera/-/graphql-kimera-1.0.0.tgz#b5478553de4369886ea92bb621f480819738e37a"
+  integrity sha512-EVrbz7FsDH9veDXNNHxtA3aYDzS4q1xnrm2M2e1AMMZrCfeQLM96sMSryb8JSPyajwXQ1a8wc3RpaSBt+ubStA==
   dependencies:
     easygraphql-parser "0.0.12"
-    graphql "14.1.1"
     graphql-tools "4.0.5"
     lodash "4.17.13"
     multikeymap "^1.0.0"
@@ -7832,7 +7831,7 @@ graphql.macro@1.4.2:
     babel-plugin-macros "^2.5.0"
     graphql-tag "^2.10.1"
 
-graphql@14.1.1, graphql@14.6.0, graphql@^14.4.0, graphql@^14.5.3, graphql@^15.0.0:
+graphql@14.6.0, graphql@^14.4.0, graphql@^14.5.3, graphql@^15.0.0:
   version "14.6.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.6.0.tgz#57822297111e874ea12f5cd4419616930cd83e49"
   integrity sha512-VKzfvHEKybTKjQVpTFrA5yUq2S9ihcZvfJAtsDBBCuV6wauPu1xl/f9ehgVf0FcEJJs4vz6ysb/ZMkGigQZseg==
