@@ -15,7 +15,7 @@ export default {
   minZoom: 12,
   maxZoom: 18,
   editMinZoom: 16,
-  allowAddEditLoo: true,
+  allowAddEditLoo: false,
   showBackButtons: false,
   fallbackLocation: {
     // Trafalgar Square. Because.
