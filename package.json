@@ -93,7 +93,7 @@
   "devDependencies": {
     "@commitlint/cli": "9.0.1",
     "@commitlint/config-conventional": "9.0.1",
-    "@lola-tech/graphql-kimera": "0.10.0-alpha.8",
+    "@lola-tech/graphql-kimera": "0.10.0-alpha.9",
     "@mapbox/geojson-area": "0.2.2",
     "@mapbox/geojson-rewind": "0.5.0",
     "@shelf/jest-mongodb": "1.1.5",
