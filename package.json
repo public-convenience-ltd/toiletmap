@@ -1,58 +1,22 @@
 {
-  "name": "toiletmap",
-  "private": true,
+  "name": "gbptm-redirector",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "yarn lint && CI=true lerna run test --parallel",
-    "release": "lerna version --conventional-commits --push --exact -m \"build: release %s\"",
-    "lint": "eslint . && stylelint \"packages/{ui,admin}/**/*.css\"",
-    "prettify": "prettier --write \"./**/*.{js,json}\"",
-    "build:ui": "lerna run build --scope=@toiletmap/ui",
-    "build:explorer": "lerna run build --scope=@toiletmap/explorer",
-    "docker:build": "docker build --network=host -t toiletmap/toiletmap .",
-    "docker:run": "docker run --network=host --env-file .env -d toiletmap/toiletmap",
-    "build": "yarn build:ui && yarn build:explorer && yarn docker:build",
-    "deploy:push": "heroku container:push web",
-    "deploy:release": "heroku container:release web"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/neontribe/gbptm.git"
   },
   "author": "",
-  "license": "MIT",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/neontribe/gbptm/issues"
   },
   "homepage": "https://github.com/neontribe/gbptm#readme",
-  "lint-staged": {
-    "*.js": [
-      "eslint --max-warnings 0",
-      "prettier --write"
-    ],
-    "*.css": "stylelint"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "8.3.5",
-    "@commitlint/config-conventional": "8.3.4",
-    "husky": "4.2.3",
-    "lerna": "3.20.2",
-    "lint-staged": "10.0.9",
-    "prettier": "2.0.2",
-    "stylelint": "13.2.1",
-    "stylelint-config-standard": "20.0.0"
-  },
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -e",
-      "pre-commit": "lint-staged"
-    }
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
