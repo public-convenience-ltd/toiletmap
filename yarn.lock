@@ -10884,10 +10884,10 @@ mongoose-paginate@5.0.3:
   dependencies:
     bluebird "3.0.5"
 
-mongoose@5.9.20:
-  version "5.9.20"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.9.20.tgz#975255196104ce760386ab439b1dad43caae23b5"
-  integrity sha512-vRP6Csu2obzSl3ed7kTQMrolBNgweiRJ/eBU1PSe/rJfjqWS1oqDE2D1ZPGxkVOsKXs7Gyd84GAXerj8IB2UWg==
+mongoose@5.9.21:
+  version "5.9.21"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.9.21.tgz#73bccfada310d0ad4c51b18b038d36a9b50aa870"
+  integrity sha512-HQUemnKJdrE8ig+d3RTeOan6DWasmda8V97fs1ymozTNSuh2eGaf4D92/BrXYCw5QTgE/Ff5SxalndfgLn3DGg==
   dependencies:
     bson "^1.1.4"
     kareem "2.3.1"
