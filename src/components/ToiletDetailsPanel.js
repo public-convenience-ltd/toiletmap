@@ -450,6 +450,22 @@ const ToiletDetailsPanel = ({
                   <Spacer mb={3} />
                 </>
               )}
+
+              {Boolean(data.covidDetails) && (
+                <>
+                  <Text fontWeight="bold">
+                    <h3>COVID-19 Details</h3>
+                  </Text>
+                  <Spacer mb={2} />
+                  <div>
+                    {data.covidDetails.split('\n').map((string, i) => (
+                      <div key={i}>{string}</div>
+                    ))}
+                  </div>
+                  <Spacer mb={3} />
+                </>
+              )}
+
               {Boolean(data.notes) && (
                 <>
                   <Text fontWeight="bold">

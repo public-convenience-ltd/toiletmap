@@ -184,6 +184,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
   const [noPayment, setNoPayment] = useState(loo.noPayment);
 
   const hasOpeningTimes = Boolean(loo.openingTimes);
+  const isCovidAffected = Boolean(loo.covidDetails);
 
   const isOpen = loo.openingTimes
     ? loo.openingTimes.map((x) => x !== rangeTypes.CLOSED)
@@ -264,6 +265,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
       'geometry',
       'isFree',
       'has-opening-times',
+      'is-covid-affected',
       ...openingTimesFields,
     ]);
 
@@ -398,7 +400,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
           >
             {noPayment === false && (
               <label>
-                Payment Details
+                Payment details
                 <Input
                   ref={register({
                     required: true,
@@ -553,6 +555,33 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
 
           <Spacer mt={4} />
 
+          <h2 id="covid-heading">8. Is this toilet affected by COVID-19?</h2>
+
+          <Controller
+            as={Switch}
+            aria-labelledby="covid-heading"
+            name="is-covid-affected"
+            control={control}
+            valueName="checked"
+            defaultValue={isCovidAffected}
+          />
+
+          <Spacer mt={3} />
+
+          <div hidden={!isCovidAffected}>
+            <label>
+              COVID-19 notes
+              <Textarea
+                ref={register}
+                name="covidDetails"
+                defaultValue={loo.covidDetails || ''}
+                data-testid="covid-details"
+              />
+            </label>
+          </div>
+
+          <Spacer mt={4} />
+
           {isFunction(children)
             ? children({ hasDirtyFields: dirtyFields.size })
             : children}
@@ -579,6 +608,7 @@ EntryForm.propTypes = {
     opening: PropTypes.string,
     noPayment: PropTypes.bool,
     paymentDetails: PropTypes.string,
+    covidDetails: PropTypes.string,
     notes: PropTypes.string,
     openingTimes: PropTypes.oneOfType([
       PropTypes.array,

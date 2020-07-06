@@ -16,6 +16,7 @@ const FIND_NEARBY_LOOS_QUERY = `
       accessible
       babyChange
       radar
+      covidDetails
     }
   }
 `;

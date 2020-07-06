@@ -25,6 +25,7 @@ const looInfoResolver = (property) => {
     automatic: resolve,
     noPayment: resolve,
     paymentDetails: resolve,
+    covidDetails: resolve,
     notes: resolve,
     removalReason: resolve,
     verifiedAt: resolve,

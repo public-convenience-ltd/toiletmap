@@ -31,6 +31,7 @@ module.exports = exports = new Schema({
   notes: { type: String, trim: true },
   removalReason: { type: String, trim: true },
   verifiedAt: { type: Date },
+  covidDetails: { type: String, trim: true },
   area: {
     type: [
       {

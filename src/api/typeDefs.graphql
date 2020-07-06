@@ -96,6 +96,7 @@ type Loo {
   automatic: Boolean
   noPayment: Boolean
   paymentDetails: String
+  covidDetails: String
   notes: String
   removalReason: String
 }
@@ -141,6 +142,7 @@ type Report {
   automatic: Boolean
   noPayment: Boolean
   paymentDetails: String
+  covidDetails: String
   notes: String
   removalReason: String
   "The Loo which uses the data submitted in this report"
@@ -297,6 +299,7 @@ input ReportInput {
   automatic: Boolean
   noPayment: Boolean
   paymentDetails: String
+  covidDetails: String
   notes: String
 }
 

@@ -6,6 +6,7 @@ import {
   faKey,
   faCog,
   faToilet,
+  faVirus,
 } from '@fortawesome/free-solid-svg-icons';
 import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 
@@ -22,6 +23,7 @@ const iconMap = {
   allGender: faToilet,
   radar: faKey,
   automatic: faCog,
+  covidDetails: faVirus,
 };
 
 const Filters = ({ filters, onFilterChange }) => (

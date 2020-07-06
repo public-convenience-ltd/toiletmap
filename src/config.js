@@ -2,6 +2,10 @@ export const FILTERS_KEY = 'filters';
 
 const filters = [
   {
+    id: 'covidDetails',
+    label: 'COVID-19 Details',
+  },
+  {
     id: 'noPayment',
     label: 'Free',
   },

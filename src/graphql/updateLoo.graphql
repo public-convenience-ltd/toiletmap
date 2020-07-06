@@ -18,6 +18,7 @@ mutation updateLoo(
   $noPayment: Boolean
   $paymentDetails: String
   $notes: String
+  $covidDetails: String
 ) {
   submitReport(
     report: {
@@ -38,6 +39,7 @@ mutation updateLoo(
       noPayment: $noPayment
       paymentDetails: $paymentDetails
       notes: $notes
+      covidDetails: $covidDetails
     }
   ) {
     code
