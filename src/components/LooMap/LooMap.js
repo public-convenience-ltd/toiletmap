@@ -56,7 +56,9 @@ const LooMap = ({
     // ensure all map tiles are loaded on Safari
     // https://github.com/neontribe/gbptm/issues/776
     setTimeout(() => {
-      leafletElement.invalidateSize();
+      leafletElement.invalidateSize({
+        pan: false,
+      });
     }, 400);
   }, []);
 
