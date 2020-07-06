@@ -24,4 +24,5 @@ fragment LooFragment on Loo {
   notes
   removalReason
   attended
+  campaignUOL
 }

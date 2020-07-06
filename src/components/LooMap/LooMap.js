@@ -88,6 +88,7 @@ const LooMap = ({
             new ToiletMarkerIcon({
               isHighlighted: toilet.isHighlighted,
               toiletId: toilet.id,
+              isUseOurLoosCampaign: toilet.campaignUOL,
             })
           }
           label={toilet.name || 'Unnamed toilet'}

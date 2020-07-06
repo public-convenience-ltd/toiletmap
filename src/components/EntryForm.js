@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { useForm, Controller } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import isFunction from 'lodash/isFunction';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
@@ -9,6 +10,7 @@ import pick from 'lodash/pick';
 import Container from '../components/Container';
 import Notification from '../components/Notification';
 import Box from '../components/Box';
+import Button from '../components/Button';
 import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 import VisuallyHidden from '../components/VisuallyHidden';
@@ -16,6 +18,7 @@ import Switch from '../components/Switch';
 import { WEEKDAYS, rangeTypes } from '../openingTimes';
 
 import crosshair from '../images/crosshair-small.svg';
+import uolLogo from '../images/domestos_use_our_loos_logo.png';
 
 const openingTimesFields = WEEKDAYS.flatMap((day) => {
   return [
@@ -420,14 +423,24 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
 
           <h2 id="opening-hours-heading">6. Do you know the opening hours?</h2>
 
-          <Controller
-            as={Switch}
-            aria-labelledby="opening-hours-heading"
-            name="has-opening-times"
-            control={control}
-            valueName="checked"
-            defaultValue={hasOpeningTimes}
-          />
+          <Spacer mt={2} />
+
+          <Box display="flex" alignItems="center" ml={[2, 4]}>
+            <Controller
+              as={Switch}
+              aria-labelledby="opening-hours-heading"
+              name="has-opening-times"
+              control={control}
+              valueName="checked"
+              defaultValue={hasOpeningTimes}
+            />
+
+            <Spacer ml={2} />
+
+            <Text fontSize={2}>
+              {getValues('has-opening-times') ? 'Yes' : 'No'}
+            </Text>
+          </Box>
 
           <Spacer mt={3} />
 
@@ -509,12 +522,69 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                 );
               })}
             </ol>
-
-            <Spacer mt={4} />
           </div>
 
+          <Spacer mt={4} />
+
+          <h2 id="campaignUOL-heading">
+            7. Do you know if the toilet belongs to the Use Our Loos Scheme?
+          </h2>
+
+          <Spacer mt={2} />
+
+          <Box ml={[2, 4]}>
+            <Box display="flex" alignItems="center">
+              <Controller
+                as={Switch}
+                aria-labelledby="campaignUOL-heading"
+                name="campaignUOL"
+                control={control}
+                valueName="checked"
+                defaultValue={loo.campaignUOL || false}
+              />
+
+              <Spacer ml={2} />
+
+              <Text fontSize={2}>
+                {getValues('campaignUOL') ? 'Yes' : 'No'}
+              </Text>
+            </Box>
+
+            <Spacer mt={3} />
+
+            <Box display="flex" alignItems={['flex-start', 'flex-end']}>
+              <img
+                src={uolLogo}
+                alt="Use Our Loos"
+                css={{
+                  height: '3em',
+                  float: 'left',
+                }}
+              />
+
+              <Spacer ml={3} />
+
+              <Text as="p" fontSize={2}>
+                Use our loos is a national campaign working to unlock the loos
+                that are hidden in high street cafes, restaurants, coffee shops
+                and bars.&nbsp;
+                <Button
+                  as={Link}
+                  to="/use-our-loos"
+                  variant="link"
+                  aria-label="Read more about the Use Our Loos Campaign"
+                  target="_blank"
+                >
+                  Read more here.
+                </Button>
+              </Text>
+            </Box>
+          </Box>
+
+          <Spacer mt={4} />
+
           <label>
-            7. Notes
+            8. Notes
             <Textarea
               ref={register}
               name="notes"
