@@ -10,6 +10,9 @@ import {
   faPoundSign,
   faBaby,
   faToilet,
+  faMale,
+  faFemale,
+  faChild,
   faKey,
   faCog,
   faQuestion,
@@ -19,10 +22,13 @@ import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 import lightFormat from 'date-fns/lightFormat';
 import getISODay from 'date-fns/getISODay';
 import parseISO from 'date-fns/parseISO';
+import add from 'date-fns/add';
 import { Link } from 'react-router-dom';
-import { useMutation, useQuery, gql } from '@apollo/client';
 import useComponentSize from '@rehooks/component-size';
 import L from 'leaflet';
+import { mutate } from 'swr';
+import { loader } from 'graphql.macro';
+import { print } from 'graphql/language/printer';
 
 import Box from './Box';
 import Button from './Button';
@@ -30,9 +36,14 @@ import Text from './Text';
 import Spacer from './Spacer';
 import Icon from './Icon';
 import { Media } from './Media';
-import { getIsOpen, WEEKDAYS, rangeTypes } from '../openingTimes';
+// Suppress Opening Hours Heading during COVID-19
+import { /* getIsOpen, */ WEEKDAYS, rangeTypes } from '../openingTimes';
+import { useMapState } from './MapState';
+import { useMutation } from '../graphql/fetcher';
 
 import uolLogo from '../images/uol-logo.svg';
+
+const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
 
 const uolFragment = (
   <Box display="flex" alignItems="center">
@@ -79,26 +90,18 @@ function getTimeRangeLabel(range) {
   return 'Unknown';
 }
 
-function getIsOpenLabel(openingTimes = [], dateTime = new Date()) {
-  const isOpen = getIsOpen(openingTimes, dateTime);
+// Suppress Opening Hours heading during COVID-19
+// function getIsOpenLabel(openingTimes = [], dateTime = new Date()) {
+//   const isOpen = getIsOpen(openingTimes, dateTime);
 
-  if (isOpen === null) {
-    return 'Unknown';
-  }
+//   if (isOpen === null) {
+//     return 'Unknown';
+//   }
 
-  return isOpen ? 'Open now' : 'Closed';
-}
+//   return isOpen ? 'Open now' : 'Closed';
+// }
 
-const GEOLOCATION_QUERY = gql`
-  query geolocation {
-    geolocation {
-      lat
-      lng
-    }
-  }
-`;
-
-const SUBMIT_VERIFICATION_REPORT_MUTATION = gql`
+const SUBMIT_VERIFICATION_REPORT_MUTATION = `
   mutation submitVerificationReportMutation($id: ID) {
     submitVerificationReport(id: $id) {
       loo {
@@ -142,11 +145,27 @@ const ToiletDetailsPanel = ({
   const [isExpanded, setIsExpanded] = React.useState(startExpanded);
 
   const [
-    submitVerificationReport,
+    submitVerificationMutation,
     { loading: submitVerificationLoading },
   ] = useMutation(SUBMIT_VERIFICATION_REPORT_MUTATION);
 
-  const { data: geolocationData } = useQuery(GEOLOCATION_QUERY);
+  const submitVerificationReport = async (variables) => {
+    const responseData = await submitVerificationMutation(variables);
+
+    // update the local cache with the new data
+    mutate(
+      [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: data.id })],
+      {
+        loo: {
+          ...data,
+          verifiedAt: responseData.submitVerificationReport.loo.verifiedAt,
+        },
+      },
+      false
+    );
+  };
+
+  const [mapState] = useMapState();
 
   // programmatically set focus on close button when panel expands
   const closeButtonRef = React.useRef(null);
@@ -187,9 +206,9 @@ const ToiletDetailsPanel = ({
       <Text fontWeight="bold" fontSize={[3, 4]} lineHeight={1.2}>
         <h2 id="toilet-details-heading">{data.name || 'Unnamed Toilet'}</h2>
       </Text>
-      {geolocationData.geolocation && (
+      {mapState.geolocation && (
         <Box ml={5}>
-          <DistanceTo from={geolocationData.geolocation} to={data.location} />
+          <DistanceTo from={mapState.geolocation} to={data.location} />
         </Box>
       )}
     </Box>
@@ -224,14 +243,14 @@ const ToiletDetailsPanel = ({
 
   const features = [
     {
-      icon: <Icon icon={faPoundSign} />,
-      label: 'Free',
-      valueIcon: getFeatureValueIcon(data.noPayment),
+      icon: <Icon icon={faFemale} />,
+      label: 'Women',
+      valueIcon: getFeatureValueIcon(data.women),
     },
     {
-      icon: <Icon icon={faBaby} />,
-      label: 'Baby Changing',
-      valueIcon: getFeatureValueIcon(data.babyChange),
+      icon: <Icon icon={faMale} />,
+      label: 'Men',
+      valueIcon: getFeatureValueIcon(data.men),
     },
     {
       icon: <Icon icon={faAccessibleIcon} />,
@@ -253,9 +272,29 @@ const ToiletDetailsPanel = ({
       valueIcon: getFeatureValueIcon(data.allGender),
     },
     {
+      icon: <Icon icon={faChild} />,
+      label: 'Children',
+      valueIcon: getFeatureValueIcon(data.children),
+    },
+    {
+      icon: <Icon icon={faBaby} />,
+      label: 'Baby Changing',
+      valueIcon: getFeatureValueIcon(data.babyChange),
+    },
+    {
+      icon: <Icon icon={faToilet} />,
+      label: 'Urinal Only',
+      valueIcon: getFeatureValueIcon(data.urinalOnly),
+    },
+    {
       icon: <Icon icon={faCog} />,
       label: 'Automatic',
       valueIcon: getFeatureValueIcon(data.automatic),
+    },
+    {
+      icon: <Icon icon={faPoundSign} />,
+      label: 'Free',
+      valueIcon: getFeatureValueIcon(data.noPayment),
     },
   ];
 
@@ -267,10 +306,13 @@ const ToiletDetailsPanel = ({
 
   const updatedAt = parseISO(data.updatedAt);
   let verifiedOrUpdatedDate = updatedAt;
+  let verifiedOrUpdated = 'updated';
   if (data.verifiedAt) {
     const verifiedAt = parseISO(data.verifiedAt);
-    if (updatedAt < verifiedAt) {
+    // Add a minute for the comparison to account for the fact that verification causes updatedAt to update :-(
+    if (updatedAt < add(verifiedAt, { minutes: 1 })) {
       verifiedOrUpdatedDate = verifiedAt;
+      verifiedOrUpdated = 'verified';
     }
   }
 
@@ -282,9 +324,7 @@ const ToiletDetailsPanel = ({
       <Spacer mb={2} />
       <Box display="flex" alignItems="center">
         <Button
-          onClick={() =>
-            submitVerificationReport({ variables: { id: data.id } })
-          }
+          onClick={() => submitVerificationReport({ id: data.id })}
           disabled={submitVerificationLoading}
         >
           Yes
@@ -304,8 +344,10 @@ const ToiletDetailsPanel = ({
         </Box>
       </Box>
       <Spacer mb={[0, 2]} />
-      Last verified:{' '}
-      {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
+      Last {verifiedOrUpdated}:{' '}
+      <Link to={`/explorer/loos/${data.id}`}>
+        {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
+      </Link>
     </Box>
   );
 
@@ -532,6 +574,7 @@ const ToiletDetailsPanel = ({
         </Box>
 
         <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
+          {/* Supress opening hours heading during COVID-19
           <Box display="flex" alignItems="center">
             <Icon icon={faClock} />
             <Spacer mr={2} />
@@ -540,7 +583,7 @@ const ToiletDetailsPanel = ({
             </Text>
           </Box>
           <Spacer mb={[0, 2]} />
-          {getIsOpenLabel(openingTimes)}
+          {getIsOpenLabel(openingTimes)} */}
         </Box>
 
         <Box

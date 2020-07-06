@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Loo = require('./loo');
 const Report = require('./report');
 const Area = require('./area');
+const MapGeo = require('./mapgeo');
 
 module.exports = {
   connect: function connect(url) {
@@ -13,5 +14,6 @@ module.exports = {
   },
   Loo,
   Report,
-  Area
+  Area,
+  MapGeo,
 };

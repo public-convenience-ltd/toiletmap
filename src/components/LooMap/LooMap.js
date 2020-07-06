@@ -43,7 +43,8 @@ const LooMap = ({
   const [announcement, setAnnouncement] = React.useState(null);
 
   useEffect(() => {
-    const map = mapRef.current.leafletElement.getContainer();
+    const { leafletElement } = mapRef.current;
+    const map = leafletElement.getContainer();
 
     // when focused on the map container, Leaflet allows the user to pan the map by using the arrow keys
     // without the application role screen reader software overrides these controls
@@ -51,6 +52,12 @@ const LooMap = ({
     // this also avoids the entire main region being announced
     map.setAttribute('role', 'application');
     map.setAttribute('aria-label', 'Map');
+
+    // ensure all map tiles are loaded on Safari
+    // https://github.com/neontribe/gbptm/issues/776
+    setTimeout(() => {
+      leafletElement.invalidateSize();
+    }, 400);
   }, []);
 
   const handleViewportChanged = () => {

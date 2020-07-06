@@ -1,6 +1,7 @@
-import { useQuery, gql } from '@apollo/client';
+import React from 'react';
+import useSWR from 'swr';
 
-const NEARBY_LOOS_QUERY = gql`
+const FIND_NEARBY_LOOS_QUERY = `
   query findLoosNearby($lat: Float!, $lng: Float!, $radius: Int!) {
     loosByProximity(from: { lat: $lat, lng: $lng, maxDistance: $radius }) {
       id
@@ -20,15 +21,23 @@ const NEARBY_LOOS_QUERY = gql`
   }
 `;
 
-const useNearbyLoos = ({ variables, skip }) => {
-  const { loading, data, error } = useQuery(NEARBY_LOOS_QUERY, {
-    variables,
-    skip,
-  });
+const useNearbyLoos = (variables) => {
+  const dataRef = React.useRef();
+
+  const { isValidating, data, error } = useSWR([
+    FIND_NEARBY_LOOS_QUERY,
+    JSON.stringify(variables),
+  ]);
+
+  // This is a hack to return the previous cache key's data if the new cache key's data is loading
+  // https://github.com/vercel/swr/issues/192
+  if (data !== undefined) {
+    dataRef.current = data;
+  }
 
   return {
-    data: data ? data.loosByProximity : [],
-    loading,
+    data: dataRef.current ? dataRef.current.loosByProximity : [],
+    loading: isValidating,
     error,
   };
 };

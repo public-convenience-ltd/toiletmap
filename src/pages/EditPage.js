@@ -5,8 +5,9 @@ import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
 import uniqBy from 'lodash/uniqBy';
 import { css } from '@emotion/core';
+import useSWR, { mutate } from 'swr';
 import { loader } from 'graphql.macro';
-import { useQuery, useMutation } from '@apollo/client';
+import { print } from 'graphql/language/printer';
 
 import PageLayout from '../components/PageLayout';
 import Button from '../components/Button';
@@ -16,43 +17,39 @@ import EntryForm from '../components/EntryForm';
 import LooMap from '../components/LooMap';
 import Box from '../components/Box';
 
-import useNearbyLoos from '../components/useNearbyLoos';
-import useMapPosition from '../components/useMapPosition';
-
 import config from '../config';
-// import history from '../history';
+import { useMutation } from '../graphql/fetcher';
+import useNearbyLoos from '../components/useNearbyLoos';
+import { useMapState } from '../components/MapState';
 
-const FIND_BY_ID = loader('./findLooById.graphql');
-const UPDATE_LOO = loader('./updateLoo.graphql');
+const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
+const UPDATE_LOO_MUTATION = print(loader('../graphql/updateLoo.graphql'));
 
 const EditPage = (props) => {
-  // find the raw loo data for the given loo
-  const { loading: loadingLooData, data: looData, error: looError } = useQuery(
-    FIND_BY_ID,
-    {
-      variables: {
-        id: props.match.params.id,
-      },
-    }
-  );
+  const {
+    isValidating: loadingLooData,
+    data: looData,
+    error: looError,
+  } = useSWR([
+    FIND_LOO_BY_ID_QUERY,
+    JSON.stringify({ id: props.match.params.id }),
+  ]);
 
-  const [mapPosition, setMapPosition] = useMapPosition();
+  const [mapState, setMapState] = useMapState();
 
   const looLocation = (looData && looData.loo.location) || null;
 
   // set the map position to the loo location
   React.useEffect(() => {
     if (looLocation) {
-      setMapPosition({ center: looLocation });
+      setMapState({ center: looLocation });
     }
-  }, [looLocation, setMapPosition]);
+  }, [looLocation, setMapState]);
 
   const { data } = useNearbyLoos({
-    variables: {
-      lat: mapPosition.center.lat,
-      lng: mapPosition.center.lng,
-      radius: mapPosition.radius,
-    },
+    lat: mapState.center.lat,
+    lng: mapState.center.lng,
+    radius: mapState.radius,
   });
 
   // local state mapCenter to get fix issues with react-leaflet not being stateless and lat lng rounding issues
@@ -80,23 +77,36 @@ const EditPage = (props) => {
 
   const [
     updateLoo,
-    { loading: saveLoading, data: saveResponse, error: saveError },
-  ] = useMutation(UPDATE_LOO);
+    { loading: saveLoading, data: saveData, error: saveError },
+  ] = useMutation(UPDATE_LOO_MUTATION);
 
-  if (saveError) {
-    console.error('saving', saveError);
-  }
+  const save = async (formData) => {
+    formData.id = looData.loo.id;
 
-  const save = (data) => {
-    const id = looData.loo.id;
+    try {
+      const data = await updateLoo(formData);
 
-    updateLoo({
-      variables: {
-        ...data,
-        id,
-      },
-    });
+      // update cached query
+      mutate(
+        [
+          FIND_LOO_BY_ID_QUERY,
+          JSON.stringify({ id: data.submitReport.loo.id }),
+        ],
+        {
+          loo: data.submitReport.loo,
+        }
+      );
+    } catch (err) {
+      console.error('save error', err);
+    }
   };
+
+  if (saveData) {
+    // redirect to updated toilet entry page
+    return (
+      <Redirect to={`/loos/${saveData.submitReport.loo.id}?message=updated`} />
+    );
+  }
 
   if (loadingLooData || !looData || !initialData || looError) {
     return (
@@ -122,15 +132,6 @@ const EditPage = (props) => {
     return <Redirect to="/" />;
   }
 
-  // redirect to new toilet entry page on successful addition
-  if (saveResponse && saveResponse.submitReport.code === '200') {
-    return (
-      <Redirect
-        to={`/loos/${saveResponse.submitReport.loo.id}?message=updated`}
-      />
-    );
-  }
-
   const getLoosToDisplay = () => {
     let activeLoo;
 
@@ -154,8 +155,8 @@ const EditPage = (props) => {
       <Box display="flex" height="40vh">
         <LooMap
           loos={getLoosToDisplay()}
-          center={mapPosition.center}
-          zoom={mapPosition.zoom}
+          center={mapState.center}
+          zoom={mapState.zoom}
           minZoom={config.editMinZoom}
           showCenter
           showContributor
@@ -176,7 +177,6 @@ const EditPage = (props) => {
         loo={initialData.loo}
         center={mapCenter}
         saveLoading={saveLoading}
-        saveResponse={saveResponse}
         saveError={saveError}
         onSubmit={save}
       >

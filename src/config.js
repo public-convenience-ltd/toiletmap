@@ -44,7 +44,7 @@ export default {
   analyticsId:
     process.env.NODE_ENV === 'production' ? 'UA-52513593-1' : 'UA-111111111-1',
   initialZoom: 16,
-  minZoom: 12,
+  minZoom: 11,
   maxZoom: 18,
   editMinZoom: 16,
   fallbackLocation: {

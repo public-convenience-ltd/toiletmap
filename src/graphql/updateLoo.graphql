@@ -1,3 +1,5 @@
+#import "./looFragment.graphql"
+
 mutation updateLoo(
   $id: ID
   $location: PointInput!
@@ -5,9 +7,9 @@ mutation updateLoo(
   $openingTimes: OpeningTimes
   $accessible: Boolean
   $allGender: Boolean
-  $male: Boolean
-  $female: Boolean
-  $childrenOnly: Boolean
+  $men: Boolean
+  $women: Boolean
+  $children: Boolean
   $urinalOnly: Boolean
   $babyChange: Boolean
   $radar: Boolean
@@ -25,9 +27,9 @@ mutation updateLoo(
       name: $name
       openingTimes: $openingTimes
       accessible: $accessible
-      male: $male
-      female: $female
-      childrenOnly: $childrenOnly
+      men: $men
+      women: $women
+      children: $children
       urinalOnly: $urinalOnly
       allGender: $allGender
       babyChange: $babyChange
@@ -44,32 +46,7 @@ mutation updateLoo(
     success
     message
     loo {
-      id
-      name
-      area {
-        name
-        type
-      }
-      location {
-        lat
-        lng
-      }
-      active
-      openingTimes
-      accessible
-      allGender
-      male
-      female
-      urinalOnly
-      childrenOnly
-      babyChange
-      radar
-      attended
-      noPayment
-      paymentDetails
-      notes
-      removalReason
-      campaignUOL
+      ...LooFragment
     }
   }
 }

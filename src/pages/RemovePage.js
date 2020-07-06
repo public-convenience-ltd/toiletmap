@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { useQuery, useMutation } from '@apollo/client';
+import useSWR from 'swr';
+import { Redirect, useParams, useHistory } from 'react-router-dom';
 import { loader } from 'graphql.macro';
-import { Redirect } from 'react-router-dom';
+import { print } from 'graphql/language/printer';
 
 import config from '../config';
+import { useMutation } from '../graphql/fetcher';
 
 import PageLayout from '../components/PageLayout';
 import Container from '../components/Container';
@@ -13,54 +15,49 @@ import Text from '../components/Text';
 import Button from '../components/Button';
 import Notification from '../components/Notification';
 
-const FIND_LOO_BY_ID = loader('./findLooById.graphql');
-const REMOVE_LOO_MUTATION = loader('./removeLoo.graphql');
+const REMOVE_LOO_MUTATION = print(loader('../graphql/removeLoo.graphql'));
+const GET_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
 
 const RemovePage = function (props) {
   const [reason, setReason] = useState('');
+  const params = useParams();
+  const history = useHistory();
 
-  const { loading: loadingLoo, data: looData, error: looError } = useQuery(
-    FIND_LOO_BY_ID,
-    {
-      variables: {
-        id: props.match.params.id,
-      },
-    }
-  );
+  const {
+    isValidating: loadingLooData,
+    data: looData,
+    error: looError,
+  } = useSWR([GET_LOO_BY_ID_QUERY, JSON.stringify({ id: params.id })]);
 
   const [
     doRemove,
     { loading: loadingRemove, error: removeError },
-  ] = useMutation(REMOVE_LOO_MUTATION, {
-    onCompleted: () => {
-      props.history.push(`/loos/${props.match.params.id}?message=removed`);
-    },
-  });
+  ] = useMutation(REMOVE_LOO_MUTATION);
 
   const updateReason = (evt) => {
     setReason(evt.currentTarget.value);
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
-    doRemove({
-      variables: {
-        id: looData.loo.id,
-        reason,
-      },
+    await doRemove({
+      id: looData.loo.id,
+      reason,
     });
+
+    history.push(`/loos/${props.match.params.id}?message=removed`);
   };
 
   if (removeError || looError) {
     console.error(removeError || looError);
   }
 
-  if (loadingLoo || looError) {
+  if (loadingLooData || !looData || looError) {
     return (
       <PageLayout>
         <Notification>
-          {loadingLoo ? 'Fetching Toilet Data' : 'Error finding toilet.'}
+          {loadingLooData ? 'Fetching Toilet Data' : 'Error finding toilet.'}
         </Notification>
       </PageLayout>
     );

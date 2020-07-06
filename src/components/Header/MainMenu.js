@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import Box from '../Box';
@@ -22,6 +22,13 @@ const MainMenu = ({
   children,
 }) => {
   const { isAuthenticated, logout } = useAuth();
+  const history = useHistory();
+
+  const handleLogout = () => {
+    logout();
+    onMenuItemClick();
+    history.push('/');
+  };
 
   return (
     <Text
@@ -46,7 +53,7 @@ const MainMenu = ({
         >
           <Box as="li" ml={[0, 4]}>
             <StyledNavLink to="/" onClick={onMenuItemClick} exact>
-              Find Toilet
+              Find a Toilet
             </StyledNavLink>
           </Box>
           <Box as="li" mt={[3, 0]} ml={[0, 4]}>
@@ -58,7 +65,7 @@ const MainMenu = ({
               }
               onClick={onMenuItemClick}
             >
-              Add Toilet
+              Add a Toilet
             </StyledNavLink>
           </Box>
 
@@ -80,13 +87,7 @@ const MainMenu = ({
 
           {isAuthenticated() && (
             <Box as="li" mt={[3, 0]} mb={['auto', 0]} ml={[0, 4]}>
-              <button
-                type="button"
-                onClick={() => {
-                  logout();
-                  onMenuItemClick();
-                }}
-              >
+              <button type="button" onClick={handleLogout}>
                 Logout
               </button>
             </Box>

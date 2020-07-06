@@ -324,18 +324,18 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
             title="3. Who can use these toilets?"
             questions={[
               {
-                field: 'female',
+                field: 'women',
                 label: 'Women?',
-                value: loo['female'],
+                value: loo['women'],
               },
               {
-                field: 'male',
+                field: 'men',
                 label: 'Men?',
-                value: loo['male'],
+                value: loo['men'],
               },
               {
                 field: 'accessible',
-                label: 'Is there disabled access?',
+                label: 'Is there a disabled toilet?',
                 value: loo['accessible'],
               },
               {
@@ -355,13 +355,13 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
             questions={[
               {
                 field: 'allGender',
-                label: 'An all gender toilet?',
+                label: 'A gender neutral toilet?',
                 value: loo['allGender'],
               },
               {
-                field: 'childrenOnly',
+                field: 'children',
                 label: 'A children’s toilet?',
-                value: loo['childrenOnly'],
+                value: loo['children'],
               },
               {
                 field: 'babyChange',
