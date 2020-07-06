@@ -573,6 +573,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                   to="/use-our-loos"
                   variant="link"
                   aria-label="Read more about the Use Our Loos Campaign"
+                  target="_blank"
                 >
                   Read more here.
                 </Button>
