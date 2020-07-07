@@ -187,7 +187,6 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
   const [noPayment, setNoPayment] = useState(loo.noPayment);
 
   const hasOpeningTimes = Boolean(loo.openingTimes);
-  const isCovidAffected = Boolean(loo.covidDetails);
 
   const isOpen = loo.openingTimes
     ? loo.openingTimes.map((x) => x !== rangeTypes.CLOSED)
@@ -238,6 +237,14 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
     // either Yes or Don't know
     if (dirtyFieldNames.includes('isFree') && data.isFree !== 'false') {
       transformed.paymentDetails = null;
+    }
+
+    // remove covid details if the isCovidAffected toggle is off
+    if (
+      dirtyFieldNames.includes('is-covid-affected') &&
+      data['is-covid-affected'] === false
+    ) {
+      transformed.covidDetails = null;
     }
 
     // construct expected opening times structure if relevant fields have changed
@@ -633,12 +640,12 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
             name="is-covid-affected"
             control={control}
             valueName="checked"
-            defaultValue={isCovidAffected}
+            defaultValue={Boolean(loo.covidDetails)}
           />
 
           <Spacer mt={3} />
 
-          <div hidden={!isCovidAffected}>
+          <div hidden={!getValues('is-covid-affected')}>
             <label>
               COVID-19 notes
               <Textarea
