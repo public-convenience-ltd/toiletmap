@@ -29,6 +29,7 @@ const looInfoResolver = (property) => {
     notes: resolve,
     removalReason: resolve,
     verifiedAt: resolve,
+    campaignUOL: resolve,
   };
 };
 
