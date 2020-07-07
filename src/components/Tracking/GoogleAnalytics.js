@@ -1,24 +1,41 @@
 import React from 'react';
 import ReactGA from 'react-ga';
+import Fingerprint2 from 'fingerprintjs2';
+import { useLocation } from 'react-router-dom';
 
 import config from '../../config';
-import useOnLocationChange from './useOnLocationChange';
-
-const startGA = () => {
-  ReactGA.initialize(config.analyticsId);
-};
 
 const GoogleAnalytics = () => {
+  const [isInitialized, setIsInitialized] = React.useState(false);
+
   React.useEffect(() => {
-    startGA();
+    async function startGA() {
+      // Compute a fingerprint so we can avoid using cookies
+      const ident = await Fingerprint2.getPromise();
+      const components = ident.map((c) => c.value);
+      const murmur = Fingerprint2.x64hash128(components.join(''), 31);
+
+      ReactGA.initialize(config.analyticsId, {
+        gaOptions: {
+          storage: 'none',
+          clientId: murmur,
+        },
+      });
+      ReactGA.ga('set', 'anonymizeIp', true);
+      setIsInitialized(true);
+    }
+    if (config.analyticsId) {
+      startGA();
+    }
   }, []);
 
-  const onLocationChange = React.useCallback(
-    (pathname) => ReactGA.pageview(pathname),
-    []
-  );
+  const { pathname } = useLocation();
 
-  useOnLocationChange(onLocationChange);
+  React.useEffect(() => {
+    if (isInitialized) {
+      ReactGA.pageview(pathname);
+    }
+  }, [pathname, isInitialized]);
 
   return null;
 };
