@@ -141,8 +141,9 @@ const Section = ({ register, id, title, questions, children }) => (
                   ref={register}
                   name={field}
                   value={true}
+                  aria-labelledby={`${id}-yes`}
                   defaultChecked={value === true}
-                  data-testid={`${field}:no`}
+                  data-testid={`${field}:yes`}
                 />
               </label>
             </Text>
@@ -168,9 +169,9 @@ const Section = ({ register, id, title, questions, children }) => (
                   ref={register}
                   name={field}
                   value=""
-                  aria-labelledby={`${id}-no`}
+                  aria-labelledby={`${id}-unknown`}
                   defaultChecked={value !== true && value !== false}
-                  data-testid={`${field}:no`}
+                  data-testid={`${field}:unknown`}
                 />
               </label>
             </Text>
@@ -428,6 +429,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
           <Box display="flex" alignItems="center" ml={[2, 4]}>
             <Controller
               as={Switch}
+              data-testid="opening-hours-toggle"
               aria-labelledby="opening-hours-heading"
               name="has-opening-times"
               control={control}
@@ -470,6 +472,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                       <Box display="flex" alignItems="center">
                         <Controller
                           as={Switch}
+                          data-testid={`${day.toLowerCase()}-toggle`}
                           aria-labelledby={id}
                           name={`${day.toLowerCase()}-is-open`}
                           control={control}
@@ -483,6 +486,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                       {getValues(`${day.toLowerCase()}-is-open`) ? (
                         <Box display="flex" alignItems="center">
                           <input
+                            data-testid={`${day.toLowerCase()}-from`}
                             type="time"
                             defaultValue={
                               loo.openingTimes
@@ -502,6 +506,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                           <Spacer ml={2} />
 
                           <input
+                            data-testid={`${day.toLowerCase()}-to`}
                             type="time"
                             defaultValue={
                               loo.openingTimes
@@ -624,7 +629,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
           <Spacer mt={4} />
 
           {isFunction(children)
-            ? children({ hasDirtyFields: dirtyFields.size })
+            ? children({ hasDirtyFields: !!dirtyFields.size })
             : children}
 
           <Spacer mt={4} />

@@ -10,5 +10,9 @@ module.exports = {
       testMatch: ['<rootDir>/tests/**/*.test.js'],
       preset: 'jest-puppeteer',
     },
-  ]
+    {
+      displayName: 'components',
+      testMatch: ['<rootDir>/src/components/**/*.test.js'],
+    },
+  ],
 };
