@@ -632,7 +632,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
 
           <Spacer mt={4} />
 
-          <h2 id="covid-heading">8. Is this toilet affected by COVID-19?</h2>
+          <h2 id="covid-heading">9. Is this toilet affected by COVID-19?</h2>
 
           <Controller
             as={Switch}
