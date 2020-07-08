@@ -480,7 +480,15 @@ const ToiletDetailsPanel = ({
 
               {Boolean(data.covidDetails) && (
                 <>
-                  <Box my={[0, -1]} mx={[0, -3]} py={1} px={3} bg="tertiary">
+                  <Box
+                    display="inline-block"
+                    my={[0, -1]}
+                    mx={[0, -2]}
+                    py={1}
+                    px={2}
+                    bg="primary"
+                    borderRadius={8}
+                  >
                     <Text fontWeight="bold" color="white">
                       <h3>COVID-19 Details</h3>
                     </Text>
@@ -579,19 +587,32 @@ const ToiletDetailsPanel = ({
       minHeight={100}
       borderTopLeftRadius={[3, 4]}
       borderTopRightRadius={[3, 4]}
-      padding={[3, 4]}
+      p={[3, 4]}
       as="section"
       aria-labelledby="toilet-details-heading"
       ref={containerRef}
     >
       <Grid>
-        <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
+        <Box width={['100%', '50%', '25%']} p={[3, 4]}>
           {titleFragment}
           <Spacer mb={2} />
           {data.campaignUOL && uolFragment}
+
+          <Text fontWeight="bold" color="white">
+            <Box
+              display="inline-flex"
+              alignItems="center"
+              bg="primary"
+              py={1}
+              px={2}
+              borderRadius={8}
+            >
+              <h3>COVID-19 Affected</h3>
+            </Box>
+          </Text>
         </Box>
 
-        <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
+        <Box width={['100%', '50%', '25%']} p={[0, 4]}>
           {/* Supress opening hours heading during COVID-19
           <Box display="flex" alignItems="center">
             <Icon icon={faClock} />
@@ -601,12 +622,12 @@ const ToiletDetailsPanel = ({
             </Text>
           </Box>
           <Spacer mb={[0, 2]} />
-          {getIsOpenLabel(openingTimes)} */}
+          {getIsOpenLabel(openingTimes)}*/}
         </Box>
 
         <Box
           width={['100%', '50%']}
-          padding={3}
+          p={3}
           display="flex"
           justifyContent={['flex-start', 'flex-start', 'flex-end']}
           alignItems="center"
