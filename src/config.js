@@ -1,10 +1,11 @@
 export const FILTERS_KEY = 'filters';
 
 const filters = [
-  {
-    id: 'covidDetails',
-    label: 'COVID-19 Details',
-  },
+  // disable covid filter until we've accumulated enough data for it to be useful
+  // {
+  //   id: 'covidDetails',
+  //   label: 'COVID-19 Affected',
+  // },
   {
     id: 'noPayment',
     label: 'Free',
