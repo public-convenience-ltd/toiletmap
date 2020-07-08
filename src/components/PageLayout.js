@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { ThemeProvider } from 'emotion-theming';
 
 import Box from './Box';
 import { MediaContextProvider, Media } from './Media';
 import Header from './Header';
 import Footer from './Footer';
+import ConditionalWrap from './ConditionalWrap';
 import TrackingBanner from './Tracking/TrackingBanner';
 
 import globalStyles from '../globalStyles';
@@ -13,7 +15,10 @@ import config from '../config';
 
 import { TRACKING_STORAGE_KEY } from './Tracking';
 
-const PageLayout = ({ mapCenter, children }) => {
+const LAYOUT_DEFAULT = 'default';
+const LAYOUT_BLOG = 'blog';
+
+const PageLayout = ({ mapCenter, layoutMode, children }) => {
   const trackingRef = useRef(null);
 
   const [isTrackingStateChosen, setIsTrackingStateChosen] = useState(
@@ -64,10 +69,15 @@ const PageLayout = ({ mapCenter, children }) => {
             <Box
               as="main"
               flexGrow={1}
-              children={children}
               // support screen readers in ie11
               role="main"
-            />
+            >
+              <ConditionalWrap
+                condition={layoutMode === LAYOUT_BLOG}
+                wrap={(children) => <Box my={5} children={children} />}
+                children={children}
+              />
+            </Box>
           </Box>
 
           <Box mt="auto">
@@ -77,6 +87,14 @@ const PageLayout = ({ mapCenter, children }) => {
       </MediaContextProvider>
     </ThemeProvider>
   );
+};
+
+PageLayout.propTypes = {
+  layoutMode: PropTypes.oneOf([LAYOUT_DEFAULT, LAYOUT_BLOG]),
+};
+
+PropTypes.defaultProps = {
+  layoutMode: LAYOUT_DEFAULT,
 };
 
 export default PageLayout;

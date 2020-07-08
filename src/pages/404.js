@@ -8,7 +8,7 @@ import Text from '../components/Text';
 import Button from '../components/Button';
 
 const NotFound = () => (
-  <PageLayout>
+  <PageLayout layoutMode="blog">
     <Box
       display="flex"
       flexDirection="column"
@@ -19,8 +19,6 @@ const NotFound = () => (
       p={3}
     >
       <div>
-        <Spacer mt={4} />
-
         <Text fontSize={20} fontWeight="bold">
           <h1>Page not found</h1>
         </Text>

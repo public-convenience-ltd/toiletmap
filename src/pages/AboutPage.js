@@ -22,13 +22,12 @@ const ListItem = (props) => (
 
 const AboutPage = (props) => {
   return (
-    <PageLayout>
+    <PageLayout layoutMode="blog">
       <Helmet>
         <title>{config.getTitle('About')}</title>
       </Helmet>
 
       <Container maxWidth={845}>
-        <Spacer mb={5} />
         <Text fontSize={6} fontWeight="bold" textAlign="center">
           <h1>About the Toilet Map</h1>
         </Text>
