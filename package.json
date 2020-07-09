@@ -55,6 +55,7 @@
     "date-fns": "2.14.0",
     "downshift": "5.4.5",
     "emotion-theming": "10.0.27",
+    "fingerprintjs2": "2.1.0",
     "focus-visible": "5.1.0",
     "framer-motion": "1.11.1",
     "graphql-iso-date": "3.6.1",

@@ -1,10 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import useOnLocationChange from './useOnLocationChange';
+import { useLocation } from 'react-router-dom';
 
 const AdobeTracking = () => {
-  const onLocationChange = React.useCallback(() => {
-    // Check if tracking has been initialised
+  const { pathname } = useLocation();
+
+  React.useEffect(() => {
     if (window.digitalData && window.s) {
       // Set tracking page attributes
       window.digitalData.page.pageInfo.pageName = `${document.title}`;
@@ -12,9 +13,7 @@ const AdobeTracking = () => {
       // Fire tracking event
       window.s.t();
     }
-  }, []);
-
-  useOnLocationChange(onLocationChange);
+  }, [pathname]);
 
   return (
     <Helmet>

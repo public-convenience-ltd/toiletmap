@@ -22,7 +22,6 @@ const TrackingBanner = React.forwardRef((props, ref) => {
     // set tracking settings in local storage
     config.setSettings(TRACKING_STORAGE_KEY, {
       aaAccepted: data.aa,
-      gaAccepted: data.ga,
       trackingStateChosen: true,
     });
 
@@ -89,30 +88,6 @@ const TrackingBanner = React.forwardRef((props, ref) => {
               >
                 <Box display="flex" flexDirection="column" flexShrink={0}>
                   <fieldset>
-                    <Box
-                      as="label"
-                      display="flex"
-                      justifyContent="space-between"
-                      alignItems="center"
-                      width="100%"
-                    >
-                      <b>Opt in to Google Analytics</b>
-                      <Spacer ml={[1, 5]} />
-                      <input
-                        ref={register}
-                        name="ga"
-                        type="checkbox"
-                        defaultChecked={
-                          config.getSetting(
-                            TRACKING_STORAGE_KEY,
-                            'gaAccepted'
-                          ) || false
-                        }
-                      />
-                    </Box>
-
-                    <Spacer mt={2} />
-
                     <Box
                       as="label"
                       display="flex"

@@ -29,10 +29,10 @@ const PrivacyPage = () => {
         <Spacer mb={3} />
 
         <p>
-          Cookies on The Great British Public Toilet Map website are used to
+          The Great British Public Toilet Map uses a cookieless approach to
           gather anonymous data such as which pages are viewed, what time the
-          visit occurred, if the visitor has been to the site before, and which
-          site referred the visitor to the web page etc.
+          visit occurred, and which site referred the visitor to the web page
+          etc.
         </p>
         <p>
           Public Convenience Ltd also notes and saves information such as time
@@ -40,19 +40,11 @@ const PrivacyPage = () => {
           to provide more relevant services to users.
         </p>
         <p>
-          Any data collected automatically from visitors to our web sites
-          through the use of cookies will be used to improve the sites, and will
-          not and cannot be used to identify any visitor. Consent by site
-          visitors for this anonymous data to be collected and used by Public
-          Convenience Ltd and the Use Our Loos campaign for the purpose stated
-          above will be assumed by your continued navigation of this website.
-        </p>
-        <p>
           We will not associate any data gathered from this site through
-          navigation and cookies with any personally identifying information
-          from any source. We may also log Internet Protocol (IP) address (but
-          nothing that directly identifies visitors) in order to receive and
-          send the required information over the internet.
+          navigation and with any personally identifying information from any
+          source. We may also log Internet Protocol (IP) address (but nothing
+          that directly identifies visitors) in order to receive and send the
+          required information over the internet.
         </p>
 
         <Spacer mb={4} />

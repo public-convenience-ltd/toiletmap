@@ -41,8 +41,9 @@ export default {
   },
   filters,
   messages,
-  analyticsId:
-    process.env.NODE_ENV === 'production' ? 'UA-52513593-1' : 'UA-111111111-1',
+  analyticsId: window.location.hostname.match(/toiletmap\.org\.uk/)
+    ? 'UA-52513593-1'
+    : null,
   initialZoom: 16,
   minZoom: 11,
   maxZoom: 18,
