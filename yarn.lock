@@ -1976,14 +1976,14 @@
   resolved "https://registry.yarnpkg.com/@rehooks/component-size/-/component-size-1.0.3.tgz#823eabeb42084893d46d43e3a9d1d0e34252b3cb"
   integrity sha512-pnYld+8SSF2vXwdLOqBGUyOrv/SjzwLjIUcs/4c1JJgR0q4E9eBtBfuZMD6zUD51fvSehSsbnlQMzotSmPTXPg==
 
-"@shelf/jest-mongodb@1.1.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@shelf/jest-mongodb/-/jest-mongodb-1.1.5.tgz#50573c9cb8cf12f6ee93fb79ea7420a431138c9c"
-  integrity sha512-9OwFr4v/wrdDfP3Xa1aMMhBY9yyrKzeE20S8nBs4qloYQsjCy72mJVOWAT6OPaz4OXVkQb7JCySlzec27wZMeQ==
+"@shelf/jest-mongodb@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@shelf/jest-mongodb/-/jest-mongodb-1.2.1.tgz#dd449e1c90cc54a586c50152ccdcf7429db07571"
+  integrity sha512-hvgqSBZT1F4/dCzcKEPEIgi0KY4Sa8MkOzycGIJnltztqYliszHkTcwk6K0y9aBF9uVWMlhhwwXgMS2JokfMKA==
   dependencies:
-    cwd "0.10.0"
     debug "4.1.1"
-    mongodb-memory-server "6.4.1"
+    mongodb-memory-server "6.6.1"
+    uuid "8.1.0"
 
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
@@ -5528,7 +5528,7 @@ customize-cra@1.0.0:
   dependencies:
     lodash.flow "^3.5.0"
 
-cwd@0.10.0, cwd@^0.10.0:
+cwd@^0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/cwd/-/cwd-0.10.0.tgz#172400694057c22a13b0cf16162c7e4b7a7fe567"
   integrity sha1-FyQAaUBXwioTsM8WFix+S3p/5Wc=
@@ -10747,10 +10747,10 @@ moment@^2.10.2:
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.26.0.tgz#5e1f82c6bafca6e83e808b30c8705eed0dcbd39a"
   integrity sha512-oIixUO+OamkUkwjhAVE18rAMfRJNsNe/Stid/gwHSOfHrOtw9EhAY2AHvdKZ/k/MggcYELFCJz/Sn2pL8b8JMw==
 
-mongodb-memory-server-core@6.4.1:
-  version "6.4.1"
-  resolved "https://registry.yarnpkg.com/mongodb-memory-server-core/-/mongodb-memory-server-core-6.4.1.tgz#c7c650eb9640b7af719cb6de8b6cd8d2921d6c26"
-  integrity sha512-bnSI8AHoumtDjQ2oSkdVGqm8o4CPUkn0/GW6Cn6dRxGpen3EJapLOEWtNzAizmWRDrnIVjVBcNB8tryLgIWx+A==
+mongodb-memory-server-core@6.6.1:
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/mongodb-memory-server-core/-/mongodb-memory-server-core-6.6.1.tgz#942ec372534cb0b58095b291a0984f4d9d8b5389"
+  integrity sha512-k6YowfiHxUdGwR/AhXuyv1V3VW2NkA6VuICQfUqZGeqENsExbnL05oKpavAXrmCGxcabXZ3IMvcgmUwmlJAGng==
   dependencies:
     "@types/cross-spawn" "^6.0.1"
     "@types/debug" "^4.1.5"
@@ -10781,12 +10781,12 @@ mongodb-memory-server-core@6.4.1:
   optionalDependencies:
     mongodb "^3.5.4"
 
-mongodb-memory-server@6.4.1:
-  version "6.4.1"
-  resolved "https://registry.yarnpkg.com/mongodb-memory-server/-/mongodb-memory-server-6.4.1.tgz#13c882a9a907edb02267e73062f19fcb2a146aff"
-  integrity sha512-RNQfI7DE5vinMIF7Uusna4AUoKPxQqB62wF+vEybSHkuzK6j3snGpeTXmZiqojqnNzeNQIDGHNkLKLq4NSbqmA==
+mongodb-memory-server@6.6.1:
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/mongodb-memory-server/-/mongodb-memory-server-6.6.1.tgz#e7bc7fb0910d2398572c22dac1d96ecb3636f189"
+  integrity sha512-qnGpGE50snhS3IgKwiPlxnL5wFWPxWutqcCqlsbb68FKohaEIsvi/gMBqJbBLF2l2sQu4a4aJofuKFudSI38vQ==
   dependencies:
-    mongodb-memory-server-core "6.4.1"
+    mongodb-memory-server-core "6.6.1"
 
 mongodb@3.5.6:
   version "3.5.6"
@@ -16157,6 +16157,11 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
+uuid@8.1.0, uuid@^8.0.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.1.0.tgz#6f1536eb43249f473abc6bd58ff983da1ca30d8d"
+  integrity sha512-CI18flHDznR0lq54xBycOVmphdCYnQLKn8abKn7PXUiKUGdEd+/l9LWNJmugXel4hXq7S+RMNl34ecyC9TntWg==
+
 uuid@8.2.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.2.0.tgz#cb10dd6b118e2dada7d0cd9730ba7417c93d920e"
@@ -16171,11 +16176,6 @@ uuid@^7.0.2, uuid@^7.0.3:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.3.tgz#c5c9f2c8cf25dc0a372c4df1441c41f5bd0c680b"
   integrity sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==
-
-uuid@^8.0.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.1.0.tgz#6f1536eb43249f473abc6bd58ff983da1ca30d8d"
-  integrity sha512-CI18flHDznR0lq54xBycOVmphdCYnQLKn8abKn7PXUiKUGdEd+/l9LWNJmugXel4hXq7S+RMNl34ecyC9TntWg==
 
 v8-compile-cache@^2.0.3, v8-compile-cache@^2.1.1:
   version "2.1.1"

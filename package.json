@@ -97,7 +97,7 @@
     "@lola-tech/graphql-kimera": "1.0.1",
     "@mapbox/geojson-area": "0.2.2",
     "@mapbox/geojson-rewind": "0.5.0",
-    "@shelf/jest-mongodb": "1.1.5",
+    "@shelf/jest-mongodb": "1.2.1",
     "apollo-server-testing": "2.15.1",
     "cli-progress": "3.8.2",
     "customize-cra": "1.0.0",
