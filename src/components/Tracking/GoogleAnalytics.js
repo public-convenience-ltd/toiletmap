@@ -13,6 +13,8 @@ const GoogleAnalytics = () => {
       // Compute a fingerprint so we can avoid using cookies
       const ident = await Fingerprint2.getPromise();
       const components = ident.map((c) => c.value);
+      // Make this _our_ fingerprint
+      components.push('publicconvenience');
       const murmur = Fingerprint2.x64hash128(components.join(''), 31);
 
       ReactGA.initialize(config.analyticsId, {
