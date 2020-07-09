@@ -283,7 +283,12 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
   return (
     <Container maxWidth={846}>
       <Text fontSize={[16, 18]}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <Box
+          as="form"
+          display="flex"
+          flexDirection="column"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <VisuallyHidden>
             <h1>{title}</h1>
           </VisuallyHidden>
@@ -634,7 +639,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
               <Notification>Saving your changes&hellip;</Notification>
             </Box>
           )}
-        </form>
+        </Box>
       </Text>
     </Container>
   );

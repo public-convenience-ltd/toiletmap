@@ -206,8 +206,6 @@ const EditPage = (props) => {
           </Box>
         )}
       </EntryForm>
-
-      <Spacer mt={4} />
     </PageLayout>
   );
 };

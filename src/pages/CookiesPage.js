@@ -11,13 +11,12 @@ import Text from '../components/Text';
 import config from '../config';
 
 const CookiesPage = () => (
-  <PageLayout>
+  <PageLayout layoutMode="blog">
     <Helmet>
       <title>{config.getTitle('Cookies')}</title>
     </Helmet>
 
     <Container maxWidth={845}>
-      <Spacer mb={5} />
       <Text fontSize={6} fontWeight="bold" textAlign="center">
         <h1>Cookies</h1>
       </Text>

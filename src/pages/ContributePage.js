@@ -24,13 +24,12 @@ const LoginPage = (props) => {
   const auth = useAuth();
 
   return (
-    <PageLayout>
+    <PageLayout layoutMode="blog">
       <Helmet>
         <title>{config.getTitle('Contributing')}</title>
       </Helmet>
 
       <Container maxWidth={845}>
-        <Spacer mb={5} />
         <Text fontSize={6} fontWeight="bold" textAlign="center">
           <h1>Want to Contribute Toilet Data?</h1>
         </Text>

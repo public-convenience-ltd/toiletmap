@@ -14,13 +14,12 @@ import uolLogo from '../images/domestos-use-our-loos-full.png';
 
 const UseOurLoosPage = (props) => {
   return (
-    <PageLayout>
+    <PageLayout layoutMode="blog">
       <Helmet>
         <title>{config.getTitle('Domestos’ Use Our Loos Scheme')}</title>
       </Helmet>
 
       <Container maxWidth={845}>
-        <Spacer mb={5} />
         <Text fontSize={6} fontWeight="bold" textAlign="center">
           <h1>Domestos’ Use Our Loos Scheme</h1>
         </Text>

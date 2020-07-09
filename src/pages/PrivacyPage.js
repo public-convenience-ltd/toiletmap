@@ -11,13 +11,12 @@ import config from '../config';
 
 const PrivacyPage = () => {
   return (
-    <PageLayout>
+    <PageLayout layoutMode="blog">
       <Helmet>
         <title>{config.getTitle('Privacy Policy')}</title>
       </Helmet>
 
       <Container maxWidth={845}>
-        <Spacer mb={5} />
         <Text fontSize={6} fontWeight="bold" textAlign="center">
           <h1>Privacy Policy</h1>
         </Text>

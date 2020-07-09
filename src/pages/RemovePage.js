@@ -68,14 +68,12 @@ const RemovePage = function (props) {
   }
 
   return (
-    <PageLayout>
+    <PageLayout layoutMode="blog">
       <Helmet>
         <title>{config.getTitle('Remove Toilet')}</title>
       </Helmet>
 
       <Container maxWidth={845}>
-        <Spacer mb={5} />
-
         <Text fontSize={6} fontWeight="bold" textAlign="center">
           <h1>Toilet Remover</h1>
         </Text>
