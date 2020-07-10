@@ -4,7 +4,7 @@
 <Button>Click me!</Button>
 ```
 
-### Seconary
+### Secondary
 
 ```jsx
 <Button variant="secondary">Click me!</Button>
