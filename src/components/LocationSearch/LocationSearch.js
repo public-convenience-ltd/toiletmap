@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
 import { useCombobox } from 'downshift';
 import { useTheme } from 'emotion-theming';
 import styled from '@emotion/styled';
@@ -11,8 +10,6 @@ import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
 
 import useNominatimAutocomplete from './useNominatimAutocomplete';
-
-import poweredByGoogle from './powered_by_google.png';
 
 const Input = styled.input(
   ({ theme }) => `
@@ -88,12 +85,6 @@ const LocationSearch = ({ onSelectedItemChange }) => {
 
   return (
     <>
-      <Helmet>
-        <script
-          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places`}
-        />
-      </Helmet>
-
       <VisuallyHidden>
         <label {...getLabelProps()}>Search for a location</label>
       </VisuallyHidden>
@@ -177,14 +168,6 @@ const LocationSearch = ({ onSelectedItemChange }) => {
                   </Box>
                 ))
               : 'No results found'}
-
-            <Box
-              as="img"
-              src={poweredByGoogle}
-              alt="Powered by Google"
-              mt={3}
-              maxWidth={120}
-            />
           </>
         )}
       </Box>
