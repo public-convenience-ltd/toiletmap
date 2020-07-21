@@ -6,7 +6,7 @@ const useNominatimAutocomplete = (input) => {
 
   const fetchPlaces = React.useCallback(
     debounce(async (input) => {
-      const fetchUrl = `https://nominatim.openstreetmap.org/search?q=${input}&limit=5&format=json`;
+      const fetchUrl = `https://nominatim.openstreetmap.org/search?q=${input}&countrycodes=gb&limit=5&format=json`;
 
       const response = await fetch(fetchUrl);
       const results = await response.json();
