@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
 import { useCombobox } from 'downshift';
 import { useTheme } from 'emotion-theming';
 import styled from '@emotion/styled';
@@ -10,9 +9,7 @@ import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
 
-import usePlacesAutocomplete from './usePlacesAutocomplete';
-
-import poweredByGoogle from './powered_by_google.png';
+import useNominatimAutocomplete from './useNominatimAutocomplete';
 
 const Input = styled.input(
   ({ theme }) => `
@@ -28,17 +25,16 @@ const LocationSearch = ({ onSelectedItemChange }) => {
   const [query, setQuery] = React.useState('');
   const theme = useTheme();
 
-  const { places, getPlaceById } = usePlacesAutocomplete(query);
+  const { places, getPlaceLatLng } = useNominatimAutocomplete(query);
 
   const handleSelectedItemChange = async ({ selectedItem }) => {
     if (!selectedItem) {
       return;
     }
 
-    const result = await getPlaceById(selectedItem.placeId);
-    const { lat, lng } = result.geometry.location;
+    const { lat, lng } = await getPlaceLatLng(selectedItem);
 
-    onSelectedItemChange({ lat: lat(), lng: lng() });
+    onSelectedItemChange({ lat, lng });
   };
 
   const stateReducer = (state, actionAndChanges) => {
@@ -82,19 +78,13 @@ const LocationSearch = ({ onSelectedItemChange }) => {
   } = useCombobox({
     items: places,
     onInputValueChange: ({ inputValue }) => setQuery(inputValue),
-    itemToString: (item) => (item ? `${item.label}, ${item.subLabel}` : ''),
+    itemToString: (item) => (item ? item.label : ''),
     onSelectedItemChange: handleSelectedItemChange,
     stateReducer,
   });
 
   return (
     <>
-      <Helmet>
-        <script
-          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places`}
-        />
-      </Helmet>
-
       <VisuallyHidden>
         <label {...getLabelProps()}>Search for a location</label>
       </VisuallyHidden>
@@ -174,18 +164,10 @@ const LocationSearch = ({ onSelectedItemChange }) => {
                     }}
                     {...getItemProps({ item, index })}
                   >
-                    <span>{item.label}</span> {item.subLabel}
+                    <span>{item.label}</span>
                   </Box>
                 ))
               : 'No results found'}
-
-            <Box
-              as="img"
-              src={poweredByGoogle}
-              alt="Powered by Google"
-              mt={3}
-              maxWidth={120}
-            />
           </>
         )}
       </Box>

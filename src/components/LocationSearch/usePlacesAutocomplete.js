@@ -60,8 +60,7 @@ const usePlacesAutocomplete = (input) => {
         const locationResults = places.map((item) => ({
           id: item.id,
           placeId: item.place_id,
-          label: item.structured_formatting.main_text,
-          subLabel: item.structured_formatting.secondary_text,
+          label: `${item.structured_formatting.main_text}, ${item.structured_formatting.secondary_text}`,
         }));
 
         setPlaces(locationResults);
@@ -93,7 +92,7 @@ const usePlacesAutocomplete = (input) => {
     setPlaces([]);
   }, [input, setPlaces]);
 
-  const getPlaceById = (placeId) => {
+  const getPlaceLatLng = ({ placeId }) => {
     // PlacesService expects an HTML (normally a map) element
     // https://developers.google.com/maps/documentation/javascript/reference/places-service#library
     const placesService = new window.google.maps.places.PlacesService(
@@ -103,7 +102,7 @@ const usePlacesAutocomplete = (input) => {
     const OK = window.google.maps.places.PlacesServiceStatus.OK;
 
     return new Promise((resolve, reject) => {
-      placesService.getDetails({ placeId, sessionToken }, (results, status) => {
+      placesService.getDetails({ placeId, sessionToken }, (result, status) => {
         if (status !== OK) {
           reject(status);
           return;
@@ -113,12 +112,14 @@ const usePlacesAutocomplete = (input) => {
         // https://developers.google.com/maps/documentation/javascript/reference/places-autocomplete-service#AutocompleteSessionToken
         resetSessionToken();
 
-        resolve(results);
+        const { lat, lng } = result.geometry.location;
+
+        resolve({ lat: lat(), lng: lng() });
       });
     });
   };
 
-  return { places, getPlaceById };
+  return { places, getPlaceLatLng };
 };
 
 export default usePlacesAutocomplete;
