@@ -10,7 +10,7 @@ import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
 
-import usePlacesAutocomplete from './usePlacesAutocomplete';
+import useNominatimAutocomplete from './useNominatimAutocomplete';
 
 import poweredByGoogle from './powered_by_google.png';
 
@@ -28,17 +28,16 @@ const LocationSearch = ({ onSelectedItemChange }) => {
   const [query, setQuery] = React.useState('');
   const theme = useTheme();
 
-  const { places, getPlaceById } = usePlacesAutocomplete(query);
+  const { places, getPlaceLatLng } = useNominatimAutocomplete(query);
 
   const handleSelectedItemChange = async ({ selectedItem }) => {
     if (!selectedItem) {
       return;
     }
 
-    const result = await getPlaceById(selectedItem.placeId);
-    const { lat, lng } = result.geometry.location;
+    const { lat, lng } = await getPlaceLatLng(selectedItem);
 
-    onSelectedItemChange({ lat: lat(), lng: lng() });
+    onSelectedItemChange({ lat, lng });
   };
 
   const stateReducer = (state, actionAndChanges) => {
@@ -82,7 +81,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
   } = useCombobox({
     items: places,
     onInputValueChange: ({ inputValue }) => setQuery(inputValue),
-    itemToString: (item) => (item ? `${item.label}, ${item.subLabel}` : ''),
+    itemToString: (item) => (item ? item.label : ''),
     onSelectedItemChange: handleSelectedItemChange,
     stateReducer,
   });
@@ -174,7 +173,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
                     }}
                     {...getItemProps({ item, index })}
                   >
-                    <span>{item.label}</span> {item.subLabel}
+                    <span>{item.label}</span>
                   </Box>
                 ))
               : 'No results found'}
