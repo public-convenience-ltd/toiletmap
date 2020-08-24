@@ -229,9 +229,13 @@ const ToiletDetailsPanel = ({
     </Button>
   );
 
-  const crossIconFragment = <Icon icon={faTimes} color="tertiary" />;
-  const questionIconFragment = <Icon icon={faQuestion} color="tertiary" />;
-  const checkIconFragment = <Icon icon={faCheck} />;
+  const crossIconFragment = (
+    <Icon icon={faTimes} color="tertiary" title="unavailable" />
+  );
+  const questionIconFragment = (
+    <Icon icon={faQuestion} color="tertiary" title="unknown" />
+  );
+  const checkIconFragment = <Icon icon={faCheck} title="available" />;
 
   const getFeatureValueIcon = (value) => {
     if (value === null) {
