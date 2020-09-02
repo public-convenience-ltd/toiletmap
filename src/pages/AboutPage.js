@@ -20,6 +20,16 @@ const ListItem = (props) => (
   <Box as="li" marginTop={2} marginLeft={4} {...props} />
 );
 
+const SubHeading = (props) => (
+  <>
+    <Spacer mb={4} />
+    <Text {...props} fontSize={3} fontWeight="bold">
+      <h2>{props.children}</h2>
+    </Text>
+    <Spacer mb={3} />
+  </>
+);
+
 const AboutPage = (props) => {
   return (
     <PageLayout layoutMode="blog">
@@ -82,11 +92,7 @@ const AboutPage = (props) => {
           </Button>
           , private companies and organisations.
         </p>
-        <Spacer mb={4} />
-        <Text fontSize={3} fontWeight="bold">
-          <h2>Publicly Accessible Toilets</h2>
-        </Text>
-        <Spacer mb={3} />
+        <SubHeading>Publicly Accessible Toilets</SubHeading>
         <p>
           The project aims to map all publicly-accessible toilets - that means
           all toilets that the public can access without needing to be a
@@ -128,6 +134,16 @@ const AboutPage = (props) => {
             gbtoiletmap@gmail.com
           </Button>
           .
+        </p>
+        <SubHeading>The Explorer</SubHeading>
+        <p>
+          <Button variant="link" as="a" href="">
+            <Link to="/explorer">Visit the Explorer</Link>
+          </Button>
+          &nbsp;to get an overview of the statistics and details related to the
+          Toilet Map. These statistics are calculated on-demand, so will be up
+          to date, and can help to provide a overview of public toilet coverage
+          across the country.
         </p>
       </Container>
     </PageLayout>
