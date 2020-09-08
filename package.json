@@ -85,7 +85,7 @@
     "react-router-dom": "5.2.0",
     "react-router-hash-link": "2.0.0",
     "react-simple-maps": "2.1.2",
-    "react-tooltip": "4.2.7",
+    "react-tooltip": "4.2.9",
     "resize-observer-polyfill": "1.5.1",
     "styled-system": "5.1.5",
     "swr": "0.3.1",
