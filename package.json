@@ -83,7 +83,7 @@
     "react-leaflet": "2.7.0",
     "react-leaflet-control": "2.1.2",
     "react-router-dom": "5.2.0",
-    "react-router-hash-link": "1.2.2",
+    "react-router-hash-link": "2.0.0",
     "react-simple-maps": "2.1.2",
     "react-tooltip": "4.2.7",
     "resize-observer-polyfill": "1.5.1",
