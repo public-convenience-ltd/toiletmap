@@ -64,7 +64,7 @@
     "graphql.macro": "1.4.2",
     "hasha": "5.2.0",
     "jsonwebtoken": "8.5.1",
-    "jwks-rsa": "1.8.1",
+    "jwks-rsa": "1.9.0",
     "leaflet": "1.6.0",
     "lodash": "4.17.19",
     "mongoose": "5.10.3",
