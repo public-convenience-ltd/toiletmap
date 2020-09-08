@@ -69,7 +69,7 @@
     "lodash": "4.17.19",
     "mongoose": "5.10.3",
     "mongoose-paginate": "5.0.3",
-    "node-fetch": "2.6.0",
+    "node-fetch": "2.6.1",
     "prop-types": "15.7.2",
     "query-string": "6.13.1",
     "react": "16.13.1",
