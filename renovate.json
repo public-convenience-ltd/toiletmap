@@ -1,9 +1,29 @@
 {
   "extends": ["config:base"],
+  "stabilityDays": 3,
+  "dependencyDashboard": true,
+  "prCreation": "not-pending",
+  "semanticCommits": true,
   "packageRules": [
     {
-      "packageNames": ["@apollo/client"],
-      "allowedVersions": "!/james/"
+      "depTypeList": ["devDependencies"],
+      "semanticCommitType": "chore"
+    },
+    {
+      "depTypeList": ["dependencies"],
+      "semanticCommitType": "fix"
+    },
+    {
+      "depTypeList": ["devDependencies"],
+      "updateTypes": ["minor", "patch", "pin", "digest"],
+      "semanticCommitType": "chore",
+      "automerge": true
+    },
+    {
+      "depTypeList": ["dependencies"],
+      "updateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "automerge": true
     }
   ]
 }
