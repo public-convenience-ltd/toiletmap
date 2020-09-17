@@ -40,10 +40,10 @@
   resolved "https://registry.yarnpkg.com/@ardatan/aggregate-error/-/aggregate-error-0.0.1.tgz#1403ac5de10d8ca689fc1f65844c27179ae1d44f"
   integrity sha512-UQ9BequOTIavs0pTHLMwQwKQF8tTV1oezY/H2O9chA+JNPFZSua55xpU5dPSjAU9/jLJ1VwU+HJuTVN8u7S6Fg==
 
-"@artsy/fresnel@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@artsy/fresnel/-/fresnel-1.2.1.tgz#27782e52eb024bff6f49c036b4f3286e94042896"
-  integrity sha512-iZVljbN1RrkUlrrvZp1759nArdWUUF+x0GMaJT4KLyaJNbjKRFTs5VE1cBchrsRrs7lq+BLRYpb+8vwsTV2rng==
+"@artsy/fresnel@1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@artsy/fresnel/-/fresnel-1.2.2.tgz#612ecbf93602f7b01e9b5fc0489330767b7971ea"
+  integrity sha512-NndGZyDPZS2XSiYsq+q2oCVHfe6J7N4W1m+i6DgYXONI3q7Yk1EHLVyjJp8S3NBAx/x27gio4MRdCDZfBR3x8Q==
 
 "@babel/code-frame@7.5.5":
   version "7.5.5"
