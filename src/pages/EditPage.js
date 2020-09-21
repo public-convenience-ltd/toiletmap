@@ -30,10 +30,12 @@ const EditPage = (props) => {
     isValidating: loadingLooData,
     data: looData,
     error: looError,
-  } = useSWR([
-    FIND_LOO_BY_ID_QUERY,
-    JSON.stringify({ id: props.match.params.id }),
-  ]);
+  } = useSWR(
+    [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: props.match.params.id })],
+    {
+      revalidateOnFocus: false,
+    }
+  );
 
   const [mapState, setMapState] = useMapState();
 
