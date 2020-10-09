@@ -67,7 +67,7 @@
     "jwks-rsa": "1.10.1",
     "leaflet": "1.7.1",
     "lodash": "4.17.20",
-    "mongoose": "5.10.7",
+    "mongoose": "5.10.9",
     "mongoose-paginate": "5.0.3",
     "node-fetch": "2.6.1",
     "prop-types": "15.7.2",
