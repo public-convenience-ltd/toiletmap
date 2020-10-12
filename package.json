@@ -89,7 +89,7 @@
     "resize-observer-polyfill": "1.5.1",
     "styled-system": "5.1.5",
     "swr": "0.3.5",
-    "timeago-react": "3.0.0"
+    "timeago-react": "3.0.1"
   },
   "devDependencies": {
     "@commitlint/cli": "11.0.0",
