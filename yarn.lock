@@ -10638,10 +10638,10 @@ micromatch@^4.0.2:
     braces "^3.0.1"
     picomatch "^2.0.5"
 
-migrate-mongo@8.1.2:
-  version "8.1.2"
-  resolved "https://registry.yarnpkg.com/migrate-mongo/-/migrate-mongo-8.1.2.tgz#43a5878f78bcb2518016e0e1819d2d9b4c617ba2"
-  integrity sha512-7nSxoe/Q94xFuYTI+FBmJ6mRhLyse8E81RmwEoEJQ1UX+AcsHggcNKEXJZ4UY+80EcfFarmhpE+XLzO5YnduCg==
+migrate-mongo@8.1.4:
+  version "8.1.4"
+  resolved "https://registry.yarnpkg.com/migrate-mongo/-/migrate-mongo-8.1.4.tgz#700fb921fae0aecc571c6b251486e0fd1fac93e7"
+  integrity sha512-iuJiG86Qzr1w9B5j6jB6akZO0w040DTEWtKdclISaQg7KdovtXGYDmW8hehDsULY5oFGjNtJv/ABsOPlz0c5mw==
   dependencies:
     cli-table3 "^0.6.0"
     commander "^6.1.0"
