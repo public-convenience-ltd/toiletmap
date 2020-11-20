@@ -107,7 +107,7 @@
     "husky": "4.3.0",
     "jest-puppeteer": "4.4.0",
     "lint-staged": "10.4.0",
-    "migrate-mongo": "8.1.2",
+    "migrate-mongo": "8.1.4",
     "msw": "0.19.5",
     "nodemon": "2.0.6",
     "prettier": "2.1.2",
