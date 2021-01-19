@@ -112,7 +112,7 @@
     "nodemon": "2.0.6",
     "prettier": "2.2.1",
     "puppeteer": "5.5.0",
-    "react-app-rewired": "2.1.6",
+    "react-app-rewired": "2.1.8",
     "react-scripts": "3.4.4",
     "react-styleguidist": "11.1.5",
     "serve": "11.3.2",
