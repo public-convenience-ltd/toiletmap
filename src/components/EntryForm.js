@@ -15,7 +15,7 @@ import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 import VisuallyHidden from '../components/VisuallyHidden';
 import Switch from '../components/Switch';
-import { WEEKDAYS, rangeTypes } from '../openingTimes';
+import { WEEKDAYS, isClosed } from '../openingTimes';
 
 import crosshair from '../images/crosshair-small.svg';
 import uolLogo from '../images/domestos_use_our_loos_logo.png';
@@ -189,7 +189,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
   const hasOpeningTimes = Boolean(loo.openingTimes);
 
   const isOpen = loo.openingTimes
-    ? loo.openingTimes.map((x) => x !== rangeTypes.CLOSED)
+    ? loo.openingTimes.map((x) => !isClosed(x))
     : WEEKDAYS.map(() => false);
 
   const {
@@ -248,7 +248,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
       if (data['has-opening-times']) {
         const openingTimes = WEEKDAYS.map((day) => {
           if (!data[`${day.toLowerCase()}-is-open`]) {
-            return rangeTypes.CLOSED;
+            return [];
           }
 
           return [

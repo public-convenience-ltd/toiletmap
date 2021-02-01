@@ -3,9 +3,9 @@ import set from 'date-fns/set';
 import setISODay from 'date-fns/setISODay';
 import isWithinInterval from 'date-fns/isWithinInterval';
 
-const rangeTypes = {
-  CLOSED: 'CLOSED',
-};
+function isClosed(range) {
+  return Array.isArray(range) && range.length === 0;
+}
 
 const WEEKDAYS = [
   'Monday',
@@ -37,7 +37,7 @@ function getIsOpen(openingTimes = [], dateTime = new Date()) {
   const weekdayToCheck = getISODay(dateTime);
   const timeRangeToCheck = openingTimes[weekdayToCheck - 1];
 
-  if (timeRangeToCheck === rangeTypes.CLOSED) {
+  if (isClosed(timeRangeToCheck)) {
     return false;
   }
 
@@ -65,7 +65,7 @@ function getIsOpen(openingTimes = [], dateTime = new Date()) {
   return false;
 }
 
-export { rangeTypes };
+export { isClosed };
 
 export { WEEKDAYS };
 
