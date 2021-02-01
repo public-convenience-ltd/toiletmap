@@ -24,7 +24,7 @@ const validateOpeningTimes = (value) => {
   }
 
   const elementsAreValid = value.every((item) => {
-    const isClosedString = item === 'CLOSED';
+    const isClosed = Array.isArray(item) && item.length === 0;
 
     const isArrayOfTimes =
       Array.isArray(item) &&
@@ -40,12 +40,12 @@ const validateOpeningTimes = (value) => {
         return Boolean(found && found.length);
       });
 
-    return isClosedString || isArrayOfTimes;
+    return isClosed || isArrayOfTimes;
   });
 
   if (!elementsAreValid) {
     throw new Error(
-      'Type OpeningTimes must be an array of "CLOSED" or ["XX:XX", "XX:XX"] elements'
+      'Type OpeningTimes must be an array of [] or ["XX:XX", "XX:XX"] elements'
     );
   }
 
@@ -55,7 +55,7 @@ const validateOpeningTimes = (value) => {
 const OpeningTimesScalar = new GraphQLScalarType({
   name: 'OpeningTimes',
   desription:
-    'An array of 7 elements in which each represent a day\'s opening times. Each element can be either a string of "CLOSED" or an array of opening and closing times ["09:00", "17:00"]',
+    'An array of 7 elements in which each represent a day\'s opening times. Each element can be either an empty array (closed) or an array of opening and closing times ["09:00", "17:00"]',
   serialize: validateOpeningTimes,
   parseValue: validateOpeningTimes,
   parseLiteral: (ast) => validateOpeningTimes(astToOpeningTimes(ast)),

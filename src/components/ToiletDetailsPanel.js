@@ -37,7 +37,7 @@ import Spacer from './Spacer';
 import Icon from './Icon';
 import { Media } from './Media';
 // Suppress Opening Hours Heading during COVID-19
-import { /* getIsOpen, */ WEEKDAYS, rangeTypes } from '../openingTimes';
+import { /* getIsOpen, */ WEEKDAYS, isClosed } from '../openingTimes';
 import { useMapState } from './MapState';
 import { useMutation } from '../graphql/fetcher';
 
@@ -75,7 +75,7 @@ const UnstyledList = styled.ul`
 `;
 
 function getTimeRangeLabel(range) {
-  if (range === rangeTypes.CLOSED) {
+  if (isClosed(range)) {
     return 'Closed';
   }
 
