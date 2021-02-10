@@ -490,7 +490,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                           <input
                             type="time"
                             pattern="[0-9]{2}:[0-9]{2}"
-                            placeholder="08:00"
+                            placeholder="hh:mm"
                             defaultValue={
                               loo.openingTimes
                                 ? loo.openingTimes[index][0]
@@ -511,7 +511,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                           <input
                             type="time"
                             pattern="[0-9]{2}:[0-9]{2}"
-                            placeholder="24:00"
+                            placeholder="hh:mm"
                             defaultValue={
                               loo.openingTimes
                                 ? loo.openingTimes[index][1]
