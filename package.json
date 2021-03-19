@@ -109,7 +109,7 @@
     "lint-staged": "10.5.3",
     "migrate-mongo": "8.1.4",
     "msw": "0.19.5",
-    "nodemon": "2.0.6",
+    "nodemon": "2.0.7",
     "prettier": "2.2.1",
     "puppeteer": "5.5.0",
     "react-app-rewired": "2.1.8",
