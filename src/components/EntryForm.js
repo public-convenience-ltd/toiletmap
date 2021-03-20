@@ -202,10 +202,10 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
   } = useForm();
 
   // read the formState before render to subscribe the form state through Proxy
-  const { dirtyFields } = formState;
+  const { isDirty, dirtyFields } = formState;
 
   const onSubmit = (data) => {
-    const dirtyFieldNames = Array.from(dirtyFields.keys());
+    const dirtyFieldNames = Object.keys(dirtyFields);
 
     // only include fields which have been modified
     let transformed = pick(data, dirtyFieldNames);
@@ -632,9 +632,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
 
           <Spacer mt={4} />
 
-          {isFunction(children)
-            ? children({ hasDirtyFields: dirtyFields.size })
-            : children}
+          {isFunction(children) ? children({ isDirty }) : children}
 
           <Spacer mt={4} />
 
