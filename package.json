@@ -136,8 +136,5 @@
       "last 1 safari version",
       "ie 11"
     ]
-  },
-  "resolutions": {
-    "graphql": "14.6.0"
   }
 }
