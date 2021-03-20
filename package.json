@@ -50,7 +50,7 @@
     "@rehooks/component-size": "1.0.3",
     "@styled-system/prop-types": "5.1.5",
     "apollo-server": "2.21.2",
-    "auth0-js": "9.14.3",
+    "auth0-js": "9.15.0",
     "chart.js": "2.9.4",
     "d3-scale": "3.2.3",
     "date-fns": "2.19.0",
@@ -65,10 +65,10 @@
     "graphql.macro": "1.4.2",
     "hasha": "5.2.2",
     "jsonwebtoken": "8.5.1",
-    "jwks-rsa": "1.12.2",
+    "jwks-rsa": "2.0.1",
     "leaflet": "1.7.1",
     "lodash": "4.17.21",
-    "mongoose": "5.10.15",
+    "mongoose": "5.12.1",
     "mongoose-paginate": "5.0.3",
     "node-fetch": "2.6.1",
     "prop-types": "15.7.2",
@@ -89,8 +89,8 @@
     "react-tooltip": "4.2.15",
     "resize-observer-polyfill": "1.5.1",
     "styled-system": "5.1.5",
-    "swr": "0.5.3",
-    "timeago-react": "3.0.1"
+    "swr": "0.5.4",
+    "timeago-react": "3.0.2"
   },
   "devDependencies": {
     "@commitlint/cli": "12.0.1",
