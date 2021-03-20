@@ -15740,10 +15740,10 @@ thunky@^1.0.2:
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
 
-timeago-react@3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/timeago-react/-/timeago-react-3.0.1.tgz#b67a7271f3241b8535c10d3bc2cf3ee18a0649e8"
-  integrity sha512-IWSLWO47saoPOplrrLF5JbOW474oXnx+GfTw4SIuskY9yaSbzNnf0Lah2G9AwLuuQ4dQHSu4EgEOSNTPBxdoQA==
+timeago-react@3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/timeago-react/-/timeago-react-3.0.2.tgz#1bd8b86c37c93bcd6a4340fea340e6c9c2bdd4e0"
+  integrity sha512-K+NqoRcE13xv7lrmHtZmy7G+yXF8ZxmuwRK/EGKyT1chpI3zmV6YnB5o9+slnOCq1dXuQJknr/hWjINyP7C9LA==
   dependencies:
     timeago.js "^4.0.0"
 
