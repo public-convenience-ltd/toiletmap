@@ -5,7 +5,7 @@ name: CI
 
 on:
   pull_request:
-    branches: [ trunk ]
+    branches: [ main ]
 
 jobs:
   test:

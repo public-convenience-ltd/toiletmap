@@ -36,9 +36,9 @@ When you commit all the files you touch in your work will be run through `pretti
 
 ## Making a Pull Request
 
-We use github `pull requests` to integrate changes to this codebase. When you've got a set of changes as one or more commits which you'd like to propose you should separate them into a branch made from the default branch, `trunk`. Everyone appreciates it very much if you are able to make the commit history on your branch as clean as possible.
+We use github `pull requests` to integrate changes to this codebase. When you've got a set of changes as one or more commits which you'd like to propose you should separate them into a branch made from the default branch, `main`. Everyone appreciates it very much if you are able to make the commit history on your branch as clean as possible.
 
-Once you have your branch the way you like it you can push it to the remote. Once it is there you can use the github interface to make a `pull request` targeting the `trunk` branch.
+Once you have your branch the way you like it you can push it to the remote. Once it is there you can use the github interface to make a `pull request` targeting the `main` branch.
 
 Please take care to give good details about the changes in your PR to help reviewers later.
 
