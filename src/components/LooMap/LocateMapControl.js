@@ -58,11 +58,20 @@ const LocateMapControl = ({ position }) => {
     onStopLocation,
   });
 
+  const handleClick = () => {
+    if (!isActive) {
+      startLocate();
+      window.plausible('Geolocate'); 
+    } else {
+      stopLocate()
+    }
+  }; 
+
   return (
     <Control position={position}>
       <ControlButton
         type="button"
-        onClick={() => (isActive ? stopLocate() : startLocate())}
+        onClick={handleClick}
         aria-label="Locate my position"
         variant={isActive && 'active'}
       >
