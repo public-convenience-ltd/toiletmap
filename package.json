@@ -89,7 +89,7 @@
     "react-tooltip": "4.2.15",
     "resize-observer-polyfill": "1.5.1",
     "styled-system": "5.1.5",
-    "swr": "0.5.4",
+    "swr": "0.5.5",
     "timeago-react": "3.0.2"
   },
   "devDependencies": {
