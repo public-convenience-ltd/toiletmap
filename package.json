@@ -54,7 +54,7 @@
     "chart.js": "2.9.4",
     "d3-scale": "3.2.3",
     "date-fns": "2.19.0",
-    "downshift": "6.1.0",
+    "downshift": "6.1.2",
     "emotion-theming": "10.0.27",
     "fingerprintjs2": "2.1.4",
     "focus-visible": "5.2.0",
