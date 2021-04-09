@@ -182,11 +182,11 @@ const EditPage = (props) => {
         saveError={saveError}
         onSubmit={save}
       >
-        {({ hasDirtyFields }) => (
+        {({ isDirty }) => (
           <Box display="flex" flexDirection="column" alignItems="center">
             <Button
               type="submit"
-              disabled={!hasDirtyFields}
+              disabled={!isDirty}
               css={{
                 width: '100%',
               }}
