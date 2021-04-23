@@ -52,7 +52,7 @@
     "apollo-server": "2.23.0",
     "auth0-js": "9.15.0",
     "chart.js": "2.9.4",
-    "d3-scale": "3.2.4",
+    "d3-scale": "3.3.0",
     "date-fns": "2.21.1",
     "downshift": "6.1.2",
     "emotion-theming": "10.0.27",
