@@ -432,12 +432,18 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
 
           <Box display="flex" alignItems="center" ml={[2, 4]}>
             <Controller
-              as={Switch}
               aria-labelledby="opening-hours-heading"
               name="has-opening-times"
               control={control}
-              valueName="checked"
               defaultValue={hasOpeningTimes}
+              render={({ onChange, value, ...props }) => (
+                <Switch
+                  checked={value}
+                  onChange={onChange}
+                  onClick={onChange}
+                  {...props}
+                />
+              )}
             />
 
             <Spacer ml={2} />
@@ -474,12 +480,18 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                     >
                       <Box display="flex" alignItems="center">
                         <Controller
-                          as={Switch}
                           aria-labelledby={id}
                           name={`${day.toLowerCase()}-is-open`}
                           control={control}
-                          valueName="checked"
                           defaultValue={isOpen[index]}
+                          render={({ onChange, value, ...props }) => (
+                            <Switch
+                              checked={value}
+                              onChange={onChange}
+                              onClick={onChange}
+                              {...props}
+                            />
+                          )}
                         />
                       </Box>
 
@@ -544,12 +556,18 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
           <Box ml={[2, 4]}>
             <Box display="flex" alignItems="center">
               <Controller
-                as={Switch}
                 aria-labelledby="campaignUOL-heading"
                 name="campaignUOL"
                 control={control}
-                valueName="checked"
                 defaultValue={loo.campaignUOL || false}
+                render={({ onChange, value, ...props }) => (
+                  <Switch
+                    checked={value}
+                    onChange={onChange}
+                    onClick={onChange}
+                    {...props}
+                  />
+                )}
               />
 
               <Spacer ml={2} />
