@@ -365,6 +365,7 @@ const ToiletDetailsPanel = ({
         borderTopRightRadius={[3, 4]}
         as="section"
         aria-labelledby="toilet-details-heading"
+        data-testid="toilet-details"
         ref={containerRef}
       >
         <Media greaterThanOrEqual="md">
@@ -568,6 +569,7 @@ const ToiletDetailsPanel = ({
       padding={[3, 4]}
       as="section"
       aria-labelledby="toilet-details-heading"
+      data-testid="toilet-details"
       ref={containerRef}
     >
       <Grid>
@@ -604,6 +606,7 @@ const ToiletDetailsPanel = ({
             icon={<Icon icon={faList} />}
             onClick={() => setIsExpanded(true)}
             aria-expanded="false"
+            data-testid="details-button"
           >
             Details
           </Button>
