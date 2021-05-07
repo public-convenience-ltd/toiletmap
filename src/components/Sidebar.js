@@ -19,6 +19,8 @@ import LocationSearch from './LocationSearch';
 import Filters from './Filters';
 import Button from '../components/Button';
 import Drawer from '../components/Drawer';
+import { useMapState } from './MapState';
+
 
 const Arrow = styled((props) => <Icon icon={faAngleRight} {...props} />, {
   shouldForwardProp: (prop) => {
@@ -53,6 +55,7 @@ const Sidebar = ({
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   const filterToggleRef = useRef(null);
+  const [, setMapState] = useMapState();
 
   return (
     <section aria-labelledby="heading-search">
@@ -74,6 +77,29 @@ const Sidebar = ({
             onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
           >
             Filter Map
+          </Button>
+        </Box>
+
+        <Box display="flex" justifyContent="center" mt={3}>
+          <Button
+            type="button"
+            onClick={() => {
+              navigator.geolocation.getCurrentPosition(({ coords }) => {
+                const { latitude: lat, longitude: lng } = coords;
+                const location = { lat, lng };
+
+                setMapState({
+                  geolocation: location,
+                  center: location,
+
+                });
+                
+                window.plausible('Find a toilet near me');
+              });
+            }}
+            aria-label="Find a toilet near me"
+          >
+            Find a toilet near me
           </Button>
         </Box>
 
