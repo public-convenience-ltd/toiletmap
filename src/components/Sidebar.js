@@ -7,6 +7,8 @@ import {
   faFilter,
   faAngleRight,
   faPlusCircle,
+  faMapMarker,
+  faMapMarkerAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
 
@@ -20,7 +22,6 @@ import Filters from './Filters';
 import Button from '../components/Button';
 import Drawer from '../components/Drawer';
 import { useMapState } from './MapState';
-
 
 const Arrow = styled((props) => <Icon icon={faAngleRight} {...props} />, {
   shouldForwardProp: (prop) => {
@@ -91,9 +92,8 @@ const Sidebar = ({
                 setMapState({
                   geolocation: location,
                   center: location,
-
                 });
-                
+
                 window.plausible('Find a toilet near me');
               });
             }}
@@ -217,6 +217,39 @@ const Sidebar = ({
               </Box>
               <Arrow />
             </StyledNavLink>
+
+            <Box as="section" mt={4} aria-labelledby="heading-find">
+              <h2 id="heading-find">
+                <VisuallyHidden>Find a toilet near me</VisuallyHidden>
+              </h2>
+              <Box
+                as="button"
+                type="button"
+                display="flex"
+                alignItems="center"
+                onClick={() => {
+                  navigator.geolocation.getCurrentPosition(({ coords }) => {
+                    const { latitude: lat, longitude: lng } = coords;
+                    const location = { lat, lng };
+
+                    setMapState({
+                      geolocation: location,
+                      center: location,
+                    });
+
+                    window.plausible('Find a toilet near me');
+                  });
+                }}
+              >
+                <Icon icon={faMapMarkerAlt} fixedWidth size="lg" />
+                <Box mx={2}>
+                  <Text lineHeight={1}>
+                    <b>Find a toilet near me</b>
+                  </Text>
+                </Box>
+                <Arrow />
+              </Box>
+            </Box>
           </Box>
         </Box>
       </Media>
