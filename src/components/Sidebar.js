@@ -7,7 +7,6 @@ import {
   faFilter,
   faAngleRight,
   faPlusCircle,
-  faMapMarker,
   faMapMarkerAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
