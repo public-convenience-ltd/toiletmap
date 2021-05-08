@@ -119,7 +119,7 @@
     "serve": "11.3.2",
     "source-map-explorer": "2.5.2",
     "stylelint": "13.13.1",
-    "stylelint-config-standard": "21.0.0",
+    "stylelint-config-standard": "22.0.0",
     "topojson-server": "3.0.1",
     "topojson-simplify": "3.0.3",
     "uuid": "8.3.2"
