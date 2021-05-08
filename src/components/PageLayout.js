@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from 'emotion-theming';
 
@@ -7,63 +7,23 @@ import { MediaContextProvider, Media } from './Media';
 import Header from './Header';
 import Footer from './Footer';
 import ConditionalWrap from './ConditionalWrap';
-import TrackingBanner from './Tracking/TrackingBanner';
 
 import globalStyles from '../globalStyles';
 import theme from '../theme';
-import config from '../config';
 
-import { TRACKING_STORAGE_KEY } from './Tracking';
 
 const LAYOUT_DEFAULT = 'default';
 const LAYOUT_BLOG = 'blog';
 
 const PageLayout = ({ mapCenter, layoutMode, children }) => {
-  const trackingRef = useRef(null);
-
-  const [isTrackingStateChosen, setIsTrackingStateChosen] = useState(
-    config.getSetting(TRACKING_STORAGE_KEY, 'trackingStateChosen')
-  );
-
-  // stored indepedently from isTrackingStateChosen state since we should not programmatically
-  // update focus on the initial render
-  const [showTrackingBanner, setShowTrackingBanner] = useState(false);
-
-  useEffect(() => {
-    // programmatically focus the banner header when its presence is initiated by the user
-    if (showTrackingBanner) {
-      setTimeout(() => {
-        trackingRef.current.focus();
-      }, 0);
-    }
-  }, [showTrackingBanner]);
-
-  const footerFragment = (
-    <Footer>
-      <button
-        type="button"
-        aria-expanded={showTrackingBanner}
-        onClick={() => setShowTrackingBanner(true)}
-      >
-        Cookie Preferences
-      </button>
-    </Footer>
-  );
 
   return (
     <ThemeProvider theme={theme}>
       <MediaContextProvider>
         {globalStyles}
 
-        {(!isTrackingStateChosen || showTrackingBanner) && (
-          <TrackingBanner
-            ref={trackingRef}
-            onClose={() => setIsTrackingStateChosen(false)}
-          />
-        )}
-
         <Box display="flex" flexDirection="column" height="100%">
-          <Header mapCenter={mapCenter}>{footerFragment}</Header>
+          <Header mapCenter={mapCenter}><Footer /></Header>
 
           <Box position="relative" display="flex" flexGrow={1} overflowY="auto">
             <Box
@@ -81,7 +41,7 @@ const PageLayout = ({ mapCenter, layoutMode, children }) => {
           </Box>
 
           <Box mt="auto">
-            <Media greaterThan="sm">{footerFragment}</Media>
+            <Media greaterThan="sm"><Footer /></Media>
           </Box>
         </Box>
       </MediaContextProvider>
