@@ -112,7 +112,7 @@
     "msw": "0.28.2",
     "nodemon": "2.0.7",
     "prettier": "2.2.1",
-    "puppeteer": "8.0.0",
+    "puppeteer": "9.1.1",
     "react-app-rewired": "2.1.8",
     "react-scripts": "3.4.4",
     "react-styleguidist": "11.1.6",
