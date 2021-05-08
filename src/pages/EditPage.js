@@ -190,6 +190,7 @@ const EditPage = (props) => {
               css={{
                 width: '100%',
               }}
+              data-testid="update-toilet-button"
             >
               Update the toilet
             </Button>
@@ -202,6 +203,7 @@ const EditPage = (props) => {
               css={{
                 width: '100%',
               }}
+              data-testid="remove-toilet-button"
             >
               Remove the toilet
             </Button>

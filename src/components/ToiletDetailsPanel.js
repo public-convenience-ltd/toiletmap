@@ -342,6 +342,7 @@ const ToiletDetailsPanel = ({
             icon={<Icon icon={faEdit} />}
             as={Link}
             to={editUrl}
+            data-testid="edit-button"
           >
             Edit
           </Button>
@@ -525,7 +526,12 @@ const ToiletDetailsPanel = ({
               <Text fontSize={1} color="grey">
                 Hours may vary with national holidays or seasonal changes. If
                 you know these hours to be out of date please{' '}
-                <Button as={Link} to={editUrl} variant="link">
+                <Button
+                  as={Link}
+                  to={editUrl}
+                  variant="link"
+                  data-testid="edit-link"
+                >
                   edit this toilet
                 </Button>
                 .
