@@ -12,7 +12,7 @@ describe('Homepage', () => {
     );
   });
 
-  it.only('shows a marker for a loo', async () => {
+  it('shows a marker for a loo', async () => {
     await expect(page).toMatchElement('[data-testid^=toiletMarker]');
   });
 });
