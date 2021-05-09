@@ -29,7 +29,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint --max-warnings 1",
+      "eslint --max-warnings 0",
       "prettier --write"
     ],
     "*.css": "stylelint"
