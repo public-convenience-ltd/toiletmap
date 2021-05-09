@@ -1,5 +1,3 @@
-import { browser } from 'puppeteer';
-
 /* global page */
 const baseUrl = 'http://localhost:4444';
 
