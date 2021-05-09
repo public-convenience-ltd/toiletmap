@@ -56,8 +56,6 @@ const Header = ({ mapCenter, children }) => {
         <CovidNotification
           onClose={() => {
             config.setSetting('notification', 'covid', 'dismissed');
-
-            // reload window to allow tracking components to check updated local storage values
             window.location.reload();
           }}
         />

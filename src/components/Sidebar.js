@@ -7,6 +7,7 @@ import {
   faFilter,
   faAngleRight,
   faPlusCircle,
+  faMapMarkerAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
 
@@ -19,6 +20,7 @@ import LocationSearch from './LocationSearch';
 import Filters from './Filters';
 import Button from '../components/Button';
 import Drawer from '../components/Drawer';
+import { useMapState } from './MapState';
 
 const Arrow = styled((props) => <Icon icon={faAngleRight} {...props} />, {
   shouldForwardProp: (prop) => {
@@ -53,6 +55,7 @@ const Sidebar = ({
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   const filterToggleRef = useRef(null);
+  const [, setMapState] = useMapState();
 
   return (
     <section aria-labelledby="heading-search">
@@ -74,6 +77,28 @@ const Sidebar = ({
             onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
           >
             Filter Map
+          </Button>
+        </Box>
+
+        <Box display="flex" justifyContent="center" mt={3}>
+          <Button
+            type="button"
+            onClick={() => {
+              navigator.geolocation.getCurrentPosition(({ coords }) => {
+                const { latitude: lat, longitude: lng } = coords;
+                const location = { lat, lng };
+
+                setMapState({
+                  geolocation: location,
+                  center: location,
+                });
+
+                window.plausible('Find a toilet near me');
+              });
+            }}
+            aria-label="Find a toilet near me"
+          >
+            Find a toilet near me
           </Button>
         </Box>
 
@@ -191,6 +216,39 @@ const Sidebar = ({
               </Box>
               <Arrow />
             </StyledNavLink>
+
+            <Box as="section" mt={4} aria-labelledby="heading-find">
+              <h2 id="heading-find">
+                <VisuallyHidden>Find a toilet near me</VisuallyHidden>
+              </h2>
+              <Box
+                as="button"
+                type="button"
+                display="flex"
+                alignItems="center"
+                onClick={() => {
+                  navigator.geolocation.getCurrentPosition(({ coords }) => {
+                    const { latitude: lat, longitude: lng } = coords;
+                    const location = { lat, lng };
+
+                    setMapState({
+                      geolocation: location,
+                      center: location,
+                    });
+
+                    window.plausible('Find a toilet near me');
+                  });
+                }}
+              >
+                <Icon icon={faMapMarkerAlt} fixedWidth size="lg" />
+                <Box mx={2}>
+                  <Text lineHeight={1}>
+                    <b>Find a toilet near me</b>
+                  </Text>
+                </Box>
+                <Arrow />
+              </Box>
+            </Box>
           </Box>
         </Box>
       </Media>

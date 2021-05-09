@@ -20,7 +20,6 @@ import UseOurLoosPage from './pages/UseOurLoosPage';
 import CookiesPage from './pages/CookiesPage';
 import PrivacyPage from './pages/PrivacyPage';
 import NotFound from './pages/404';
-import Tracking from './components/Tracking';
 import PageLoading from './components/PageLoading';
 
 import AuthProvider from './Auth';
@@ -55,7 +54,6 @@ ReactDOM.render(
     >
       <MapStateProvider>
         <Router history={history}>
-          <Tracking />
           <Suspense fallback={<PageLoading />}>
             <Switch>
               <Route exact path="/" component={HomePage} />
