@@ -455,7 +455,10 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
 
           <Spacer mt={3} />
 
-          <div hidden={!getValues('has-opening-times')}>
+          <div
+            data-testid="opening-hours-selection"
+            hidden={!getValues('has-opening-times')}
+          >
             <ol>
               {WEEKDAYS.map((day, index) => {
                 const id = `heading-${day.toLowerCase()}`;
