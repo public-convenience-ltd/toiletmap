@@ -342,6 +342,7 @@ const ToiletDetailsPanel = ({
             icon={<Icon icon={faEdit} />}
             as={Link}
             to={editUrl}
+            data-testid="edit-button"
           >
             Edit
           </Button>
@@ -365,6 +366,7 @@ const ToiletDetailsPanel = ({
         borderTopRightRadius={[3, 4]}
         as="section"
         aria-labelledby="toilet-details-heading"
+        data-testid="toilet-details"
         ref={containerRef}
       >
         <Media greaterThanOrEqual="md">
@@ -524,7 +526,12 @@ const ToiletDetailsPanel = ({
               <Text fontSize={1} color="grey">
                 Hours may vary with national holidays or seasonal changes. If
                 you know these hours to be out of date please{' '}
-                <Button as={Link} to={editUrl} variant="link">
+                <Button
+                  as={Link}
+                  to={editUrl}
+                  variant="link"
+                  data-testid="edit-link"
+                >
                   edit this toilet
                 </Button>
                 .
@@ -568,6 +575,7 @@ const ToiletDetailsPanel = ({
       padding={[3, 4]}
       as="section"
       aria-labelledby="toilet-details-heading"
+      data-testid="toilet-details"
       ref={containerRef}
     >
       <Grid>
@@ -604,6 +612,7 @@ const ToiletDetailsPanel = ({
             icon={<Icon icon={faList} />}
             onClick={() => setIsExpanded(true)}
             aria-expanded="false"
+            data-testid="details-button"
           >
             Details
           </Button>

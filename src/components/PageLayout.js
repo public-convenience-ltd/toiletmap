@@ -11,19 +11,19 @@ import ConditionalWrap from './ConditionalWrap';
 import globalStyles from '../globalStyles';
 import theme from '../theme';
 
-
 const LAYOUT_DEFAULT = 'default';
 const LAYOUT_BLOG = 'blog';
 
 const PageLayout = ({ mapCenter, layoutMode, children }) => {
-
   return (
     <ThemeProvider theme={theme}>
       <MediaContextProvider>
         {globalStyles}
 
         <Box display="flex" flexDirection="column" height="100%">
-          <Header mapCenter={mapCenter}><Footer /></Header>
+          <Header mapCenter={mapCenter}>
+            <Footer />
+          </Header>
 
           <Box position="relative" display="flex" flexGrow={1} overflowY="auto">
             <Box
@@ -41,7 +41,9 @@ const PageLayout = ({ mapCenter, layoutMode, children }) => {
           </Box>
 
           <Box mt="auto">
-            <Media greaterThan="sm"><Footer /></Media>
+            <Media greaterThan="sm">
+              <Footer />
+            </Media>
           </Box>
         </Box>
       </MediaContextProvider>
