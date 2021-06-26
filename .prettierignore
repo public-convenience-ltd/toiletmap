@@ -1,6 +1,7 @@
 package.json
-.now
-build
+explorer-old
 yarn.lock
-/public/adobe-digital-data-stage.js
-/public/adobe-digital-data.js
+.next
+public
+src/api-client/page.tsx
+src/api-client/graphql.tsx

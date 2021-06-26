@@ -1,7 +1,7 @@
 ### Implements
 
-* [color](https://styled-system.com/api#color)
-* [typography](https://styled-system.com/api#typography)
+- [color](https://styled-system.com/api#color)
+- [typography](https://styled-system.com/api#typography)
 
 ### Usage
 

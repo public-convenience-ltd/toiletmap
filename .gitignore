@@ -12,6 +12,7 @@ node_modules
 # Local config
 .env
 .now
+.vscode
 
 build
 
@@ -21,3 +22,12 @@ build
 .idea
 
 .vercel
+
+# nextjs
+.next
+.loos
+out
+
+# Storybook build
+storybook-static
+public/storybook

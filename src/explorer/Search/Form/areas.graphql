@@ -1,5 +1,0 @@
-query getAreas {
-  items: areas {
-    label: name
-  }
-}

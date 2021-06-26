@@ -12,15 +12,15 @@ This repo uses a commit convention.
 
 The first part of this is the commit "type". The most common types are "feat" for new features, and "fix" for bugfixes. Using these commit types helps us correctly manage our version numbers and changelogs. Since our release process calculates new version numbers from our commits it is very important to get this right.
 
-* `feat` is for introducing a new feature
-* `fix` is for bug fixes
-* `docs` for documentation only changes
-* `style` is for code formatting only
-* `refactor` is for changes to code which should not be detectable by users or testers
-* `test` is for changes which only touch test files or related tooling
-* `build` is for changes which only touch our develop/release tools
+- `feat` is for introducing a new feature
+- `fix` is for bug fixes
+- `docs` for documentation only changes
+- `style` is for code formatting only
+- `refactor` is for changes to code which should not be detectable by users or testers
+- `test` is for changes which only touch test files or related tooling
+- `build` is for changes which only touch our develop/release tools
 
- Please ask questions if you're in doubt about the right prefix to use.
+Please ask questions if you're in doubt about the right prefix to use.
 
 After the type and scope there should be a colon.
 
@@ -44,11 +44,11 @@ Please take care to give good details about the changes in your PR to help revie
 
 Once you've submitted the request a few different things will happen. Right away our CI :robot: will go to work on your branch. It will:
 
-* Check out your branch
-* Merge master into it if necessary
-* Run our linters over the whole codebase
-* Run the entire test suite
-* Deploy a preview environment on now.sh
+- Check out your branch
+- Merge master into it if necessary
+- Run our linters over the whole codebase
+- Run the entire test suite
+- Deploy a preview environment on now.sh
 
 If all that goes well it'll mark your PR with a nice green tick. If a check fails it'll place a red cross and a link where you can find out what went wrong.
 

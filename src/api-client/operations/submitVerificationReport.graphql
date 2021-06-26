@@ -1,0 +1,8 @@
+mutation submitVerificationReportMutation($id: ID) {
+  submitVerificationReport(id: $id) {
+    loo {
+      id
+      verifiedAt
+    }
+  }
+}

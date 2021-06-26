@@ -1,0 +1,5 @@
+query findLooById($id: ID) {
+  loo(id: $id) {
+    ...LooFragment
+  }
+}

@@ -16,7 +16,8 @@ module.exports = {
     let skips = 0;
 
     let sevendayR = /([0-2][0-9]:[0-5][0-9])-([0-2][0-9]:[0-5][0-9])/;
-    let somedaysR = /([a-z][a-z])-([a-z][a-z]) ([0-2][0-9]:[0-5][0-9])-([0-2][0-9]:[0-5][0-9])/i;
+    let somedaysR =
+      /([a-z][a-z])-([a-z][a-z]) ([0-2][0-9]:[0-5][0-9])-([0-2][0-9]:[0-5][0-9])/i;
 
     let reps = await db.collection('newreports').find({
       'diff.opening': { $exists: true },
