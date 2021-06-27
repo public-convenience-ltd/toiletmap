@@ -36,7 +36,7 @@ const Explorer = lazy(() =>
   import(/*webpackChunkName: 'explorer'*/ '../explorer')
 );
 const AddPage = lazy(() =>
-  import(/*webpackChunkName: 'add'*/ './AddPage')
+  import(/*webpackChunkName: 'add'*/ './loos/add')
 );
 const EditPage = lazy(() =>
   import(/*webpackChunkName: 'edit'*/ './EditPage')

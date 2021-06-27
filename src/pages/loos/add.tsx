@@ -1,27 +1,27 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import queryString from 'query-string';
-import { Redirect } from 'next/link';
 import { mutate } from 'swr';
 // import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';
 
-import PageLayout from '../components/PageLayout';
-import LooMap from '../components/LooMap';
-import EntryForm from '../components/EntryForm';
-import Box from '../components/Box';
-import Spacer from '../components/Spacer';
-import Button from '../components/Button';
-import LocationSearch from '../components/LocationSearch';
+import PageLayout from '../../components/PageLayout';
+import EntryForm from '../../components/EntryForm';
+import Box from '../../components/Box';
+import Spacer from '../../components/Spacer';
+import Button from '../../components/Button';
+import LocationSearch from '../../components/LocationSearch';
 
-import { useMapState } from '../components/MapState';
-import useNearbyLoos from '../components/useNearbyLoos';
+import { useMapState } from '../../components/MapState';
+import useNearbyLoos from '../../components/useNearbyLoos';
 
-import config from '../config';
-import { useMutation } from '../graphql/fetcher';
+import config from '../../config';
+import { useMutation } from '../../graphql/fetcher';
+import dynamic from 'next/dynamic';
+import Router, { useRouter } from 'next/router';
 
-const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
-const UPDATE_LOO_MUTATION = print(loader('../graphql/updateLoo.graphql'));
+// const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
+// const UPDATE_LOO_MUTATION = print(loader('../graphql/updateLoo.graphql'));
 
 const initialFormState = {
   active: null,
@@ -30,14 +30,16 @@ const initialFormState = {
 
 const AddPage = (props) => {
   const [mapState, setMapState] = useMapState();
-
+  const LooMap = React.useMemo(() => dynamic(() => import('../../components/LooMap'), { loading: () => <p>Loading map...</p>, ssr: false, }), [])
   const { data } = useNearbyLoos({
     lat: mapState.center.lat,
     lng: mapState.center.lng,
     radius: mapState.radius,
   });
 
-  const { lat, lng } = queryString.parse(props.location.search);
+  const router = useRouter();
+
+  const { lat, lng } = router.query;
 
   // set the map position if lat and lng query params are present
   React.useEffect(() => {
@@ -51,10 +53,10 @@ const AddPage = (props) => {
     }
   }, [lat, lng, setMapState]);
 
-  const [
-    updateLoo,
-    { data: saveData, loading: saveLoading, error: saveError },
-  ] = useMutation(UPDATE_LOO_MUTATION);
+  // const [
+  //   updateLoo,
+  //   { data: saveData, loading: saveLoading, error: saveError },
+  // ] = useMutation(UPDATE_LOO_MUTATION);
 
   const save = async (formData) => {
     // add the active state for which there's no user-facing form control as yet
@@ -78,11 +80,11 @@ const AddPage = (props) => {
   };
 
   // redirect to new toilet entry page on successful addition
-  if (saveData) {
-    return (
-      <Redirect to={`/loos/${saveData.submitReport.loo.id}?message=created`} />
-    );
-  }
+  // if (saveData) {
+  //   return (
+  //     <Redirect to={`/loos/${saveData.submitReport.loo.id}?message=created`} />
+  //   );
+  // }
 
   return (
     <PageLayout>
@@ -119,8 +121,8 @@ const AddPage = (props) => {
         title="Add This Toilet"
         loo={initialFormState}
         center={mapState.center}
-        saveLoading={saveLoading}
-        saveError={saveError}
+        // saveLoading={saveLoading}
+        // saveError={saveError}
         onSubmit={save}
       >
         <Box display="flex" flexDirection="column" alignItems="center">
