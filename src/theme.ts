@@ -1,5 +1,6 @@
+const breakpoints = ['768px', '1024px', '1192px'];
 const theme = {
-  breakpoints: ['768px', '1024px', '1192px'],
+  breakpoints: breakpoints,
   space: [0, 4, 8, 16, 32, 64],
   radii: [0, 4, 8, 16, 32, 64],
   fontSizes: [10, 12, 16, 18, 24, 32, 40],
@@ -13,10 +14,10 @@ const theme = {
     grey: '#807f7f',
     aqua: '#93f9db',
   },
+  mediaQueries: breakpoints.map(
+    (n) => `@media screen and (min-width: ${n})`
+  )
 };
 
-theme.mediaQueries = theme.breakpoints.map(
-  (n) => `@media screen and (min-width: ${n})`
-);
 
 export default theme;
