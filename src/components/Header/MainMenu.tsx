@@ -105,9 +105,9 @@ const MainMenu = ({
         </Box>
 
         {children && (
-          <Box as={Media} lessThan="md">
+          <Media lessThan="md">
             <Text fontWeight="normal">{children}</Text>
-          </Box>
+          </Media>
         )}
       </Box>
     </Text>

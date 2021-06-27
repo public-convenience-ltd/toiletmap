@@ -14,7 +14,6 @@ import {
   BorderProps,
   LayoutProps,
 } from 'styled-system';
-import { createPropTypes } from '@styled-system/prop-types';
 
 interface IBoxProps extends ColorProps, SpaceProps, FlexboxProps, PositionProps, BorderProps, LayoutProps {
   children: React.ReactNode;

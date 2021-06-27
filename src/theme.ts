@@ -19,5 +19,27 @@ const theme = {
   )
 };
 
+import "@emotion/react";
+
+declare module "@emotion/react" {
+  export interface Theme {
+    breakpoints: string[];
+    space: number[];
+    radii: number[];
+    fontSizes: number[];
+    colors: {
+      primary: string;
+      secondary: string;
+      tertiary: string;
+      ice: string;
+      white: string;
+      lightGrey: string;
+      grey: string;
+      aqua: string;
+    };
+    mediaQueries: string[];
+  }
+}
+
 
 export default theme;

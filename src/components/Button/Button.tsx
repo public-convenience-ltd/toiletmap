@@ -1,13 +1,14 @@
-import React from 'react';
-import styled from '@emotion/styled';
-import { variant } from 'styled-system';
+import React, { AnchorHTMLAttributes, ComponentPropsWithoutRef, ElementType, LegacyRef } from 'react';
+import styled, { StyledComponent } from '@emotion/styled';
+import { buttonStyle, ButtonStyleProps, variant } from 'styled-system';
 
 import Box from '../Box';
 import Text from '../Text';
 
 const BUTTON_HEIGHT = 34;
 
-const StyledButton = styled.button(
+
+const StyledButton = styled.button<IButtonProps>(
   (props) =>
     `
     display: inline-flex;
@@ -68,14 +69,22 @@ const StyledButton = styled.button(
         minHeight: 0,
       },
     },
-  })
+  }),
+  buttonStyle
 );
 
 const ButtonIcon = ({ icon }) => {
   return <Box mr={2}>{icon}</Box>;
 };
 
-const Button = React.forwardRef(({ children, icon, ...props }, ref) => (
+
+interface IButtonProps extends ButtonStyleProps {
+  icon?: JSX.Element;
+}
+
+type ButtonProps = IButtonProps & ComponentPropsWithoutRef<typeof StyledButton>;
+
+const Button = React.forwardRef<HTMLButtonElement & HTMLAnchorElement, ButtonProps>(({ children, icon, ...props }, ref) => (
   <StyledButton ref={ref} type="button" {...props}>
     {Boolean(icon) && <ButtonIcon icon={icon} />}
 
