@@ -4,7 +4,16 @@ import auth0 from 'auth0-js';
 const CLIENT_ID = 'sUts4RKy04JcyZ2IVFgMAC0rhPARCQYg';
 const permissionsKey = 'https://toiletmap.org.uk/permissions';
 
-export const AuthContext = React.createContext();
+export const AuthContext = React.createContext<{
+  isAuthenticated: () => boolean,
+  getAccessToken: () => string | null,
+  redirectOnNextLogin: (location: any) => any,
+  redirectOnLogin: () => void,
+  login: () => void,
+  logout: () => void,
+  checkPermission: (perm: string) => boolean,
+  handleAuthentication: () => void,
+}>(null);
 export const useAuth = () => React.useContext(AuthContext);
 
 export const isAuthenticated = () => {
