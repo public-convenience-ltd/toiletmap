@@ -10,8 +10,8 @@ function introspectionProvider(query) {
   }).then(response => response.json());
 }
 
-export default () => (
-  <Voyager introspection={introspectionProvider}
-    workerURI={process.env.PUBLIC_URL + '/voyager.worker.js'}
-  />
-);
+const Index = () => <Voyager introspection={introspectionProvider}
+  workerURI={process.env.PUBLIC_URL + '/voyager.worker.js'}
+/>;
+
+export default Index;

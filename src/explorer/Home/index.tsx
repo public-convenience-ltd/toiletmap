@@ -22,7 +22,7 @@ const SubTypography = withStyles({
   },
 })(Typography);
 
-export default () => {
+const Index = () => {
   const match = useRouteMatch();
   return (
     <div className={styles.main}>
@@ -125,3 +125,5 @@ export default () => {
     </div>
   );
 };
+
+export default Index;
