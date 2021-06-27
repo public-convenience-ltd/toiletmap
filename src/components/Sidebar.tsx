@@ -208,13 +208,14 @@ const Sidebar = ({
             <StyledNavLink
               href={`/loos/add?lat=${mapCenter.lat}&lng=${mapCenter.lng}`}
             >
-              <Icon icon={faPlusCircle} fixedWidth size="lg" />
-              <Box mx={2}>
-                <Text lineHeight={1}>
-                  <b>Add a Toilet</b>
-                </Text>
-              </Box>
-              <Arrow />
+              <>
+                <Icon icon={faPlusCircle} fixedWidth size="lg" />
+                <Box mx={2}>
+                  <Text lineHeight={1}>
+                    <b>Add a Toilet</b>
+                  </Text>
+                </Box>
+                <Arrow /></>
             </StyledNavLink>
 
             <Box as="section" mt={4} aria-labelledby="heading-find">

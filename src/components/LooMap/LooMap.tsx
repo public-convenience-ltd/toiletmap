@@ -34,6 +34,12 @@ const LooMap = ({
   showCrosshair,
   withAccessibilityOverlays,
 }) => {
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+
   const mapRef = React.useRef();
   const [intersectingToilets, setIntersectingToilets] = React.useState([]);
   const [
@@ -43,24 +49,27 @@ const LooMap = ({
   const [announcement, setAnnouncement] = React.useState(null);
 
   useEffect(() => {
-    const { leafletElement } = mapRef.current;
-    const map = leafletElement.getContainer();
-
-    // when focused on the map container, Leaflet allows the user to pan the map by using the arrow keys
-    // without the application role screen reader software overrides these controls
-    //
-    // this also avoids the entire main region being announced
-    map.setAttribute('role', 'application');
-    map.setAttribute('aria-label', 'Map');
-
-    // ensure all map tiles are loaded on Safari
-    // https://github.com/neontribe/gbptm/issues/776
-    setTimeout(() => {
-      leafletElement.invalidateSize({
-        pan: false,
-      });
-    }, 400);
-  }, []);
+    if(mounted) {
+      const { leafletElement } = mapRef.current;
+      const map = leafletElement.getContainer();
+  
+      // when focused on the map container, Leaflet allows the user to pan the map by using the arrow keys
+      // without the application role screen reader software overrides these controls
+      //
+      // this also avoids the entire main region being announced
+      map.setAttribute('role', 'application');
+      map.setAttribute('aria-label', 'Map');
+  
+      // ensure all map tiles are loaded on Safari
+      // https://github.com/neontribe/gbptm/issues/776
+      setTimeout(() => {
+        leafletElement.invalidateSize({
+          pan: false,
+        });
+      }, 400);
+    }
+   
+  }, [mounted]);
 
   const handleViewportChanged = () => {
     const map = mapRef.current.leafletElement;
@@ -120,13 +129,13 @@ const LooMap = ({
 
       setAnnouncement(`${toilet.name || 'Unnamed toilet'} selected`);
 
-      push(`/loos/${toilet.id}`);
+      Router.push(`/loos/${toilet.id}`);
     },
-    [intersectingToilets, push]
+    [intersectingToilets, Router.push]
   );
 
   React.useEffect(() => {
-    if (withAccessibilityOverlays && mapRef.current) {
+    if (mounted && withAccessibilityOverlays && mapRef.current) {
       const map = mapRef.current.leafletElement.getContainer();
 
       const callback = function (mutationsList) {
@@ -151,10 +160,11 @@ const LooMap = ({
         observer.disconnect();
       };
     }
-  }, [withAccessibilityOverlays, mapRef, renderAccessibilityOverlays]);
+  }, [withAccessibilityOverlays, mapRef, renderAccessibilityOverlays, mounted]);
 
   return (
-    <Box
+    
+    mounted && <Box
       position="relative"
       height="100%"
       width="100%"

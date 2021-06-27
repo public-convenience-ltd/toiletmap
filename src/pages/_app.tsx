@@ -11,7 +11,7 @@ import { SWRConfig } from 'swr';
 
 import ProtectedRoute from '../components/ProtectedRoute';
 import AuthCallback from './AuthCallback';
-import HomePage from './HomePage';
+import HomePage from '.';
 import AboutPage from './about';
 import ContactPage from './ContactPage';
 import ContributePage from './ContributePage';

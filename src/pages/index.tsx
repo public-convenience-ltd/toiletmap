@@ -16,12 +16,18 @@ import VisuallyHidden from '../components/VisuallyHidden';
 import { useMapState } from '../components/MapState';
 
 import config, { FILTERS_KEY } from '../config';
+import { useRouter } from 'next/router';
 
 // const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
 const HomePage = ({ initialPosition, ...props }) => {
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const [mapState, setMapState] = useMapState();
   const LooMap = React.useMemo(() => dynamic(() => import('../components/LooMap'), { loading: () => <p>Loading map...</p>, ssr: false, }), [])
   const ToiletDetailsPanel = React.useMemo(() => dynamic(() => import('../components/ToiletDetailsPanel'), { loading: () => <p>Loading map...</p>, ssr: false, }), [])
@@ -44,8 +50,9 @@ const HomePage = ({ initialPosition, ...props }) => {
     lng: mapState.center.lng,
     radius: Math.ceil(mapState.radius),
   });
-
-  const selectedLooId = useParams().id;
+  const router = useRouter();
+  
+  const {id: selectedLooId} = router.query;
 
   const { isValidating: loading, data } = useSWR(
     selectedLooId
@@ -53,7 +60,8 @@ const HomePage = ({ initialPosition, ...props }) => {
       : null
   );
 
-  const { message } = queryString.parse(props.location.search);
+  // const { message } = queryString.parse(props.location.search);
+  const message = "TODO"
 
   // get the filter objects from config for the filters applied by the user
   const applied = config.filters.filter((filter) => filters[filter.id]);
@@ -71,7 +79,7 @@ const HomePage = ({ initialPosition, ...props }) => {
     })
   );
 
-  const isLooPage = useRouteMatch('/loos/:id');
+  const isLooPage = router.pathname === '/loos';
 
   const [shouldCenter, setShouldCenter] = React.useState(isLooPage);
 
@@ -103,7 +111,7 @@ const HomePage = ({ initialPosition, ...props }) => {
   );
 
   return (
-    <PageLayout mapCenter={mapState.center}>
+    mounted && <PageLayout mapCenter={mapState.center}>
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
@@ -112,7 +120,7 @@ const HomePage = ({ initialPosition, ...props }) => {
         <h1>{pageTitle}</h1>
       </VisuallyHidden>
 
-      <Box height="100%" display="flex" position="relative">
+      <Box height="100vh" display="flex" position="relative">
         <Box
           position="absolute"
           zIndex={1}
