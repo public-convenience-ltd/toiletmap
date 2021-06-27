@@ -16,7 +16,7 @@ import Marker from './Marker';
 import VisuallyHidden from '../VisuallyHidden';
 import { Media } from '../Media';
 
-import crosshair from '../../images/crosshair.svg';
+import crosshair from '../../../public/crosshair.svg';
 
 import 'leaflet/dist/leaflet.css';
 

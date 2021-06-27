@@ -1,16 +1,16 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-
+import Image from 'next/image'
 import PageLayout from '../components/PageLayout';
 import Container from '../components/Container';
 import Button from '../components/Button';
 import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 import Box from '../components/Box';
-
+import {css} from '@emotion/react'
 import config from '../config';
 
-import uolLogo from '../images/domestos-use-our-loos-full.png';
+import uolLogo from '../../public/domestos-use-our-loos-full.png';
 
 const UseOurLoosPage = (props) => {
   return (
@@ -51,9 +51,9 @@ const UseOurLoosPage = (props) => {
           flexDirection="column"
           alignItems="center"
         >
-          <Box
-            as="img"
-            maxWidth={266}
+          <Image
+            height={266}
+            width={266}
             src={uolLogo}
             alt="Use Our Loos is powered by Domestos"
           />

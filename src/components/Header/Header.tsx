@@ -46,13 +46,17 @@ const CovidNotification = ({ onClose }) => (
 );
 
 const Header = ({ mapCenter, children }) => {
+  const [mounted, setMounted] = useState(false);
+  React.useEffect(() => {
+      setMounted(true)
+  }, [])
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const showCovidNotification =
     config.getSetting('notification', 'covid') !== 'dismissed';
 
   return (
-    <Box as="header">
+    mounted && <Box as="header">
       {showCovidNotification && (
         <CovidNotification
           onClose={() => {
@@ -81,7 +85,7 @@ const Header = ({ mapCenter, children }) => {
             <VisuallyHidden>Main menu</VisuallyHidden>
           </h2>
 
-          <Box as={Media} at="sm" display="flex" justifyContent="flex-end">
+          <Media at="sm" css={{display:"flex", justifyContent:"flex-end"}}>
             <button
               type="button"
               aria-expanded={isMenuVisible}
@@ -98,7 +102,7 @@ const Header = ({ mapCenter, children }) => {
                 children={children}
               />
             </Drawer>
-          </Box>
+          </Media>
 
           <Media greaterThan="sm">
             <MainMenu mapCenter={mapCenter} children={children} />

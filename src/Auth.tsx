@@ -23,7 +23,7 @@ export const isAuthenticated = () => {
   return new Date().getTime() < expiresAt;
 };
 
-export const getAccessToken = () => {
+const getAccessToken = () => {
   return localStorage.getItem('access_token');
 };
 

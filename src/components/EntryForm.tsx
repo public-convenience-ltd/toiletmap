@@ -17,8 +17,8 @@ import VisuallyHidden from '../components/VisuallyHidden';
 import Switch from '../components/Switch';
 import { WEEKDAYS, isClosed } from '../openingTimes';
 
-import crosshair from '../images/crosshair-small.svg';
-import uolLogo from '../images/domestos_use_our_loos_logo.png';
+import crosshair from '../../public/crosshair-small.svg';
+import uolLogo from '../../public/domestos_use_our_loos_logo.png';
 
 const openingTimesFields = WEEKDAYS.flatMap((day) => {
   return [

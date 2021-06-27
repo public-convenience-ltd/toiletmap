@@ -113,9 +113,5 @@ const MainMenu = ({
     </Text>
   );
 };
-MainMenu.propTypes = {
-  // mobile footer
-  children: PropTypes.any,
-};
 
 export default MainMenu;

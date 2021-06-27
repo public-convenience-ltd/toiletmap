@@ -1,17 +1,17 @@
 import React from 'react';
 
+import Image from 'next/image'
+import logo from './logo.svg';
 import Box from '../Box';
 
-import logo from './logo.svg';
-
 const Logo = (props) => (
-  <Box
-    as="img"
-    src={logo}
-    alt="The Great British Toilet Map"
-    width={154}
-    {...props}
-  />
+  <Box width="150px">
+    <Image
+      src={logo}
+      alt="The Great British Toilet Map"
+      layout="responsive"
+      {...props}
+    /></Box>
 );
 
 export default Logo;

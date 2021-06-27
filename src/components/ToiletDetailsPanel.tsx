@@ -41,7 +41,7 @@ import { /* getIsOpen, */ WEEKDAYS, isClosed } from '../openingTimes';
 import { useMapState } from './MapState';
 import { useMutation } from '../graphql/fetcher';
 
-import uolLogo from '../images/uol-logo.svg';
+import uolLogo from '../../public/uol-logo.svg';
 
 const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
 
