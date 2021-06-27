@@ -14,7 +14,13 @@ import theme from '../theme';
 const LAYOUT_DEFAULT = 'default';
 const LAYOUT_BLOG = 'blog';
 
-const PageLayout = ({ mapCenter, layoutMode, children }) => {
+interface IPageLayout {
+  mapCenter?: {lat: number; lng: number;}
+  layoutMode: 'default' | 'blog';
+  children: React.ReactElement;
+}
+
+const PageLayout = ({ mapCenter, layoutMode, children }: IPageLayout) => {
   return (
     <ThemeProvider theme={theme}>
       <MediaContextProvider>

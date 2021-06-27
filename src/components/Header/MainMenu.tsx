@@ -16,12 +16,18 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
+interface IMainMenu {
+  mapCenter?: { lat: number; lng: number; }
+  onMenuItemClick?: () => void;
+  children: React.ReactElement;
+}
+
 // Todo: Contact link
 const MainMenu = ({
   mapCenter,
   onMenuItemClick,
   children,
-}) => {
+}: IMainMenu) => {
   const { isAuthenticated, logout } = useAuth();
   const router = useRouter();
 

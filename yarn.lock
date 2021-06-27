@@ -1394,6 +1394,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/geojson@*":
+  version "7946.0.7"
+  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.7.tgz#c8fa532b60a0042219cdf173ca21a975ef0666ad"
+  integrity sha512-wE2v81i4C4Ol09RtsWFAqg3BUitWbHSpSlIo+bNdsCJijO9sjme+zm+73ZMCa/qMC8UEERxzGbvmr1cffo2SiQ==
+
 "@types/glob@^7.1.1":
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.1.2.tgz#06ca26521353a545d94a0adc74f38a59d232c987"
@@ -1497,6 +1502,13 @@
     "@types/koa-compose" "*"
     "@types/node" "*"
 
+"@types/leaflet@*":
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.7.3.tgz#0294806f44081519a8c69593f7d0659d6aefda89"
+  integrity sha512-uIAUQbzow2NxFsKmgOnogUA5A6oQ4ZCJoAet4hhe1RwUw54Tydn1tkpHKMZKbqloTMYAZ0CtCF3MoITAwMJWHw==
+  dependencies:
+    "@types/geojson" "*"
+
 "@types/long@^4.0.0":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@types/long/-/long-4.0.1.tgz#459c65fa1867dafe6a8f322c4c51695663cc55e9"
@@ -1594,6 +1606,14 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-leaflet@2.8.1":
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/@types/react-leaflet/-/react-leaflet-2.8.1.tgz#acda592cf1b7dfe20ac81071c21c1e5521fe71a4"
+  integrity sha512-BbFyH9R/MecfXaz1Yt29oGBG8AxIKILgAniO61/kv9/sRe5/qj9yDxf3PW7M+nDl5Wn3V7Mp9inKF0LflV+KkQ==
+  dependencies:
+    "@types/leaflet" "*"
+    "@types/react" "*"
+
 "@types/react-transition-group@^2.0.8":
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-2.9.2.tgz#c48cf2a11977c8b4ff539a1c91d259eaa627028d"
@@ -1654,6 +1674,13 @@
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.0.tgz#7036640b4e21cc2f259ae826ce843d277dad8cff"
   integrity sha512-RJJrrySY7A8havqpGObOB4W92QXKJo63/jFLLgpvOtsGUqbQZ9Sbgl35KMm1DjC6j7AvmmU2bIno+3IyEaemaw==
+
+"@types/styled-system@5.1.11":
+  version "5.1.11"
+  resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-5.1.11.tgz#158849f3b14cdf8bf27a10f0cf87a2c3a89eb680"
+  integrity sha512-R+JxEZYa5T0HD2urViR/mdklVaGhwbNOtDoWWGQ1+z1CGs/gF1UAKCaS//YwsUwterEKpyaKxgaXyFNKF04GCA==
+  dependencies:
+    csstype "^3.0.2"
 
 "@types/tapable@*":
   version "1.0.5"
