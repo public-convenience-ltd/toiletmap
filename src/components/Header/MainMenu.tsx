@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import NavLink from 'next/link';
 import {useRouter} from 'next/router';
 import styled from '@emotion/styled';
-
 import Box from '../Box';
 import Text from '../Text';
 import { Media } from '../Media';
@@ -42,8 +41,7 @@ const MainMenu = ({
       fontWeight="bold"
       textAlign={['center', 'left']}
       css={{
-        // fill container on mobile
-        height: '100%',
+        height: '100%'
       }}
     >
       <Box

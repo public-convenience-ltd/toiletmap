@@ -42,7 +42,7 @@ const AccessibilityIntersection = ({
     };
   }, [onSelection]);
 
-  return <Rectangle ref={rectangleRef} {...props} />;
+  return <Rectangle bounds={null} ref={rectangleRef} {...props}></Rectangle>;
 };
 
 AccessibilityIntersection.propTypes = {

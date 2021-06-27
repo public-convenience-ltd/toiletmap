@@ -37,10 +37,10 @@
   },
   "dependencies": {
     "@artsy/fresnel": "1.5.0",
-    "@emotion/babel-preset-css-prop": "10.2.1",
+    "@emotion/babel-plugin": "11.3.0",
     "@emotion/is-prop-valid": "0.8.8",
     "@emotion/react": "11.4.0",
-    "@emotion/styled": "10.0.27",
+    "@emotion/styled": "11.3.0",
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/free-brands-svg-icons": "5.15.3",
     "@fortawesome/free-regular-svg-icons": "5.15.3",

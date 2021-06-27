@@ -80,7 +80,7 @@ const AuthProvider = ({ children }) => {
           JSON.stringify(authResult.idTokenPayload[permissionsKey])
         );
 
-        resolve();
+        resolve(true);
       });
     });
 
