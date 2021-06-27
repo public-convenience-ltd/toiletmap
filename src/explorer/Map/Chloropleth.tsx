@@ -6,7 +6,7 @@ import {
   Geographies,
   Geography,
 } from 'react-simple-maps';
-import { loader } from 'graphql.macro';
+// import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';
 import cloneDeep from 'lodash/cloneDeep';
 import { scaleQuantile } from 'd3-scale';

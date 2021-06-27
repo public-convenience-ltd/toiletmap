@@ -1,10 +1,9 @@
 import React from 'react';
 import useSWR from 'swr';
-import { useParams } from 'next/link';
-import { loader } from 'graphql.macro';
+// import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';
 
-import Map from './Map';
+import dynamic from 'next/dynamic';
 import PropertyTable from './PropertyTable';
 import ExpandableReport from './ExpandableReport';
 
@@ -23,7 +22,9 @@ const LOO_DETAILS = print(loader('./looDetails.graphql'));
 function Loo(props) {
   const auth = useAuth();
   let { id } = useParams();
-
+  const Map = React.useMemo(
+    () => dynamic(() => import('./Map'), { loading: () => <p>Loading map...</p>, ssr: false, }), []
+  ) 
   const { isValidating: loading, data, error } = useSWR([
     LOO_DETAILS,
     JSON.stringify({ id }),

@@ -44,7 +44,7 @@ function SidebarItem(props) {
   return (
     <CentredListItem button>
       <Link
-        to={`${match.path}/${props.pathName}`}
+        href={`${match.path}/${props.pathName}`}
         style={{ textDecoration: 'none' }}
       >
         <div className={styles.centredLink}>

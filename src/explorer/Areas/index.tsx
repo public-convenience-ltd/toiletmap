@@ -1,8 +1,8 @@
 import React from 'react';
 import useSWR from 'swr';
-import { Link } from 'next/link';
+import Link from 'next/link';
 import get from 'lodash/get';
-import { loader } from 'graphql.macro';
+// import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';
 
 import Table from '@material-ui/core/Table';
@@ -76,7 +76,7 @@ function Areas() {
                 ))}
 
                 <TableCell key={`link_${area.meta.name}`}>
-                  <Link to={`./search?areaName=${area.meta.name}`}>
+                  <Link href={`./search?areaName=${area.meta.name}`}>
                     view loos
                   </Link>
                 </TableCell>

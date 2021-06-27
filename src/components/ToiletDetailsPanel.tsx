@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { faClock, faEdit } from '@fortawesome/free-regular-svg-icons';
 import {
   faDirections,
@@ -23,11 +23,11 @@ import lightFormat from 'date-fns/lightFormat';
 import getISODay from 'date-fns/getISODay';
 import parseISO from 'date-fns/parseISO';
 import add from 'date-fns/add';
-import { Link } from 'next/link';
+import Link from 'next/link';
 import useComponentSize from '@rehooks/component-size';
 import L from 'leaflet';
 import { mutate } from 'swr';
-import { loader } from 'graphql.macro';
+// // import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';
 
 import Box from './Box';
@@ -143,7 +143,6 @@ const ToiletDetailsPanel = ({
   children,
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(startExpanded);
-
   const [
     submitVerificationMutation,
     { loading: submitVerificationLoading },
@@ -341,7 +340,7 @@ const ToiletDetailsPanel = ({
             variant="secondary"
             icon={<Icon icon={faEdit} />}
             as={Link}
-            to={editUrl}
+            href={editUrl}
             data-testid="edit-button"
           >
             Edit
@@ -350,7 +349,7 @@ const ToiletDetailsPanel = ({
       </Box>
       <Spacer mb={[0, 2]} />
       Last {verifiedOrUpdated}:{' '}
-      <Link to={`/explorer/loos/${data.id}`}>
+      <Link href={`/explorer/loos/${data.id}`}>
         {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
       </Link>
     </Box>
@@ -528,7 +527,7 @@ const ToiletDetailsPanel = ({
                 you know these hours to be out of date please{' '}
                 <Button
                   as={Link}
-                  to={editUrl}
+                  href={editUrl}
                   variant="link"
                   data-testid="edit-link"
                 >

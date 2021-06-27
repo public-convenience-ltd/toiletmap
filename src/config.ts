@@ -1,3 +1,4 @@
+import Router from 'next/router'
 export const FILTERS_KEY = 'filters';
 
 const filters = [
@@ -41,7 +42,7 @@ export default {
   },
   filters,
   messages,
-  analyticsId: window.location.hostname.match(/toiletmap\.org\.uk/)
+  analyticsId: (typeof window !== 'undefined') && window.location.hostname.match(/toiletmap\.org\.uk/)
     ? 'UA-52513593-1'
     : null,
   initialZoom: 16,
@@ -54,7 +55,7 @@ export default {
     lng: -0.127758,
   },
   getSettings(namespace) {
-    return JSON.parse(localStorage.getItem(namespace) || '{}');
+    return JSON.parse((typeof localStorage !== 'undefined') && localStorage.getItem(namespace) || '{}');
   },
   getSetting(namespace, key, defaultVal = '') {
     const val = this.getSettings(namespace)[key];

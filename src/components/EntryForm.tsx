@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { useForm, Controller } from 'react-hook-form';
-import { Link } from 'next/link';
+import Link from 'next/link';
 import isFunction from 'lodash/isFunction';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
@@ -600,7 +600,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                 and bars.&nbsp;
                 <Button
                   as={Link}
-                  to="/use-our-loos"
+                  href="/use-our-loos"
                   variant="link"
                   aria-label="Read more about the Use Our Loos Campaign"
                   target="_blank"

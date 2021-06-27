@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link, Redirect } from 'next/link';
+import Link from 'next/link';
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
 import uniqBy from 'lodash/uniqBy';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import useSWR, { mutate } from 'swr';
-import { loader } from 'graphql.macro';
+// import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';
 
 import PageLayout from '../components/PageLayout';

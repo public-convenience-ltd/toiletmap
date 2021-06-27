@@ -9,7 +9,7 @@ import {
   faPlusCircle,
   faMapMarkerAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import { NavLink } from 'next/link';
+import Link from 'next/link';
 
 import { Media } from './Media';
 import VisuallyHidden from './VisuallyHidden';
@@ -40,7 +40,7 @@ Arrow.propTypes = {
   isExpanded: PropTypes.bool,
 };
 
-const StyledNavLink = styled(NavLink)`
+const StyledNavLink = styled(Link)`
   display: flex;
   align-items: center;
 `;
@@ -93,7 +93,7 @@ const Sidebar = ({
                   center: location,
                 });
 
-                window.plausible('Find a toilet near me');
+                (typeof window !== 'undefined') && window.plausible('Find a toilet near me');
               });
             }}
             aria-label="Find a toilet near me"
@@ -206,7 +206,7 @@ const Sidebar = ({
               <VisuallyHidden>Add a toilet</VisuallyHidden>
             </h2>
             <StyledNavLink
-              to={`/loos/add?lat=${mapCenter.lat}&lng=${mapCenter.lng}`}
+              href={`/loos/add?lat=${mapCenter.lat}&lng=${mapCenter.lng}`}
             >
               <Icon icon={faPlusCircle} fixedWidth size="lg" />
               <Box mx={2}>
@@ -236,7 +236,7 @@ const Sidebar = ({
                       center: location,
                     });
 
-                    window.plausible('Find a toilet near me');
+                    (typeof window !== 'undefined') && window.plausible('Find a toilet near me');
                   });
                 }}
               >

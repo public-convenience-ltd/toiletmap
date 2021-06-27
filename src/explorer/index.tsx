@@ -1,6 +1,6 @@
 import React from 'react';
-import { Switch, Route, useRouteMatch } from 'next/link';
-
+import Link from 'next/link';
+import Router from 'next/router';
 import Layout from './Layout';
 import Home from './Home';
 import HeadlineStats from './HeadlineStats';
@@ -11,33 +11,32 @@ import Voyager from './Voyager';
 import Map from './Map';
 
 export default function Explorer() {
-  let match = useRouteMatch();
+
 
   return (
     <Layout>
-      <Switch>
-        <Route exact path={`${match.path}/`}>
-          <Home />
-        </Route>
-        <Route path={`${match.path}/loos/:id`}>
-          <Loo />
-        </Route>
-        <Route path={`${match.path}/statistics`}>
-          <HeadlineStats />
-        </Route>
-        <Route path={`${match.path}/areas`}>
-          <Areas />
-        </Route>
-        <Route path={`${match.path}/search`}>
-          <Search />
-        </Route>
-        <Route path={`${match.path}/voyager`}>
-          <Voyager />
-        </Route>
-        <Route exact path={`${match.path}/map`}>
-          <Map />
-        </Route>
-      </Switch>
+      <Link exact href={`${Router.pathname}/`}>
+        <Home />
+      </Link>
+      <Link href={`${Router.pathname}/loos/:id`}>
+        <Loo />
+      </Link>
+      <Link href={`${Router.pathname}/statistics`}>
+        <HeadlineStats />
+      </Link>
+      <Link href={`${Router.pathname}/areas`}>
+        <Areas />
+      </Link>
+      <Link href={`${Router.pathname}/search`}>
+        <Search />
+      </Link>
+      <Link href={`${Router.pathname}/voyager`}>
+        <Voyager />
+      </Link>
+      <Link exact href={`${Router.pathname}/map`}>
+        <Map />
+      </Link>
+
     </Layout>
   );
 }

@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useParams, useRouteMatch } from 'next/link';
+import Link from 'next/link';
 import queryString from 'query-string';
 import { Helmet } from 'react-helmet';
 import useSWR from 'swr';
-import { loader } from 'graphql.macro';
-import { print } from 'graphql/language/printer';
-
+// // import { loader } from 'graphql.macro';
+// import { print } from 'graphql/language/printer';
+import dynamic from 'next/dynamic';
 import PageLayout from '../components/PageLayout';
-import LooMap from '../components/LooMap';
 import useNearbyLoos from '../components/useNearbyLoos';
 import Box from '../components/Box';
-import ToiletDetailsPanel from '../components/ToiletDetailsPanel';
 import Sidebar from '../components/Sidebar';
 import Notification from '../components/Notification';
 import VisuallyHidden from '../components/VisuallyHidden';
@@ -19,13 +17,14 @@ import { useMapState } from '../components/MapState';
 
 import config, { FILTERS_KEY } from '../config';
 
-const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
+// const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
 const HomePage = ({ initialPosition, ...props }) => {
   const [mapState, setMapState] = useMapState();
-
+  const LooMap = React.useMemo(() => dynamic(() => import('../components/LooMap'), { loading: () => <p>Loading map...</p>, ssr: false, }), [])
+  const ToiletDetailsPanel = React.useMemo(() => dynamic(() => import('../components/ToiletDetailsPanel'), { loading: () => <p>Loading map...</p>, ssr: false, }), [])
   let initialState = config.getSettings(FILTERS_KEY);
 
   // default any unsaved filters as 'false'
@@ -122,9 +121,8 @@ const HomePage = ({ initialPosition, ...props }) => {
           right={0}
           m={3}
           maxWidth={326}
-          maxHeight={`calc(100% - ${
-            toiletPanelDimensions.height || 0
-          }px - ${SIDEBAR_BOTTOM_MARGIN}px)`}
+          maxHeight={`calc(100% - ${toiletPanelDimensions.height || 0
+            }px - ${SIDEBAR_BOTTOM_MARGIN}px)`}
           overflowY="auto"
           // center on small viewports
           mx={['auto', 0]}

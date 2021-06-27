@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'next/link';
+import Link from 'next/link';
 import styled from '@emotion/styled';
 
 import Box from './Box';
@@ -20,7 +20,7 @@ const UseOurLoosLogo = styled((props) => (
   height: 2rem;
 `;
 
-const Footer = ({ children }) => (
+const Footer = ({ children = null }) => (
   <Box
     as="footer"
     display="flex"
@@ -34,9 +34,9 @@ const Footer = ({ children }) => (
     height={['auto', 60]}
   >
     <Link
-      to="/use-our-loos"
+      href="/use-our-loos"
       title="Domestos: Use Our Loos Campaign"
-      scroll={(el) => el.scrollIntoView(true)}
+      scroll={true}
     >
       <Box display="flex" flexDirection={['column', 'row']} alignItems="center">
         <Text fontSize={14}>
@@ -60,7 +60,7 @@ const Footer = ({ children }) => (
           ))}
 
           <Box as="li" ml={[0, 4]}>
-            <Link to="/privacy">Privacy Policy</Link>
+            <Link href="/privacy">Privacy Policy</Link>
           </Box>
         </Box>
       </Text>

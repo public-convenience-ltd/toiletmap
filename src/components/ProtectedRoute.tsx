@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'next/link';
+import Link from 'next/link';
 
 import { useAuth } from '../Auth';
 
@@ -7,7 +7,7 @@ const ProtectedRoute = ({ component: Component, injectProps, ...rest }) => {
   const auth = useAuth();
 
   return (
-    <Route
+    <Link
       {...rest}
       render={(props) => {
         if (auth.isAuthenticated()) {

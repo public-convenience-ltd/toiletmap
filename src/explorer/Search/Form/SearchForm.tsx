@@ -1,5 +1,5 @@
 import React from 'react';
-import { loader } from 'graphql.macro';
+// import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';
 
 import Grid from '@material-ui/core/Grid';

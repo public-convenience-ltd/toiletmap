@@ -145,5 +145,10 @@
   },
   "msw": {
     "workerDirectory": "public"
+  },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
   }
 }

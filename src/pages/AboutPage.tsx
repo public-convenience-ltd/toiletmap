@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'next/link';
+import Link from 'next/link';
 import { Helmet } from 'react-helmet';
 import styled from '@emotion/styled';
 
@@ -77,7 +77,7 @@ const AboutPage = (props) => {
         <p>
           The information comes from the public - anyone can go on the website
           and{' '}
-          <Button variant="link" as={Link} to="/">
+          <Button variant="link" as={Link} href="/">
             add, edit or remove toilets
           </Button>
           . We also use open data and request information from councils,{' '}
@@ -138,7 +138,7 @@ const AboutPage = (props) => {
         <SubHeading>The Explorer</SubHeading>
         <p>
           <Button variant="link" as="a" href="">
-            <Link to="/explorer">Visit the Explorer</Link>
+            <Link href="/explorer">Visit the Explorer</Link>
           </Button>
           &nbsp;to get an overview of the statistics and details related to the
           Toilet Map. These statistics are calculated on-demand, so will be up

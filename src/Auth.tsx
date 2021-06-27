@@ -19,7 +19,7 @@ export const useAuth = () => React.useContext(AuthContext);
 export const isAuthenticated = () => {
   // Check whether the current time is past the
   // Access Token's expiry time
-  let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+  let expiresAt = JSON.parse((typeof localStorage !== 'undefined') && localStorage.getItem('expires_at'));
   return new Date().getTime() < expiresAt;
 };
 
@@ -32,17 +32,19 @@ const redirectOnNextLogin = (location) => {
 };
 
 const redirectOnLogin = () => {
-  return JSON.parse(localStorage.getItem('redirectOnLogin'));
+  return JSON.parse((typeof localStorage !== 'undefined') && localStorage.getItem('redirectOnLogin'));
 };
 
 const logout = () => {
-  // Clear Access Token and ID Token from local storage also the cached email
-  localStorage.removeItem('name');
-  localStorage.removeItem('nickname');
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('id_token');
-  localStorage.removeItem('expires_at');
-  localStorage.removeItem('permissions');
+  if(typeof window.localStorage !== 'undefined') {
+    // Clear Access Token and ID Token from local storage also the cached email
+    localStorage.removeItem('name');
+    localStorage.removeItem('nickname');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('expires_at');
+    localStorage.removeItem('permissions');
+  }
 };
 
 const checkPermission = (perm) => {
@@ -58,7 +60,7 @@ const AuthProvider = ({ children }) => {
       audience: 'https://www.toiletmap.org.uk/graphql',
       scope: 'openid profile report:loo',
       clientID: CLIENT_ID,
-      redirectUri: `${window.location.origin}/callback`,
+      redirectUri: `${(typeof window !== 'undefined') ? window.location.origin : ''}/callback`,
     })
   );
 

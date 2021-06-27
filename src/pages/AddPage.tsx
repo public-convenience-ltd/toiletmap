@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import queryString from 'query-string';
 import { Redirect } from 'next/link';
 import { mutate } from 'swr';
-import { loader } from 'graphql.macro';
+// import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';
 
 import PageLayout from '../components/PageLayout';

@@ -61,7 +61,7 @@ PageLayout.propTypes = {
   layoutMode: PropTypes.oneOf([LAYOUT_DEFAULT, LAYOUT_BLOG]),
 };
 
-PropTypes.defaultProps = {
+PageLayout.defaultProps = {
   layoutMode: LAYOUT_DEFAULT,
 };
 

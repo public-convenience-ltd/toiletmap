@@ -2,7 +2,7 @@ import React from 'react';
 import useSWR from 'swr';
 import { useLocation, useHistory, useRouteMatch } from 'next/link';
 import { parse, stringify } from 'query-string';
-import { loader } from 'graphql.macro';
+// import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';
 
 import Results from './Results';

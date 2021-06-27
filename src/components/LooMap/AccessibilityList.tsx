@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { css } from '@emotion/core';
-import { useTheme } from 'emotion-theming';
+import { useTheme, css } from '@emotion/react';
 
 import Box from '../Box';
 import Text from '../Text';

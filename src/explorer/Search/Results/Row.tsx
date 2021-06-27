@@ -2,7 +2,7 @@ import React from 'react';
 import uniq from 'lodash/uniq';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import { Link } from 'next/link';
+import Link from 'next/link';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -25,7 +25,7 @@ export default function ResultRow({ loo }) {
   return (
     <TableRow>
       <TableCell component="th" scope="row">
-        <Link to={`./loos/${loo.id}`}>
+        <Link href={`./loos/${loo.id}`}>
           <Chip
             avatar={
               <Avatar>

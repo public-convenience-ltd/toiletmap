@@ -6,7 +6,7 @@ const Portal = (props) => {
   // https://github.com/facebook/react/issues/13097#issuecomment-405658104
   const [isMounted, setIsMounted] = React.useState(false);
 
-  const element = document.querySelector(props.selector);
+  const element = (typeof document !== 'undefined') && document.querySelector(props.selector);
 
   React.useEffect(() => {
     setIsMounted(true);

@@ -1,7 +1,7 @@
 import React from 'react';
 import useSWR from 'swr';
 import { Doughnut } from 'react-chartjs-2';
-import { loader } from 'graphql.macro';
+// import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';
 
 import LooIcon from '@material-ui/icons/Wc';

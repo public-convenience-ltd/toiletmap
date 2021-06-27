@@ -2,7 +2,7 @@ import { setupWorker, rest } from 'msw';
 import { graphql } from 'graphql';
 import { getExecutableSchema, mockResolver } from '@lola-tech/graphql-kimera';
 import { v4 as uuid } from 'uuid';
-import { loader } from 'graphql.macro';
+// import { loader } from 'graphql.macro';
 
 const typeDefs = loader('./api/typeDefs.graphql');
 

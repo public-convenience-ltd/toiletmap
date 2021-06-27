@@ -1,8 +1,3 @@
-body {
-  background-color: #e8eaf6;
-  margin: 0;
-}
-
 .main {
   flex: 1;
   padding: 2rem;
@@ -21,6 +16,6 @@ body {
   text-decoration: underline;
 }
 
-:global(.leaflet-container) {
+/* :global(.leaflet-container) {
   z-index: 0;
-}
+} */

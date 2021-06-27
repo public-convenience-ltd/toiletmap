@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import Box from '../Box';
@@ -56,7 +57,7 @@ const Header = ({ mapCenter, children }) => {
         <CovidNotification
           onClose={() => {
             config.setSetting('notification', 'covid', 'dismissed');
-            window.location.reload();
+            Router.reload();
           }}
         />
       )}

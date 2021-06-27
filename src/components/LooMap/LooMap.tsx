@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'next/link';
-import { css } from '@emotion/core';
+import Router from 'next/router';
+import { css } from '@emotion/react';
 import { Map, TileLayer, ZoomControl } from 'react-leaflet';
 import 'focus-visible';
 
-import config from '../../config.js';
+import config from '../../config';
 import LocateMapControl from './LocateMapControl';
 import ToiletMarkerIcon from './ToiletMarkerIcon';
 import AccessibilityIntersection from './AccessibilityIntersection';
@@ -77,7 +77,7 @@ const LooMap = ({
     });
   };
 
-  const { push } = useHistory();
+
 
   const memoizedMarkers = React.useMemo(
     () =>
@@ -96,18 +96,18 @@ const LooMap = ({
           label={toilet.name || 'Unnamed toilet'}
           onClick={() => {
             if (!staticMap) {
-              push(`/loos/${toilet.id}`);
+              Router.push(`/loos/${toilet.id}`);
             }
           }}
           onKeyDown={(event) => {
             if (!staticMap && event.originalEvent.keyCode === KEY_ENTER) {
-              push(`/loos/${toilet.id}`);
+              Router.push(`/loos/${toilet.id}`);
             }
           }}
           keyboard={false}
         />
       )),
-    [loos, staticMap, push]
+    [loos, staticMap, Router.push]
   );
 
   const keyboardSelectionHandler = React.useCallback(
