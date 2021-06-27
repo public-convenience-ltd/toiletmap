@@ -7,7 +7,7 @@ import Portal from '../Portal';
 
 const MENU_HEIGHT = 60; // px
 
-const Drawer = ({ visible, animateFrom, ...props }) => {
+const Drawer = ({ visible, animateFrom = 'left', ...props }) => {
   const animateTo = animateFrom === 'right' ? 'left' : 'right';
 
   const variants = {

@@ -11,15 +11,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'next/link';
 
-import { Media } from '../components/Media';
+import { Media } from './Media';
 import VisuallyHidden from './VisuallyHidden';
 import Box from './Box';
 import Text from './Text';
 import Icon from './Icon';
 import LocationSearch from './LocationSearch';
 import Filters from './Filters';
-import Button from '../components/Button';
-import Drawer from '../components/Drawer';
+import Button from './Button';
+import Drawer from './Drawer';
 import { useMapState } from './MapState';
 
 const Arrow = styled((props) => <Icon icon={faAngleRight} {...props} />, {

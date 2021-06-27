@@ -53,7 +53,7 @@ const MainMenu = ({
           width="100%"
         >
           <Box as="li" ml={[0, 4]}>
-            <StyledNavLink to="/" onClick={onMenuItemClick} exact>
+            <StyledNavLink href="/" onClick={onMenuItemClick} exact>
               Find a Toilet
             </StyledNavLink>
           </Box>
