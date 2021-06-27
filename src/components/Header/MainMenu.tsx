@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavLink, useHistory } from 'react-router-dom';
+import NavLink from 'next/link';
+import {useRouter} from 'next/router';
 import styled from '@emotion/styled';
 
 import Box from '../Box';
@@ -18,16 +19,16 @@ const StyledNavLink = styled(NavLink)`
 // Todo: Contact link
 const MainMenu = ({
   mapCenter,
-  onMenuItemClick = Function.prototype,
+  onMenuItemClick,
   children,
 }) => {
   const { isAuthenticated, logout } = useAuth();
-  const history = useHistory();
+  const router = useRouter();
 
   const handleLogout = () => {
     logout();
     onMenuItemClick();
-    history.push('/');
+    router.push('/');
   };
 
   return (
@@ -58,7 +59,7 @@ const MainMenu = ({
           </Box>
           <Box as="li" mt={[3, 0]} ml={[0, 4]}>
             <StyledNavLink
-              to={
+              href={
                 mapCenter
                   ? `/loos/add?lat=${mapCenter.lat}&lng=${mapCenter.lng}`
                   : `/loos/add`

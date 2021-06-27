@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as InternalLink, useRouteMatch } from 'react-router-dom';
+import { Link as InternalLink, useRouteMatch } from 'next/link';
 import Paper from '@material-ui/core/Paper';
 import ExternalLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';

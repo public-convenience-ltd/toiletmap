@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'next/link';
 import { Helmet } from 'react-helmet';
 
 import PageLayout from '../components/PageLayout';

@@ -1,6 +1,6 @@
 import React from 'react';
 import useSWR from 'swr';
-import { Link } from 'react-router-dom';
+import { Link } from 'next/link';
 import get from 'lodash/get';
 import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';

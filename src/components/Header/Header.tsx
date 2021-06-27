@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import Box from '../Box';
@@ -70,7 +70,7 @@ const Header = ({ mapCenter, children }) => {
         minHeight={60}
       >
         <Box flexShrink={0}>
-          <Link to="/">
+          <Link href="/">
             <Logo />
           </Link>
         </Box>

@@ -9,7 +9,7 @@ import {
   faPlusCircle,
   faMapMarkerAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'next/link';
 
 import { Media } from '../components/Media';
 import VisuallyHidden from './VisuallyHidden';

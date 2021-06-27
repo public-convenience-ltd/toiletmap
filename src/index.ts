@@ -5,7 +5,7 @@ import 'resize-observer-polyfill';
 
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Router, Route, Switch, Redirect } from 'next/link';
 import { createBrowserHistory } from 'history';
 import { SWRConfig } from 'swr';
 

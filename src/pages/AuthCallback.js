@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'next/link';
 
 import { useAuth } from '../Auth';
 import PageLayout from '../components/PageLayout';

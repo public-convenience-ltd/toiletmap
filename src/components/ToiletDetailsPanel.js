@@ -23,7 +23,7 @@ import lightFormat from 'date-fns/lightFormat';
 import getISODay from 'date-fns/getISODay';
 import parseISO from 'date-fns/parseISO';
 import add from 'date-fns/add';
-import { Link } from 'react-router-dom';
+import { Link } from 'next/link';
 import useComponentSize from '@rehooks/component-size';
 import L from 'leaflet';
 import { mutate } from 'swr';

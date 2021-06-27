@@ -1,6 +1,6 @@
 import React from 'react';
 import useSWR from 'swr';
-import { useLocation, useHistory, useRouteMatch } from 'react-router-dom';
+import { useLocation, useHistory, useRouteMatch } from 'next/link';
 import { parse, stringify } from 'query-string';
 import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';

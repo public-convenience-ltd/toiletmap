@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import queryString from 'query-string';
-import { Redirect } from 'react-router-dom';
+import { Redirect } from 'next/link';
 import { mutate } from 'swr';
 import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';

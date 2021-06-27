@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useParams, useRouteMatch } from 'react-router-dom';
+import { useParams, useRouteMatch } from 'next/link';
 import queryString from 'query-string';
 import { Helmet } from 'react-helmet';
 import useSWR from 'swr';

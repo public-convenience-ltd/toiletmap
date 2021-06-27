@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from 'next/link';
 import { css } from '@emotion/core';
 import { Map, TileLayer, ZoomControl } from 'react-leaflet';
 import 'focus-visible';
