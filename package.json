@@ -110,7 +110,7 @@
     "migrate-mongo": "8.2.2",
     "msw": "0.30.0",
     "nodemon": "2.0.7",
-    "prettier": "2.3.1",
+    "prettier": "2.3.2",
     "puppeteer": "10.0.0",
     "react-app-rewired": "2.1.8",
     "react-scripts": "3.4.4",
