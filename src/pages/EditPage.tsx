@@ -22,8 +22,10 @@ import { useMutation } from '../graphql/fetcher';
 import useNearbyLoos from '../components/useNearbyLoos';
 import { useMapState } from '../components/MapState';
 
-const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
-const UPDATE_LOO_MUTATION = print(loader('../graphql/updateLoo.graphql'));
+// const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
+// const UPDATE_LOO_MUTATION = print(loader('../graphql/updateLoo.graphql'));
+import FIND_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';
+import UPDATE_LOO_MUTATION from '../graphql/updateLoo.graphql';
 
 const EditPage = (props) => {
   const {
