@@ -14,7 +14,7 @@ const fetcher = (query, variables) => {
   return graphQLClient.request(query, variables);
 };
 
-export const useMutation = (mutation) => {
+export const useMutation = (mutation: string) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState();
   const [data, setData] = React.useState();

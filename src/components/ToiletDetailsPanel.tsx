@@ -74,7 +74,7 @@ const UnstyledList = styled.ul`
   list-style: none;
 `;
 
-function getTimeRangeLabel(range) {
+function getTimeRangeLabel(range: any[]) {
   if (isClosed(range)) {
     return 'Closed';
   }
@@ -112,7 +112,7 @@ const SUBMIT_VERIFICATION_REPORT_MUTATION = `
   }
 `;
 
-function round(value, precision = 0) {
+function round(value: number, precision = 0) {
   const multiplier = Math.pow(10, precision);
   return Math.round(value * multiplier) / multiplier;
 }
@@ -148,7 +148,7 @@ const ToiletDetailsPanel = ({
     { loading: submitVerificationLoading },
   ] = useMutation(SUBMIT_VERIFICATION_REPORT_MUTATION);
 
-  const submitVerificationReport = async (variables) => {
+  const submitVerificationReport = async (variables: { id: any; }) => {
     const responseData = await submitVerificationMutation(variables);
 
     // update the local cache with the new data
@@ -507,7 +507,7 @@ const ToiletDetailsPanel = ({
               </Box>
               <Spacer mb={[0, 2]} />
               <UnstyledList>
-                {openingTimes.map((timeRange, i) => (
+                {openingTimes.map((timeRange: any[], i) => (
                   <Box
                     as="li"
                     display="flex"

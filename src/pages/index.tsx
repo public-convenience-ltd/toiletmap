@@ -67,7 +67,7 @@ const HomePage = ({ initialPosition, ...props }) => {
   const applied = config.filters.filter((filter) => filters[filter.id]);
 
   // restrict the results to only those toilets which pass all of our filter requirements
-  const toilets = toiletData.filter((toilet) =>
+  const toilets = toiletData.filter((toilet: { [x: string]: any; }) =>
     applied.every((filter) => {
       const value = toilet[filter.id];
 
@@ -145,7 +145,7 @@ const HomePage = ({ initialPosition, ...props }) => {
         </Box>
 
         <LooMap
-          loos={toilets.map((toilet) => {
+          loos={toilets.map((toilet: { id: string | string[]; }) => {
             if (toilet.id === selectedLooId) {
               return {
                 ...toilet,

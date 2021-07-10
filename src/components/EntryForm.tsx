@@ -20,7 +20,7 @@ import { WEEKDAYS, isClosed } from '../openingTimes';
 import crosshair from '../../public/crosshair-small.svg';
 import uolLogo from '../../public/domestos_use_our_loos_logo.png';
 
-const openingTimesFields = WEEKDAYS.flatMap((day) => {
+const openingTimesFields = WEEKDAYS.flatMap((day: string) => {
   return [
     `${day.toLowerCase()}-is-open`,
     `${day.toLowerCase()}-opens`,
@@ -189,7 +189,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
   const hasOpeningTimes = Boolean(loo.openingTimes);
 
   const isOpen = loo.openingTimes
-    ? loo.openingTimes.map((x) => !isClosed(x))
+    ? loo.openingTimes.map((x: string | any[]) => !isClosed(x))
     : WEEKDAYS.map(() => false);
 
   const {
@@ -204,7 +204,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
   // read the formState before render to subscribe the form state through Proxy
   const { isDirty, dirtyFields } = formState;
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: { [x: string]: any; isFree: string; geometry: { coordinates: string[]; }; }) => {
     const dirtyFieldNames = Object.keys(dirtyFields);
 
     // only include fields which have been modified
@@ -242,7 +242,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
     // construct expected opening times structure if relevant fields have changed
     if (
       [...openingTimesFields, 'has-opening-times'].some(
-        (field) => dirtyFieldNames.indexOf(field) >= 0
+        (field: string) => dirtyFieldNames.indexOf(field) >= 0
       )
     ) {
       if (data['has-opening-times']) {

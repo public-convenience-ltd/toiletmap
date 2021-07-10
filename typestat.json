@@ -1,10 +1,12 @@
-{
-    "fixes": {
-        "incompleteTypes": true,
-        "noInferableTypes": true
-    },
-    "include": [
-        "src/**/*.{ts,tsx}"
-    ],
-    "projectPath": "./tsconfig.json"
-}
+[
+  {
+      "fixes": {
+          "noImplicitAny": true
+      }
+  },
+  {
+      "fixes": {
+          "noInferableTypes": true
+      }
+  }
+]

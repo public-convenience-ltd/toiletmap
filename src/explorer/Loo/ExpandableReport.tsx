@@ -12,7 +12,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import PropertyTable from './PropertyTable';
 
-export default function ExpandableReport(props) {
+export default function ExpandableReport(props: { report: any; }) {
   let [expanded, setExpanded] = useState(false);
   let report = pickBy(props.report, (val) => val !== null);
   let displayProperties = omit(

@@ -43,7 +43,7 @@ const usePlacesSessionToken = () => {
   return [token, reset];
 };
 
-const usePlacesAutocomplete = (input) => {
+const usePlacesAutocomplete = (input: string | any[]) => {
   const autocompleteService = usePlacesAutocompleteService();
 
   const [sessionToken, resetSessionToken] = usePlacesSessionToken();
@@ -52,12 +52,12 @@ const usePlacesAutocomplete = (input) => {
 
   const fetchPlaces = React.useCallback(
     debounce((input) => {
-      const onFetchCompleted = (places) => {
+      const onFetchCompleted = (places: any[]) => {
         if (!places) {
           return;
         }
 
-        const locationResults = places.map((item) => ({
+        const locationResults = places.map((item: { id: any; place_id: any; structured_formatting: { main_text: any; secondary_text: any; }; }) => ({
           id: item.id,
           placeId: item.place_id,
           label: `${item.structured_formatting.main_text}, ${item.structured_formatting.secondary_text}`,
@@ -102,7 +102,7 @@ const usePlacesAutocomplete = (input) => {
     const OK = window.google.maps.places.PlacesServiceStatus.OK;
 
     return new Promise((resolve, reject) => {
-      placesService.getDetails({ placeId, sessionToken }, (result, status) => {
+      placesService.getDetails({ placeId, sessionToken }, (result: { geometry: { location: { lat: any; lng: any; }; }; }, status) => {
         if (status !== OK) {
           reject(status);
           return;

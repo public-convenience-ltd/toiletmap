@@ -10,10 +10,10 @@ const schema = getExecutableSchema({
   typeDefs,
   mockProvidersFn: () => ({
     scenario: {
-      loosByProximity: mockResolver((store) => () => {
+      loosByProximity: mockResolver((store: { get: () => any[]; }) => () => {
         return [store.get()[0]];
       }),
-      loo: mockResolver((store) => (_, { id }) => ({
+      loo: mockResolver((store: { get: () => any; }) => (_, { id }) => ({
         ...store.get(),
         id,
       })),

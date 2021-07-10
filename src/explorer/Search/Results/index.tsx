@@ -9,7 +9,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 
 import ResultRow from './Row';
 
-function Results(props) {
+function Results(props: { data: any; rowsPerPage: any; handleChangePage: any; handleChangeRowsPerPage: any; }) {
   const {
     data,
     rowsPerPage,

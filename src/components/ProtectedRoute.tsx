@@ -9,7 +9,7 @@ const ProtectedRoute = ({ component: Component, injectProps, ...rest }) => {
   return (
     <Link
       {...rest}
-      render={(props) => {
+      render={(props: JSX.IntrinsicAttributes) => {
         if (auth.isAuthenticated()) {
           return <Component {...props} {...injectProps} />;
         } else {

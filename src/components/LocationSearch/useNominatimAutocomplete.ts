@@ -1,7 +1,7 @@
 import React from 'react';
 import debounce from 'lodash/debounce';
 
-const useNominatimAutocomplete = (input) => {
+const useNominatimAutocomplete = (input: string | any[]) => {
   const [places, setPlaces] = React.useState([]);
 
   const fetchPlaces = React.useCallback(
@@ -15,7 +15,7 @@ const useNominatimAutocomplete = (input) => {
         return;
       }
 
-      const locationResults = results.map((item) => ({
+      const locationResults = results.map((item: { place_id: any; display_name: any; lat: any; lon: any; }) => ({
         id: item.place_id,
         label: item.display_name,
         location: {

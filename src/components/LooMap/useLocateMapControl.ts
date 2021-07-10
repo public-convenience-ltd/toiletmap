@@ -9,7 +9,7 @@ const LocationMarker = L.Marker.extend({
     this.createIcon();
   },
 
-  _getIcon: function (options, style) {
+  _getIcon: function (options: { radius: any; weight: any; }, style) {
     const { radius, weight } = options;
     const realRadius = radius + weight;
     const diameter = realRadius * 2;
@@ -58,7 +58,7 @@ const useLocateMapControl = ({
   }, [map]);
 
   const handleLocationFound = React.useCallback(
-    (event) => {
+    (event: { accuracy: number; latlng: any; }) => {
       const radius = event.accuracy || 0;
       const latlng = event.latlng;
 

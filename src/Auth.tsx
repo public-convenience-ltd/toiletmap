@@ -66,7 +66,7 @@ const AuthProvider = ({ children }) => {
 
   const handleAuthentication = () =>
     new Promise((resolve, reject) => {
-      auth0Ref.current.parseHash((err, authResult) => {
+      auth0Ref.current.parseHash((err, authResult: { expiresIn: number; accessToken: string; idToken: string; idTokenPayload: { [x: string]: any; nickname: string; }; }) => {
         if (err) {
           reject(err);
           return;

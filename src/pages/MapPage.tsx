@@ -2,7 +2,7 @@ import React from 'react';
 
 import HomePage from '.';
 
-const MapPage = (props) => {
+const MapPage = (props: { match: { params: { lat: string; lng: string; }; }; }) => {
   return (
     <HomePage
       initialPosition={{

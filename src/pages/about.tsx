@@ -16,11 +16,11 @@ const List = styled.ul`
   list-style: initial;
 `;
 
-const ListItem = (props) => (
+const ListItem = (props: JSX.IntrinsicAttributes) => (
   <Box as="li" marginTop={2} marginLeft={4} {...props} />
 );
 
-const SubHeading = (props) => (
+const SubHeading = (props: JSX.IntrinsicAttributes) => (
   <>
     <Spacer mb={4} />
     <Text {...props} fontSize={3} fontWeight="bold">

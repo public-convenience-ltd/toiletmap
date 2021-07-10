@@ -10,7 +10,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import CloseOutlined from '@material-ui/icons/CloseOutlined';
 
-const renderInput = (inputProps) => {
+const renderInput = (inputProps: { [x: string]: any; fullWidth?: boolean; classes: any; InputProps: any; ref?: any; }) => {
   const { InputProps, classes, ref, ...other } = inputProps;
 
   return (
@@ -49,14 +49,14 @@ const renderSuggestion = ({
   );
 };
 
-function filterSuggestions(data, value) {
+function filterSuggestions(data: any[], value: string) {
   const inputValue = deburr(value.trim()).toLowerCase();
   const inputLength = inputValue.length;
   let count = 0;
 
   return inputLength === 0
     ? []
-    : data.filter((suggestion) => {
+    : data.filter((suggestion: string) => {
         const keep =
           count < 5 &&
           suggestion.slice(0, inputLength).toLowerCase() === inputValue;
@@ -69,7 +69,7 @@ function filterSuggestions(data, value) {
       });
 }
 
-function Autocomplete(props) {
+function Autocomplete(props: { [x: string]: any; classes: any; id: any; onChange: any; value: any; query: any; placeholderText: any; clearAriaLabel: any; }) {
   const {
     classes,
     id,
@@ -83,7 +83,7 @@ function Autocomplete(props) {
 
   const { data } = useSWR(query);
 
-  const items = data?.items?.map((i) => i.label) || [];
+  const items = data?.items?.map((i: { label: any; }) => i.label) || [];
 
   return (
     <Downshift id={id} onChange={onChange} selectedItem={value} {...others}>

@@ -16,7 +16,7 @@ const List = styled.ul`
   list-style: initial;
 `;
 
-const ListItem = (props) => (
+const ListItem = (props: JSX.IntrinsicAttributes) => (
   <Box as="li" marginTop={2} marginLeft={4} {...props} />
 );
 

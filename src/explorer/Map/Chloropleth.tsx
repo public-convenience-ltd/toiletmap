@@ -30,7 +30,7 @@ const SCALE = [
 ];
 SCALE.reverse();
 
-function Chloropleth(props) {
+function Chloropleth(props: { width?: any; height?: any; setTooltipContent?: any; options?: any; }) {
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
   const [transformedStats, setTransformedStats] = useState();
   const [geography, setGeography] = useState();
@@ -53,7 +53,7 @@ function Chloropleth(props) {
     }
 
     const transformed = {};
-    statsData.areaStats.forEach((stat) => {
+    statsData.areaStats.forEach((stat: { area: { name: string | number; }; }) => {
       transformed[stat.area.name] = stat;
     });
     setTransformedStats(transformed);
@@ -68,8 +68,8 @@ function Chloropleth(props) {
     // Convert to valid TopoJSON form
     const newGeography = cloneDeep(areasData.mapAreas);
     const newObjects = {};
-    newGeography.objects.forEach((obj) => {
-      obj.value.geometries.forEach((geom) => {
+    newGeography.objects.forEach((obj: { value: { geometries: any[]; }; name: string | number; }) => {
+      obj.value.geometries.forEach((geom: { properties: string; }) => {
         geom.properties = JSON.parse(geom.properties);
       });
       newObjects[obj.name] = obj.value;
@@ -94,7 +94,7 @@ function Chloropleth(props) {
     let areaSizes = {};
     Object.keys(geography.objects).forEach((objName) => {
       const obj = geography.objects[objName];
-      obj.geometries.forEach((geom) => {
+      obj.geometries.forEach((geom: { properties: { name: string | number; areaSize: number; }; }) => {
         areaSizes[geom.properties.name] = geom.properties.areaSize / 1000000;
       });
     });
@@ -102,12 +102,12 @@ function Chloropleth(props) {
   }, [opts, geography, statsData]);
 
   // The function used to map the stats data into values
-  let statsFunc = (s) => s[opts.statistic];
+  let statsFunc = (s: { [x: string]: any; }) => s[opts.statistic];
   if (opts.display === 'density') {
-    statsFunc = (s) => s[opts.statistic] / areaSizes[s.area.name];
+    statsFunc = (s: { [x: string]: number; area: { name: string | number; }; }) => s[opts.statistic] / areaSizes[s.area.name];
   }
 
-  let colourScale;
+  let colourScale: (arg0: any) => any;
   if (statsData && areaSizes) {
     colourScale = scaleQuantile()
       .domain(statsData.areaStats.map(statsFunc))
@@ -142,8 +142,8 @@ function Chloropleth(props) {
                 geographies.map((geo) => {
                   const { name, areaSize } = geo.properties;
 
-                  let value;
-                  let unit;
+                  let value: string;
+                  let unit: string;
                   switch (opts.display) {
                     case 'number':
                       value = transformedStats[name][opts.statistic];

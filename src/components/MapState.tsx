@@ -1,7 +1,7 @@
 import React from 'react';
 import config from '../config';
 
-const MapStateContext = React.createContext();
+const MapStateContext = React.createContext(null);
 
 const reducer = (state, newState) => {
   return {

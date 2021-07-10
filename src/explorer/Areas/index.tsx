@@ -67,7 +67,7 @@ function Areas() {
           {!error &&
             !loading &&
             data &&
-            data.areaStats.map((area, index) => (
+            data.areaStats.map((area: { meta: { name: any; }; }, index) => (
               <TableRow key={index}>
                 {cells.map((cell) => (
                   <TableCell key={cell.key + 'c_' + index}>

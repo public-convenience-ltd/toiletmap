@@ -80,7 +80,7 @@ const Content = ({ toilets }) => {
   );
 };
 
-const AccessibilityList = (props) => {
+const AccessibilityList = (props: JSX.IntrinsicAttributes & { toilets: any; }) => {
   const [showContent, setShowContent] = React.useState(false);
 
   // to ensure it gets announced, there must be a delay between the existence of the aria live element and the content

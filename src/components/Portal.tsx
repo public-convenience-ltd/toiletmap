@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
-const Portal = (props) => {
+const Portal = (props: { selector: any; children: any; }) => {
   // https://github.com/facebook/react/issues/13097#issuecomment-405658104
   const [isMounted, setIsMounted] = React.useState(false);
 

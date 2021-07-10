@@ -38,7 +38,7 @@ export default function Search() {
     JSON.stringify(variables),
   ]);
 
-  function search(params) {
+  function search(params: Record<string,any>) {
     let query = stringify({ ...variables, ...params });
     history.push(`${path}?${query}`);
   }
@@ -52,7 +52,7 @@ export default function Search() {
         data={data.loos}
         rowsPerPage={variables.limit}
         handleChangePage={(e, page) => search({ page })}
-        handleChangeRowsPerPage={(e) => search({ limit: e.target.value })}
+        handleChangeRowsPerPage={(e: { target: { value: any; }; }) => search({ limit: e.target.value })}
       />
     </>
   );

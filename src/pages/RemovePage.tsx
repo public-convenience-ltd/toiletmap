@@ -22,7 +22,7 @@ import REMOVE_LOO_MUTATION from '../graphql/removeLoo.graphql';
 
 import GET_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';
 
-const RemovePage = function (props) {
+const RemovePage = function (props: { match: { params: { id: any; }; }; }) {
   const [reason, setReason] = useState('');
   const params = useParams();
   const history = useHistory();
@@ -40,7 +40,7 @@ const RemovePage = function (props) {
     setReason(evt.currentTarget.value);
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
     await doRemove({

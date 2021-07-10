@@ -3,7 +3,7 @@ import Chloropleth from './Chloropleth';
 import ReactTooltip from 'react-tooltip';
 import { Paper, Grid, Select, MenuItem, InputLabel } from '@material-ui/core';
 
-function convertRemToPixels(rem) {
+function convertRemToPixels(rem: number) {
   return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 }
 
@@ -12,9 +12,9 @@ const DEFAULT_OPTIONS = {
   display: 'density',
 };
 
-function Options(props) {
-  const getCallback = (optionName) => {
-    return (e) => props.onOptionChange(optionName, e.target.value);
+function Options(props: { onOptionChange: (arg0: any,arg1: any) => any; }) {
+  const getCallback = (optionName: string) => {
+    return (e: { target: { value: any; }; }) => props.onOptionChange(optionName, e.target.value);
   };
 
   const year = new Date().getFullYear();
@@ -76,7 +76,7 @@ function Map(props) {
   const [options, setOptions] = useState(DEFAULT_OPTIONS);
   const [mapWidth, setMapWidth] = useState(640);
 
-  const updateOptions = (opt, newVal) => {
+  const updateOptions = (opt: string | number, newVal) => {
     setOptions((prevOptions) => {
       const newOpts = { ...prevOptions };
       newOpts[opt] = newVal;

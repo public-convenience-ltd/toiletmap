@@ -27,7 +27,7 @@ import { useMapState } from '../components/MapState';
 import FIND_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';
 import UPDATE_LOO_MUTATION from '../graphql/updateLoo.graphql';
 
-const EditPage = (props) => {
+const EditPage = (props: { match: { params: { id: any; }; }; }) => {
   const {
     isValidating: loadingLooData,
     data: looData,
@@ -84,7 +84,7 @@ const EditPage = (props) => {
     { loading: saveLoading, data: saveData, error: saveError },
   ] = useMutation(UPDATE_LOO_MUTATION);
 
-  const save = async (formData) => {
+  const save = async (formData: { id: any; }) => {
     formData.id = looData.loo.id;
 
     try {
@@ -169,7 +169,7 @@ const EditPage = (props) => {
             showCrosshair
             controlsOffset={20}
             withAccessibilityOverlays={false}
-            onViewportChanged={(mapPosition) => {
+            onViewportChanged={(mapPosition: { center: (prevState: undefined) => undefined; }) => {
               setMapCenter(mapPosition.center);
             }}
           />

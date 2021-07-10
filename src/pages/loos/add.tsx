@@ -58,7 +58,7 @@ const AddPage = (props) => {
   //   { data: saveData, loading: saveLoading, error: saveError },
   // ] = useMutation(UPDATE_LOO_MUTATION);
 
-  const save = async (formData) => {
+  const save = async (formData: { active: boolean; }) => {
     // add the active state for which there's no user-facing form control as yet
     formData.active = true;
 

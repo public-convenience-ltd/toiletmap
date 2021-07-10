@@ -2,7 +2,7 @@ import L from 'leaflet';
 
 const ICON_DIMENSIONS = [22, 34];
 const LARGE_ICON_DIMENSSIONS = ICON_DIMENSIONS.map((i) => i * 1.5);
-const getIconAnchor = (dimensions) => [dimensions[0] / 2, dimensions[1]];
+const getIconAnchor = (dimensions: any[]) => [dimensions[0] / 2, dimensions[1]];
 
 const getSVGHTML = ({ isUseOurLoosCampaign, isHighlighted }) => {
   if (isUseOurLoosCampaign) {
@@ -43,7 +43,7 @@ const ToiletMarkerIcon = L.DivIcon.extend({
     isUseOurLoosCampaign: false,
   },
 
-  initialize: function (options) {
+  initialize: function (options: { isHighlighted: any; toiletId?: any; isUseOurLoosCampaign?: any; }) {
     this.options = {
       ...this.options,
       iconSize: options.isHighlighted

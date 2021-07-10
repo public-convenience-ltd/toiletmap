@@ -18,14 +18,14 @@ const AccessibilityIntersection = ({
   useEffect(() => {
     const rectangle = rectangleRef.current.leafletElement;
     const contains = toilets
-      .filter((toilet) => rectangle.getBounds().contains(toilet.location))
+      .filter((toilet: { location: any; }) => rectangle.getBounds().contains(toilet.location))
       .slice(0, KEY_CODES.length);
 
     onIntersection(contains);
   }, [center, toilets, onIntersection]);
 
   useEffect(() => {
-    const keyDownHandler = (event) => {
+    const keyDownHandler = (event: { keyCode: number; }) => {
       const selectionIndex = KEY_CODES.indexOf(event.keyCode);
 
       if (selectionIndex === -1) {

@@ -17,7 +17,7 @@ const MISSING_MESSAGE = 'Not Recorded';
 
 export default function ResultRow({ loo }) {
   const { name, area } = loo;
-  const contributors = loo.reports.reduce((current, next) => {
+  const contributors = loo.reports.reduce((current: any[], next: { contributor: any; }) => {
     current.push(next.contributor);
     return current;
   }, []);

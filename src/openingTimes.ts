@@ -3,7 +3,7 @@ import set from 'date-fns/set';
 import setISODay from 'date-fns/setISODay';
 import isWithinInterval from 'date-fns/isWithinInterval';
 
-function isClosed(range) {
+function isClosed(range: string | any[]) {
   return Array.isArray(range) && range.length === 0;
 }
 
@@ -17,7 +17,7 @@ const WEEKDAYS = [
   'Sunday',
 ];
 
-function getDateFromTime(timeRangeString, weekdayToCheck) {
+function getDateFromTime(timeRangeString: string, weekdayToCheck: number) {
   const [hours, minutes] = timeRangeString.split(':');
 
   const weekday =

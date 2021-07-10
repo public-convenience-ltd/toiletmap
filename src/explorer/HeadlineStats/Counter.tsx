@@ -47,7 +47,7 @@ function Counter({ icon, value, label }: CounterProps) {
             transition: '0.8s ease-out',
             transitionProperty: 'background-color, color, opacity',
           }}
-          frameStyle={(perc) => (perc === 100 ? {} : { opacity: 0.25 })}
+          frameStyle={(perc: number) => (perc === 100 ? {} : { opacity: 0.25 })}
           value={value}
         />
       </span>

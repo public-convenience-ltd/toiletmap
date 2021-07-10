@@ -108,7 +108,7 @@ const LooMap = ({
               Router.push(`/loos/${toilet.id}`);
             }
           }}
-          onKeyDown={(event) => {
+          onKeyDown={(event: { originalEvent: { keyCode: number; }; }) => {
             if (!staticMap && event.originalEvent.keyCode === KEY_ENTER) {
               Router.push(`/loos/${toilet.id}`);
             }
@@ -120,7 +120,7 @@ const LooMap = ({
   );
 
   const keyboardSelectionHandler = React.useCallback(
-    (selectionIndex) => {
+    (selectionIndex: string | number) => {
       const toilet = intersectingToilets[selectionIndex];
 
       if (!toilet) {
@@ -273,7 +273,7 @@ const LooMap = ({
             />
 
             <AccessibilityList
-              toilets={intersectingToilets.map((toilet) => toilet.name)}
+              toilets={intersectingToilets.map((toilet: { name: any; }) => toilet.name)}
             />
 
             <VisuallyHidden>

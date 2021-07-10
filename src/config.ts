@@ -54,20 +54,20 @@ export default {
     lat: 51.507351,
     lng: -0.127758,
   },
-  getSettings(namespace) {
+  getSettings(namespace: string) {
     return JSON.parse((typeof localStorage !== 'undefined') && localStorage.getItem(namespace) || '{}');
   },
-  getSetting(namespace, key, defaultVal = '') {
+  getSetting(namespace: string, key: string, defaultVal = '') {
     const val = this.getSettings(namespace)[key];
 
     return val === undefined ? defaultVal : val;
   },
-  setSetting(namespace, key, val) {
+  setSetting(namespace: string, key: string, val: string) {
     var settings = this.getSettings(namespace);
     settings[key] = val;
     localStorage.setItem(namespace, JSON.stringify(settings));
   },
-  setSettings(namespace, obj = {}) {
+  setSettings(namespace: string, obj = {}) {
     localStorage.setItem(
       namespace,
       JSON.stringify({
@@ -76,7 +76,7 @@ export default {
       })
     );
   },
-  getTitle(appendText) {
+  getTitle(appendText: string) {
     if (appendText) {
       return `${title}: ${appendText}`;
     }

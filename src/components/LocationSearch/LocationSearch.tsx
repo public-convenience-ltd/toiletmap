@@ -37,7 +37,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
     onSelectedItemChange({ lat, lng });
   };
 
-  const stateReducer = (state, actionAndChanges) => {
+  const stateReducer = (state: { isOpen: any; selectedItem: any; inputValue: any; }, actionAndChanges: { type: any; changes: any; }) => {
     switch (actionAndChanges.type) {
       case useCombobox.stateChangeTypes.InputBlur:
         // Prevents reset on blur to fix results being closed when iOS keyboard is hidden
@@ -78,7 +78,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
   } = useCombobox({
     items: places,
     onInputValueChange: ({ inputValue }) => setQuery(inputValue),
-    itemToString: (item) => (item ? item.label : ''),
+    itemToString: (item: { label: string; }) => (item ? item.label : ''),
     onSelectedItemChange: handleSelectedItemChange,
     stateReducer,
   });
@@ -150,7 +150,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
         {isOpen && (
           <>
             {places.length
-              ? places.map((item, index) => (
+              ? places.map((item, index: number) => (
                   <Box
                     key={item.id}
                     color={highlightedIndex === index ? 'tertiary' : undefined}

@@ -21,7 +21,7 @@ const FIND_NEARBY_LOOS_QUERY = `
   }
 `;
 
-const useNearbyLoos = (variables) => {
+const useNearbyLoos = (variables: { lat: any; lng: any; radius: any; }) => {
   const dataRef = React.useRef();
 
   const { isValidating, data, error } = useSWR([

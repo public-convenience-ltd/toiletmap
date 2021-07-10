@@ -22,14 +22,14 @@ import Button from './Button';
 import Drawer from './Drawer';
 import { useMapState } from './MapState';
 
-const Arrow = styled((props) => <Icon icon={faAngleRight} {...props} />, {
+const Arrow = styled((props: JSX.IntrinsicAttributes) => <Icon icon={faAngleRight} {...props} />, {
   shouldForwardProp: (prop) => {
     return isPropValid(prop) && prop !== 'isExpanded';
   },
 })`
   transition: transform 0.2s ease;
 
-  ${(props) =>
+  ${(props: { isExpanded: any; }) =>
     props.isExpanded &&
     `
     transform: rotate(90deg);
