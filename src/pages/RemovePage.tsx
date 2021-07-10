@@ -29,10 +29,8 @@ const RemovePage = function (props) {
     error: looError,
   } = useSWR([GET_LOO_BY_ID_QUERY, JSON.stringify({ id: params.id })]);
 
-  const [
-    doRemove,
-    { loading: loadingRemove, error: removeError },
-  ] = useMutation(REMOVE_LOO_MUTATION);
+  const [doRemove, { loading: loadingRemove, error: removeError }] =
+    useMutation(REMOVE_LOO_MUTATION);
 
   const updateReason = (evt) => {
     setReason(evt.currentTarget.value);
@@ -69,55 +67,57 @@ const RemovePage = function (props) {
 
   return (
     <PageLayout layoutMode="blog">
-      <Helmet>
-        <title>{config.getTitle('Remove Toilet')}</title>
-      </Helmet>
+      <>
+        <Helmet>
+          <title>{config.getTitle('Remove Toilet')}</title>
+        </Helmet>
 
-      <Container maxWidth={845}>
-        <Text fontSize={6} fontWeight="bold" textAlign="center">
-          <h1>Toilet Remover</h1>
-        </Text>
+        <Container maxWidth={845}>
+          <Text fontSize={6} fontWeight="bold" textAlign="center">
+            <h1>Toilet Remover</h1>
+          </Text>
 
-        <Spacer mb={5} />
+          <Spacer mb={5} />
 
-        <p>
-          Please let us know why you're removing this toilet from the map using
-          the form below.
-        </p>
-
-        <Spacer mb={3} />
-
-        <form onSubmit={onSubmit}>
-          <label>
-            <b>Reason for removal</b>
-            <textarea
-              type="text"
-              name="reason"
-              value={reason}
-              onChange={updateReason}
-              required
-              css={{
-                height: '100px',
-                width: '100%',
-              }}
-            />
-          </label>
+          <p>
+            Please let us know why you're removing this toilet from the map
+            using the form below.
+          </p>
 
           <Spacer mb={3} />
 
-          <Button type="submit">Remove</Button>
-        </form>
+          <form onSubmit={onSubmit}>
+            <label>
+              <b>Reason for removal</b>
+              <textarea
+                type="text"
+                name="reason"
+                value={reason}
+                onChange={updateReason}
+                required
+                css={{
+                  height: '100px',
+                  width: '100%',
+                }}
+              />
+            </label>
 
-        {loadingRemove && (
-          <Notification>Submitting removal report&hellip;</Notification>
-        )}
+            <Spacer mb={3} />
 
-        {removeError && (
-          <Notification>
-            Oops. We can't submit your report at this time. Try again later.
-          </Notification>
-        )}
-      </Container>
+            <Button type="submit">Remove</Button>
+          </form>
+
+          {loadingRemove && (
+            <Notification>Submitting removal report&hellip;</Notification>
+          )}
+
+          {removeError && (
+            <Notification>
+              Oops. We can't submit your report at this time. Try again later.
+            </Notification>
+          )}
+        </Container>
+      </>
     </PageLayout>
   );
 };

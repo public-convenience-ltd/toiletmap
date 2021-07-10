@@ -90,6 +90,9 @@ const App = ({Component, pageProps}) => (
               href="/explorer"
               render={(props) => <Explorer {...props} />}
             />
+
+
+            // TODO: Protected routes need auth in nextJS world.
             <ProtectedRoute href="/loos/:id/edit" component={EditPage} />
             <ProtectedRoute href="/loos/:id/remove" component={RemovePage} />
             <Link component={NotFound} /> */}

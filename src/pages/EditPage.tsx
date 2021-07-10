@@ -150,66 +150,68 @@ const EditPage = (props) => {
 
   return (
     <PageLayout>
-      <Helmet>
-        <title>{config.getTitle('Edit Toilet')}</title>
-      </Helmet>
+      <>
+        <Helmet>
+          <title>{config.getTitle('Edit Toilet')}</title>
+        </Helmet>
 
-      <Box display="flex" height="40vh">
-        <LooMap
-          loos={getLoosToDisplay()}
-          center={mapState.center}
-          zoom={mapState.zoom}
-          minZoom={config.editMinZoom}
-          showCenter
-          showContributor
-          showLocateControl
-          showCrosshair
-          controlsOffset={20}
-          withAccessibilityOverlays={false}
-          onViewportChanged={(mapPosition) => {
-            setMapCenter(mapPosition.center);
-          }}
-        />
-      </Box>
+        <Box display="flex" height="40vh">
+          <LooMap
+            loos={getLoosToDisplay()}
+            center={mapState.center}
+            zoom={mapState.zoom}
+            minZoom={config.editMinZoom}
+            showCenter
+            showContributor
+            showLocateControl
+            showCrosshair
+            controlsOffset={20}
+            withAccessibilityOverlays={false}
+            onViewportChanged={(mapPosition) => {
+              setMapCenter(mapPosition.center);
+            }}
+          />
+        </Box>
 
-      <Spacer mt={4} />
+        <Spacer mt={4} />
 
-      <EntryForm
-        title="Edit This Toilet"
-        loo={initialData.loo}
-        center={mapCenter}
-        saveLoading={saveLoading}
-        saveError={saveError}
-        onSubmit={save}
-      >
-        {({ isDirty }) => (
-          <Box display="flex" flexDirection="column" alignItems="center">
-            <Button
-              type="submit"
-              disabled={!isDirty}
-              css={{
-                width: '100%',
-              }}
-              data-testid="update-toilet-button"
-            >
-              Update the toilet
-            </Button>
+        <EntryForm
+          title="Edit This Toilet"
+          loo={initialData.loo}
+          center={mapCenter}
+          saveLoading={saveLoading}
+          saveError={saveError}
+          onSubmit={save}
+        >
+          {({ isDirty }) => (
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <Button
+                type="submit"
+                disabled={!isDirty}
+                css={{
+                  width: '100%',
+                }}
+                data-testid="update-toilet-button"
+              >
+                Update the toilet
+              </Button>
 
-            <Spacer mt={2} />
+              <Spacer mt={2} />
 
-            <Button
-              as={Link}
-              to={`/loos/${props.match.params.id}/remove`}
-              css={{
-                width: '100%',
-              }}
-              data-testid="remove-toilet-button"
-            >
-              Remove the toilet
-            </Button>
-          </Box>
-        )}
-      </EntryForm>
+              <Button
+                as={Link}
+                to={`/loos/${props.match.params.id}/remove`}
+                css={{
+                  width: '100%',
+                }}
+                data-testid="remove-toilet-button"
+              >
+                Remove the toilet
+              </Button>
+            </Box>
+          )}
+        </EntryForm>
+      </>
     </PageLayout>
   );
 };

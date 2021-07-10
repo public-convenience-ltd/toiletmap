@@ -3,7 +3,13 @@ import propTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import AnimatedNumber from 'react-animated-number';
 
-function Counter({ icon, value, label }) {
+interface CounterProps {
+    icon?: React.ReactElement;
+    value?: number;
+    label?: string;
+}
+
+function Counter({ icon, value, label }: CounterProps) {
   var iconCopy = React.cloneElement(icon, {
     style: {
       height: 140,
