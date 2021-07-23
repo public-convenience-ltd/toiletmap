@@ -107,6 +107,7 @@
     "cli-progress": "3.9.0",
     "customize-cra": "1.0.0",
     "dotenv": "10.0.0",
+    "esbuild-loader": "2.13.1",
     "geojson-precision": "1.0.0",
     "http-proxy-middleware": "2.0.0",
     "husky": "6.0.0",
