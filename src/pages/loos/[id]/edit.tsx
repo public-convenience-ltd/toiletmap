@@ -9,31 +9,35 @@ import useSWR, { mutate } from 'swr';
 // import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';
 
-import PageLayout from '../components/PageLayout';
-import Button from '../components/Button';
-import Spacer from '../components/Spacer';
-import Notification from '../components/Notification';
-import EntryForm from '../components/EntryForm';
-import LooMap from '../components/LooMap';
-import Box from '../components/Box';
+import PageLayout from '../../../components/PageLayout';
+import Button from '../../../components/Button';
+import Spacer from '../../../components/Spacer';
+import Notification from '../../../components/Notification';
+import EntryForm from '../../../components/EntryForm';
+import Box from '../../../components/Box';
 
-import config from '../config';
-import { useMutation } from '../graphql/fetcher';
-import useNearbyLoos from '../components/useNearbyLoos';
-import { useMapState } from '../components/MapState';
+import config from '../../../config';
+import { useMutation } from '../../../graphql/fetcher';
+import useNearbyLoos from '../../../components/useNearbyLoos';
+import { useMapState } from '../../../components/MapState';
 
 // const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
 // const UPDATE_LOO_MUTATION = print(loader('../graphql/updateLoo.graphql'));
-import FIND_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';
-import UPDATE_LOO_MUTATION from '../graphql/updateLoo.graphql';
+import FIND_LOO_BY_ID_QUERY from '../../../graphql/findLooById.graphql';
+import UPDATE_LOO_MUTATION from '../../../graphql/updateLoo.graphql';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 
 const EditPage = (props: { match: { params: { id: any; }; }; }) => {
+  const router = useRouter();
+  const {id: selectedLooId} = router.query;
+
   const {
     isValidating: loadingLooData,
     data: looData,
     error: looError,
   } = useSWR(
-    [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: props.match.params.id })],
+    [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: selectedLooId })],
     {
       revalidateOnFocus: false,
     }
@@ -42,6 +46,8 @@ const EditPage = (props: { match: { params: { id: any; }; }; }) => {
   const [mapState, setMapState] = useMapState();
 
   const looLocation = (looData && looData.loo.location) || null;
+
+  const LooMap = React.useMemo(() => dynamic(() => import('../../../components/LooMap'), { loading: () => <p>Loading map...</p>, ssr: false, }), [])
 
   // set the map position to the loo location
   React.useEffect(() => {
@@ -202,7 +208,7 @@ const EditPage = (props: { match: { params: { id: any; }; }; }) => {
 
               <Button
                 as={Link}
-                to={`/loos/${props.match.params.id}/remove`}
+                href={`/loos/${selectedLooId}/remove`}
                 css={{
                   width: '100%',
                 }}
