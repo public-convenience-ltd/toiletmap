@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { css } from '@emotion/react';
 import { Map, TileLayer, ZoomControl } from 'react-leaflet';
 import 'focus-visible';
@@ -86,6 +86,7 @@ const LooMap = ({
     });
   };
 
+  const router = useRouter();
 
 
   const memoizedMarkers = React.useMemo(
@@ -105,18 +106,18 @@ const LooMap = ({
           label={toilet.name || 'Unnamed toilet'}
           onClick={() => {
             if (!staticMap) {
-              Router.push(`/loos/${toilet.id}`);
+              router.push(`/loos/${toilet.id}`, undefined, {shallow: true});
             }
           }}
           onKeyDown={(event: { originalEvent: { keyCode: number; }; }) => {
             if (!staticMap && event.originalEvent.keyCode === KEY_ENTER) {
-              Router.push(`/loos/${toilet.id}`);
+              router.push(`/loos/${toilet.id}`,  undefined, {shallow: true});
             }
           }}
           keyboard={false}
         />
       )),
-    [loos, staticMap, Router.push]
+    [loos, staticMap, router.push]
   );
 
   const keyboardSelectionHandler = React.useCallback(
@@ -129,9 +130,9 @@ const LooMap = ({
 
       setAnnouncement(`${toilet.name || 'Unnamed toilet'} selected`);
 
-      Router.push(`/loos/${toilet.id}`);
+      router.push(`/loos/${toilet.id}`,  undefined, {shallow: true});
     },
-    [intersectingToilets, Router.push]
+    [intersectingToilets, router.push]
   );
 
   React.useEffect(() => {
