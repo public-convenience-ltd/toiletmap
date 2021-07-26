@@ -32,18 +32,18 @@ import { MapStateProvider } from '../components/MapState';
 //   );
 // }
 
-const Explorer = lazy(() =>
-  import(/*webpackChunkName: 'explorer'*/ '../explorer')
-);
-const AddPage = lazy(() =>
-  import(/*webpackChunkName: 'add'*/ './loose/add')
-);
-const EditPage = lazy(() =>
-  import(/*webpackChunkName: 'edit'*/ './EditPage')
-);
-const RemovePage = lazy(() =>
-  import(/*webpackChunkName: 'remove'*/ './RemovePage')
-);
+// const Explorer = lazy(() =>
+//   import(/*webpackChunkName: 'explorer'*/ '../explorer')
+// );
+// const AddPage = lazy(() =>
+//   import(/*webpackChunkName: 'add'*/ './loos/add')
+// );
+// const EditPage = lazy(() =>
+//   import(/*webpackChunkName: 'edit'*/ './EditPage')
+// );
+// const RemovePage = lazy(() =>
+//   import(/*webpackChunkName: 'remove'*/ './RemovePage')
+// );
 
 // ReactDOM.render(
 //  ,

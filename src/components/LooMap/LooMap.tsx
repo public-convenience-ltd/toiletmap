@@ -106,12 +106,12 @@ const LooMap = ({
           label={toilet.name || 'Unnamed toilet'}
           onClick={() => {
             if (!staticMap) {
-              router.push(`/loos/${toilet.id}`, undefined, {shallow: true});
+              router.push(`/loos/${toilet.id}`, `/loos/${toilet.id}`, {shallow: true});
             }
           }}
           onKeyDown={(event: { originalEvent: { keyCode: number; }; }) => {
             if (!staticMap && event.originalEvent.keyCode === KEY_ENTER) {
-              router.push(`/loos/${toilet.id}`,  undefined, {shallow: true});
+              router.push(`/loos/${toilet.id}`, `/loos/${toilet.id}`, {shallow: true});
             }
           }}
           keyboard={false}
@@ -129,8 +129,7 @@ const LooMap = ({
       }
 
       setAnnouncement(`${toilet.name || 'Unnamed toilet'} selected`);
-
-      router.push(`/loos/${toilet.id}`,  undefined, {shallow: true});
+      router.push(`/loos/${toilet.id}`, `/loos/${toilet.id}`, {shallow: true});
     },
     [intersectingToilets, router.push]
   );

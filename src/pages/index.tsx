@@ -18,7 +18,8 @@ import { useMapState } from '../components/MapState';
 import config, { FILTERS_KEY } from '../config';
 import { useRouter } from 'next/router';
 
-// const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
+import FIND_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';
+import UPDATE_LOO_MUTATION from '../graphql/updateLoo.graphql';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
@@ -53,7 +54,7 @@ const HomePage = ({ initialPosition, ...props }) => {
   const router = useRouter();
   
   const {id: selectedLooId} = router.query;
-
+  
   const { isValidating: loading, data } = useSWR(
     selectedLooId
       ? [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: selectedLooId })]
