@@ -13,12 +13,12 @@ import ProtectedRoute from '../components/ProtectedRoute';
 import AuthCallback from './AuthCallback';
 import HomePage from '.';
 import AboutPage from './about';
-import ContactPage from './ContactPage';
-import ContributePage from './ContributePage';
+import ContactPage from './contact';
+import ContributePage from './contribute';
 import MapPage from './MapPage';
 import UseOurLoosPage from './use-our-loos';
-import CookiesPage from './CookiesPage';
-import PrivacyPage from './PrivacyPage';
+import CookiesPage from './cookies';
+import PrivacyPage from './privacy';
 import NotFound from './404';
 import PageLoading from '../components/PageLoading';
 
