@@ -113,9 +113,7 @@ const EditPage = (props: { match: { params: { id: any; }; }; }) => {
 
   if (saveData) {
     // redirect to updated toilet entry page
-    return (
-      <Redirect to={`/loos/${saveData.submitReport.loo.id}?message=updated`} />
-    );
+    router.push(`/loos/${saveData.submitReport.loo.id}?message=updated`)
   }
 
   if (loadingLooData || !looData || !initialData || looError) {
@@ -139,7 +137,7 @@ const EditPage = (props: { match: { params: { id: any; }; }; }) => {
 
   // redirect to index if loo is not active (i.e. removed)
   if (looData && !looData.loo.active) {
-    return <Redirect to="/" />;
+    router.push('/');
   }
 
   const getLoosToDisplay = () => {

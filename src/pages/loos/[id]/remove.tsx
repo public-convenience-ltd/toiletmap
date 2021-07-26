@@ -1,37 +1,37 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import useSWR from 'swr';
-import { Redirect, useParams, useHistory } from 'next/link';
 // import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';
 
-import config from '../config';
-import { useMutation } from '../graphql/fetcher';
+import config from '../../../config';
+import { useMutation } from '../../../graphql/fetcher';
 
-import PageLayout from '../components/PageLayout';
-import Container from '../components/Container';
-import Spacer from '../components/Spacer';
-import Text from '../components/Text';
-import Button from '../components/Button';
-import Notification from '../components/Notification';
+import PageLayout from '../../../components/PageLayout';
+import Container from '../../../components/Container';
+import Spacer from '../../../components/Spacer';
+import Text from '../../../components/Text';
+import Button from '../../../components/Button';
+import Notification from '../../../components/Notification';
 
 // const REMOVE_LOO_MUTATION = print(loader('../graphql/removeLoo.graphql'));
-import REMOVE_LOO_MUTATION from '../graphql/removeLoo.graphql';
+import REMOVE_LOO_MUTATION from '../../../graphql/removeLoo.graphql';
 
 // const GET_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
 
-import GET_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';
+import GET_LOO_BY_ID_QUERY from '../../../graphql/findLooById.graphql';
+import { useRouter } from 'next/router';
 
 const RemovePage = function (props: { match: { params: { id: any; }; }; }) {
   const [reason, setReason] = useState('');
-  const params = useParams();
-  const history = useHistory();
+  const router = useRouter();
+  const {id: selectedLooId} = router.query;
 
   const {
     isValidating: loadingLooData,
     data: looData,
     error: looError,
-  } = useSWR([GET_LOO_BY_ID_QUERY, JSON.stringify({ id: params.id })]);
+  } = useSWR([GET_LOO_BY_ID_QUERY, JSON.stringify({ id: selectedLooId })]);
 
   const [doRemove, { loading: loadingRemove, error: removeError }] =
     useMutation(REMOVE_LOO_MUTATION);
@@ -48,7 +48,7 @@ const RemovePage = function (props: { match: { params: { id: any; }; }; }) {
       reason,
     });
 
-    history.push(`/loos/${props.match.params.id}?message=removed`);
+    router.push(`/loos/${selectedLooId}?message=removed`);
   };
 
   if (removeError || looError) {
@@ -66,7 +66,7 @@ const RemovePage = function (props: { match: { params: { id: any; }; }; }) {
   }
 
   if (!looData.loo.active) {
-    return <Redirect to="/" />;
+    router.push('/');
   }
 
   return (
