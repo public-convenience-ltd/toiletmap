@@ -38,7 +38,7 @@ import { MapStateProvider } from '../components/MapState';
 // const AddPage = lazy(() =>
 //   import(/*webpackChunkName: 'add'*/ './loos/add')
 // );
-// const EditPage = lazy(() =>
+// const EditPage = lazy(() =>5
 //   import(/*webpackChunkName: 'edit'*/ './EditPage')
 // );
 // const RemovePage = lazy(() =>
