@@ -17,7 +17,8 @@
     "generate": "node -r dotenv/config ./src/api/db/manage/generate/index.js --confirm",
     "areas": "node -r dotenv/config ./src/api/db/manage/areaToDatabase/index.js",
     "styleguide": "styleguidist server",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "repository": {
     "type": "git",
@@ -90,6 +91,11 @@
     "timeago-react": "3.0.3"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "1.21.8",
+    "@graphql-codegen/import-types-preset": "1.18.6",
+    "@graphql-codegen/typescript": "1.23.0",
+    "@graphql-codegen/typescript-operations": "1.18.4",
+    "@graphql-codegen/typescript-react-apollo": "2.3.1",
     "@commitlint/cli": "12.1.4",
     "@commitlint/config-conventional": "12.1.4",
     "@lola-tech/graphql-kimera": "1.0.1",
