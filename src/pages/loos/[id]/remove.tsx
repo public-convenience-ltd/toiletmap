@@ -15,11 +15,11 @@ import Button from '../../../components/Button';
 import Notification from '../../../components/Notification';
 
 // const REMOVE_LOO_MUTATION = print(loader('../graphql/removeLoo.graphql'));
-import REMOVE_LOO_MUTATION from '../../../graphql/removeLoo.graphql';
+// import REMOVE_LOO_MUTATION from '../../../graphql/removeLoo.graphql';
 
 // const GET_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
 
-import GET_LOO_BY_ID_QUERY from '../../../graphql/findLooById.graphql';
+// import GET_LOO_BY_ID_QUERY from '../../../graphql/findLooById.graphql';
 import { useRouter } from 'next/router';
 
 const RemovePage = function (props: { match: { params: { id: any; }; }; }) {

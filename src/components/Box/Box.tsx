@@ -16,7 +16,7 @@ import {
 } from 'styled-system';
 
 interface IBoxProps extends ColorProps, SpaceProps, FlexboxProps, PositionProps, BorderProps, LayoutProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 // https://styled-system.com/guides/build-a-box

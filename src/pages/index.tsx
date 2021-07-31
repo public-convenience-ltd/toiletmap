@@ -18,8 +18,11 @@ import { useMapState } from '../components/MapState';
 import config, { FILTERS_KEY } from '../config';
 import { useRouter } from 'next/router';
 
-import FIND_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';
-import UPDATE_LOO_MUTATION from '../graphql/updateLoo.graphql';
+// import FIND_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';
+// import UPDATE_LOO_MUTATION from '../graphql/updateLoo.graphql';
+import { withApollo } from '../components/withApollo';
+import { withPageFindLoosNearby } from '../generated/page';
+import { NextPage } from 'next';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
@@ -209,4 +212,4 @@ HomePage.propTypes = {
   }),
 };
 
-export default HomePage;
+export default withApollo(HomePage as NextPage);
