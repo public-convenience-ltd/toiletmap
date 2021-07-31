@@ -1,28 +1,7 @@
 import React from 'react';
-import useSWR from 'swr';
-import { FindLoosNearbyQuery } from '../generated/graphql';
 import { useFindLoosNearby } from '../generated/page';
 import * as Types from '../generated/graphql';
-import { QueryHookOptions, useQuery } from '@apollo/client';
-// const FIND_NEARBY_LOOS_QUERY = `
-//   query findLoosNearby($lat: Float!, $lng: Float!, $radius: Int!) {
-//     loosByProximity(from: { lat: $lat, lng: $lng, maxDistance: $radius }) {
-//       id
-//       name
-//       location {
-//         lat
-//         lng
-//       }
-//       noPayment
-//       allGender
-//       automatic
-//       accessible
-//       babyChange
-//       radar
-//       campaignUOL
-//     }
-//   }
-// `;
+
 
 const useNearbyLoos = (variables: Types.FindLoosNearbyQueryVariables) => {
   const dataRef = React.useRef();
