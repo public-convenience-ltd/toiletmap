@@ -43,8 +43,7 @@ import { useMutation } from '../graphql/fetcher';
 
 import uolLogo from '../../public/uol-logo.svg';
 
-// const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
-import FIND_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';
+// import FIND_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';
 import UPDATE_LOO_MUTATION from '../graphql/updateLoo.graphql';
 
 const uolFragment = (

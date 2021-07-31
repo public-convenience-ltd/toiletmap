@@ -558,6 +558,25 @@ export type FindLooByIdQuery = (
   )> }
 );
 
+export type FindLoosNearbyQueryVariables = Exact<{
+  lat: Scalars['Float'];
+  lng: Scalars['Float'];
+  radius: Scalars['Int'];
+}>;
+
+
+export type FindLoosNearbyQuery = (
+  { __typename?: 'Query' }
+  & { loosByProximity: Array<(
+    { __typename?: 'Loo' }
+    & Pick<Loo, 'id' | 'name' | 'noPayment' | 'allGender' | 'automatic' | 'accessible' | 'babyChange' | 'radar' | 'campaignUOL'>
+    & { location?: Maybe<(
+      { __typename?: 'Point' }
+      & Pick<Point, 'lat' | 'lng'>
+    )> }
+  )> }
+);
+
 export type LooFragmentFragment = (
   { __typename?: 'Loo' }
   & Pick<Loo, 'id' | 'createdAt' | 'updatedAt' | 'verifiedAt' | 'active' | 'name' | 'openingTimes' | 'accessible' | 'men' | 'women' | 'allGender' | 'babyChange' | 'children' | 'urinalOnly' | 'radar' | 'automatic' | 'noPayment' | 'paymentDetails' | 'notes' | 'removalReason' | 'attended' | 'campaignUOL'>
@@ -821,6 +840,26 @@ export const FindLooByIdDocument = gql`
 }
     ${LooFragmentFragmentDoc}`;
 export type FindLooByIdQueryResult = Apollo.QueryResult<FindLooByIdQuery, FindLooByIdQueryVariables>;
+export const FindLoosNearbyDocument = gql`
+    query findLoosNearby($lat: Float!, $lng: Float!, $radius: Int!) {
+  loosByProximity(from: {lat: $lat, lng: $lng, maxDistance: $radius}) {
+    id
+    name
+    location {
+      lat
+      lng
+    }
+    noPayment
+    allGender
+    automatic
+    accessible
+    babyChange
+    radar
+    campaignUOL
+  }
+}
+    `;
+export type FindLoosNearbyQueryResult = Apollo.QueryResult<FindLoosNearbyQuery, FindLoosNearbyQueryVariables>;
 export const RemoveLooDocument = gql`
     mutation removeLoo($id: ID!, $reason: String!) {
   submitRemovalReport(report: {edit: $id, reason: $reason}) {
