@@ -8,7 +8,7 @@
     "build": "next build",
     "dev": "next dev",
     "start": "next start",
-    "api": "node -r dotenv/config ./api/index.js",
+    "start:api": "node -r dotenv/config ./api/index.js",
     "lint": "eslint . && stylelint \"src/**/*.css\"",
     "format": "prettier --write \"./**/*.{js,json}\"",
     "test": "jest",
@@ -18,7 +18,7 @@
     "areas": "node -r dotenv/config ./src/api/db/manage/areaToDatabase/index.js",
     "styleguide": "styleguidist server",
     "prepare": "husky install",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "codegen": "start-server-and-test start:api http-get://localhost:4000 graphql-codegen --config codegen.yml"
   },
   "repository": {
     "type": "git",
@@ -128,6 +128,7 @@
     "react-styleguidist": "11.1.7",
     "serve": "12.0.0",
     "source-map-explorer": "2.5.2",
+    "start-server-and-test": "1.13.1",
     "stylelint": "13.13.1",
     "stylelint-config-standard": "22.0.0",
     "topojson-server": "3.0.1",

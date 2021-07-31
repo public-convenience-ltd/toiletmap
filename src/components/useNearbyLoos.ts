@@ -1,17 +1,11 @@
 import React from 'react';
 import { useFindLoosNearby } from '../generated/page';
 import * as Types from '../generated/graphql';
+import { FindLoosNearbyQuery } from '../generated/graphql';
 
 
 const useNearbyLoos = (variables: Types.FindLoosNearbyQueryVariables) => {
-  const dataRef = React.useRef();
-
-
-
-  // const { isValidating, data, error } = useSWR([
-  //   FIND_NEARBY_LOOS_QUERY,
-  //   JSON.stringify(variables),
-  // ]);
+  const dataRef = React.useRef<FindLoosNearbyQuery>();
 
   const { data, error,loading } = useFindLoosNearby(() => ({
     variables
