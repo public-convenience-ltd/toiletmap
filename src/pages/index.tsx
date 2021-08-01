@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Link from 'next/link';
-import queryString from 'query-string';
 import { Helmet } from 'react-helmet';
 import useSWR from 'swr';
-// // import { loader } from 'graphql.macro';
-// import { print } from 'graphql/language/printer';
 import dynamic from 'next/dynamic';
 import PageLayout from '../components/PageLayout';
 import useNearbyLoos from '../components/useNearbyLoos';
@@ -14,24 +10,15 @@ import Sidebar from '../components/Sidebar';
 import Notification from '../components/Notification';
 import VisuallyHidden from '../components/VisuallyHidden';
 import { useMapState } from '../components/MapState';
-
 import config, { FILTERS_KEY } from '../config';
 import { useRouter } from 'next/router';
-
-// import FIND_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';
-// import UPDATE_LOO_MUTATION from '../graphql/updateLoo.graphql';
 import { withApollo } from '../components/withApollo';
-import { withPageFindLoosNearby } from '../generated/page';
 import { NextPage } from 'next';
+import { getServerPageFindLoosNearby, useFindLooById, useFindLoosNearby } from '../generated/page';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
 const HomePage = ({ initialPosition, ...props }) => {
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => {
-    setMounted(true)
-  }, [])
-
   const [mapState, setMapState] = useMapState();
   const LooMap = React.useMemo(() => dynamic(() => import('../components/LooMap'), { loading: () => <p>Loading map...</p>, ssr: false, }), [])
   const ToiletDetailsPanel = React.useMemo(() => dynamic(() => import('../components/ToiletDetailsPanel'), { loading: () => <p>Loading map...</p>, ssr: false, }), [])
@@ -49,20 +36,50 @@ const HomePage = ({ initialPosition, ...props }) => {
     window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
   }, [filters]);
 
-  const { data: toiletData } = useNearbyLoos({
+  // const { data: toiletData, loading: toiletLoading, error: toiletError } = useNearbyLoos({
+  //   lat: mapState.center.lat,
+  //   lng: mapState.center.lng,
+  //   radius: Math.ceil(mapState.radius),
+  // });
+
+  // React.useEffect(() => {
+
+  //   console.log(toiletData, toiletLoading, toiletError)
+  // }, [toiletLoading, toiletData, toiletError])
+
+
+  // const useNearbyLoos = (variables: Types.FindLoosNearbyQueryVariables) => {
+  
+  const [toiletData, setToiletData] = React.useState([]);
+  const variables = {
     lat: mapState.center.lat,
     lng: mapState.center.lng,
     radius: Math.ceil(mapState.radius),
-  });
+  };
   const router = useRouter();
   
-  const {id: selectedLooId} = router.query;
-  
-  const { isValidating: loading, data } = useSWR(
-    selectedLooId
-      ? [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: selectedLooId })]
-      : null
-  );
+  /**
+   * Fetch nearby loo data when the map state changes.
+   */
+  React.useEffect(() => {
+    async function fetchNearbyLooData() {
+      const { props : toiletProps } = await getServerPageFindLoosNearby({variables});
+      if(toiletProps.data !== undefined) {
+        setToiletData(toiletProps.data.loosByProximity);
+      }
+    }
+    fetchNearbyLooData();
+  }, [mapState])
+
+ 
+  const { id: selectedLooId  = []} = router.query;
+
+  // const { isValidating: loading, data } = useSWR(
+  //   selectedLooId
+  //     ? [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: selectedLooId })]
+  //     : null
+  // );
+  const {data} = useFindLooById((router) => ({variables: {id: selectedLooId[0]}}))
 
   // const { message } = queryString.parse(props.location.search);
   const message = "TODO"
@@ -115,7 +132,7 @@ const HomePage = ({ initialPosition, ...props }) => {
   );
 
   return (
-    mounted && <PageLayout mapCenter={mapState.center}>
+    <PageLayout mapCenter={mapState.center}>
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>

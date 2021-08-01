@@ -25,6 +25,7 @@ const Box = styled.div<IBoxProps>`${compose(space, color, layout, flexbox, posit
   min-width: 0;
 `
 
+export type BoxProps = typeof Box.defaultProps;
 
 /** @component */
 export default Box;

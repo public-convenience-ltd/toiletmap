@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Box from '../Box';
+import Box, { BoxProps } from '../Box';
 
-const Divider = (props: JSX.IntrinsicAttributes) => (
+const Divider = (props: BoxProps) => (
   <Box
     as="hr"
     height="1px"

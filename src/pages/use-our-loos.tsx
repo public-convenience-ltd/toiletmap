@@ -7,7 +7,7 @@ import Button from '../components/Button';
 import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 import Box from '../components/Box';
-import {css} from '@emotion/react'
+import { css } from '@emotion/react'
 import config from '../config';
 
 import uolLogo from '../../public/domestos-use-our-loos-full.png';

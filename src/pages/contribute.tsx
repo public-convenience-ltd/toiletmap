@@ -8,7 +8,7 @@ import Container from '../components/Container';
 import Button from '../components/Button';
 import Text from '../components/Text';
 import Spacer from '../components/Spacer';
-import Box from '../components/Box';
+import Box, { BoxProps } from '../components/Box';
 
 import config from '../config';
 
@@ -16,7 +16,7 @@ const List = styled.ul`
   list-style: initial;
 `;
 
-const ListItem = (props: JSX.IntrinsicAttributes) => (
+const ListItem = (props: BoxProps) => (
   <Box as="li" marginTop={2} marginLeft={4} {...props} />
 );
 

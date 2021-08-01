@@ -9,5 +9,7 @@ const Text = styled.div<ITextProps>(
   compose(color, typography, height)
 );
 
+export type TextProps = typeof Text.defaultProps;
+
 /** @component */
 export default Text;

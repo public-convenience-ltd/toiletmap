@@ -17,7 +17,7 @@ const LAYOUT_BLOG = 'blog';
 interface IPageLayout {
   mapCenter?: {lat: number; lng: number;}
   layoutMode: 'default' | 'blog';
-  children: React.ReactElement;
+  children: React.ReactNode;
 }
 
 const PageLayout = ({ mapCenter, layoutMode, children }: IPageLayout) => {
