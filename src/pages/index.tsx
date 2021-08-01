@@ -72,15 +72,18 @@ const HomePage = ({ initialPosition, ...props }) => {
   }, [mapState])
 
  
-  const { id: selectedLooId  = []} = router.query;
+  const { id: selectedLooId } = router.query;
 
   // const { isValidating: loading, data } = useSWR(
   //   selectedLooId
   //     ? [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: selectedLooId })]
   //     : null
   // );
-  const {data} = useFindLooById((router) => ({variables: {id: selectedLooId[0]}}))
-
+  const {loading, data} = useFindLooById((router) => ({variables: {id: selectedLooId as string}}))
+  console.log(loading, selectedLooId)
+  React.useEffect(() => {
+    console.log(data);
+  }, [loading])
   // const { message } = queryString.parse(props.location.search);
   const message = "TODO"
 
