@@ -1,9 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import queryString from 'query-string';
 import { mutate } from 'swr';
-// import { loader } from 'graphql.macro';
-import { print } from 'graphql/language/printer';
 
 import PageLayout from '../../components/PageLayout';
 import EntryForm from '../../components/EntryForm';
@@ -16,9 +13,10 @@ import { useMapState } from '../../components/MapState';
 import useNearbyLoos from '../../components/useNearbyLoos';
 
 import config from '../../config';
-import { useMutation } from '../../graphql/fetcher';
 import dynamic from 'next/dynamic';
 import Router, { useRouter } from 'next/router';
+import { NextPage } from 'next';
+import { withApollo } from '../../components/withApollo';
 
 // const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
 // const UPDATE_LOO_MUTATION = print(loader('../graphql/updateLoo.graphql'));
@@ -137,4 +135,4 @@ const AddPage = (props) => {
   );
 };
 
-export default AddPage;
+export default withApollo(AddPage as NextPage);

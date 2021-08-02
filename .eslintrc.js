@@ -6,7 +6,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  extends: ['eslint:recommended', 'react-app'],
+  extends: ['eslint:recommended'/*, 'react-app'*/],
   parserOptions: {
     ecmaVersion: 2017,
     ecmaFeatures: {

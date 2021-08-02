@@ -106,18 +106,18 @@ const LooMap = ({
           label={toilet.name || 'Unnamed toilet'}
           onClick={() => {
             if (!staticMap) {
-              router.replace(`/loos/${toilet.id}`, `/loos/${toilet.id}`, {shallow: true});
+              router.push(`/loos/${toilet.id}`, undefined, {shallow: true});
             }
           }}
           onKeyDown={(event: { originalEvent: { keyCode: number; }; }) => {
             if (!staticMap && event.originalEvent.keyCode === KEY_ENTER) {
-              router.replace(`/loos/${toilet.id}`, `/loos/${toilet.id}`,{shallow: true});
+              router.push(`/loos/${toilet.id}`, undefined, {shallow: true});
             }
           }}
           keyboard={false}
         />
       )),
-    [loos, staticMap, router.push]
+    [loos, staticMap]
   );
 
   const keyboardSelectionHandler = React.useCallback(
@@ -129,9 +129,9 @@ const LooMap = ({
       }
 
       setAnnouncement(`${toilet.name || 'Unnamed toilet'} selected`);
-      router.replace(`/loos/${toilet.id}`, `/loos/${toilet.id}`,{shallow: true});
+      router.push(`/loos/${toilet.id}`, undefined, {shallow: true});
     },
-    [intersectingToilets, router.push]
+    [intersectingToilets]
   );
 
   React.useEffect(() => {

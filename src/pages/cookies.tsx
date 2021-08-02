@@ -12,7 +12,7 @@ import config from '../config';
 
 const CookiesPage = () => (
   <PageLayout layoutMode="blog">
-    <Helmet>
+    {/* <Helmet>
       <title>{config.getTitle('Cookies')}</title>
     </Helmet>
 
@@ -31,7 +31,7 @@ const CookiesPage = () => (
           privacy policy.
         </Button>
       </p>
-    </Container>
+    </Container> */}
   </PageLayout>
 );
 

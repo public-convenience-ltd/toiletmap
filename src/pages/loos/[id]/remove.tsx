@@ -14,60 +14,54 @@ import Text from '../../../components/Text';
 import Button from '../../../components/Button';
 import Notification from '../../../components/Notification';
 
-// const REMOVE_LOO_MUTATION = print(loader('../graphql/removeLoo.graphql'));
-// import REMOVE_LOO_MUTATION from '../../../graphql/removeLoo.graphql';
-
-// const GET_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
-
-// import GET_LOO_BY_ID_QUERY from '../../../graphql/findLooById.graphql';
 import { useRouter } from 'next/router';
 
 const RemovePage = function (props: { match: { params: { id: any; }; }; }) {
-  const [reason, setReason] = useState('');
-  const router = useRouter();
-  const {id: selectedLooId} = router.query;
+  // const [reason, setReason] = useState('');
+  // const router = useRouter();
+  // const {id: selectedLooId} = router.query;
 
-  const {
-    isValidating: loadingLooData,
-    data: looData,
-    error: looError,
-  } = useSWR([GET_LOO_BY_ID_QUERY, JSON.stringify({ id: selectedLooId })]);
+  // const {
+  //   isValidating: loadingLooData,
+  //   data: looData,
+  //   error: looError,
+  // } = useSWR([GET_LOO_BY_ID_QUERY, JSON.stringify({ id: selectedLooId })]);
 
-  const [doRemove, { loading: loadingRemove, error: removeError }] =
-    useMutation(REMOVE_LOO_MUTATION);
+  // const [doRemove, { loading: loadingRemove, error: removeError }] =
+  //   useMutation(REMOVE_LOO_MUTATION);
 
-  const updateReason = (evt) => {
-    setReason(evt.currentTarget.value);
-  };
+  // const updateReason = (evt) => {
+  //   setReason(evt.currentTarget.value);
+  // };
 
-  const onSubmit = async (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
+  // const onSubmit = async (e: { preventDefault: () => void; }) => {
+  //   e.preventDefault();
 
-    await doRemove({
-      id: looData.loo.id,
-      reason,
-    });
+  //   await doRemove({
+  //     id: looData.loo.id,
+  //     reason,
+  //   });
 
-    router.push(`/loos/${selectedLooId}?message=removed`);
-  };
+  //   router.push(`/loos/${selectedLooId}?message=removed`);
+  // };
 
-  if (removeError || looError) {
-    console.error(removeError || looError);
-  }
+  // if (removeError || looError) {
+  //   console.error(removeError || looError);
+  // }
 
-  if (loadingLooData || !looData || looError) {
-    return (
-      <PageLayout>
-        <Notification>
-          {loadingLooData ? 'Fetching Toilet Data' : 'Error finding toilet.'}
-        </Notification>
-      </PageLayout>
-    );
-  }
+  // if (loadingLooData || !looData || looError) {
+  //   return (
+  //     <PageLayout>
+  //       <Notification>
+  //         {loadingLooData ? 'Fetching Toilet Data' : 'Error finding toilet.'}
+  //       </Notification>
+  //     </PageLayout>
+  //   );
+  // }
 
-  if (!looData.loo.active) {
-    router.push('/');
-  }
+  // if (!looData.loo.active) {
+  //   router.push('/');
+  // }
 
   return (
     <PageLayout layoutMode="blog">
@@ -88,7 +82,7 @@ const RemovePage = function (props: { match: { params: { id: any; }; }; }) {
             using the form below.
           </p>
 
-          <Spacer mb={3} />
+          {/* <Spacer mb={3} />
 
           <form onSubmit={onSubmit}>
             <label>
@@ -119,7 +113,7 @@ const RemovePage = function (props: { match: { params: { id: any; }; }; }) {
             <Notification>
               Oops. We can't submit your report at this time. Try again later.
             </Notification>
-          )}
+          )} */}
         </Container>
       </>
     </PageLayout>

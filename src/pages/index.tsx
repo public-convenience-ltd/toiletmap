@@ -14,7 +14,7 @@ import config, { FILTERS_KEY } from '../config';
 import { useRouter } from 'next/router';
 import { withApollo } from '../components/withApollo';
 import { NextPage } from 'next';
-import { getServerPageFindLoosNearby, useFindLooById, useFindLoosNearby } from '../generated/page';
+import { getServerPageFindLooById, getServerPageFindLoosNearby, useFindLooById, useFindLoosNearby } from '../generated/page';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
@@ -35,20 +35,6 @@ const HomePage = ({ initialPosition, ...props }) => {
   React.useEffect(() => {
     window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
   }, [filters]);
-
-  // const { data: toiletData, loading: toiletLoading, error: toiletError } = useNearbyLoos({
-  //   lat: mapState.center.lat,
-  //   lng: mapState.center.lng,
-  //   radius: Math.ceil(mapState.radius),
-  // });
-
-  // React.useEffect(() => {
-
-  //   console.log(toiletData, toiletLoading, toiletError)
-  // }, [toiletLoading, toiletData, toiletError])
-
-
-  // const useNearbyLoos = (variables: Types.FindLoosNearbyQueryVariables) => {
   
   const [toiletData, setToiletData] = React.useState([]);
   const variables = {
@@ -74,16 +60,21 @@ const HomePage = ({ initialPosition, ...props }) => {
  
   const { id: selectedLooId } = router.query;
 
-  // const { isValidating: loading, data } = useSWR(
-  //   selectedLooId
-  //     ? [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: selectedLooId })]
-  //     : null
-  // );
-  const {loading, data} = useFindLooById((router) => ({variables: {id: selectedLooId as string}}))
-  console.log(loading, selectedLooId)
+
+  const [selectedLoo, setSelectedLoo] = React.useState(null);
+  const [loadingSelectedLoo, setLoadingSelectedLoo] = React.useState(false);
   React.useEffect(() => {
-    console.log(data);
-  }, [loading])
+    async function fetchNearbyLooData() {
+      const { props : toiletProps } = await getServerPageFindLooById({variables: {id: selectedLooId as string}});
+      if(toiletProps.data !== undefined) {
+        setSelectedLoo(toiletProps.data.loo);
+        setLoadingSelectedLoo(false);
+      }
+    }
+    setLoadingSelectedLoo(true);
+    fetchNearbyLooData();
+  }, [selectedLooId])
+
   // const { message } = queryString.parse(props.location.search);
   const message = "TODO"
 
@@ -103,21 +94,21 @@ const HomePage = ({ initialPosition, ...props }) => {
     })
   );
 
-  const isLooPage = router.pathname === '/loos';
-
+  const isLooPage = router.pathname === '/loos/[id]';
+    console.log("AA", isLooPage, router.pathname)
   const [shouldCenter, setShouldCenter] = React.useState(isLooPage);
 
   // set initial map center to toilet if on /loos/:id
   React.useEffect(() => {
-    if (shouldCenter && data) {
+    if (shouldCenter && selectedLoo) {
       setMapState({
-        center: data.loo.location,
+        center: selectedLoo.location,
       });
 
       // don't recenter the map each time the id changes
       setShouldCenter(false);
     }
-  }, [data, shouldCenter, setMapState]);
+  }, [selectedLoo, shouldCenter, setMapState]);
 
   // set the map position if initialPosition prop exists
   React.useEffect(() => {
@@ -131,7 +122,7 @@ const HomePage = ({ initialPosition, ...props }) => {
   const [toiletPanelDimensions, setToiletPanelDimensions] = React.useState({});
 
   const pageTitle = config.getTitle(
-    isLooPage && data ? data.loo.name || 'Unnamed Toilet' : 'Find Toilet'
+    isLooPage && selectedLoo ? selectedLoo.name || 'Unnamed Toilet' : 'Find Toilet'
   );
 
   return (
@@ -184,7 +175,7 @@ const HomePage = ({ initialPosition, ...props }) => {
           controlsOffset={toiletPanelDimensions.height}
         />
 
-        {Boolean(selectedLooId) && data && (
+        {Boolean(selectedLooId) && selectedLoo && (
           <Box
             position="absolute"
             left={0}
@@ -193,8 +184,8 @@ const HomePage = ({ initialPosition, ...props }) => {
             zIndex={100}
           >
             <ToiletDetailsPanel
-              data={data.loo}
-              isLoading={loading || !data}
+              data={selectedLoo}
+              isLoading={loadingSelectedLoo || !selectedLoo}
               startExpanded={!!message}
               onDimensionsChange={setToiletPanelDimensions}
             >
