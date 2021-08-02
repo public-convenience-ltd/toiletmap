@@ -16,6 +16,23 @@ import { withApollo } from '../components/withApollo';
 import { NextPage } from 'next';
 import { getServerPageFindLooById, getServerPageFindLoosNearby, useFindLooById, useFindLoosNearby } from '../generated/page';
 
+
+
+/**
+ * SSR Migration plan
+ * ---
+ * 
+ * Look at getStaticProps to fetch loos for lat/lng at build time.
+ * Look at using getStaticProps to pre-fetch /loos/[id].
+ * 
+ * Use ISR (https://nextjs.org/docs/basic-features/data-fetching#incremental-static-regeneration)
+ * ISR lets us regenerate loo pages and lat/lng loo list incrementally upon new requests
+ * Set revalidate to throttle this by n seconds.
+ */
+
+
+
+
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
 const HomePage = ({ initialPosition, ...props }) => {
@@ -46,6 +63,7 @@ const HomePage = ({ initialPosition, ...props }) => {
   
   /**
    * Fetch nearby loo data when the map state changes.
+   * TODO: Try initial fetch using SSR.
    */
   React.useEffect(() => {
     async function fetchNearbyLooData() {
@@ -61,6 +79,9 @@ const HomePage = ({ initialPosition, ...props }) => {
   const { id: selectedLooId } = router.query;
 
 
+  /**
+   * TODO: Fetch loo information using SSR.
+   */
   const [selectedLoo, setSelectedLoo] = React.useState(null);
   const [loadingSelectedLoo, setLoadingSelectedLoo] = React.useState(false);
   React.useEffect(() => {
