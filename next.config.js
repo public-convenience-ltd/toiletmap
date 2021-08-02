@@ -11,6 +11,7 @@ module.exports = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  distDir: 'build',
   webpack: (config, { isServer }) => {
     // config.module.rules.push({
     //   test: /\.(graphql|gql)$/,
