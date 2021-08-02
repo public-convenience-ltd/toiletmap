@@ -19,7 +19,5 @@ jobs:
       uses: bahmutov/npm-install@v1.7.7
     - name: Build Test Client
       run: yarn build:testable
-    - name: Start
-      run: yarn start
-    # - name: Test
-    #   run: yarn test
+    - name: Test
+      run: yarn test
