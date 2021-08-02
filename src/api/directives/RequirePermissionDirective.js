@@ -1,7 +1,7 @@
 const {
   SchemaDirectiveVisitor,
   AuthenticationError,
-} = require('apollo-server');
+} = require('apollo-server-micro');
 const { defaultFieldResolver } = require('graphql');
 const config = require('../config');
 

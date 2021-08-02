@@ -1,3 +1,5 @@
+import { gql } from 'apollo-server-micro'
+export default gql(`
 scalar DateTime
 scalar OpeningTimes
 
@@ -191,7 +193,7 @@ type Proportions {
 Statistics for a certain area.
 """
 type AreaStats {
-  "The area's identifier. Note that only the `name` will be passed with this field."
+  "The area's identifier. Note that only the 'name' will be passed with this field."
   area: AdminGeo!
   "The total number of loos in this area"
   totalLoos: Int!
@@ -323,3 +325,4 @@ type Mutation {
     @auth(requires: SUBMIT_REPORT)
   submitVerificationReport(id: ID): ReportMutationResponse
 }
+`)

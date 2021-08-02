@@ -1,4 +1,4 @@
-const { SchemaDirectiveVisitor } = require('apollo-server');
+const { SchemaDirectiveVisitor } = require('apollo-server-micro');
 const { defaultFieldResolver } = require('graphql');
 const config = require('../config');
 

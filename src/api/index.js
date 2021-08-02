@@ -1,4 +1,4 @@
-const { ApolloServer, gql } = require('apollo-server');
+const { ApolloServer, gql } = require('apollo-server-micro');
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
 
@@ -67,5 +67,5 @@ const apollo = new ApolloServer({
   playground: { ...config.graphql.playground },
   introspection: true,
 });
-
+console.log(apollo)
 module.exports = apollo;

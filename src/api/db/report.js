@@ -225,4 +225,4 @@ ReportSchema.statics.getCounters = async function () {
   };
 };
 
-module.exports = new mongoose.model('NewReport', ReportSchema);
+module.exports = mongoose.models.NewReport || new mongoose.model('NewReport', ReportSchema);
