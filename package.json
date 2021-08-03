@@ -7,6 +7,7 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "build": "next build",
     "dev": "next dev",
+    "api": "micro -l tcp://localhost:4000 ./src/api/index.js",
     "start": "next start",
     "lint": "eslint . && stylelint \"src/**/*.css\"",
     "format": "prettier --write \"./**/*.{js,json}\"",
@@ -17,7 +18,7 @@
     "areas": "node -r dotenv/config ./src/api/db/manage/areaToDatabase/index.js",
     "styleguide": "styleguidist server",
     "prepare": "husky install",
-    "codegen": "start-server-and-test api http-get://localhost:4000 graphql-codegen --config codegen.yml"
+    "gql:codegen": "start-server-and-test api http-get://localhost:4000/api 'graphql-codegen --config codegen.yml'"
   },
   "repository": {
     "type": "git",

@@ -20,7 +20,6 @@ export type Scalars = {
 
 /**
  * A unit of Administrative Geography
- *
  * e.g. a district council
  */
 export type AdminGeo = {
@@ -32,7 +31,7 @@ export type AdminGeo = {
 /** Statistics for a certain area. */
 export type AreaStats = {
   __typename?: 'AreaStats';
-  /** The area's identifier. Note that only the `name` will be passed with this field. */
+  /** The area's identifier. Note that only the 'name' will be passed with this field. */
   area: AdminGeo;
   /** The total number of loos in this area */
   totalLoos: Scalars['Int'];
@@ -80,7 +79,6 @@ export type Counters = {
 
 /**
  * A Toilet
- *
  * The data representing a toilet is computed from its **Report**s
  */
 export type Loo = {
@@ -174,7 +172,6 @@ export enum Permission {
 
 /**
  * A Geographical Point
- *
  * Expressed in WGS84 coordinates (SRID 4326).
  */
 export type Point = {
@@ -268,7 +265,6 @@ export type RemovalReportInput = {
 
 /**
  * Reported information about a real-world toilet
- *
  * Reports are submitted by contributors or created as part of data imports
  * A report can refer to another report (via the **previous** field) to indicate
  * that it is intended to augment or adjust an exisitn Loo

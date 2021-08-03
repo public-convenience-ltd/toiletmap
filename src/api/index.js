@@ -21,7 +21,7 @@ const client = jwksClient({
 });
 
 const { connect } = require('./db');
-connect(process.env.MONGODB_URI);
+connect(process.env.MONGODB_URI||"mongodb://127.0.0.1:27017/toiletmap");
 
 function getKey(header, cb) {
   client.getSigningKey(header.kid, function (err, key) {
@@ -67,5 +67,7 @@ const apollo = new ApolloServer({
   playground: { ...config.graphql.playground },
   introspection: true,
 });
-console.log(apollo)
-module.exports = apollo;
+
+module.exports = apollo.start().then(() => apollo.createHandler({
+  path: '/api',
+}));
