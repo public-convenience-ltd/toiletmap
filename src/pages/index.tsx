@@ -21,10 +21,10 @@ import { getServerPageFindLooById, getServerPageFindLoosNearby, useFindLooById, 
 /**
  * SSR Migration plan
  * ---
- * 
+ *
  * Look at getStaticProps to fetch loos for lat/lng at build time.
  * Look at using getStaticProps to pre-fetch /loos/[id].
- * 
+ *
  * Use ISR (https://nextjs.org/docs/basic-features/data-fetching#incremental-static-regeneration)
  * ISR lets us regenerate loo pages and lat/lng loo list incrementally upon new requests
  * Set revalidate to throttle this by n seconds.
@@ -52,7 +52,7 @@ const HomePage = ({ initialPosition, ...props }) => {
   React.useEffect(() => {
     window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
   }, [filters]);
-  
+
   const [toiletData, setToiletData] = React.useState([]);
   const variables = {
     lat: mapState.center.lat,
@@ -60,7 +60,7 @@ const HomePage = ({ initialPosition, ...props }) => {
     radius: Math.ceil(mapState.radius),
   };
   const router = useRouter();
-  
+
   /**
    * Fetch nearby loo data when the map state changes.
    * TODO: Try initial fetch using SSR.
@@ -75,7 +75,7 @@ const HomePage = ({ initialPosition, ...props }) => {
     fetchNearbyLooData();
   }, [mapState])
 
- 
+
   const { id: selectedLooId } = router.query;
 
 
@@ -116,7 +116,6 @@ const HomePage = ({ initialPosition, ...props }) => {
   );
 
   const isLooPage = router.pathname === '/loos/[id]';
-    console.log("AA", isLooPage, router.pathname)
   const [shouldCenter, setShouldCenter] = React.useState(isLooPage);
 
   // set initial map center to toilet if on /loos/:id

@@ -8,7 +8,6 @@
     "build": "next build",
     "dev": "next dev",
     "start": "next start",
-    "api": "node -r dotenv/config ./api/index.js",
     "lint": "eslint . && stylelint \"src/**/*.css\"",
     "format": "prettier --write \"./**/*.{js,json}\"",
     "test": "jest",
@@ -51,7 +50,7 @@
     "@material-ui/icons": "4.11.2",
     "@rehooks/component-size": "1.0.3",
     "@styled-system/prop-types": "5.1.5",
-    "apollo-server": "2.24.1",
+    "apollo-server-micro": "2.25.2",
     "auth0-js": "9.16.2",
     "chart.js": "2.9.4",
     "d3-scale": "3.3.0",
@@ -68,6 +67,7 @@
     "jwks-rsa": "2.0.4",
     "leaflet": "1.7.1",
     "lodash": "4.17.21",
+    "micro": "9.3.4",
     "mongoose": "5.12.14",
     "mongoose-paginate": "5.0.3",
     "next": "11.0.1",
@@ -92,8 +92,8 @@
   },
   "devDependencies": {
     "@apollo/client": "3.4.1",
-    "@commitlint/cli": "12.1.4",
-    "@commitlint/config-conventional": "12.1.4",
+    "@commitlint/cli": "13.1.0",
+    "@commitlint/config-conventional": "13.1.0",
     "@graphql-codegen/cli": "1.21.8",
     "@graphql-codegen/import-types-preset": "1.18.6",
     "@graphql-codegen/typescript": "1.23.0",
@@ -103,11 +103,11 @@
     "@mapbox/geojson-area": "0.2.2",
     "@mapbox/geojson-rewind": "0.5.1",
     "@shelf/jest-mongodb": "1.3.4",
-    "@types/jest": "26.0.23",
-    "@types/node": "15.12.4",
+    "@types/jest": "26.0.24",
+    "@types/node": "16.4.10",
     "@types/puppeteer": "5.4.4",
-    "@types/react": "17.0.11",
-    "@types/react-dom": "17.0.8",
+    "@types/react": "17.0.15",
+    "@types/react-dom": "17.0.9",
     "@types/react-leaflet": "2.8.1",
     "@types/styled-system": "5.1.11",
     "apollo-server-testing": "2.24.1",
@@ -119,7 +119,7 @@
     "geojson-precision": "1.0.0",
     "graphql-codegen-apollo-next-ssr": "1.6.1",
     "http-proxy-middleware": "2.0.1",
-    "husky": "6.0.0",
+    "husky": "7.0.1",
     "jest-puppeteer": "5.0.3",
     "lint-staged": "11.1.1",
     "migrate-mongo": "8.2.3",
@@ -135,22 +135,9 @@
     "stylelint-config-standard": "22.0.0",
     "topojson-server": "3.0.1",
     "topojson-simplify": "3.0.3",
-    "typescript": "4.3.4",
+    "typescript": "4.3.5",
     "uuid": "8.3.2",
     "webpack": "5.40.0"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version",
-      "ie 11"
-    ]
   },
   "resolutions": {
     "graphql": "14.7.0"
