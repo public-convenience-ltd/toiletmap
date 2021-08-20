@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { mutate } from 'swr';
 
 import PageLayout from '../../components/PageLayout';
@@ -136,3 +137,5 @@ const AddPage = (props) => {
 };
 
 export default withApollo(AddPage as NextPage);
+
+export const getServerSideProps = withPageAuthRequired();

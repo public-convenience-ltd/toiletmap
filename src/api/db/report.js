@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const hasha = require('hasha');
 const isEqual = require('lodash/isEqual');
 
-const config = require('../config');
 const CoreSchema = require('./core');
 
 const ReportSchema = new mongoose.Schema(
@@ -168,15 +167,15 @@ ReportSchema.statics.submit = async function (data, user, from) {
     },
   };
 
-  reportData.contributor = config.reports.anonContributor;
+  reportData.contributor = 'Toiletmap.org.uk Contributor';
 
   if (user) {
     if (user.sub) {
       reportData.contributorId = user.sub;
     }
 
-    if (user[config.auth0.profileKey].nickname) {
-      reportData.contributor = user[config.auth0.profileKey].nickname;
+    if (user[process.env.AUTH0_PROFILE_KEY].nickname) {
+      reportData.contributor = user[process.env.AUTH0_PROFILE_KEY].nickname;
     }
   }
 

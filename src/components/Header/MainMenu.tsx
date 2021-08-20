@@ -1,12 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Link, { LinkProps } from 'next/link';
 import {useRouter} from 'next/router';
 import styled from '@emotion/styled';
 import Box from '../Box';
 import Text from '../Text';
 import { Media } from '../Media';
-import { useAuth } from '../../Auth';
+import { useUser } from '@auth0/nextjs-auth0';
 
 const StyledNavLink = styled(Link)<LinkProps & {
   onMouseEnter?: React.MouseEventHandler<Element> | undefined;
@@ -32,14 +31,8 @@ const MainMenu = ({
   onMenuItemClick,
   children,
 }: IMainMenu) => {
-  const { isAuthenticated, logout } = useAuth();
+  const { user } = useUser();
   const router = useRouter();
-
-  const handleLogout = () => {
-    logout();
-    onMenuItemClick();
-    router.push('/');
-  };
 
   return (
     <Text
@@ -62,7 +55,7 @@ const MainMenu = ({
           width="100%"
         >
           <Box as="li" ml={[0, 4]}>
-            <StyledNavLink  href="/" onClick={onMenuItemClick}>
+            <StyledNavLink  href="/">
               Find a Toilet
             </StyledNavLink>
           </Box>
@@ -73,33 +66,32 @@ const MainMenu = ({
                   ? `/loos/add?lat=${mapCenter.lat}&lng=${mapCenter.lng}`
                   : `/loos/add`
               }
-              onClick={onMenuItemClick}
             >
               Add a Toilet
             </StyledNavLink>
           </Box>
 
           <Box as="li" mt={['auto', 0]} ml={[0, 'auto']}>
-            <StyledNavLink href="/about" onClick={onMenuItemClick}>
+            <StyledNavLink href="/about">
               About
             </StyledNavLink>
           </Box>
           <Box as="li" mt={[3, 0]} ml={[0, 4]}>
-            <StyledNavLink href="/use-our-loos" onClick={onMenuItemClick}>
+            <StyledNavLink href="/use-our-loos">
               Our Sponsor
             </StyledNavLink>
           </Box>
           <Box as="li" mt={[3, 0]} mb={['auto', 0]} ml={[0, 4]}>
-            <StyledNavLink href="/contact" onClick={onMenuItemClick}>
+            <StyledNavLink href="/contact">
               Contact
             </StyledNavLink>
           </Box>
 
-          {isAuthenticated() && (
+          {user && (
             <Box as="li" mt={[3, 0]} mb={['auto', 0]} ml={[0, 4]}>
-              <button type="button" onClick={handleLogout}>
+              <StyledNavLink href="/api/auth/logout">
                 Logout
-              </button>
+              </StyledNavLink>
             </Box>
           )}
         </Box>

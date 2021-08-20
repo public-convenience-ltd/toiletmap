@@ -2,7 +2,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from '@emotion/styled';
 
-import { useAuth } from '../Auth';
 import PageLayout from '../components/PageLayout';
 import Container from '../components/Container';
 import Button from '../components/Button';
@@ -21,7 +20,6 @@ const ListItem = (props: BoxProps) => (
 );
 
 const LoginPage = (props) => {
-  const auth = useAuth();
 
   return (
     <PageLayout layoutMode="blog">
@@ -43,7 +41,7 @@ const LoginPage = (props) => {
           Up:
         </p>
         <Spacer mb={3} />
-        <Button onClick={auth.login}>Log In/Sign Up</Button>
+        <a href="/api/auth/login" >Log In/Sign Up</a>
         <Spacer mb={4} />
         <Text fontSize={3} fontWeight="bold">
           <h2>Examples of Public toilets</h2>
