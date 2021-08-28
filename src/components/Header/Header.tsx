@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Router from 'next/router';
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
@@ -9,63 +8,15 @@ import { Media } from '../Media';
 import Drawer from '../Drawer';
 import Icon from '../Icon';
 import Logo from '../Logo';
-import Text from '../Text';
-import Spacer from '../Spacer';
 
 import MainMenu from './MainMenu';
 
-import config from '../../config';
-
-const CovidNotification = ({ onClose }) => (
-  <Text fontSize={[14, 16]} color="white">
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      px={[3, 4]}
-      py={2}
-      bg="primary"
-    >
-      <div>
-        <h2 css={{ display: 'inline', fontWeight: 'bold' }}>COVID-19:</h2>&nbsp;
-        Toilets in businesses may not currently be open to non-customers. For
-        public toilets, check with local authority websites. Toilets in
-        supermarkets, shopping centres, train stations and service stations are
-        mostly open.
-      </div>
-
-      <Spacer ml={[2, 4]} />
-
-      <Text fontSize={20}>
-        <button type="button" aria-label="Close notification" onClick={onClose}>
-          <Icon icon={faTimes} />
-        </button>
-      </Text>
-    </Box>
-  </Text>
-);
-
 const Header = ({ mapCenter, children }) => {
-  const [mounted, setMounted] = useState(false);
-  React.useEffect(() => {
-      setMounted(true)
-  }, [])
+
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
-  const showCovidNotification =
-    config.getSetting('notification', 'covid') !== 'dismissed';
-
   return (
-    mounted && <Box as="header">
-      {showCovidNotification && (
-        <CovidNotification
-          onClose={() => {
-            config.setSetting('notification', 'covid', 'dismissed');
-            Router.reload();
-          }}
-        />
-      )}
-
+    <Box as="header">
       <Box
         display="flex"
         alignItems="center"

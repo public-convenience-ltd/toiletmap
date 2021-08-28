@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Link from 'next/link';
 
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+
 
 import PageLayout from '../../../components/PageLayout';
 import Button from '../../../components/Button';
@@ -170,7 +172,7 @@ const EditPage = (props: { match: { params: { id: any; }; }; }) => {
         </Box>
 
         <Spacer mt={4} />
-{/* 
+{/*
         <EntryForm
           title="Edit This Toilet"
           loo={initialData.loo}
@@ -213,3 +215,5 @@ const EditPage = (props: { match: { params: { id: any; }; }; }) => {
 };
 
 export default withApollo(EditPage as NextPage);
+
+export const getServerSideProps = withPageAuthRequired();

@@ -1,4 +1,3 @@
-const config = require('./config');
 const { Loo, Report, Area, MapGeo } = require('./db');
 const { GraphQLDateTime } = require('graphql-iso-date');
 const without = require('lodash/without');
@@ -76,7 +75,7 @@ const resolvers = {
         args.filters.contributors &&
         args.filters.contributors.length &&
         context.user &&
-        context.user[config.auth0.permissionsKey].includes(REQUIRED_PERMISSION)
+        context.user[process.env.AUTH0_PERMISSIONS_KEY].includes(REQUIRED_PERMISSION)
       ) {
         query.$and = [
           {

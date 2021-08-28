@@ -4,6 +4,8 @@ import useSWR from 'swr';
 // import { loader } from 'graphql.macro';
 import { print } from 'graphql/language/printer';
 
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+
 import config from '../../../config';
 import { useMutation } from '../../../graphql/fetcher';
 
@@ -121,3 +123,5 @@ const RemovePage = function (props: { match: { params: { id: any; }; }; }) {
 };
 
 export default RemovePage;
+
+export const getServerSideProps = withPageAuthRequired();

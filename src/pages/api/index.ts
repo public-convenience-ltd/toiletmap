@@ -1,9 +1,8 @@
-import { ApolloServer, gql } from 'apollo-server-micro';
+import { ApolloServer } from 'apollo-server-micro';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import jwt from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
-
-import settings from '../../api/config';
+import { getSession } from '@auth0/nextjs-auth0';
 
 import resolvers from '../../api/resolvers';
 import {
@@ -14,7 +13,7 @@ import {
 import typeDefs from '../../api/typeDefs';
 
 const client = jwksClient({
-  jwksUri: settings.auth0.jwksUri,
+  jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}/.well-known/jwks.json`
 });
 
 const { connect } = require('../../api/db');
@@ -28,9 +27,9 @@ function getKey(header, cb) {
 }
 
 const options = {
-  audience: settings.auth0.audience,
-  issuer: settings.auth0.issuer,
-  algorithms: settings.auth0.algorithms,
+  audience: process.env.AUTH0_AUDIENCE,
+  issuer: process.env.AUTH0_ISSUER_BASE_URL,
+  algorithms: ['RS256'],
 };
 
 // Add GraphQL API
@@ -43,11 +42,12 @@ const server = new ApolloServer({
       redact: RedactionDirective,
     },
   }),
-  context: async ({ req }) => {
+  context: async ({ req, res }) => {
     let user = null;
-    const authorization = req.headers.authorization;
-    if (authorization) {
-      const token = authorization.replace('Bearer ', '');
+
+    // Support auth by header (legacy SPA and third-party apps)
+    if (req.headers.authorization) {
+      const token = req.headers.authorization.replace('Bearer ', '');
       user = await new Promise((resolve, reject) => {
         jwt.verify(token, getKey, options, (err, decoded) => {
           if (err) {
@@ -56,12 +56,26 @@ const server = new ApolloServer({
           resolve(decoded);
         });
       });
+    } else {
+      // We might have a session on toiletmap.org.uk
+      user = getSession(req, res);
     }
+
     return {
       user,
     };
   },
   introspection: true,
+  playground: {
+    tabs: [
+      {
+        endpoint: '/api',
+        name: 'Nearby Loos Query',
+        query:
+          'query loosNearNeontribe {\n\tloosByProximity(from: {lat: 52.6335, lng: 1.2953, maxDistance: 500}) {\n\t\tid\n\t\tname\n\t}\n}',
+      },
+    ],
+  },
 });
 
 export const config = {

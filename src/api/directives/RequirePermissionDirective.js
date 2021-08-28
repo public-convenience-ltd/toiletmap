@@ -3,7 +3,6 @@ const {
   AuthenticationError,
 } = require('apollo-server-micro');
 const { defaultFieldResolver } = require('graphql');
-const config = require('../config');
 
 class RequirePermissionDirective extends SchemaDirectiveVisitor {
   visitObject(type) {
@@ -42,7 +41,7 @@ class RequirePermissionDirective extends SchemaDirectiveVisitor {
         if (ctx && ctx.user) {
           if (
             requiredRole &&
-            !ctx.user[config.auth0.permissionsKey].includes(requiredRole)
+            !ctx.user[process.env.AUTH0_PERMISSIONS_KEY].includes(requiredRole)
           ) {
             throw new AuthenticationError(
               'You are not authorized to perform this operation.'

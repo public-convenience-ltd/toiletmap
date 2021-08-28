@@ -99,7 +99,7 @@ type Report {
   id: ID!
   "An identifier for the user or process which contributed the report"
   contributor: String!
-    @redact(requires: VIEW_CONTRIBUTOR_INFO, replace: Anonymous)
+    @redact(requires: VIEW_CONTRIBUTOR_INFO, replace: "Anonymous")
   "When the report was added to the system"
   createdAt: DateTime!
   verifiedAt: DateTime
