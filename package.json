@@ -50,7 +50,7 @@
     "@rehooks/component-size": "1.0.3",
     "@styled-system/prop-types": "5.1.5",
     "apollo-server": "2.24.1",
-    "auth0-js": "9.16.2",
+    "auth0-js": "9.16.4",
     "chart.js": "2.9.4",
     "d3-scale": "3.3.0",
     "date-fns": "2.22.1",
