@@ -1,14 +1,13 @@
 import { ApolloServer } from 'apollo-server-micro';
+import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import jwt from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { getSession } from '@auth0/nextjs-auth0';
 
 import resolvers from '../../api/resolvers';
-import {
-  RequirePermissionDirective,
-  RedactionDirective,
-} from '../../api/directives';
+import authDirective from '../../api/directives/authDirective';
+import redactedDirective from '../../api/directives/redactedDirective';
 
 import typeDefs from '../../api/typeDefs';
 
@@ -32,19 +31,25 @@ const options = {
   algorithms: ['RS256'],
 };
 
+// Build our executable schema and apply our custom directives
+const { redactedDirectiveTypeDefs, redactedDirectiveTransformer } = redactedDirective('redact');
+const { authDirectiveTypeDefs, authDirectiveTransformer } = authDirective('auth');
+let schema = makeExecutableSchema({
+  typeDefs: [
+    redactedDirectiveTypeDefs,
+    authDirectiveTypeDefs,
+    typeDefs,
+  ],
+  resolvers,
+});
+schema = redactedDirectiveTransformer(schema);
+schema = authDirectiveTransformer(schema);
+
 // Add GraphQL API
 const server = new ApolloServer({
-  schema: makeExecutableSchema({
-    typeDefs,
-    resolvers,
-    schemaDirectives: {
-      auth: RequirePermissionDirective,
-      redact: RedactionDirective,
-    },
-  }),
+  schema,
   context: async ({ req, res }) => {
     let user = null;
-
     // Support auth by header (legacy SPA and third-party apps)
     if (req.headers.authorization) {
       const token = req.headers.authorization.replace('Bearer ', '');
@@ -58,7 +63,8 @@ const server = new ApolloServer({
       });
     } else {
       // We might have a session on toiletmap.org.uk
-      user = getSession(req, res);
+      let session = getSession(req, res);
+      if (session) { user = session.user }
     }
 
     return {
@@ -66,16 +72,21 @@ const server = new ApolloServer({
     };
   },
   introspection: true,
-  playground: {
-    tabs: [
-      {
-        endpoint: '/api',
-        name: 'Nearby Loos Query',
-        query:
-          'query loosNearNeontribe {\n\tloosByProximity(from: {lat: 52.6335, lng: 1.2953, maxDistance: 500}) {\n\t\tid\n\t\tname\n\t}\n}',
+  plugins: [
+    ApolloServerPluginLandingPageGraphQLPlayground({
+      settings: {
+        'request.credentials': 'same-origin',
       },
-    ],
-  },
+      tabs: [
+        {
+          endpoint: '/api',
+          name: 'Nearby Loos Query',
+          query:
+            'query loosNearNeontribe {\n\tloosByProximity(from: {lat: 52.6335, lng: 1.2953, maxDistance: 500}) {\n\t\tid\n\t\tname\n\t}\n}',
+        },
+      ],
+    }),
+  ]
 });
 
 export const config = {
@@ -84,6 +95,11 @@ export const config = {
   },
 };
 
-export default server.createHandler({
-  path: '/api',
-});
+const startServer = server.start();
+
+export default async function handler(req, res) {
+  await startServer;
+  await server.createHandler({
+    path: "/api",
+  })(req, res);
+}
