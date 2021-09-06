@@ -25,17 +25,6 @@
   "bugs": {
     "url": "https://github.com/neontribe/gbptm/issues"
   },
-  "lint-staged": {
-    "*.js": [
-      "eslint --max-warnings 0",
-      "prettier --write"
-    ],
-    "*.ts": [
-      "eslint --max-warnings 0",
-      "prettier --write"
-    ],
-    "*.css": "stylelint"
-  },
   "dependencies": {
     "@apollo/client": "3.4.10",
     "@artsy/fresnel": "1.5.0",
