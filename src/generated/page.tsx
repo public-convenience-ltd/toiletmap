@@ -6,9 +6,9 @@ import { NextRouter, useRouter } from 'next/router'
 import { QueryHookOptions, useQuery } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 import type React from 'react';
-import { getApolloClient} from '../components/withApollo';
+import { getApolloClient , any} from '../components/withApollo';
 export async function getServerPageGetAreaStats
-    (options: Omit<Apollo.QueryOptions<Types.GetAreaStatsQueryVariables>, 'query'>, ctx? :any ){
+    (options: Omit<Apollo.QueryOptions<Types.GetAreaStatsQueryVariables>, 'query'>, ctx?: any ){
         const apolloClient = getApolloClient(ctx);
         
         const data = await apolloClient.query<Types.GetAreaStatsQuery>({ ...options, query: Operations.GetAreaStatsDocument });
@@ -43,7 +43,7 @@ export const ssrGetAreaStats = {
       usePage: useGetAreaStats,
     }
 export async function getServerPageHeadlineStats
-    (options: Omit<Apollo.QueryOptions<Types.HeadlineStatsQueryVariables>, 'query'>, ctx? :any ){
+    (options: Omit<Apollo.QueryOptions<Types.HeadlineStatsQueryVariables>, 'query'>, ctx?: any ){
         const apolloClient = getApolloClient(ctx);
         
         const data = await apolloClient.query<Types.HeadlineStatsQuery>({ ...options, query: Operations.HeadlineStatsDocument });
@@ -78,7 +78,7 @@ export const ssrHeadlineStats = {
       usePage: useHeadlineStats,
     }
 export async function getServerPageFullLooDetails
-    (options: Omit<Apollo.QueryOptions<Types.FullLooDetailsQueryVariables>, 'query'>, ctx? :any ){
+    (options: Omit<Apollo.QueryOptions<Types.FullLooDetailsQueryVariables>, 'query'>, ctx?: any ){
         const apolloClient = getApolloClient(ctx);
         
         const data = await apolloClient.query<Types.FullLooDetailsQuery>({ ...options, query: Operations.FullLooDetailsDocument });
@@ -113,7 +113,7 @@ export const ssrFullLooDetails = {
       usePage: useFullLooDetails,
     }
 export async function getServerPageGetAreas
-    (options: Omit<Apollo.QueryOptions<Types.GetAreasQueryVariables>, 'query'>, ctx? :any ){
+    (options: Omit<Apollo.QueryOptions<Types.GetAreasQueryVariables>, 'query'>, ctx?: any ){
         const apolloClient = getApolloClient(ctx);
         
         const data = await apolloClient.query<Types.GetAreasQuery>({ ...options, query: Operations.GetAreasDocument });
@@ -148,7 +148,7 @@ export const ssrGetAreas = {
       usePage: useGetAreas,
     }
 export async function getServerPageGetStats
-    (options: Omit<Apollo.QueryOptions<Types.GetStatsQueryVariables>, 'query'>, ctx? :any ){
+    (options: Omit<Apollo.QueryOptions<Types.GetStatsQueryVariables>, 'query'>, ctx?: any ){
         const apolloClient = getApolloClient(ctx);
         
         const data = await apolloClient.query<Types.GetStatsQuery>({ ...options, query: Operations.GetStatsDocument });
@@ -183,7 +183,7 @@ export const ssrGetStats = {
       usePage: useGetStats,
     }
 export async function getServerPageGetFormAreas
-    (options: Omit<Apollo.QueryOptions<Types.GetFormAreasQueryVariables>, 'query'>, ctx? :any ){
+    (options: Omit<Apollo.QueryOptions<Types.GetFormAreasQueryVariables>, 'query'>, ctx?: any ){
         const apolloClient = getApolloClient(ctx);
         
         const data = await apolloClient.query<Types.GetFormAreasQuery>({ ...options, query: Operations.GetFormAreasDocument });
@@ -218,7 +218,7 @@ export const ssrGetFormAreas = {
       usePage: useGetFormAreas,
     }
 export async function getServerPageGetContributors
-    (options: Omit<Apollo.QueryOptions<Types.GetContributorsQueryVariables>, 'query'>, ctx? :any ){
+    (options: Omit<Apollo.QueryOptions<Types.GetContributorsQueryVariables>, 'query'>, ctx?: any ){
         const apolloClient = getApolloClient(ctx);
         
         const data = await apolloClient.query<Types.GetContributorsQuery>({ ...options, query: Operations.GetContributorsDocument });
@@ -253,7 +253,7 @@ export const ssrGetContributors = {
       usePage: useGetContributors,
     }
 export async function getServerPageSearch
-    (options: Omit<Apollo.QueryOptions<Types.SearchQueryVariables>, 'query'>, ctx? :any ){
+    (options: Omit<Apollo.QueryOptions<Types.SearchQueryVariables>, 'query'>, ctx?: any ){
         const apolloClient = getApolloClient(ctx);
         
         const data = await apolloClient.query<Types.SearchQuery>({ ...options, query: Operations.SearchDocument });
@@ -288,7 +288,7 @@ export const ssrSearch = {
       usePage: useSearch,
     }
 export async function getServerPageFindLooById
-    (options: Omit<Apollo.QueryOptions<Types.FindLooByIdQueryVariables>, 'query'>, ctx? :any ){
+    (options: Omit<Apollo.QueryOptions<Types.FindLooByIdQueryVariables>, 'query'>, ctx?: any ){
         const apolloClient = getApolloClient(ctx);
         
         const data = await apolloClient.query<Types.FindLooByIdQuery>({ ...options, query: Operations.FindLooByIdDocument });
@@ -323,7 +323,7 @@ export const ssrFindLooById = {
       usePage: useFindLooById,
     }
 export async function getServerPageFindLoosNearby
-    (options: Omit<Apollo.QueryOptions<Types.FindLoosNearbyQueryVariables>, 'query'>, ctx? :any ){
+    (options: Omit<Apollo.QueryOptions<Types.FindLoosNearbyQueryVariables>, 'query'>, ctx?: any ){
         const apolloClient = getApolloClient(ctx);
         
         const data = await apolloClient.query<Types.FindLoosNearbyQuery>({ ...options, query: Operations.FindLoosNearbyDocument });
