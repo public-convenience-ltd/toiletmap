@@ -4,6 +4,7 @@ export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+const defaultOptions =  {}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -454,6 +455,33 @@ export const FindLooByIdDocument = gql`
   }
 }
     ${LooFragmentFragmentDoc}`;
+
+/**
+ * __useFindLooByIdQuery__
+ *
+ * To run a query within a React component, call `useFindLooByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindLooByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindLooByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useFindLooByIdQuery(baseOptions?: Apollo.QueryHookOptions<FindLooByIdQuery, FindLooByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindLooByIdQuery, FindLooByIdQueryVariables>(FindLooByIdDocument, options);
+      }
+export function useFindLooByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindLooByIdQuery, FindLooByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindLooByIdQuery, FindLooByIdQueryVariables>(FindLooByIdDocument, options);
+        }
+export type FindLooByIdQueryHookResult = ReturnType<typeof useFindLooByIdQuery>;
+export type FindLooByIdLazyQueryHookResult = ReturnType<typeof useFindLooByIdLazyQuery>;
 export type FindLooByIdQueryResult = Apollo.QueryResult<FindLooByIdQuery, FindLooByIdQueryVariables>;
 export const FindLoosNearbyDocument = gql`
     query findLoosNearby($lat: Float!, $lng: Float!, $radius: Int!) {
@@ -474,6 +502,35 @@ export const FindLoosNearbyDocument = gql`
   }
 }
     `;
+
+/**
+ * __useFindLoosNearbyQuery__
+ *
+ * To run a query within a React component, call `useFindLoosNearbyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindLoosNearbyQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindLoosNearbyQuery({
+ *   variables: {
+ *      lat: // value for 'lat'
+ *      lng: // value for 'lng'
+ *      radius: // value for 'radius'
+ *   },
+ * });
+ */
+export function useFindLoosNearbyQuery(baseOptions: Apollo.QueryHookOptions<FindLoosNearbyQuery, FindLoosNearbyQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindLoosNearbyQuery, FindLoosNearbyQueryVariables>(FindLoosNearbyDocument, options);
+      }
+export function useFindLoosNearbyLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindLoosNearbyQuery, FindLoosNearbyQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindLoosNearbyQuery, FindLoosNearbyQueryVariables>(FindLoosNearbyDocument, options);
+        }
+export type FindLoosNearbyQueryHookResult = ReturnType<typeof useFindLoosNearbyQuery>;
+export type FindLoosNearbyLazyQueryHookResult = ReturnType<typeof useFindLoosNearbyLazyQuery>;
 export type FindLoosNearbyQueryResult = Apollo.QueryResult<FindLoosNearbyQuery, FindLoosNearbyQueryVariables>;
 export const RemoveLooDocument = gql`
     mutation removeLoo($id: ID!, $reason: String!) {
@@ -489,6 +546,30 @@ export const RemoveLooDocument = gql`
 }
     `;
 export type RemoveLooMutationFn = Apollo.MutationFunction<RemoveLooMutation, RemoveLooMutationVariables>;
+
+/**
+ * __useRemoveLooMutation__
+ *
+ * To run a mutation, you first call `useRemoveLooMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveLooMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeLooMutation, { data, loading, error }] = useRemoveLooMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      reason: // value for 'reason'
+ *   },
+ * });
+ */
+export function useRemoveLooMutation(baseOptions?: Apollo.MutationHookOptions<RemoveLooMutation, RemoveLooMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveLooMutation, RemoveLooMutationVariables>(RemoveLooDocument, options);
+      }
+export type RemoveLooMutationHookResult = ReturnType<typeof useRemoveLooMutation>;
 export type RemoveLooMutationResult = Apollo.MutationResult<RemoveLooMutation>;
 export type RemoveLooMutationOptions = Apollo.BaseMutationOptions<RemoveLooMutation, RemoveLooMutationVariables>;
 export const SubmitVerificationReportMutationDocument = gql`
@@ -502,6 +583,29 @@ export const SubmitVerificationReportMutationDocument = gql`
 }
     `;
 export type SubmitVerificationReportMutationMutationFn = Apollo.MutationFunction<SubmitVerificationReportMutationMutation, SubmitVerificationReportMutationMutationVariables>;
+
+/**
+ * __useSubmitVerificationReportMutationMutation__
+ *
+ * To run a mutation, you first call `useSubmitVerificationReportMutationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSubmitVerificationReportMutationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [submitVerificationReportMutationMutation, { data, loading, error }] = useSubmitVerificationReportMutationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useSubmitVerificationReportMutationMutation(baseOptions?: Apollo.MutationHookOptions<SubmitVerificationReportMutationMutation, SubmitVerificationReportMutationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SubmitVerificationReportMutationMutation, SubmitVerificationReportMutationMutationVariables>(SubmitVerificationReportMutationDocument, options);
+      }
+export type SubmitVerificationReportMutationMutationHookResult = ReturnType<typeof useSubmitVerificationReportMutationMutation>;
 export type SubmitVerificationReportMutationMutationResult = Apollo.MutationResult<SubmitVerificationReportMutationMutation>;
 export type SubmitVerificationReportMutationMutationOptions = Apollo.BaseMutationOptions<SubmitVerificationReportMutationMutation, SubmitVerificationReportMutationMutationVariables>;
 export const UpdateLooDocument = gql`
@@ -519,5 +623,45 @@ export const UpdateLooDocument = gql`
 }
     ${LooFragmentFragmentDoc}`;
 export type UpdateLooMutationFn = Apollo.MutationFunction<UpdateLooMutation, UpdateLooMutationVariables>;
+
+/**
+ * __useUpdateLooMutation__
+ *
+ * To run a mutation, you first call `useUpdateLooMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLooMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLooMutation, { data, loading, error }] = useUpdateLooMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      location: // value for 'location'
+ *      name: // value for 'name'
+ *      openingTimes: // value for 'openingTimes'
+ *      accessible: // value for 'accessible'
+ *      allGender: // value for 'allGender'
+ *      men: // value for 'men'
+ *      women: // value for 'women'
+ *      children: // value for 'children'
+ *      urinalOnly: // value for 'urinalOnly'
+ *      babyChange: // value for 'babyChange'
+ *      radar: // value for 'radar'
+ *      attended: // value for 'attended'
+ *      automatic: // value for 'automatic'
+ *      noPayment: // value for 'noPayment'
+ *      paymentDetails: // value for 'paymentDetails'
+ *      notes: // value for 'notes'
+ *      campaignUOL: // value for 'campaignUOL'
+ *   },
+ * });
+ */
+export function useUpdateLooMutation(baseOptions?: Apollo.MutationHookOptions<UpdateLooMutation, UpdateLooMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateLooMutation, UpdateLooMutationVariables>(UpdateLooDocument, options);
+      }
+export type UpdateLooMutationHookResult = ReturnType<typeof useUpdateLooMutation>;
 export type UpdateLooMutationResult = Apollo.MutationResult<UpdateLooMutation>;
 export type UpdateLooMutationOptions = Apollo.BaseMutationOptions<UpdateLooMutation, UpdateLooMutationVariables>;

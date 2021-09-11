@@ -9,7 +9,7 @@ generates:
       - "typescript-react-apollo"
     config:
           reactApolloVersion: 3
-          withHooks: false
+          withHooks: true
           withHOC: false
           withComponent: false
           exportFragmentSpreadSubTypes: true
