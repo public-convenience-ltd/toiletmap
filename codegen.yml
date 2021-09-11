@@ -1,8 +1,8 @@
 overwrite: true
-schema: "http://localhost:3000/api"
-documents: "src/**/*.graphql"
+schema: "src/api/schema.graphql"
+documents: "src/api-client/operations/*.graphql"
 generates:
-  src/generated/graphql.tsx:
+  src/api-client/graphql.tsx:
     plugins:
       - "typescript"
       - "typescript-operations"
@@ -14,7 +14,7 @@ generates:
           withComponent: false
           exportFragmentSpreadSubTypes: true
           documentMode: graphQLTag
-  src/generated/page.tsx:
+  src/api-client/page.tsx:
     config:
       documentMode: external
       importDocumentNodeExternallyFrom: ./graphql
@@ -31,4 +31,4 @@ generates:
     presetConfig:
       typesPath: ./graphql
     plugins:
-      - graphql-codegen-apollo-next-ssr # replace by - graphql-codegen-apollo-next-ssr
+      - graphql-codegen-apollo-next-ssr

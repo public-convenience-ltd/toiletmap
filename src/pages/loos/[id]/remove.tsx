@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import useSWR from 'swr';
-// import { loader } from 'graphql.macro';
-import { print } from 'graphql/language/printer';
 
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 import config from '../../../config';
-import { useMutation } from '../../../graphql/fetcher';
 
 import PageLayout from '../../../components/PageLayout';
 import Container from '../../../components/Container';

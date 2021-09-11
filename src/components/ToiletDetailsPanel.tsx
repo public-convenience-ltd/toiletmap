@@ -26,9 +26,6 @@ import add from 'date-fns/add';
 import Link from 'next/link';
 import useComponentSize from '@rehooks/component-size';
 import L from 'leaflet';
-import { mutate } from 'swr';
-// // import { loader } from 'graphql.macro';
-import { print } from 'graphql/language/printer';
 
 import Box from './Box';
 import Button from './Button';
@@ -39,7 +36,6 @@ import { Media } from './Media';
 // Suppress Opening Hours Heading during COVID-19
 import { /* getIsOpen, */ WEEKDAYS, isClosed } from '../openingTimes';
 import { useMapState } from './MapState';
-import { useMutation } from '../graphql/fetcher';
 
 import uolLogo from '../../public/uol-logo.svg';
 
@@ -102,17 +98,6 @@ function getTimeRangeLabel(range: any[]) {
 //   return isOpen ? 'Open now' : 'Closed';
 // }
 
-const SUBMIT_VERIFICATION_REPORT_MUTATION = `
-  mutation submitVerificationReportMutation($id: ID) {
-    submitVerificationReport(id: $id) {
-      loo {
-        id
-        verifiedAt
-      }
-    }
-  }
-`;
-
 function round(value: number, precision = 0) {
   const multiplier = Math.pow(10, precision);
   return Math.round(value * multiplier) / multiplier;
@@ -144,25 +129,9 @@ const ToiletDetailsPanel = ({
   children,
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(startExpanded);
-  const [
-    submitVerificationMutation,
-    { loading: submitVerificationLoading },
-  ] = useMutation(SUBMIT_VERIFICATION_REPORT_MUTATION);
 
   const submitVerificationReport = async (variables: { id: any; }) => {
-    const responseData = await submitVerificationMutation(variables);
-
-    // update the local cache with the new data
-    mutate(
-      [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: data.id })],
-      {
-        loo: {
-          ...data,
-          verifiedAt: responseData.submitVerificationReport.loo.verifiedAt,
-        },
-      },
-      false
-    );
+    alert('Implement me with apollo');
   };
 
   const [mapState] = useMapState();
@@ -329,7 +298,7 @@ const ToiletDetailsPanel = ({
       <Box display="flex" alignItems="center">
         <Button
           onClick={() => submitVerificationReport({ id: data.id })}
-          disabled={submitVerificationLoading}
+          disabled={'submitVerificationLoading'}
         >
           Yes
         </Button>

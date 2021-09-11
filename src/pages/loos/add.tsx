@@ -1,7 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
-import { mutate } from 'swr';
 
 import PageLayout from '../../components/PageLayout';
 import EntryForm from '../../components/EntryForm';
@@ -18,9 +17,6 @@ import dynamic from 'next/dynamic';
 import Router, { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import { withApollo } from '../../components/withApollo';
-
-// const FIND_LOO_BY_ID_QUERY = print(loader('../graphql/findLooById.graphql'));
-// const UPDATE_LOO_MUTATION = print(loader('../graphql/updateLoo.graphql'));
 
 const initialFormState = {
   active: null,
