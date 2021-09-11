@@ -34,7 +34,7 @@ const messages = {
   removed: 'Thank you, toilet removed!',
 };
 
-const title = 'The Great British Toilet Map';
+const title = 'Toilet Map';
 
 export default {
   viewport: {
