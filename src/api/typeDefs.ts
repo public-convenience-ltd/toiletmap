@@ -4,5 +4,5 @@ import fs from 'fs';
 import path from 'path';
 
 export default gql(
-  fs.readFileSync(path.join(process.cwd(), './src/api/typeDefs.graphql'), 'utf-8')
+  fs.readFileSync(path.join(process.cwd(), './src/api/schema.graphql'), 'utf-8')
 );

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Helmet } from 'react-helmet';
+import Head from 'next/head';
 
 import PageLayout from '../components/PageLayout';
 import Container from '../components/Container';
@@ -12,9 +12,9 @@ import config from '../config';
 
 const CookiesPage = () => (
   <PageLayout layoutMode="blog">
-    {/* <Helmet>
+    {/* <Head>
       <title>{config.getTitle('Cookies')}</title>
-    </Helmet>
+    </Head>
 
     <Container maxWidth={845}>
       <Text fontSize={6} fontWeight="bold" textAlign="center">

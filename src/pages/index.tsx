@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
-import useSWR from 'swr';
+import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import PageLayout from '../components/PageLayout';
-import useNearbyLoos from '../components/useNearbyLoos';
 import Box from '../components/Box';
 import Sidebar from '../components/Sidebar';
 import Notification from '../components/Notification';
@@ -14,7 +12,7 @@ import config, { FILTERS_KEY } from '../config';
 import { useRouter } from 'next/router';
 import { withApollo } from '../components/withApollo';
 import { NextPage } from 'next';
-import { getServerPageFindLooById, getServerPageFindLoosNearby, useFindLooById, useFindLoosNearby } from '../generated/page';
+import { getServerPageFindLooById, getServerPageFindLoosNearby, useFindLooById, useFindLoosNearby } from '../api-client/page';
 
 /**
  * SSR Migration plan
@@ -142,9 +140,9 @@ const HomePage = ({ initialPosition, ...props }) => {
 
   return (
     <PageLayout mapCenter={mapState.center}>
-      <Helmet>
+      <Head>
         <title>{pageTitle}</title>
-      </Helmet>
+      </Head>
 
       <VisuallyHidden>
         <h1>{pageTitle}</h1>

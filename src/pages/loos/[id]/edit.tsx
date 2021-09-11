@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
+import Head from 'next/head';
 import Link from 'next/link';
 
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
@@ -149,9 +149,9 @@ const EditPage = (props: { match: { params: { id: any; }; }; }) => {
   return (
     <PageLayout>
       <>
-        <Helmet>
+        <Head>
           <title>{config.getTitle('Edit Toilet')}</title>
-        </Helmet>
+        </Head>
 
         <Box display="flex" height="40vh">
           {/* <LooMap

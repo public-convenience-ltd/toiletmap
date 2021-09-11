@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import Head from 'next/head';
 
 import PageLayout from '../components/PageLayout';
 import Container from '../components/Container';
@@ -12,9 +12,9 @@ import config from '../config';
 const ContactPage = (props) => {
   return (
     <PageLayout layoutMode="blog">
-      <Helmet>
+      <Head>
         <title>{config.getTitle('Contact Us')}</title>
-      </Helmet>
+      </Head>
 
       <Container maxWidth={845}>
         <Text fontSize={6} fontWeight="bold" textAlign="center">

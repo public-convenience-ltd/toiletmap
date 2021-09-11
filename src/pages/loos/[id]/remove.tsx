@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-import { Helmet } from 'react-helmet';
-import useSWR from 'swr';
-// import { loader } from 'graphql.macro';
-import { print } from 'graphql/language/printer';
+import Head from 'next/head';
 
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 import config from '../../../config';
-import { useMutation } from '../../../graphql/fetcher';
 
 import PageLayout from '../../../components/PageLayout';
 import Container from '../../../components/Container';
@@ -68,9 +64,9 @@ const RemovePage = function (props: { match: { params: { id: any; }; }; }) {
   return (
     <PageLayout layoutMode="blog">
       <>
-        <Helmet>
+        <Head>
           <title>{config.getTitle('Remove Toilet')}</title>
-        </Helmet>
+        </Head>
 
         <Container maxWidth={845}>
           <Text fontSize={6} fontWeight="bold" textAlign="center">

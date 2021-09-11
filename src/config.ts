@@ -34,7 +34,7 @@ const messages = {
   removed: 'Thank you, toilet removed!',
 };
 
-const title = 'The Great British Toilet Map';
+const title = 'Toilet Map';
 
 export default {
   viewport: {
@@ -42,9 +42,6 @@ export default {
   },
   filters,
   messages,
-  analyticsId: (typeof window !== 'undefined') && window.location.hostname.match(/toiletmap\.org\.uk/)
-    ? 'UA-52513593-1'
-    : null,
   initialZoom: 16,
   minZoom: 11,
   maxZoom: 18,
