@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
@@ -17,15 +17,27 @@ import dynamic from 'next/dynamic';
 import Router, { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import { withApollo } from '../../components/withApollo';
+import {
+  UpdateLooMutationVariables,
+  useFindLooByIdQuery,
+  useUpdateLooMutation,
+} from '../../api-client/graphql';
 
 const initialFormState = {
   active: null,
   noPayment: true,
 };
 
-const AddPage = (props) => {
+const AddPage = () => {
   const [mapState, setMapState] = useMapState();
-  const LooMap = React.useMemo(() => dynamic(() => import('../../components/LooMap'), { loading: () => <p>Loading map...</p>, ssr: false, }), [])
+  const LooMap = React.useMemo(
+    () =>
+      dynamic(() => import('../../components/LooMap'), {
+        loading: () => <p>Loading map...</p>,
+        ssr: false,
+      }),
+    []
+  );
   const { data } = useNearbyLoos({
     lat: mapState.center.lat,
     lng: mapState.center.lng,
@@ -48,38 +60,31 @@ const AddPage = (props) => {
     }
   }, [lat, lng, setMapState]);
 
-  // const [
-  //   updateLoo,
-  //   { data: saveData, loading: saveLoading, error: saveError },
-  // ] = useMutation(UPDATE_LOO_MUTATION);
+  const [
+    updateLooMutation,
+    { data: saveData, loading: saveLoading, error: saveError },
+  ] = useUpdateLooMutation();
 
-  const save = async (formData: { active: boolean; }) => {
+  const saveLoo = async (formData: UpdateLooMutationVariables) => {
     // add the active state for which there's no user-facing form control as yet
     formData.active = true;
 
-    try {
-      const data = await updateLoo(formData);
+    const { errors } = await updateLooMutation({
+      variables: { ...formData },
+    });
 
-      mutate(
-        [
-          FIND_LOO_BY_ID_QUERY,
-          JSON.stringify({ id: data.submitReport.loo.id }),
-        ],
-        {
-          loo: data.submitReport.loo,
-        }
-      );
-    } catch (err) {
-      console.error('save error', err);
+    if (errors) {
+      console.error('save error', errors);
     }
   };
 
-  // redirect to new toilet entry page on successful addition
-  // if (saveData) {
-  //   return (
-  //     <Redirect to={`/loos/${saveData.submitReport.loo.id}?message=created`} />
-  //   );
-  // }
+  // redirect to new toilet entry page upon successful addition
+  useEffect(() => {
+    if(saveData) {
+      router.push(`/loos/${saveData.submitReport.loo.id}?message=created`)
+    }
+  }, [saveData, router])
+
 
   return (
     <PageLayout>
@@ -116,9 +121,9 @@ const AddPage = (props) => {
         title="Add This Toilet"
         loo={initialFormState}
         center={mapState.center}
-        // saveLoading={saveLoading}
-        // saveError={saveError}
-        onSubmit={save}
+        saveLoading={saveLoading}
+        saveError={saveError}
+        onSubmit={saveLoo}
       >
         <Box display="flex" flexDirection="column" alignItems="center">
           <Button type="submit" data-testid="add-the-toilet">

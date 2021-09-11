@@ -265,6 +265,7 @@ input ReportInput {
   paymentDetails: String
   notes: String
   campaignUOL: Boolean
+  active: Boolean
 }
 input RemovalReportInput {
   edit: ID!

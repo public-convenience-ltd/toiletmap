@@ -29,14 +29,14 @@ export type AdminGeo = {
 /** Statistics for a certain area. */
 export type AreaStats = {
   __typename?: 'AreaStats';
-  /** The number of loos marked as active in this area */
-  activeLoos: Scalars['Int'];
   /** The area's identifier. Note that only the 'name' will be passed with this field. */
   area: AdminGeo;
-  /** The number of loos with baby changing facilities in this area */
-  babyChangeLoos: Scalars['Int'];
   /** The total number of loos in this area */
   totalLoos: Scalars['Int'];
+  /** The number of loos marked as active in this area */
+  activeLoos: Scalars['Int'];
+  /** The number of loos with baby changing facilities in this area */
+  babyChangeLoos: Scalars['Int'];
 };
 
 /** The name of a contributor. This requires a certain level of permissions to access. */
@@ -59,14 +59,14 @@ export type Counters = {
   activeLoos?: Maybe<Scalars['Int']>;
   /** The number of loos which have been closed/removed */
   inactiveLoos?: Maybe<Scalars['Int']>;
-  /** The number of loos which have more than one report registered for them */
-  multipleReports?: Maybe<Scalars['Int']>;
-  /** The total number of reports that report a loo as closed/removed */
-  removalReports?: Maybe<Scalars['Int']>;
   /** The total number of loos */
   totalLoos?: Maybe<Scalars['Int']>;
   /** The total number of reports */
   totalReports?: Maybe<Scalars['Int']>;
+  /** The total number of reports that report a loo as closed/removed */
+  removalReports?: Maybe<Scalars['Int']>;
+  /** The number of loos which have more than one report registered for them */
+  multipleReports?: Maybe<Scalars['Int']>;
 };
 
 /**
@@ -75,68 +75,68 @@ export type Counters = {
  */
 export type Loo = {
   __typename?: 'Loo';
-  accessible?: Maybe<Scalars['Boolean']>;
+  id?: Maybe<Scalars['ID']>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  verifiedAt?: Maybe<Scalars['DateTime']>;
+  reports?: Maybe<Array<Maybe<Report>>>;
   active?: Maybe<Scalars['Boolean']>;
-  allGender?: Maybe<Scalars['Boolean']>;
+  location?: Maybe<Point>;
   area?: Maybe<Array<Maybe<AdminGeo>>>;
+  name?: Maybe<Scalars['String']>;
+  openingTimes?: Maybe<Scalars['OpeningTimes']>;
+  accessible?: Maybe<Scalars['Boolean']>;
+  allGender?: Maybe<Scalars['Boolean']>;
+  men?: Maybe<Scalars['Boolean']>;
+  women?: Maybe<Scalars['Boolean']>;
+  urinalOnly?: Maybe<Scalars['Boolean']>;
+  children?: Maybe<Scalars['Boolean']>;
+  babyChange?: Maybe<Scalars['Boolean']>;
+  radar?: Maybe<Scalars['Boolean']>;
   attended?: Maybe<Scalars['Boolean']>;
   automatic?: Maybe<Scalars['Boolean']>;
-  babyChange?: Maybe<Scalars['Boolean']>;
-  campaignUOL?: Maybe<Scalars['Boolean']>;
-  children?: Maybe<Scalars['Boolean']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  id?: Maybe<Scalars['ID']>;
-  location?: Maybe<Point>;
-  men?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
   noPayment?: Maybe<Scalars['Boolean']>;
-  notes?: Maybe<Scalars['String']>;
-  openingTimes?: Maybe<Scalars['OpeningTimes']>;
   paymentDetails?: Maybe<Scalars['String']>;
-  radar?: Maybe<Scalars['Boolean']>;
+  notes?: Maybe<Scalars['String']>;
   removalReason?: Maybe<Scalars['String']>;
-  reports?: Maybe<Array<Maybe<Report>>>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-  urinalOnly?: Maybe<Scalars['Boolean']>;
-  verifiedAt?: Maybe<Scalars['DateTime']>;
-  women?: Maybe<Scalars['Boolean']>;
+  campaignUOL?: Maybe<Scalars['Boolean']>;
 };
 
 /** Include or Exclude Loos from search results based on whether they satisfy a filter condition */
 export type LooFilter = {
   active?: Maybe<Scalars['Boolean']>;
-  areaName?: Maybe<Scalars['String']>;
-  contributors?: Maybe<Array<Maybe<Scalars['String']>>>;
-  fromDate?: Maybe<Scalars['DateTime']>;
   noPayment?: Maybe<Scalars['Boolean']>;
   text?: Maybe<Scalars['String']>;
+  fromDate?: Maybe<Scalars['DateTime']>;
   toDate?: Maybe<Scalars['DateTime']>;
+  contributors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  areaName?: Maybe<Scalars['String']>;
 };
 
 export type LooSearchResponse = {
   __typename?: 'LooSearchResponse';
-  limit?: Maybe<Scalars['Int']>;
   loos: Array<Loo>;
-  page?: Maybe<Scalars['Int']>;
-  pages?: Maybe<Scalars['Int']>;
   total?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  pages?: Maybe<Scalars['Int']>;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  submitRemovalReport?: Maybe<ReportMutationResponse>;
   submitReport?: Maybe<ReportMutationResponse>;
+  submitRemovalReport?: Maybe<ReportMutationResponse>;
   submitVerificationReport?: Maybe<ReportMutationResponse>;
-};
-
-
-export type MutationSubmitRemovalReportArgs = {
-  report?: Maybe<RemovalReportInput>;
 };
 
 
 export type MutationSubmitReportArgs = {
   report?: Maybe<ReportInput>;
+};
+
+
+export type MutationSubmitRemovalReportArgs = {
+  report?: Maybe<RemovalReportInput>;
 };
 
 
@@ -146,8 +146,8 @@ export type MutationSubmitVerificationReportArgs = {
 
 export type MutationResponse = {
   code: Scalars['String'];
-  message: Scalars['String'];
   success: Scalars['Boolean'];
+  message: Scalars['String'];
 };
 
 export type PaginationInput = {
@@ -175,12 +175,12 @@ export type PointInput = {
 /** Proportions of different values for different attributes */
 export type Proportions = {
   __typename?: 'Proportions';
-  /** The proportions of loos that are accessible vs not accessible */
-  accessibleLoos: Array<Chunk>;
   /** The proportions of loos that are active vs removed */
   activeLoos: Array<Chunk>;
   /** The proportions of loos that have baby changing facilities vs those that don't */
   babyChanging: Array<Chunk>;
+  /** The proportions of loos that are accessible vs not accessible */
+  accessibleLoos: Array<Chunk>;
 };
 
 export type ProximityInput = {
@@ -194,26 +194,26 @@ export type ProximityInput = {
 
 export type Query = {
   __typename?: 'Query';
-  /** Retrieve statistics, broken down by area, for all areas */
-  areaStats: Array<AreaStats>;
-  /** Retrieve a list of areas in existance, name and type only */
-  areas: Array<AdminGeo>;
-  /** Retrieve a list of contributors. Requires correct authentication */
-  contributors: Array<AuthedContributor>;
-  /** Retrieve 'counter' statistics */
-  counters: Counters;
   /** Retrieve a Loo by ID */
   loo?: Maybe<Loo>;
   /** Search for loos matching a filter */
   loos: LooSearchResponse;
   /** Retrieve Loos by proximity to a Point */
   loosByProximity: Array<Loo>;
+  /** Retrieve a list of areas in existance, name and type only */
+  areas: Array<AdminGeo>;
   /** Retrieve the explorer map TopoJSON data */
   mapAreas?: Maybe<TopoGeo>;
-  /** Retrieve proportional statistics */
-  proportions: Proportions;
   /** Retrieve a report by ID */
   report?: Maybe<Report>;
+  /** Retrieve 'counter' statistics */
+  counters: Counters;
+  /** Retrieve proportional statistics */
+  proportions: Proportions;
+  /** Retrieve statistics, broken down by area, for all areas */
+  areaStats: Array<AreaStats>;
+  /** Retrieve a list of contributors. Requires correct authentication */
+  contributors: Array<AuthedContributor>;
 };
 
 
@@ -255,69 +255,70 @@ export type RemovalReportInput = {
  */
 export type Report = {
   __typename?: 'Report';
-  accessible?: Maybe<Scalars['Boolean']>;
-  active?: Maybe<Scalars['Boolean']>;
-  allGender?: Maybe<Scalars['Boolean']>;
-  area?: Maybe<Array<Maybe<AdminGeo>>>;
-  attended?: Maybe<Scalars['Boolean']>;
-  automatic?: Maybe<Scalars['Boolean']>;
-  babyChange?: Maybe<Scalars['Boolean']>;
-  campaignUOL?: Maybe<Scalars['Boolean']>;
-  children?: Maybe<Scalars['Boolean']>;
+  id: Scalars['ID'];
   /** An identifier for the user or process which contributed the report */
   contributor: Scalars['String'];
   /** When the report was added to the system */
   createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
-  location?: Maybe<Point>;
-  /** The Loo which uses the data submitted in this report */
-  loo?: Maybe<Loo>;
-  men?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
-  noPayment?: Maybe<Scalars['Boolean']>;
-  notes?: Maybe<Scalars['String']>;
-  openingTimes?: Maybe<Scalars['OpeningTimes']>;
-  paymentDetails?: Maybe<Scalars['String']>;
+  verifiedAt?: Maybe<Scalars['DateTime']>;
   /**
    * A link to the previous report in the chain
    * This is nullable since this might be the first report about a particular toilet
    */
   previous?: Maybe<Report>;
-  radar?: Maybe<Scalars['Boolean']>;
-  removalReason?: Maybe<Scalars['String']>;
-  urinalOnly?: Maybe<Scalars['Boolean']>;
-  verifiedAt?: Maybe<Scalars['DateTime']>;
+  active?: Maybe<Scalars['Boolean']>;
+  location?: Maybe<Point>;
+  area?: Maybe<Array<Maybe<AdminGeo>>>;
+  name?: Maybe<Scalars['String']>;
+  openingTimes?: Maybe<Scalars['OpeningTimes']>;
+  accessible?: Maybe<Scalars['Boolean']>;
+  allGender?: Maybe<Scalars['Boolean']>;
+  men?: Maybe<Scalars['Boolean']>;
   women?: Maybe<Scalars['Boolean']>;
+  urinalOnly?: Maybe<Scalars['Boolean']>;
+  children?: Maybe<Scalars['Boolean']>;
+  babyChange?: Maybe<Scalars['Boolean']>;
+  radar?: Maybe<Scalars['Boolean']>;
+  attended?: Maybe<Scalars['Boolean']>;
+  automatic?: Maybe<Scalars['Boolean']>;
+  noPayment?: Maybe<Scalars['Boolean']>;
+  paymentDetails?: Maybe<Scalars['String']>;
+  notes?: Maybe<Scalars['String']>;
+  removalReason?: Maybe<Scalars['String']>;
+  campaignUOL?: Maybe<Scalars['Boolean']>;
+  /** The Loo which uses the data submitted in this report */
+  loo?: Maybe<Loo>;
 };
 
 export type ReportInput = {
-  accessible?: Maybe<Scalars['Boolean']>;
-  allGender?: Maybe<Scalars['Boolean']>;
-  attended?: Maybe<Scalars['Boolean']>;
-  automatic?: Maybe<Scalars['Boolean']>;
-  babyChange?: Maybe<Scalars['Boolean']>;
-  campaignUOL?: Maybe<Scalars['Boolean']>;
-  children?: Maybe<Scalars['Boolean']>;
   edit?: Maybe<Scalars['ID']>;
   location: PointInput;
-  men?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
-  noPayment?: Maybe<Scalars['Boolean']>;
-  notes?: Maybe<Scalars['String']>;
   openingTimes?: Maybe<Scalars['OpeningTimes']>;
-  paymentDetails?: Maybe<Scalars['String']>;
-  radar?: Maybe<Scalars['Boolean']>;
-  urinalOnly?: Maybe<Scalars['Boolean']>;
+  accessible?: Maybe<Scalars['Boolean']>;
+  allGender?: Maybe<Scalars['Boolean']>;
+  men?: Maybe<Scalars['Boolean']>;
   women?: Maybe<Scalars['Boolean']>;
+  urinalOnly?: Maybe<Scalars['Boolean']>;
+  children?: Maybe<Scalars['Boolean']>;
+  babyChange?: Maybe<Scalars['Boolean']>;
+  radar?: Maybe<Scalars['Boolean']>;
+  attended?: Maybe<Scalars['Boolean']>;
+  automatic?: Maybe<Scalars['Boolean']>;
+  noPayment?: Maybe<Scalars['Boolean']>;
+  paymentDetails?: Maybe<Scalars['String']>;
+  notes?: Maybe<Scalars['String']>;
+  campaignUOL?: Maybe<Scalars['Boolean']>;
+  active?: Maybe<Scalars['Boolean']>;
 };
 
 export type ReportMutationResponse = MutationResponse & {
   __typename?: 'ReportMutationResponse';
   code: Scalars['String'];
-  loo?: Maybe<Loo>;
+  success: Scalars['Boolean'];
   message: Scalars['String'];
   report?: Maybe<Report>;
-  success: Scalars['Boolean'];
+  loo?: Maybe<Loo>;
 };
 
 export enum SortOrder {
@@ -328,24 +329,24 @@ export enum SortOrder {
 /** Main TopoJSON type. Contains various objects and arcs. */
 export type TopoGeo = {
   __typename?: 'TopoGeo';
-  arcs: Array<Array<Array<Scalars['Float']>>>;
-  objects: Array<TopoObjectContainer>;
-  transform?: Maybe<TopoTransform>;
   type: Scalars['String'];
+  transform?: Maybe<TopoTransform>;
+  objects: Array<TopoObjectContainer>;
+  arcs: Array<Array<Array<Scalars['Float']>>>;
 };
 
 export type TopoGeometry = {
   __typename?: 'TopoGeometry';
+  type: Scalars['String'];
   arcs: Array<Array<Array<Scalars['Float']>>>;
   /** JSON-encoded properties string */
   properties: Scalars['String'];
-  type: Scalars['String'];
 };
 
 export type TopoObject = {
   __typename?: 'TopoObject';
-  geometries: Array<TopoGeometry>;
   type: Scalars['String'];
+  geometries: Array<TopoGeometry>;
 };
 
 export type TopoObjectContainer = {
@@ -413,6 +414,7 @@ export type UpdateLooMutationVariables = Exact<{
   paymentDetails?: Maybe<Scalars['String']>;
   notes?: Maybe<Scalars['String']>;
   campaignUOL?: Maybe<Scalars['Boolean']>;
+  active?: Maybe<Scalars['Boolean']>;
 }>;
 
 
@@ -609,9 +611,9 @@ export type SubmitVerificationReportMutationMutationHookResult = ReturnType<type
 export type SubmitVerificationReportMutationMutationResult = Apollo.MutationResult<SubmitVerificationReportMutationMutation>;
 export type SubmitVerificationReportMutationMutationOptions = Apollo.BaseMutationOptions<SubmitVerificationReportMutationMutation, SubmitVerificationReportMutationMutationVariables>;
 export const UpdateLooDocument = gql`
-    mutation updateLoo($id: ID, $location: PointInput!, $name: String, $openingTimes: OpeningTimes, $accessible: Boolean, $allGender: Boolean, $men: Boolean, $women: Boolean, $children: Boolean, $urinalOnly: Boolean, $babyChange: Boolean, $radar: Boolean, $attended: Boolean, $automatic: Boolean, $noPayment: Boolean, $paymentDetails: String, $notes: String, $campaignUOL: Boolean) {
+    mutation updateLoo($id: ID, $location: PointInput!, $name: String, $openingTimes: OpeningTimes, $accessible: Boolean, $allGender: Boolean, $men: Boolean, $women: Boolean, $children: Boolean, $urinalOnly: Boolean, $babyChange: Boolean, $radar: Boolean, $attended: Boolean, $automatic: Boolean, $noPayment: Boolean, $paymentDetails: String, $notes: String, $campaignUOL: Boolean, $active: Boolean) {
   submitReport(
-    report: {edit: $id, location: $location, name: $name, openingTimes: $openingTimes, accessible: $accessible, men: $men, women: $women, children: $children, urinalOnly: $urinalOnly, allGender: $allGender, babyChange: $babyChange, radar: $radar, attended: $attended, automatic: $automatic, noPayment: $noPayment, paymentDetails: $paymentDetails, notes: $notes, campaignUOL: $campaignUOL}
+    report: {edit: $id, location: $location, name: $name, openingTimes: $openingTimes, accessible: $accessible, men: $men, women: $women, children: $children, urinalOnly: $urinalOnly, allGender: $allGender, babyChange: $babyChange, radar: $radar, attended: $attended, automatic: $automatic, noPayment: $noPayment, paymentDetails: $paymentDetails, notes: $notes, campaignUOL: $campaignUOL, active: $active}
   ) {
     code
     success
@@ -655,6 +657,7 @@ export type UpdateLooMutationFn = Apollo.MutationFunction<UpdateLooMutation, Upd
  *      paymentDetails: // value for 'paymentDetails'
  *      notes: // value for 'notes'
  *      campaignUOL: // value for 'campaignUOL'
+ *      active: // value for 'active'
  *   },
  * });
  */
