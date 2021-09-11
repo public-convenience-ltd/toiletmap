@@ -16,6 +16,188 @@ export type Scalars = {
   OpeningTimes: any;
 };
 
+/**
+ * A unit of Administrative Geography
+ * e.g. a district council
+ */
+export type AdminGeo = {
+  __typename?: 'AdminGeo';
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+};
+
+/** Statistics for a certain area. */
+export type AreaStats = {
+  __typename?: 'AreaStats';
+  /** The area's identifier. Note that only the 'name' will be passed with this field. */
+  area: AdminGeo;
+  /** The total number of loos in this area */
+  totalLoos: Scalars['Int'];
+  /** The number of loos marked as active in this area */
+  activeLoos: Scalars['Int'];
+  /** The number of loos with baby changing facilities in this area */
+  babyChangeLoos: Scalars['Int'];
+};
+
+/** The name of a contributor. This requires a certain level of permissions to access. */
+export type AuthedContributor = {
+  __typename?: 'AuthedContributor';
+  name: Scalars['String'];
+};
+
+/** A piece of proportional data, with a name and a value */
+export type Chunk = {
+  __typename?: 'Chunk';
+  name: Scalars['String'];
+  value: Scalars['Int'];
+};
+
+/** A container type for various statistical counters */
+export type Counters = {
+  __typename?: 'Counters';
+  /** The number of loos that are still open */
+  activeLoos?: Maybe<Scalars['Int']>;
+  /** The number of loos which have been closed/removed */
+  inactiveLoos?: Maybe<Scalars['Int']>;
+  /** The total number of loos */
+  totalLoos?: Maybe<Scalars['Int']>;
+  /** The total number of reports */
+  totalReports?: Maybe<Scalars['Int']>;
+  /** The total number of reports that report a loo as closed/removed */
+  removalReports?: Maybe<Scalars['Int']>;
+  /** The number of loos which have more than one report registered for them */
+  multipleReports?: Maybe<Scalars['Int']>;
+};
+
+/**
+ * A Toilet
+ * The data representing a toilet is computed from its **Report**s
+ */
+export type Loo = {
+  __typename?: 'Loo';
+  id?: Maybe<Scalars['ID']>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  verifiedAt?: Maybe<Scalars['DateTime']>;
+  reports?: Maybe<Array<Maybe<Report>>>;
+  active?: Maybe<Scalars['Boolean']>;
+  location?: Maybe<Point>;
+  area?: Maybe<Array<Maybe<AdminGeo>>>;
+  name?: Maybe<Scalars['String']>;
+  openingTimes?: Maybe<Scalars['OpeningTimes']>;
+  accessible?: Maybe<Scalars['Boolean']>;
+  allGender?: Maybe<Scalars['Boolean']>;
+  men?: Maybe<Scalars['Boolean']>;
+  women?: Maybe<Scalars['Boolean']>;
+  urinalOnly?: Maybe<Scalars['Boolean']>;
+  children?: Maybe<Scalars['Boolean']>;
+  babyChange?: Maybe<Scalars['Boolean']>;
+  radar?: Maybe<Scalars['Boolean']>;
+  attended?: Maybe<Scalars['Boolean']>;
+  automatic?: Maybe<Scalars['Boolean']>;
+  noPayment?: Maybe<Scalars['Boolean']>;
+  paymentDetails?: Maybe<Scalars['String']>;
+  notes?: Maybe<Scalars['String']>;
+  removalReason?: Maybe<Scalars['String']>;
+  campaignUOL?: Maybe<Scalars['Boolean']>;
+};
+
+/** Include or Exclude Loos from search results based on whether they satisfy a filter condition */
+export type LooFilter = {
+  active?: Maybe<Scalars['Boolean']>;
+  noPayment?: Maybe<Scalars['Boolean']>;
+  text?: Maybe<Scalars['String']>;
+  fromDate?: Maybe<Scalars['DateTime']>;
+  toDate?: Maybe<Scalars['DateTime']>;
+  contributors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  areaName?: Maybe<Scalars['String']>;
+};
+
+export type LooSearchResponse = {
+  __typename?: 'LooSearchResponse';
+  loos: Array<Loo>;
+  total?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  pages?: Maybe<Scalars['Int']>;
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  submitReport?: Maybe<ReportMutationResponse>;
+  submitRemovalReport?: Maybe<ReportMutationResponse>;
+  submitVerificationReport?: Maybe<ReportMutationResponse>;
+};
+
+
+export type MutationSubmitReportArgs = {
+  report?: Maybe<ReportInput>;
+};
+
+
+export type MutationSubmitRemovalReportArgs = {
+  report?: Maybe<RemovalReportInput>;
+};
+
+
+export type MutationSubmitVerificationReportArgs = {
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type MutationResponse = {
+  code: Scalars['String'];
+  success: Scalars['Boolean'];
+  message: Scalars['String'];
+};
+
+export type PaginationInput = {
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+};
+
+export enum Permission {
+  SubmitReport = 'SUBMIT_REPORT',
+  ModerateReport = 'MODERATE_REPORT',
+  ViewContributorInfo = 'VIEW_CONTRIBUTOR_INFO'
+}
+
+/**
+ * A Geographical Point
+ * Expressed in WGS84 coordinates (SRID 4326).
+ */
+export type Point = {
+  __typename?: 'Point';
+  /** Latitude */
+  lat: Scalars['Float'];
+  /** Longitude */
+  lng: Scalars['Float'];
+};
+
+export type PointInput = {
+  lat: Scalars['Float'];
+  lng: Scalars['Float'];
+};
+
+/** Proportions of different values for different attributes */
+export type Proportions = {
+  __typename?: 'Proportions';
+  /** The proportions of loos that are active vs removed */
+  activeLoos: Array<Chunk>;
+  /** The proportions of loos that have baby changing facilities vs those that don't */
+  babyChanging: Array<Chunk>;
+  /** The proportions of loos that are accessible vs not accessible */
+  accessibleLoos: Array<Chunk>;
+};
+
+export type ProximityInput = {
+  /** Latitude */
+  lat: Scalars['Float'];
+  /** Longitude */
+  lng: Scalars['Float'];
+  /** Maximum Distance in meters */
+  maxDistance?: Maybe<Scalars['Int']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   /** Retrieve a Loo by ID */
@@ -67,37 +249,9 @@ export type QueryReportArgs = {
   id: Scalars['ID'];
 };
 
-/**
- * A Toilet
- * The data representing a toilet is computed from its **Report**s
- */
-export type Loo = {
-  __typename?: 'Loo';
-  id?: Maybe<Scalars['ID']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-  verifiedAt?: Maybe<Scalars['DateTime']>;
-  reports?: Maybe<Array<Maybe<Report>>>;
-  active?: Maybe<Scalars['Boolean']>;
-  location?: Maybe<Point>;
-  area?: Maybe<Array<Maybe<AdminGeo>>>;
-  name?: Maybe<Scalars['String']>;
-  openingTimes?: Maybe<Scalars['OpeningTimes']>;
-  accessible?: Maybe<Scalars['Boolean']>;
-  allGender?: Maybe<Scalars['Boolean']>;
-  men?: Maybe<Scalars['Boolean']>;
-  women?: Maybe<Scalars['Boolean']>;
-  urinalOnly?: Maybe<Scalars['Boolean']>;
-  children?: Maybe<Scalars['Boolean']>;
-  babyChange?: Maybe<Scalars['Boolean']>;
-  radar?: Maybe<Scalars['Boolean']>;
-  attended?: Maybe<Scalars['Boolean']>;
-  automatic?: Maybe<Scalars['Boolean']>;
-  noPayment?: Maybe<Scalars['Boolean']>;
-  paymentDetails?: Maybe<Scalars['String']>;
-  notes?: Maybe<Scalars['String']>;
-  removalReason?: Maybe<Scalars['String']>;
-  campaignUOL?: Maybe<Scalars['Boolean']>;
+export type RemovalReportInput = {
+  edit: Scalars['ID'];
+  reason: Scalars['String'];
 };
 
 /**
@@ -142,179 +296,6 @@ export type Report = {
   loo?: Maybe<Loo>;
 };
 
-/**
- * A Geographical Point
- * Expressed in WGS84 coordinates (SRID 4326).
- */
-export type Point = {
-  __typename?: 'Point';
-  /** Latitude */
-  lat: Scalars['Float'];
-  /** Longitude */
-  lng: Scalars['Float'];
-};
-
-/**
- * A unit of Administrative Geography
- * e.g. a district council
- */
-export type AdminGeo = {
-  __typename?: 'AdminGeo';
-  name?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-};
-
-/** Include or Exclude Loos from search results based on whether they satisfy a filter condition */
-export type LooFilter = {
-  active?: Maybe<Scalars['Boolean']>;
-  noPayment?: Maybe<Scalars['Boolean']>;
-  text?: Maybe<Scalars['String']>;
-  fromDate?: Maybe<Scalars['DateTime']>;
-  toDate?: Maybe<Scalars['DateTime']>;
-  contributors?: Maybe<Array<Maybe<Scalars['String']>>>;
-  areaName?: Maybe<Scalars['String']>;
-};
-
-export type PaginationInput = {
-  limit?: Maybe<Scalars['Int']>;
-  page?: Maybe<Scalars['Int']>;
-};
-
-export enum SortOrder {
-  NewestFirst = 'NEWEST_FIRST',
-  OldestFirst = 'OLDEST_FIRST'
-}
-
-export type LooSearchResponse = {
-  __typename?: 'LooSearchResponse';
-  loos: Array<Loo>;
-  total?: Maybe<Scalars['Int']>;
-  page?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  pages?: Maybe<Scalars['Int']>;
-};
-
-export type ProximityInput = {
-  /** Latitude */
-  lat: Scalars['Float'];
-  /** Longitude */
-  lng: Scalars['Float'];
-  /** Maximum Distance in meters */
-  maxDistance?: Maybe<Scalars['Int']>;
-};
-
-/** Main TopoJSON type. Contains various objects and arcs. */
-export type TopoGeo = {
-  __typename?: 'TopoGeo';
-  type: Scalars['String'];
-  transform?: Maybe<TopoTransform>;
-  objects: Array<TopoObjectContainer>;
-  arcs: Array<Array<Array<Scalars['Float']>>>;
-};
-
-/** A whole load of TopoJSON stuff follows */
-export type TopoTransform = {
-  __typename?: 'TopoTransform';
-  scale: Array<Scalars['Float']>;
-  translate: Array<Scalars['Float']>;
-};
-
-export type TopoObjectContainer = {
-  __typename?: 'TopoObjectContainer';
-  name: Scalars['String'];
-  value: TopoObject;
-};
-
-export type TopoObject = {
-  __typename?: 'TopoObject';
-  type: Scalars['String'];
-  geometries: Array<TopoGeometry>;
-};
-
-export type TopoGeometry = {
-  __typename?: 'TopoGeometry';
-  type: Scalars['String'];
-  arcs: Array<Array<Array<Scalars['Float']>>>;
-  /** JSON-encoded properties string */
-  properties: Scalars['String'];
-};
-
-/** A container type for various statistical counters */
-export type Counters = {
-  __typename?: 'Counters';
-  /** The number of loos that are still open */
-  activeLoos?: Maybe<Scalars['Int']>;
-  /** The number of loos which have been closed/removed */
-  inactiveLoos?: Maybe<Scalars['Int']>;
-  /** The total number of loos */
-  totalLoos?: Maybe<Scalars['Int']>;
-  /** The total number of reports */
-  totalReports?: Maybe<Scalars['Int']>;
-  /** The total number of reports that report a loo as closed/removed */
-  removalReports?: Maybe<Scalars['Int']>;
-  /** The number of loos which have more than one report registered for them */
-  multipleReports?: Maybe<Scalars['Int']>;
-};
-
-/** Proportions of different values for different attributes */
-export type Proportions = {
-  __typename?: 'Proportions';
-  /** The proportions of loos that are active vs removed */
-  activeLoos: Array<Chunk>;
-  /** The proportions of loos that have baby changing facilities vs those that don't */
-  babyChanging: Array<Chunk>;
-  /** The proportions of loos that are accessible vs not accessible */
-  accessibleLoos: Array<Chunk>;
-};
-
-/** A piece of proportional data, with a name and a value */
-export type Chunk = {
-  __typename?: 'Chunk';
-  name: Scalars['String'];
-  value: Scalars['Int'];
-};
-
-/** Statistics for a certain area. */
-export type AreaStats = {
-  __typename?: 'AreaStats';
-  /** The area's identifier. Note that only the 'name' will be passed with this field. */
-  area: AdminGeo;
-  /** The total number of loos in this area */
-  totalLoos: Scalars['Int'];
-  /** The number of loos marked as active in this area */
-  activeLoos: Scalars['Int'];
-  /** The number of loos with baby changing facilities in this area */
-  babyChangeLoos: Scalars['Int'];
-};
-
-/** The name of a contributor. This requires a certain level of permissions to access. */
-export type AuthedContributor = {
-  __typename?: 'AuthedContributor';
-  name: Scalars['String'];
-};
-
-export type Mutation = {
-  __typename?: 'Mutation';
-  submitReport?: Maybe<ReportMutationResponse>;
-  submitRemovalReport?: Maybe<ReportMutationResponse>;
-  submitVerificationReport?: Maybe<ReportMutationResponse>;
-};
-
-
-export type MutationSubmitReportArgs = {
-  report?: Maybe<ReportInput>;
-};
-
-
-export type MutationSubmitRemovalReportArgs = {
-  report?: Maybe<RemovalReportInput>;
-};
-
-
-export type MutationSubmitVerificationReportArgs = {
-  id?: Maybe<Scalars['ID']>;
-};
-
 export type ReportInput = {
   edit?: Maybe<Scalars['ID']>;
   location: PointInput;
@@ -336,11 +317,6 @@ export type ReportInput = {
   campaignUOL?: Maybe<Scalars['Boolean']>;
 };
 
-export type PointInput = {
-  lat: Scalars['Float'];
-  lng: Scalars['Float'];
-};
-
 export type ReportMutationResponse = MutationResponse & {
   __typename?: 'ReportMutationResponse';
   code: Scalars['String'];
@@ -350,22 +326,46 @@ export type ReportMutationResponse = MutationResponse & {
   loo?: Maybe<Loo>;
 };
 
-export type MutationResponse = {
-  code: Scalars['String'];
-  success: Scalars['Boolean'];
-  message: Scalars['String'];
-};
-
-export type RemovalReportInput = {
-  edit: Scalars['ID'];
-  reason: Scalars['String'];
-};
-
-export enum Permission {
-  SubmitReport = 'SUBMIT_REPORT',
-  ModerateReport = 'MODERATE_REPORT',
-  ViewContributorInfo = 'VIEW_CONTRIBUTOR_INFO'
+export enum SortOrder {
+  NewestFirst = 'NEWEST_FIRST',
+  OldestFirst = 'OLDEST_FIRST'
 }
+
+/** Main TopoJSON type. Contains various objects and arcs. */
+export type TopoGeo = {
+  __typename?: 'TopoGeo';
+  type: Scalars['String'];
+  transform?: Maybe<TopoTransform>;
+  objects: Array<TopoObjectContainer>;
+  arcs: Array<Array<Array<Scalars['Float']>>>;
+};
+
+export type TopoGeometry = {
+  __typename?: 'TopoGeometry';
+  type: Scalars['String'];
+  arcs: Array<Array<Array<Scalars['Float']>>>;
+  /** JSON-encoded properties string */
+  properties: Scalars['String'];
+};
+
+export type TopoObject = {
+  __typename?: 'TopoObject';
+  type: Scalars['String'];
+  geometries: Array<TopoGeometry>;
+};
+
+export type TopoObjectContainer = {
+  __typename?: 'TopoObjectContainer';
+  name: Scalars['String'];
+  value: TopoObject;
+};
+
+/** A whole load of TopoJSON stuff follows */
+export type TopoTransform = {
+  __typename?: 'TopoTransform';
+  scale: Array<Scalars['Float']>;
+  translate: Array<Scalars['Float']>;
+};
 
 export type GetAreaStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -646,7 +646,11 @@ export const GetContributorsDocument = gql`
 export type GetContributorsQueryResult = Apollo.QueryResult<GetContributorsQuery, GetContributorsQueryVariables>;
 export const SearchDocument = gql`
     query search($rows: Int = 10, $page: Int = 1, $text: String, $order: SortOrder = NEWEST_FIRST, $areaName: String, $fromDate: DateTime, $toDate: DateTime, $contributor: String) {
-  loos(pagination: {limit: $rows, page: $page}, filters: {text: $text, fromDate: $fromDate, toDate: $toDate, contributors: [$contributor], areaName: $areaName}, sort: $order) {
+  loos(
+    pagination: {limit: $rows, page: $page}
+    filters: {text: $text, fromDate: $fromDate, toDate: $toDate, contributors: [$contributor], areaName: $areaName}
+    sort: $order
+  ) {
     loos {
       id
       name
@@ -712,7 +716,9 @@ export type RemoveLooMutationResult = Apollo.MutationResult<RemoveLooMutation>;
 export type RemoveLooMutationOptions = Apollo.BaseMutationOptions<RemoveLooMutation, RemoveLooMutationVariables>;
 export const UpdateLooDocument = gql`
     mutation updateLoo($id: ID, $location: PointInput!, $name: String, $openingTimes: OpeningTimes, $accessible: Boolean, $allGender: Boolean, $men: Boolean, $women: Boolean, $children: Boolean, $urinalOnly: Boolean, $babyChange: Boolean, $radar: Boolean, $attended: Boolean, $automatic: Boolean, $noPayment: Boolean, $paymentDetails: String, $notes: String, $campaignUOL: Boolean) {
-  submitReport(report: {edit: $id, location: $location, name: $name, openingTimes: $openingTimes, accessible: $accessible, men: $men, women: $women, children: $children, urinalOnly: $urinalOnly, allGender: $allGender, babyChange: $babyChange, radar: $radar, attended: $attended, automatic: $automatic, noPayment: $noPayment, paymentDetails: $paymentDetails, notes: $notes, campaignUOL: $campaignUOL}) {
+  submitReport(
+    report: {edit: $id, location: $location, name: $name, openingTimes: $openingTimes, accessible: $accessible, men: $men, women: $women, children: $children, urinalOnly: $urinalOnly, allGender: $allGender, babyChange: $babyChange, radar: $radar, attended: $attended, automatic: $automatic, noPayment: $noPayment, paymentDetails: $paymentDetails, notes: $notes, campaignUOL: $campaignUOL}
+  ) {
     code
     success
     message

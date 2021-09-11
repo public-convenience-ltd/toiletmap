@@ -16,8 +16,6 @@ import { withApollo } from '../components/withApollo';
 import { NextPage } from 'next';
 import { getServerPageFindLooById, getServerPageFindLoosNearby, useFindLooById, useFindLoosNearby } from '../generated/page';
 
-
-
 /**
  * SSR Migration plan
  * ---
@@ -29,9 +27,6 @@ import { getServerPageFindLooById, getServerPageFindLoosNearby, useFindLooById, 
  * ISR lets us regenerate loo pages and lat/lng loo list incrementally upon new requests
  * Set revalidate to throttle this by n seconds.
  */
-
-
-
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
@@ -80,7 +75,7 @@ const HomePage = ({ initialPosition, ...props }) => {
 
 
   /**
-   * TODO: Fetch loo information using SSR.
+   * TODO: Fetch loo information as one big blob using SSR.
    */
   const [selectedLoo, setSelectedLoo] = React.useState(null);
   const [loadingSelectedLoo, setLoadingSelectedLoo] = React.useState(false);
