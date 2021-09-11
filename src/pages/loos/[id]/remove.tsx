@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Helmet } from 'react-helmet';
+import Head from 'next/head';
 
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
@@ -64,9 +64,9 @@ const RemovePage = function (props: { match: { params: { id: any; }; }; }) {
   return (
     <PageLayout layoutMode="blog">
       <>
-        <Helmet>
+        <Head>
           <title>{config.getTitle('Remove Toilet')}</title>
-        </Helmet>
+        </Head>
 
         <Container maxWidth={845}>
           <Text fontSize={6} fontWeight="bold" textAlign="center">

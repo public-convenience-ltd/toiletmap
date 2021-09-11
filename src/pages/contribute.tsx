@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import Head from 'next/head';
 import styled from '@emotion/styled';
 
 import PageLayout from '../components/PageLayout';
@@ -23,9 +23,9 @@ const LoginPage = (props) => {
 
   return (
     <PageLayout layoutMode="blog">
-      <Helmet>
+      <Head>
         <title>{config.getTitle('Contributing')}</title>
-      </Helmet>
+      </Head>
 
       <Container maxWidth={845}>
         <Text fontSize={6} fontWeight="bold" textAlign="center">

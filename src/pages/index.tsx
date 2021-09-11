@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
+import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import PageLayout from '../components/PageLayout';
 import Box from '../components/Box';
@@ -145,9 +145,9 @@ const HomePage = ({ initialPosition, ...props }) => {
 
   return (
     <PageLayout mapCenter={mapState.center}>
-      <Helmet>
+      <Head>
         <title>{pageTitle}</title>
-      </Helmet>
+      </Head>
 
       <VisuallyHidden>
         <h1>{pageTitle}</h1>

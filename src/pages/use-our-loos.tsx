@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import Head from 'next/head';
 import Image from 'next/image'
 import PageLayout from '../components/PageLayout';
 import Container from '../components/Container';
@@ -15,9 +15,9 @@ import uolLogo from '../../public/domestos-use-our-loos-full.png';
 const UseOurLoosPage = (props) => {
   return (
     <PageLayout layoutMode="blog">
-      <Helmet>
+      <Head>
         <title>{config.getTitle('Domestos’ Use Our Loos Scheme')}</title>
-      </Helmet>
+      </Head>
 
       <Container maxWidth={845}>
         <Text fontSize={6} fontWeight="bold" textAlign="center">

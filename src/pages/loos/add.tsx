@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import Head from 'next/head';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 import PageLayout from '../../components/PageLayout';
@@ -83,9 +83,9 @@ const AddPage = (props) => {
 
   return (
     <PageLayout>
-      <Helmet>
+      <Head>
         <title>{config.getTitle('Add Toilet')}</title>
-      </Helmet>
+      </Head>
 
       <Box position="relative" display="flex" height="40vh">
         <LooMap
