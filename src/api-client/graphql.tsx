@@ -386,6 +386,13 @@ export type RemoveLooMutationVariables = Exact<{
 
 export type RemoveLooMutation = { __typename?: 'Mutation', submitRemovalReport?: Maybe<{ __typename?: 'ReportMutationResponse', code: string, success: boolean, loo?: Maybe<{ __typename?: 'Loo', id?: Maybe<string>, active?: Maybe<boolean>, removalReason?: Maybe<string> }> }> };
 
+export type SubmitVerificationReportMutationMutationVariables = Exact<{
+  id?: Maybe<Scalars['ID']>;
+}>;
+
+
+export type SubmitVerificationReportMutationMutation = { __typename?: 'Mutation', submitVerificationReport?: Maybe<{ __typename?: 'ReportMutationResponse', loo?: Maybe<{ __typename?: 'Loo', id?: Maybe<string>, verifiedAt?: Maybe<any> }> }> };
+
 export type UpdateLooMutationVariables = Exact<{
   id?: Maybe<Scalars['ID']>;
   location: PointInput;
@@ -484,6 +491,19 @@ export const RemoveLooDocument = gql`
 export type RemoveLooMutationFn = Apollo.MutationFunction<RemoveLooMutation, RemoveLooMutationVariables>;
 export type RemoveLooMutationResult = Apollo.MutationResult<RemoveLooMutation>;
 export type RemoveLooMutationOptions = Apollo.BaseMutationOptions<RemoveLooMutation, RemoveLooMutationVariables>;
+export const SubmitVerificationReportMutationDocument = gql`
+    mutation submitVerificationReportMutation($id: ID) {
+  submitVerificationReport(id: $id) {
+    loo {
+      id
+      verifiedAt
+    }
+  }
+}
+    `;
+export type SubmitVerificationReportMutationMutationFn = Apollo.MutationFunction<SubmitVerificationReportMutationMutation, SubmitVerificationReportMutationMutationVariables>;
+export type SubmitVerificationReportMutationMutationResult = Apollo.MutationResult<SubmitVerificationReportMutationMutation>;
+export type SubmitVerificationReportMutationMutationOptions = Apollo.BaseMutationOptions<SubmitVerificationReportMutationMutation, SubmitVerificationReportMutationMutationVariables>;
 export const UpdateLooDocument = gql`
     mutation updateLoo($id: ID, $location: PointInput!, $name: String, $openingTimes: OpeningTimes, $accessible: Boolean, $allGender: Boolean, $men: Boolean, $women: Boolean, $children: Boolean, $urinalOnly: Boolean, $babyChange: Boolean, $radar: Boolean, $attended: Boolean, $automatic: Boolean, $noPayment: Boolean, $paymentDetails: String, $notes: String, $campaignUOL: Boolean) {
   submitReport(
