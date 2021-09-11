@@ -14,7 +14,7 @@
     "generate": "node -r dotenv/config ./src/api/db/manage/generate/index.js --confirm",
     "areas": "node -r dotenv/config ./src/api/db/manage/areaToDatabase/index.js",
     "prepare": "husky install",
-    "gql:codegen": "start-server-and-test dev http-get://localhost:3000/api 'graphql-codegen --config codegen.yml'"
+    "gql:codegen": "yarn build && start-server-and-test start http://localhost:3000 'graphql-codegen --config codegen.yml'"
   },
   "repository": {
     "type": "git",
