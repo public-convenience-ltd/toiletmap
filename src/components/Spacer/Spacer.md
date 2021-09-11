@@ -2,7 +2,7 @@
 
 ### Implements
 
-* [space](https://styled-system.com/api#space)
+- [space](https://styled-system.com/api#space)
 
 ### Vertical spacing
 
@@ -13,7 +13,7 @@ import Box from '../Box';
   <Box height={10} bg="#000" />
   <Spacer mt={3} />
   <Box height={10} bg="#000" />
-</>
+</>;
 ```
 
 ### Lateral spacing
@@ -25,5 +25,5 @@ import Box from '../Box';
   <Box width={10} bg="#000" />
   <Spacer ml={3} />
   <Box width={10} bg="#000" />
-</Box>
+</Box>;
 ```

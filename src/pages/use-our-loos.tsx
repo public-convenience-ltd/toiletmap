@@ -1,13 +1,13 @@
 import React from 'react';
 import Head from 'next/head';
-import Image from 'next/image'
+import Image from 'next/image';
 import PageLayout from '../components/PageLayout';
 import Container from '../components/Container';
 import Button from '../components/Button';
 import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 import Box from '../components/Box';
-import { css } from '@emotion/react'
+import { css } from '@emotion/react';
 import config from '../config';
 
 import uolLogo from '../../public/domestos-use-our-loos-full.png';

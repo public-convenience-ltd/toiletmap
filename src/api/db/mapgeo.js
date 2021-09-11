@@ -47,4 +47,5 @@ const MapGeoSchema = new mongoose.Schema(
 
 MapGeoSchema.index({ areaType: 'text' });
 
-module.exports = mongoose.models.MapGeo || new mongoose.model('MapGeo', MapGeoSchema);
+module.exports =
+  mongoose.models.MapGeo || new mongoose.model('MapGeo', MapGeoSchema);

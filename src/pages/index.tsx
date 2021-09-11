@@ -12,7 +12,12 @@ import config, { FILTERS_KEY } from '../config';
 import { useRouter } from 'next/router';
 import { withApollo } from '../components/withApollo';
 import { NextPage } from 'next';
-import { getServerPageFindLooById, getServerPageFindLoosNearby, useFindLooById, useFindLoosNearby } from '../api-client/page';
+import {
+  getServerPageFindLooById,
+  getServerPageFindLoosNearby,
+  useFindLooById,
+  useFindLoosNearby,
+} from '../api-client/page';
 
 /**
  * SSR Migration plan
@@ -27,11 +32,26 @@ import { getServerPageFindLooById, getServerPageFindLoosNearby, useFindLooById, 
  */
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
+const MapLoader = () => <p>Loading map...</p>;
 
 const HomePage = ({ initialPosition, ...props }) => {
   const [mapState, setMapState] = useMapState();
-  const LooMap = React.useMemo(() => dynamic(() => import('../components/LooMap'), { loading: () => <p>Loading map...</p>, ssr: false, }), [])
-  const ToiletDetailsPanel = React.useMemo(() => dynamic(() => import('../components/ToiletDetailsPanel'), { loading: () => <p>Loading map...</p>, ssr: false, }), [])
+  const LooMap = React.useMemo(
+    () =>
+      dynamic(() => import('../components/LooMap'), {
+        loading: MapLoader,
+        ssr: false,
+      }),
+    []
+  );
+  const ToiletDetailsPanel = React.useMemo(
+    () =>
+      dynamic(() => import('../components/ToiletDetailsPanel'), {
+        loading: MapLoader,
+        ssr: false,
+      }),
+    []
+  );
   let initialState = config.getSettings(FILTERS_KEY);
 
   // default any unsaved filters as 'false'
@@ -47,11 +67,7 @@ const HomePage = ({ initialPosition, ...props }) => {
   }, [filters]);
 
   const [toiletData, setToiletData] = React.useState([]);
-  const variables = {
-    lat: mapState.center.lat,
-    lng: mapState.center.lng,
-    radius: Math.ceil(mapState.radius),
-  };
+
   const router = useRouter();
 
   /**
@@ -60,17 +76,22 @@ const HomePage = ({ initialPosition, ...props }) => {
    */
   React.useEffect(() => {
     async function fetchNearbyLooData() {
-      const { props : toiletProps } = await getServerPageFindLoosNearby({variables});
-      if(toiletProps.data !== undefined) {
+      const variables = {
+        lat: mapState.center.lat,
+        lng: mapState.center.lng,
+        radius: Math.ceil(mapState.radius),
+      };
+      const { props: toiletProps } = await getServerPageFindLoosNearby({
+        variables,
+      });
+      if (toiletProps.data !== undefined) {
         setToiletData(toiletProps.data.loosByProximity);
       }
     }
     fetchNearbyLooData();
-  }, [mapState])
-
+  }, [mapState]);
 
   const { id: selectedLooId } = router.query;
-
 
   /**
    * TODO: Fetch loo information as one big blob using SSR.
@@ -79,24 +100,26 @@ const HomePage = ({ initialPosition, ...props }) => {
   const [loadingSelectedLoo, setLoadingSelectedLoo] = React.useState(false);
   React.useEffect(() => {
     async function fetchNearbyLooData() {
-      const { props : toiletProps } = await getServerPageFindLooById({variables: {id: selectedLooId as string}});
-      if(toiletProps.data !== undefined) {
+      const { props: toiletProps } = await getServerPageFindLooById({
+        variables: { id: selectedLooId as string },
+      });
+      if (toiletProps.data !== undefined) {
         setSelectedLoo(toiletProps.data.loo);
         setLoadingSelectedLoo(false);
       }
     }
     setLoadingSelectedLoo(true);
     fetchNearbyLooData();
-  }, [selectedLooId])
+  }, [selectedLooId]);
 
   // const { message } = queryString.parse(props.location.search);
-  const message = "TODO"
+  const message = 'TODO';
 
   // get the filter objects from config for the filters applied by the user
   const applied = config.filters.filter((filter) => filters[filter.id]);
 
   // restrict the results to only those toilets which pass all of our filter requirements
-  const toilets = toiletData.filter((toilet: { [x: string]: any; }) =>
+  const toilets = toiletData.filter((toilet: { [x: string]: any }) =>
     applied.every((filter) => {
       const value = toilet[filter.id];
 
@@ -135,7 +158,9 @@ const HomePage = ({ initialPosition, ...props }) => {
   const [toiletPanelDimensions, setToiletPanelDimensions] = React.useState({});
 
   const pageTitle = config.getTitle(
-    isLooPage && selectedLoo ? selectedLoo.name || 'Unnamed Toilet' : 'Find Toilet'
+    isLooPage && selectedLoo
+      ? selectedLoo.name || 'Unnamed Toilet'
+      : 'Find Toilet'
   );
 
   return (
@@ -157,8 +182,9 @@ const HomePage = ({ initialPosition, ...props }) => {
           right={0}
           m={3}
           maxWidth={326}
-          maxHeight={`calc(100% - ${toiletPanelDimensions.height || 0
-            }px - ${SIDEBAR_BOTTOM_MARGIN}px)`}
+          maxHeight={`calc(100% - ${
+            toiletPanelDimensions.height || 0
+          }px - ${SIDEBAR_BOTTOM_MARGIN}px)`}
           overflowY="auto"
           // center on small viewports
           mx={['auto', 0]}
@@ -173,7 +199,7 @@ const HomePage = ({ initialPosition, ...props }) => {
         </Box>
 
         <LooMap
-          loos={toilets.map((toilet: { id: string | string[]; }) => {
+          loos={toilets.map((toilet: { id: string | string[] }) => {
             if (toilet.id === selectedLooId) {
               return {
                 ...toilet,
@@ -215,10 +241,9 @@ const HomePage = ({ initialPosition, ...props }) => {
                   pb={[4, 3, 4]}
                   bg={['white', 'white', 'transparent']}
                 >
-                  <Notification
-                    allowClose
-                    children={config.messages[message]}
-                  />
+                  <Notification allowClose>
+                    {config.messages[message]}
+                  </Notification>
                 </Box>
               )}
             </ToiletDetailsPanel>

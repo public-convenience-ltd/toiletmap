@@ -1,19 +1,19 @@
 overwrite: true
-schema: "src/api/schema.graphql"
-documents: "src/api-client/operations/*.graphql"
+schema: 'src/api/schema.graphql'
+documents: 'src/api-client/operations/*.graphql'
 generates:
   src/api-client/graphql.tsx:
     plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
     config:
-          reactApolloVersion: 3
-          withHooks: true
-          withHOC: false
-          withComponent: false
-          exportFragmentSpreadSubTypes: true
-          documentMode: graphQLTag
+      reactApolloVersion: 3
+      withHooks: true
+      withHOC: false
+      withComponent: false
+      exportFragmentSpreadSubTypes: true
+      documentMode: graphQLTag
   src/api-client/page.tsx:
     config:
       documentMode: external

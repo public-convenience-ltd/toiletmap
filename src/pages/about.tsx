@@ -44,7 +44,7 @@ const AboutPage = (props) => {
         <Spacer mb={5} />
         <p>
           The Great British Public Toilet Map is a website to help people find
-          toilets across the UK. It is the UK's largest database of
+          toilets across the UK. It is the UK&apos;s largest database of
           publicly-accessible toilets, with over 11000 facilities.
         </p>
         <p>
@@ -54,9 +54,9 @@ const AboutPage = (props) => {
         </p>
         <p>
           The Great British Public Toilet Map aims to be a complete, up-to-date,
-          sustainable source of toilet locations. It's the UK's largest database
-          of publicly-accessible toilets (see below), with over 11000
-          facilities.
+          sustainable source of toilet locations. It&apos;s the UK&apos;s
+          largest database of publicly-accessible toilets (see below), with over
+          11000 facilities.
         </p>
         <p>
           The Great British Public Toilet Map is run by Public Convenience, a

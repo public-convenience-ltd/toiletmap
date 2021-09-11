@@ -12,7 +12,6 @@ import Logo from '../Logo';
 import MainMenu from './MainMenu';
 
 const Header = ({ mapCenter, children }) => {
-
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   return (
@@ -26,8 +25,10 @@ const Header = ({ mapCenter, children }) => {
         minHeight={60}
       >
         <Box flexShrink={0}>
-          <Link href="/">
-            <Logo />
+          <Link href="/" passHref>
+            <a>
+              <Logo />
+            </a>
           </Link>
         </Box>
 
@@ -36,7 +37,7 @@ const Header = ({ mapCenter, children }) => {
             <VisuallyHidden>Main menu</VisuallyHidden>
           </h2>
 
-          <Media at="sm" css={{display:"flex", justifyContent:"flex-end"}}>
+          <Media at="sm" css={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button
               type="button"
               aria-expanded={isMenuVisible}
@@ -50,13 +51,14 @@ const Header = ({ mapCenter, children }) => {
               <MainMenu
                 mapCenter={mapCenter}
                 onMenuItemClick={() => setIsMenuVisible(false)}
-                children={children}
-              />
+              >
+                {children}
+              </MainMenu>
             </Drawer>
           </Media>
 
           <Media greaterThan="sm">
-            <MainMenu mapCenter={mapCenter} children={children} />
+            <MainMenu mapCenter={mapCenter}>{children}</MainMenu>
           </Media>
         </Box>
       </Box>

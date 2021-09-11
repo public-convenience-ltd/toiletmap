@@ -43,7 +43,11 @@ const ToiletMarkerIcon = L.DivIcon.extend({
     isUseOurLoosCampaign: false,
   },
 
-  initialize: function (options: { isHighlighted: any; toiletId?: any; isUseOurLoosCampaign?: any; }) {
+  initialize: function (options: {
+    isHighlighted: any;
+    toiletId?: any;
+    isUseOurLoosCampaign?: any;
+  }) {
     this.options = {
       ...this.options,
       iconSize: options.isHighlighted

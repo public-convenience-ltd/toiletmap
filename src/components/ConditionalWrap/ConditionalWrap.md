@@ -7,9 +7,7 @@ In this scenario the content would be wrapped inside a modal, but only for mobil
 ```jsx static
 <ConditionalWrap
   condition={isMobile}
-  wrap={children => <Modal>{children}</Modal>}
-  children={
-    <p>Content here!</p>
-  }
+  wrap={(children) => <Modal>{children}</Modal>}
+  children={<p>Content here!</p>}
 />
 ```

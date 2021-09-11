@@ -14,7 +14,7 @@ import Notification from '../../../components/Notification';
 
 import { useRouter } from 'next/router';
 
-const RemovePage = function (props: { match: { params: { id: any; }; }; }) {
+const RemovePage = function (props: { match: { params: { id: any } } }) {
   // const [reason, setReason] = useState('');
   // const router = useRouter();
   // const {id: selectedLooId} = router.query;
@@ -76,7 +76,7 @@ const RemovePage = function (props: { match: { params: { id: any; }; }; }) {
           <Spacer mb={5} />
 
           <p>
-            Please let us know why you're removing this toilet from the map
+            Please let us know why you&apos;re removing this toilet from the map
             using the form below.
           </p>
 

@@ -82,9 +82,9 @@ const PrivacyPage = () => {
           Loos campaign is not stored or processed by Public Convenience Ltd.
         </p>
         <p>
-          If you'd like to know what we've stored about you, or ask us to forget
-          you, or to let us know about something you'd like changed please drop
-          us a line at{' '}
+          If you&apos;d like to know what we&apos;ve stored about you, or ask us
+          to forget you, or to let us know about something you&apos;d like
+          changed please drop us a line at{' '}
           <Button
             as="a"
             variant="link"
@@ -94,8 +94,8 @@ const PrivacyPage = () => {
           >
             gbtoiletmap@gmail.com
           </Button>
-          . If you'd like to exercise any of your rights under the GDPR that's
-          the address to use.
+          . If you&apos;d like to exercise any of your rights under the GDPR
+          that&apos;s the address to use.
         </p>
       </Container>
     </PageLayout>

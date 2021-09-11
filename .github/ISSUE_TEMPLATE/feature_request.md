@@ -1,7 +1,6 @@
 ---
 name: Feature request
 about: Suggest an idea for toiletmap.org.uk
-
 ---
 
 **Is your feature request related to a problem? Please describe.**

@@ -15,7 +15,7 @@ const LAYOUT_DEFAULT = 'default';
 const LAYOUT_BLOG = 'blog';
 
 interface IPageLayout {
-  mapCenter?: {lat: number; lng: number;}
+  mapCenter?: { lat: number; lng: number };
   layoutMode: 'default' | 'blog';
   children: React.ReactNode;
 }
@@ -40,9 +40,10 @@ const PageLayout = ({ mapCenter, layoutMode, children }: IPageLayout) => {
             >
               <ConditionalWrap
                 condition={layoutMode === LAYOUT_BLOG}
-                wrap={(children) => <Box my={5} children={children} />}
-                children={children}
-              />
+                wrap={(children) => <Box my={5}>{children}</Box>}
+              >
+                {children}
+              </ConditionalWrap>
             </Box>
           </Box>
 

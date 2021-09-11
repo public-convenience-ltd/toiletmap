@@ -1,4 +1,4 @@
-import Router from 'next/router'
+import Router from 'next/router';
 export const FILTERS_KEY = 'filters';
 
 const filters = [
@@ -36,7 +36,7 @@ const messages = {
 
 const title = 'Toilet Map';
 
-export default {
+const config = {
   viewport: {
     mobile: 567,
   },
@@ -52,7 +52,11 @@ export default {
     lng: -0.127758,
   },
   getSettings(namespace: string) {
-    return JSON.parse((typeof localStorage !== 'undefined') && localStorage.getItem(namespace) || '{}');
+    return JSON.parse(
+      (typeof localStorage !== 'undefined' &&
+        localStorage.getItem(namespace)) ||
+        '{}'
+    );
   },
   getSetting(namespace: string, key: string, defaultVal = '') {
     const val = this.getSettings(namespace)[key];
@@ -81,3 +85,5 @@ export default {
     return title;
   },
 };
+
+export default config;

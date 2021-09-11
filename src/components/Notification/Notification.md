@@ -1,7 +1,5 @@
 ```jsx
-<Notification>
-  Please wait whilst we fetch some data&hellip;
-</Notification>
+<Notification>Please wait whilst we fetch some data&hellip;</Notification>
 ```
 
 ### Allow close

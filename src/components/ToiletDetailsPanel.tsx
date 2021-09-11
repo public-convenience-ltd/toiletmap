@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { faClock, faEdit } from '@fortawesome/free-regular-svg-icons';
@@ -44,7 +45,7 @@ import uolLogo from '../../public/uol-logo.svg';
 
 const uolFragment = (
   <Box display="flex" alignItems="center">
-    <img
+    <Image
       src={uolLogo}
       alt=""
       css={{
@@ -130,7 +131,7 @@ const ToiletDetailsPanel = ({
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(startExpanded);
 
-  const submitVerificationReport = async (variables: { id: any; }) => {
+  const submitVerificationReport = async (variables: { id: any }) => {
     alert('Implement me with apollo');
   };
 

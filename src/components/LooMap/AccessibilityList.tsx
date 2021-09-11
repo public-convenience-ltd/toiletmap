@@ -39,7 +39,9 @@ const Content = ({ toilets }) => {
       p={3}
       bg="white"
     >
-      <Text fontSize={16}>Use number keys to show a toilet's details.</Text>
+      <Text fontSize={16}>
+        Use number keys to show a toilet&apos;s details.
+      </Text>
 
       <Spacer mt={3} />
 
@@ -80,7 +82,9 @@ const Content = ({ toilets }) => {
   );
 };
 
-const AccessibilityList = (props: JSX.IntrinsicAttributes & { toilets: any; }) => {
+const AccessibilityList = (
+  props: JSX.IntrinsicAttributes & { toilets: any }
+) => {
   const [showContent, setShowContent] = React.useState(false);
 
   // to ensure it gets announced, there must be a delay between the existence of the aria live element and the content

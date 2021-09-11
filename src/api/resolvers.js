@@ -75,7 +75,9 @@ const resolvers = {
         args.filters.contributors &&
         args.filters.contributors.length &&
         context.user &&
-        context.user[process.env.AUTH0_PERMISSIONS_KEY].includes(REQUIRED_PERMISSION)
+        context.user[process.env.AUTH0_PERMISSIONS_KEY].includes(
+          REQUIRED_PERMISSION
+        )
       ) {
         query.$and = [
           {
