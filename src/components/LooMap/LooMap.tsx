@@ -36,30 +36,27 @@ const LooMap = ({
 }) => {
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => {
-    setMounted(true)
-  }, [])
-
+    setMounted(true);
+  }, []);
 
   const mapRef = React.useRef();
   const [intersectingToilets, setIntersectingToilets] = React.useState([]);
-  const [
-    renderAccessibilityOverlays,
-    setRenderAccessibilityOverlays,
-  ] = React.useState(false);
+  const [renderAccessibilityOverlays, setRenderAccessibilityOverlays] =
+    React.useState(false);
   const [announcement, setAnnouncement] = React.useState(null);
 
   useEffect(() => {
-    if(mounted) {
+    if (mounted) {
       const { leafletElement } = mapRef.current;
       const map = leafletElement.getContainer();
-  
+
       // when focused on the map container, Leaflet allows the user to pan the map by using the arrow keys
       // without the application role screen reader software overrides these controls
       //
       // this also avoids the entire main region being announced
       map.setAttribute('role', 'application');
       map.setAttribute('aria-label', 'Map');
-  
+
       // ensure all map tiles are loaded on Safari
       // https://github.com/neontribe/gbptm/issues/776
       setTimeout(() => {
@@ -68,7 +65,6 @@ const LooMap = ({
         });
       }, 400);
     }
-   
   }, [mounted]);
 
   const handleViewportChanged = () => {
@@ -88,7 +84,6 @@ const LooMap = ({
 
   const router = useRouter();
 
-
   const memoizedMarkers = React.useMemo(
     () =>
       loos.map((toilet) => (
@@ -106,18 +101,18 @@ const LooMap = ({
           label={toilet.name || 'Unnamed toilet'}
           onClick={() => {
             if (!staticMap) {
-              router.push(`/loos/${toilet.id}`, undefined, {shallow: true});
+              router.push(`/loos/${toilet.id}`, undefined, { shallow: true });
             }
           }}
-          onKeyDown={(event: { originalEvent: { keyCode: number; }; }) => {
+          onKeyDown={(event: { originalEvent: { keyCode: number } }) => {
             if (!staticMap && event.originalEvent.keyCode === KEY_ENTER) {
-              router.push(`/loos/${toilet.id}`, undefined, {shallow: true});
+              router.push(`/loos/${toilet.id}`, undefined, { shallow: true });
             }
           }}
           keyboard={false}
         />
       )),
-    [loos, staticMap]
+    [loos, staticMap, router]
   );
 
   const keyboardSelectionHandler = React.useCallback(
@@ -129,9 +124,9 @@ const LooMap = ({
       }
 
       setAnnouncement(`${toilet.name || 'Unnamed toilet'} selected`);
-      router.push(`/loos/${toilet.id}`, undefined, {shallow: true});
+      router.push(`/loos/${toilet.id}`, undefined, { shallow: true });
     },
-    [intersectingToilets]
+    [intersectingToilets, router]
   );
 
   React.useEffect(() => {
@@ -163,132 +158,136 @@ const LooMap = ({
   }, [withAccessibilityOverlays, mapRef, renderAccessibilityOverlays, mounted]);
 
   return (
-    
-    mounted && <Box
-      position="relative"
-      height="100%"
-      width="100%"
-      css={
-        showCrosshair
-          ? css`
-              &:after {
-                content: url(${crosshair});
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                display: block;
-                height: 53px;
-                width: 52px;
-                transform: translate(-50%, -50%);
-              }
-            `
-          : undefined
-      }
-    >
-      <Map
-        ref={mapRef}
-        center={center}
-        zoom={zoom}
-        minZoom={minZoom}
-        maxZoom={maxZoom}
-        onViewportChanged={handleViewportChanged}
-        dragging={!staticMap}
-        scrollWheelZoom={!staticMap}
-        zoomControl={false}
-        tap={false}
-        css={(theme) => css`
-          height: 100%;
-          width: 100%;
-          position: relative;
-          z-index: 0;
-
-          .leaflet-bottom {
-            bottom: ${controlsOffset}px;
-          }
-
-          .leaflet-bar {
-            border: none;
-            box-shadow: none;
-          }
-
-          a.leaflet-bar-part,
-          a.leaflet-control-zoom-in,
-          a.leaflet-control-zoom-out {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            color: ${theme.colors.primary};
-            border: 1px solid ${theme.colors.primary};
-            border-radius: 20px;
-
-            &:not(:first-of-type) {
-              margin-top: 10px;
-            }
-
-            &:first-of-type,
-            &:last-of-type {
-              border-radius: 20px;
-            }
-          }
-
-          &[data-focus-visible-added] {
-            border: 2px solid ${theme.colors.tertiary};
-          }
-
-          .leaflet-control [data-focus-visible-added] {
-            outline: 2px solid ${theme.colors.tertiary} !important;
-            outline-offset: 3px;
-          }
-
-          &[data-focus-visible-added] {
-            outline-offset: 0;
-          }
-        `}
+    mounted && (
+      <Box
+        position="relative"
+        height="100%"
+        width="100%"
+        css={
+          showCrosshair
+            ? css`
+                &:after {
+                  content: url(${crosshair});
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  display: block;
+                  height: 53px;
+                  width: 52px;
+                  transform: translate(-50%, -50%);
+                }
+              `
+            : undefined
+        }
       >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        <Map
+          ref={mapRef}
+          center={center}
+          zoom={zoom}
           minZoom={minZoom}
           maxZoom={maxZoom}
-        />
+          onViewportChanged={handleViewportChanged}
+          dragging={!staticMap}
+          scrollWheelZoom={!staticMap}
+          zoomControl={false}
+          tap={false}
+          css={(theme) => css`
+            height: 100%;
+            width: 100%;
+            position: relative;
+            z-index: 0;
 
-        {memoizedMarkers}
+            .leaflet-bottom {
+              bottom: ${controlsOffset}px;
+            }
 
-        <Media greaterThan="md">
-          <ZoomControl position="bottomright" />
-        </Media>
+            .leaflet-bar {
+              border: none;
+              box-shadow: none;
+            }
 
-        <LocateMapControl position="bottomright" />
+            a.leaflet-bar-part,
+            a.leaflet-control-zoom-in,
+            a.leaflet-control-zoom-out {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 40px;
+              height: 40px;
+              color: ${theme.colors.primary};
+              border: 1px solid ${theme.colors.primary};
+              border-radius: 20px;
 
-        {renderAccessibilityOverlays && (
-          <>
-            <AccessibilityIntersection
-              className="accessibility-box"
-              toilets={loos}
-              bounds={mapRef.current.leafletElement.getBounds().pad(-0.4)}
-              onIntersection={setIntersectingToilets}
-              onSelection={keyboardSelectionHandler}
-              center={center}
-            />
+              &:not(:first-of-type) {
+                margin-top: 10px;
+              }
 
-            <AccessibilityList
-              toilets={intersectingToilets.map((toilet: { name: any; }) => toilet.name)}
-            />
+              &:first-of-type,
+              &:last-of-type {
+                border-radius: 20px;
+              }
+            }
 
-            <VisuallyHidden>
-              <div
-                role="status"
-                aria-atomic="true"
-                aria-live="polite"
-                aria-relevant="additions text"
-                children={announcement}
+            &[data-focus-visible-added] {
+              border: 2px solid ${theme.colors.tertiary};
+            }
+
+            .leaflet-control [data-focus-visible-added] {
+              outline: 2px solid ${theme.colors.tertiary} !important;
+              outline-offset: 3px;
+            }
+
+            &[data-focus-visible-added] {
+              outline-offset: 0;
+            }
+          `}
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            minZoom={minZoom}
+            maxZoom={maxZoom}
+          />
+
+          {memoizedMarkers}
+
+          <Media greaterThan="md">
+            <ZoomControl position="bottomright" />
+          </Media>
+
+          <LocateMapControl position="bottomright" />
+
+          {renderAccessibilityOverlays && (
+            <>
+              <AccessibilityIntersection
+                className="accessibility-box"
+                toilets={loos}
+                bounds={mapRef.current.leafletElement.getBounds().pad(-0.4)}
+                onIntersection={setIntersectingToilets}
+                onSelection={keyboardSelectionHandler}
+                center={center}
               />
-            </VisuallyHidden>
-          </>
-        )}
-      </Map>
-    </Box>
+
+              <AccessibilityList
+                toilets={intersectingToilets.map(
+                  (toilet: { name: any }) => toilet.name
+                )}
+              />
+
+              <VisuallyHidden>
+                <div
+                  role="status"
+                  aria-atomic="true"
+                  aria-live="polite"
+                  aria-relevant="additions text"
+                >
+                  {announcement}
+                </div>
+              </VisuallyHidden>
+            </>
+          )}
+        </Map>
+      </Box>
+    )
   );
 };
 

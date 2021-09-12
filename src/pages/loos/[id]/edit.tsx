@@ -4,7 +4,6 @@ import Link from 'next/link';
 
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
-
 import PageLayout from '../../../components/PageLayout';
 import Button from '../../../components/Button';
 import Spacer from '../../../components/Spacer';
@@ -20,9 +19,11 @@ import { useRouter } from 'next/router';
 import { withApollo } from '../../../components/withApollo';
 import { NextPage } from 'next';
 
-const EditPage = (props: { match: { params: { id: any; }; }; }) => {
+const MapLoader = () => <p>Loading map...</p>;
+
+const EditPage = (props: { match: { params: { id: any } } }) => {
   const router = useRouter();
-  const {id: selectedLooId} = router.query;
+  const { id: selectedLooId } = router.query;
 
   // const {
   //   isValidating: loadingLooData,
@@ -39,7 +40,14 @@ const EditPage = (props: { match: { params: { id: any; }; }; }) => {
 
   // const looLocation = (looData && looData.loo.location) || null;
 
-  const LooMap = React.useMemo(() => dynamic(() => import('../../../components/LooMap'), { loading: () => <p>Loading map...</p>, ssr: false, }), [])
+  const LooMap = React.useMemo(
+    () =>
+      dynamic(() => import('../../../components/LooMap'), {
+        loading: MapLoader,
+        ssr: false,
+      }),
+    []
+  );
 
   // set the map position to the loo location
   // React.useEffect(() => {
@@ -172,7 +180,7 @@ const EditPage = (props: { match: { params: { id: any; }; }; }) => {
         </Box>
 
         <Spacer mt={4} />
-{/*
+        {/*
         <EntryForm
           title="Edit This Toilet"
           loo={initialData.loo}

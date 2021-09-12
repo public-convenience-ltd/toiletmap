@@ -13,16 +13,16 @@ const Inner = styled(Box)`
   transition: left 0.2s ease;
 `;
 
-const Switch = React.forwardRef(
-  (
-    {
-      checked,
-      onClick = Function.prototype,
-      onChange = Function.prototype,
-      ...props
-    },
-    ref
-  ) => (
+const Switch = React.forwardRef(function MySwitch(
+  {
+    checked,
+    onClick = Function.prototype,
+    onChange = Function.prototype,
+    ...props
+  },
+  ref
+) {
+  return (
     <Box
       as="button"
       type="button"
@@ -53,8 +53,8 @@ const Switch = React.forwardRef(
         bg="white"
       />
     </Box>
-  )
-);
+  );
+});
 
 Switch.propTypes = {
   /** Determines whether the switch is on */

@@ -1,10 +1,16 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions =  {}
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
+const defaultOptions = {};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -29,14 +35,14 @@ export type AdminGeo = {
 /** Statistics for a certain area. */
 export type AreaStats = {
   __typename?: 'AreaStats';
-  /** The area's identifier. Note that only the 'name' will be passed with this field. */
-  area: AdminGeo;
-  /** The total number of loos in this area */
-  totalLoos: Scalars['Int'];
   /** The number of loos marked as active in this area */
   activeLoos: Scalars['Int'];
+  /** The area's identifier. Note that only the 'name' will be passed with this field. */
+  area: AdminGeo;
   /** The number of loos with baby changing facilities in this area */
   babyChangeLoos: Scalars['Int'];
+  /** The total number of loos in this area */
+  totalLoos: Scalars['Int'];
 };
 
 /** The name of a contributor. This requires a certain level of permissions to access. */
@@ -59,14 +65,14 @@ export type Counters = {
   activeLoos?: Maybe<Scalars['Int']>;
   /** The number of loos which have been closed/removed */
   inactiveLoos?: Maybe<Scalars['Int']>;
+  /** The number of loos which have more than one report registered for them */
+  multipleReports?: Maybe<Scalars['Int']>;
+  /** The total number of reports that report a loo as closed/removed */
+  removalReports?: Maybe<Scalars['Int']>;
   /** The total number of loos */
   totalLoos?: Maybe<Scalars['Int']>;
   /** The total number of reports */
   totalReports?: Maybe<Scalars['Int']>;
-  /** The total number of reports that report a loo as closed/removed */
-  removalReports?: Maybe<Scalars['Int']>;
-  /** The number of loos which have more than one report registered for them */
-  multipleReports?: Maybe<Scalars['Int']>;
 };
 
 /**
@@ -75,70 +81,67 @@ export type Counters = {
  */
 export type Loo = {
   __typename?: 'Loo';
-  id?: Maybe<Scalars['ID']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-  verifiedAt?: Maybe<Scalars['DateTime']>;
-  reports?: Maybe<Array<Maybe<Report>>>;
-  active?: Maybe<Scalars['Boolean']>;
-  location?: Maybe<Point>;
-  area?: Maybe<Array<Maybe<AdminGeo>>>;
-  name?: Maybe<Scalars['String']>;
-  openingTimes?: Maybe<Scalars['OpeningTimes']>;
   accessible?: Maybe<Scalars['Boolean']>;
+  active?: Maybe<Scalars['Boolean']>;
   allGender?: Maybe<Scalars['Boolean']>;
-  men?: Maybe<Scalars['Boolean']>;
-  women?: Maybe<Scalars['Boolean']>;
-  urinalOnly?: Maybe<Scalars['Boolean']>;
-  children?: Maybe<Scalars['Boolean']>;
-  babyChange?: Maybe<Scalars['Boolean']>;
-  radar?: Maybe<Scalars['Boolean']>;
+  area?: Maybe<Array<Maybe<AdminGeo>>>;
   attended?: Maybe<Scalars['Boolean']>;
   automatic?: Maybe<Scalars['Boolean']>;
-  noPayment?: Maybe<Scalars['Boolean']>;
-  paymentDetails?: Maybe<Scalars['String']>;
-  notes?: Maybe<Scalars['String']>;
-  removalReason?: Maybe<Scalars['String']>;
+  babyChange?: Maybe<Scalars['Boolean']>;
   campaignUOL?: Maybe<Scalars['Boolean']>;
+  children?: Maybe<Scalars['Boolean']>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  id?: Maybe<Scalars['ID']>;
+  location?: Maybe<Point>;
+  men?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+  noPayment?: Maybe<Scalars['Boolean']>;
+  notes?: Maybe<Scalars['String']>;
+  openingTimes?: Maybe<Scalars['OpeningTimes']>;
+  paymentDetails?: Maybe<Scalars['String']>;
+  radar?: Maybe<Scalars['Boolean']>;
+  removalReason?: Maybe<Scalars['String']>;
+  reports?: Maybe<Array<Maybe<Report>>>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  urinalOnly?: Maybe<Scalars['Boolean']>;
+  verifiedAt?: Maybe<Scalars['DateTime']>;
+  women?: Maybe<Scalars['Boolean']>;
 };
 
 /** Include or Exclude Loos from search results based on whether they satisfy a filter condition */
 export type LooFilter = {
   active?: Maybe<Scalars['Boolean']>;
+  areaName?: Maybe<Scalars['String']>;
+  contributors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  fromDate?: Maybe<Scalars['DateTime']>;
   noPayment?: Maybe<Scalars['Boolean']>;
   text?: Maybe<Scalars['String']>;
-  fromDate?: Maybe<Scalars['DateTime']>;
   toDate?: Maybe<Scalars['DateTime']>;
-  contributors?: Maybe<Array<Maybe<Scalars['String']>>>;
-  areaName?: Maybe<Scalars['String']>;
 };
 
 export type LooSearchResponse = {
   __typename?: 'LooSearchResponse';
-  loos: Array<Loo>;
-  total?: Maybe<Scalars['Int']>;
-  page?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
+  loos: Array<Loo>;
+  page?: Maybe<Scalars['Int']>;
   pages?: Maybe<Scalars['Int']>;
+  total?: Maybe<Scalars['Int']>;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  submitReport?: Maybe<ReportMutationResponse>;
   submitRemovalReport?: Maybe<ReportMutationResponse>;
+  submitReport?: Maybe<ReportMutationResponse>;
   submitVerificationReport?: Maybe<ReportMutationResponse>;
 };
-
-
-export type MutationSubmitReportArgs = {
-  report?: Maybe<ReportInput>;
-};
-
 
 export type MutationSubmitRemovalReportArgs = {
   report?: Maybe<RemovalReportInput>;
 };
 
+export type MutationSubmitReportArgs = {
+  report?: Maybe<ReportInput>;
+};
 
 export type MutationSubmitVerificationReportArgs = {
   id?: Maybe<Scalars['ID']>;
@@ -146,8 +149,8 @@ export type MutationSubmitVerificationReportArgs = {
 
 export type MutationResponse = {
   code: Scalars['String'];
-  success: Scalars['Boolean'];
   message: Scalars['String'];
+  success: Scalars['Boolean'];
 };
 
 export type PaginationInput = {
@@ -175,12 +178,12 @@ export type PointInput = {
 /** Proportions of different values for different attributes */
 export type Proportions = {
   __typename?: 'Proportions';
+  /** The proportions of loos that are accessible vs not accessible */
+  accessibleLoos: Array<Chunk>;
   /** The proportions of loos that are active vs removed */
   activeLoos: Array<Chunk>;
   /** The proportions of loos that have baby changing facilities vs those that don't */
   babyChanging: Array<Chunk>;
-  /** The proportions of loos that are accessible vs not accessible */
-  accessibleLoos: Array<Chunk>;
 };
 
 export type ProximityInput = {
@@ -194,33 +197,31 @@ export type ProximityInput = {
 
 export type Query = {
   __typename?: 'Query';
+  /** Retrieve statistics, broken down by area, for all areas */
+  areaStats: Array<AreaStats>;
+  /** Retrieve a list of areas in existance, name and type only */
+  areas: Array<AdminGeo>;
+  /** Retrieve a list of contributors. Requires correct authentication */
+  contributors: Array<AuthedContributor>;
+  /** Retrieve 'counter' statistics */
+  counters: Counters;
   /** Retrieve a Loo by ID */
   loo?: Maybe<Loo>;
   /** Search for loos matching a filter */
   loos: LooSearchResponse;
   /** Retrieve Loos by proximity to a Point */
   loosByProximity: Array<Loo>;
-  /** Retrieve a list of areas in existance, name and type only */
-  areas: Array<AdminGeo>;
   /** Retrieve the explorer map TopoJSON data */
   mapAreas?: Maybe<TopoGeo>;
-  /** Retrieve a report by ID */
-  report?: Maybe<Report>;
-  /** Retrieve 'counter' statistics */
-  counters: Counters;
   /** Retrieve proportional statistics */
   proportions: Proportions;
-  /** Retrieve statistics, broken down by area, for all areas */
-  areaStats: Array<AreaStats>;
-  /** Retrieve a list of contributors. Requires correct authentication */
-  contributors: Array<AuthedContributor>;
+  /** Retrieve a report by ID */
+  report?: Maybe<Report>;
 };
-
 
 export type QueryLooArgs = {
   id?: Maybe<Scalars['ID']>;
 };
-
 
 export type QueryLoosArgs = {
   filters: LooFilter;
@@ -228,16 +229,13 @@ export type QueryLoosArgs = {
   sort?: Maybe<SortOrder>;
 };
 
-
 export type QueryLoosByProximityArgs = {
   from: ProximityInput;
 };
 
-
 export type QueryMapAreasArgs = {
   areaType?: Maybe<Scalars['String']>;
 };
-
 
 export type QueryReportArgs = {
   id: Scalars['ID'];
@@ -255,98 +253,98 @@ export type RemovalReportInput = {
  */
 export type Report = {
   __typename?: 'Report';
-  id: Scalars['ID'];
+  accessible?: Maybe<Scalars['Boolean']>;
+  active?: Maybe<Scalars['Boolean']>;
+  allGender?: Maybe<Scalars['Boolean']>;
+  area?: Maybe<Array<Maybe<AdminGeo>>>;
+  attended?: Maybe<Scalars['Boolean']>;
+  automatic?: Maybe<Scalars['Boolean']>;
+  babyChange?: Maybe<Scalars['Boolean']>;
+  campaignUOL?: Maybe<Scalars['Boolean']>;
+  children?: Maybe<Scalars['Boolean']>;
   /** An identifier for the user or process which contributed the report */
   contributor: Scalars['String'];
   /** When the report was added to the system */
   createdAt: Scalars['DateTime'];
-  verifiedAt?: Maybe<Scalars['DateTime']>;
+  id: Scalars['ID'];
+  location?: Maybe<Point>;
+  /** The Loo which uses the data submitted in this report */
+  loo?: Maybe<Loo>;
+  men?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+  noPayment?: Maybe<Scalars['Boolean']>;
+  notes?: Maybe<Scalars['String']>;
+  openingTimes?: Maybe<Scalars['OpeningTimes']>;
+  paymentDetails?: Maybe<Scalars['String']>;
   /**
    * A link to the previous report in the chain
    * This is nullable since this might be the first report about a particular toilet
    */
   previous?: Maybe<Report>;
-  active?: Maybe<Scalars['Boolean']>;
-  location?: Maybe<Point>;
-  area?: Maybe<Array<Maybe<AdminGeo>>>;
-  name?: Maybe<Scalars['String']>;
-  openingTimes?: Maybe<Scalars['OpeningTimes']>;
-  accessible?: Maybe<Scalars['Boolean']>;
-  allGender?: Maybe<Scalars['Boolean']>;
-  men?: Maybe<Scalars['Boolean']>;
-  women?: Maybe<Scalars['Boolean']>;
-  urinalOnly?: Maybe<Scalars['Boolean']>;
-  children?: Maybe<Scalars['Boolean']>;
-  babyChange?: Maybe<Scalars['Boolean']>;
   radar?: Maybe<Scalars['Boolean']>;
-  attended?: Maybe<Scalars['Boolean']>;
-  automatic?: Maybe<Scalars['Boolean']>;
-  noPayment?: Maybe<Scalars['Boolean']>;
-  paymentDetails?: Maybe<Scalars['String']>;
-  notes?: Maybe<Scalars['String']>;
   removalReason?: Maybe<Scalars['String']>;
-  campaignUOL?: Maybe<Scalars['Boolean']>;
-  /** The Loo which uses the data submitted in this report */
-  loo?: Maybe<Loo>;
+  urinalOnly?: Maybe<Scalars['Boolean']>;
+  verifiedAt?: Maybe<Scalars['DateTime']>;
+  women?: Maybe<Scalars['Boolean']>;
 };
 
 export type ReportInput = {
-  edit?: Maybe<Scalars['ID']>;
-  location: PointInput;
-  name?: Maybe<Scalars['String']>;
-  openingTimes?: Maybe<Scalars['OpeningTimes']>;
   accessible?: Maybe<Scalars['Boolean']>;
+  active?: Maybe<Scalars['Boolean']>;
   allGender?: Maybe<Scalars['Boolean']>;
-  men?: Maybe<Scalars['Boolean']>;
-  women?: Maybe<Scalars['Boolean']>;
-  urinalOnly?: Maybe<Scalars['Boolean']>;
-  children?: Maybe<Scalars['Boolean']>;
-  babyChange?: Maybe<Scalars['Boolean']>;
-  radar?: Maybe<Scalars['Boolean']>;
   attended?: Maybe<Scalars['Boolean']>;
   automatic?: Maybe<Scalars['Boolean']>;
-  noPayment?: Maybe<Scalars['Boolean']>;
-  paymentDetails?: Maybe<Scalars['String']>;
-  notes?: Maybe<Scalars['String']>;
+  babyChange?: Maybe<Scalars['Boolean']>;
   campaignUOL?: Maybe<Scalars['Boolean']>;
-  active?: Maybe<Scalars['Boolean']>;
+  children?: Maybe<Scalars['Boolean']>;
+  edit?: Maybe<Scalars['ID']>;
+  location: PointInput;
+  men?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+  noPayment?: Maybe<Scalars['Boolean']>;
+  notes?: Maybe<Scalars['String']>;
+  openingTimes?: Maybe<Scalars['OpeningTimes']>;
+  paymentDetails?: Maybe<Scalars['String']>;
+  radar?: Maybe<Scalars['Boolean']>;
+  urinalOnly?: Maybe<Scalars['Boolean']>;
+  women?: Maybe<Scalars['Boolean']>;
 };
 
 export type ReportMutationResponse = MutationResponse & {
   __typename?: 'ReportMutationResponse';
   code: Scalars['String'];
-  success: Scalars['Boolean'];
+  loo?: Maybe<Loo>;
   message: Scalars['String'];
   report?: Maybe<Report>;
-  loo?: Maybe<Loo>;
+  success: Scalars['Boolean'];
 };
 
 export enum SortOrder {
   NewestFirst = 'NEWEST_FIRST',
-  OldestFirst = 'OLDEST_FIRST'
+  OldestFirst = 'OLDEST_FIRST',
 }
 
 /** Main TopoJSON type. Contains various objects and arcs. */
 export type TopoGeo = {
   __typename?: 'TopoGeo';
-  type: Scalars['String'];
-  transform?: Maybe<TopoTransform>;
-  objects: Array<TopoObjectContainer>;
   arcs: Array<Array<Array<Scalars['Float']>>>;
+  objects: Array<TopoObjectContainer>;
+  transform?: Maybe<TopoTransform>;
+  type: Scalars['String'];
 };
 
 export type TopoGeometry = {
   __typename?: 'TopoGeometry';
-  type: Scalars['String'];
   arcs: Array<Array<Array<Scalars['Float']>>>;
   /** JSON-encoded properties string */
   properties: Scalars['String'];
+  type: Scalars['String'];
 };
 
 export type TopoObject = {
   __typename?: 'TopoObject';
-  type: Scalars['String'];
   geometries: Array<TopoGeometry>;
+  type: Scalars['String'];
 };
 
 export type TopoObjectContainer = {
@@ -366,8 +364,35 @@ export type FindLooByIdQueryVariables = Exact<{
   id?: Maybe<Scalars['ID']>;
 }>;
 
-
-export type FindLooByIdQuery = { __typename?: 'Query', loo?: Maybe<{ __typename?: 'Loo', id?: Maybe<string>, createdAt?: Maybe<any>, updatedAt?: Maybe<any>, verifiedAt?: Maybe<any>, active?: Maybe<boolean>, name?: Maybe<string>, openingTimes?: Maybe<any>, accessible?: Maybe<boolean>, men?: Maybe<boolean>, women?: Maybe<boolean>, allGender?: Maybe<boolean>, babyChange?: Maybe<boolean>, children?: Maybe<boolean>, urinalOnly?: Maybe<boolean>, radar?: Maybe<boolean>, automatic?: Maybe<boolean>, noPayment?: Maybe<boolean>, paymentDetails?: Maybe<string>, notes?: Maybe<string>, removalReason?: Maybe<string>, attended?: Maybe<boolean>, campaignUOL?: Maybe<boolean>, location?: Maybe<{ __typename?: 'Point', lat: number, lng: number }> }> };
+export type FindLooByIdQuery = {
+  __typename?: 'Query';
+  loo?: Maybe<{
+    __typename?: 'Loo';
+    id?: Maybe<string>;
+    createdAt?: Maybe<any>;
+    updatedAt?: Maybe<any>;
+    verifiedAt?: Maybe<any>;
+    active?: Maybe<boolean>;
+    name?: Maybe<string>;
+    openingTimes?: Maybe<any>;
+    accessible?: Maybe<boolean>;
+    men?: Maybe<boolean>;
+    women?: Maybe<boolean>;
+    allGender?: Maybe<boolean>;
+    babyChange?: Maybe<boolean>;
+    children?: Maybe<boolean>;
+    urinalOnly?: Maybe<boolean>;
+    radar?: Maybe<boolean>;
+    automatic?: Maybe<boolean>;
+    noPayment?: Maybe<boolean>;
+    paymentDetails?: Maybe<string>;
+    notes?: Maybe<string>;
+    removalReason?: Maybe<string>;
+    attended?: Maybe<boolean>;
+    campaignUOL?: Maybe<boolean>;
+    location?: Maybe<{ __typename?: 'Point'; lat: number; lng: number }>;
+  }>;
+};
 
 export type FindLoosNearbyQueryVariables = Exact<{
   lat: Scalars['Float'];
@@ -375,25 +400,85 @@ export type FindLoosNearbyQueryVariables = Exact<{
   radius: Scalars['Int'];
 }>;
 
+export type FindLoosNearbyQuery = {
+  __typename?: 'Query';
+  loosByProximity: Array<{
+    __typename?: 'Loo';
+    id?: Maybe<string>;
+    name?: Maybe<string>;
+    noPayment?: Maybe<boolean>;
+    allGender?: Maybe<boolean>;
+    automatic?: Maybe<boolean>;
+    accessible?: Maybe<boolean>;
+    babyChange?: Maybe<boolean>;
+    radar?: Maybe<boolean>;
+    campaignUOL?: Maybe<boolean>;
+    location?: Maybe<{ __typename?: 'Point'; lat: number; lng: number }>;
+  }>;
+};
 
-export type FindLoosNearbyQuery = { __typename?: 'Query', loosByProximity: Array<{ __typename?: 'Loo', id?: Maybe<string>, name?: Maybe<string>, noPayment?: Maybe<boolean>, allGender?: Maybe<boolean>, automatic?: Maybe<boolean>, accessible?: Maybe<boolean>, babyChange?: Maybe<boolean>, radar?: Maybe<boolean>, campaignUOL?: Maybe<boolean>, location?: Maybe<{ __typename?: 'Point', lat: number, lng: number }> }> };
-
-export type LooFragmentFragment = { __typename?: 'Loo', id?: Maybe<string>, createdAt?: Maybe<any>, updatedAt?: Maybe<any>, verifiedAt?: Maybe<any>, active?: Maybe<boolean>, name?: Maybe<string>, openingTimes?: Maybe<any>, accessible?: Maybe<boolean>, men?: Maybe<boolean>, women?: Maybe<boolean>, allGender?: Maybe<boolean>, babyChange?: Maybe<boolean>, children?: Maybe<boolean>, urinalOnly?: Maybe<boolean>, radar?: Maybe<boolean>, automatic?: Maybe<boolean>, noPayment?: Maybe<boolean>, paymentDetails?: Maybe<string>, notes?: Maybe<string>, removalReason?: Maybe<string>, attended?: Maybe<boolean>, campaignUOL?: Maybe<boolean>, location?: Maybe<{ __typename?: 'Point', lat: number, lng: number }> };
+export type LooFragmentFragment = {
+  __typename?: 'Loo';
+  id?: Maybe<string>;
+  createdAt?: Maybe<any>;
+  updatedAt?: Maybe<any>;
+  verifiedAt?: Maybe<any>;
+  active?: Maybe<boolean>;
+  name?: Maybe<string>;
+  openingTimes?: Maybe<any>;
+  accessible?: Maybe<boolean>;
+  men?: Maybe<boolean>;
+  women?: Maybe<boolean>;
+  allGender?: Maybe<boolean>;
+  babyChange?: Maybe<boolean>;
+  children?: Maybe<boolean>;
+  urinalOnly?: Maybe<boolean>;
+  radar?: Maybe<boolean>;
+  automatic?: Maybe<boolean>;
+  noPayment?: Maybe<boolean>;
+  paymentDetails?: Maybe<string>;
+  notes?: Maybe<string>;
+  removalReason?: Maybe<string>;
+  attended?: Maybe<boolean>;
+  campaignUOL?: Maybe<boolean>;
+  location?: Maybe<{ __typename?: 'Point'; lat: number; lng: number }>;
+};
 
 export type RemoveLooMutationVariables = Exact<{
   id: Scalars['ID'];
   reason: Scalars['String'];
 }>;
 
-
-export type RemoveLooMutation = { __typename?: 'Mutation', submitRemovalReport?: Maybe<{ __typename?: 'ReportMutationResponse', code: string, success: boolean, loo?: Maybe<{ __typename?: 'Loo', id?: Maybe<string>, active?: Maybe<boolean>, removalReason?: Maybe<string> }> }> };
+export type RemoveLooMutation = {
+  __typename?: 'Mutation';
+  submitRemovalReport?: Maybe<{
+    __typename?: 'ReportMutationResponse';
+    code: string;
+    success: boolean;
+    loo?: Maybe<{
+      __typename?: 'Loo';
+      id?: Maybe<string>;
+      active?: Maybe<boolean>;
+      removalReason?: Maybe<string>;
+    }>;
+  }>;
+};
 
 export type SubmitVerificationReportMutationMutationVariables = Exact<{
   id?: Maybe<Scalars['ID']>;
 }>;
 
-
-export type SubmitVerificationReportMutationMutation = { __typename?: 'Mutation', submitVerificationReport?: Maybe<{ __typename?: 'ReportMutationResponse', loo?: Maybe<{ __typename?: 'Loo', id?: Maybe<string>, verifiedAt?: Maybe<any> }> }> };
+export type SubmitVerificationReportMutationMutation = {
+  __typename?: 'Mutation';
+  submitVerificationReport?: Maybe<{
+    __typename?: 'ReportMutationResponse';
+    loo?: Maybe<{
+      __typename?: 'Loo';
+      id?: Maybe<string>;
+      verifiedAt?: Maybe<any>;
+    }>;
+  }>;
+};
 
 export type UpdateLooMutationVariables = Exact<{
   id?: Maybe<Scalars['ID']>;
@@ -417,46 +502,80 @@ export type UpdateLooMutationVariables = Exact<{
   active?: Maybe<Scalars['Boolean']>;
 }>;
 
-
-export type UpdateLooMutation = { __typename?: 'Mutation', submitReport?: Maybe<{ __typename?: 'ReportMutationResponse', code: string, success: boolean, message: string, loo?: Maybe<{ __typename?: 'Loo', id?: Maybe<string>, createdAt?: Maybe<any>, updatedAt?: Maybe<any>, verifiedAt?: Maybe<any>, active?: Maybe<boolean>, name?: Maybe<string>, openingTimes?: Maybe<any>, accessible?: Maybe<boolean>, men?: Maybe<boolean>, women?: Maybe<boolean>, allGender?: Maybe<boolean>, babyChange?: Maybe<boolean>, children?: Maybe<boolean>, urinalOnly?: Maybe<boolean>, radar?: Maybe<boolean>, automatic?: Maybe<boolean>, noPayment?: Maybe<boolean>, paymentDetails?: Maybe<string>, notes?: Maybe<string>, removalReason?: Maybe<string>, attended?: Maybe<boolean>, campaignUOL?: Maybe<boolean>, location?: Maybe<{ __typename?: 'Point', lat: number, lng: number }> }> }> };
+export type UpdateLooMutation = {
+  __typename?: 'Mutation';
+  submitReport?: Maybe<{
+    __typename?: 'ReportMutationResponse';
+    code: string;
+    success: boolean;
+    message: string;
+    loo?: Maybe<{
+      __typename?: 'Loo';
+      id?: Maybe<string>;
+      createdAt?: Maybe<any>;
+      updatedAt?: Maybe<any>;
+      verifiedAt?: Maybe<any>;
+      active?: Maybe<boolean>;
+      name?: Maybe<string>;
+      openingTimes?: Maybe<any>;
+      accessible?: Maybe<boolean>;
+      men?: Maybe<boolean>;
+      women?: Maybe<boolean>;
+      allGender?: Maybe<boolean>;
+      babyChange?: Maybe<boolean>;
+      children?: Maybe<boolean>;
+      urinalOnly?: Maybe<boolean>;
+      radar?: Maybe<boolean>;
+      automatic?: Maybe<boolean>;
+      noPayment?: Maybe<boolean>;
+      paymentDetails?: Maybe<string>;
+      notes?: Maybe<string>;
+      removalReason?: Maybe<string>;
+      attended?: Maybe<boolean>;
+      campaignUOL?: Maybe<boolean>;
+      location?: Maybe<{ __typename?: 'Point'; lat: number; lng: number }>;
+    }>;
+  }>;
+};
 
 export const LooFragmentFragmentDoc = gql`
-    fragment LooFragment on Loo {
-  id
-  createdAt
-  updatedAt
-  verifiedAt
-  active
-  location {
-    lat
-    lng
+  fragment LooFragment on Loo {
+    id
+    createdAt
+    updatedAt
+    verifiedAt
+    active
+    location {
+      lat
+      lng
+    }
+    name
+    openingTimes
+    accessible
+    men
+    women
+    allGender
+    babyChange
+    children
+    urinalOnly
+    radar
+    automatic
+    noPayment
+    paymentDetails
+    notes
+    removalReason
+    attended
+    campaignUOL
   }
-  name
-  openingTimes
-  accessible
-  men
-  women
-  allGender
-  babyChange
-  children
-  urinalOnly
-  radar
-  automatic
-  noPayment
-  paymentDetails
-  notes
-  removalReason
-  attended
-  campaignUOL
-}
-    `;
+`;
 export const FindLooByIdDocument = gql`
-    query findLooById($id: ID) {
-  loo(id: $id) {
-    ...LooFragment
+  query findLooById($id: ID) {
+    loo(id: $id) {
+      ...LooFragment
+    }
   }
-}
-    ${LooFragmentFragmentDoc}`;
+  ${LooFragmentFragmentDoc}
+`;
 
 /**
  * __useFindLooByIdQuery__
@@ -474,36 +593,57 @@ export const FindLooByIdDocument = gql`
  *   },
  * });
  */
-export function useFindLooByIdQuery(baseOptions?: Apollo.QueryHookOptions<FindLooByIdQuery, FindLooByIdQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindLooByIdQuery, FindLooByIdQueryVariables>(FindLooByIdDocument, options);
-      }
-export function useFindLooByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindLooByIdQuery, FindLooByIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindLooByIdQuery, FindLooByIdQueryVariables>(FindLooByIdDocument, options);
-        }
-export type FindLooByIdQueryHookResult = ReturnType<typeof useFindLooByIdQuery>;
-export type FindLooByIdLazyQueryHookResult = ReturnType<typeof useFindLooByIdLazyQuery>;
-export type FindLooByIdQueryResult = Apollo.QueryResult<FindLooByIdQuery, FindLooByIdQueryVariables>;
-export const FindLoosNearbyDocument = gql`
-    query findLoosNearby($lat: Float!, $lng: Float!, $radius: Int!) {
-  loosByProximity(from: {lat: $lat, lng: $lng, maxDistance: $radius}) {
-    id
-    name
-    location {
-      lat
-      lng
-    }
-    noPayment
-    allGender
-    automatic
-    accessible
-    babyChange
-    radar
-    campaignUOL
-  }
+export function useFindLooByIdQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    FindLooByIdQuery,
+    FindLooByIdQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FindLooByIdQuery, FindLooByIdQueryVariables>(
+    FindLooByIdDocument,
+    options
+  );
 }
-    `;
+export function useFindLooByIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FindLooByIdQuery,
+    FindLooByIdQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FindLooByIdQuery, FindLooByIdQueryVariables>(
+    FindLooByIdDocument,
+    options
+  );
+}
+export type FindLooByIdQueryHookResult = ReturnType<typeof useFindLooByIdQuery>;
+export type FindLooByIdLazyQueryHookResult = ReturnType<
+  typeof useFindLooByIdLazyQuery
+>;
+export type FindLooByIdQueryResult = Apollo.QueryResult<
+  FindLooByIdQuery,
+  FindLooByIdQueryVariables
+>;
+export const FindLoosNearbyDocument = gql`
+  query findLoosNearby($lat: Float!, $lng: Float!, $radius: Int!) {
+    loosByProximity(from: { lat: $lat, lng: $lng, maxDistance: $radius }) {
+      id
+      name
+      location {
+        lat
+        lng
+      }
+      noPayment
+      allGender
+      automatic
+      accessible
+      babyChange
+      radar
+      campaignUOL
+    }
+  }
+`;
 
 /**
  * __useFindLoosNearbyQuery__
@@ -523,31 +663,57 @@ export const FindLoosNearbyDocument = gql`
  *   },
  * });
  */
-export function useFindLoosNearbyQuery(baseOptions: Apollo.QueryHookOptions<FindLoosNearbyQuery, FindLoosNearbyQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindLoosNearbyQuery, FindLoosNearbyQueryVariables>(FindLoosNearbyDocument, options);
-      }
-export function useFindLoosNearbyLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindLoosNearbyQuery, FindLoosNearbyQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindLoosNearbyQuery, FindLoosNearbyQueryVariables>(FindLoosNearbyDocument, options);
-        }
-export type FindLoosNearbyQueryHookResult = ReturnType<typeof useFindLoosNearbyQuery>;
-export type FindLoosNearbyLazyQueryHookResult = ReturnType<typeof useFindLoosNearbyLazyQuery>;
-export type FindLoosNearbyQueryResult = Apollo.QueryResult<FindLoosNearbyQuery, FindLoosNearbyQueryVariables>;
+export function useFindLoosNearbyQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FindLoosNearbyQuery,
+    FindLoosNearbyQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FindLoosNearbyQuery, FindLoosNearbyQueryVariables>(
+    FindLoosNearbyDocument,
+    options
+  );
+}
+export function useFindLoosNearbyLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FindLoosNearbyQuery,
+    FindLoosNearbyQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FindLoosNearbyQuery, FindLoosNearbyQueryVariables>(
+    FindLoosNearbyDocument,
+    options
+  );
+}
+export type FindLoosNearbyQueryHookResult = ReturnType<
+  typeof useFindLoosNearbyQuery
+>;
+export type FindLoosNearbyLazyQueryHookResult = ReturnType<
+  typeof useFindLoosNearbyLazyQuery
+>;
+export type FindLoosNearbyQueryResult = Apollo.QueryResult<
+  FindLoosNearbyQuery,
+  FindLoosNearbyQueryVariables
+>;
 export const RemoveLooDocument = gql`
-    mutation removeLoo($id: ID!, $reason: String!) {
-  submitRemovalReport(report: {edit: $id, reason: $reason}) {
-    code
-    success
-    loo {
-      id
-      active
-      removalReason
+  mutation removeLoo($id: ID!, $reason: String!) {
+    submitRemovalReport(report: { edit: $id, reason: $reason }) {
+      code
+      success
+      loo {
+        id
+        active
+        removalReason
+      }
     }
   }
-}
-    `;
-export type RemoveLooMutationFn = Apollo.MutationFunction<RemoveLooMutation, RemoveLooMutationVariables>;
+`;
+export type RemoveLooMutationFn = Apollo.MutationFunction<
+  RemoveLooMutation,
+  RemoveLooMutationVariables
+>;
 
 /**
  * __useRemoveLooMutation__
@@ -567,24 +733,41 @@ export type RemoveLooMutationFn = Apollo.MutationFunction<RemoveLooMutation, Rem
  *   },
  * });
  */
-export function useRemoveLooMutation(baseOptions?: Apollo.MutationHookOptions<RemoveLooMutation, RemoveLooMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RemoveLooMutation, RemoveLooMutationVariables>(RemoveLooDocument, options);
-      }
-export type RemoveLooMutationHookResult = ReturnType<typeof useRemoveLooMutation>;
+export function useRemoveLooMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveLooMutation,
+    RemoveLooMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RemoveLooMutation, RemoveLooMutationVariables>(
+    RemoveLooDocument,
+    options
+  );
+}
+export type RemoveLooMutationHookResult = ReturnType<
+  typeof useRemoveLooMutation
+>;
 export type RemoveLooMutationResult = Apollo.MutationResult<RemoveLooMutation>;
-export type RemoveLooMutationOptions = Apollo.BaseMutationOptions<RemoveLooMutation, RemoveLooMutationVariables>;
+export type RemoveLooMutationOptions = Apollo.BaseMutationOptions<
+  RemoveLooMutation,
+  RemoveLooMutationVariables
+>;
 export const SubmitVerificationReportMutationDocument = gql`
-    mutation submitVerificationReportMutation($id: ID) {
-  submitVerificationReport(id: $id) {
-    loo {
-      id
-      verifiedAt
+  mutation submitVerificationReportMutation($id: ID) {
+    submitVerificationReport(id: $id) {
+      loo {
+        id
+        verifiedAt
+      }
     }
   }
-}
-    `;
-export type SubmitVerificationReportMutationMutationFn = Apollo.MutationFunction<SubmitVerificationReportMutationMutation, SubmitVerificationReportMutationMutationVariables>;
+`;
+export type SubmitVerificationReportMutationMutationFn =
+  Apollo.MutationFunction<
+    SubmitVerificationReportMutationMutation,
+    SubmitVerificationReportMutationMutationVariables
+  >;
 
 /**
  * __useSubmitVerificationReportMutationMutation__
@@ -603,28 +786,87 @@ export type SubmitVerificationReportMutationMutationFn = Apollo.MutationFunction
  *   },
  * });
  */
-export function useSubmitVerificationReportMutationMutation(baseOptions?: Apollo.MutationHookOptions<SubmitVerificationReportMutationMutation, SubmitVerificationReportMutationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<SubmitVerificationReportMutationMutation, SubmitVerificationReportMutationMutationVariables>(SubmitVerificationReportMutationDocument, options);
-      }
-export type SubmitVerificationReportMutationMutationHookResult = ReturnType<typeof useSubmitVerificationReportMutationMutation>;
-export type SubmitVerificationReportMutationMutationResult = Apollo.MutationResult<SubmitVerificationReportMutationMutation>;
-export type SubmitVerificationReportMutationMutationOptions = Apollo.BaseMutationOptions<SubmitVerificationReportMutationMutation, SubmitVerificationReportMutationMutationVariables>;
+export function useSubmitVerificationReportMutationMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    SubmitVerificationReportMutationMutation,
+    SubmitVerificationReportMutationMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    SubmitVerificationReportMutationMutation,
+    SubmitVerificationReportMutationMutationVariables
+  >(SubmitVerificationReportMutationDocument, options);
+}
+export type SubmitVerificationReportMutationMutationHookResult = ReturnType<
+  typeof useSubmitVerificationReportMutationMutation
+>;
+export type SubmitVerificationReportMutationMutationResult =
+  Apollo.MutationResult<SubmitVerificationReportMutationMutation>;
+export type SubmitVerificationReportMutationMutationOptions =
+  Apollo.BaseMutationOptions<
+    SubmitVerificationReportMutationMutation,
+    SubmitVerificationReportMutationMutationVariables
+  >;
 export const UpdateLooDocument = gql`
-    mutation updateLoo($id: ID, $location: PointInput!, $name: String, $openingTimes: OpeningTimes, $accessible: Boolean, $allGender: Boolean, $men: Boolean, $women: Boolean, $children: Boolean, $urinalOnly: Boolean, $babyChange: Boolean, $radar: Boolean, $attended: Boolean, $automatic: Boolean, $noPayment: Boolean, $paymentDetails: String, $notes: String, $campaignUOL: Boolean, $active: Boolean) {
-  submitReport(
-    report: {edit: $id, location: $location, name: $name, openingTimes: $openingTimes, accessible: $accessible, men: $men, women: $women, children: $children, urinalOnly: $urinalOnly, allGender: $allGender, babyChange: $babyChange, radar: $radar, attended: $attended, automatic: $automatic, noPayment: $noPayment, paymentDetails: $paymentDetails, notes: $notes, campaignUOL: $campaignUOL, active: $active}
+  mutation updateLoo(
+    $id: ID
+    $location: PointInput!
+    $name: String
+    $openingTimes: OpeningTimes
+    $accessible: Boolean
+    $allGender: Boolean
+    $men: Boolean
+    $women: Boolean
+    $children: Boolean
+    $urinalOnly: Boolean
+    $babyChange: Boolean
+    $radar: Boolean
+    $attended: Boolean
+    $automatic: Boolean
+    $noPayment: Boolean
+    $paymentDetails: String
+    $notes: String
+    $campaignUOL: Boolean
+    $active: Boolean
   ) {
-    code
-    success
-    message
-    loo {
-      ...LooFragment
+    submitReport(
+      report: {
+        edit: $id
+        location: $location
+        name: $name
+        openingTimes: $openingTimes
+        accessible: $accessible
+        men: $men
+        women: $women
+        children: $children
+        urinalOnly: $urinalOnly
+        allGender: $allGender
+        babyChange: $babyChange
+        radar: $radar
+        attended: $attended
+        automatic: $automatic
+        noPayment: $noPayment
+        paymentDetails: $paymentDetails
+        notes: $notes
+        campaignUOL: $campaignUOL
+        active: $active
+      }
+    ) {
+      code
+      success
+      message
+      loo {
+        ...LooFragment
+      }
     }
   }
-}
-    ${LooFragmentFragmentDoc}`;
-export type UpdateLooMutationFn = Apollo.MutationFunction<UpdateLooMutation, UpdateLooMutationVariables>;
+  ${LooFragmentFragmentDoc}
+`;
+export type UpdateLooMutationFn = Apollo.MutationFunction<
+  UpdateLooMutation,
+  UpdateLooMutationVariables
+>;
 
 /**
  * __useUpdateLooMutation__
@@ -661,10 +903,23 @@ export type UpdateLooMutationFn = Apollo.MutationFunction<UpdateLooMutation, Upd
  *   },
  * });
  */
-export function useUpdateLooMutation(baseOptions?: Apollo.MutationHookOptions<UpdateLooMutation, UpdateLooMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateLooMutation, UpdateLooMutationVariables>(UpdateLooDocument, options);
-      }
-export type UpdateLooMutationHookResult = ReturnType<typeof useUpdateLooMutation>;
+export function useUpdateLooMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateLooMutation,
+    UpdateLooMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateLooMutation, UpdateLooMutationVariables>(
+    UpdateLooDocument,
+    options
+  );
+}
+export type UpdateLooMutationHookResult = ReturnType<
+  typeof useUpdateLooMutation
+>;
 export type UpdateLooMutationResult = Apollo.MutationResult<UpdateLooMutation>;
-export type UpdateLooMutationOptions = Apollo.BaseMutationOptions<UpdateLooMutation, UpdateLooMutationVariables>;
+export type UpdateLooMutationOptions = Apollo.BaseMutationOptions<
+  UpdateLooMutation,
+  UpdateLooMutationVariables
+>;

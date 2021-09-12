@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { useForm, Controller } from 'react-hook-form';
 import Link from 'next/link';
+import Image from 'next/image';
 import isFunction from 'lodash/isFunction';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
@@ -85,12 +86,14 @@ const RadioInput = styled.input`
   }
 `;
 
-const Radio = React.forwardRef((props, ref) => (
-  <>
-    <RadioInput type="radio" ref={ref} {...props} />
-    <span />
-  </>
-));
+const Radio = React.forwardRef(function MyRadio(props, ref) {
+  return (
+    <>
+      <RadioInput type="radio" ref={ref} {...props} />
+      <span />
+    </>
+  );
+});
 
 const Section = ({ register, id, title, questions, children }) => (
   <div role="group" aria-labelledby={`heading-${id}`}>
@@ -123,7 +126,7 @@ const Section = ({ register, id, title, questions, children }) => (
             textAlign="center"
             fontSize={[14, 16]}
           >
-            <span aria-hidden="true">Don't know</span>
+            <span aria-hidden="true">Don&apos;t know</span>
           </Text>
         </tr>
       </thead>
@@ -163,7 +166,7 @@ const Section = ({ register, id, title, questions, children }) => (
 
             <Text as="td" textAlign="center" css={{ width: '16%' }}>
               <label>
-                <VisuallyHidden>Don't know</VisuallyHidden>
+                <VisuallyHidden>Don&apos;t know</VisuallyHidden>
                 <Radio
                   ref={register}
                   name={field}
@@ -192,19 +195,17 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
     ? loo.openingTimes.map((x: string | any[]) => !isClosed(x))
     : WEEKDAYS.map(() => false);
 
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState,
-    setValue,
-    getValues,
-  } = useForm();
+  const { register, control, handleSubmit, formState, setValue, getValues } =
+    useForm();
 
   // read the formState before render to subscribe the form state through Proxy
   const { isDirty, dirtyFields } = formState;
 
-  const onSubmit = (data: { [x: string]: any; isFree: string; geometry: { coordinates: string[]; }; }) => {
+  const onSubmit = (data: {
+    [x: string]: any;
+    isFree: string;
+    geometry: { coordinates: string[] };
+  }) => {
     const dirtyFieldNames = Object.keys(dirtyFields);
 
     // only include fields which have been modified
@@ -297,7 +298,11 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
             <span>1. Align the crosshair&nbsp;</span>
             <Box as="span" display="flex" css={{ whiteSpace: 'nowrap' }}>
               (&nbsp;
-              <img src={crosshair} alt="crosshair" css={{ height: '1.5em' }} />
+              <Image
+                src={crosshair}
+                alt="crosshair"
+                css={{ height: '1.5em' }}
+              />
               &nbsp;)
             </Box>
             &nbsp;
@@ -583,7 +588,7 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
             <Spacer mt={3} />
 
             <Box display="flex" alignItems={['flex-start', 'flex-end']}>
-              <img
+              <Image
                 src={uolLogo}
                 alt="Use Our Loos"
                 css={{

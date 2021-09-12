@@ -28,12 +28,14 @@ const initialFormState = {
   noPayment: true,
 };
 
-const AddPage = () => {
+const MapLoader = () => <p>Loading map...</p>;
+
+const AddPage = (props) => {
   const [mapState, setMapState] = useMapState();
   const LooMap = React.useMemo(
     () =>
       dynamic(() => import('../../components/LooMap'), {
-        loading: () => <p>Loading map...</p>,
+        loading: MapLoader,
         ssr: false,
       }),
     []
@@ -80,11 +82,10 @@ const AddPage = () => {
 
   // redirect to new toilet entry page upon successful addition
   useEffect(() => {
-    if(saveData) {
-      router.push(`/loos/${saveData.submitReport.loo.id}?message=created`)
+    if (saveData) {
+      router.push(`/loos/${saveData.submitReport.loo.id}?message=created`);
     }
-  }, [saveData, router])
-
+  }, [saveData, router]);
 
   return (
     <PageLayout>

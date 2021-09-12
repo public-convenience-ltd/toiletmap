@@ -38,7 +38,7 @@ const ControlButton = styled.button(
 const LocateMapControl = ({ position }) => {
   const [, setMapState] = useMapState();
 
-  const onLocationFound = (event: { latitude: any; longitude: any; }) => {
+  const onLocationFound = (event: { latitude: any; longitude: any }) => {
     setMapState({
       geolocation: {
         lat: event.latitude,
@@ -61,11 +61,11 @@ const LocateMapControl = ({ position }) => {
   const handleClick = () => {
     if (!isActive) {
       startLocate();
-      window.plausible('Geolocate'); 
+      window.plausible('Geolocate');
     } else {
-      stopLocate()
+      stopLocate();
     }
-  }; 
+  };
 
   return (
     <Control position={position}>

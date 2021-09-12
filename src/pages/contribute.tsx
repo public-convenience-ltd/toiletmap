@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 import styled from '@emotion/styled';
 
 import PageLayout from '../components/PageLayout';
@@ -20,7 +21,6 @@ const ListItem = (props: BoxProps) => (
 );
 
 const LoginPage = (props) => {
-
   return (
     <PageLayout layoutMode="blog">
       <Head>
@@ -41,7 +41,9 @@ const LoginPage = (props) => {
           Up:
         </p>
         <Spacer mb={3} />
-        <a href="/api/auth/login" >Log In/Sign Up</a>
+        <Link href="/api/auth/login" passHref>
+          <a>Log In/Sign Up</a>
+        </Link>
         <Spacer mb={4} />
         <Text fontSize={3} fontWeight="bold">
           <h2>Examples of Public toilets</h2>

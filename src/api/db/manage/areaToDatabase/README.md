@@ -28,7 +28,7 @@ Run `yarn areas`.
 
 Options, if you're modifying what `yarn areas` runs:
 
-- `-n`, `--dry-run`  Don't update the database, just output what would be done.
+- `-n`, `--dry-run` Don't update the database, just output what would be done.
 
 ## I want to...
 

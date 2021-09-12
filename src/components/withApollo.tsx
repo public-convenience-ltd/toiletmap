@@ -1,27 +1,27 @@
-import { NextPage } from "next";
+import { NextPage } from 'next';
 import {
   ApolloClient,
   NormalizedCacheObject,
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
-} from "@apollo/client";
+} from '@apollo/client';
 
-export const withApollo = (Comp: NextPage) => (props: any) => {
-  return (
-    <ApolloProvider client={getApolloClient(null, props.apolloState)}>
-      <Comp />
-    </ApolloProvider>
-  );
-};
+export const withApollo = (Comp: NextPage) =>
+  function WithApollo(props: any) {
+    return (
+      <ApolloProvider client={getApolloClient(null, props.apolloState)}>
+        <Comp />
+      </ApolloProvider>
+    );
+  };
 
 export const getApolloClient = (
   ctx?: any,
   initialState?: NormalizedCacheObject
 ) => {
-    // TODO: AUTH
   const httpLink = createHttpLink({
-    uri: "/api",
+    uri: '/api',
     fetch,
   });
   const cache = new InMemoryCache().restore(initialState || {});

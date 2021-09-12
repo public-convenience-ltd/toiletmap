@@ -5,7 +5,7 @@ const usePlacesAutocompleteService = () => {
   const autocompleteService = React.useRef();
 
   React.useEffect(() => {
-    if (!window.google || !window.google.maps.places) {
+    if (!window['google'] || !window['google'].maps.places) {
       return;
     }
 
@@ -13,7 +13,9 @@ const usePlacesAutocompleteService = () => {
       return;
     }
 
-    autocompleteService.current = new window.google.maps.places.AutocompleteService();
+    autocompleteService.current = new window[
+      'google'
+    ].maps.places.AutocompleteService();
   });
 
   return autocompleteService;
@@ -25,11 +27,11 @@ const usePlacesSessionToken = () => {
   const [token, setToken] = React.useState(null);
 
   const reset = () => {
-    setToken(new window.google.maps.places.AutocompleteSessionToken());
+    setToken(new window['google'].maps.places.AutocompleteSessionToken());
   };
 
   React.useEffect(() => {
-    if (!window.google || !window.google.maps.places) {
+    if (!window['google'] || !window['google'].maps.places) {
       return;
     }
 
@@ -50,29 +52,32 @@ const usePlacesAutocomplete = (input: string | any[]) => {
 
   const [places, setPlaces] = React.useState([]);
 
-  const fetchPlaces = React.useCallback(
-    debounce((input) => {
-      const onFetchCompleted = (places: any[]) => {
-        if (!places) {
-          return;
-        }
+  const fetchPlaces = debounce((input) => {
+    const onFetchCompleted = (places: any[]) => {
+      if (!places) {
+        return;
+      }
 
-        const locationResults = places.map((item: { id: any; place_id: any; structured_formatting: { main_text: any; secondary_text: any; }; }) => ({
+      const locationResults = places.map(
+        (item: {
+          id: any;
+          place_id: any;
+          structured_formatting: { main_text: any; secondary_text: any };
+        }) => ({
           id: item.id,
           placeId: item.place_id,
           label: `${item.structured_formatting.main_text}, ${item.structured_formatting.secondary_text}`,
-        }));
-
-        setPlaces(locationResults);
-      };
-
-      autocompleteService.current.getPlacePredictions(
-        { input, types: ['geocode'], sessionToken },
-        onFetchCompleted
+        })
       );
-    }, 300),
-    [sessionToken]
-  );
+
+      setPlaces(locationResults);
+    };
+
+    autocompleteService.current.getPlacePredictions(
+      { input, types: ['geocode'], sessionToken },
+      onFetchCompleted
+    );
+  }, 300);
 
   // Fetch places when input changes
   React.useEffect(() => {
@@ -95,27 +100,33 @@ const usePlacesAutocomplete = (input: string | any[]) => {
   const getPlaceLatLng = ({ placeId }) => {
     // PlacesService expects an HTML (normally a map) element
     // https://developers.google.com/maps/documentation/javascript/reference/places-service#library
-    const placesService = new window.google.maps.places.PlacesService(
+    const placesService = new window['google'].maps.places.PlacesService(
       document.createElement('div')
     );
 
-    const OK = window.google.maps.places.PlacesServiceStatus.OK;
+    const OK = window['google'].maps.places.PlacesServiceStatus.OK;
 
     return new Promise((resolve, reject) => {
-      placesService.getDetails({ placeId, sessionToken }, (result: { geometry: { location: { lat: any; lng: any; }; }; }, status) => {
-        if (status !== OK) {
-          reject(status);
-          return;
+      placesService.getDetails(
+        { placeId, sessionToken },
+        (
+          result: { geometry: { location: { lat: any; lng: any } } },
+          status
+        ) => {
+          if (status !== OK) {
+            reject(status);
+            return;
+          }
+
+          // Create a new session token when session has completed
+          // https://developers.google.com/maps/documentation/javascript/reference/places-autocomplete-service#AutocompleteSessionToken
+          resetSessionToken();
+
+          const { lat, lng } = result.geometry.location;
+
+          resolve({ lat: lat(), lng: lng() });
         }
-
-        // Create a new session token when session has completed
-        // https://developers.google.com/maps/documentation/javascript/reference/places-autocomplete-service#AutocompleteSessionToken
-        resetSessionToken();
-
-        const { lat, lng } = result.geometry.location;
-
-        resolve({ lat: lat(), lng: lng() });
-      });
+      );
     });
   };
 

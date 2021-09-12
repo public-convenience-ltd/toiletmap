@@ -1,12 +1,12 @@
 [
   {
-      "fixes": {
-          "noImplicitAny": true
-      }
+    "fixes": {
+      "noImplicitAny": true
+    }
   },
   {
-      "fixes": {
-          "noInferableTypes": true
-      }
+    "fixes": {
+      "noInferableTypes": true
+    }
   }
 ]

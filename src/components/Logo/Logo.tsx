@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Image from 'next/image'
+import Image from 'next/image';
 import logo from './logo.svg';
 import Box from '../Box';
 
@@ -11,7 +11,8 @@ const Logo = (props) => (
       alt="The Great British Toilet Map"
       layout="responsive"
       {...props}
-    /></Box>
+    />
+  </Box>
 );
 
 export default Logo;

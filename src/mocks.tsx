@@ -10,10 +10,10 @@ const schema = getExecutableSchema({
   typeDefs,
   mockProvidersFn: () => ({
     scenario: {
-      loosByProximity: mockResolver((store: { get: () => any[]; }) => () => {
+      loosByProximity: mockResolver((store: { get: () => any[] }) => () => {
         return [store.get()[0]];
       }),
-      loo: mockResolver((store: { get: () => any; }) => (_, { id }) => ({
+      loo: mockResolver((store: { get: () => any }) => (_, { id }) => ({
         ...store.get(),
         id,
       })),
@@ -35,12 +35,16 @@ const schema = getExecutableSchema({
 
 const mocks = [
   rest.post('/api', async (req, res, ctx) => {
-    let result  = await graphql(schema, req.body.query, null, null, JSON.parse(req.body.variables));
-
-    return res(
-      ctx.json(result)
+    let result = await graphql(
+      schema,
+      req.body.query,
+      null,
+      null,
+      JSON.parse(req.body.variables)
     );
-  })
+
+    return res(ctx.json(result));
+  }),
 ];
 
 const worker = setupWorker(...mocks);

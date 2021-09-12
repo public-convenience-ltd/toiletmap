@@ -10,5 +10,5 @@ module.exports = {
       testMatch: ['<rootDir>/tests/**/*.test.js'],
       preset: 'jest-puppeteer',
     },
-  ]
+  ],
 };

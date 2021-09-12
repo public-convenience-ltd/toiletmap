@@ -12,7 +12,7 @@ import redactedDirective from '../../api/directives/redactedDirective';
 import typeDefs from '../../api/typeDefs';
 
 const client = jwksClient({
-  jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}/.well-known/jwks.json`
+  jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}/.well-known/jwks.json`,
 });
 
 const { connect } = require('../../api/db');
@@ -32,14 +32,12 @@ const options = {
 };
 
 // Build our executable schema and apply our custom directives
-const { redactedDirectiveTypeDefs, redactedDirectiveTransformer } = redactedDirective('redact');
-const { authDirectiveTypeDefs, authDirectiveTransformer } = authDirective('auth');
+const { redactedDirectiveTypeDefs, redactedDirectiveTransformer } =
+  redactedDirective('redact');
+const { authDirectiveTypeDefs, authDirectiveTransformer } =
+  authDirective('auth');
 let schema = makeExecutableSchema({
-  typeDefs: [
-    redactedDirectiveTypeDefs,
-    authDirectiveTypeDefs,
-    typeDefs,
-  ],
+  typeDefs: [redactedDirectiveTypeDefs, authDirectiveTypeDefs, typeDefs],
   resolvers,
 });
 schema = redactedDirectiveTransformer(schema);
@@ -64,7 +62,9 @@ const server = new ApolloServer({
     } else {
       // We might have a session on toiletmap.org.uk
       let session = getSession(req, res);
-      if (session) { user = session.user }
+      if (session) {
+        user = session.user;
+      }
     }
 
     return {
@@ -86,7 +86,7 @@ const server = new ApolloServer({
         },
       ],
     }),
-  ]
+  ],
 });
 
 export const config = {
@@ -100,6 +100,6 @@ const startServer = server.start();
 export default async function handler(req, res) {
   await startServer;
   await server.createHandler({
-    path: "/api",
+    path: '/api',
   })(req, res);
 }

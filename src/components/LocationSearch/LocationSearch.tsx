@@ -31,13 +31,16 @@ const LocationSearch = ({ onSelectedItemChange }) => {
     if (!selectedItem) {
       return;
     }
-    window.plausible('Search'); 
+    window['plausible']('Search');
     const { lat, lng } = await getPlaceLatLng(selectedItem);
-    
+
     onSelectedItemChange({ lat, lng });
   };
 
-  const stateReducer = (state: { isOpen: any; selectedItem: any; inputValue: any; }, actionAndChanges: { type: any; changes: any; }) => {
+  const stateReducer = (
+    state: { isOpen: any; selectedItem: any; inputValue: any },
+    actionAndChanges: { type: any; changes: any }
+  ) => {
     switch (actionAndChanges.type) {
       case useCombobox.stateChangeTypes.InputBlur:
         // Prevents reset on blur to fix results being closed when iOS keyboard is hidden
@@ -78,7 +81,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
   } = useCombobox({
     items: places,
     onInputValueChange: ({ inputValue }) => setQuery(inputValue),
-    itemToString: (item: { label: string; }) => (item ? item.label : ''),
+    itemToString: (item: { label: string }) => (item ? item.label : ''),
     onSelectedItemChange: handleSelectedItemChange,
     stateReducer,
   });

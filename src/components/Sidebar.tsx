@@ -22,14 +22,17 @@ import Button from './Button';
 import Drawer from './Drawer';
 import { useMapState } from './MapState';
 
-const Arrow = styled((props: JSX.IntrinsicAttributes) => <Icon icon={faAngleRight} {...props} />, {
-  shouldForwardProp: (prop) => {
-    return isPropValid(prop) && prop !== 'isExpanded';
-  },
-})`
+const Arrow = styled(
+  (props: JSX.IntrinsicAttributes) => <Icon icon={faAngleRight} {...props} />,
+  {
+    shouldForwardProp: (prop) => {
+      return isPropValid(prop) && prop !== 'isExpanded';
+    },
+  }
+)`
   transition: transform 0.2s ease;
 
-  ${(props: { isExpanded: any; }) =>
+  ${(props: { isExpanded: any }) =>
     props.isExpanded &&
     `
     transform: rotate(90deg);
@@ -93,7 +96,8 @@ const Sidebar = ({
                   center: location,
                 });
 
-                (typeof window !== 'undefined') && window.plausible('Find a toilet near me');
+                typeof window !== 'undefined' &&
+                  window.plausible('Find a toilet near me');
               });
             }}
             aria-label="Find a toilet near me"
@@ -215,7 +219,8 @@ const Sidebar = ({
                     <b>Add a Toilet</b>
                   </Text>
                 </Box>
-                <Arrow /></>
+                <Arrow />
+              </>
             </StyledNavLink>
 
             <Box as="section" mt={4} aria-labelledby="heading-find">
@@ -237,7 +242,8 @@ const Sidebar = ({
                       center: location,
                     });
 
-                    (typeof window !== 'undefined') && window.plausible('Find a toilet near me');
+                    typeof window !== 'undefined' &&
+                      window.plausible('Find a toilet near me');
                   });
                 }}
               >

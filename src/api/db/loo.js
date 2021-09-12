@@ -211,4 +211,5 @@ LooSchema.statics.getAreasCounters = async function () {
   return areas;
 };
 
-module.exports = mongoose.models.NewLoo || new mongoose.model('NewLoo', LooSchema);
+module.exports =
+  mongoose.models.NewLoo || new mongoose.model('NewLoo', LooSchema);

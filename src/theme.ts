@@ -14,14 +14,12 @@ const theme = {
     grey: '#807f7f',
     aqua: '#93f9db',
   },
-  mediaQueries: breakpoints.map(
-    (n) => `@media screen and (min-width: ${n})`
-  )
+  mediaQueries: breakpoints.map((n) => `@media screen and (min-width: ${n})`),
 };
 
-import "@emotion/react";
+import '@emotion/react';
 
-declare module "@emotion/react" {
+declare module '@emotion/react' {
   export interface Theme {
     breakpoints: string[];
     space: number[];
@@ -40,6 +38,5 @@ declare module "@emotion/react" {
     mediaQueries: string[];
   }
 }
-
 
 export default theme;
