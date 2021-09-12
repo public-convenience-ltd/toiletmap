@@ -5,7 +5,7 @@ name: CI
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, next]
 
 jobs:
   test:
@@ -17,7 +17,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: Yarn install (with caching)
         uses: bahmutov/npm-install@v1.7.7
-      - name: Build Test Client
-        run: yarn build:testable
-      - name: Test
-        run: yarn test
+      - name: Lint
+        run: yarn lint
+      # - name: Typecheck
+      #   run: yarn check
+      # - name: Test
+      #   run: yarn test

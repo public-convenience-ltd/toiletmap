@@ -8,6 +8,7 @@
     "dev": "next dev",
     "start": "next start",
     "lint": "next lint",
+    "check": "tsc -p tsconfig.json --noEmit",
     "format": "prettier --write .",
     "test": "jest",
     "migrate": "migrate-mongo up",
