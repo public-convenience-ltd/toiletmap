@@ -3,3 +3,5 @@ src/explorer
 yarn.lock
 .next
 public
+src/api-client/page.tsx
+src/api-client/graphql.tsx
