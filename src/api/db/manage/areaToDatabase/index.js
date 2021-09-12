@@ -6,7 +6,7 @@ const config = require('./config.json');
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
-const { connect, Area, Loo, MapGeo } = require('../../../db/');
+const { dbConnect, Area, Loo, MapGeo } = require('../../../db/');
 const cliProgress = require('cli-progress');
 const topojson = require('topojson-server');
 const toposimplify = require('topojson-simplify');
@@ -336,7 +336,7 @@ async function run() {
   }
 
   if (!dryrun) {
-    connect(process.env.MONGODB_URI);
+    await dbConnect();
   }
 
   let count = config.datasets.length;

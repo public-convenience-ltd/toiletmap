@@ -33,7 +33,7 @@ const looInfoResolver = (property) => {
 
 const resolvers = {
   Query: {
-    loo: (parent, args) => Loo.findById(args.id),
+    loo: async (parent, args) => await Loo.findById(args.id),
     loos: async (parent, args, context) => {
       const REQUIRED_PERMISSION = 'VIEW_CONTRIBUTOR_INFO';
 
@@ -100,8 +100,8 @@ const resolvers = {
         page: res.page,
       };
     },
-    loosByProximity: (parent, args) =>
-      Loo.findNear(args.from.lng, args.from.lat, args.from.maxDistance),
+    loosByProximity: async (parent, args) =>
+      await Loo.findNear(args.from.lng, args.from.lat, args.from.maxDistance),
     areas: async (parent, args) => {
       const data = await Area.find({}, { name: 1, type: 1 }).exec();
 

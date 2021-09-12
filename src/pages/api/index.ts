@@ -15,8 +15,7 @@ const client = jwksClient({
   jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}/.well-known/jwks.json`,
 });
 
-const { connect } = require('../../api/db');
-connect(process.env.MONGODB_URI);
+const { dbConnect } = require('../../api/db');
 
 function getKey(header, cb) {
   client.getSigningKey(header.kid, function (err, key) {
@@ -98,6 +97,8 @@ export const config = {
 const startServer = server.start();
 
 export default async function handler(req, res) {
+  // We'll need a mongodb connection
+  await dbConnect();
   await startServer;
   await server.createHandler({
     path: '/api',
