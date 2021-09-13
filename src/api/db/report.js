@@ -56,7 +56,7 @@ const ReportSchema = new mongoose.Schema(
 
         if (this.previous) {
           // generate a loo from previous reports
-          await this.populate('previous').execPopulate();
+          await this.populate('previous');
           const looBefore = await this.previous.generateLoo();
           this.depopulate('previous');
 

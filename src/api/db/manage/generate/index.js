@@ -1,10 +1,10 @@
-const { Report, connect } = require('../../index.js');
+const { Report, dbConnect } = require('../../index.js');
 const mongoose = require('mongoose');
 const cliProgress = require('cli-progress');
 
 // use a main function so we can have await niceties
 async function main() {
-  await connect(process.env.MONGODB_URI);
+  await dbConnect();
   try {
     // check they're serious
     if (!process.argv.slice(2).includes('--confirm')) {
@@ -42,7 +42,7 @@ async function main() {
       let root = report;
       // Traverse each linked report list to find the root report.
       while (root.next) {
-        await root.populate('next').execPopulate();
+        await root.populate('next');
         root = root.next;
       }
       // Generate a loo from each root report and save it.
