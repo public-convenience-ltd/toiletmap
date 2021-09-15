@@ -12,11 +12,13 @@ import config from '../../../config';
 import { useRouter } from 'next/router';
 import { withApollo } from '../../../components/withApollo';
 import { NextPage } from 'next';
+import { GetServerSideProps, GetStaticPaths } from 'next';
 import useFilters from '../../../components/useFilters';
 import {
   useFindLoosNearbyQuery,
   useFindLooByIdQuery,
 } from '../../../api-client/graphql';
+import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 const MapLoader = () => <p>Loading map...</p>;
@@ -25,29 +27,26 @@ const LooMap = dynamic(() => import('../../../components/LooMap'), {
   ssr: false,
 });
 
-const LooPage = () => {
+const LooPage: PageFindLooByIdComp = (props) => {
+  const loo = props.data.loo;
   const [mapState, setMapState] = useMapState();
   const router = useRouter();
   const { id, message } = router.query;
 
-  const { data: looData, loading } = useFindLooByIdQuery({
-    variables: {
-      id: id as string,
-    },
-  });
-
   const { data: nearbyLoos } = useFindLoosNearbyQuery({
     variables: {
-      lat: looData?.loo.location.lat,
-      lng: looData?.loo.location.lng,
+      lat: loo.location.lat,
+      lng: loo.location.lng,
       radius: Math.ceil(mapState.radius),
     },
-    skip: !looData?.loo,
+    skip: !loo,
   });
 
   const { filters, filtered, setFilters } = useFilters(
     nearbyLoos?.loosByProximity
   );
+
+  console.log(loo);
 
   // set initial map center to toilet if on /loos/:id
   //   React.useEffect(() => {
@@ -63,7 +62,7 @@ const LooPage = () => {
 
   const [toiletPanelDimensions, setToiletPanelDimensions] = React.useState({});
 
-  const pageTitle = config.getTitle(looData?.loo.name || 'Unnamed Toilet');
+  const pageTitle = config.getTitle(loo.name || 'Unnamed Toilet');
 
   return (
     <PageLayout mapCenter={mapState.center}>
@@ -101,16 +100,7 @@ const LooPage = () => {
         </Box>
 
         <LooMap
-          //   loos={toilets.map((toilet: { id: string | string[] }) => {
-          //     if (toilet.id === selectedLooId) {
-          //       return {
-          //         ...toilet,
-          //         isHighlighted: true,
-          //       };
-          //     }
-          //     return toilet;
-          //   })}
-          loos={filtered}
+          loos={filtered.concat([{ ...loo, isHighlighted: true }])}
           center={mapState.center}
           zoom={mapState.zoom}
           onViewportChanged={setMapState}
@@ -119,9 +109,9 @@ const LooPage = () => {
 
         <Box position="absolute" left={0} bottom={0} width="100%" zIndex={100}>
           <ToiletDetailsPanel
-            data={looData?.loo}
-            isLoading={loading}
-            startExpanded={!!message}
+            data={loo}
+            isLoading={false}
+            startExpanded={true}
             onDimensionsChange={setToiletPanelDimensions}
           >
             {config.messages[message] && (
@@ -149,4 +139,31 @@ const LooPage = () => {
   );
 };
 
-export default withApollo(LooPage as NextPage);
+export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
+  const res = await ssrFindLooById.getServerPage(
+    {
+      variables: { id: params.id as string },
+    },
+    { req }
+  );
+
+  if (res.props.error || !res.props.data) {
+    return {
+      notFound: true,
+    };
+  }
+  return res;
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
+export default withApollo(
+  ssrFindLooById.withPage((arg) => ({
+    variables: { id: arg?.query?.id as string },
+  }))(LooPage)
+);
