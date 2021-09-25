@@ -14,12 +14,11 @@ import useNearbyLoos from '../../components/useNearbyLoos';
 
 import config from '../../config';
 import dynamic from 'next/dynamic';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import { withApollo } from '../../components/withApollo';
 import {
   UpdateLooMutationVariables,
-  useFindLooByIdQuery,
   useUpdateLooMutation,
 } from '../../api-client/graphql';
 

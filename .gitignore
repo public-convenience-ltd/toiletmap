@@ -12,6 +12,7 @@ node_modules
 # Local config
 .env
 .now
+.vscode
 
 build
 
