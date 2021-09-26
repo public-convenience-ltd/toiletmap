@@ -11,13 +11,9 @@ import { useMapState } from '../../../components/MapState';
 import config from '../../../config';
 import { useRouter } from 'next/router';
 import { withApollo } from '../../../components/withApollo';
-import { NextPage } from 'next';
 import { GetServerSideProps, GetStaticPaths } from 'next';
-import useFilters from '../../../components/useFilters';
-import {
-  useFindLoosNearbyQuery,
-  useFindLooByIdQuery,
-} from '../../../api-client/graphql';
+import useFilters from '../../../hooks/useFilters';
+import { useFindLoosNearbyQuery } from '../../../api-client/graphql';
 import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;

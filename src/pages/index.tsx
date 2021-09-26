@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import { withApollo } from '../components/withApollo';
 import { NextPage } from 'next';
 import { useFindLoosNearbyQuery } from '../api-client/graphql';
-import useFilters from '../components/useFilters';
+import useFilters from '../hooks/useFilters';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 const MapLoader = () => <p>Loading map...</p>;

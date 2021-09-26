@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
 import { Map, TileLayer, ZoomControl } from 'react-leaflet';
 import 'focus-visible';
@@ -19,20 +19,34 @@ import { Media } from '../Media';
 import crosshair from '../../../public/crosshair.svg';
 
 import 'leaflet/dist/leaflet.css';
+import { Loo } from '../../api-client/graphql';
 
 const KEY_ENTER = 13;
 
-const LooMap = ({
+interface Props {
+  loos?: Array<Loo>;
+  center: { lat: number; lng: number };
+  zoom?: number;
+  minZoom?: number;
+  maxZoom?: number;
+  staticMap?: boolean;
+  onViewportChanged?: () => void;
+  controlsOffset?: number;
+  showCrosshair: boolean;
+  withAccessibilityOverlays?: boolean;
+}
+
+const LooMap: React.FC<Props> = ({
   center,
-  zoom,
-  minZoom,
-  maxZoom,
+  zoom = config.initialZoom,
+  minZoom = config.minZoom,
+  maxZoom = config.maxZoom,
   onViewportChanged,
-  loos,
-  staticMap,
-  controlsOffset,
+  loos = [],
+  staticMap = false,
+  controlsOffset = 0,
   showCrosshair,
-  withAccessibilityOverlays,
+  withAccessibilityOverlays = true,
 }) => {
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => {
@@ -101,12 +115,12 @@ const LooMap = ({
           label={toilet.name || 'Unnamed toilet'}
           onClick={() => {
             if (!staticMap) {
-              router.push(`/loos/${toilet.id}`, undefined, { shallow: true });
+              router.push(`/loos/${toilet.id}`);
             }
           }}
           onKeyDown={(event: { originalEvent: { keyCode: number } }) => {
             if (!staticMap && event.originalEvent.keyCode === KEY_ENTER) {
-              router.push(`/loos/${toilet.id}`, undefined, { shallow: true });
+              router.push(`/loos/${toilet.id}`);
             }
           }}
           keyboard={false}
@@ -124,7 +138,7 @@ const LooMap = ({
       }
 
       setAnnouncement(`${toilet.name || 'Unnamed toilet'} selected`);
-      router.push(`/loos/${toilet.id}`, undefined, { shallow: true });
+      router.push(`/loos/${toilet.id}`);
     },
     [intersectingToilets, router]
   );
@@ -289,33 +303,6 @@ const LooMap = ({
       </Box>
     )
   );
-};
-
-LooMap.propTypes = {
-  loos: PropTypes.array,
-  center: PropTypes.shape({
-    lat: PropTypes.number,
-    lng: PropTypes.number,
-  }).isRequired,
-  zoom: PropTypes.number,
-  minZoom: PropTypes.number,
-  maxZoom: PropTypes.number,
-  staticMap: PropTypes.bool,
-  onViewportChanged: PropTypes.func,
-  controlsOffset: PropTypes.number,
-  showCrosshair: PropTypes.bool,
-  withAccessibilityOverlays: PropTypes.bool,
-};
-
-LooMap.defaultProps = {
-  loos: [],
-  zoom: config.initialZoom,
-  minZoom: config.minZoom,
-  maxZoom: config.maxZoom,
-  staticMap: false,
-  onViewportChanged: Function.prototype,
-  controlsOffset: 0,
-  withAccessibilityOverlays: true,
 };
 
 export default LooMap;

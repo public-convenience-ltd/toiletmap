@@ -11,14 +11,13 @@ import EntryForm from '../../../components/EntryForm';
 import Box from '../../../components/Box';
 
 import config from '../../../config';
-import useNearbyLoos from '../../../components/useNearbyLoos';
+import useNearbyLoos from '../../../hooks/useNearbyLoos';
 import { useMapState } from '../../../components/MapState';
 
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { withApollo } from '../../../components/withApollo';
 import { NextPage } from 'next';
-import { useFindLooById } from '../../../api-client/page';
 import {
   UpdateLooMutationVariables,
   useFindLooByIdQuery,
@@ -30,6 +29,11 @@ import Notification from '../../../components/Notification';
 import { css } from '@emotion/react';
 
 const MapLoader = () => <p>Loading map...</p>;
+
+const LooMap = dynamic(() => import('../../../components/LooMap'), {
+  loading: MapLoader,
+  ssr: false,
+});
 
 const EditPage = (props: { match: { params: { id?: string } } }) => {
   const router = useRouter();
@@ -44,15 +48,6 @@ const EditPage = (props: { match: { params: { id?: string } } }) => {
   const [mapState, setMapState] = useMapState();
 
   const looLocation = (looData && looData.loo.location) || null;
-
-  const LooMap = React.useMemo(
-    () =>
-      dynamic(() => import('../../../components/LooMap'), {
-        loading: MapLoader,
-        ssr: false,
-      }),
-    []
-  );
 
   // set the map position to the loo location
   React.useEffect(() => {
