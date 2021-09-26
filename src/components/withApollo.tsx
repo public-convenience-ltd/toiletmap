@@ -21,7 +21,8 @@ export const getApolloClient = (
   initialState?: NormalizedCacheObject
 ) => {
   const httpLink = createHttpLink({
-    uri: '/api',
+    uri:
+      typeof window === 'undefined' ? process.env.VERCEL_URL + '/api' : '/api',
     fetch,
   });
   const cache = new InMemoryCache().restore(initialState || {});

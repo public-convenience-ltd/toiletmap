@@ -1,30 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-import PageLayout from '../components/PageLayout';
-import Box from '../components/Box';
-import Sidebar from '../components/Sidebar';
-import Notification from '../components/Notification';
-import VisuallyHidden from '../components/VisuallyHidden';
-import { useMapState } from '../components/MapState';
-import config from '../config';
+import PageLayout from '../../../components/PageLayout';
+import Box from '../../../components/Box';
+import Sidebar from '../../../components/Sidebar';
+import VisuallyHidden from '../../../components/VisuallyHidden';
+import { useMapState } from '../../../components/MapState';
+import config, { FILTERS_KEY } from '../../../config';
 import { useRouter } from 'next/router';
-import { withApollo } from '../components/withApollo';
+import { withApollo } from '../../../components/withApollo';
 import { NextPage } from 'next';
-import { useFindLoosNearbyQuery } from '../api-client/graphql';
-import useFilters from '../components/useFilters';
+import { useFindLoosNearbyQuery } from '../../../api-client/graphql';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 const MapLoader = () => <p>Loading map...</p>;
-const LooMap = dynamic(() => import('../components/LooMap'), {
+const LooMap = dynamic(() => import('../../../components/LooMap'), {
   loading: MapLoader,
   ssr: false,
 });
 
-const HomePage = () => {
+const MapPage = () => {
   const router = useRouter();
-  const { message } = router.query;
   const [mapState, setMapState] = useMapState();
+  let initialState = config.getSettings(FILTERS_KEY);
+
+  // default any unsaved filters as 'false'
+  config.filters.forEach((filter) => {
+    initialState[filter.id] = initialState[filter.id] || false;
+  });
+
+  const [filters, setFilters] = useState(initialState);
+
+  // keep local storage and state in sync
+  React.useEffect(() => {
+    window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
+  }, [filters]);
 
   const { data } = useFindLoosNearbyQuery({
     variables: {
@@ -34,9 +44,27 @@ const HomePage = () => {
     },
   });
 
-  const { filters, filtered, setFilters } = useFilters(data?.loosByProximity);
+  // get the filter objects from config for the filters applied by the user
+  const applied = config.filters.filter((filter) => filters[filter.id]);
 
-  const pageTitle = config.getTitle('Home');
+  const toilets = React.useMemo(() => {
+    if (data?.loosByProximity) {
+      return data.loosByProximity.filter((toilet: { [x: string]: any }) =>
+        applied.every((filter) => {
+          const value = toilet[filter.id];
+
+          if (value === null) {
+            return false;
+          }
+
+          return !!value;
+        })
+      );
+    }
+    return [];
+  }, [data?.loosByProximity, applied]);
+
+  const pageTitle = config.getTitle('Area Map');
 
   return (
     <PageLayout mapCenter={mapState.center}>
@@ -72,7 +100,7 @@ const HomePage = () => {
         </Box>
 
         <LooMap
-          loos={filtered}
+          loos={toilets}
           center={mapState.center}
           zoom={mapState.zoom}
           onViewportChanged={setMapState}

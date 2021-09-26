@@ -26,7 +26,6 @@ import parseISO from 'date-fns/parseISO';
 import add from 'date-fns/add';
 import Link from 'next/link';
 import useComponentSize from '@rehooks/component-size';
-import L from 'leaflet';
 
 import Box from './Box';
 import Button from './Button';
@@ -105,10 +104,11 @@ function round(value: number, precision = 0) {
 }
 
 const DistanceTo = ({ from, to }) => {
-  const fromLatLng = L.latLng(from.lat, from.lng);
+  // const fromLatLng = L.latLng(from.lat, from.lng);
 
-  const toLatLng = L.latLng(to.lat, to.lng);
-  const metersToLoo = fromLatLng.distanceTo(toLatLng);
+  // const toLatLng = L.latLng(to.lat, to.lng);
+  // const metersToLoo = fromLatLng.distanceTo(toLatLng);
+  const metersToLoo = 10000;
 
   const distance =
     metersToLoo < 1000
@@ -117,7 +117,7 @@ const DistanceTo = ({ from, to }) => {
 
   return (
     <Text as="span" fontSize="3" fontWeight="bold">
-      {distance}
+      FIXME {distance}
     </Text>
   );
 };

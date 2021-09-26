@@ -38,7 +38,7 @@
     "@fortawesome/free-brands-svg-icons": "5.15.4",
     "@fortawesome/free-regular-svg-icons": "5.15.4",
     "@fortawesome/free-solid-svg-icons": "5.15.4",
-    "@fortawesome/react-fontawesome": "0.1.14",
+    "@fortawesome/react-fontawesome": "0.1.15",
     "@graphql-tools/schema": "8.2.0",
     "@graphql-tools/utils": "8.2.2",
     "@rehooks/component-size": "1.0.3",
