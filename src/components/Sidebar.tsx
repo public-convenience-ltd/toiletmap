@@ -22,8 +22,12 @@ import Button from './Button';
 import Drawer from './Drawer';
 import { useMapState } from './MapState';
 
+interface Props {
+  isExpanded?: boolean;
+}
+
 const Arrow = styled(
-  (props: JSX.IntrinsicAttributes) => <Icon icon={faAngleRight} {...props} />,
+  (props: Props) => <Icon icon={faAngleRight} {...props} />,
   {
     shouldForwardProp: (prop) => {
       return isPropValid(prop) && prop !== 'isExpanded';
@@ -38,10 +42,6 @@ const Arrow = styled(
     transform: rotate(90deg);
   `}
 `;
-
-Arrow.propTypes = {
-  isExpanded: PropTypes.bool,
-};
 
 const StyledNavLink = styled(Link)`
   display: flex;
@@ -120,7 +120,7 @@ const Sidebar = ({
             <Text fontSize={12}>
               <Box
                 as="button"
-                type="button"
+                itemType="button"
                 onClick={() => onFilterChange({})}
                 border={0}
                 borderBottom={2}
@@ -212,7 +212,7 @@ const Sidebar = ({
             <StyledNavLink
               href={`/loos/add?lat=${mapCenter.lat}&lng=${mapCenter.lng}`}
             >
-              <>
+              <Box display="flex" alignItems="center" as="button" type="button">
                 <Icon icon={faPlusCircle} fixedWidth size="lg" />
                 <Box mx={2}>
                   <Text lineHeight={1}>
@@ -220,9 +220,8 @@ const Sidebar = ({
                   </Text>
                 </Box>
                 <Arrow />
-              </>
+              </Box>
             </StyledNavLink>
-
             <Box as="section" mt={4} aria-labelledby="heading-find">
               <h2 id="heading-find">
                 <VisuallyHidden>Find a toilet near me</VisuallyHidden>

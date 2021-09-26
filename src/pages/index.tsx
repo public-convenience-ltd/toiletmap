@@ -15,8 +15,6 @@ import { NextPage } from 'next';
 import {
   getServerPageFindLooById,
   getServerPageFindLoosNearby,
-  useFindLooById,
-  useFindLoosNearby,
 } from '../api-client/page';
 
 /**
