@@ -28,10 +28,6 @@ export const getApolloClient = (
     uri: typeof window === 'undefined' ? url + '/api' : '/api',
     fetch,
   });
-  console.log(
-    'afwafawfawfawfawfaw',
-    typeof window === 'undefined' ? process.env.VERCEL_URL + '/api' : '/api'
-  );
   const cache = new InMemoryCache().restore(initialState || {});
   return new ApolloClient({
     link: httpLink,
