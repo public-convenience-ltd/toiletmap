@@ -10,16 +10,15 @@ import Button from '../../components/Button';
 import LocationSearch from '../../components/LocationSearch';
 
 import { useMapState } from '../../components/MapState';
-import useNearbyLoos from '../../components/useNearbyLoos';
+import useNearbyLoos from '../../hooks/useNearbyLoos';
 
 import config from '../../config';
 import dynamic from 'next/dynamic';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import { withApollo } from '../../components/withApollo';
 import {
   UpdateLooMutationVariables,
-  useFindLooByIdQuery,
   useUpdateLooMutation,
 } from '../../api-client/graphql';
 
@@ -30,16 +29,14 @@ const initialFormState = {
 
 const MapLoader = () => <p>Loading map...</p>;
 
+const LooMap = dynamic(() => import('../../components/LooMap'), {
+  loading: MapLoader,
+  ssr: false,
+});
+
 const AddPage = (props) => {
   const [mapState, setMapState] = useMapState();
-  const LooMap = React.useMemo(
-    () =>
-      dynamic(() => import('../../components/LooMap'), {
-        loading: MapLoader,
-        ssr: false,
-      }),
-    []
-  );
+
   const { data } = useNearbyLoos({
     lat: mapState.center.lat,
     lng: mapState.center.lng,

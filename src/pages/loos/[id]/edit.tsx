@@ -11,50 +11,50 @@ import EntryForm from '../../../components/EntryForm';
 import Box from '../../../components/Box';
 
 import config from '../../../config';
-import useNearbyLoos from '../../../components/useNearbyLoos';
+import useNearbyLoos from '../../../hooks/useNearbyLoos';
 import { useMapState } from '../../../components/MapState';
 
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { withApollo } from '../../../components/withApollo';
 import { NextPage } from 'next';
+import {
+  UpdateLooMutationVariables,
+  useFindLooByIdQuery,
+  useUpdateLooMutation,
+} from '../../../api-client/graphql';
+import { cloneDeep } from '@apollo/client/utilities';
+import { merge, uniqBy } from 'lodash';
+import Notification from '../../../components/Notification';
+import { css } from '@emotion/react';
 
 const MapLoader = () => <p>Loading map...</p>;
 
-const EditPage = (props: { match: { params: { id: any } } }) => {
+const LooMap = dynamic(() => import('../../../components/LooMap'), {
+  loading: MapLoader,
+  ssr: false,
+});
+
+const EditPage = (props: { match: { params: { id?: string } } }) => {
   const router = useRouter();
   const { id: selectedLooId } = router.query;
 
-  // const {
-  //   isValidating: loadingLooData,
-  //   data: looData,
-  //   error: looError,
-  // } = useSWR(
-  //   [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: selectedLooId })],
-  //   {
-  //     revalidateOnFocus: false,
-  //   }
-  // );
+  const {
+    data: looData,
+    error: looError,
+    loading: loadingLooData,
+  } = useFindLooByIdQuery({ variables: { id: selectedLooId as string } });
 
   const [mapState, setMapState] = useMapState();
 
-  // const looLocation = (looData && looData.loo.location) || null;
-
-  const LooMap = React.useMemo(
-    () =>
-      dynamic(() => import('../../../components/LooMap'), {
-        loading: MapLoader,
-        ssr: false,
-      }),
-    []
-  );
+  const looLocation = (looData && looData.loo.location) || null;
 
   // set the map position to the loo location
-  // React.useEffect(() => {
-  //   if (looLocation) {
-  //     setMapState({ center: looLocation });
-  //   }
-  // }, [looLocation, setMapState]);
+  React.useEffect(() => {
+    if (looLocation) {
+      setMapState({ center: looLocation });
+    }
+  }, [looLocation, setMapState]);
 
   const { data } = useNearbyLoos({
     lat: mapState.center.lat,
@@ -63,96 +63,89 @@ const EditPage = (props: { match: { params: { id: any } } }) => {
   });
 
   // local state mapCenter to get fix issues with react-leaflet not being stateless and lat lng rounding issues
-  const [mapCenter, setMapCenter] = useState();
+  const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
 
-  const [initialData, setInitialData] = useState();
+  const [initialData, setInitialData] = useState({
+    loo: null,
+    center: { lat: 0, lng: 0 },
+  });
 
-  // useEffect(() => {
-  //   if (!looData) {
-  //     return;
-  //   }
+  useEffect(() => {
+    if (!looData) {
+      return;
+    }
 
-  //   const toilet = cloneDeep(merge({}, { active: null }, looData.loo));
-  //   setMapCenter(toilet.location);
+    const toilet = cloneDeep(merge({}, { active: null }, looData.loo));
+    setMapCenter(toilet.location);
 
-  //   // keep track of defaults so we only submit new information
-  //   setInitialData({
-  //     loo: toilet,
-  //     center: {
-  //       lat: toilet.location.lat,
-  //       lng: toilet.location.lng,
-  //     },
-  //   });
-  // }, [looData]);
+    // keep track of defaults so we only submit new information
+    setInitialData({
+      loo: toilet,
+      center: {
+        lat: toilet.location.lat,
+        lng: toilet.location.lng,
+      },
+    });
+  }, [looData]);
 
-  // const [
-  //   updateLoo,
-  //   { loading: saveLoading, data: saveData, error: saveError },
-  // ] = useMutation(UPDATE_LOO_MUTATION);
+  const [
+    updateLooMutation,
+    { data: saveData, loading: saveLoading, error: saveError },
+  ] = useUpdateLooMutation();
 
-  // const save = async (formData: { id: any; }) => {
-  //   formData.id = looData.loo.id;
+  const save = async (formData: UpdateLooMutationVariables) => {
+    formData.id = looData.loo.id;
 
-  //   try {
-  //     const data = await updateLoo(formData);
+    try {
+      const data = await updateLooMutation({ variables: { ...formData } });
+      useUpdateLooMutation;
+    } catch (err) {
+      console.error('save error', err);
+    }
+  };
 
-  //     // update cached query
-  //     mutate(
-  //       [
-  //         FIND_LOO_BY_ID_QUERY,
-  //         JSON.stringify({ id: data.submitReport.loo.id }),
-  //       ],
-  //       {
-  //         loo: data.submitReport.loo,
-  //       }
-  //     );
-  //   } catch (err) {
-  //     console.error('save error', err);
-  //   }
-  // };
+  if (saveData) {
+    // redirect to updated toilet entry page
+    router.push(`/loos/${saveData.submitReport.loo.id}?message=updated`);
+  }
 
-  // if (saveData) {
-  //   // redirect to updated toilet entry page
-  //   router.push(`/loos/${saveData.submitReport.loo.id}?message=updated`)
-  // }
-
-  // if (loadingLooData || !looData || !initialData || looError) {
-  //   return (
-  //     <PageLayout>
-  //       <Box
-  //         my={4}
-  //         mx="auto"
-  //         css={css`
-  //           max-width: 360px; /* fallback */
-  //           max-width: fit-content;
-  //         `}
-  //       >
-  //         <Notification>
-  //           {looError ? 'Error fetching toilet data' : 'Fetching Toilet Data'}
-  //         </Notification>
-  //       </Box>
-  //     </PageLayout>
-  //   );
-  // }
+  if (loadingLooData || !looData || !initialData || looError) {
+    return (
+      <PageLayout>
+        <Box
+          my={4}
+          mx="auto"
+          css={css`
+            max-width: 360px; /* fallback */
+            max-width: fit-content;
+          `}
+        >
+          <Notification>
+            {looError ? 'Error fetching toilet data' : 'Fetching Toilet Data'}
+          </Notification>
+        </Box>
+      </PageLayout>
+    );
+  }
 
   // redirect to index if loo is not active (i.e. removed)
-  // if (looData && !looData.loo.active) {
-  //   router.push('/');
-  // }
+  if (looData && !looData.loo.active) {
+    router.push('/');
+  }
 
-  // const getLoosToDisplay = () => {
-  //   let activeLoo;
+  const getLoosToDisplay = () => {
+    let activeLoo;
 
-  //   if (looData) {
-  //     activeLoo = {
-  //       ...looData.loo,
-  //       isHighlighted: true,
-  //     };
-  //   }
+    if (looData) {
+      activeLoo = {
+        ...looData.loo,
+        isHighlighted: true,
+      };
+    }
 
-  //   // only return the active loos once (activeLoo must be first in array)
-  //   return uniqBy([activeLoo, ...data], 'id').filter(Boolean);
-  // };
+    // only return the active loos once (activeLoo must be first in array)
+    return uniqBy([activeLoo, ...data], 'id').filter(Boolean);
+  };
 
   return (
     <PageLayout>
@@ -162,7 +155,7 @@ const EditPage = (props: { match: { params: { id: any } } }) => {
         </Head>
 
         <Box display="flex" height="40vh">
-          {/* <LooMap
+          <LooMap
             loos={getLoosToDisplay()}
             center={mapState.center}
             zoom={mapState.zoom}
@@ -173,50 +166,54 @@ const EditPage = (props: { match: { params: { id: any } } }) => {
             showCrosshair
             controlsOffset={20}
             withAccessibilityOverlays={false}
-            onViewportChanged={(mapPosition: { center: (prevState: undefined) => undefined; }) => {
+            onViewportChanged={(mapPosition: {
+              center: (prevState: undefined) => undefined;
+            }) => {
               setMapCenter(mapPosition.center);
             }}
-          /> */}
+          />
         </Box>
 
         <Spacer mt={4} />
-        {/*
-        <EntryForm
-          title="Edit This Toilet"
-          loo={initialData.loo}
-          center={mapCenter}
-          saveLoading={saveLoading}
-          saveError={saveError}
-          onSubmit={save}
-        >
-          {({ isDirty }) => (
-            <Box display="flex" flexDirection="column" alignItems="center">
-              <Button
-                type="submit"
-                disabled={!isDirty}
-                css={{
-                  width: '100%',
-                }}
-                data-testid="update-toilet-button"
-              >
-                Update the toilet
-              </Button>
 
-              <Spacer mt={2} />
+        {initialData?.loo && (
+          <EntryForm
+            title="Edit This Toilet"
+            loo={initialData.loo}
+            center={mapCenter}
+            saveLoading={saveLoading}
+            saveError={saveError}
+            onSubmit={save}
+          >
+            {({ isDirty }) => (
+              <Box display="flex" flexDirection="column" alignItems="center">
+                <Button
+                  type="submit"
+                  disabled={!isDirty}
+                  css={{
+                    width: '100%',
+                  }}
+                  data-testid="update-toilet-button"
+                >
+                  Update the toilet
+                </Button>
 
-              <Button
-                as={Link}
-                href={`/loos/${selectedLooId}/remove`}
-                css={{
-                  width: '100%',
-                }}
-                data-testid="remove-toilet-button"
-              >
-                Remove the toilet
-              </Button>
-            </Box>
-          )}
-        </EntryForm> */}
+                <Spacer mt={2} />
+
+                <Button
+                  as={Link}
+                  href={`/loos/${selectedLooId}/remove`}
+                  css={{
+                    width: '100%',
+                  }}
+                  data-testid="remove-toilet-button"
+                >
+                  Remove the toilet
+                </Button>
+              </Box>
+            )}
+          </EntryForm>
+        )}
       </>
     </PageLayout>
   );
