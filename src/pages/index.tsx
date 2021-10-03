@@ -21,7 +21,7 @@ const LooMap = dynamic(() => import('../components/LooMap'), {
   ssr: false,
 });
 
-const HomePage = () => {
+export const HomePage = () => {
   const router = useRouter();
   const { message } = router.query;
   const [mapState, setMapState] = useMapState();

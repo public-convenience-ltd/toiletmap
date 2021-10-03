@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { withApollo } from '../../../components/withApollo';
 import { NextPage } from 'next';
 import { useFindLoosNearbyQuery } from '../../../api-client/graphql';
+import { HomePage } from '../..';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 const MapLoader = () => <p>Loading map...</p>;
