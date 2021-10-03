@@ -2242,14 +2242,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/leaflet@*":
-  version "1.7.5"
-  resolved "https://registry.npmjs.org/@types/leaflet/-/leaflet-1.7.5.tgz"
-  integrity sha512-+Myo00Yb5OuvUyrH+vUwn9DRgOaBJsF/etIMdMcNhWGBMo58Mo1cxLInvCd0ZpvItju/AeDYFB/Od2pLiHB3VA==
-  dependencies:
-    "@types/geojson" "*"
-
-"@types/leaflet@1.7.5":
+"@types/leaflet@*", "@types/leaflet@1.7.5":
   version "1.7.5"
   resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.7.5.tgz#7b2bcf1271fb7b8c305e3c468eaad65b6dbac472"
   integrity sha512-+Myo00Yb5OuvUyrH+vUwn9DRgOaBJsF/etIMdMcNhWGBMo58Mo1cxLInvCd0ZpvItju/AeDYFB/Od2pLiHB3VA==
