@@ -48,7 +48,7 @@
     "date-fns": "2.25.0",
     "downshift": "6.1.7",
     "focus-visible": "5.2.0",
-    "framer-motion": "2.9.5",
+    "framer-motion": "4.1.17",
     "graphql": "15.6.1",
     "graphql-iso-date": "3.6.1",
     "graphql-voyager": "1.0.0-rc.31",
