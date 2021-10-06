@@ -79,7 +79,7 @@ const MainMenu = ({ mapCenter, onMenuItemClick, children }: IMainMenu) => {
 
           {user && (
             <Box as="li" mt={[3, 0]} mb={['auto', 0]} ml={[0, 4]}>
-              <StyledNavLink href="/api/auth/logout">Logout</StyledNavLink>
+              <a href={`/api/auth/logout`}>Logout</a>
             </Box>
           )}
         </Box>

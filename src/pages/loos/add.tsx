@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0';
 
 import PageLayout from '../../components/PageLayout';
 import EntryForm from '../../components/EntryForm';
@@ -8,6 +8,7 @@ import Box from '../../components/Box';
 import Spacer from '../../components/Spacer';
 import Button from '../../components/Button';
 import LocationSearch from '../../components/LocationSearch';
+import Login from '../../components/Login';
 
 import { useMapState } from '../../components/MapState';
 import useNearbyLoos from '../../hooks/useNearbyLoos';
@@ -21,6 +22,7 @@ import {
   UpdateLooMutationVariables,
   useUpdateLooMutation,
 } from '../../api-client/graphql';
+import PageLoading from '../../components/PageLoading';
 
 const initialFormState = {
   active: null,
@@ -35,6 +37,7 @@ const LooMap = dynamic(() => import('../../components/LooMap'), {
 });
 
 const AddPage = (props) => {
+  const { user, error, isLoading } = useUser();
   const [mapState, setMapState] = useMapState();
 
   const { data } = useNearbyLoos({
@@ -83,6 +86,14 @@ const AddPage = (props) => {
       router.push(`/loos/${saveData.submitReport.loo.id}?message=created`);
     }
   }, [saveData, router]);
+
+  if (isLoading) {
+    return <PageLoading />;
+  }
+
+  if (!user) {
+    return <Login />;
+  }
 
   return (
     <PageLayout>
@@ -136,5 +147,3 @@ const AddPage = (props) => {
 };
 
 export default withApollo(AddPage as NextPage);
-
-export const getServerSideProps = withPageAuthRequired();

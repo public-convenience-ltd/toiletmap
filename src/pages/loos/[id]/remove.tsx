@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
-
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0';
 
 import config from '../../../config';
 
@@ -11,10 +10,20 @@ import Spacer from '../../../components/Spacer';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
 import Notification from '../../../components/Notification';
+import Login from '../../../components/Login';
+import PageLoading from '../../../components/PageLoading';
 
 import { useRouter } from 'next/router';
 
 const RemovePage = function (props: { match: { params: { id: any } } }) {
+  const { user, error, isLoading } = useUser();
+  if (isLoading) {
+    return <PageLoading />;
+  }
+
+  if (!user) {
+    return <Login />;
+  }
   // const [reason, setReason] = useState('');
   // const router = useRouter();
   // const {id: selectedLooId} = router.query;
@@ -119,5 +128,3 @@ const RemovePage = function (props: { match: { params: { id: any } } }) {
 };
 
 export default RemovePage;
-
-export const getServerSideProps = withPageAuthRequired();

@@ -1,14 +1,14 @@
 import React from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
-import PageLayout from '../components/PageLayout';
-import Container from '../components/Container';
-import Button from '../components/Button';
-import Text from '../components/Text';
-import Spacer from '../components/Spacer';
-import Box, { BoxProps } from '../components/Box';
+import PageLayout from './PageLayout';
+import Container from './Container';
+import Button from './Button';
+import Text from './Text';
+import Spacer from './Spacer';
+import Box, { BoxProps } from './Box';
 
 import config from '../config';
 
@@ -21,6 +21,7 @@ const ListItem = (props: BoxProps) => (
 );
 
 const LoginPage = (props) => {
+  const router = useRouter();
   return (
     <PageLayout layoutMode="blog">
       <Head>
@@ -41,9 +42,7 @@ const LoginPage = (props) => {
           Up:
         </p>
         <Spacer mb={3} />
-        <Link href="/api/auth/login" passHref>
-          <a>Log In/Sign Up</a>
-        </Link>
+        <a href={`/api/auth/login?returnTo=${router.asPath}`}>Log In/Sign Up</a>
         <Spacer mb={4} />
         <Text fontSize={3} fontWeight="bold">
           <h2>Examples of Public toilets</h2>

@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0';
 
 import PageLayout from '../../../components/PageLayout';
 import Button from '../../../components/Button';
 import Spacer from '../../../components/Spacer';
 import EntryForm from '../../../components/EntryForm';
 import Box from '../../../components/Box';
+import Login from '../../../components/Login';
 
 import config from '../../../config';
 import useNearbyLoos from '../../../hooks/useNearbyLoos';
@@ -27,6 +28,7 @@ import { cloneDeep } from '@apollo/client/utilities';
 import { merge, uniqBy } from 'lodash';
 import Notification from '../../../components/Notification';
 import { css } from '@emotion/react';
+import PageLoading from '../../../components/PageLoading';
 
 const MapLoader = () => <p>Loading map...</p>;
 
@@ -37,6 +39,7 @@ const LooMap = dynamic(() => import('../../../components/LooMap'), {
 
 const EditPage = (props: { match: { params: { id?: string } } }) => {
   const router = useRouter();
+  const { isLoading, user } = useUser();
   const { id: selectedLooId } = router.query;
 
   const {
@@ -107,6 +110,14 @@ const EditPage = (props: { match: { params: { id?: string } } }) => {
   if (saveData) {
     // redirect to updated toilet entry page
     router.push(`/loos/${saveData.submitReport.loo.id}?message=updated`);
+  }
+
+  if (isLoading) {
+    return <PageLoading />;
+  }
+
+  if (!user) {
+    return <Login />;
   }
 
   if (loadingLooData || !looData || !initialData || looError) {
@@ -220,5 +231,3 @@ const EditPage = (props: { match: { params: { id?: string } } }) => {
 };
 
 export default withApollo(EditPage as NextPage);
-
-export const getServerSideProps = withPageAuthRequired();
