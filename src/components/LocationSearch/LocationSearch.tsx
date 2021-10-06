@@ -79,6 +79,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
     highlightedIndex,
     getItemProps,
   } = useCombobox({
+    id: 'search-results',
     items: places,
     onInputValueChange: ({ inputValue }) => setQuery(inputValue),
     itemToString: (item: { label: string }) => (item ? item.label : ''),

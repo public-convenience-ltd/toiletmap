@@ -1,6 +1,5 @@
 import React from 'react';
 import Link, { LinkProps } from 'next/link';
-import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import Box from '../Box';
 import Text from '../Text';
@@ -30,7 +29,6 @@ interface IMainMenu {
 // Todo: Contact link
 const MainMenu = ({ mapCenter, onMenuItemClick, children }: IMainMenu) => {
   const { user } = useUser();
-  const router = useRouter();
 
   return (
     <Text

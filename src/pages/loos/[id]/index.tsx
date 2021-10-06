@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import PageLayout from '../../../components/PageLayout';
@@ -42,7 +42,14 @@ const LooPage: PageFindLooByIdComp = (props) => {
     nearbyLoos?.loosByProximity
   );
 
-  console.log(loo);
+  const markers = useMemo(() => {
+    if (!loo) {
+      return [];
+    }
+    let list = filtered ? filtered.filter((l) => l.id !== loo.id) : [];
+    list.push({ ...loo, isHighlighted: true });
+    return list;
+  }, [loo, filtered]);
 
   // set initial map center to toilet if on /loos/:id
   //   React.useEffect(() => {
@@ -96,7 +103,7 @@ const LooPage: PageFindLooByIdComp = (props) => {
         </Box>
 
         <LooMap
-          loos={filtered.concat([{ ...loo, isHighlighted: true }])}
+          loos={markers}
           center={mapState.center}
           zoom={mapState.zoom}
           onViewportChanged={setMapState}
