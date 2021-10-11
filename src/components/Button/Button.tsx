@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentPropsWithoutRef } from 'react';
 import styled from '@emotion/styled';
 import { variant } from 'styled-system';
 
@@ -7,7 +7,10 @@ import Text from '../Text';
 
 const BUTTON_HEIGHT = 34;
 
-const StyledButton = styled.button(
+const StyledButton = styled.button<{
+  icon?: JSX.Element;
+  variant?: 'primary' | 'secondary' | 'link';
+}>(
   (props) =>
     `
     display: inline-flex;
@@ -24,12 +27,10 @@ const StyledButton = styled.button(
     border-width: 2px;
     color: ${props.theme.colors.primary};
     box-sizing: border-box;
-
     &:disabled {
       border-color: ${props.theme.colors.lightGrey};
       background-color: ${props.theme.colors.lightGrey};
     }
-
     &:disabled:hover {
       color: ${props.theme.colors.primary};
     }
@@ -75,18 +76,19 @@ const ButtonIcon = ({ icon }) => {
   return <Box mr={2}>{icon}</Box>;
 };
 
-const Button = ({ children, icon, ...props }) => (
-  <StyledButton type="button" {...props}>
-    {Boolean(icon) && <ButtonIcon icon={icon} />}
+type ButtonProps = ComponentPropsWithoutRef<typeof StyledButton>;
 
-    <Text as="span">{children}</Text>
-  </StyledButton>
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ children, icon, variant = 'primary', ...props }, ref) => (
+    <StyledButton ref={ref} type="button" variant={variant} {...props}>
+      {icon && <ButtonIcon icon={icon} />}
+
+      <Text as="span">{children}</Text>
+    </StyledButton>
+  )
 );
 
-Button.defaultProps = {
-  variant: 'primary',
-  as: 'button',
-};
+Button.displayName = 'Button';
 
 /** @component */
-export default StyledButton;
+export default Button;

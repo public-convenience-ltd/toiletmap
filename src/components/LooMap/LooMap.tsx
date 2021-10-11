@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
-import { Map, TileLayer, ZoomControl } from 'react-leaflet';
+import { LatLng, Map, TileLayer, ZoomControl } from 'react-leaflet';
 import 'focus-visible';
 
 import config from '../../config';
@@ -20,6 +20,7 @@ import crosshair from '../../../public/crosshair.svg';
 
 import 'leaflet/dist/leaflet.css';
 import { Loo } from '../../api-client/graphql';
+import styled from '@emotion/styled';
 
 const KEY_ENTER = 13;
 
@@ -30,14 +31,71 @@ interface Props {
   minZoom?: number;
   maxZoom?: number;
   staticMap?: boolean;
-  onViewportChanged?: () => void;
+  onViewportChanged?: ({
+    center,
+    zoom,
+    radius,
+  }: {
+    center: LatLng;
+    zoom: number;
+    radius: number;
+  }) => void;
   controlsOffset?: number;
   showCrosshair: boolean;
   withAccessibilityOverlays?: boolean;
 }
 
+const StyledMap = styled(Map)(
+  ({ theme }) => css`
+    height: 100%;
+    width: 100%;
+    position: relative;
+    z-index: 0;
+
+    .leaflet-bar {
+      border: none;
+      box-shadow: none;
+    }
+
+    a.leaflet-bar-part,
+    a.leaflet-control-zoom-in,
+    a.leaflet-control-zoom-out {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      color: ${theme.colors.primary};
+      border: 1px solid ${theme.colors.primary};
+      border-radius: 20px;
+
+      &:not(:first-of-type) {
+        margin-top: 10px;
+      }
+
+      &:first-of-type,
+      &:last-of-type {
+        border-radius: 20px;
+      }
+    }
+
+    &[data-focus-visible-added] {
+      border: 2px solid ${theme.colors.tertiary};
+    }
+
+    .leaflet-control [data-focus-visible-added] {
+      outline: 2px solid ${theme.colors.tertiary} !important;
+      outline-offset: 3px;
+    }
+
+    &[data-focus-visible-added] {
+      outline-offset: 0;
+    }
+  `
+);
+
 const LooMap: React.FC<Props> = ({
-  center,
+  center = config.fallbackLocation,
   zoom = config.initialZoom,
   minZoom = config.minZoom,
   maxZoom = config.maxZoom,
@@ -53,7 +111,7 @@ const LooMap: React.FC<Props> = ({
     setMounted(true);
   }, []);
 
-  const mapRef = React.useRef();
+  const mapRef = React.useRef<Map>();
   const [intersectingToilets, setIntersectingToilets] = React.useState([]);
   const [renderAccessibilityOverlays, setRenderAccessibilityOverlays] =
     React.useState(false);
@@ -194,7 +252,7 @@ const LooMap: React.FC<Props> = ({
             : undefined
         }
       >
-        <Map
+        <StyledMap
           ref={mapRef}
           center={center}
           zoom={zoom}
@@ -205,54 +263,9 @@ const LooMap: React.FC<Props> = ({
           scrollWheelZoom={!staticMap}
           zoomControl={false}
           tap={false}
-          css={(theme) => css`
-            height: 100%;
-            width: 100%;
-            position: relative;
-            z-index: 0;
-
+          css={css`
             .leaflet-bottom {
               bottom: ${controlsOffset}px;
-            }
-
-            .leaflet-bar {
-              border: none;
-              box-shadow: none;
-            }
-
-            a.leaflet-bar-part,
-            a.leaflet-control-zoom-in,
-            a.leaflet-control-zoom-out {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              width: 40px;
-              height: 40px;
-              color: ${theme.colors.primary};
-              border: 1px solid ${theme.colors.primary};
-              border-radius: 20px;
-
-              &:not(:first-of-type) {
-                margin-top: 10px;
-              }
-
-              &:first-of-type,
-              &:last-of-type {
-                border-radius: 20px;
-              }
-            }
-
-            &[data-focus-visible-added] {
-              border: 2px solid ${theme.colors.tertiary};
-            }
-
-            .leaflet-control [data-focus-visible-added] {
-              outline: 2px solid ${theme.colors.tertiary} !important;
-              outline-offset: 3px;
-            }
-
-            &[data-focus-visible-added] {
-              outline-offset: 0;
             }
           `}
         >
@@ -299,7 +312,7 @@ const LooMap: React.FC<Props> = ({
               </VisuallyHidden>
             </>
           )}
-        </Map>
+        </StyledMap>
       </Box>
     )
   );

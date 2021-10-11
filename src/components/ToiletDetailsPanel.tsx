@@ -39,9 +39,6 @@ import { useMapState } from './MapState';
 
 import uolLogo from '../../public/uol-logo.svg';
 
-// import FIND_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';
-// import UPDATE_LOO_MUTATION from '../graphql/updateLoo.graphql';
-
 const uolFragment = (
   <Box display="flex" alignItems="center">
     <Image
@@ -121,6 +118,9 @@ const DistanceTo = ({ from, to }) => {
     </Text>
   );
 };
+
+// TODO: Fix loo reporting user journey. Mutation removed during the nextjs migration.
+// Reference: https://github.com/neontribe/gbptm/blob/main/src/components/ToiletDetailsPanel.js#L147
 
 const ToiletDetailsPanel = ({
   data,
@@ -299,7 +299,7 @@ const ToiletDetailsPanel = ({
       <Box display="flex" alignItems="center">
         <Button
           onClick={() => submitVerificationReport({ id: data.id })}
-          disabled={'submitVerificationLoading'}
+          // disabled={submitVerificationLoading}
         >
           Yes
         </Button>
@@ -307,15 +307,15 @@ const ToiletDetailsPanel = ({
         <Box display="flex" alignItems="center">
           No?
           <Spacer mr={2} />
-          <Button
-            variant="secondary"
-            icon={<Icon icon={faEdit} />}
-            as={Link}
-            href={editUrl}
-            data-testid="edit-button"
-          >
-            Edit
-          </Button>
+          <Link href={editUrl} passHref>
+            <Button
+              variant="secondary"
+              icon={<Icon icon={faEdit} />}
+              data-testid="edit-button"
+            >
+              Edit
+            </Button>
+          </Link>
         </Box>
       </Box>
       <Spacer mb={[0, 2]} />
@@ -496,14 +496,11 @@ const ToiletDetailsPanel = ({
               <Text fontSize={1} color="grey">
                 Hours may vary with national holidays or seasonal changes. If
                 you know these hours to be out of date please{' '}
-                <Button
-                  as={Link}
-                  href={editUrl}
-                  variant="link"
-                  data-testid="edit-link"
-                >
-                  edit this toilet
-                </Button>
+                <Link href={editUrl} passHref>
+                  <Button variant="link" data-testid="edit-link">
+                    edit this toilet
+                  </Button>
+                </Link>
                 .
               </Text>
 
@@ -521,9 +518,9 @@ const ToiletDetailsPanel = ({
                 padding={2}
                 marginBottom={2}
               >
-                <Button as="a" variant="link" href="#toilet-details-heading">
-                  Back to top
-                </Button>
+                <Link href="#toilet-details-heading" passHref>
+                  <Button variant="link">Back to top</Button>
+                </Link>
               </Box>
             </Media>
           </Grid>
