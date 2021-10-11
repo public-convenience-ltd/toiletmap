@@ -27,7 +27,7 @@ const CookiesPage = () => (
       </p>
       <p>
         For more detailed information about the cookies we use, see our{' '}
-        <Button as={Link} variant="link" to="/privacy">
+        <Button as={'a'} variant="link" href="/privacy">
           privacy policy.
         </Button>
       </p>

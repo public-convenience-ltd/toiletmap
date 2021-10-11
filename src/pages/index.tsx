@@ -48,7 +48,7 @@ const HomePage = () => {
         <h1>{pageTitle}</h1>
       </VisuallyHidden>
 
-      <Box height="100vh" display="flex" position="relative">
+      <Box height="100%" display="flex" position="relative">
         <Box
           position="absolute"
           zIndex={1}

@@ -604,7 +604,6 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
                 that are hidden in high street cafes, restaurants, coffee shops
                 and bars.&nbsp;
                 <Button
-                  as={Link}
                   href="/use-our-loos"
                   variant="link"
                   aria-label="Read more about the Use Our Loos Campaign"
