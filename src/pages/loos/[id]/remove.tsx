@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import { useUser } from '@auth0/nextjs-auth0';
 
@@ -12,11 +12,65 @@ import Button from '../../../components/Button';
 import Notification from '../../../components/Notification';
 import Login from '../../../components/Login';
 import PageLoading from '../../../components/PageLoading';
-
 import { useRouter } from 'next/router';
+import {
+  useFindLooByIdQuery,
+  useRemoveLooMutation,
+} from '../../../api-client/graphql';
+import { withApollo } from '../../../components/withApollo';
+import { NextPage } from 'next';
 
 const RemovePage = function (props: { match: { params: { id: any } } }) {
   const { user, error, isLoading } = useUser();
+
+  const [reason, setReason] = useState('');
+  const router = useRouter();
+  const { id: selectedLooId } = router.query;
+
+  const {
+    data: looData,
+    error: looError,
+    loading: loadingLooData,
+  } = useFindLooByIdQuery({ variables: { id: selectedLooId as string } });
+
+  const [removeLooMutation, { loading: loadingRemove, error: removeError }] =
+    useRemoveLooMutation();
+
+  const updateReason = (evt) => {
+    setReason(evt.currentTarget.value);
+  };
+
+  const onSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+
+    await removeLooMutation({
+      variables: {
+        id: looData.loo.id,
+        reason,
+      },
+    });
+
+    router.push(`/loos/${selectedLooId}?message=removed`);
+  };
+
+  if (removeError || looError) {
+    console.error(removeError || looError);
+  }
+
+  if (loadingLooData || !looData || looError) {
+    return (
+      <PageLayout>
+        <Notification>
+          {loadingLooData ? 'Fetching Toilet Data' : 'Error finding toilet.'}
+        </Notification>
+      </PageLayout>
+    );
+  }
+
+  if (!looData.loo.active) {
+    router.push('/');
+  }
+
   if (isLoading) {
     return <PageLoading />;
   }
@@ -24,51 +78,6 @@ const RemovePage = function (props: { match: { params: { id: any } } }) {
   if (!user) {
     return <Login />;
   }
-  // const [reason, setReason] = useState('');
-  // const router = useRouter();
-  // const {id: selectedLooId} = router.query;
-
-  // const {
-  //   isValidating: loadingLooData,
-  //   data: looData,
-  //   error: looError,
-  // } = useSWR([GET_LOO_BY_ID_QUERY, JSON.stringify({ id: selectedLooId })]);
-
-  // const [doRemove, { loading: loadingRemove, error: removeError }] =
-  //   useMutation(REMOVE_LOO_MUTATION);
-
-  // const updateReason = (evt) => {
-  //   setReason(evt.currentTarget.value);
-  // };
-
-  // const onSubmit = async (e: { preventDefault: () => void; }) => {
-  //   e.preventDefault();
-
-  //   await doRemove({
-  //     id: looData.loo.id,
-  //     reason,
-  //   });
-
-  //   router.push(`/loos/${selectedLooId}?message=removed`);
-  // };
-
-  // if (removeError || looError) {
-  //   console.error(removeError || looError);
-  // }
-
-  // if (loadingLooData || !looData || looError) {
-  //   return (
-  //     <PageLayout>
-  //       <Notification>
-  //         {loadingLooData ? 'Fetching Toilet Data' : 'Error finding toilet.'}
-  //       </Notification>
-  //     </PageLayout>
-  //   );
-  // }
-
-  // if (!looData.loo.active) {
-  //   router.push('/');
-  // }
 
   return (
     <PageLayout layoutMode="blog">
@@ -89,7 +98,7 @@ const RemovePage = function (props: { match: { params: { id: any } } }) {
             using the form below.
           </p>
 
-          {/* <Spacer mb={3} />
+          <Spacer mb={3} />
 
           <form onSubmit={onSubmit}>
             <label>
@@ -118,13 +127,14 @@ const RemovePage = function (props: { match: { params: { id: any } } }) {
 
           {removeError && (
             <Notification>
-              Oops. We can't submit your report at this time. Try again later.
+              Oops. We can&lsquo;t submit your report at this time. Try again
+              later.
             </Notification>
-          )} */}
+          )}
         </Container>
       </>
     </PageLayout>
   );
 };
 
-export default RemovePage;
+export default withApollo(RemovePage as NextPage);
