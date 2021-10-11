@@ -12,7 +12,7 @@ import config from '../config';
 
 const CookiesPage = () => (
   <PageLayout layoutMode="blog">
-    {/* <Head>
+    <Head>
       <title>{config.getTitle('Cookies')}</title>
     </Head>
 
@@ -23,7 +23,7 @@ const CookiesPage = () => (
       <Spacer mb={5} />
       <p>
         Opting in to Adobe Analytics means we can share your data with Unilever
-        and benefit from Unilever's continued sponsorship.
+        and benefit from Unilever&lsquo;s continued sponsorship.
       </p>
       <p>
         For more detailed information about the cookies we use, see our{' '}
@@ -31,7 +31,7 @@ const CookiesPage = () => (
           privacy policy.
         </Button>
       </p>
-    </Container> */}
+    </Container>
   </PageLayout>
 );
 
