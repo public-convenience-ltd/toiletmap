@@ -7,6 +7,12 @@ trim_trailing_whitespace = true
 [*.js]
 indent_size = 2
 indent_style = space
+[*.ts]
+indent_size = 2
+indent_style = space
+[*.tsx]
+indent_size = 2
+indent_style = space
 [*.css]
 indent_size = 2
 indent_style = space
