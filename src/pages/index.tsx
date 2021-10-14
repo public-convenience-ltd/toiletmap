@@ -11,7 +11,6 @@ import config from '../config';
 import { useRouter } from 'next/router';
 import { withApollo } from '../components/withApollo';
 import { NextPage } from 'next';
-import { useFindLoosNearbyQuery } from '../api-client/graphql';
 import useFilters from '../hooks/useFilters';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
@@ -26,15 +25,7 @@ const HomePage = () => {
   const { message } = router.query;
   const [mapState, setMapState] = useMapState();
 
-  const { data } = useFindLoosNearbyQuery({
-    variables: {
-      lat: mapState.center.lat,
-      lng: mapState.center.lng,
-      radius: Math.ceil(mapState.radius),
-    },
-  });
-
-  const { filters, filtered, setFilters } = useFilters(data?.loosByProximity);
+  const { filters, filtered, setFilters } = useFilters([]);
 
   const pageTitle = config.getTitle('Home');
 
@@ -72,7 +63,6 @@ const HomePage = () => {
         </Box>
 
         <LooMap
-          loos={filtered}
           center={mapState.center}
           zoom={mapState.zoom}
           onViewportChanged={setMapState}

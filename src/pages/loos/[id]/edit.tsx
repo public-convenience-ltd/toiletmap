@@ -12,7 +12,6 @@ import Box from '../../../components/Box';
 import Login from '../../../components/Login';
 
 import config from '../../../config';
-import useNearbyLoos from '../../../hooks/useNearbyLoos';
 import { useMapState } from '../../../components/MapState';
 
 import dynamic from 'next/dynamic';
@@ -58,12 +57,6 @@ const EditPage = (props: { match: { params: { id?: string } } }) => {
       setMapState({ center: looLocation });
     }
   }, [looLocation, setMapState]);
-
-  const { data } = useNearbyLoos({
-    lat: mapState.center.lat,
-    lng: mapState.center.lng,
-    radius: mapState.radius,
-  });
 
   // local state mapCenter to get fix issues with react-leaflet not being stateless and lat lng rounding issues
   const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
@@ -167,21 +160,12 @@ const EditPage = (props: { match: { params: { id?: string } } }) => {
 
         <Box display="flex" height="40vh">
           <LooMap
-            loos={getLoosToDisplay()}
             center={mapState.center}
             zoom={mapState.zoom}
             minZoom={config.editMinZoom}
-            showCenter
-            showContributor
-            showLocateControl
             showCrosshair
             controlsOffset={20}
             withAccessibilityOverlays={false}
-            onViewportChanged={(mapPosition: {
-              center: (prevState: undefined) => undefined;
-            }) => {
-              setMapCenter(mapPosition.center);
-            }}
           />
         </Box>
 

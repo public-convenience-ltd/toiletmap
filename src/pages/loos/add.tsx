@@ -11,7 +11,6 @@ import LocationSearch from '../../components/LocationSearch';
 import Login from '../../components/Login';
 
 import { useMapState } from '../../components/MapState';
-import useNearbyLoos from '../../hooks/useNearbyLoos';
 
 import config from '../../config';
 import dynamic from 'next/dynamic';
@@ -39,12 +38,6 @@ const LooMap = dynamic(() => import('../../components/LooMap'), {
 const AddPage = (props) => {
   const { user, error, isLoading } = useUser();
   const [mapState, setMapState] = useMapState();
-
-  const { data } = useNearbyLoos({
-    lat: mapState.center.lat,
-    lng: mapState.center.lng,
-    radius: mapState.radius,
-  });
 
   const router = useRouter();
 
@@ -103,14 +96,9 @@ const AddPage = (props) => {
 
       <Box position="relative" display="flex" height="40vh">
         <LooMap
-          loos={data}
           center={mapState.center}
           zoom={mapState.zoom}
           minZoom={config.editMinZoom}
-          showCenter
-          showContributor
-          showSearchControl
-          showLocateControl
           showCrosshair
           controlsOffset={20}
           withAccessibilityOverlays={false}
