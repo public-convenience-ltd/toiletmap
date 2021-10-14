@@ -27,6 +27,11 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <style>{`
+            #__next {
+              height: 100%;
+            }
+          `}</style>
           <title>The Great British Public Toilet Map</title>
           <meta
             name="Description"

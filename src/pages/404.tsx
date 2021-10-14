@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 
 import PageLayout from '../components/PageLayout';
 import Box from '../components/Box';
@@ -32,7 +31,7 @@ const NotFound = () => (
 
         <Spacer mt={4} />
 
-        <Button as={Link} href="/">
+        <Button as={'a'} variant="link" href="/">
           Take me back home!
         </Button>
       </div>
