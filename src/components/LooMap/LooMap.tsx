@@ -1,17 +1,26 @@
-import { useMemo } from 'react';
 import { useRouter } from 'next/router';
-import { MapContainer, TileLayer, Marker, ZoomControl } from 'react-leaflet';
+import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { css } from '@emotion/react';
 import Box from '../Box';
-import ToiletMarkerIcon from './ToiletMarkerIcon';
-import LocateMapControl from './LocateMapControl';
 import { Media } from '../Media';
+import Markers from './Markers';
+import { Loo } from '../../api-client/graphql';
+interface Props {
+  focus?: Loo;
+  center: { lat: number; lng: number };
+  zoom?: number;
+  minZoom?: number;
+  maxZoom?: number;
+  staticMap?: boolean;
+  onViewportChanged?: () => void;
+  controlsOffset?: number;
+  showCrosshair?: boolean;
+  withAccessibilityOverlays?: boolean;
+}
 
-const KEY_ENTER = 13;
-
-const LooMap = ({
-  loos = [],
+const LooMap: React.FC<Props> = ({
+  focus,
   showCrosshair,
   controlsOffset = 0,
   center,
@@ -21,38 +30,6 @@ const LooMap = ({
   staticMap = false,
 }) => {
   const router = useRouter();
-  const memoizedMarkers = useMemo(
-    () =>
-      loos.map((toilet) => (
-        <Marker
-          key={toilet.id}
-          position={toilet.location}
-          zIndexOffset={toilet.isHighlighted ? 1000 : 0}
-          icon={
-            new ToiletMarkerIcon({
-              isHighlighted: toilet.isHighlighted,
-              toiletId: toilet.id,
-              isUseOurLoosCampaign: toilet.campaignUOL,
-            })
-          }
-          label={toilet.name || 'Unnamed toilet'}
-          eventHandlers={{
-            click: () => {
-              if (!staticMap) {
-                router.push(`/loos/${toilet.id}`);
-              }
-            },
-            keydown: (event: { originalEvent: { keyCode: number } }) => {
-              if (!staticMap && event.originalEvent.keyCode === KEY_ENTER) {
-                router.push(`/loos/${toilet.id}`);
-              }
-            },
-          }}
-          keyboard={false}
-        />
-      )),
-    [loos, staticMap, router]
-  );
 
   return (
     <Box
@@ -138,7 +115,7 @@ const LooMap = ({
           minZoom={minZoom}
           maxZoom={maxZoom}
         />
-        {memoizedMarkers}
+        <Markers focus={focus} />
         <Media greaterThan="md">
           <ZoomControl position="bottomright" />
         </Media>

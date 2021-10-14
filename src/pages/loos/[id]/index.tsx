@@ -13,7 +13,6 @@ import { useRouter } from 'next/router';
 import { withApollo } from '../../../components/withApollo';
 import { GetServerSideProps, GetStaticPaths } from 'next';
 import useFilters from '../../../hooks/useFilters';
-import { useFindLoosNearbyQuery } from '../../../api-client/graphql';
 import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
@@ -29,27 +28,7 @@ const LooPage: PageFindLooByIdComp = (props) => {
   const router = useRouter();
   const { id, message } = router.query;
 
-  const { data: nearbyLoos } = useFindLoosNearbyQuery({
-    variables: {
-      lat: loo.location.lat,
-      lng: loo.location.lng,
-      radius: Math.ceil(mapState.radius),
-    },
-    skip: !loo,
-  });
-
-  const { filters, filtered, setFilters } = useFilters(
-    nearbyLoos?.loosByProximity
-  );
-
-  const markers = useMemo(() => {
-    if (!loo) {
-      return [];
-    }
-    let list = filtered ? filtered.filter((l) => l.id !== loo.id) : [];
-    list.push({ ...loo, isHighlighted: true });
-    return list;
-  }, [loo, filtered]);
+  const { filters, filtered, setFilters } = useFilters([]);
 
   // set initial map center to toilet if on /loos/:id
   //   React.useEffect(() => {
@@ -103,10 +82,9 @@ const LooPage: PageFindLooByIdComp = (props) => {
         </Box>
 
         <LooMap
-          loos={markers}
+          focus={loo}
           center={mapState.center}
           zoom={mapState.zoom}
-          onViewportChanged={setMapState}
           controlsOffset={toiletPanelDimensions.height}
         />
 
