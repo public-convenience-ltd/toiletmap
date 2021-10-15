@@ -74,7 +74,10 @@ const Sidebar = ({
             variant="secondary"
             icon={<FontAwesomeIcon icon={faFilter} />}
             aria-expanded={isFiltersExpanded}
-            onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
+            onClick={() => {
+              window.plausible('Open Filters Panel');
+              setIsFiltersExpanded(!isFiltersExpanded)
+            }}
           >
             Filter Map
           </Button>
@@ -93,7 +96,6 @@ const Sidebar = ({
                   center: location,
                 });
 
-                window.plausible('Find a toilet near me');
               });
             }}
             aria-label="Find a toilet near me"
@@ -236,7 +238,6 @@ const Sidebar = ({
                       center: location,
                     });
 
-                    window.plausible('Find a toilet near me');
                   });
                 }}
               >
