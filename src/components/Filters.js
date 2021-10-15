@@ -47,7 +47,7 @@ const Filters = ({ filters, onFilterChange }) => (
           checked={filters[id] || false}
           aria-labelledby={`filter-${id}`}
           onClick={() => {
-            window.plausible('Toggle Filter', {filter: label});
+            window.plausible('Toggle Filter', {props: {filter: label}});
             onFilterChange({
               ...filters,
               [id]: !filters[id],
