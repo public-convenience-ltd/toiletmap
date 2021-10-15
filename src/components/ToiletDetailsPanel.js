@@ -328,7 +328,10 @@ const ToiletDetailsPanel = ({
       <Spacer mb={2} />
       <Box display="flex" alignItems="center">
         <Button
-          onClick={() => submitVerificationReport({ id: data.id })}
+          onClick={() => {
+            window.plausible('Verification Report');
+            submitVerificationReport({ id: data.id });
+          }}
           disabled={submitVerificationLoading}
         >
           Yes
