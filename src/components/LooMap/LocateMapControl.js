@@ -61,11 +61,10 @@ const LocateMapControl = ({ position }) => {
   const handleClick = () => {
     if (!isActive) {
       startLocate();
-      window.plausible('Geolocate'); 
     } else {
       stopLocate()
     }
-  }; 
+  };
 
   return (
     <Control position={position}>
