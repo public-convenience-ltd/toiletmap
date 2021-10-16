@@ -63,7 +63,16 @@ const Markers = ({ focus }) => {
     });
   }, [data, focus, router]);
 
-  return <MarkerClusterGroup>{memoizedMarkers}</MarkerClusterGroup>;
+  return (
+    <MarkerClusterGroup
+      chunkedLoading={true}
+      animateAddingMarkers={false}
+      removeOutsideVisibleBounds={true}
+      maxClusterRadius={150}
+    >
+      {memoizedMarkers}
+    </MarkerClusterGroup>
+  );
 };
 
 export default Markers;
