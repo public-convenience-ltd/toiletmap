@@ -17,22 +17,16 @@ const Markers = ({ focus }) => {
   const router = useRouter();
   const map = useMap();
 
-  const [mapFind, setMapFind] = useState({
-    lat: 54.093409, //map.getCenter().lat,
-    lng: -2.89479, //map.getCenter().lng,
-    radius: 1000000, //Math.ceil(
-    //  map.getBounds().getNorthEast().distanceTo(map.getCenter())
-    //),
+  const [mapFind, _] = useState({
+    lat: 54.093409,
+    lng: -2.89479,
+    radius: 1000000,
   });
 
   const { data } = useFindLoosNearbyQuery({
     fetchPolicy: 'cache-first',
     nextFetchPolicy: 'cache-only',
     variables: mapFind,
-  });
-
-  useMapEvents({
-    moveend: () => setMapFind(mapFind),
   });
 
   const memoizedMarkers = useMemo(() => {
