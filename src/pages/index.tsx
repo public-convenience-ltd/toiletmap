@@ -10,8 +10,9 @@ import { useMapState } from '../components/MapState';
 import config from '../config';
 import { useRouter } from 'next/router';
 import { withApollo } from '../components/withApollo';
-import { NextPage } from 'next';
+import { GetServerSideProps, GetStaticPaths, NextPage } from 'next';
 import useFilters from '../hooks/useFilters';
+import { ssrFindLoosNearby } from '../api-client/page';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 const MapLoader = () => <p>Loading map...</p>;
@@ -73,4 +74,37 @@ const HomePage = () => {
   );
 };
 
-export default withApollo(HomePage as NextPage);
+const staticQueryVars = {
+  lat: 54.093409,
+  lng: -2.89479,
+  radius: 1000000,
+};
+
+export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
+  const res = await ssrFindLoosNearby.getServerPage(
+    {
+      variables: staticQueryVars,
+    },
+    { req }
+  );
+
+  if (res.props.error || !res.props.data) {
+    return {
+      notFound: true,
+    };
+  }
+  return res;
+};
+
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   return {
+//     paths: [],
+//     fallback: 'blocking',
+//   };
+// };
+
+export default withApollo(
+  ssrFindLoosNearby.withPage(() => ({
+    variables: staticQueryVars,
+  }))(HomePage)
+);
