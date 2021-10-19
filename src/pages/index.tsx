@@ -13,6 +13,12 @@ import { withApollo } from '../components/withApollo';
 import { GetServerSideProps, GetStaticPaths, NextPage } from 'next';
 import useFilters from '../hooks/useFilters';
 import { ssrFindLoosNearby } from '../api-client/page';
+import handler, { getStaticApolloClient, server as SS } from './api';
+import {
+  FindLoosNearbyDocument,
+  FindLoosNearbyQuery,
+} from '../api-client/graphql';
+import { getServerPageFindLoosNearby } from '../api-client/staticPage';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 const MapLoader = () => <p>Loading map...</p>;
@@ -81,9 +87,12 @@ const staticQueryVars = {
 };
 
 export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
-  const res = await ssrFindLoosNearby.getServerPage(
+  const { dbConnect } = require('../api/db');
+  await dbConnect();
+
+  const res = await getServerPageFindLoosNearby(
     {
-      variables: staticQueryVars,
+      variables: { ...staticQueryVars },
     },
     { req }
   );
@@ -93,18 +102,13 @@ export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
       notFound: true,
     };
   }
+
   return res;
 };
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   return {
-//     paths: [],
-//     fallback: 'blocking',
-//   };
-// };
 
 export default withApollo(
   ssrFindLoosNearby.withPage(() => ({
     variables: staticQueryVars,
+    ssr: true,
   }))(HomePage)
 );

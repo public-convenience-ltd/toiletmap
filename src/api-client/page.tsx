@@ -10,9 +10,9 @@ import { getApolloClient } from '../components/withApollo';
 export async function getServerPageFindLooById
     (options: Omit<Apollo.QueryOptions<Types.FindLooByIdQueryVariables>, 'query'>, ctx?: any ){
         const apolloClient = getApolloClient(ctx);
-
+        
         const data = await apolloClient.query<Types.FindLooByIdQuery>({ ...options, query: Operations.FindLooByIdDocument });
-
+        
         const apolloState = apolloClient.cache.extract();
 
         return {
@@ -33,10 +33,10 @@ export type PageFindLooByIdComp = React.FC<{data?: Types.FindLooByIdQuery, error
 export const withPageFindLooById = (optionsFunc?: (router: NextRouter)=> QueryHookOptions<Types.FindLooByIdQuery, Types.FindLooByIdQueryVariables>) => (WrappedComponent:PageFindLooByIdComp) : NextPage  => (props) => {
                 const router = useRouter()
                 const options = optionsFunc ? optionsFunc(router) : {};
-                const {data, error } = useQuery(Operations.FindLooByIdDocument, options)
+                const {data, error } = useQuery(Operations.FindLooByIdDocument, options)    
                 return <WrappedComponent {...props} data={data} error={error} /> ;
-
-            };
+                   
+            }; 
 export const ssrFindLooById = {
       getServerPage: getServerPageFindLooById,
       withPage: withPageFindLooById,
@@ -45,10 +45,11 @@ export const ssrFindLooById = {
 export async function getServerPageFindLoosNearby
     (options: Omit<Apollo.QueryOptions<Types.FindLoosNearbyQueryVariables>, 'query'>, ctx?: any ){
         const apolloClient = getApolloClient(ctx);
-
+        
         const data = await apolloClient.query<Types.FindLoosNearbyQuery>({ ...options, query: Operations.FindLoosNearbyDocument });
-
+        
         const apolloState = apolloClient.cache.extract();
+
         return {
             props: {
                 apolloState: apolloState,
@@ -67,10 +68,10 @@ export type PageFindLoosNearbyComp = React.FC<{data?: Types.FindLoosNearbyQuery,
 export const withPageFindLoosNearby = (optionsFunc?: (router: NextRouter)=> QueryHookOptions<Types.FindLoosNearbyQuery, Types.FindLoosNearbyQueryVariables>) => (WrappedComponent:PageFindLoosNearbyComp) : NextPage  => (props) => {
                 const router = useRouter()
                 const options = optionsFunc ? optionsFunc(router) : {};
-                const {data, error } = useQuery(Operations.FindLoosNearbyDocument, options)
+                const {data, error } = useQuery(Operations.FindLoosNearbyDocument, options)    
                 return <WrappedComponent {...props} data={data} error={error} /> ;
-
-            };
+                   
+            }; 
 export const ssrFindLoosNearby = {
       getServerPage: getServerPageFindLoosNearby,
       withPage: withPageFindLoosNearby,

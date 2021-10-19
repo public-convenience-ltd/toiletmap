@@ -28,7 +28,6 @@ export const getApolloClient = (
     uri: typeof window === 'undefined' ? url + '/api' : '/api',
     fetch,
   });
-  console.log(initialState, 'DJKLAJWHKLJDAWKJ');
   const cache = new InMemoryCache().restore(initialState || {});
   return new ApolloClient({
     link: httpLink,
