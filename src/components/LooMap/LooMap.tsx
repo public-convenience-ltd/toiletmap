@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'react-leaflet-markercluster/dist/styles.min.css';
 import { css } from '@emotion/react';
 import Box from '../Box';
 import { Media } from '../Media';
@@ -26,7 +27,7 @@ const LooMap: React.FC<Props> = ({
   center,
   zoom,
   minZoom,
-  maxZoom,
+  maxZoom = 18,
   staticMap = false,
 }) => {
   const router = useRouter();
