@@ -10,6 +10,12 @@ import authDirective from '../../api/directives/authDirective';
 import redactedDirective from '../../api/directives/redactedDirective';
 
 import typeDefs from '../../api/typeDefs';
+import { SchemaLink } from '@apollo/client/link/schema';
+import {
+  ApolloClient,
+  InMemoryCache,
+  NormalizedCacheObject,
+} from '@apollo/client';
 
 const client = jwksClient({
   jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}/.well-known/jwks.json`,
@@ -35,7 +41,8 @@ const { redactedDirectiveTypeDefs, redactedDirectiveTransformer } =
   redactedDirective('redact');
 const { authDirectiveTypeDefs, authDirectiveTransformer } =
   authDirective('auth');
-let schema = makeExecutableSchema({
+
+export let schema = makeExecutableSchema({
   typeDefs: [redactedDirectiveTypeDefs, authDirectiveTypeDefs, typeDefs],
   resolvers,
 });
@@ -43,7 +50,7 @@ schema = redactedDirectiveTransformer(schema);
 schema = authDirectiveTransformer(schema);
 
 // Add GraphQL API
-const server = new ApolloServer({
+export const server = new ApolloServer({
   schema,
   context: async ({ req, res }) => {
     let user = null;

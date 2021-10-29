@@ -8,6 +8,7 @@ import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 
 import config from '../config';
+import { NextPage } from 'next';
 
 const ContactPage = (props) => {
   return (
@@ -34,4 +35,4 @@ const ContactPage = (props) => {
   );
 };
 
-export default ContactPage;
+export default ContactPage as NextPage;
