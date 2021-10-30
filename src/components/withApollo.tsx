@@ -10,7 +10,7 @@ import {
 export const withApollo = (Comp: NextPage) =>
   function WithApollo(props: any) {
     return (
-      <ApolloProvider client={getApolloClient(null, props.apolloState)}>
+      <ApolloProvider client={getApolloClient(null, props.data)}>
         <Comp />
       </ApolloProvider>
     );
@@ -28,7 +28,7 @@ export const getApolloClient = (
     uri: typeof window === 'undefined' ? url + '/api' : '/api',
     fetch,
   });
-  const cache = new InMemoryCache().restore(initialState || {});
+  const cache = new InMemoryCache().restore(initialState);
   return new ApolloClient({
     link: httpLink,
     cache,
