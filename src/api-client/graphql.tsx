@@ -380,6 +380,13 @@ export type FindLoosNearbyQuery = { __typename?: 'Query', loosByProximity: Array
 
 export type LooFragmentFragment = { __typename?: 'Loo', id?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, verifiedAt?: any | null | undefined, active?: boolean | null | undefined, name?: string | null | undefined, openingTimes?: any | null | undefined, accessible?: boolean | null | undefined, men?: boolean | null | undefined, women?: boolean | null | undefined, allGender?: boolean | null | undefined, babyChange?: boolean | null | undefined, children?: boolean | null | undefined, urinalOnly?: boolean | null | undefined, radar?: boolean | null | undefined, automatic?: boolean | null | undefined, noPayment?: boolean | null | undefined, paymentDetails?: string | null | undefined, notes?: string | null | undefined, removalReason?: string | null | undefined, attended?: boolean | null | undefined, campaignUOL?: boolean | null | undefined, location?: { __typename?: 'Point', lat: number, lng: number } | null | undefined };
 
+export type MinimumViableLooResponseQueryVariables = Exact<{
+  limit: Scalars['Int'];
+}>;
+
+
+export type MinimumViableLooResponseQuery = { __typename?: 'Query', loos: { __typename?: 'LooSearchResponse', loos: Array<{ __typename?: 'Loo', id?: string | null | undefined, name?: string | null | undefined, location?: { __typename?: 'Point', lat: number, lng: number } | null | undefined }> } };
+
 export type RemoveLooMutationVariables = Exact<{
   id: Scalars['ID'];
   reason: Scalars['String'];
@@ -534,6 +541,48 @@ export function useFindLoosNearbyLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type FindLoosNearbyQueryHookResult = ReturnType<typeof useFindLoosNearbyQuery>;
 export type FindLoosNearbyLazyQueryHookResult = ReturnType<typeof useFindLoosNearbyLazyQuery>;
 export type FindLoosNearbyQueryResult = Apollo.QueryResult<FindLoosNearbyQuery, FindLoosNearbyQueryVariables>;
+export const MinimumViableLooResponseDocument = gql`
+    query minimumViableLooResponse($limit: Int!) {
+  loos(filters: {}, pagination: {limit: $limit}) {
+    loos {
+      id
+      name
+      location {
+        lat
+        lng
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useMinimumViableLooResponseQuery__
+ *
+ * To run a query within a React component, call `useMinimumViableLooResponseQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMinimumViableLooResponseQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMinimumViableLooResponseQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useMinimumViableLooResponseQuery(baseOptions: Apollo.QueryHookOptions<MinimumViableLooResponseQuery, MinimumViableLooResponseQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MinimumViableLooResponseQuery, MinimumViableLooResponseQueryVariables>(MinimumViableLooResponseDocument, options);
+      }
+export function useMinimumViableLooResponseLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MinimumViableLooResponseQuery, MinimumViableLooResponseQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MinimumViableLooResponseQuery, MinimumViableLooResponseQueryVariables>(MinimumViableLooResponseDocument, options);
+        }
+export type MinimumViableLooResponseQueryHookResult = ReturnType<typeof useMinimumViableLooResponseQuery>;
+export type MinimumViableLooResponseLazyQueryHookResult = ReturnType<typeof useMinimumViableLooResponseLazyQuery>;
+export type MinimumViableLooResponseQueryResult = Apollo.QueryResult<MinimumViableLooResponseQuery, MinimumViableLooResponseQueryVariables>;
 export const RemoveLooDocument = gql`
     mutation removeLoo($id: ID!, $reason: String!) {
   submitRemovalReport(report: {edit: $id, reason: $reason}) {
