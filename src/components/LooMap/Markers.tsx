@@ -7,7 +7,7 @@ import React, {
   forwardRef,
 } from 'react';
 import { useRouter } from 'next/router';
-import { useFindLoosNearbyQuery } from '../../api-client/graphql';
+import { useMinimumViableLooResponseQuery } from '../../api-client/graphql';
 import { Marker, useMapEvents, useMap } from 'react-leaflet';
 import ToiletMarkerIcon from './ToiletMarkerIcon';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
@@ -15,25 +15,18 @@ const KEY_ENTER = 13;
 
 const Markers = ({ focus }) => {
   const router = useRouter();
-  const map = useMap();
 
-  const [mapFind, _] = useState({
-    lat: 54.093409,
-    lng: -2.89479,
-    radius: 1000000,
-  });
-
-  const { data } = useFindLoosNearbyQuery({
+  const { data } = useMinimumViableLooResponseQuery({
     fetchPolicy: 'cache-first',
     nextFetchPolicy: 'cache-only',
-    variables: mapFind,
+    variables: { limit: 1000000 },
   });
 
   const memoizedMarkers = useMemo(() => {
-    if (!data?.loosByProximity) {
+    if (!data?.loos.loos) {
       return null;
     }
-    return data.loosByProximity.map((toilet) => {
+    return data.loos.loos.map((toilet) => {
       return (
         <Marker
           key={toilet.id}

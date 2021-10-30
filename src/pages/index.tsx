@@ -13,12 +13,7 @@ import { withApollo } from '../components/withApollo';
 import { GetServerSideProps, GetStaticPaths, NextPage } from 'next';
 import useFilters from '../hooks/useFilters';
 import { ssrFindLoosNearby } from '../api-client/page';
-import handler, { getStaticApolloClient, server as SS } from './api';
-import {
-  FindLoosNearbyDocument,
-  FindLoosNearbyQuery,
-} from '../api-client/graphql';
-import { getServerPageFindLoosNearby } from '../api-client/staticPage';
+import { getServerPageMinimumViableLooResponse } from '../api-client/staticPage';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 const MapLoader = () => <p>Loading map...</p>;
@@ -28,8 +23,6 @@ const LooMap = dynamic(() => import('../components/LooMap'), {
 });
 
 const HomePage = () => {
-  const router = useRouter();
-  const { message } = router.query;
   const [mapState, setMapState] = useMapState();
 
   const { filters, filtered, setFilters } = useFilters([]);
@@ -80,19 +73,13 @@ const HomePage = () => {
   );
 };
 
-const staticQueryVars = {
-  lat: 54.093409,
-  lng: -2.89479,
-  radius: 1000000,
-};
-
 export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
   const { dbConnect } = require('../api/db');
   await dbConnect();
 
-  const res = await getServerPageFindLoosNearby(
+  const res = await getServerPageMinimumViableLooResponse(
     {
-      variables: { ...staticQueryVars },
+      variables: { limit: 1000000 },
     },
     { req }
   );
@@ -103,12 +90,7 @@ export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
     };
   }
 
-  return res;
+  return { props: { data: res.props.apolloState } };
 };
 
-export default withApollo(
-  ssrFindLoosNearby.withPage(() => ({
-    variables: staticQueryVars,
-    ssr: true,
-  }))(HomePage)
-);
+export default withApollo(HomePage);

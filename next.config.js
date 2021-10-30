@@ -9,4 +9,5 @@ module.exports = {
   experimental: {
     nftTracing: true,
   },
+  // swcMinify: true, .. emotion transform is not working with swc yet
 };
