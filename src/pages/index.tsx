@@ -14,6 +14,7 @@ import { GetServerSideProps, GetStaticPaths, NextPage } from 'next';
 import useFilters from '../hooks/useFilters';
 import { ssrFindLoosNearby } from '../api-client/page';
 import { getServerPageMinimumViableLooResponse } from '../api-client/staticPage';
+import { useMinimumViableLooResponseQuery } from '../api-client/graphql';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 const MapLoader = () => <p>Loading map...</p>;
@@ -25,7 +26,13 @@ const LooMap = dynamic(() => import('../components/LooMap'), {
 const HomePage = () => {
   const [mapState, setMapState] = useMapState();
 
-  const { filters, filtered, setFilters } = useFilters([]);
+  const { data } = useMinimumViableLooResponseQuery({
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-only',
+    variables: { limit: 1000000 },
+  });
+
+  const { filters, setFilters } = useFilters([]);
 
   const pageTitle = config.getTitle('Home');
 
@@ -67,6 +74,8 @@ const HomePage = () => {
           zoom={mapState.zoom}
           onViewportChanged={setMapState}
           controlsOffset={0}
+          loos={data?.loos.loos}
+          filters={filters}
         />
       </Box>
     </PageLayout>

@@ -385,7 +385,7 @@ export type MinimumViableLooResponseQueryVariables = Exact<{
 }>;
 
 
-export type MinimumViableLooResponseQuery = { __typename?: 'Query', loos: { __typename?: 'LooSearchResponse', loos: Array<{ __typename?: 'Loo', id?: string | null | undefined, name?: string | null | undefined, location?: { __typename?: 'Point', lat: number, lng: number } | null | undefined }> } };
+export type MinimumViableLooResponseQuery = { __typename?: 'Query', loos: { __typename?: 'LooSearchResponse', loos: Array<{ __typename?: 'Loo', id?: string | null | undefined, name?: string | null | undefined, noPayment?: boolean | null | undefined, allGender?: boolean | null | undefined, automatic?: boolean | null | undefined, accessible?: boolean | null | undefined, babyChange?: boolean | null | undefined, radar?: boolean | null | undefined, campaignUOL?: boolean | null | undefined, location?: { __typename?: 'Point', lat: number, lng: number } | null | undefined }> } };
 
 export type RemoveLooMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -551,6 +551,13 @@ export const MinimumViableLooResponseDocument = gql`
         lat
         lng
       }
+      noPayment
+      allGender
+      automatic
+      accessible
+      babyChange
+      radar
+      campaignUOL
     }
   }
 }

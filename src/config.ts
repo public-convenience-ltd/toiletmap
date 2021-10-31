@@ -1,4 +1,3 @@
-import Router from 'next/router';
 export const FILTERS_KEY = 'filters';
 
 const filters = [
