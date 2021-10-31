@@ -10,16 +10,13 @@ import {
 export const withApollo = (Comp: NextPage) =>
   function WithApollo(props: any) {
     return (
-      <ApolloProvider client={getApolloClient(null, props.data)}>
-        <Comp />
+      <ApolloProvider client={getApolloClient(props.data)}>
+        <Comp {...props} />
       </ApolloProvider>
     );
   };
 
-export const getApolloClient = (
-  ctx?: any,
-  initialState?: NormalizedCacheObject
-) => {
+export const getApolloClient = (initialState?: NormalizedCacheObject) => {
   const url =
     process.env.NODE_ENV === 'development'
       ? process.env.AUTH0_BASE_URL
@@ -28,7 +25,7 @@ export const getApolloClient = (
     uri: typeof window === 'undefined' ? url + '/api' : '/api',
     fetch,
   });
-  const cache = new InMemoryCache().restore(initialState);
+  const cache = new InMemoryCache().restore(initialState || {});
   return new ApolloClient({
     link: httpLink,
     cache,

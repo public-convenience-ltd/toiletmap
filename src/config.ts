@@ -1,6 +1,27 @@
 export const FILTERS_KEY = 'filters';
 
-const filters = [
+type Filters =
+  | 'noPayment'
+  | 'babyChange'
+  | 'accessible'
+  | 'allGender'
+  | 'radar'
+  | 'automatic';
+
+type FilterLabels =
+  | 'Free'
+  | 'Baby Changing'
+  | 'Accessible'
+  | 'Gender Neutral'
+  | 'Radar Key'
+  | 'Automatic';
+
+type Filter = {
+  id: Filters;
+  label: FilterLabels;
+};
+
+const filters: Array<Filter> = [
   {
     id: 'noPayment',
     label: 'Free',
