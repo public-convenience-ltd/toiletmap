@@ -83,7 +83,7 @@ const HomePage = (props) => {
 export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
   const data = await getStaticPropsAllLoos();
 
-  return { props: { data: data, looId: params.id } };
+  return { props: { data: data, looId: '' } };
 };
 
 export default withApollo(HomePage);
