@@ -55,6 +55,7 @@
     "jsonwebtoken": "8.5.1",
     "jwks-rsa": "2.0.4",
     "leaflet": "1.7.1",
+    "leaflet.markercluster": "1.5.3",
     "lodash": "4.17.21",
     "micro": "9.3.4",
     "mongoose": "6.0.10",
@@ -67,7 +68,6 @@
     "react-hook-form": "6.15.8",
     "react-leaflet": "3.2.2",
     "react-leaflet-control": "2.1.2",
-    "react-leaflet-markercluster": "3.0.0-rc1",
     "react-tooltip": "4.2.21",
     "resize-observer-polyfill": "1.5.1",
     "styled-system": "5.1.5"
@@ -85,6 +85,7 @@
     "@mapbox/geojson-rewind": "0.5.1",
     "@types/jest": "27.0.2",
     "@types/leaflet": "1.7.5",
+    "@types/leaflet.markercluster": "1.4.5",
     "@types/lodash": "4.14.175",
     "@types/node": "16.10.9",
     "@types/react": "17.0.30",
