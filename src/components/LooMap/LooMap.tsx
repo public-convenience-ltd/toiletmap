@@ -60,29 +60,7 @@ const LooMap: React.FC<Props> = ({
               }
             `
           : undefined,
-        css`
-          .leaflet-noPayment-pane {
-            display: ${filters['noPayment'] ? 'none' : 'block'};
-          }
-          .leaflet-babyChange-pane {
-            display: ${filters['babyChange'] ? 'none' : 'block'};
-          }
-          .leaflet-accessible-pane {
-            display: ${filters['accessible'] ? 'none' : 'block'};
-          }
-          .leaflet-allGender-pane {
-            display: ${filters['allGender'] ? 'none' : 'block'};
-          }
-          .leaflet-radar-pane {
-            display: ${filters['radar'] ? 'none' : 'block'};
-          }
-          .leaflet-automatic-pane {
-            display: ${filters['automatic'] ? 'none' : 'block'};
-          }
-          .leaflet-marker-pane {
-            display: ${filters['noPayment'] ? 'none' : 'block'};
-          }
-        `,
+        css``,
       ]}
     >
       <MapContainer
@@ -147,13 +125,6 @@ const LooMap: React.FC<Props> = ({
           minZoom={minZoom}
           maxZoom={maxZoom}
         />
-
-        <Pane name="noPayment" style={{ zIndex: 400 }}></Pane>
-        <Pane name="babyChange" style={{ zIndex: 400 }}></Pane>
-        <Pane name="accessible" style={{ zIndex: 400 }}></Pane>
-        <Pane name="allGender" style={{ zIndex: 400 }}></Pane>
-        <Pane name="radar" style={{ zIndex: 400 }}></Pane>
-        <Pane name="automatic" style={{ zIndex: 400 }}></Pane>
 
         <Markers focus={focus} loos={loos} flobs={filters} />
 
