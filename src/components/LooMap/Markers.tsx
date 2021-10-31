@@ -19,45 +19,42 @@ const Markers = ({ focus, loos }: { loos: Array<Loo>; focus: Loo }) => {
   const router = useRouter();
 
   const focusedMarker = useMemo(() => {
-    return L.marker(new L.LatLng(focus?.location.lat, focus?.location.lng), {
-      zIndexOffset: 1000,
-      icon: new ToiletMarkerIcon({
-        isHighlighted: true,
-        toiletId: focus?.id,
-        isUseOurLoosCampaign: focus?.campaignUOL,
-      }),
-      alt: focus?.name || 'Unnamed toilet',
-      keyboard: false,
-    })
-      .on('click', () => {
-        router.push(`/loos/${focus?.id}`, undefined, {
-          shallow: true,
-        });
-      })
-      .on('keydown', (event: { originalEvent: { keyCode: number } }) => {
-        if (event.originalEvent.keyCode === KEY_ENTER) {
-          router.push(`/loos/${focus.id}`, undefined, { shallow: true });
-        }
-      });
-  }, [
-    focus.campaignUOL,
-    focus.id,
-    focus.location.lat,
-    focus.location.lng,
-    focus.name,
-    router,
-  ]);
+    const marker =
+      focus === undefined
+        ? null
+        : L.marker(new L.LatLng(focus?.location.lat, focus?.location.lng), {
+            zIndexOffset: 1000,
+            icon: new ToiletMarkerIcon({
+              isHighlighted: true,
+              toiletId: focus?.id,
+              isUseOurLoosCampaign: focus?.campaignUOL,
+            }),
+            alt: focus?.name || 'Unnamed toilet',
+            keyboard: false,
+          })
+            .on('click', () => {
+              router.push(`/loos/${focus?.id}`, undefined, {
+                shallow: true,
+              });
+            })
+            .on('keydown', (event: { originalEvent: { keyCode: number } }) => {
+              if (event.originalEvent.keyCode === KEY_ENTER) {
+                router.push(`/loos/${focus.id}`, undefined, { shallow: true });
+              }
+            });
+    return marker;
+  }, [focus, router]);
 
   const filteredLooGroups = useMemo(() => {
     return loos
-      .filter((loo) => !!loo?.location || loo.id === focus?.id)
+      .filter((loo) => !!loo?.location)
       .map((toilet) =>
         L.marker(new L.LatLng(toilet.location.lat, toilet.location.lng), {
           zIndexOffset: 0,
           icon: new ToiletMarkerIcon({
             isHighlighted: false,
             toiletId: toilet.id,
-            isUseOurLoosCampaign: toilet.campaignUOL,
+            isUseOurLoosCampaign: toilet?.campaignUOL,
           }),
           alt: toilet.name || 'Unnamed toilet',
           keyboard: false,
@@ -73,7 +70,7 @@ const Markers = ({ focus, loos }: { loos: Array<Loo>; focus: Loo }) => {
             }
           })
       );
-  }, [loos, focus?.id, router]);
+  }, [loos, router]);
 
   const map = useMap();
   useEffect(() => {

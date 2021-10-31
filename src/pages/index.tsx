@@ -12,6 +12,7 @@ import useFilters from '../hooks/useFilters';
 import { getServerPageMinimumViableLooResponse } from '../api-client/staticPage';
 import { useMinimumViableLooResponseQuery } from '../api-client/graphql';
 import { useMemo } from 'react';
+import getStaticPropsAllLoos from '../looCache';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 const MapLoader = () => <p>Loading map...</p>;
@@ -80,23 +81,9 @@ const HomePage = (props) => {
 };
 
 export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
-  const { dbConnect } = require('../api/db');
-  await dbConnect();
+  const data = await getStaticPropsAllLoos();
 
-  const res = await getServerPageMinimumViableLooResponse(
-    {
-      variables: { limit: 1000000 },
-    },
-    { req }
-  );
-
-  if (res.props.error || !res.props.data) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return { props: { data: res.props.apolloState } };
+  return { props: { data: data, looId: params.id } };
 };
 
 export default withApollo(HomePage);
