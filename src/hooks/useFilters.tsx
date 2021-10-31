@@ -32,7 +32,7 @@ const useFilters = (toilets) => {
       );
     }
     return [];
-  }, [toilets, applied]);
+  }, [applied, toilets]);
 
   return {
     filtered,

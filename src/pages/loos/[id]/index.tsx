@@ -1,19 +1,20 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import PageLayout from '../../../components/PageLayout';
 import Box from '../../../components/Box';
 import Sidebar from '../../../components/Sidebar';
-import Notification from '../../../components/Notification';
 import VisuallyHidden from '../../../components/VisuallyHidden';
-import ToiletDetailsPanel from '../../../components/ToiletDetailsPanel';
 import { useMapState } from '../../../components/MapState';
 import config from '../../../config';
-import { useRouter } from 'next/router';
 import { withApollo } from '../../../components/withApollo';
-import { GetServerSideProps, GetStaticPaths } from 'next';
+import { GetServerSideProps } from 'next';
 import useFilters from '../../../hooks/useFilters';
-import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
+import { getServerPageMinimumViableLooResponse } from '../../../api-client/staticPage';
+import { NormalizedCacheObject } from '@apollo/client';
+import { Loo } from '../../../api-client/graphql';
+import { useRouter } from 'next/router';
+import getStaticPropsAllLoos from '../../../looCache';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 const MapLoader = () => <p>Loading map...</p>;
@@ -22,29 +23,21 @@ const LooMap = dynamic(() => import('../../../components/LooMap'), {
   ssr: false,
 });
 
-const LooPage: PageFindLooByIdComp = (props) => {
-  const loo = props.data.loo;
+const LooPage: React.FC<{ data: NormalizedCacheObject }> = (props) => {
   const [mapState, setMapState] = useMapState();
+  const loos = React.useMemo(() => {
+    if (props.data) {
+      return Object.values(props.data);
+    }
+    return [];
+  }, [props.data]);
+
   const router = useRouter();
-  const { id, message } = router.query;
 
-  const { filters, filtered, setFilters } = useFilters([]);
+  const focused = loos.find((loo: Loo) => loo.id === router.query.id);
+  const { filters, setFilters, filtered } = useFilters(loos);
 
-  // set initial map center to toilet if on /loos/:id
-  //   React.useEffect(() => {
-  //     if (shouldCenter && selectedLoo) {
-  //       setMapState({
-  //         center: selectedLoo.location,
-  //       });
-
-  //       // don't recenter the map each time the id changes
-  //       setShouldCenter(false);
-  //     }
-  //   }, [selectedLoo, shouldCenter, setMapState]);
-
-  const [toiletPanelDimensions, setToiletPanelDimensions] = React.useState({});
-
-  const pageTitle = config.getTitle(loo.name || 'Unnamed Toilet');
+  const pageTitle = config.getTitle('Home');
 
   return (
     <PageLayout mapCenter={mapState.center}>
@@ -56,7 +49,7 @@ const LooPage: PageFindLooByIdComp = (props) => {
         <h1>{pageTitle}</h1>
       </VisuallyHidden>
 
-      <Box height="100vh" display="flex" position="relative">
+      <Box height="100%" display="flex" position="relative">
         <Box
           position="absolute"
           zIndex={1}
@@ -65,9 +58,7 @@ const LooPage: PageFindLooByIdComp = (props) => {
           right={0}
           m={3}
           maxWidth={326}
-          maxHeight={`calc(100% - ${
-            toiletPanelDimensions.height || 0
-          }px - ${SIDEBAR_BOTTOM_MARGIN}px)`}
+          maxHeight={`calc(100% - 0px - ${SIDEBAR_BOTTOM_MARGIN}px)`}
           overflowY="auto"
           // center on small viewports
           mx={['auto', 0]}
@@ -80,71 +71,31 @@ const LooPage: PageFindLooByIdComp = (props) => {
             mapCenter={mapState.center}
           />
         </Box>
-
         <LooMap
-          focus={loo}
           center={mapState.center}
           zoom={mapState.zoom}
-          controlsOffset={toiletPanelDimensions.height}
+          onViewportChanged={setMapState}
+          controlsOffset={0}
+          loos={filtered}
+          filters={filters}
+          focus={focused as Loo}
         />
-
-        <Box position="absolute" left={0} bottom={0} width="100%" zIndex={100}>
-          <ToiletDetailsPanel
-            data={loo}
-            isLoading={false}
-            startExpanded={true}
-            onDimensionsChange={setToiletPanelDimensions}
-          >
-            {config.messages[message] && (
-              <Box
-                position="absolute"
-                left={0}
-                right={0}
-                bottom={0}
-                display="flex"
-                justifyContent="center"
-                p={4}
-                pt={1}
-                pb={[4, 3, 4]}
-                bg={['white', 'white', 'transparent']}
-              >
-                <Notification allowClose>
-                  {config.messages[message]}
-                </Notification>
-              </Box>
-            )}
-          </ToiletDetailsPanel>
-        </Box>
       </Box>
     </PageLayout>
   );
 };
 
 export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
-  const res = await ssrFindLooById.getServerPage(
-    {
-      variables: { id: params.id as string },
-    },
-    { req }
-  );
+  const data = await getStaticPropsAllLoos();
 
-  if (res.props.error || !res.props.data) {
-    return {
-      notFound: true,
-    };
-  }
-  return res;
+  return { props: { data: data, looId: params.id } };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths = async () => {
   return {
     paths: [],
     fallback: 'blocking',
   };
 };
 
-export default withApollo(
-  ssrFindLooById.withPage((arg) => ({
-    variables: { id: arg?.query?.id as string },
-  }))(LooPage)
-);
+export default withApollo(LooPage);
