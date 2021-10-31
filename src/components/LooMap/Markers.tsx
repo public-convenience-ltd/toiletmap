@@ -75,12 +75,16 @@ const Markers = ({ focus, loos }: { loos: Array<Loo>; focus: Loo }) => {
   const map = useMap();
   useEffect(() => {
     mcg.clearLayers();
-    map.addLayer(focusedMarker);
+    if (focusedMarker) {
+      map.addLayer(focusedMarker);
+    }
     mcg.addLayers(filteredLooGroups);
     map.addLayer(mcg);
     return () => {
       mcg.clearLayers();
-      map.removeLayer(focusedMarker);
+      if (focusedMarker) {
+        map.removeLayer(focusedMarker);
+      }
       map.removeLayer(mcg);
     };
   }, [map, filteredLooGroups, focusedMarker]);
