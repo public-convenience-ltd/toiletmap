@@ -6,13 +6,13 @@ module.exports = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  // images: {
+  //   loader: 'imgix',
+  //   path: 'https://noop/',
+  // },
   experimental: {
     nftTracing: true,
   },
-  exportPathMap: function () {
-    return {
-      '/': { page: '/loos/none' },
-    };
-  },
+
   // swcMinify: true, .. emotion transform is not working with swc yet
 };
