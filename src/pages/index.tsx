@@ -1,25 +1,27 @@
-import { useMemo } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-import PageLayout from '../../components/PageLayout';
-import Box from '../../components/Box';
-import Sidebar from '../../components/Sidebar';
-import VisuallyHidden from '../../components/VisuallyHidden';
-import { useMapState } from '../../components/MapState';
-import config from '../../config';
-import { withApollo } from '../../components/withApollo';
+import PageLayout from '../components/PageLayout';
+import Box from '../components/Box';
+import Sidebar from '../components/Sidebar';
+import VisuallyHidden from '../components/VisuallyHidden';
+import { useMapState } from '../components/MapState';
+import config from '../config';
+import { withApollo } from '../components/withApollo';
 import { GetServerSideProps } from 'next';
-import useFilters from '../../hooks/useFilters';
-import getStaticPropsAllLoos from '../../looCache';
+import useFilters from '../hooks/useFilters';
+import { getServerPageMinimumViableLooResponse } from '../api-client/staticPage';
+import { useMinimumViableLooResponseQuery } from '../api-client/graphql';
+import { useMemo } from 'react';
+import getStaticPropsAllLoos from '../looCache';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 const MapLoader = () => <p>Loading map...</p>;
-const LooMap = dynamic(() => import('../../components/LooMap'), {
+const LooMap = dynamic(() => import('../components/LooMap'), {
   loading: MapLoader,
   ssr: false,
 });
 
-const LoosPage = (props) => {
+const HomePage = (props) => {
   const [mapState, setMapState] = useMapState();
 
   const loos = useMemo(() => {
@@ -72,7 +74,6 @@ const LoosPage = (props) => {
           onViewportChanged={setMapState}
           controlsOffset={0}
           loos={filtered}
-          filters={filters}
         />
       </Box>
     </PageLayout>
@@ -82,7 +83,7 @@ const LoosPage = (props) => {
 export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
   const data = await getStaticPropsAllLoos();
 
-  return { props: { data: data } };
+  return { props: { data: data, looId: '' } };
 };
 
-export default withApollo(LoosPage);
+export default withApollo(HomePage);
