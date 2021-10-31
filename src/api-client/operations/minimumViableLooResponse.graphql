@@ -15,5 +15,4 @@ query minimumViableLooResponse($limit: Int!) {
       radar
       campaignUOL
     }
-  }
 }

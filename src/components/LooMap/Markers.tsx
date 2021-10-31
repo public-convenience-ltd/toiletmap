@@ -1,27 +1,34 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { Loo } from '../../api-client/graphql';
-import { Marker } from 'react-leaflet';
 import ToiletMarkerIcon from './ToiletMarkerIcon';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { useMap } from 'react-leaflet';
 const KEY_ENTER = 13;
+
+const FILTERS = [
+  'noPayment',
+
+  'babyChange',
+
+  'accessible',
+
+  'allGender',
+
+  'radar',
+
+  'automatic',
+] as const;
 
 const mcg = L.markerClusterGroup({
   chunkedLoading: true,
   showCoverageOnHover: false,
 });
 
-const Markers = ({
-  focus,
-  loos,
-  flobs,
-}: {
-  loos: Array<Loo>;
-  focus: Loo;
-  flobs: any;
-}) => {
+const Markers = ({ focus, loos }: { loos: Array<Loo>; focus: Loo }) => {
   const router = useRouter();
 
   const toiletMarkerIcon = useCallback(
@@ -35,32 +42,7 @@ const Markers = ({
   );
 
   const filteredLooGroups = useMemo(() => {
-    const filters = [
-      'noPayment',
-
-      'babyChange',
-
-      'accessible',
-
-      'allGender',
-
-      'radar',
-
-      'automatic',
-    ];
-
-    const totalLoos = loos.filter((loo) => {
-      for (const filter of filters) {
-        if (flobs[filter]) {
-          if (loo[filter] === true) {
-            return false;
-          }
-        }
-      }
-      return true;
-    });
-
-    return totalLoos.map((toilet) =>
+    return loos.map((toilet) =>
       L.marker(new L.LatLng(toilet.location.lat, toilet.location.lng), {
         zIndexOffset: toilet.id === focus?.id ? 1000 : 0,
         icon: toiletMarkerIcon(toilet, focus?.id),
@@ -76,7 +58,7 @@ const Markers = ({
           }
         })
     );
-  }, [loos, flobs, focus?.id, toiletMarkerIcon, router]);
+  }, [loos, focus?.id, toiletMarkerIcon, router]);
 
   const map = useMap();
   useEffect(() => {
