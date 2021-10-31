@@ -1,15 +1,11 @@
 import { useRouter } from 'next/router';
 import { MapContainer, Pane, TileLayer, ZoomControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import 'react-leaflet-markercluster/dist/styles.min.css';
 import { css } from '@emotion/react';
 import Box from '../Box';
 import { Media } from '../Media';
 import Markers from './Markers';
-import {
-  Loo,
-  MinimumViableLooResponseQueryResult,
-} from '../../api-client/graphql';
+import { Loo } from '../../api-client/graphql';
 interface Props {
   focus?: Loo;
   center: { lat: number; lng: number };
@@ -21,7 +17,6 @@ interface Props {
   controlsOffset?: number;
   showCrosshair?: boolean;
   withAccessibilityOverlays?: boolean;
-
   loos: Array<Loo>;
   filters: any;
 }
@@ -38,8 +33,6 @@ const LooMap: React.FC<Props> = ({
   loos,
   filters,
 }) => {
-  const router = useRouter();
-
   return (
     <Box
       position="relative"
@@ -126,7 +119,7 @@ const LooMap: React.FC<Props> = ({
           maxZoom={maxZoom}
         />
 
-        <Markers focus={focus} loos={loos} flobs={filters} />
+        <Markers focus={focus} loos={loos} />
 
         <Media greaterThan="md">
           <ZoomControl position="bottomright" />

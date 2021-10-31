@@ -12,7 +12,6 @@ import { useRouter } from 'next/router';
 import { withApollo } from '../components/withApollo';
 import { GetServerSideProps, GetStaticPaths, NextPage } from 'next';
 import useFilters from '../hooks/useFilters';
-import { ssrFindLoosNearby } from '../api-client/page';
 import { getServerPageMinimumViableLooResponse } from '../api-client/staticPage';
 import { useMinimumViableLooResponseQuery } from '../api-client/graphql';
 
@@ -32,7 +31,7 @@ const HomePage = () => {
     variables: { limit: 1000000 },
   });
 
-  const { filters, setFilters } = useFilters([]);
+  const { filters, setFilters, filtered } = useFilters(data?.loos.loos);
 
   const pageTitle = config.getTitle('Home');
 
@@ -74,7 +73,7 @@ const HomePage = () => {
           zoom={mapState.zoom}
           onViewportChanged={setMapState}
           controlsOffset={0}
-          loos={data?.loos.loos}
+          loos={filtered}
           filters={filters}
         />
       </Box>
