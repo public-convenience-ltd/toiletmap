@@ -4,13 +4,12 @@ import {
   NormalizedCacheObject,
   InMemoryCache,
   ApolloProvider,
-  createHttpLink,
 } from '@apollo/client';
 import { SchemaLink } from '@apollo/client/link/schema';
 import { schema } from '../pages/api';
 
 export const withApollo = (Comp: NextPage) =>
-  function WithApollo(props: any) {
+  function WithApollo() {
     return (
       <ApolloProvider client={getApolloClient()}>
         <Comp />
@@ -18,7 +17,7 @@ export const withApollo = (Comp: NextPage) =>
     );
   };
 
-export function getApolloClient(ctx: any): ApolloClient<NormalizedCacheObject> {
+export function getApolloClient(): ApolloClient<NormalizedCacheObject> {
   return new ApolloClient({
     ssrMode: true,
     link: new SchemaLink({ schema }),

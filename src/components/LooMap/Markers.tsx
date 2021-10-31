@@ -9,23 +9,10 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { useMap } from 'react-leaflet';
 const KEY_ENTER = 13;
 
-const FILTERS = [
-  'noPayment',
-
-  'babyChange',
-
-  'accessible',
-
-  'allGender',
-
-  'radar',
-
-  'automatic',
-] as const;
-
 const mcg = L.markerClusterGroup({
   chunkedLoading: true,
   showCoverageOnHover: false,
+  chunkInterval: 500,
 });
 
 const Markers = ({ focus, loos }: { loos: Array<Loo>; focus: Loo }) => {
@@ -42,22 +29,26 @@ const Markers = ({ focus, loos }: { loos: Array<Loo>; focus: Loo }) => {
   );
 
   const filteredLooGroups = useMemo(() => {
-    return loos.map((toilet) =>
-      L.marker(new L.LatLng(toilet.location.lat, toilet.location.lng), {
-        zIndexOffset: toilet.id === focus?.id ? 1000 : 0,
-        icon: toiletMarkerIcon(toilet, focus?.id),
-        alt: toilet.name || 'Unnamed toilet',
-        keyboard: false,
-      })
-        .on('click', () => {
-          router.push(`/loos/${toilet.id}`);
+    return loos
+      .filter((loo) => !!loo?.location)
+      .map((toilet) =>
+        L.marker(new L.LatLng(toilet.location.lat, toilet.location.lng), {
+          zIndexOffset: toilet.id === focus?.id ? 1000 : 0,
+          icon: toiletMarkerIcon(toilet, focus?.id),
+          alt: toilet.name || 'Unnamed toilet',
+          keyboard: false,
         })
-        .on('keydown', (event: { originalEvent: { keyCode: number } }) => {
-          if (event.originalEvent.keyCode === KEY_ENTER) {
-            router.push(`/loos/${toilet.id}`);
-          }
-        })
-    );
+          .on('click', () => {
+            router.push(`/loos/${toilet.id}`, undefined, {
+              shallow: true,
+            });
+          })
+          .on('keydown', (event: { originalEvent: { keyCode: number } }) => {
+            if (event.originalEvent.keyCode === KEY_ENTER) {
+              router.push(`/loos/${toilet.id}`, undefined, { shallow: true });
+            }
+          })
+      );
   }, [loos, focus?.id, toiletMarkerIcon, router]);
 
   const map = useMap();

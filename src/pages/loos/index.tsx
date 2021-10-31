@@ -1,37 +1,35 @@
-import React from 'react';
+import { useMemo } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-import PageLayout from '../components/PageLayout';
-import Box from '../components/Box';
-import Sidebar from '../components/Sidebar';
-import Notification from '../components/Notification';
-import VisuallyHidden from '../components/VisuallyHidden';
-import { useMapState } from '../components/MapState';
-import config from '../config';
-import { useRouter } from 'next/router';
-import { withApollo } from '../components/withApollo';
-import { GetServerSideProps, GetStaticPaths, NextPage } from 'next';
-import useFilters from '../hooks/useFilters';
-import { getServerPageMinimumViableLooResponse } from '../api-client/staticPage';
-import { useMinimumViableLooResponseQuery } from '../api-client/graphql';
+import PageLayout from '../../components/PageLayout';
+import Box from '../../components/Box';
+import Sidebar from '../../components/Sidebar';
+import VisuallyHidden from '../../components/VisuallyHidden';
+import { useMapState } from '../../components/MapState';
+import config from '../../config';
+import { withApollo } from '../../components/withApollo';
+import { GetServerSideProps } from 'next';
+import useFilters from '../../hooks/useFilters';
+import getStaticPropsAllLoos from '../../looCache';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 const MapLoader = () => <p>Loading map...</p>;
-const LooMap = dynamic(() => import('../components/LooMap'), {
+const LooMap = dynamic(() => import('../../components/LooMap'), {
   loading: MapLoader,
   ssr: false,
 });
 
-const HomePage = () => {
+const LoosPage = (props) => {
   const [mapState, setMapState] = useMapState();
 
-  const { data } = useMinimumViableLooResponseQuery({
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-only',
-    variables: { limit: 1000000 },
-  });
+  const loos = useMemo(() => {
+    if (props.data) {
+      return Object.values(props.data);
+    }
+    return [];
+  }, [props.data]);
 
-  const { filters, setFilters, filtered } = useFilters(data?.loos.loos);
+  const { filters, setFilters, filtered } = useFilters(loos);
 
   const pageTitle = config.getTitle('Home');
 
@@ -82,23 +80,9 @@ const HomePage = () => {
 };
 
 export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
-  const { dbConnect } = require('../api/db');
-  await dbConnect();
+  const data = await getStaticPropsAllLoos();
 
-  const res = await getServerPageMinimumViableLooResponse(
-    {
-      variables: { limit: 1000000 },
-    },
-    { req }
-  );
-
-  if (res.props.error || !res.props.data) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return { props: { data: res.props.apolloState } };
+  return { props: { data: data } };
 };
 
-export default withApollo(HomePage);
+export default withApollo(LoosPage);
