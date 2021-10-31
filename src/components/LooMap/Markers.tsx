@@ -19,18 +19,18 @@ const Markers = ({ focus, loos }: { loos: Array<Loo>; focus: Loo }) => {
   const router = useRouter();
 
   const focusedMarker = useMemo(() => {
-    return L.marker(new L.LatLng(focus.location.lat, focus.location.lng), {
+    return L.marker(new L.LatLng(focus?.location.lat, focus?.location.lng), {
       zIndexOffset: 1000,
       icon: new ToiletMarkerIcon({
         isHighlighted: true,
-        toiletId: focus.id,
-        isUseOurLoosCampaign: focus.campaignUOL,
+        toiletId: focus?.id,
+        isUseOurLoosCampaign: focus?.campaignUOL,
       }),
-      alt: focus.name || 'Unnamed toilet',
+      alt: focus?.name || 'Unnamed toilet',
       keyboard: false,
     })
       .on('click', () => {
-        router.push(`/loos/${focus.id}`, undefined, {
+        router.push(`/loos/${focus?.id}`, undefined, {
           shallow: true,
         });
       })
