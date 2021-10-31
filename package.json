@@ -137,7 +137,7 @@
     ]
   },
   "resolutions": {
-    "graphql": "14.7.0"
+    "graphql": "16.0.0"
   },
   "msw": {
     "workerDirectory": "public"
