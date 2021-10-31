@@ -25,14 +25,14 @@ const LooMap = dynamic(() => import('../../../components/LooMap'), {
 
 const LooPage: React.FC<{ data: NormalizedCacheObject }> = (props) => {
   const [mapState, setMapState] = useMapState();
+  const router = useRouter();
+
   const loos = React.useMemo(() => {
     if (props.data) {
       return Object.values(props.data);
     }
     return [];
   }, [props.data]);
-
-  const router = useRouter();
 
   const focused = loos.find((loo: Loo) => loo.id === router.query.id);
   const { filters, setFilters, filtered } = useFilters(loos);
@@ -77,7 +77,6 @@ const LooPage: React.FC<{ data: NormalizedCacheObject }> = (props) => {
           onViewportChanged={setMapState}
           controlsOffset={0}
           loos={filtered}
-          filters={filters}
           focus={focused as Loo}
         />
       </Box>
