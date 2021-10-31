@@ -1,12 +1,15 @@
 import { useRouter } from 'next/router';
-import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet';
+import { MapContainer, Pane, TileLayer, ZoomControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'react-leaflet-markercluster/dist/styles.min.css';
 import { css } from '@emotion/react';
 import Box from '../Box';
 import { Media } from '../Media';
 import Markers from './Markers';
-import { Loo } from '../../api-client/graphql';
+import {
+  Loo,
+  MinimumViableLooResponseQueryResult,
+} from '../../api-client/graphql';
 interface Props {
   focus?: Loo;
   center: { lat: number; lng: number };
@@ -18,6 +21,9 @@ interface Props {
   controlsOffset?: number;
   showCrosshair?: boolean;
   withAccessibilityOverlays?: boolean;
+
+  loos: Array<Loo>;
+  filters: any;
 }
 
 const LooMap: React.FC<Props> = ({
@@ -29,6 +35,8 @@ const LooMap: React.FC<Props> = ({
   minZoom,
   maxZoom = 18,
   staticMap = false,
+  loos,
+  filters,
 }) => {
   const router = useRouter();
 
@@ -37,7 +45,7 @@ const LooMap: React.FC<Props> = ({
       position="relative"
       height="100%"
       width="100%"
-      css={
+      css={[
         showCrosshair
           ? css`
               &:after {
@@ -51,8 +59,31 @@ const LooMap: React.FC<Props> = ({
                 transform: translate(-50%, -50%);
               }
             `
-          : undefined
-      }
+          : undefined,
+        css`
+          .leaflet-noPayment-pane {
+            display: ${filters['noPayment'] ? 'none' : 'block'};
+          }
+          .leaflet-babyChange-pane {
+            display: ${filters['babyChange'] ? 'none' : 'block'};
+          }
+          .leaflet-accessible-pane {
+            display: ${filters['accessible'] ? 'none' : 'block'};
+          }
+          .leaflet-allGender-pane {
+            display: ${filters['allGender'] ? 'none' : 'block'};
+          }
+          .leaflet-radar-pane {
+            display: ${filters['radar'] ? 'none' : 'block'};
+          }
+          .leaflet-automatic-pane {
+            display: ${filters['automatic'] ? 'none' : 'block'};
+          }
+          .leaflet-marker-pane {
+            display: ${filters['noPayment'] ? 'none' : 'block'};
+          }
+        `,
+      ]}
     >
       <MapContainer
         center={center}
@@ -116,11 +147,19 @@ const LooMap: React.FC<Props> = ({
           minZoom={minZoom}
           maxZoom={maxZoom}
         />
-        <Markers focus={focus} />
+
+        <Pane name="noPayment" style={{ zIndex: 400 }}></Pane>
+        <Pane name="babyChange" style={{ zIndex: 400 }}></Pane>
+        <Pane name="accessible" style={{ zIndex: 400 }}></Pane>
+        <Pane name="allGender" style={{ zIndex: 400 }}></Pane>
+        <Pane name="radar" style={{ zIndex: 400 }}></Pane>
+        <Pane name="automatic" style={{ zIndex: 400 }}></Pane>
+
+        <Markers focus={focus} loos={loos} flobs={filters} />
+
         <Media greaterThan="md">
           <ZoomControl position="bottomright" />
         </Media>
-
         {/* <LocateMapControl position="bottomright" /> */}
       </MapContainer>
     </Box>

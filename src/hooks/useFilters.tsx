@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
+import { Loo } from '../api-client/graphql';
 import config, { FILTERS_KEY } from '../config';
 
 const useFilters = (toilets) => {
@@ -9,33 +10,37 @@ const useFilters = (toilets) => {
   });
   const [filters, setFilters] = useState(initialState);
 
-  // keep local storage and state in sync
-  useEffect(() => {
-    window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
-  }, [filters]);
+  // // keep local storage and state in sync
+  // useEffect(() => {
+  //   window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
+  // }, [filters]);
 
-  // get the filter objects from config for the filters applied by the user
-  const applied = config.filters.filter((filter) => filters[filter.id]);
+  // // get the filter objects from config for the filters applied by the user
+  // const applied = config.filters.filter((filter) => filters[filter.id]);
 
-  const filtered = useMemo(() => {
-    if (toilets) {
-      return toilets.filter((toilet: { [x: string]: any }) =>
-        applied.every((filter) => {
-          const value = toilet[filter.id];
+  // const filtered = useMemo(() => {
+  //   if (toilets) {
+  //     const filteredList: Array<Loo> = toilets.filter(
+  //       (toilet: { [x: string]: any }) =>
+  //         applied.every((filter) => {
+  //           const value = toilet[filter.id];
 
-          if (value === null) {
-            return false;
-          }
+  //           if (value === null) {
+  //             return false;
+  //           }
 
-          return !!value;
-        })
-      );
-    }
-    return [];
-  }, [toilets, applied]);
+  //           return !!value;
+  //         })
+  //     );
+  //     return filteredList.reduce<Set<string>>((acc, toilet) => {
+  //       acc.add(toilet.id);
+  //       return acc;
+  //     }, new Set<string>());
+  //   }
+  //   return new Set<string>();
+  // }, [toilets, applied]);
 
   return {
-    filtered,
     filters,
     setFilters,
   };
