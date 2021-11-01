@@ -9,10 +9,8 @@ import config from '../config';
 import { withApollo } from '../components/withApollo';
 import { GetServerSideProps } from 'next';
 import useFilters from '../hooks/useFilters';
-import { getServerPageMinimumViableLooResponse } from '../api-client/staticPage';
-import { useMinimumViableLooResponseQuery } from '../api-client/graphql';
-import { useMemo } from 'react';
-import getStaticPropsAllLoos from '../looCache';
+import { dbConnect } from '../api/db';
+import { ssrUkLooMarkers, PageUkLooMarkersComp } from '../api-client/page';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 const MapLoader = () => <p>Loading map...</p>;
@@ -21,17 +19,11 @@ const LooMap = dynamic(() => import('../components/LooMap'), {
   ssr: false,
 });
 
-const HomePage = (props) => {
+const HomePage: PageUkLooMarkersComp = (props) => {
+  console.log(props)
   const [mapState, setMapState] = useMapState();
 
-  const loos = useMemo(() => {
-    if (props.data) {
-      return Object.values(props.data);
-    }
-    return [];
-  }, [props.data]);
-
-  const { filters, setFilters, filtered } = useFilters(loos);
+  const { filters, setFilters, filtered } = useFilters([]);
 
   const pageTitle = config.getTitle('Home');
 
@@ -73,7 +65,6 @@ const HomePage = (props) => {
           zoom={mapState.zoom}
           onViewportChanged={setMapState}
           controlsOffset={0}
-          loos={filtered}
         />
       </Box>
     </PageLayout>
@@ -81,9 +72,9 @@ const HomePage = (props) => {
 };
 
 export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
-  const data = await getStaticPropsAllLoos();
-
-  return { props: { data: data, looId: '' } };
+  await dbConnect();
+  return await ssrUkLooMarkers.getServerPage({}, { req });
 };
 
-export default withApollo(HomePage);
+export default withApollo(
+  ssrUkLooMarkers.withPage(() => ({}))(HomePage));

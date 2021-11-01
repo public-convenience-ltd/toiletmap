@@ -114,3 +114,38 @@ export const ssrMinimumViableLooResponse = {
     }
 
 
+export async function getServerPageUkLooMarkers
+    (options: Omit<Apollo.QueryOptions<Types.UkLooMarkersQueryVariables>, 'query'>, ctx?: any ){
+        const apolloClient = getApolloClient(ctx);
+        
+        const data = await apolloClient.query<Types.UkLooMarkersQuery>({ ...options, query: Operations.UkLooMarkersDocument });
+        
+        const apolloState = apolloClient.cache.extract();
+
+        return {
+            props: {
+                apolloState: apolloState,
+                data: data?.data,
+                error: data?.error ?? data?.errors ?? null,
+            },
+        };
+      }
+export const useUkLooMarkers = (
+  optionsFunc?: (router: NextRouter)=> QueryHookOptions<Types.UkLooMarkersQuery, Types.UkLooMarkersQueryVariables>) => {
+  const router = useRouter();
+  const options = optionsFunc ? optionsFunc(router) : {};
+  return useQuery(Operations.UkLooMarkersDocument, options);
+};
+export type PageUkLooMarkersComp = React.FC<{data?: Types.UkLooMarkersQuery, error?: Apollo.ApolloError}>;
+export const withPageUkLooMarkers = (optionsFunc?: (router: NextRouter)=> QueryHookOptions<Types.UkLooMarkersQuery, Types.UkLooMarkersQueryVariables>) => (WrappedComponent:PageUkLooMarkersComp) : NextPage  => (props) => {
+                const router = useRouter()
+                const options = optionsFunc ? optionsFunc(router) : {};
+                const {data, error } = useQuery(Operations.UkLooMarkersDocument, options)    
+                return <WrappedComponent {...props} data={data} error={error} /> ;
+                   
+            }; 
+export const ssrUkLooMarkers = {
+      getServerPage: getServerPageUkLooMarkers,
+      withPage: withPageUkLooMarkers,
+      usePage: useUkLooMarkers,
+    }

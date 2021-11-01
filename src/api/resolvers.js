@@ -102,6 +102,36 @@ const resolvers = {
     },
     loosByProximity: async (parent, args) =>
       await Loo.findNear(args.from.lng, args.from.lat, args.from.maxDistance),
+    ukLooMarkers: async () => {
+      const loos = await Loo.find({'properties.active': true}).where('properties.geometry').within({
+        type: 'Polygon',
+        coordinates: [[
+          [
+            -0.3515625,
+            61.44927080076419
+          ],
+          [
+            -15.5126953125,
+            55.7642131648377
+          ],
+          [
+            -7.66845703125,
+            48.151428143221224
+          ],
+          [
+            2.35107421875,
+            51.34433866059924
+          ],
+          [
+            -0.3515625,
+            61.44927080076419
+          ]
+        ]]
+      });
+      return loos.map(loo => {
+        return `${loo.id}|${loo.properties.geometry.coordinates[0].toFixed(4)}|${loo.properties.geometry.coordinates[1].toFixed(4)}|${loo.properties.name ? loo.properties.name.replace('|', ' ') : ''}`;
+      });
+    },
     areas: async (parent, args) => {
       const data = await Area.find({}, { name: 1, type: 1 }).exec();
 

@@ -17,7 +17,6 @@ interface Props {
   controlsOffset?: number;
   showCrosshair?: boolean;
   withAccessibilityOverlays?: boolean;
-  loos: Array<Loo>;
   filters: any;
 }
 
@@ -30,7 +29,6 @@ const LooMap: React.FC<Props> = ({
   minZoom,
   maxZoom = 18,
   staticMap = false,
-  loos,
   filters,
 }) => {
   return (
@@ -119,7 +117,7 @@ const LooMap: React.FC<Props> = ({
           maxZoom={maxZoom}
         />
 
-        <Markers focus={focus} loos={loos} />
+        <Markers focus={focus} />
 
         <Media greaterThan="md">
           <ZoomControl position="bottomright" />

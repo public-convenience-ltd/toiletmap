@@ -214,6 +214,7 @@ export type Query = {
   proportions: Proportions;
   /** Retrieve a report by ID */
   report?: Maybe<Report>;
+  ukLooMarkers: Array<Scalars['String']>;
 };
 
 
@@ -401,6 +402,11 @@ export type SubmitVerificationReportMutationMutationVariables = Exact<{
 
 
 export type SubmitVerificationReportMutationMutation = { __typename?: 'Mutation', submitVerificationReport?: { __typename?: 'ReportMutationResponse', loo?: { __typename?: 'Loo', id?: string | null | undefined, verifiedAt?: any | null | undefined } | null | undefined } | null | undefined };
+
+export type UkLooMarkersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UkLooMarkersQuery = { __typename?: 'Query', ukLooMarkers: Array<string> };
 
 export type UpdateLooMutationVariables = Exact<{
   id?: Maybe<Scalars['ID']>;
@@ -666,6 +672,38 @@ export function useSubmitVerificationReportMutationMutation(baseOptions?: Apollo
 export type SubmitVerificationReportMutationMutationHookResult = ReturnType<typeof useSubmitVerificationReportMutationMutation>;
 export type SubmitVerificationReportMutationMutationResult = Apollo.MutationResult<SubmitVerificationReportMutationMutation>;
 export type SubmitVerificationReportMutationMutationOptions = Apollo.BaseMutationOptions<SubmitVerificationReportMutationMutation, SubmitVerificationReportMutationMutationVariables>;
+export const UkLooMarkersDocument = gql`
+    query ukLooMarkers {
+  ukLooMarkers
+}
+    `;
+
+/**
+ * __useUkLooMarkersQuery__
+ *
+ * To run a query within a React component, call `useUkLooMarkersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUkLooMarkersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUkLooMarkersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUkLooMarkersQuery(baseOptions?: Apollo.QueryHookOptions<UkLooMarkersQuery, UkLooMarkersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UkLooMarkersQuery, UkLooMarkersQueryVariables>(UkLooMarkersDocument, options);
+      }
+export function useUkLooMarkersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UkLooMarkersQuery, UkLooMarkersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UkLooMarkersQuery, UkLooMarkersQueryVariables>(UkLooMarkersDocument, options);
+        }
+export type UkLooMarkersQueryHookResult = ReturnType<typeof useUkLooMarkersQuery>;
+export type UkLooMarkersLazyQueryHookResult = ReturnType<typeof useUkLooMarkersLazyQuery>;
+export type UkLooMarkersQueryResult = Apollo.QueryResult<UkLooMarkersQuery, UkLooMarkersQueryVariables>;
 export const UpdateLooDocument = gql`
     mutation updateLoo($id: ID, $location: PointInput!, $name: String, $openingTimes: OpeningTimes, $accessible: Boolean, $allGender: Boolean, $men: Boolean, $women: Boolean, $children: Boolean, $urinalOnly: Boolean, $babyChange: Boolean, $radar: Boolean, $attended: Boolean, $automatic: Boolean, $noPayment: Boolean, $paymentDetails: String, $notes: String, $campaignUOL: Boolean, $active: Boolean) {
   submitReport(
