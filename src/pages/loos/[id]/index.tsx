@@ -87,7 +87,7 @@ const LooPage: React.FC<{ data: NormalizedCacheObject }> = (props) => {
 export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
   const data = await getStaticPropsAllLoos();
 
-  return { props: { data: data, looId: params.id } };
+  return { props: { data: data, looId: '' } };
 };
 
 export const getStaticPaths = async () => {
