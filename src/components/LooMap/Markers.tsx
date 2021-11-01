@@ -7,6 +7,7 @@ import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { useMap } from 'react-leaflet';
+import { useUkLooMarkersQuery } from '../../api-client/graphql'
 const KEY_ENTER = 13;
 
 const mcg = L.markerClusterGroup({
@@ -15,8 +16,23 @@ const mcg = L.markerClusterGroup({
   chunkInterval: 500,
 });
 
-const Markers = ({ focus, loos }: { loos: Array<Loo>; focus: Loo }) => {
+function parseCompressedLoo(str) {
+  const l = str.split('|')
+  return {
+    id: l[0],
+    location: {
+      lng: l[1],
+      lat: l[2],
+    },
+    name: l[3]
+  }
+}
+
+const Markers = ({ focus }: { focus: Loo }) => {
   const router = useRouter();
+
+  const { data } = useUkLooMarkersQuery({fetchPolicy: 'cache-only'});
+
 
   const focusedMarker = useMemo(() => {
     const marker =
@@ -46,10 +62,13 @@ const Markers = ({ focus, loos }: { loos: Array<Loo>; focus: Loo }) => {
   }, [focus, router]);
 
   const filteredLooGroups = useMemo(() => {
-    return loos
-      .filter((loo) => !!loo?.location)
-      .map((toilet) =>
-        L.marker(new L.LatLng(toilet.location.lat, toilet.location.lng), {
+    if (!data?.ukLooMarkers) {
+      return [];
+    }
+    return data.ukLooMarkers
+      .map((compressed) => {
+        const toilet = parseCompressedLoo(compressed)
+        return L.marker(new L.LatLng(toilet.location.lat, toilet.location.lng), {
           zIndexOffset: 0,
           icon: new ToiletMarkerIcon({
             isHighlighted: false,
@@ -69,8 +88,8 @@ const Markers = ({ focus, loos }: { loos: Array<Loo>; focus: Loo }) => {
               router.push(`/loos/${toilet.id}`, undefined, { shallow: true });
             }
           })
-      );
-  }, [loos, router]);
+        });
+  }, [data, router]);
 
   const map = useMap();
   useEffect(() => {
