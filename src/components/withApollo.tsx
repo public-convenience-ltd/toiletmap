@@ -1,6 +1,4 @@
-import {
-  NextPage,
-} from "next";
+import { NextPage } from 'next';
 
 import {
   ApolloClient,
@@ -8,27 +6,32 @@ import {
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
-} from "@apollo/client";
+} from '@apollo/client';
 import {
   NextApiRequestCookies,
   // @ts-ignore This path is generated at build time and conflicts otherwise
 } from 'next-server/server/api-utils';
-import { IncomingMessage } from "http";
+import { IncomingMessage } from 'http';
 
 export type ApolloClientContext = {
   req?: IncomingMessage & {
-    cookies: NextApiRequestCookies
-  }
+    cookies: NextApiRequestCookies;
+  };
 };
 
-export const withApollo = (Comp: NextPage) => (props: any) => {
-  return (
-    <ApolloProvider client={getApolloClient(undefined, props.apolloState)}>
-      <Comp />
-    </ApolloProvider>
-  );
-};
+export const withApollo = (Comp: NextPage) =>
+  function ApolloWrapper(props: any) {
+    return (
+      <ApolloProvider client={getApolloClient(undefined, props.apolloState)}>
+        <Comp />
+      </ApolloProvider>
+    );
+  };
 
+/**
+ * Refactor this to reuse any existing apolloclinet in the client-side
+ * merge the initialState from the pageprops with the client's current state see: https://developers.wpengine.com/blog/apollo-client-cache-rehydration-in-next-js
+ */
 export const getApolloClient = (
   ctx?: ApolloClientContext,
   initialState?: NormalizedCacheObject

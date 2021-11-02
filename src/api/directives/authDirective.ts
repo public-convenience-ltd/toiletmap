@@ -32,7 +32,6 @@ export default function authDirective(directiveName: string) {
               const { resolve = defaultFieldResolver } = fieldConfig;
               fieldConfig.resolve = function (source, args, context, info) {
                 if (context && context.user) {
-                  console.log(context.user[process.env.AUTH0_PERMISSIONS_KEY]);
                   if (
                     requires &&
                     !context.user[process.env.AUTH0_PERMISSIONS_KEY].includes(

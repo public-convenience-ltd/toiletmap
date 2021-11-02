@@ -20,7 +20,6 @@ const LooMap = dynamic(() => import('../components/LooMap'), {
 });
 
 const HomePage: PageUkLooMarkersComp = (props) => {
-  console.log(props)
   const [mapState, setMapState] = useMapState();
 
   const { filters, setFilters, filtered } = useFilters([]);
@@ -76,5 +75,4 @@ export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
   return await ssrUkLooMarkers.getServerPage({}, { req });
 };
 
-export default withApollo(
-  ssrUkLooMarkers.withPage(() => ({}))(HomePage));
+export default withApollo(ssrUkLooMarkers.withPage(() => ({}))(HomePage));
