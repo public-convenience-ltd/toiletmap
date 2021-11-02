@@ -1,4 +1,5 @@
 import { ApolloServer } from 'apollo-server-micro';
+import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import jwt from 'jsonwebtoken';
@@ -79,6 +80,7 @@ export const server = new ApolloServer({
   },
   introspection: true,
   plugins: [
+    responseCachePlugin(),
     ApolloServerPluginLandingPageGraphQLPlayground({
       settings: {
         'request.credentials': 'same-origin',

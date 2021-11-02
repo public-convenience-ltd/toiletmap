@@ -24,7 +24,6 @@ const LooMap = dynamic(() => import('../../../components/LooMap'), {
 });
 
 const LooPage: PageFindLooByIdComp = (props) => {
-  console.log(props);
   const [mapState, setMapState] = useMapState();
 
   const { filters, setFilters } = useFilters([]);
@@ -74,35 +73,41 @@ const LooPage: PageFindLooByIdComp = (props) => {
           controlsOffset={0}
           focus={props?.data?.loo}
         />
-        { props?.data?.loo &&
-        <Box position="absolute" left={0} bottom={0} width="100%" zIndex={100}>
-          <ToiletDetailsPanel
-            data={props?.data?.loo}
-            isLoading={false}
-            startExpanded={true}
-            onDimensionsChange={setToiletPanelDimensions}
+        {props?.data?.loo && (
+          <Box
+            position="absolute"
+            left={0}
+            bottom={0}
+            width="100%"
+            zIndex={100}
           >
-            {config.messages[message as string] && (
-              <Box
-                position="absolute"
-                left={0}
-                right={0}
-                bottom={0}
-                display="flex"
-                justifyContent="center"
-                p={4}
-                pt={1}
-                pb={[4, 3, 4]}
-                bg={['white', 'white', 'transparent']}
-              >
-                <Notification allowClose>
-                  {config.messages[message as string]}
-                </Notification>
-              </Box>
-            )}
-          </ToiletDetailsPanel>
-        </Box>
-        }
+            <ToiletDetailsPanel
+              data={props?.data?.loo}
+              isLoading={false}
+              startExpanded={true}
+              onDimensionsChange={setToiletPanelDimensions}
+            >
+              {config.messages[message as string] && (
+                <Box
+                  position="absolute"
+                  left={0}
+                  right={0}
+                  bottom={0}
+                  display="flex"
+                  justifyContent="center"
+                  p={4}
+                  pt={1}
+                  pb={[4, 3, 4]}
+                  bg={['white', 'white', 'transparent']}
+                >
+                  <Notification allowClose>
+                    {config.messages[message as string]}
+                  </Notification>
+                </Box>
+              )}
+            </ToiletDetailsPanel>
+          </Box>
+        )}
       </Box>
     </PageLayout>
   );
@@ -110,9 +115,12 @@ const LooPage: PageFindLooByIdComp = (props) => {
 
 export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
   await dbConnect();
-  const res = await ssrFindLooById.getServerPage({
-    variables: {id: params.id as string}
-  }, { req });
+  const res = await ssrFindLooById.getServerPage(
+    {
+      variables: { id: params.id as string },
+    },
+    { req }
+  );
 
   if (res.props.error || !res.props.data) {
     return {
@@ -132,6 +140,6 @@ export const getStaticPaths = async () => {
 
 export default withApollo(
   ssrFindLooById.withPage((arg) => ({
-    variables: { id: arg?.query?.id.toString() }
+    variables: { id: arg?.query?.id.toString() },
   }))(LooPage)
 );
