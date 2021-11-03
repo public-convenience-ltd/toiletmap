@@ -45,6 +45,11 @@ export type AuthedContributor = {
   name: Scalars['String'];
 };
 
+export enum CacheControlScope {
+  Private = 'PRIVATE',
+  Public = 'PUBLIC'
+}
+
 /** A piece of proportional data, with a name and a value */
 export type Chunk = {
   __typename?: 'Chunk';
