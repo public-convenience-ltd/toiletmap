@@ -36,18 +36,26 @@ export const getApolloClient = (
   ctx?: ApolloClientContext,
   initialState?: NormalizedCacheObject
 ) => {
-  const url =
-    process.env.NODE_ENV === 'development'
-      ? process.env.AUTH0_BASE_URL
-      : process.env.VERCEL_URL;
-  const httpLink = createHttpLink({
-    uri: typeof window === 'undefined' ? url + '/api' : '/api',
-    fetch,
-  });
+  let link;
+  if (typeof window === 'undefined') {
+    const { SchemaLink } = require('@apollo/client/link/schema');
+    const { schema } = require('../pages/api');
+    link = new SchemaLink({ schema });
+  } else {
+    const url =
+      process.env.NODE_ENV === 'development'
+        ? process.env.AUTH0_BASE_URL
+        : process.env.VERCEL_URL;
+    link = createHttpLink({
+      uri: typeof window === 'undefined' ? url + '/api' : '/api',
+      fetch,
+    });
+  }
 
   const cache = new InMemoryCache().restore(initialState || {});
   return new ApolloClient({
-    link: httpLink,
+    ssrMode: typeof window === 'undefined',
+    link,
     cache,
   });
 };
