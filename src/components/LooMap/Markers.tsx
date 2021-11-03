@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
-import { Loo } from '../../api-client/graphql';
 import ToiletMarkerIcon from './ToiletMarkerIcon';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
@@ -28,37 +27,10 @@ function parseCompressedLoo(str) {
   };
 }
 
-const Markers = ({ focus }: { focus: Loo }) => {
+const Markers = () => {
   const router = useRouter();
 
-  const { data } = useUkLooMarkersQuery({ fetchPolicy: 'cache-first' });
-
-  const focusedMarker = useMemo(() => {
-    const marker =
-      focus === undefined
-        ? null
-        : L.marker(new L.LatLng(focus?.location.lat, focus?.location.lng), {
-            zIndexOffset: 1000,
-            icon: new ToiletMarkerIcon({
-              isHighlighted: true,
-              toiletId: focus?.id,
-              isUseOurLoosCampaign: focus?.campaignUOL,
-            }),
-            alt: focus?.name || 'Unnamed toilet',
-            keyboard: false,
-          })
-            .on('click', () => {
-              router.push(`/loos/${focus?.id}`, undefined, {
-                shallow: true,
-              });
-            })
-            .on('keydown', (event: { originalEvent: { keyCode: number } }) => {
-              if (event.originalEvent.keyCode === KEY_ENTER) {
-                router.push(`/loos/${focus.id}`, undefined, { shallow: true });
-              }
-            });
-    return marker;
-  }, [focus, router]);
+  const { data } = useUkLooMarkersQuery();
 
   const filteredLooGroups = useMemo(() => {
     if (!data?.ukLooMarkers) {
@@ -69,7 +41,6 @@ const Markers = ({ focus }: { focus: Loo }) => {
       return L.marker(new L.LatLng(toilet.location.lat, toilet.location.lng), {
         zIndexOffset: 0,
         icon: new ToiletMarkerIcon({
-          isHighlighted: false,
           toiletId: toilet.id,
           isUseOurLoosCampaign: toilet?.campaignUOL,
         }),
@@ -92,19 +63,13 @@ const Markers = ({ focus }: { focus: Loo }) => {
   const map = useMap();
   useEffect(() => {
     mcg.clearLayers();
-    if (focusedMarker) {
-      map.addLayer(focusedMarker);
-    }
     mcg.addLayers(filteredLooGroups);
     map.addLayer(mcg);
     return () => {
       mcg.clearLayers();
-      if (focusedMarker) {
-        map.removeLayer(focusedMarker);
-      }
       map.removeLayer(mcg);
     };
-  }, [map, filteredLooGroups, focusedMarker]);
+  }, [map, filteredLooGroups]);
 
   return null;
 };

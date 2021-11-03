@@ -1,10 +1,10 @@
-import { useRouter } from 'next/router';
-import { MapContainer, Pane, TileLayer, ZoomControl } from 'react-leaflet';
+import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { css } from '@emotion/react';
 import Box from '../Box';
 import { Media } from '../Media';
 import Markers from './Markers';
+import CurrentLooMarker from './CurrentLooMarker';
 import { Loo } from '../../api-client/graphql';
 interface Props {
   focus?: Loo;
@@ -117,7 +117,8 @@ const LooMap: React.FC<Props> = ({
           maxZoom={maxZoom}
         />
 
-        <Markers focus={focus} />
+        {focus && <CurrentLooMarker loo={focus} />}
+        <Markers />
 
         <Media greaterThan="md">
           <ZoomControl position="bottomright" />
