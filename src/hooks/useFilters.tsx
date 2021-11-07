@@ -14,28 +14,7 @@ const useFilters = (toilets) => {
     window.localStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
   }, [filters]);
 
-  // get the filter objects from config for the filters applied by the user
-  const applied = config.filters.filter((filter) => filters[filter.id]);
-
-  const filtered = useMemo(() => {
-    if (toilets) {
-      return toilets.filter((toilet: { [x: string]: any }) =>
-        applied.every((filter) => {
-          const value = toilet[filter.id];
-
-          if (value === null) {
-            return false;
-          }
-
-          return !!value;
-        })
-      );
-    }
-    return [];
-  }, [applied, toilets]);
-
   return {
-    filtered,
     filters,
     setFilters,
   };

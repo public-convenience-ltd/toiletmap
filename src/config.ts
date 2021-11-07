@@ -16,7 +16,7 @@ type FilterLabels =
   | 'Radar Key'
   | 'Automatic';
 
-type Filter = {
+export type Filter = {
   id: Filters;
   label: FilterLabels;
 };

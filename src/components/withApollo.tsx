@@ -45,6 +45,7 @@ export function getApolloClient(
   // If a page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
   if (initialState) {
+    console.log(initialState);
     // Get existing cache, loaded during client side data fetching
     const existingCache = _apolloClient.extract();
 
