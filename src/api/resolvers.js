@@ -125,40 +125,41 @@ const resolvers = {
       const FILTER_BABY_CHNG = 0b00010000;
       const FILTER_RADAR = 0b00100000;
       const FILTER_UOL = 0b01000000;
-
+      let count = 0;
       const genLooFilterMask = (loo) => {
         const noPayment =
-          loo.properties.noPayment === null ||
+          loo.properties.noPayment === undefined ||
           loo.properties.noPayment === false
             ? 0
             : FILTER_NO_PAYMENT;
         const allGender =
-          loo.properties.allGender === null ||
+          loo.properties.allGender === undefined ||
           loo.properties.allGender === false
             ? 0
-            : FILTER_ALL_GENDER;
+            : FILTER_AUTOMATIC;
+
         const automatic =
-          loo.properties.automatic === null ||
+          loo.properties.automatic === undefined ||
           loo.properties.automatic === false
             ? 0
             : FILTER_AUTOMATIC;
         const accessible =
-          loo.properties.accessible === null ||
+          loo.properties.accessible === undefined ||
           loo.properties.accessible === false
             ? 0
             : FILTER_ACCESSIBLE;
         const babyChange =
-          loo.properties.babyChange === null ||
+          loo.properties.babyChange === undefined ||
           loo.properties.babyChange === false
             ? 0
             : FILTER_BABY_CHNG;
         const radar =
-          loo.properties.radar === null || loo.properties.radar === false
+          loo.properties.radar === undefined || loo.properties.radar === false
             ? 0
             : FILTER_RADAR;
         const campaignUOL =
-          loo.properties.campaignUOL === null ||
-          loo.properties.allGender === false
+          loo.properties.campaignUOL === undefined ||
+          loo.properties.campaignUOL === false
             ? 0
             : FILTER_UOL;
 
@@ -173,13 +174,14 @@ const resolvers = {
         );
       };
 
-      return loos.map((loo) => {
-        return `${loo.id.s}|${loo.properties.geometry.coordinates[0].toFixed(
+      const mapped = loos.map((loo) => {
+        return `${loo.id}|${loo.properties.geometry.coordinates[0].toFixed(
           4
         )}|${loo.properties.geometry.coordinates[1].toFixed(4)}|${
           loo.properties.name ? loo.properties.name.replace('|', ' ') : ''
         }|${genLooFilterMask(loo)}`;
       });
+      return mapped;
     },
     areas: async (parent, args) => {
       const data = await Area.find({}, { name: 1, type: 1 }).exec();

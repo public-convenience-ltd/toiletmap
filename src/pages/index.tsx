@@ -22,7 +22,7 @@ const LooMap = dynamic(() => import('../components/LooMap'), {
 const HomePage: PageUkLooMarkersComp = (props) => {
   const [mapState, setMapState] = useMapState();
 
-  const { filters, setFilters, filtered } = useFilters([]);
+  const { filters, setFilters } = useFilters([]);
 
   const pageTitle = config.getTitle('Home');
 
