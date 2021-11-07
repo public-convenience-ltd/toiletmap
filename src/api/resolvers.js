@@ -136,7 +136,7 @@ const resolvers = {
           loo.properties.allGender === undefined ||
           loo.properties.allGender === false
             ? 0
-            : FILTER_AUTOMATIC;
+            : FILTER_ALL_GENDER;
 
         const automatic =
           loo.properties.automatic === undefined ||
