@@ -72,6 +72,7 @@ const LooPage: PageFindLooByIdComp = (props) => {
           onViewportChanged={setMapState}
           controlsOffset={0}
           focus={props?.data?.loo}
+          filters={filters}
         />
         {props?.data?.loo && (
           <Box
