@@ -64,6 +64,7 @@ const HomePage: PageUkLooMarkersComp = (props) => {
           zoom={mapState.zoom}
           onViewportChanged={setMapState}
           controlsOffset={0}
+          filters={filters}
         />
       </Box>
     </PageLayout>

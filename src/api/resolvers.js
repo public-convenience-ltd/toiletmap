@@ -117,22 +117,68 @@ const resolvers = {
             ],
           ],
         });
-      /**
-       * TODO: add some data for map-filters:
-       * noPayment
-       * allGender
-       * automatic
-       * accessible
-       * babyChange
-       * radar
-       * campaignUOL
-       **/
+
+      const FILTER_NO_PAYMENT = 0b00000001;
+      const FILTER_ALL_GENDER = 0b00000010;
+      const FILTER_AUTOMATIC = 0b00000100;
+      const FILTER_ACCESSIBLE = 0b00001000;
+      const FILTER_BABY_CHNG = 0b00010000;
+      const FILTER_RADAR = 0b00100000;
+      const FILTER_UOL = 0b01000000;
+
+      const genLooFilterMask = (loo) => {
+        const noPayment =
+          loo.properties.noPayment === null ||
+          loo.properties.noPayment === false
+            ? 0
+            : FILTER_NO_PAYMENT;
+        const allGender =
+          loo.properties.allGender === null ||
+          loo.properties.allGender === false
+            ? 0
+            : FILTER_ALL_GENDER;
+        const automatic =
+          loo.properties.automatic === null ||
+          loo.properties.automatic === false
+            ? 0
+            : FILTER_AUTOMATIC;
+        const accessible =
+          loo.properties.accessible === null ||
+          loo.properties.accessible === false
+            ? 0
+            : FILTER_ACCESSIBLE;
+        const babyChange =
+          loo.properties.babyChange === null ||
+          loo.properties.babyChange === false
+            ? 0
+            : FILTER_BABY_CHNG;
+        const radar =
+          loo.properties.radar === null || loo.properties.radar === false
+            ? 0
+            : FILTER_RADAR;
+        const campaignUOL =
+          loo.properties.campaignUOL === null ||
+          loo.properties.allGender === false
+            ? 0
+            : FILTER_UOL;
+
+        return (
+          noPayment |
+          allGender |
+          automatic |
+          accessible |
+          babyChange |
+          radar |
+          campaignUOL
+        );
+      };
+
       return loos.map((loo) => {
-        return `${loo.id}|${loo.properties.geometry.coordinates[0].toFixed(
+        return `${loo.id.s}|${loo.properties.geometry.coordinates[0].toFixed(
           4
         )}|${loo.properties.geometry.coordinates[1].toFixed(4)}|${
           loo.properties.name ? loo.properties.name.replace('|', ' ') : ''
-        }`;
+        }|${genLooFilterMask(loo)}`;
       });
     },
     areas: async (parent, args) => {

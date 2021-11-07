@@ -118,7 +118,7 @@ const LooMap: React.FC<Props> = ({
         />
 
         {focus && <CurrentLooMarker loo={focus} />}
-        <Markers />
+        <Markers filters={filters} />
 
         <Media greaterThan="md">
           <ZoomControl position="bottomright" />
