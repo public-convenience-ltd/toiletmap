@@ -75,11 +75,10 @@ const Markers = ({ filters = [] }) => {
       }
       return p;
     }, [] as Array<FILTER_TYPE>);
-    if (typeof window !== 'undefined') {
-      window.setTimeout(() => {
-        setAppliedFilters(bitmask);
-      }, 500);
-    }
+
+    window.setTimeout(() => {
+      setAppliedFilters(bitmask);
+    }, 200);
   }, [filters]);
 
   const filteredLooGroups = useMemo(() => {
