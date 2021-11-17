@@ -87,7 +87,6 @@ export type Loo = {
   attended?: Maybe<Scalars['Boolean']>;
   automatic?: Maybe<Scalars['Boolean']>;
   babyChange?: Maybe<Scalars['Boolean']>;
-  campaignUOL?: Maybe<Scalars['Boolean']>;
   children?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   id?: Maybe<Scalars['ID']>;
@@ -268,7 +267,6 @@ export type Report = {
   attended?: Maybe<Scalars['Boolean']>;
   automatic?: Maybe<Scalars['Boolean']>;
   babyChange?: Maybe<Scalars['Boolean']>;
-  campaignUOL?: Maybe<Scalars['Boolean']>;
   children?: Maybe<Scalars['Boolean']>;
   /** An identifier for the user or process which contributed the report */
   contributor: Scalars['String'];
@@ -303,7 +301,6 @@ export type ReportInput = {
   attended?: Maybe<Scalars['Boolean']>;
   automatic?: Maybe<Scalars['Boolean']>;
   babyChange?: Maybe<Scalars['Boolean']>;
-  campaignUOL?: Maybe<Scalars['Boolean']>;
   children?: Maybe<Scalars['Boolean']>;
   edit?: Maybe<Scalars['ID']>;
   location: PointInput;
@@ -373,7 +370,7 @@ export type FindLooByIdQueryVariables = Exact<{
 }>;
 
 
-export type FindLooByIdQuery = { __typename?: 'Query', loo?: { __typename?: 'Loo', id?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, verifiedAt?: any | null | undefined, active?: boolean | null | undefined, name?: string | null | undefined, openingTimes?: any | null | undefined, accessible?: boolean | null | undefined, men?: boolean | null | undefined, women?: boolean | null | undefined, allGender?: boolean | null | undefined, babyChange?: boolean | null | undefined, children?: boolean | null | undefined, urinalOnly?: boolean | null | undefined, radar?: boolean | null | undefined, automatic?: boolean | null | undefined, noPayment?: boolean | null | undefined, paymentDetails?: string | null | undefined, notes?: string | null | undefined, removalReason?: string | null | undefined, attended?: boolean | null | undefined, campaignUOL?: boolean | null | undefined, location?: { __typename?: 'Point', lat: number, lng: number } | null | undefined } | null | undefined };
+export type FindLooByIdQuery = { __typename?: 'Query', loo?: { __typename?: 'Loo', id?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, verifiedAt?: any | null | undefined, active?: boolean | null | undefined, name?: string | null | undefined, openingTimes?: any | null | undefined, accessible?: boolean | null | undefined, men?: boolean | null | undefined, women?: boolean | null | undefined, allGender?: boolean | null | undefined, babyChange?: boolean | null | undefined, children?: boolean | null | undefined, urinalOnly?: boolean | null | undefined, radar?: boolean | null | undefined, automatic?: boolean | null | undefined, noPayment?: boolean | null | undefined, paymentDetails?: string | null | undefined, notes?: string | null | undefined, removalReason?: string | null | undefined, attended?: boolean | null | undefined, location?: { __typename?: 'Point', lat: number, lng: number } | null | undefined } | null | undefined };
 
 export type FindLoosNearbyQueryVariables = Exact<{
   lat: Scalars['Float'];
@@ -382,16 +379,9 @@ export type FindLoosNearbyQueryVariables = Exact<{
 }>;
 
 
-export type FindLoosNearbyQuery = { __typename?: 'Query', loosByProximity: Array<{ __typename?: 'Loo', id?: string | null | undefined, name?: string | null | undefined, noPayment?: boolean | null | undefined, allGender?: boolean | null | undefined, automatic?: boolean | null | undefined, accessible?: boolean | null | undefined, babyChange?: boolean | null | undefined, radar?: boolean | null | undefined, campaignUOL?: boolean | null | undefined, location?: { __typename?: 'Point', lat: number, lng: number } | null | undefined }> };
+export type FindLoosNearbyQuery = { __typename?: 'Query', loosByProximity: Array<{ __typename?: 'Loo', id?: string | null | undefined, name?: string | null | undefined, noPayment?: boolean | null | undefined, allGender?: boolean | null | undefined, automatic?: boolean | null | undefined, accessible?: boolean | null | undefined, babyChange?: boolean | null | undefined, radar?: boolean | null | undefined, location?: { __typename?: 'Point', lat: number, lng: number } | null | undefined }> };
 
-export type LooFragmentFragment = { __typename?: 'Loo', id?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, verifiedAt?: any | null | undefined, active?: boolean | null | undefined, name?: string | null | undefined, openingTimes?: any | null | undefined, accessible?: boolean | null | undefined, men?: boolean | null | undefined, women?: boolean | null | undefined, allGender?: boolean | null | undefined, babyChange?: boolean | null | undefined, children?: boolean | null | undefined, urinalOnly?: boolean | null | undefined, radar?: boolean | null | undefined, automatic?: boolean | null | undefined, noPayment?: boolean | null | undefined, paymentDetails?: string | null | undefined, notes?: string | null | undefined, removalReason?: string | null | undefined, attended?: boolean | null | undefined, campaignUOL?: boolean | null | undefined, location?: { __typename?: 'Point', lat: number, lng: number } | null | undefined };
-
-export type MinimumViableLooResponseQueryVariables = Exact<{
-  limit: Scalars['Int'];
-}>;
-
-
-export type MinimumViableLooResponseQuery = { __typename?: 'Query', loos: { __typename?: 'LooSearchResponse', loos: Array<{ __typename?: 'Loo', id?: string | null | undefined, name?: string | null | undefined, noPayment?: boolean | null | undefined, allGender?: boolean | null | undefined, automatic?: boolean | null | undefined, accessible?: boolean | null | undefined, babyChange?: boolean | null | undefined, radar?: boolean | null | undefined, campaignUOL?: boolean | null | undefined, location?: { __typename?: 'Point', lat: number, lng: number } | null | undefined }> } };
+export type LooFragmentFragment = { __typename?: 'Loo', id?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, verifiedAt?: any | null | undefined, active?: boolean | null | undefined, name?: string | null | undefined, openingTimes?: any | null | undefined, accessible?: boolean | null | undefined, men?: boolean | null | undefined, women?: boolean | null | undefined, allGender?: boolean | null | undefined, babyChange?: boolean | null | undefined, children?: boolean | null | undefined, urinalOnly?: boolean | null | undefined, radar?: boolean | null | undefined, automatic?: boolean | null | undefined, noPayment?: boolean | null | undefined, paymentDetails?: string | null | undefined, notes?: string | null | undefined, removalReason?: string | null | undefined, attended?: boolean | null | undefined, location?: { __typename?: 'Point', lat: number, lng: number } | null | undefined };
 
 export type RemoveLooMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -431,12 +421,11 @@ export type UpdateLooMutationVariables = Exact<{
   noPayment?: Maybe<Scalars['Boolean']>;
   paymentDetails?: Maybe<Scalars['String']>;
   notes?: Maybe<Scalars['String']>;
-  campaignUOL?: Maybe<Scalars['Boolean']>;
   active?: Maybe<Scalars['Boolean']>;
 }>;
 
 
-export type UpdateLooMutation = { __typename?: 'Mutation', submitReport?: { __typename?: 'ReportMutationResponse', code: string, success: boolean, message: string, loo?: { __typename?: 'Loo', id?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, verifiedAt?: any | null | undefined, active?: boolean | null | undefined, name?: string | null | undefined, openingTimes?: any | null | undefined, accessible?: boolean | null | undefined, men?: boolean | null | undefined, women?: boolean | null | undefined, allGender?: boolean | null | undefined, babyChange?: boolean | null | undefined, children?: boolean | null | undefined, urinalOnly?: boolean | null | undefined, radar?: boolean | null | undefined, automatic?: boolean | null | undefined, noPayment?: boolean | null | undefined, paymentDetails?: string | null | undefined, notes?: string | null | undefined, removalReason?: string | null | undefined, attended?: boolean | null | undefined, campaignUOL?: boolean | null | undefined, location?: { __typename?: 'Point', lat: number, lng: number } | null | undefined } | null | undefined } | null | undefined };
+export type UpdateLooMutation = { __typename?: 'Mutation', submitReport?: { __typename?: 'ReportMutationResponse', code: string, success: boolean, message: string, loo?: { __typename?: 'Loo', id?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, verifiedAt?: any | null | undefined, active?: boolean | null | undefined, name?: string | null | undefined, openingTimes?: any | null | undefined, accessible?: boolean | null | undefined, men?: boolean | null | undefined, women?: boolean | null | undefined, allGender?: boolean | null | undefined, babyChange?: boolean | null | undefined, children?: boolean | null | undefined, urinalOnly?: boolean | null | undefined, radar?: boolean | null | undefined, automatic?: boolean | null | undefined, noPayment?: boolean | null | undefined, paymentDetails?: string | null | undefined, notes?: string | null | undefined, removalReason?: string | null | undefined, attended?: boolean | null | undefined, location?: { __typename?: 'Point', lat: number, lng: number } | null | undefined } | null | undefined } | null | undefined };
 
 export const LooFragmentFragmentDoc = gql`
     fragment LooFragment on Loo {
@@ -465,7 +454,6 @@ export const LooFragmentFragmentDoc = gql`
   notes
   removalReason
   attended
-  campaignUOL
 }
     `;
 export const FindLooByIdDocument = gql`
@@ -518,7 +506,6 @@ export const FindLoosNearbyDocument = gql`
     accessible
     babyChange
     radar
-    campaignUOL
   }
 }
     `;
@@ -552,55 +539,6 @@ export function useFindLoosNearbyLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type FindLoosNearbyQueryHookResult = ReturnType<typeof useFindLoosNearbyQuery>;
 export type FindLoosNearbyLazyQueryHookResult = ReturnType<typeof useFindLoosNearbyLazyQuery>;
 export type FindLoosNearbyQueryResult = Apollo.QueryResult<FindLoosNearbyQuery, FindLoosNearbyQueryVariables>;
-export const MinimumViableLooResponseDocument = gql`
-    query minimumViableLooResponse($limit: Int!) {
-  loos(filters: {}, pagination: {limit: $limit}) {
-    loos {
-      id
-      name
-      location {
-        lat
-        lng
-      }
-      noPayment
-      allGender
-      automatic
-      accessible
-      babyChange
-      radar
-      campaignUOL
-    }
-  }
-}
-    `;
-
-/**
- * __useMinimumViableLooResponseQuery__
- *
- * To run a query within a React component, call `useMinimumViableLooResponseQuery` and pass it any options that fit your needs.
- * When your component renders, `useMinimumViableLooResponseQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMinimumViableLooResponseQuery({
- *   variables: {
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function useMinimumViableLooResponseQuery(baseOptions: Apollo.QueryHookOptions<MinimumViableLooResponseQuery, MinimumViableLooResponseQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MinimumViableLooResponseQuery, MinimumViableLooResponseQueryVariables>(MinimumViableLooResponseDocument, options);
-      }
-export function useMinimumViableLooResponseLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MinimumViableLooResponseQuery, MinimumViableLooResponseQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MinimumViableLooResponseQuery, MinimumViableLooResponseQueryVariables>(MinimumViableLooResponseDocument, options);
-        }
-export type MinimumViableLooResponseQueryHookResult = ReturnType<typeof useMinimumViableLooResponseQuery>;
-export type MinimumViableLooResponseLazyQueryHookResult = ReturnType<typeof useMinimumViableLooResponseLazyQuery>;
-export type MinimumViableLooResponseQueryResult = Apollo.QueryResult<MinimumViableLooResponseQuery, MinimumViableLooResponseQueryVariables>;
 export const RemoveLooDocument = gql`
     mutation removeLoo($id: ID!, $reason: String!) {
   submitRemovalReport(report: {edit: $id, reason: $reason}) {
@@ -710,9 +648,9 @@ export type UkLooMarkersQueryHookResult = ReturnType<typeof useUkLooMarkersQuery
 export type UkLooMarkersLazyQueryHookResult = ReturnType<typeof useUkLooMarkersLazyQuery>;
 export type UkLooMarkersQueryResult = Apollo.QueryResult<UkLooMarkersQuery, UkLooMarkersQueryVariables>;
 export const UpdateLooDocument = gql`
-    mutation updateLoo($id: ID, $location: PointInput!, $name: String, $openingTimes: OpeningTimes, $accessible: Boolean, $allGender: Boolean, $men: Boolean, $women: Boolean, $children: Boolean, $urinalOnly: Boolean, $babyChange: Boolean, $radar: Boolean, $attended: Boolean, $automatic: Boolean, $noPayment: Boolean, $paymentDetails: String, $notes: String, $campaignUOL: Boolean, $active: Boolean) {
+    mutation updateLoo($id: ID, $location: PointInput!, $name: String, $openingTimes: OpeningTimes, $accessible: Boolean, $allGender: Boolean, $men: Boolean, $women: Boolean, $children: Boolean, $urinalOnly: Boolean, $babyChange: Boolean, $radar: Boolean, $attended: Boolean, $automatic: Boolean, $noPayment: Boolean, $paymentDetails: String, $notes: String, $active: Boolean) {
   submitReport(
-    report: {edit: $id, location: $location, name: $name, openingTimes: $openingTimes, accessible: $accessible, men: $men, women: $women, children: $children, urinalOnly: $urinalOnly, allGender: $allGender, babyChange: $babyChange, radar: $radar, attended: $attended, automatic: $automatic, noPayment: $noPayment, paymentDetails: $paymentDetails, notes: $notes, campaignUOL: $campaignUOL, active: $active}
+    report: {edit: $id, location: $location, name: $name, openingTimes: $openingTimes, accessible: $accessible, men: $men, women: $women, children: $children, urinalOnly: $urinalOnly, allGender: $allGender, babyChange: $babyChange, radar: $radar, attended: $attended, automatic: $automatic, noPayment: $noPayment, paymentDetails: $paymentDetails, notes: $notes, active: $active}
   ) {
     code
     success
@@ -755,7 +693,6 @@ export type UpdateLooMutationFn = Apollo.MutationFunction<UpdateLooMutation, Upd
  *      noPayment: // value for 'noPayment'
  *      paymentDetails: // value for 'paymentDetails'
  *      notes: // value for 'notes'
- *      campaignUOL: // value for 'campaignUOL'
  *      active: // value for 'active'
  *   },
  * });

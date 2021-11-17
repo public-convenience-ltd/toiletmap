@@ -6,7 +6,6 @@ const CurrentLooMarker = ({ loo }: { loo: Loo }) => {
   const icon = new ToiletMarkerIcon({
     isHighlighted: true,
     toiletId: loo?.id,
-    isUseOurLoosCampaign: loo?.campaignUOL,
   });
 
   return <Marker position={loo.location} icon={icon} />;

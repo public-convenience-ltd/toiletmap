@@ -109,7 +109,6 @@ const LooMap: React.FC<Props> = ({
             new ToiletMarkerIcon({
               isHighlighted: toilet.isHighlighted,
               toiletId: toilet.id,
-              isUseOurLoosCampaign: toilet.campaignUOL,
             })
           }
           label={toilet.name || 'Unnamed toilet'}

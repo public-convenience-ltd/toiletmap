@@ -90,7 +90,6 @@ type Loo {
   paymentDetails: String
   notes: String
   removalReason: String
-  campaignUOL: Boolean
 }
 
 enum SortOrder {
@@ -134,7 +133,6 @@ type Report {
   paymentDetails: String
   notes: String
   removalReason: String
-  campaignUOL: Boolean
   "The Loo which uses the data submitted in this report"
   loo: Loo
 }
@@ -278,7 +276,6 @@ input ReportInput {
   noPayment: Boolean
   paymentDetails: String
   notes: String
-  campaignUOL: Boolean
   active: Boolean
 }
 input RemovalReportInput {
