@@ -9,14 +9,7 @@ import { getSession } from '@auth0/nextjs-auth0';
 import resolvers from '../../api/resolvers';
 import authDirective from '../../api/directives/authDirective';
 import redactedDirective from '../../api/directives/redactedDirective';
-
 import typeDefs from '../../api/typeDefs';
-import { SchemaLink } from '@apollo/client/link/schema';
-import {
-  ApolloClient,
-  InMemoryCache,
-  NormalizedCacheObject,
-} from '@apollo/client';
 
 const client = jwksClient({
   jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}/.well-known/jwks.json`,

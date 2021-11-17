@@ -10,21 +10,29 @@ import {
   createHttpLink,
 } from '@apollo/client';
 
+import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
+import { sha256 } from 'crypto-hash';
+
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 function createApolloClient() {
-  let link;
+  let terminatingLink;
   if (typeof window === 'undefined') {
     const { SchemaLink } = require('@apollo/client/link/schema');
     const { schema } = require('../pages/api');
-    link = new SchemaLink({ schema });
+    terminatingLink = new SchemaLink({ schema });
   } else {
-    link = createHttpLink({
+    terminatingLink = createHttpLink({
       uri: '/api',
       credentials: 'same-origin',
       fetch,
     });
   }
+
+  const link = createPersistedQueryLink({
+    sha256,
+    useGETForHashedQueries: true,
+  }).concat(terminatingLink);
 
   const cache = new InMemoryCache();
   return new ApolloClient({
@@ -45,7 +53,6 @@ export function getApolloClient(
   // If a page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
   if (initialState) {
-    console.log(initialState);
     // Get existing cache, loaded during client side data fetching
     const existingCache = _apolloClient.extract();
 

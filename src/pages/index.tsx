@@ -71,9 +71,9 @@ const HomePage: PageUkLooMarkersComp = (props) => {
   );
 };
 
-export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
-  await dbConnect();
-  return await ssrUkLooMarkers.getServerPage({}, { req });
-};
+// export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
+//   await dbConnect();
+//   return await ssrUkLooMarkers.getServerPage({}, { req });
+// };
 
-export default withApollo(ssrUkLooMarkers.withPage(() => ({}))(HomePage));
+export default withApollo(HomePage);
