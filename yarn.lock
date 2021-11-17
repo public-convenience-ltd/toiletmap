@@ -3945,6 +3945,11 @@ crypto-browserify@3.12.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
+crypto-hash@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/crypto-hash/-/crypto-hash-2.0.0.tgz#5cd5ac64c8504ad30e4ba03aacbd283b6160945c"
+  integrity sha512-uua9EnThQk7vkDCm6Ltab/7QR6XzPiV2bSdLdvbwdZKb4lot94kHkherQt6uw1hNntXjDA7lNHj2vFm1JaYt0g==
+
 css-vendor@^0.3.8:
   version "0.3.8"
   resolved "https://registry.npmjs.org/css-vendor/-/css-vendor-0.3.8.tgz"
