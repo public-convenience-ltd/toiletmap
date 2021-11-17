@@ -12,6 +12,5 @@ query findLoosNearby($lat: Float!, $lng: Float!, $radius: Int!) {
     accessible
     babyChange
     radar
-    campaignUOL
   }
 }

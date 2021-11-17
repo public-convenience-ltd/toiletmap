@@ -27,7 +27,6 @@ const looInfoResolver = (property) => {
     notes: resolve,
     removalReason: resolve,
     verifiedAt: resolve,
-    campaignUOL: resolve,
   };
 };
 
@@ -124,7 +123,6 @@ const resolvers = {
       const FILTER_ACCESSIBLE = 0b00001000;
       const FILTER_BABY_CHNG = 0b00010000;
       const FILTER_RADAR = 0b00100000;
-      const FILTER_UOL = 0b01000000;
       let count = 0;
       const genLooFilterMask = (loo) => {
         const noPayment =
@@ -157,29 +155,18 @@ const resolvers = {
           loo.properties.radar === undefined || loo.properties.radar === false
             ? 0
             : FILTER_RADAR;
-        const campaignUOL =
-          loo.properties.campaignUOL === undefined ||
-          loo.properties.campaignUOL === false
-            ? 0
-            : FILTER_UOL;
 
         return (
-          noPayment |
-          allGender |
-          automatic |
-          accessible |
-          babyChange |
-          radar |
-          campaignUOL
+          noPayment | allGender | automatic | accessible | babyChange | radar
         );
       };
 
       const mapped = loos.map((loo) => {
         return `${loo.id}|${loo.properties.geometry.coordinates[0].toFixed(
           4
-        )}|${loo.properties.geometry.coordinates[1].toFixed(4)}|${
-          loo.properties.name ? loo.properties.name.replace('|', ' ') : ''
-        }|${genLooFilterMask(loo)}`;
+        )}|${loo.properties.geometry.coordinates[1].toFixed(
+          4
+        )}|${genLooFilterMask(loo)}`;
       });
       return mapped;
     },

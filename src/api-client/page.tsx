@@ -77,41 +77,6 @@ export const ssrFindLoosNearby = {
       withPage: withPageFindLoosNearby,
       usePage: useFindLoosNearby,
     }
-export async function getServerPageMinimumViableLooResponse
-    (options: Omit<Apollo.QueryOptions<Types.MinimumViableLooResponseQueryVariables>, 'query'>, ctx?: any ){
-        const apolloClient = getApolloClient(ctx);
-        
-        const data = await apolloClient.query<Types.MinimumViableLooResponseQuery>({ ...options, query: Operations.MinimumViableLooResponseDocument });
-        
-        const apolloState = apolloClient.cache.extract();
-
-        return {
-            props: {
-                apolloState: apolloState,
-                data: data?.data,
-                error: data?.error ?? data?.errors ?? null,
-            },
-        };
-      }
-export const useMinimumViableLooResponse = (
-  optionsFunc?: (router: NextRouter)=> QueryHookOptions<Types.MinimumViableLooResponseQuery, Types.MinimumViableLooResponseQueryVariables>) => {
-  const router = useRouter();
-  const options = optionsFunc ? optionsFunc(router) : {};
-  return useQuery(Operations.MinimumViableLooResponseDocument, options);
-};
-export type PageMinimumViableLooResponseComp = React.FC<{data?: Types.MinimumViableLooResponseQuery, error?: Apollo.ApolloError}>;
-export const withPageMinimumViableLooResponse = (optionsFunc?: (router: NextRouter)=> QueryHookOptions<Types.MinimumViableLooResponseQuery, Types.MinimumViableLooResponseQueryVariables>) => (WrappedComponent:PageMinimumViableLooResponseComp) : NextPage  => (props) => {
-                const router = useRouter()
-                const options = optionsFunc ? optionsFunc(router) : {};
-                const {data, error } = useQuery(Operations.MinimumViableLooResponseDocument, options)    
-                return <WrappedComponent {...props} data={data} error={error} /> ;
-                   
-            }; 
-export const ssrMinimumViableLooResponse = {
-      getServerPage: getServerPageMinimumViableLooResponse,
-      withPage: withPageMinimumViableLooResponse,
-      usePage: useMinimumViableLooResponse,
-    }
 
 
 export async function getServerPageUkLooMarkers

@@ -68,9 +68,6 @@ const MainMenu = ({ mapCenter, onMenuItemClick, children }: IMainMenu) => {
           <Box as="li" mt={['auto', 0]} ml={[0, 'auto']}>
             <StyledNavLink href="/about">About</StyledNavLink>
           </Box>
-          <Box as="li" mt={[3, 0]} ml={[0, 4]}>
-            <StyledNavLink href="/use-our-loos">Our Sponsor</StyledNavLink>
-          </Box>
           <Box as="li" mt={[3, 0]} mb={['auto', 0]} ml={[0, 4]}>
             <StyledNavLink href="/contact">Contact</StyledNavLink>
           </Box>

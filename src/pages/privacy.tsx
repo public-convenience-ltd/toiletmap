@@ -60,27 +60,15 @@ const PrivacyPage = () => {
           misuse and to recognise contributions from a user if that user is
           adding unsuitable content, whether intentionally or inadvertently.
         </p>
-        {/* Safer to leave the use our loos campaign in? Can we promise that data collected from the app will be separate? */}
         <p>
           A full list of a contributor’s activities will only be accessible to
-          Public Convenience Ltd and the Use Our Loos campaign manager, for
-          moderating the dataset. A contributor’s full email address will never
-          be disclosed or shared and is only visible to Public Convenience Ltd.
+          Public Convenience Ltd for moderating the dataset. A contributor’s
+          full email address will never be disclosed or shared and is only
+          visible to Public Convenience Ltd.
         </p>
 
         <Spacer mb={4} />
-        <Text fontSize={3} fontWeight="bold">
-          <h2>Public and Business Supporters of Use Our Loos campaign</h2>
-        </Text>
-        <Spacer mb={3} />
-        <p>
-          Individuals and businesses who click the “Join the Use Our Loos
-          campaign” button on The Great British Public Toilet Map should have
-          the opportunity to consider the terms and conditions of the campaign
-          before completing the sign-up form there. The campaign is separate
-          from The Great British Public Toilet Map. Data added to the Use Our
-          Loos campaign is not stored or processed by Public Convenience Ltd.
-        </p>
+
         <p>
           If you&apos;d like to know what we&apos;ve stored about you, or ask us
           to forget you, or to let us know about something you&apos;d like

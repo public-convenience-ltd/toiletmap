@@ -37,27 +37,8 @@ import { Media } from './Media';
 import { /* getIsOpen, */ WEEKDAYS, isClosed } from '../openingTimes';
 import { useMapState } from './MapState';
 
-import uolLogo from '../../public/uol-logo.svg';
-
 // import FIND_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';
 // import UPDATE_LOO_MUTATION from '../graphql/updateLoo.graphql';
-
-const uolFragment = (
-  <Box display="flex" alignItems="center">
-    <Image
-      src={uolLogo}
-      alt=""
-      css={{
-        height: '1.25em',
-      }}
-    />
-    <Spacer ml={2} />
-    <Button as={Link} to="/use-our-loos" variant="link">
-      Use Our Loos
-    </Button>
-    &nbsp;Member
-  </Box>
-);
 
 const Grid = styled(Box)`
   display: flex;
@@ -399,14 +380,6 @@ const ToiletDetailsPanel = ({
             >
               {titleFragment}
               <Spacer mb={2} />
-
-              {data.campaignUOL && (
-                <>
-                  {uolFragment}
-                  <Spacer mb={3} />
-                </>
-              )}
-
               {getDirectionsFragment}
               <Media greaterThanOrEqual="md">
                 <Spacer mb={4} />
@@ -552,7 +525,6 @@ const ToiletDetailsPanel = ({
         <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
           {titleFragment}
           <Spacer mb={2} />
-          {data.campaignUOL && uolFragment}
         </Box>
 
         <Box width={['100%', '50%', '25%']} padding={[3, 4]}>

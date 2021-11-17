@@ -24,8 +24,7 @@ function parseCompressedLoo(str) {
       lng: l[1],
       lat: l[2],
     },
-    name: l[3],
-    filterBitmask: parseInt(l[4], 10),
+    filterBitmask: parseInt(l[3], 10),
   };
 }
 
@@ -36,7 +35,6 @@ enum FILTER_TYPE {
   ACCESSIBLE = 0b00001000,
   BABY_CHNG = 0b00010000,
   RADAR = 0b00100000,
-  UOL = 0b01000000,
 }
 
 const Markers = ({ filters = [] }) => {
@@ -104,9 +102,8 @@ const Markers = ({ filters = [] }) => {
             zIndexOffset: 0,
             icon: new ToiletMarkerIcon({
               toiletId: toilet.id,
-              isUseOurLoosCampaign: toilet?.campaignUOL,
             }),
-            alt: toilet.name || 'Unnamed toilet',
+            alt: 'Public Toilet',
             keyboard: false,
           }
         )
