@@ -1,5 +1,3 @@
-import React from 'react';
-
 import PageLayout from '../components/PageLayout';
 import Box from '../components/Box';
 import Spacer from '../components/Spacer';

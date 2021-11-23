@@ -1,4 +1,3 @@
-import React from 'react';
 import Head from 'next/head';
 
 import PageLayout from '../components/PageLayout';
@@ -10,7 +9,7 @@ import Spacer from '../components/Spacer';
 import config from '../config';
 import { NextPage } from 'next';
 
-const ContactPage = (props) => {
+const ContactPage = () => {
   return (
     <PageLayout layoutMode="blog">
       <Head>

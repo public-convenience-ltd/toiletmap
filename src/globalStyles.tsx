@@ -1,9 +1,8 @@
-import React from 'react';
 import { Global, css } from '@emotion/react';
 
 import theme from './theme';
 
-// loosely based on https://hankchizljaw.com/wrote/a-modern-css-reset
+// loosely based on https://hankchizljaw.com/wrote/a-modern-css-reset + a height declaration on the next container...
 const globalStyles = (
   <Global
     styles={css`
@@ -170,6 +169,10 @@ const globalStyles = (
           transition-duration: 0.01ms !important;
           scroll-behavior: auto !important;
         }
+      }
+
+      #__next {
+        height: 100%;
       }
     `}
   />

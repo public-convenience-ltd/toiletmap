@@ -95,9 +95,6 @@ const Sidebar = ({
                   geolocation: location,
                   center: location,
                 });
-
-                typeof window !== 'undefined' &&
-                  window.plausible('Find a toilet near me');
               });
             }}
             aria-label="Find a toilet near me"
@@ -240,9 +237,6 @@ const Sidebar = ({
                       geolocation: location,
                       center: location,
                     });
-
-                    typeof window !== 'undefined' &&
-                      window.plausible('Find a toilet near me');
                   });
                 }}
               >

@@ -31,7 +31,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
     if (!selectedItem) {
       return;
     }
-    window['plausible']('Search');
+
     const { lat, lng } = await getPlaceLatLng(selectedItem);
 
     onSelectedItemChange({ lat, lng });

@@ -7,10 +7,7 @@ import VisuallyHidden from '../components/VisuallyHidden';
 import { useMapState } from '../components/MapState';
 import config from '../config';
 import { withApollo } from '../components/withApollo';
-import { GetServerSideProps } from 'next';
 import useFilters from '../hooks/useFilters';
-import { dbConnect } from '../api/db';
-import { ssrUkLooMarkers, PageUkLooMarkersComp } from '../api-client/page';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 const MapLoader = () => <p>Loading map...</p>;
@@ -19,7 +16,7 @@ const LooMap = dynamic(() => import('../components/LooMap'), {
   ssr: false,
 });
 
-const HomePage: PageUkLooMarkersComp = (props) => {
+const HomePage = () => {
   const [mapState, setMapState] = useMapState();
 
   const { filters, setFilters } = useFilters([]);
@@ -70,10 +67,5 @@ const HomePage: PageUkLooMarkersComp = (props) => {
     </PageLayout>
   );
 };
-
-// export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
-//   await dbConnect();
-//   return await ssrUkLooMarkers.getServerPage({}, { req });
-// };
 
 export default withApollo(HomePage);
