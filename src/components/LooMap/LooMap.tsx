@@ -17,7 +17,7 @@ interface Props {
   controlsOffset?: number;
   showCrosshair?: boolean;
   withAccessibilityOverlays?: boolean;
-  filters: any;
+  filters?: any;
 }
 
 const LooMap: React.FC<Props> = ({
@@ -29,7 +29,7 @@ const LooMap: React.FC<Props> = ({
   minZoom,
   maxZoom = 18,
   staticMap = false,
-  filters,
+  filters = [],
 }) => {
   return (
     <Box

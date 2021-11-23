@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -17,16 +16,14 @@ import { useMapState } from '../../../components/MapState';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { withApollo } from '../../../components/withApollo';
-import { NextPage } from 'next';
+import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
+import { GetServerSideProps } from 'next';
+import { dbConnect } from '../../../api/db';
 import {
   UpdateLooMutationVariables,
-  useFindLooByIdQuery,
   useUpdateLooMutation,
 } from '../../../api-client/graphql';
-import { cloneDeep } from '@apollo/client/utilities';
-import { merge, uniqBy } from 'lodash';
-import Notification from '../../../components/Notification';
-import { css } from '@emotion/react';
+
 import PageLoading from '../../../components/PageLoading';
 
 const MapLoader = () => <p>Loading map...</p>;
@@ -36,65 +33,21 @@ const LooMap = dynamic(() => import('../../../components/LooMap'), {
   ssr: false,
 });
 
-const EditPage = (props: { match: { params: { id?: string } } }) => {
+const EditPage: PageFindLooByIdComp = (props) => {
+  const loo = props.data.loo;
   const router = useRouter();
   const { isLoading, user } = useUser();
-  const { id: selectedLooId } = router.query;
-
-  const {
-    data: looData,
-    error: looError,
-    loading: loadingLooData,
-  } = useFindLooByIdQuery({ variables: { id: selectedLooId as string } });
-
-  const [mapState, setMapState] = useMapState();
-
-  const looLocation = (looData && looData.loo.location) || null;
-
-  // set the map position to the loo location
-  React.useEffect(() => {
-    if (looLocation) {
-      setMapState({ center: looLocation });
-    }
-  }, [looLocation, setMapState]);
-
-  // local state mapCenter to get fix issues with react-leaflet not being stateless and lat lng rounding issues
-  const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
-
-  const [initialData, setInitialData] = useState({
-    loo: null,
-    center: { lat: 0, lng: 0 },
-  });
-
-  useEffect(() => {
-    if (!looData) {
-      return;
-    }
-
-    const toilet = cloneDeep(merge({}, { active: null }, looData.loo));
-    setMapCenter(toilet.location);
-
-    // keep track of defaults so we only submit new information
-    setInitialData({
-      loo: toilet,
-      center: {
-        lat: toilet.location.lat,
-        lng: toilet.location.lng,
-      },
-    });
-  }, [looData]);
-
+  const [mapState] = useMapState();
   const [
     updateLooMutation,
     { data: saveData, loading: saveLoading, error: saveError },
   ] = useUpdateLooMutation();
 
   const save = async (formData: UpdateLooMutationVariables) => {
-    formData.id = looData.loo.id;
+    formData.id = loo.id;
 
     try {
-      const data = await updateLooMutation({ variables: { ...formData } });
-      useUpdateLooMutation;
+      await updateLooMutation({ variables: { ...formData } });
     } catch (err) {
       console.error('save error', err);
     }
@@ -113,43 +66,10 @@ const EditPage = (props: { match: { params: { id?: string } } }) => {
     return <Login />;
   }
 
-  if (loadingLooData || !looData || !initialData || looError) {
-    return (
-      <PageLayout>
-        <Box
-          my={4}
-          mx="auto"
-          css={css`
-            max-width: 360px; /* fallback */
-            max-width: fit-content;
-          `}
-        >
-          <Notification>
-            {looError ? 'Error fetching toilet data' : 'Fetching Toilet Data'}
-          </Notification>
-        </Box>
-      </PageLayout>
-    );
-  }
-
   // redirect to index if loo is not active (i.e. removed)
-  if (looData && !looData.loo.active) {
+  if (loo && !loo.active) {
     router.push('/');
   }
-
-  const getLoosToDisplay = () => {
-    let activeLoo;
-
-    if (looData) {
-      activeLoo = {
-        ...looData.loo,
-        isHighlighted: true,
-      };
-    }
-
-    // only return the active loos once (activeLoo must be first in array)
-    return uniqBy([activeLoo, ...data], 'id').filter(Boolean);
-  };
 
   return (
     <PageLayout>
@@ -160,22 +80,22 @@ const EditPage = (props: { match: { params: { id?: string } } }) => {
 
         <Box display="flex" height="40vh">
           <LooMap
-            center={mapState.center}
+            center={loo.location}
             zoom={mapState.zoom}
             minZoom={config.editMinZoom}
             showCrosshair
             controlsOffset={20}
-            withAccessibilityOverlays={false}
+            focus={loo}
           />
         </Box>
 
         <Spacer mt={4} />
 
-        {initialData?.loo && (
+        {loo && (
           <EntryForm
             title="Edit This Toilet"
-            loo={initialData.loo}
-            center={mapCenter}
+            loo={loo}
+            center={loo.location}
             saveLoading={saveLoading}
             saveError={saveError}
             onSubmit={save}
@@ -197,7 +117,7 @@ const EditPage = (props: { match: { params: { id?: string } } }) => {
 
                 <Button
                   as={Link}
-                  href={`/loos/${selectedLooId}/remove`}
+                  href={`/loos/${loo.id}/remove`}
                   css={{
                     width: '100%',
                   }}
@@ -214,4 +134,22 @@ const EditPage = (props: { match: { params: { id?: string } } }) => {
   );
 };
 
-export default withApollo(EditPage as NextPage);
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  await dbConnect();
+  const res = await ssrFindLooById.getServerPage(
+    {
+      variables: { id: ctx.params.id as string },
+    },
+    ctx
+  );
+
+  if (res.props.error || !res.props.data) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return res;
+};
+
+export default withApollo(EditPage);
