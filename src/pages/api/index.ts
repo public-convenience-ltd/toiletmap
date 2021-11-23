@@ -1,10 +1,10 @@
 import { ApolloServer } from 'apollo-server-micro';
 import responseCachePlugin from 'apollo-server-plugin-response-cache';
-import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import jwt from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { getSession } from '@auth0/nextjs-auth0';
+import Cors from 'cors';
 
 import resolvers from '../../api/resolvers';
 import authDirective from '../../api/directives/authDirective';
@@ -72,22 +72,7 @@ export const server = new ApolloServer({
     };
   },
   introspection: true,
-  plugins: [
-    responseCachePlugin(),
-    ApolloServerPluginLandingPageGraphQLPlayground({
-      settings: {
-        'request.credentials': 'same-origin',
-      },
-      tabs: [
-        {
-          endpoint: '/api',
-          name: 'Nearby Loos Query',
-          query:
-            'query loosNearNeontribe {\n\tloosByProximity(from: {lat: 52.6335, lng: 1.2953, maxDistance: 500}) {\n\t\tid\n\t\tname\n\t}\n}',
-        },
-      ],
-    }),
-  ],
+  plugins: [responseCachePlugin()],
 });
 
 export const config = {
@@ -98,7 +83,28 @@ export const config = {
 
 const startServer = server.start();
 
+// Initializing the cors middleware
+const cors = Cors({
+  methods: ['GET', 'HEAD', 'POST'],
+  origin: 'https://studio.apollographql.com',
+});
+
+// Helper method to wait for a middleware to execute before continuing
+// And to throw an error when an error happens in a middleware
+function runMiddleware(req, res, fn) {
+  return new Promise((resolve, reject) => {
+    fn(req, res, (result) => {
+      if (result instanceof Error) {
+        return reject(result);
+      }
+
+      return resolve(result);
+    });
+  });
+}
+
 export default async function handler(req, res) {
+  await runMiddleware(req, res, cors);
   // We'll need a mongodb connection
   await dbConnect();
   await startServer;
