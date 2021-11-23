@@ -9,11 +9,11 @@ import Spacer from '../../../components/Spacer';
 import EntryForm from '../../../components/EntryForm';
 import Box from '../../../components/Box';
 import Login from '../../../components/Login';
+import PageLoading from '../../../components/PageLoading';
+import LooMap from '../../../components/LooMap/LooMapLoader';
 
 import config from '../../../config';
 import { useMapState } from '../../../components/MapState';
-
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { withApollo } from '../../../components/withApollo';
 import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
@@ -23,15 +23,6 @@ import {
   UpdateLooMutationVariables,
   useUpdateLooMutation,
 } from '../../../api-client/graphql';
-
-import PageLoading from '../../../components/PageLoading';
-
-const MapLoader = () => <p>Loading map...</p>;
-
-const LooMap = dynamic(() => import('../../../components/LooMap'), {
-  loading: MapLoader,
-  ssr: false,
-});
 
 const EditPage: PageFindLooByIdComp = (props) => {
   const loo = props.data.loo;

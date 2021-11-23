@@ -7,14 +7,10 @@ import VisuallyHidden from '../components/VisuallyHidden';
 import { useMapState } from '../components/MapState';
 import config from '../config';
 import { withApollo } from '../components/withApollo';
+import LooMap from '../components/LooMap/LooMapLoader';
 import useFilters from '../hooks/useFilters';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
-const MapLoader = () => <p>Loading map...</p>;
-const LooMap = dynamic(() => import('../components/LooMap'), {
-  loading: MapLoader,
-  ssr: false,
-});
 
 const HomePage = () => {
   const [mapState, setMapState] = useMapState();

@@ -15,13 +15,9 @@ import { useRouter } from 'next/router';
 import { dbConnect } from '../../../api/db';
 import ToiletDetailsPanel from '../../../components/ToiletDetailsPanel';
 import Notification from '../../../components/Notification';
+import LooMap from '../../../components/LooMap/LooMapLoader';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
-const MapLoader = () => <p>Loading map...</p>;
-const LooMap = dynamic(() => import('../../../components/LooMap'), {
-  loading: MapLoader,
-  ssr: false,
-});
 
 const LooPage: PageFindLooByIdComp = (props) => {
   const [mapState, setMapState] = useMapState();
