@@ -212,7 +212,7 @@ const Sidebar = ({ filters, onFilterChange }) => {
                     <b>Add a Toilet</b>
                   </Text>
                 </Box>
-                <Arrow />
+                <Arrow isExpanded={false} />
               </Box>
             </StyledNavLink>
             <Box as="section" mt={4} aria-labelledby="heading-find">
@@ -242,7 +242,7 @@ const Sidebar = ({ filters, onFilterChange }) => {
                     <b>Find a toilet near me</b>
                   </Text>
                 </Box>
-                <Arrow />
+                <Arrow isExpanded={false} />
               </Box>
             </Box>
           </Box>
