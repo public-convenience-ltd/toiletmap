@@ -1,6 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-import dynamic from 'next/dynamic';
 import PageLayout from '../../../components/PageLayout';
 import Box from '../../../components/Box';
 import Sidebar from '../../../components/Sidebar';
@@ -54,13 +53,7 @@ const LooPage: PageFindLooByIdComp = (props) => {
           // center on small viewports
           mx={['auto', 0]}
         >
-          <Sidebar
-            filters={filters}
-            onFilterChange={setFilters}
-            onSelectedItemChange={(center) => setMapState({ center })}
-            onUpdateMapPosition={setMapState}
-            mapCenter={mapState.center}
-          />
+          <Sidebar filters={filters} onFilterChange={setFilters} />
         </Box>
         <LooMap
           center={mapState.center}
