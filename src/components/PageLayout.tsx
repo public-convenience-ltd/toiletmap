@@ -20,14 +20,14 @@ interface IPageLayout {
   children: React.ReactNode;
 }
 
-const PageLayout = ({ mapCenter, layoutMode, children }: IPageLayout) => {
+const PageLayout = ({ layoutMode, children }: IPageLayout) => {
   return (
     <ThemeProvider theme={theme}>
       <MediaContextProvider>
         {globalStyles}
 
         <Box display="flex" flexDirection="column" height="100%">
-          <Header mapCenter={mapCenter}>
+          <Header>
             <Footer />
           </Header>
 

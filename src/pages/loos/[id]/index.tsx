@@ -57,7 +57,6 @@ const LooPage: PageFindLooByIdComp = (props) => {
         <LooMap
           center={mapState.center}
           zoom={mapState.zoom}
-          onViewportChanged={setMapState}
           controlsOffset={0}
           focus={props?.data?.loo}
         />

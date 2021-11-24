@@ -5,6 +5,7 @@ import Box from '../Box';
 import Text from '../Text';
 import { Media } from '../Media';
 import { useUser } from '@auth0/nextjs-auth0';
+import { useMapState } from '../MapState';
 
 const StyledNavLink = styled(Link)<
   LinkProps & {
@@ -29,6 +30,7 @@ interface IMainMenu {
 // Todo: Contact link
 const MainMenu = ({ mapCenter, onMenuItemClick, children }: IMainMenu) => {
   const { user } = useUser();
+  const [mapState] = useMapState();
 
   return (
     <Text
@@ -56,8 +58,8 @@ const MainMenu = ({ mapCenter, onMenuItemClick, children }: IMainMenu) => {
           <Box as="li" mt={[3, 0]} ml={[0, 4]}>
             <StyledNavLink
               href={
-                mapCenter
-                  ? `/loos/add?lat=${mapCenter.lat}&lng=${mapCenter.lng}`
+                mapState?.center
+                  ? `/loos/add?lat=${mapState.center.lat}&lng=${mapState.center.lng}`
                   : `/loos/add`
               }
             >

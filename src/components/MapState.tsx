@@ -11,9 +11,6 @@ interface MapState {
     lng: number;
   };
   zoom?: number;
-  radius?: number;
-  geolocation?: any;
-  loos?: Loo[];
   filters?: Filter[];
 }
 
@@ -34,9 +31,6 @@ export const MapStateProvider = ({ children, loos = [] }) => {
   const [state, setState] = React.useReducer(reducer, {
     center: config.fallbackLocation,
     zoom: 16,
-    radius: 1000,
-    geolocation: null,
-    loos: loos,
     filters: initialFilterState,
   });
 

@@ -35,7 +35,7 @@ const LooMap = dynamic(() => import('../../components/LooMap'), {
   ssr: false,
 });
 
-const AddPage = (props) => {
+const AddPage = () => {
   const { user, error, isLoading } = useUser();
   const [mapState, setMapState] = useMapState();
 
@@ -48,8 +48,8 @@ const AddPage = (props) => {
     if (lat && lng) {
       setMapState({
         center: {
-          lat: parseFloat(lat),
-          lng: parseFloat(lng),
+          lat: parseFloat(lat as string),
+          lng: parseFloat(lng as string),
         },
       });
     }
@@ -102,7 +102,6 @@ const AddPage = (props) => {
           showCrosshair
           controlsOffset={20}
           withAccessibilityOverlays={false}
-          onViewportChanged={setMapState}
         />
 
         <Box position="absolute" top={0} left={0} m={3}>

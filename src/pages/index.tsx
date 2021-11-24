@@ -45,7 +45,6 @@ const HomePage = () => {
         <LooMap
           center={mapState.center}
           zoom={mapState.zoom}
-          onViewportChanged={setMapState}
           controlsOffset={0}
         />
       </Box>

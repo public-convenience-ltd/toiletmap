@@ -1,4 +1,10 @@
-import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet';
+import { useMapState } from '../MapState';
+import {
+  MapContainer,
+  TileLayer,
+  ZoomControl,
+  useMapEvents,
+} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { css } from '@emotion/react';
 import Box from '../Box';
@@ -6,6 +12,20 @@ import { Media } from '../Media';
 import Markers from './Markers';
 import CurrentLooMarker from './CurrentLooMarker';
 import { Loo } from '../../api-client/graphql';
+
+const MapTracker = () => {
+  const [, setMapState] = useMapState();
+  const map = useMapEvents({
+    moveend: () => {
+      setMapState({ center: map.getCenter() });
+    },
+    zoomend: () => {
+      setMapState({ zoom: map.getZoom() });
+    },
+  });
+  return null;
+};
+
 interface Props {
   focus?: Loo;
   center: { lat: number; lng: number };
@@ -13,7 +33,6 @@ interface Props {
   minZoom?: number;
   maxZoom?: number;
   staticMap?: boolean;
-  onViewportChanged?: () => void;
   controlsOffset?: number;
   showCrosshair?: boolean;
   withAccessibilityOverlays?: boolean;
@@ -122,6 +141,7 @@ const LooMap: React.FC<Props> = ({
           <ZoomControl position="bottomright" />
         </Media>
         {/* <LocateMapControl position="bottomright" /> */}
+        <MapTracker />
       </MapContainer>
     </Box>
   );
