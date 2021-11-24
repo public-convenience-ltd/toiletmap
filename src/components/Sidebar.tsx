@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import isPropValid from '@emotion/is-prop-valid';
@@ -48,17 +48,11 @@ const StyledNavLink = styled(Link)`
   align-items: center;
 `;
 
-const Sidebar = ({
-  filters,
-  onFilterChange,
-  onSelectedItemChange,
-  onUpdateMapPosition,
-  mapCenter,
-}) => {
+const Sidebar = ({ filters, onFilterChange }) => {
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   const filterToggleRef = useRef(null);
-  const [, setMapState] = useMapState();
+  const [mapState, setMapState] = useMapState();
 
   return (
     <section aria-labelledby="heading-search">
@@ -68,7 +62,7 @@ const Sidebar = ({
         </VisuallyHidden>
 
         <LocationSearch
-          onSelectedItemChange={(center) => onUpdateMapPosition({ center })}
+          onSelectedItemChange={(center) => setMapState({ center })}
         />
 
         <Box display="flex" justifyContent="center" mt={3}>
@@ -155,7 +149,9 @@ const Sidebar = ({
           </h2>
 
           <Box mt={3}>
-            <LocationSearch onSelectedItemChange={onSelectedItemChange} />
+            <LocationSearch
+              onSelectedItemChange={(center) => setMapState({ center })}
+            />
           </Box>
 
           <Box as="section" my={4} aria-labelledby="heading-filters">
@@ -207,7 +203,7 @@ const Sidebar = ({
               <VisuallyHidden>Add a toilet</VisuallyHidden>
             </h2>
             <StyledNavLink
-              href={`/loos/add?lat=${mapCenter.lat}&lng=${mapCenter.lng}`}
+              href={`/loos/add?lat=${mapState.center.lat}&lng=${mapState.center.lng}`}
             >
               <Box display="flex" alignItems="center" as="button" type="button">
                 <Icon icon={faPlusCircle} fixedWidth size="lg" />
@@ -258,9 +254,7 @@ const Sidebar = ({
 
 Sidebar.propTypes = {
   filters: PropTypes.object.isRequired,
-  onUpdateMapPosition: PropTypes.func.isRequired,
   onFilterChange: PropTypes.func.isRequired,
-  onSelectedItemChange: PropTypes.func.isRequired,
 };
 
 export default Sidebar;
