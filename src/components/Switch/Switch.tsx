@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-import Box from '../Box';
+import Box, { BoxProps } from '../Box';
 
 const HEIGHT = 16;
 const WIDTH = 27;
@@ -13,53 +13,55 @@ const Inner = styled(Box)`
   transition: left 0.2s ease;
 `;
 
-const Switch = React.forwardRef(function MySwitch(
-  {
-    checked,
-    onClick = Function.prototype,
-    onChange = Function.prototype,
-    ...props
-  },
-  ref
-) {
-  return (
-    <Box
-      as="button"
-      type="button"
-      role="switch"
-      {...props}
-      ref={ref}
-      aria-checked={checked}
-      position="relative"
-      bg={checked ? 'tertiary' : 'primary'}
-      height={HEIGHT}
-      width={WIDTH}
-      borderRadius={18}
-      onClick={() => {
-        onClick();
-        onChange(!checked);
-      }}
-    >
-      <Inner
-        as="span"
-        position="absolute"
-        top="1px"
-        left={
-          checked ? `calc(100% - ${LENGTH}px - ${OFFSET}px)` : `${OFFSET}px`
-        }
-        height={LENGTH}
-        width={LENGTH}
-        borderRadius="50%"
-        bg="white"
-      />
-    </Box>
-  );
-});
-
-Switch.propTypes = {
+interface SwitchProps extends Partial<HTMLButtonElement> {
   /** Determines whether the switch is on */
-  checked: PropTypes.bool.isRequired,
-};
+  checked: boolean;
+  onClick?: () => void;
+  onChange?: (checked: boolean) => void;
+}
+
+const Switch: React.FC<SwitchProps> = React.forwardRef(
+  ({ checked, onClick, onChange, ...props }, ref) => {
+    return (
+      <Box
+        as="button"
+        type="button"
+        role="switch"
+        {...props}
+        ref={ref}
+        aria-checked={checked}
+        position="relative"
+        bg={checked ? 'tertiary' : 'primary'}
+        height={HEIGHT}
+        width={WIDTH}
+        borderRadius={18}
+        onClick={() => {
+          if (onClick) {
+            onClick();
+          }
+          if (onChange) {
+            onChange(!checked);
+          }
+        }}
+      >
+        <Inner
+          as="span"
+          position="absolute"
+          top="1px"
+          left={
+            checked ? `calc(100% - ${LENGTH}px - ${OFFSET}px)` : `${OFFSET}px`
+          }
+          height={LENGTH}
+          width={LENGTH}
+          borderRadius="50%"
+          bg="white"
+        />
+      </Box>
+    );
+  }
+);
+
+Switch.displayName = 'Switch';
 
 /** @component */
 export default Switch;

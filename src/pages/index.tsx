@@ -7,14 +7,11 @@ import { useMapState } from '../components/MapState';
 import config from '../config';
 import { withApollo } from '../components/withApollo';
 import LooMap from '../components/LooMap/LooMapLoader';
-import useFilters from '../hooks/useFilters';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
 const HomePage = () => {
   const [mapState, setMapState] = useMapState();
-
-  const { filters, setFilters } = useFilters([]);
 
   const pageTitle = config.getTitle('Home');
 
@@ -42,7 +39,7 @@ const HomePage = () => {
           // center on small viewports
           mx={['auto', 0]}
         >
-          <Sidebar filters={filters} onFilterChange={setFilters} />
+          <Sidebar />
         </Box>
 
         <LooMap
@@ -50,7 +47,6 @@ const HomePage = () => {
           zoom={mapState.zoom}
           onViewportChanged={setMapState}
           controlsOffset={0}
-          filters={filters}
         />
       </Box>
     </PageLayout>
