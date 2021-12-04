@@ -9,6 +9,11 @@ import { useMap } from 'react-leaflet';
 import { useUkLooMarkersQuery } from '../../api-client/graphql';
 import config, { Filter } from '../../config';
 import { useMapState } from '../MapState';
+import { FILTER_TYPE, getAppliedFiltersAsFilterTypes } from '../../lib/filter';
+import {
+  filterCompressedLooByAppliedFilters,
+  parseCompressedLoo,
+} from '../../lib/loo';
 const KEY_ENTER = 13;
 
 const mcg = L.markerClusterGroup({
@@ -17,68 +22,24 @@ const mcg = L.markerClusterGroup({
   chunkInterval: 500,
 });
 
-function parseCompressedLoo(str) {
-  const l = str.split('|');
-  return {
-    id: l[0],
-    location: {
-      lng: l[1],
-      lat: l[2],
-    },
-    filterBitmask: parseInt(l[3], 10),
-  };
-}
-
-enum FILTER_TYPE {
-  NO_PAYMENT = 0b00000001,
-  ALL_GENDER = 0b00000010,
-  AUTOMATIC = 0b00000100,
-  ACCESSIBLE = 0b00001000,
-  BABY_CHNG = 0b00010000,
-  RADAR = 0b00100000,
-}
-
 const Markers = () => {
   const router = useRouter();
 
-  const [mapState] = useMapState();
+  const [mapState, setMapState] = useMapState();
   const { filters } = mapState;
   const { data } = useUkLooMarkersQuery();
 
-  const [appliedFilters, setAppliedFilters] = useState<Array<FILTER_TYPE>>([]);
+  const [appliedFilterTypes, setAppliedFilterTypes] = useState<
+    Array<FILTER_TYPE>
+  >([]);
 
   useEffect(() => {
-    // get the filter objects from config for the filters applied by the user
     const applied: Array<Filter> = config.filters.filter(
       (filter) => filters[filter.id]
     );
-
-    const bitmask = applied.reduce((p, c) => {
-      switch (c.id) {
-        case 'accessible':
-          p.push(FILTER_TYPE.ACCESSIBLE);
-          break;
-        case 'allGender':
-          p.push(FILTER_TYPE.ALL_GENDER);
-          break;
-        case 'automatic':
-          p.push(FILTER_TYPE.AUTOMATIC);
-          break;
-        case 'babyChange':
-          p.push(FILTER_TYPE.BABY_CHNG);
-          break;
-        case 'noPayment':
-          p.push(FILTER_TYPE.NO_PAYMENT);
-          break;
-        case 'radar':
-          p.push(FILTER_TYPE.RADAR);
-          break;
-      }
-      return p;
-    }, [] as Array<FILTER_TYPE>);
-
+    const appliedFilterTypes = getAppliedFiltersAsFilterTypes(applied);
     window.setTimeout(() => {
-      setAppliedFilters(bitmask);
+      setAppliedFilterTypes(appliedFilterTypes);
     }, 200);
   }, [filters]);
 
@@ -86,40 +47,32 @@ const Markers = () => {
     if (!data?.ukLooMarkers) {
       return [];
     }
-    return data.ukLooMarkers
-      .filter((compressed) => {
-        const toilet = parseCompressedLoo(compressed);
-        for (let i = 0; i < appliedFilters.length; i++) {
-          const filter = appliedFilters[i];
-          if (toilet.filterBitmask & filter) {
-            return false;
-          }
-        }
-        return true;
+
+    const parsedAndFilteredMarkers = data?.ukLooMarkers
+      .map(parseCompressedLoo)
+      .filter((compressedLoo) =>
+        filterCompressedLooByAppliedFilters(compressedLoo, appliedFilterTypes)
+      );
+
+    return parsedAndFilteredMarkers.map((toilet) => {
+      return L.marker(new L.LatLng(toilet.location.lat, toilet.location.lng), {
+        zIndexOffset: 0,
+        icon: new ToiletMarkerIcon({
+          toiletId: toilet.id,
+        }),
+        alt: 'Public Toilet',
+        keyboard: false,
       })
-      .map((compressed) => {
-        const toilet = parseCompressedLoo(compressed);
-        return L.marker(
-          new L.LatLng(toilet.location.lat, toilet.location.lng),
-          {
-            zIndexOffset: 0,
-            icon: new ToiletMarkerIcon({
-              toiletId: toilet.id,
-            }),
-            alt: 'Public Toilet',
-            keyboard: false,
-          }
-        )
-          .on('click', () => {
+        .on('click', () => {
+          router.push(`/loos/${toilet.id}`);
+        })
+        .on('keydown', (event: { originalEvent: { keyCode: number } }) => {
+          if (event.originalEvent.keyCode === KEY_ENTER) {
             router.push(`/loos/${toilet.id}`);
-          })
-          .on('keydown', (event: { originalEvent: { keyCode: number } }) => {
-            if (event.originalEvent.keyCode === KEY_ENTER) {
-              router.push(`/loos/${toilet.id}`);
-            }
-          });
-      });
-  }, [data, router, appliedFilters]);
+          }
+        });
+    });
+  }, [appliedFilterTypes, data?.ukLooMarkers, router]);
 
   const map = useMap();
   useEffect(() => {

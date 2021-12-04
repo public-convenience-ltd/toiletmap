@@ -1,3 +1,5 @@
+import { stringifyAndCompressLoos } from '../lib/loo';
+
 const { Loo, Report, Area, MapGeo } = require('./db');
 const { GraphQLDateTime } = require('graphql-iso-date');
 const without = require('lodash/without');
@@ -116,59 +118,7 @@ const resolvers = {
             ],
           ],
         });
-
-      const FILTER_NO_PAYMENT = 0b00000001;
-      const FILTER_ALL_GENDER = 0b00000010;
-      const FILTER_AUTOMATIC = 0b00000100;
-      const FILTER_ACCESSIBLE = 0b00001000;
-      const FILTER_BABY_CHNG = 0b00010000;
-      const FILTER_RADAR = 0b00100000;
-      let count = 0;
-      const genLooFilterMask = (loo) => {
-        const noPayment =
-          loo.properties.noPayment === undefined ||
-          loo.properties.noPayment === false
-            ? 0
-            : FILTER_NO_PAYMENT;
-        const allGender =
-          loo.properties.allGender === undefined ||
-          loo.properties.allGender === false
-            ? 0
-            : FILTER_ALL_GENDER;
-
-        const automatic =
-          loo.properties.automatic === undefined ||
-          loo.properties.automatic === false
-            ? 0
-            : FILTER_AUTOMATIC;
-        const accessible =
-          loo.properties.accessible === undefined ||
-          loo.properties.accessible === false
-            ? 0
-            : FILTER_ACCESSIBLE;
-        const babyChange =
-          loo.properties.babyChange === undefined ||
-          loo.properties.babyChange === false
-            ? 0
-            : FILTER_BABY_CHNG;
-        const radar =
-          loo.properties.radar === undefined || loo.properties.radar === false
-            ? 0
-            : FILTER_RADAR;
-
-        return (
-          noPayment | allGender | automatic | accessible | babyChange | radar
-        );
-      };
-
-      const mapped = loos.map((loo) => {
-        return `${loo.id}|${loo.properties.geometry.coordinates[0].toFixed(
-          4
-        )}|${loo.properties.geometry.coordinates[1].toFixed(
-          4
-        )}|${genLooFilterMask(loo)}`;
-      });
-      return mapped;
+      return stringifyAndCompressLoos(loos);
     },
     areas: async (parent, args) => {
       const data = await Area.find({}, { name: 1, type: 1 }).exec();
