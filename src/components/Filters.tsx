@@ -14,6 +14,7 @@ import Switch from './Switch';
 import Icon from './Icon';
 
 import config from '../config';
+import { useMapState } from './MapState';
 
 const iconMap = {
   noPayment: faPoundSign,
@@ -24,43 +25,45 @@ const iconMap = {
   automatic: faCog,
 };
 
-const Filters = ({ filters, onFilterChange }) => (
-  <ul>
-    {config.filters.map(({ id, label }, index) => (
-      <Box
-        as="li"
-        key={id}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mt={index ? 3 : undefined}
-      >
-        <Box display="flex" alignItems="center">
-          <Icon icon={iconMap[id]} fixedWidth size="lg" />
-          <Box ml={3} id={`filter-${id}`}>
-            {label}
+const Filters: React.FC = () => {
+  const [mapState, setMapState] = useMapState();
+  const { filters } = mapState;
+  return (
+    <ul>
+      {config.filters.map(({ id, label }, index) => (
+        <Box
+          as="li"
+          key={id}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mt={index ? 3 : undefined}
+        >
+          <Box display="flex" alignItems="center">
+            <Icon icon={iconMap[id]} fixedWidth size="lg" />
+            <Box ml={3} id={`filter-${id}`}>
+              {label}
+            </Box>
           </Box>
+
+          <Switch
+            name={id}
+            checked={filters[id] || false}
+            aria-labelledby={`filter-${id}`}
+            onClick={() => {
+              setMapState({
+                ...mapState,
+                filters: {
+                  ...filters,
+                  [id]: !filters[id],
+                },
+              });
+            }}
+          />
         </Box>
-
-        <Switch
-          name={id}
-          checked={filters[id] || false}
-          aria-labelledby={`filter-${id}`}
-          onClick={() => {
-            onFilterChange({
-              ...filters,
-              [id]: !filters[id],
-            });
-          }}
-        />
-      </Box>
-    ))}
-  </ul>
-);
-
-Filters.propTypes = {
-  filters: PropTypes.object.isRequired,
-  onFilterChange: PropTypes.func.isRequired,
+      ))}
+    </ul>
+  );
 };
 
 export default Filters;

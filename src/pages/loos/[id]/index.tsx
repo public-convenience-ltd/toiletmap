@@ -8,7 +8,7 @@ import { useMapState } from '../../../components/MapState';
 import config from '../../../config';
 import { withApollo } from '../../../components/withApollo';
 import { GetServerSideProps } from 'next';
-import useFilters from '../../../hooks/useFilters';
+
 import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
 import { useRouter } from 'next/router';
 import { dbConnect } from '../../../api/db';
@@ -21,7 +21,6 @@ const SIDEBAR_BOTTOM_MARGIN = 32;
 const LooPage: PageFindLooByIdComp = (props) => {
   const [mapState, setMapState] = useMapState();
 
-  const { filters, setFilters } = useFilters([]);
   const [toiletPanelDimensions, setToiletPanelDimensions] = React.useState({});
 
   const router = useRouter();
@@ -53,7 +52,7 @@ const LooPage: PageFindLooByIdComp = (props) => {
           // center on small viewports
           mx={['auto', 0]}
         >
-          <Sidebar filters={filters} onFilterChange={setFilters} />
+          <Sidebar />
         </Box>
         <LooMap
           center={mapState.center}
@@ -61,7 +60,6 @@ const LooPage: PageFindLooByIdComp = (props) => {
           onViewportChanged={setMapState}
           controlsOffset={0}
           focus={props?.data?.loo}
-          filters={filters}
         />
         {props?.data?.loo && (
           <Box

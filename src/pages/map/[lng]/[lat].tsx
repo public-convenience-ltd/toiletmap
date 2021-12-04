@@ -11,14 +11,12 @@ import { useRouter } from 'next/router';
 import { withApollo } from '../../../components/withApollo';
 import { NextPage } from 'next';
 import LooMap from '../../../components/LooMap/LooMapLoader';
-import useFilters from '../../../hooks/useFilters';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
 const MapPage: NextPage = () => {
   const { query } = useRouter();
   const [mapState, setMapState] = useMapState();
-  const { filters, setFilters } = useFilters([]);
 
   const center = React.useMemo(
     () => ({
@@ -54,7 +52,7 @@ const MapPage: NextPage = () => {
           // center on small viewports
           mx={['auto', 0]}
         >
-          <Sidebar filters={filters} onFilterChange={setFilters} />
+          <Sidebar />
         </Box>
 
         <LooMap

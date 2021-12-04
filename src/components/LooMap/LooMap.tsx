@@ -17,7 +17,6 @@ interface Props {
   controlsOffset?: number;
   showCrosshair?: boolean;
   withAccessibilityOverlays?: boolean;
-  filters?: any;
 }
 
 const LooMap: React.FC<Props> = ({
@@ -29,7 +28,6 @@ const LooMap: React.FC<Props> = ({
   minZoom,
   maxZoom = 18,
   staticMap = false,
-  filters = [],
 }) => {
   return (
     <Box
@@ -118,7 +116,7 @@ const LooMap: React.FC<Props> = ({
         />
 
         {focus && <CurrentLooMarker loo={focus} />}
-        <Markers filters={filters} />
+        <Markers />
 
         <Media greaterThan="md">
           <ZoomControl position="bottomright" />

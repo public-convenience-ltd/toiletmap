@@ -48,11 +48,12 @@ const StyledNavLink = styled(Link)`
   align-items: center;
 `;
 
-const Sidebar = ({ filters, onFilterChange }) => {
+const Sidebar = () => {
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   const filterToggleRef = useRef(null);
   const [mapState, setMapState] = useMapState();
+  const { filters } = mapState;
 
   return (
     <section aria-labelledby="heading-search">
@@ -112,7 +113,7 @@ const Sidebar = ({ filters, onFilterChange }) => {
               <Box
                 as="button"
                 itemType="button"
-                onClick={() => onFilterChange({})}
+                onClick={() => setMapState({ ...mapState, filters: {} })}
                 border={0}
                 borderBottom={2}
                 borderStyle="solid"
@@ -122,7 +123,7 @@ const Sidebar = ({ filters, onFilterChange }) => {
             </Text>
           </Box>
 
-          <Filters filters={filters} onFilterChange={onFilterChange} />
+          <Filters />
 
           <Box display="flex" justifyContent="center" mt={4}>
             <Button
@@ -182,7 +183,7 @@ const Sidebar = ({ filters, onFilterChange }) => {
                   <Box
                     as="button"
                     type="button"
-                    onClick={() => onFilterChange({})}
+                    onClick={() => setMapState({ ...mapState, filters: {} })}
                     border={0}
                     borderBottom={2}
                     borderStyle="solid"
@@ -194,7 +195,7 @@ const Sidebar = ({ filters, onFilterChange }) => {
             </Box>
 
             <Box pt={4} hidden={!isFilterExpanded}>
-              <Filters filters={filters} onFilterChange={onFilterChange} />
+              <Filters />
             </Box>
           </Box>
 
@@ -250,11 +251,6 @@ const Sidebar = ({ filters, onFilterChange }) => {
       </Media>
     </section>
   );
-};
-
-Sidebar.propTypes = {
-  filters: PropTypes.object.isRequired,
-  onFilterChange: PropTypes.func.isRequired,
 };
 
 export default Sidebar;

@@ -7,7 +7,8 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { useMap } from 'react-leaflet';
 import { useUkLooMarkersQuery } from '../../api-client/graphql';
-import config, { Filter, FILTERS_KEY } from '../../config';
+import config, { Filter } from '../../config';
+import { useMapState } from '../MapState';
 const KEY_ENTER = 13;
 
 const mcg = L.markerClusterGroup({
@@ -37,9 +38,11 @@ enum FILTER_TYPE {
   RADAR = 0b00100000,
 }
 
-const Markers = ({ filters = [] }) => {
+const Markers = () => {
   const router = useRouter();
 
+  const [mapState] = useMapState();
+  const { filters } = mapState;
   const { data } = useUkLooMarkersQuery();
 
   const [appliedFilters, setAppliedFilters] = useState<Array<FILTER_TYPE>>([]);

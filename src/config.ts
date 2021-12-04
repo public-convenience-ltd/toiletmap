@@ -72,11 +72,16 @@ const config = {
     lng: -0.127758,
   },
   getSettings(namespace: string) {
-    return JSON.parse(
-      (typeof localStorage !== 'undefined' &&
-        localStorage.getItem(namespace)) ||
-        '{}'
-    );
+    try {
+      JSON.parse(
+        (typeof localStorage !== 'undefined' &&
+          localStorage.getItem(namespace)) ||
+          '{}'
+      );
+    } catch (e) {
+      console.warn('Problem parsing JSON setting from local storage: ', e);
+      return null;
+    }
   },
   getSetting(namespace: string, key: string, defaultVal = '') {
     const val = this.getSettings(namespace)[key];
