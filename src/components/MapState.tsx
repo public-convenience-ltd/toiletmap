@@ -1,19 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { Dispatch, useEffect } from 'react';
 import { Loo } from '../api-client/graphql';
 import config, { Filter, FILTERS_KEY } from '../config';
 
-const MapStateContext = React.createContext(null);
+const MapStateContext =
+  React.createContext<[MapState, Dispatch<MapState>]>(null);
 
 interface MapState {
-  center: {
+  center?: {
     lat: number;
     lng: number;
   };
-  zoom: number;
-  radius: number;
-  geolocation: any;
-  loos: Loo[];
-  filters: Filter[];
+  zoom?: number;
+  radius?: number;
+  geolocation?: any;
+  loos?: Loo[];
+  filters?: Filter[];
 }
 
 const reducer = (state: MapState, newState: MapState) => {
