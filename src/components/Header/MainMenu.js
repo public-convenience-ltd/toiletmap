@@ -74,11 +74,6 @@ const MainMenu = ({
               About
             </StyledNavLink>
           </Box>
-          <Box as="li" mt={[3, 0]} ml={[0, 4]}>
-            <StyledNavLink to="/use-our-loos" onClick={onMenuItemClick}>
-              Our Sponsor
-            </StyledNavLink>
-          </Box>
           <Box as="li" mt={[3, 0]} mb={['auto', 0]} ml={[0, 4]}>
             <StyledNavLink to="/contact" onClick={onMenuItemClick}>
               Contact
