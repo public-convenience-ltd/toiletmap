@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import PageLayout from '../../../components/PageLayout';
 import Box from '../../../components/Box';
@@ -20,6 +20,12 @@ const SIDEBAR_BOTTOM_MARGIN = 32;
 
 const LooPage: PageFindLooByIdComp = (props) => {
   const [mapState, setMapState] = useMapState();
+
+  // Just set our center when this page is an ingress route
+  // This way you can click loos on the map without the map jerking about
+  useEffect(() => {
+    setMapState({ center: props.data.loo.location });
+  });
 
   const [toiletPanelDimensions, setToiletPanelDimensions] = React.useState({});
 
@@ -125,8 +131,4 @@ export const getStaticPaths = async () => {
   };
 };
 
-export default withApollo(
-  ssrFindLooById.withPage((arg) => ({
-    variables: { id: arg?.query?.id.toString() },
-  }))(LooPage)
-);
+export default withApollo(LooPage);

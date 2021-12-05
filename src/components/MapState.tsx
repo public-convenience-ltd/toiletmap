@@ -1,5 +1,4 @@
 import React, { Dispatch, useEffect } from 'react';
-import { Loo } from '../api-client/graphql';
 import config, { Filter, FILTERS_KEY } from '../config';
 
 const MapStateContext =

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Head from 'next/head';
 import { useUser } from '@auth0/nextjs-auth0';
 
@@ -13,25 +13,18 @@ import Notification from '../../../components/Notification';
 import Login from '../../../components/Login';
 import PageLoading from '../../../components/PageLoading';
 import { useRouter } from 'next/router';
-import {
-  useFindLooByIdQuery,
-  useRemoveLooMutation,
-} from '../../../api-client/graphql';
+import { useRemoveLooMutation } from '../../../api-client/graphql';
 import { withApollo } from '../../../components/withApollo';
-import { NextPage } from 'next';
+import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
+import { GetServerSideProps } from 'next';
+import { dbConnect } from '../../../api/db';
 
-const RemovePage = function (props: { match: { params: { id: any } } }) {
+const RemovePage: PageFindLooByIdComp = function (props) {
+  const loo = props.data.loo;
   const { user, error, isLoading } = useUser();
 
   const [reason, setReason] = useState('');
   const router = useRouter();
-  const { id: selectedLooId } = router.query;
-
-  const {
-    data: looData,
-    error: looError,
-    loading: loadingLooData,
-  } = useFindLooByIdQuery({ variables: { id: selectedLooId as string } });
 
   const [removeLooMutation, { loading: loadingRemove, error: removeError }] =
     useRemoveLooMutation();
@@ -45,29 +38,19 @@ const RemovePage = function (props: { match: { params: { id: any } } }) {
 
     await removeLooMutation({
       variables: {
-        id: looData.loo.id,
+        id: loo.id,
         reason,
       },
     });
 
-    router.push(`/loos/${selectedLooId}?message=removed`);
+    router.push(`/loos/${loo.id}?message=removed`);
   };
 
-  if (removeError || looError) {
-    console.error(removeError || looError);
+  if (removeError) {
+    console.error(removeError);
   }
 
-  if (loadingLooData || !looData || looError) {
-    return (
-      <PageLayout>
-        <Notification>
-          {loadingLooData ? 'Fetching Toilet Data' : 'Error finding toilet.'}
-        </Notification>
-      </PageLayout>
-    );
-  }
-
-  if (!looData.loo.active) {
+  if (!loo.active) {
     router.push('/');
   }
 
@@ -137,4 +120,22 @@ const RemovePage = function (props: { match: { params: { id: any } } }) {
   );
 };
 
-export default withApollo(RemovePage as NextPage);
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  await dbConnect();
+  const res = await ssrFindLooById.getServerPage(
+    {
+      variables: { id: ctx.params.id as string },
+    },
+    ctx
+  );
+
+  if (res.props.error || !res.props.data) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return res;
+};
+
+export default withApollo(RemovePage);

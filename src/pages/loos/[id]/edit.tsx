@@ -29,6 +29,7 @@ const EditPage: PageFindLooByIdComp = (props) => {
   const router = useRouter();
   const { isLoading, user } = useUser();
   const [mapState] = useMapState();
+
   const [
     updateLooMutation,
     { data: saveData, loading: saveLoading, error: saveError },
@@ -86,7 +87,6 @@ const EditPage: PageFindLooByIdComp = (props) => {
           <EntryForm
             title="Edit This Toilet"
             loo={loo}
-            center={loo.location}
             saveLoading={saveLoading}
             saveError={saveError}
             onSubmit={save}

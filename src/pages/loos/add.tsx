@@ -15,25 +15,18 @@ import { useMapState } from '../../components/MapState';
 import config from '../../config';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { NextPage } from 'next';
 import { withApollo } from '../../components/withApollo';
 import {
   UpdateLooMutationVariables,
   useUpdateLooMutation,
 } from '../../api-client/graphql';
 import PageLoading from '../../components/PageLoading';
+import LooMap from '../../components/LooMap/LooMapLoader';
 
 const initialFormState = {
   active: null,
   noPayment: true,
 };
-
-const MapLoader = () => <p>Loading map...</p>;
-
-const LooMap = dynamic(() => import('../../components/LooMap'), {
-  loading: MapLoader,
-  ssr: false,
-});
 
 const AddPage = () => {
   const { user, error, isLoading } = useUser();
@@ -116,7 +109,6 @@ const AddPage = () => {
       <EntryForm
         title="Add This Toilet"
         loo={initialFormState}
-        center={mapState.center}
         saveLoading={saveLoading}
         saveError={saveError}
         onSubmit={saveLoo}
@@ -133,4 +125,4 @@ const AddPage = () => {
   );
 };
 
-export default withApollo(AddPage as NextPage);
+export default withApollo(AddPage);
