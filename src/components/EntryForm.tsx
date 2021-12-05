@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { useForm, Controller } from 'react-hook-form';
 import Image from 'next/image';
@@ -17,6 +16,7 @@ import Switch from '../components/Switch';
 import { WEEKDAYS, isClosed } from '../openingTimes';
 
 import crosshair from '../../public/crosshair-small.svg';
+import { useMapState } from './MapState';
 
 const openingTimesFields = WEEKDAYS.flatMap((day: string) => {
   return [
@@ -183,8 +183,9 @@ const Section = ({ register, id, title, questions, children }) => (
   </div>
 );
 
-const EntryForm = ({ title, loo, center, children, ...props }) => {
+const EntryForm = ({ title, loo, children, ...props }) => {
   const [noPayment, setNoPayment] = useState(loo.noPayment);
+  const [{ center }] = useMapState();
 
   const hasOpeningTimes = Boolean(loo.openingTimes);
 
@@ -304,6 +305,30 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
             </Box>
             &nbsp;
             <span>with where you believe the toilet to be</span>
+            <VisuallyHidden>
+              <label>
+                Latitude
+                <Input
+                  ref={register}
+                  type="text"
+                  name="geometry.coordinates.0"
+                  value={center.lat}
+                  readOnly
+                />
+              </label>
+
+              <label>
+                Longitude
+                <Input
+                  ref={register}
+                  type="text"
+                  name="geometry.coordinates.1"
+                  data-testid="loo-name"
+                  value={center.lng}
+                  readOnly
+                />
+              </label>
+            </VisuallyHidden>
           </Box>
 
           <Spacer mt={4} />
@@ -563,33 +588,6 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
             />
           </label>
 
-          <Spacer mt={3} />
-
-          <VisuallyHidden>
-            <label>
-              Latitude
-              <Input
-                ref={register}
-                type="text"
-                name="geometry.coordinates.0"
-                value={center.lat}
-                readOnly
-              />
-            </label>
-
-            <label>
-              Longitude
-              <Input
-                ref={register}
-                type="text"
-                name="geometry.coordinates.1"
-                data-testid="loo-name"
-                value={center.lng}
-                readOnly
-              />
-            </label>
-          </VisuallyHidden>
-
           <Spacer mt={4} />
 
           {isFunction(children) ? children({ isDirty }) : children}
@@ -605,32 +603,6 @@ const EntryForm = ({ title, loo, center, children, ...props }) => {
       </Text>
     </Container>
   );
-};
-
-EntryForm.propTypes = {
-  title: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  loo: PropTypes.shape({
-    name: PropTypes.string,
-    accessible: PropTypes.bool,
-    opening: PropTypes.string,
-    noPayment: PropTypes.bool,
-    paymentDetails: PropTypes.string,
-    notes: PropTypes.string,
-    openingTimes: PropTypes.oneOfType([
-      PropTypes.array,
-      PropTypes.oneOf([null]),
-    ]),
-  }),
-  center: PropTypes.shape({
-    lat: PropTypes.number.isRequired,
-    lng: PropTypes.number.isRequired,
-  }).isRequired,
-  saveLoading: PropTypes.bool,
-};
-
-EntryForm.defaultProps = {
-  loo: {},
 };
 
 export default EntryForm;
