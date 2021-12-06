@@ -54,7 +54,6 @@ const LooPage: PageFindLooByIdComp = (props) => {
           m={3}
           maxWidth={326}
           maxHeight={`calc(100% - 0px - ${SIDEBAR_BOTTOM_MARGIN}px)`}
-          overflowY="auto"
           // center on small viewports
           mx={['auto', 0]}
         >
