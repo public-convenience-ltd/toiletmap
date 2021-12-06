@@ -12,7 +12,6 @@ directive @cacheControl(
   inheritMaxAge: Boolean
 ) on FIELD_DEFINITION | OBJECT | INTERFACE | UNION
 
-
 """
 A Geographical Point
 Expressed in WGS84 coordinates (SRID 4326).
