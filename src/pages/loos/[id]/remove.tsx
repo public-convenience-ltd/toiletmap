@@ -14,7 +14,7 @@ import Login from '../../../components/Login';
 import PageLoading from '../../../components/PageLoading';
 import { useRouter } from 'next/router';
 import { useRemoveLooMutation } from '../../../api-client/graphql';
-import { withApollo } from '../../../components/withApollo';
+import { withApollo } from '../../../api-client/withApollo';
 import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
 import { GetServerSideProps } from 'next';
 import { dbConnect } from '../../../api/db';

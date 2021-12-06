@@ -13,7 +13,7 @@ import LooMap from '../../../components/LooMap/LooMapLoader';
 import config from '../../../config';
 import { useMapState } from '../../../components/MapState';
 import { useRouter } from 'next/router';
-import { withApollo } from '../../../components/withApollo';
+import { withApollo } from '../../../api-client/withApollo';
 import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
 import { GetServerSideProps } from 'next';
 import { dbConnect } from '../../../api/db';

@@ -5,7 +5,7 @@ import Sidebar from '../../../components/Sidebar';
 import VisuallyHidden from '../../../components/VisuallyHidden';
 import { useMapState } from '../../../components/MapState';
 import config from '../../../config';
-import { withApollo } from '../../../components/withApollo';
+import { withApollo } from '../../../api-client/withApollo';
 import { GetServerSideProps } from 'next';
 
 import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';

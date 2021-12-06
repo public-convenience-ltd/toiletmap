@@ -25,7 +25,7 @@ generates:
       # excludePatternsOptions: 'i'
       # customDataIdFromObjectName: 'test'
       # customDataIdFromObjectImport: 'abc'
-      apolloClientInstanceImport: '../components/withApollo'
+      apolloClientInstanceImport: './withApollo'
       # apolloStateKey: '__APOLLO_STATE__'
     preset: import-types
     presetConfig:

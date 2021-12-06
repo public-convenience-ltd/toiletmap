@@ -13,7 +13,7 @@ import { useMapState } from '../../components/MapState';
 
 import config from '../../config';
 import { useRouter } from 'next/router';
-import { withApollo } from '../../components/withApollo';
+import { withApollo } from '../../api-client/withApollo';
 import {
   UpdateLooMutationVariables,
   useUpdateLooMutation,
