@@ -1,9 +1,6 @@
-import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
-
-import PageLayout from './PageLayout';
 import Container from './Container';
 import Button from './Button';
 import Text from './Text';
@@ -23,7 +20,7 @@ const ListItem = (props: BoxProps) => (
 const LoginPage = (props) => {
   const router = useRouter();
   return (
-    <PageLayout layoutMode="blog">
+    <Box my={5}>
       <Head>
         <title>{config.getTitle('Contributing')}</title>
       </Head>
@@ -92,7 +89,7 @@ const LoginPage = (props) => {
           .
         </p>
       </Container>
-    </PageLayout>
+    </Box>
   );
 };
 

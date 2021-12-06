@@ -4,8 +4,8 @@ import { useUser } from '@auth0/nextjs-auth0';
 
 import config from '../../../config';
 
-import PageLayout from '../../../components/PageLayout';
 import Container from '../../../components/Container';
+import Box from '../../../components/Box';
 import Spacer from '../../../components/Spacer';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
@@ -63,60 +63,58 @@ const RemovePage: PageFindLooByIdComp = function (props) {
   }
 
   return (
-    <PageLayout layoutMode="blog">
-      <>
-        <Head>
-          <title>{config.getTitle('Remove Toilet')}</title>
-        </Head>
+    <Box my={5}>
+      <Head>
+        <title>{config.getTitle('Remove Toilet')}</title>
+      </Head>
 
-        <Container maxWidth={845}>
-          <Text fontSize={6} fontWeight="bold" textAlign="center">
-            <h1>Toilet Remover</h1>
-          </Text>
+      <Container maxWidth={845}>
+        <Text fontSize={6} fontWeight="bold" textAlign="center">
+          <h1>Toilet Remover</h1>
+        </Text>
 
-          <Spacer mb={5} />
+        <Spacer mb={5} />
 
-          <p>
-            Please let us know why you&apos;re removing this toilet from the map
-            using the form below.
-          </p>
+        <p>
+          Please let us know why you&apos;re removing this toilet from the map
+          using the form below.
+        </p>
+
+        <Spacer mb={3} />
+
+        <form onSubmit={onSubmit}>
+          <label>
+            <b>Reason for removal</b>
+            <textarea
+              type="text"
+              name="reason"
+              value={reason}
+              onChange={updateReason}
+              required
+              css={{
+                height: '100px',
+                width: '100%',
+              }}
+            />
+          </label>
 
           <Spacer mb={3} />
 
-          <form onSubmit={onSubmit}>
-            <label>
-              <b>Reason for removal</b>
-              <textarea
-                type="text"
-                name="reason"
-                value={reason}
-                onChange={updateReason}
-                required
-                css={{
-                  height: '100px',
-                  width: '100%',
-                }}
-              />
-            </label>
+          <Button type="submit">Remove</Button>
+        </form>
 
-            <Spacer mb={3} />
+        {loadingRemove && (
+          <Notification>Submitting removal report&hellip;</Notification>
+        )}
 
-            <Button type="submit">Remove</Button>
-          </form>
-
-          {loadingRemove && (
-            <Notification>Submitting removal report&hellip;</Notification>
-          )}
-
-          {removeError && (
-            <Notification>
-              Oops. We can&lsquo;t submit your report at this time. Try again
-              later.
-            </Notification>
-          )}
-        </Container>
-      </>
-    </PageLayout>
+        {removeError && (
+          <Notification>
+            Oops. We can&lsquo;t submit your report at this time. Try again
+            later.
+          </Notification>
+        )}
+      </Container>
+    </Box>
   );
 };
 

@@ -1,16 +1,16 @@
 import Head from 'next/head';
 
-import PageLayout from '../components/PageLayout';
 import Container from '../components/Container';
 import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 import Button from '../components/Button';
+import Box from '../components/Box';
 
 import config from '../config';
 
 const PrivacyPage = () => {
   return (
-    <PageLayout layoutMode="blog">
+    <Box my={5}>
       <Head>
         <title>{config.getTitle('Privacy Policy')}</title>
       </Head>
@@ -85,7 +85,7 @@ const PrivacyPage = () => {
           that&apos;s the address to use.
         </p>
       </Container>
-    </PageLayout>
+    </Box>
   );
 };
 

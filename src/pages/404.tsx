@@ -1,11 +1,10 @@
-import PageLayout from '../components/PageLayout';
 import Box from '../components/Box';
 import Spacer from '../components/Spacer';
 import Text from '../components/Text';
 import Button from '../components/Button';
 
 const NotFound = () => (
-  <PageLayout layoutMode="blog">
+  <Box my={5}>
     <Box
       display="flex"
       flexDirection="column"
@@ -34,7 +33,7 @@ const NotFound = () => (
         </Button>
       </div>
     </Box>
-  </PageLayout>
+  </Box>
 );
 
 export default NotFound;

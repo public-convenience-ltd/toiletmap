@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import PageLayout from '../components/PageLayout';
 import Box from '../components/Box';
 import Sidebar from '../components/Sidebar';
 import VisuallyHidden from '../components/VisuallyHidden';
@@ -16,7 +15,7 @@ const HomePage = () => {
   const pageTitle = config.getTitle('Home');
 
   return (
-    <PageLayout mapCenter={mapState.center}>
+    <>
       <Head>
         <title>{pageTitle}</title>
       </Head>
@@ -47,7 +46,7 @@ const HomePage = () => {
           controlsOffset={0}
         />
       </Box>
-    </PageLayout>
+    </>
   );
 };
 

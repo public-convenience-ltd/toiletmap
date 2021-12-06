@@ -2,8 +2,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 
 import { useUser } from '@auth0/nextjs-auth0';
-
-import PageLayout from '../../../components/PageLayout';
 import Button from '../../../components/Button';
 import Spacer from '../../../components/Spacer';
 import EntryForm from '../../../components/EntryForm';
@@ -64,64 +62,62 @@ const EditPage: PageFindLooByIdComp = (props) => {
   }
 
   return (
-    <PageLayout>
-      <>
-        <Head>
-          <title>{config.getTitle('Edit Toilet')}</title>
-        </Head>
+    <>
+      <Head>
+        <title>{config.getTitle('Edit Toilet')}</title>
+      </Head>
 
-        <Box display="flex" height="40vh">
-          <LooMap
-            center={loo.location}
-            zoom={mapState.zoom}
-            minZoom={config.editMinZoom}
-            showCrosshair
-            controlsOffset={20}
-            focus={loo}
-          />
-        </Box>
+      <Box display="flex" height="40vh">
+        <LooMap
+          center={loo.location}
+          zoom={mapState.zoom}
+          minZoom={config.editMinZoom}
+          showCrosshair
+          controlsOffset={20}
+          focus={loo}
+        />
+      </Box>
 
-        <Spacer mt={4} />
+      <Spacer mt={4} />
 
-        {loo && (
-          <EntryForm
-            title="Edit This Toilet"
-            loo={loo}
-            saveLoading={saveLoading}
-            saveError={saveError}
-            onSubmit={save}
-          >
-            {({ isDirty }) => (
-              <Box display="flex" flexDirection="column" alignItems="center">
-                <Button
-                  type="submit"
-                  disabled={!isDirty}
-                  css={{
-                    width: '100%',
-                  }}
-                  data-testid="update-toilet-button"
-                >
-                  Update the toilet
-                </Button>
+      {loo && (
+        <EntryForm
+          title="Edit This Toilet"
+          loo={loo}
+          saveLoading={saveLoading}
+          saveError={saveError}
+          onSubmit={save}
+        >
+          {({ isDirty }) => (
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <Button
+                type="submit"
+                disabled={!isDirty}
+                css={{
+                  width: '100%',
+                }}
+                data-testid="update-toilet-button"
+              >
+                Update the toilet
+              </Button>
 
-                <Spacer mt={2} />
+              <Spacer mt={2} />
 
-                <Button
-                  as={Link}
-                  href={`/loos/${loo.id}/remove`}
-                  css={{
-                    width: '100%',
-                  }}
-                  data-testid="remove-toilet-button"
-                >
-                  Remove the toilet
-                </Button>
-              </Box>
-            )}
-          </EntryForm>
-        )}
-      </>
-    </PageLayout>
+              <Button
+                as={Link}
+                href={`/loos/${loo.id}/remove`}
+                css={{
+                  width: '100%',
+                }}
+                data-testid="remove-toilet-button"
+              >
+                Remove the toilet
+              </Button>
+            </Box>
+          )}
+        </EntryForm>
+      )}
+    </>
   );
 };
 
