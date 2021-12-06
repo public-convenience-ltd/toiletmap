@@ -31,7 +31,7 @@ const PageLayout = ({ layoutMode, children }: IPageLayout) => {
             <Footer />
           </Header>
 
-          <Box position="relative" display="flex" flexGrow={1} overflowY="auto">
+          <Box position="relative" display="flex" flexGrow={1}>
             <Box
               as="main"
               flexGrow={1}
