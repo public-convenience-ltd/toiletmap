@@ -1,29 +1,29 @@
 import React from 'react';
 import Head from 'next/head';
 
-import PageLayout from '../../../components/PageLayout';
-import Box from '../../../components/Box';
-import Sidebar from '../../../components/Sidebar';
-import VisuallyHidden from '../../../components/VisuallyHidden';
-import { useMapState } from '../../../components/MapState';
-import config from '../../../config';
+import PageLayout from '../../components/PageLayout';
+import Box from '../../components/Box';
+import Sidebar from '../../components/Sidebar';
+import VisuallyHidden from '../../components/VisuallyHidden';
+import { useMapState } from '../../components/MapState';
+import config from '../../config';
 import { useRouter } from 'next/router';
-import { withApollo } from '../../../components/withApollo';
+import { withApollo } from '../../components/withApollo';
 import { NextPage } from 'next';
-import LooMap from '../../../components/LooMap/LooMapLoader';
+import LooMap from '../../components/LooMap/LooMapLoader';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
 const MapPage: NextPage = () => {
-  const { query } = useRouter();
-  const [mapState, setMapState] = useMapState();
+  const router = useRouter();
+  const [mapState] = useMapState();
 
   const center = React.useMemo(
     () => ({
-      lat: parseFloat(query.lat as string),
-      lng: parseFloat(query.lng as string),
+      lat: parseFloat(router.query.lat as string),
+      lng: parseFloat(router.query.lng as string),
     }),
-    [query]
+    [router]
   );
 
   const pageTitle = config.getTitle('Area Map');
@@ -55,12 +55,7 @@ const MapPage: NextPage = () => {
           <Sidebar />
         </Box>
 
-        <LooMap
-          center={center}
-          zoom={mapState.zoom}
-          onViewportChanged={setMapState}
-          controlsOffset={0}
-        />
+        <LooMap center={center} zoom={mapState.zoom} controlsOffset={0} />
       </Box>
     </PageLayout>
   );
