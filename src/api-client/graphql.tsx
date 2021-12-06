@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -108,13 +109,13 @@ export type Loo = {
 
 /** Include or Exclude Loos from search results based on whether they satisfy a filter condition */
 export type LooFilter = {
-  active?: Maybe<Scalars['Boolean']>;
-  areaName?: Maybe<Scalars['String']>;
-  contributors?: Maybe<Array<Maybe<Scalars['String']>>>;
-  fromDate?: Maybe<Scalars['DateTime']>;
-  noPayment?: Maybe<Scalars['Boolean']>;
-  text?: Maybe<Scalars['String']>;
-  toDate?: Maybe<Scalars['DateTime']>;
+  active?: InputMaybe<Scalars['Boolean']>;
+  areaName?: InputMaybe<Scalars['String']>;
+  contributors?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  fromDate?: InputMaybe<Scalars['DateTime']>;
+  noPayment?: InputMaybe<Scalars['Boolean']>;
+  text?: InputMaybe<Scalars['String']>;
+  toDate?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type LooSearchResponse = {
@@ -135,17 +136,17 @@ export type Mutation = {
 
 
 export type MutationSubmitRemovalReportArgs = {
-  report?: Maybe<RemovalReportInput>;
+  report?: InputMaybe<RemovalReportInput>;
 };
 
 
 export type MutationSubmitReportArgs = {
-  report?: Maybe<ReportInput>;
+  report?: InputMaybe<ReportInput>;
 };
 
 
 export type MutationSubmitVerificationReportArgs = {
-  id?: Maybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 export type MutationResponse = {
@@ -155,8 +156,8 @@ export type MutationResponse = {
 };
 
 export type PaginationInput = {
-  limit?: Maybe<Scalars['Int']>;
-  page?: Maybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
 };
 
 /**
@@ -193,7 +194,7 @@ export type ProximityInput = {
   /** Longitude */
   lng: Scalars['Float'];
   /** Maximum Distance in meters */
-  maxDistance?: Maybe<Scalars['Int']>;
+  maxDistance?: InputMaybe<Scalars['Int']>;
 };
 
 export type Query = {
@@ -223,14 +224,14 @@ export type Query = {
 
 
 export type QueryLooArgs = {
-  id?: Maybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 
 export type QueryLoosArgs = {
   filters: LooFilter;
-  pagination?: Maybe<PaginationInput>;
-  sort?: Maybe<SortOrder>;
+  pagination?: InputMaybe<PaginationInput>;
+  sort?: InputMaybe<SortOrder>;
 };
 
 
@@ -240,7 +241,7 @@ export type QueryLoosByProximityArgs = {
 
 
 export type QueryMapAreasArgs = {
-  areaType?: Maybe<Scalars['String']>;
+  areaType?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -295,24 +296,24 @@ export type Report = {
 };
 
 export type ReportInput = {
-  accessible?: Maybe<Scalars['Boolean']>;
-  active?: Maybe<Scalars['Boolean']>;
-  allGender?: Maybe<Scalars['Boolean']>;
-  attended?: Maybe<Scalars['Boolean']>;
-  automatic?: Maybe<Scalars['Boolean']>;
-  babyChange?: Maybe<Scalars['Boolean']>;
-  children?: Maybe<Scalars['Boolean']>;
-  edit?: Maybe<Scalars['ID']>;
+  accessible?: InputMaybe<Scalars['Boolean']>;
+  active?: InputMaybe<Scalars['Boolean']>;
+  allGender?: InputMaybe<Scalars['Boolean']>;
+  attended?: InputMaybe<Scalars['Boolean']>;
+  automatic?: InputMaybe<Scalars['Boolean']>;
+  babyChange?: InputMaybe<Scalars['Boolean']>;
+  children?: InputMaybe<Scalars['Boolean']>;
+  edit?: InputMaybe<Scalars['ID']>;
   location: PointInput;
-  men?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
-  noPayment?: Maybe<Scalars['Boolean']>;
-  notes?: Maybe<Scalars['String']>;
-  openingTimes?: Maybe<Scalars['OpeningTimes']>;
-  paymentDetails?: Maybe<Scalars['String']>;
-  radar?: Maybe<Scalars['Boolean']>;
-  urinalOnly?: Maybe<Scalars['Boolean']>;
-  women?: Maybe<Scalars['Boolean']>;
+  men?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+  noPayment?: InputMaybe<Scalars['Boolean']>;
+  notes?: InputMaybe<Scalars['String']>;
+  openingTimes?: InputMaybe<Scalars['OpeningTimes']>;
+  paymentDetails?: InputMaybe<Scalars['String']>;
+  radar?: InputMaybe<Scalars['Boolean']>;
+  urinalOnly?: InputMaybe<Scalars['Boolean']>;
+  women?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ReportMutationResponse = MutationResponse & {
@@ -366,7 +367,7 @@ export type TopoTransform = {
 };
 
 export type FindLooByIdQueryVariables = Exact<{
-  id?: Maybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']>;
 }>;
 
 
@@ -392,7 +393,7 @@ export type RemoveLooMutationVariables = Exact<{
 export type RemoveLooMutation = { __typename?: 'Mutation', submitRemovalReport?: { __typename?: 'ReportMutationResponse', code: string, success: boolean, loo?: { __typename?: 'Loo', id?: string | null | undefined, active?: boolean | null | undefined, removalReason?: string | null | undefined } | null | undefined } | null | undefined };
 
 export type SubmitVerificationReportMutationMutationVariables = Exact<{
-  id?: Maybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']>;
 }>;
 
 
@@ -404,24 +405,24 @@ export type UkLooMarkersQueryVariables = Exact<{ [key: string]: never; }>;
 export type UkLooMarkersQuery = { __typename?: 'Query', ukLooMarkers: Array<string> };
 
 export type UpdateLooMutationVariables = Exact<{
-  id?: Maybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']>;
   location: PointInput;
-  name?: Maybe<Scalars['String']>;
-  openingTimes?: Maybe<Scalars['OpeningTimes']>;
-  accessible?: Maybe<Scalars['Boolean']>;
-  allGender?: Maybe<Scalars['Boolean']>;
-  men?: Maybe<Scalars['Boolean']>;
-  women?: Maybe<Scalars['Boolean']>;
-  children?: Maybe<Scalars['Boolean']>;
-  urinalOnly?: Maybe<Scalars['Boolean']>;
-  babyChange?: Maybe<Scalars['Boolean']>;
-  radar?: Maybe<Scalars['Boolean']>;
-  attended?: Maybe<Scalars['Boolean']>;
-  automatic?: Maybe<Scalars['Boolean']>;
-  noPayment?: Maybe<Scalars['Boolean']>;
-  paymentDetails?: Maybe<Scalars['String']>;
-  notes?: Maybe<Scalars['String']>;
-  active?: Maybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+  openingTimes?: InputMaybe<Scalars['OpeningTimes']>;
+  accessible?: InputMaybe<Scalars['Boolean']>;
+  allGender?: InputMaybe<Scalars['Boolean']>;
+  men?: InputMaybe<Scalars['Boolean']>;
+  women?: InputMaybe<Scalars['Boolean']>;
+  children?: InputMaybe<Scalars['Boolean']>;
+  urinalOnly?: InputMaybe<Scalars['Boolean']>;
+  babyChange?: InputMaybe<Scalars['Boolean']>;
+  radar?: InputMaybe<Scalars['Boolean']>;
+  attended?: InputMaybe<Scalars['Boolean']>;
+  automatic?: InputMaybe<Scalars['Boolean']>;
+  noPayment?: InputMaybe<Scalars['Boolean']>;
+  paymentDetails?: InputMaybe<Scalars['String']>;
+  notes?: InputMaybe<Scalars['String']>;
+  active?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
