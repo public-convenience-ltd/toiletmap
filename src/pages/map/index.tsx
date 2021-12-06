@@ -6,7 +6,7 @@ import VisuallyHidden from '../../components/VisuallyHidden';
 import { useMapState } from '../../components/MapState';
 import config from '../../config';
 import { useRouter } from 'next/router';
-import { withApollo } from '../../components/withApollo';
+import { withApollo } from '../../api-client/withApollo';
 import { NextPage } from 'next';
 import LooMap from '../../components/LooMap/LooMapLoader';
 

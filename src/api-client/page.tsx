@@ -6,7 +6,7 @@ import { NextRouter, useRouter } from 'next/router'
 import { QueryHookOptions, useQuery } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 import type React from 'react';
-import { getApolloClient } from '../components/withApollo';
+import { getApolloClient } from './withApollo';
 export async function getServerPageFindLooById
     (options: Omit<Apollo.QueryOptions<Types.FindLooByIdQueryVariables>, 'query'>, ctx?: any ){
         const apolloClient = getApolloClient(ctx);
