@@ -78,8 +78,8 @@
     "styled-system": "5.1.5"
   },
   "devDependencies": {
-    "@commitlint/cli": "13.2.1",
-    "@commitlint/config-conventional": "13.2.0",
+    "@commitlint/cli": "15.0.0",
+    "@commitlint/config-conventional": "15.0.0",
     "@emotion/babel-plugin": "11.3.0",
     "@graphql-codegen/cli": "2.2.1",
     "@graphql-codegen/import-types-preset": "2.1.6",
@@ -103,9 +103,9 @@
     "eslint-config-next": "12.0.4",
     "geojson-precision": "1.0.0",
     "graphql-codegen-apollo-next-ssr": "1.7.1",
-    "husky": "7.0.2",
+    "husky": "7.0.4",
     "jest": "27.2.5",
-    "lint-staged": "11.2.3",
+    "lint-staged": "12.1.2",
     "migrate-mongo": "8.2.3",
     "prettier": "2.4.1",
     "topojson-server": "3.0.1",
