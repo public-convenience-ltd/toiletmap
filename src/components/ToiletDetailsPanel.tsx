@@ -34,7 +34,7 @@ import Spacer from './Spacer';
 import Icon from './Icon';
 import { Media } from './Media';
 // Suppress Opening Hours Heading during COVID-19
-import { /* getIsOpen, */ WEEKDAYS, isClosed } from '../openingTimes';
+import { /* getIsOpen, */ WEEKDAYS, isClosed } from '../lib/openingTimes';
 import { useMapState } from './MapState';
 
 // import FIND_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';

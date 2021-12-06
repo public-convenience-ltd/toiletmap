@@ -13,7 +13,7 @@ import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 import VisuallyHidden from '../components/VisuallyHidden';
 import Switch from '../components/Switch';
-import { WEEKDAYS, isClosed } from '../openingTimes';
+import { WEEKDAYS, isClosed } from '../lib/openingTimes';
 
 import crosshair from '../../public/crosshair-small.svg';
 import { useMapState } from './MapState';
