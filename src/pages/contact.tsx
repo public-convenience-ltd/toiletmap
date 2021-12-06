@@ -1,17 +1,15 @@
 import Head from 'next/head';
-
-import PageLayout from '../components/PageLayout';
 import Container from '../components/Container';
 import Button from '../components/Button';
 import Text from '../components/Text';
 import Spacer from '../components/Spacer';
-
+import Box from '../components/Box';
 import config from '../config';
 import { NextPage } from 'next';
 
 const ContactPage = () => {
   return (
-    <PageLayout layoutMode="blog">
+    <Box my={5}>
       <Head>
         <title>{config.getTitle('Contact Us')}</title>
       </Head>
@@ -30,7 +28,7 @@ const ContactPage = () => {
           .
         </p>
       </Container>
-    </PageLayout>
+    </Box>
   );
 };
 

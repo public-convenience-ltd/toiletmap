@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
-import PageLayout from '../../../components/PageLayout';
 import Box from '../../../components/Box';
 import Sidebar from '../../../components/Sidebar';
 import VisuallyHidden from '../../../components/VisuallyHidden';
@@ -35,7 +34,7 @@ const LooPage: PageFindLooByIdComp = (props) => {
   const pageTitle = config.getTitle('Home');
 
   return (
-    <PageLayout mapCenter={mapState.center}>
+    <>
       <Head>
         <title>{pageTitle}</title>
       </Head>
@@ -101,7 +100,7 @@ const LooPage: PageFindLooByIdComp = (props) => {
           </Box>
         )}
       </Box>
-    </PageLayout>
+    </>
   );
 };
 

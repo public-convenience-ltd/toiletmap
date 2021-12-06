@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import PageLayout from '../../components/PageLayout';
+import Box from '../../components/Box';
 import Container from '../../components/Container';
 import config from '../../config';
 import 'graphql-voyager/dist/voyager.css';
@@ -19,7 +19,7 @@ function introspectionProvider(query) {
 }
 
 const Voyager = () => (
-  <PageLayout layoutMode="blog">
+  <Box my={5}>
     <Head>
       <title>{config.getTitle('Schema Visualisation')}</title>
     </Head>
@@ -30,7 +30,7 @@ const Voyager = () => (
         workerURI={'/voyager.worker.js'}
       />
     </Container>
-  </PageLayout>
+  </Box>
 );
 
 export default Voyager;

@@ -1,7 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-
-import PageLayout from '../../components/PageLayout';
 import Box from '../../components/Box';
 import Sidebar from '../../components/Sidebar';
 import VisuallyHidden from '../../components/VisuallyHidden';
@@ -29,7 +27,7 @@ const MapPage: NextPage = () => {
   const pageTitle = config.getTitle('Area Map');
 
   return (
-    <PageLayout mapCenter={mapState.center}>
+    <>
       <Head>
         <title>{pageTitle}</title>
       </Head>
@@ -56,7 +54,7 @@ const MapPage: NextPage = () => {
 
         <LooMap center={center} zoom={mapState.zoom} controlsOffset={0} />
       </Box>
-    </PageLayout>
+    </>
   );
 };
 

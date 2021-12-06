@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import Head from 'next/head';
 import styled from '@emotion/styled';
-
-import PageLayout from '../components/PageLayout';
 import Container from '../components/Container';
 import Button from '../components/Button';
 import Text, { TextProps } from '../components/Text';
@@ -31,7 +29,7 @@ const SubHeading = (props: TextProps) => (
 
 const AboutPage = () => {
   return (
-    <PageLayout layoutMode="blog">
+    <Box my={5}>
       <Head>
         <title>{config.getTitle('About')}</title>
       </Head>
@@ -145,7 +143,7 @@ const AboutPage = () => {
           across the country.
         </p>
       </Container>
-    </PageLayout>
+    </Box>
   );
 };
 

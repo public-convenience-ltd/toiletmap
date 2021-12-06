@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { useUser } from '@auth0/nextjs-auth0';
 
-import PageLayout from '../../components/PageLayout';
 import EntryForm from '../../components/EntryForm';
 import Box from '../../components/Box';
 import Spacer from '../../components/Spacer';
@@ -13,7 +12,6 @@ import Login from '../../components/Login';
 import { useMapState } from '../../components/MapState';
 
 import config from '../../config';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { withApollo } from '../../components/withApollo';
 import {
@@ -82,7 +80,7 @@ const AddPage = () => {
   }
 
   return (
-    <PageLayout>
+    <>
       <Head>
         <title>{config.getTitle('Add Toilet')}</title>
       </Head>
@@ -121,7 +119,7 @@ const AddPage = () => {
       </EntryForm>
 
       <Spacer mt={4} />
-    </PageLayout>
+    </>
   );
 };
 
