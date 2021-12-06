@@ -15,4 +15,13 @@ module.exports = {
   },
 
   // swcMinify: true, .. emotion transform is not working with swc yet
+  async rewrites() {
+    return [
+      // Map lng-lat routes to a single page
+      {
+        source: '/map/:lng/:lat',
+        destination: '/map',
+      },
+    ];
+  },
 };
