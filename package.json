@@ -27,7 +27,7 @@
     "url": "https://github.com/neontribe/gbptm/issues"
   },
   "dependencies": {
-    "@apollo/client": "3.4.17",
+    "@apollo/client": "3.5.5",
     "@artsy/fresnel": "1.9.0",
     "@auth0/nextjs-auth0": "1.6.1",
     "@emotion/is-prop-valid": "0.8.8",
