@@ -14,7 +14,7 @@
     "migrate": "migrate-mongo up",
     "generate": "node -r dotenv/config ./src/api/db/manage/generate/index.js --confirm",
     "areas": "node -r dotenv/config ./src/api/db/manage/areaToDatabase/index.js",
-    "prepare": "husky install && cp ./node_modules/graphql-voyager/dist/voyager.worker.js ./public",
+    "prepare": "husky install && cp ./node_modules/graphql-voyager/dist/voyager.worker.js ./public && yarn codegen",
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "repository": {
