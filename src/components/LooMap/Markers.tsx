@@ -68,7 +68,7 @@ const Markers = () => {
 
   const getLooGroupLayers = useMemo(() => {
     if (!data?.ukLooMarkers) {
-      return {};
+      return null;
     }
 
     const parsedAndFilteredMarkers = data?.ukLooMarkers
