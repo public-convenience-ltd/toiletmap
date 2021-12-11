@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import ToiletMarkerIcon from './ToiletMarkerIcon';
 import * as L from 'leaflet';
@@ -43,22 +43,13 @@ const Markers = () => {
     }, 200);
   }, [filters]);
 
-  const filteredLooGroups = useMemo(() => {
-    if (!data?.ukLooMarkers) {
-      return [];
-    }
-
-    const parsedAndFilteredMarkers = data?.ukLooMarkers
-      .map(parseCompressedLoo)
-      .filter((compressedLoo) =>
-        filterCompressedLooByAppliedFilters(compressedLoo, appliedFilterTypes)
-      );
-
-    return parsedAndFilteredMarkers.map((toilet) => {
+  const initialiseMarker = useCallback(
+    (toilet) => {
       return L.marker(new L.LatLng(toilet.location.lat, toilet.location.lng), {
         zIndexOffset: 0,
         icon: new ToiletMarkerIcon({
           toiletId: toilet.id,
+          isHighlighted: toilet.id === mapState?.focus?.id,
         }),
         alt: 'Public Toilet',
         keyboard: false,
@@ -71,19 +62,45 @@ const Markers = () => {
             router.push(`/loos/${toilet.id}`);
           }
         });
-    });
-  }, [appliedFilterTypes, data?.ukLooMarkers, router]);
+    },
+    [mapState?.focus?.id, router]
+  );
+
+  const getLooGroupLayers = useMemo(() => {
+    if (!data?.ukLooMarkers) {
+      return {};
+    }
+
+    const parsedAndFilteredMarkers = data?.ukLooMarkers
+      .map(parseCompressedLoo)
+      .filter((compressedLoo) =>
+        filterCompressedLooByAppliedFilters(compressedLoo, appliedFilterTypes)
+      );
+
+    return parsedAndFilteredMarkers
+      .filter((toilet) => {
+        return toilet.id !== mapState?.focus?.id;
+      })
+      .map(initialiseMarker);
+  }, [
+    appliedFilterTypes,
+    data?.ukLooMarkers,
+    initialiseMarker,
+    mapState?.focus?.id,
+  ]);
 
   const map = useMap();
   useEffect(() => {
-    mcg.clearLayers();
-    mcg.addLayers(filteredLooGroups);
-    map.addLayer(mcg);
+    if (getLooGroupLayers) {
+      mcg.clearLayers();
+      mcg.addLayers(getLooGroupLayers);
+      map.addLayer(mcg);
+    }
     return () => {
       mcg.clearLayers();
       map.removeLayer(mcg);
     };
-  }, [map, filteredLooGroups]);
+  }, [map, getLooGroupLayers, mapState?.focus]);
 
   return null;
 };

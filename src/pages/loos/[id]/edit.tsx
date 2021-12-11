@@ -21,12 +21,17 @@ import {
   UpdateLooMutationVariables,
   useUpdateLooMutation,
 } from '../../../api-client/graphql';
+import { useEffect } from 'react';
 
 const EditPage: PageFindLooByIdComp = (props) => {
   const loo = props.data.loo;
   const router = useRouter();
   const { isLoading, user } = useUser();
-  const [mapState] = useMapState();
+  const [mapState, setMapState] = useMapState();
+
+  useEffect(() => {
+    setMapState({ focus: loo });
+  }, [loo, setMapState]);
 
   const [
     updateLooMutation,
@@ -74,7 +79,6 @@ const EditPage: PageFindLooByIdComp = (props) => {
           minZoom={config.editMinZoom}
           showCrosshair
           controlsOffset={20}
-          focus={loo}
         />
       </Box>
 
