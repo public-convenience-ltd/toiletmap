@@ -2460,6 +2460,11 @@
   resolved "https://registry.npmjs.org/@types/minimist/-/minimist-1.2.2.tgz"
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
 
+"@types/ngeohash@0.6.4":
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/@types/ngeohash/-/ngeohash-0.6.4.tgz#a1ba2c25c4d1ef71f067de247a61490019ea0757"
+  integrity sha512-rr20mmx41OkWx4q5du2dv2sESR/6xH2tzScUQXwO8SiaQWa6PYTuan1nqBtA76FR9qkVfZY7nwQwZNC9StX/Ww==
+
 "@types/node@*":
   version "16.7.10"
   resolved "https://registry.npmjs.org/@types/node/-/node-16.7.10.tgz"
@@ -7649,6 +7654,11 @@ next@12.0.1:
     "@next/swc-win32-arm64-msvc" "12.0.1"
     "@next/swc-win32-ia32-msvc" "12.0.1"
     "@next/swc-win32-x64-msvc" "12.0.1"
+
+ngeohash@0.6.3:
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/ngeohash/-/ngeohash-0.6.3.tgz#10b1e80be5488262ec95c56cf2dbb6c45fbdf245"
+  integrity sha512-kltF0cOxgx1AbmVzKxYZaoB0aj7mOxZeHaerEtQV0YaqnkXNq26WWqMmJ6lTqShYxVRWZ/mwvvTrNeOwdslWiw==
 
 no-case@^3.0.4:
   version "3.0.4"
