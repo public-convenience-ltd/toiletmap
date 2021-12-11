@@ -25,7 +25,7 @@ const mcg = L.markerClusterGroup({
 const Markers = () => {
   const router = useRouter();
 
-  const [mapState, setMapState] = useMapState();
+  const [mapState] = useMapState();
   const { filters } = mapState;
   const { data } = useUkLooMarkersQuery();
 
@@ -49,7 +49,6 @@ const Markers = () => {
         zIndexOffset: 0,
         icon: new ToiletMarkerIcon({
           toiletId: toilet.id,
-          isHighlighted: toilet.id === mapState?.focus?.id,
         }),
         alt: 'Public Toilet',
         keyboard: false,
@@ -63,7 +62,7 @@ const Markers = () => {
           }
         });
     },
-    [mapState?.focus?.id, router]
+    [router]
   );
 
   const getLooGroupLayers = useMemo(() => {
