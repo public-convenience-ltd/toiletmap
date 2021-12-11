@@ -1,3 +1,4 @@
+import ngeohash from 'ngeohash';
 import { Loo } from '../api-client/graphql';
 import { FILTER_TYPE, genLooFilterBitmask } from './filter';
 
@@ -7,7 +8,7 @@ export type LooProperties = Omit<Loo, '__typename'> & {
   };
 };
 
-type CompressedLooString = `${string}|${string}|${string}|${number}`;
+type CompressedLooString = `${string}|${string}|${number}`;
 
 type CompressedLooObject = {
   id: string;
@@ -23,21 +24,22 @@ export const stringifyAndCompressLoos = (
 ): CompressedLooString[] =>
   loos.map((loo) => {
     const id = loo.id;
-    const lat = loo.properties.geometry.coordinates[0].toFixed(4);
-    const lng = loo.properties.geometry.coordinates[1].toFixed(4);
+    const [longitude, latitude] = loo.properties.geometry.coordinates;
+    const geohash = ngeohash.encode(latitude, longitude, 9);
     const filterMask = genLooFilterBitmask(loo);
-    return `${id}|${lat}|${lng}|${filterMask}` as CompressedLooString;
+    return `${id}|${geohash}|${filterMask}` as CompressedLooString;
   });
 
 export const parseCompressedLoo = (
   compressedLoo: CompressedLooString
 ): CompressedLooObject => {
   const loo = compressedLoo.split('|');
+  const { latitude, longitude } = ngeohash.decode(loo[1]);
   return {
     id: loo[0],
     location: {
-      lng: parseFloat(loo[1]),
-      lat: parseFloat(loo[2]),
+      lng: longitude,
+      lat: latitude,
     },
     filterBitmask: parseInt(loo[3], 10),
   };
