@@ -6,7 +6,7 @@ import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { useMap } from 'react-leaflet';
-import { useUkLooMarkersQuery } from '../../api-client/graphql';
+import { useLoosByGeohashQuery } from '../../api-client/graphql';
 import config, { Filter } from '../../config';
 import { useMapState } from '../MapState';
 import { FILTER_TYPE, getAppliedFiltersAsFilterTypes } from '../../lib/filter';
@@ -14,6 +14,8 @@ import {
   filterCompressedLooByAppliedFilters,
   parseCompressedLoo,
 } from '../../lib/loo';
+import ngeohash from 'ngeohash';
+
 const KEY_ENTER = 13;
 
 const mcg = L.markerClusterGroup({
@@ -27,7 +29,16 @@ const Markers = () => {
 
   const [mapState] = useMapState();
   const { filters } = mapState;
-  const { data } = useUkLooMarkersQuery();
+
+  const map = useMap();
+  const geohashTile = ngeohash.encode(
+    map.getCenter().lat,
+    map.getCenter().lng,
+    5
+  );
+  const { data } = useLoosByGeohashQuery({
+    variables: { geohash: geohashTile },
+  });
 
   const [appliedFilterTypes, setAppliedFilterTypes] = useState<
     Array<FILTER_TYPE>
@@ -49,6 +60,7 @@ const Markers = () => {
         zIndexOffset: 0,
         icon: new ToiletMarkerIcon({
           toiletId: toilet.id,
+          isHighlighted: toilet.id === mapState?.focus?.id,
         }),
         alt: 'Public Toilet',
         keyboard: false,
@@ -62,15 +74,15 @@ const Markers = () => {
           }
         });
     },
-    [router]
+    [mapState?.focus?.id, router]
   );
 
   const getLooGroupLayers = useMemo(() => {
-    if (!data?.ukLooMarkers) {
+    if (!data?.loosByGeohash) {
       return null;
     }
 
-    const parsedAndFilteredMarkers = data?.ukLooMarkers
+    const parsedAndFilteredMarkers = data?.loosByGeohash
       .map(parseCompressedLoo)
       .filter((compressedLoo) =>
         filterCompressedLooByAppliedFilters(compressedLoo, appliedFilterTypes)
@@ -83,12 +95,11 @@ const Markers = () => {
       .map(initialiseMarker);
   }, [
     appliedFilterTypes,
-    data?.ukLooMarkers,
+    data?.loosByGeohash,
     initialiseMarker,
     mapState?.focus?.id,
   ]);
 
-  const map = useMap();
   useEffect(() => {
     if (getLooGroupLayers) {
       mcg.clearLayers();
