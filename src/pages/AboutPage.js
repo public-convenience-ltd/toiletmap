@@ -92,6 +92,35 @@ const AboutPage = (props) => {
           </Button>
           , private companies and organisations.
         </p>
+        <SubHeading id="contributing">Contributing</SubHeading>
+        <p>
+          We cover each feature of the map and how you can go about using them
+          to add or edit toilets yourself in our Volunteer Help Guide, available
+          to download below.
+          <Spacer mb={2} />
+          <Button
+            as="a"
+            href="GBPTM.Toilet.Checklist.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Download volunteer help guide
+          </Button>
+        </p>
+        <p>
+          A handy printable checklist designed to make it easier for you to
+          collect data away from the computer for submitting to the map later is
+          also available for download.
+          <Spacer mb={2} />
+          <Button
+            as="a"
+            href="Toilet.Map.Volunteer.Help.Guide.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Download toilet checklist
+          </Button>
+        </p>
         <SubHeading>Publicly Accessible Toilets</SubHeading>
         <p>
           The project aims to map all publicly-accessible toilets - that means
