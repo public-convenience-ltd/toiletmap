@@ -100,7 +100,7 @@ const AboutPage = (props) => {
           <Spacer mb={2} />
           <Button
             as="a"
-            href="GBPTM.Toilet.Checklist.pdf"
+            href="Toilet.Map.Volunteer.Help.Guide.pdf"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -114,7 +114,7 @@ const AboutPage = (props) => {
           <Spacer mb={2} />
           <Button
             as="a"
-            href="Toilet.Map.Volunteer.Help.Guide.pdf"
+            href="GBPTM.Toilet.Checklist.pdf"
             target="_blank"
             rel="noopener noreferrer"
           >
