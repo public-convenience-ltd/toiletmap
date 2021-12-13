@@ -1,0 +1,3 @@
+query loosByGeohash($geohash: String!) {
+  loosByGeohash(geohash: $geohash)
+}

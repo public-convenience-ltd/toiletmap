@@ -1,4 +1,5 @@
 import { stringifyAndCompressLoos } from '../lib/loo';
+import ngeohash from 'ngeohash';
 
 const { Loo, Report, Area, MapGeo } = require('./db');
 const { GraphQLDateTime } = require('graphql-iso-date');
@@ -103,6 +104,18 @@ const resolvers = {
     },
     loosByProximity: async (parent, args) =>
       await Loo.findNear(args.from.lng, args.from.lat, args.from.maxDistance),
+    loosByGeohash: async (parent, args, context) => {
+      const geohash: string = args.geohash ?? '';
+      const [minLat, minLon, maxLat, maxLon] = ngeohash.decode_bbox(geohash);
+      const loos = await Loo.find({ 'properties.active': true })
+        .where('properties.geometry')
+        // .within()
+        .box([minLon, minLat], [maxLon, maxLat]);
+
+      const t = stringifyAndCompressLoos(loos);
+      console.log(t, 'FJKLFJKL');
+      return t;
+    },
     ukLooMarkers: async () => {
       const loos = await Loo.find({ 'properties.active': true })
         .where('properties.geometry')
