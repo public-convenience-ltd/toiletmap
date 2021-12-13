@@ -31,10 +31,13 @@ const Markers = () => {
   const { filters } = mapState;
 
   const map = useMap();
+  console.log(map.getZoom());
+
+  const hashPrecision = map.getZoom() < 11 ? 3 : 4;
   const geohashTile = ngeohash.encode(
     map.getCenter().lat,
     map.getCenter().lng,
-    5
+    hashPrecision
   );
   const { data } = useLoosByGeohashQuery({
     variables: { geohash: geohashTile },
