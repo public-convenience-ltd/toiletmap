@@ -106,11 +106,10 @@ const resolvers = {
       await Loo.findNear(args.from.lng, args.from.lat, args.from.maxDistance),
     loosByGeohash: async (parent, args, context) => {
       const geohash: string = args.geohash ?? '';
-      const neighbours = ngeohash.neighbors(geohash).map(ngeohash.decode_bbox);
       const current = ngeohash.decode_bbox(geohash);
 
       const areaLooData = await Promise.all(
-        [current, ...neighbours].map(async (boundingBox) => {
+        [current].map(async (boundingBox) => {
           const [minLat, minLon, maxLat, maxLon] = boundingBox;
           return await Loo.find({ 'properties.active': true })
             .where('properties.geometry')
