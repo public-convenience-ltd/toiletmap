@@ -26,8 +26,7 @@ const MapTracker = () => {
   return null;
 };
 
-interface Props {
-  focus?: Loo;
+interface LooMapProps {
   center: { lat: number; lng: number };
   zoom?: number;
   minZoom?: number;
@@ -38,8 +37,7 @@ interface Props {
   withAccessibilityOverlays?: boolean;
 }
 
-const LooMap: React.FC<Props> = ({
-  focus,
+const LooMap: React.FC<LooMapProps> = ({
   showCrosshair,
   controlsOffset = 0,
   center,
@@ -48,6 +46,7 @@ const LooMap: React.FC<Props> = ({
   maxZoom = 18,
   staticMap = false,
 }) => {
+  const [mapState] = useMapState();
   return (
     <Box
       position="relative"
@@ -134,7 +133,7 @@ const LooMap: React.FC<Props> = ({
           maxZoom={maxZoom}
         />
 
-        {focus && <CurrentLooMarker loo={focus} />}
+        {mapState.focus && <CurrentLooMarker loo={mapState.focus} />}
         <Markers />
 
         <Media greaterThan="md">
