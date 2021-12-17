@@ -18,45 +18,63 @@ import ngeohash from 'ngeohash';
 
 const KEY_ENTER = 13;
 
-const mcg = L.markerClusterGroup({
-  chunkedLoading: true,
-  showCoverageOnHover: false,
-  chunkInterval: 500,
-});
-
 const Markers = () => {
+  const map = useMap();
+
+  const isLocalisedView = map.getZoom() < 13;
+  const isBirdsEyeView = map.getZoom() < 10;
+  const isNationalView = map.getZoom() < 8;
+  const hashPrecision = isNationalView
+    ? 2
+    : isBirdsEyeView
+    ? 3
+    : isLocalisedView
+    ? 4
+    : 5;
+  const tileLat = isNationalView ? 51.509865 : map.getCenter().lat;
+  const tileLng = isNationalView ? -0.118092 : map.getCenter().lng;
+
+  const geohashTile = ngeohash.encode(tileLat, tileLng, hashPrecision);
+  const neighbours = ngeohash.neighbors(geohashTile);
+  const surroundingTiles = neighbours.flatMap((n) => ngeohash.neighbors(n));
+
+  const neighbourSet = new Set([...surroundingTiles]);
+
+  return (
+    <>
+      {Array.from(neighbourSet).map((hash) => (
+        <MarkerGroup key={hash} geohash={hash} />
+      ))}
+    </>
+  );
+};
+
+const MarkerGroup: React.FC<{ geohash: string }> = ({ geohash }) => {
+  const mcg = useMemo(
+    () =>
+      L.markerClusterGroup({
+        chunkedLoading: true,
+        showCoverageOnHover: false,
+        chunkInterval: 500,
+      }),
+    []
+  );
+
   const router = useRouter();
 
   const [mapState] = useMapState();
   const { filters } = mapState;
 
   const map = useMap();
-  console.log(map.getZoom());
 
-  const hashPrecision = map.getZoom() < 11 ? 3 : 4;
-  const geohashTile = ngeohash.encode(
-    map.getCenter().lat,
-    map.getCenter().lng,
-    hashPrecision
-  );
   const { data } = useLoosByGeohashQuery({
-    variables: { geohash: geohashTile },
+    variables: { geohash },
   });
 
-  const [appliedFilterTypes, setAppliedFilterTypes] = useState<
-    Array<FILTER_TYPE>
-  >([]);
-
-  useEffect(() => {
-    const applied: Array<Filter> = config.filters.filter(
-      (filter) => filters[filter.id]
-    );
-    const appliedFilterTypes = getAppliedFiltersAsFilterTypes(applied);
-    window.setTimeout(() => {
-      setAppliedFilterTypes(appliedFilterTypes);
-    }, 200);
-  }, [filters]);
-
+  const bbox = ngeohash.decode_bbox(geohash);
+  const bounds = L.rectangle(
+    L.latLngBounds(L.latLng(bbox[0], bbox[1]), L.latLng(bbox[2], bbox[3]))
+  );
   const initialiseMarker = useCallback(
     (toilet) => {
       return L.marker(new L.LatLng(toilet.location.lat, toilet.location.lng), {
@@ -79,6 +97,20 @@ const Markers = () => {
     },
     [mapState?.focus?.id, router]
   );
+
+  const [appliedFilterTypes, setAppliedFilterTypes] = useState<
+    Array<FILTER_TYPE>
+  >([]);
+
+  useEffect(() => {
+    const applied: Array<Filter> = config.filters.filter(
+      (filter) => filters[filter.id]
+    );
+    const appliedFilterTypes = getAppliedFiltersAsFilterTypes(applied);
+    window.setTimeout(() => {
+      setAppliedFilterTypes(appliedFilterTypes);
+    }, 200);
+  }, [filters]);
 
   const getLooGroupLayers = useMemo(() => {
     if (!data?.loosByGeohash) {
@@ -107,13 +139,14 @@ const Markers = () => {
     if (getLooGroupLayers) {
       mcg.clearLayers();
       mcg.addLayers(getLooGroupLayers);
+      mcg.addLayers([bounds]);
       map.addLayer(mcg);
     }
     return () => {
       mcg.clearLayers();
       map.removeLayer(mcg);
     };
-  }, [map, getLooGroupLayers, mapState?.focus]);
+  }, [bounds, getLooGroupLayers, map, mapState.focus, mcg]);
 
   return null;
 };
