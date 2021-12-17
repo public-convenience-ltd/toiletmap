@@ -34,14 +34,15 @@ export const parseCompressedLoo = (
   compressedLoo: CompressedLooString
 ): CompressedLooObject => {
   const loo = compressedLoo.split('|');
-  const { latitude, longitude } = ngeohash.decode(loo[1]);
+  const [looId, geohash, filterBitmask] = loo;
+  const { latitude, longitude } = ngeohash.decode(geohash);
   return {
-    id: loo[0],
+    id: looId,
     location: {
       lng: longitude,
       lat: latitude,
     },
-    filterBitmask: parseInt(loo[3], 10),
+    filterBitmask: parseInt(filterBitmask, 10),
   };
 };
 
