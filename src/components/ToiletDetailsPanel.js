@@ -144,10 +144,8 @@ const ToiletDetailsPanel = ({
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(startExpanded);
 
-  const [
-    submitVerificationMutation,
-    { loading: submitVerificationLoading },
-  ] = useMutation(SUBMIT_VERIFICATION_REPORT_MUTATION);
+  const [submitVerificationMutation, { loading: submitVerificationLoading }] =
+    useMutation(SUBMIT_VERIFICATION_REPORT_MUTATION);
 
   const submitVerificationReport = async (variables) => {
     const responseData = await submitVerificationMutation(variables);
@@ -518,7 +516,7 @@ const ToiletDetailsPanel = ({
                     justifyContent="space-between"
                     key={i}
                     padding={1}
-                    bg={i === todayWeekdayIndex ? 'ice' : 'white'}
+                    bg={i === todayWeekdayIndex - 1 ? 'ice' : 'white'}
                   >
                     <span>{WEEKDAYS[i]}</span>
                     <span>{getTimeRangeLabel(timeRange)}</span>
