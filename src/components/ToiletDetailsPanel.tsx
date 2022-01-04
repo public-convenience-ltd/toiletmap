@@ -458,7 +458,7 @@ const ToiletDetailsPanel = ({
                     justifyContent="space-between"
                     key={i}
                     padding={1}
-                    bg={i === todayWeekdayIndex ? 'ice' : 'white'}
+                    bg={i === todayWeekdayIndex - 1 ? 'ice' : 'white'}
                   >
                     <span>{WEEKDAYS[i]}</span>
                     <span>{getTimeRangeLabel(timeRange)}</span>
