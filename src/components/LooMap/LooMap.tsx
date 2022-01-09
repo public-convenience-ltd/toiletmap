@@ -11,7 +11,7 @@ import Box from '../Box';
 import { Media } from '../Media';
 import Markers from './Markers';
 import CurrentLooMarker from './CurrentLooMarker';
-import { Loo } from '../../api-client/graphql';
+import LocateMapControl from './LocateMapControl';
 
 const MapTracker = () => {
   const [, setMapState] = useMapState();
@@ -139,7 +139,7 @@ const LooMap: React.FC<LooMapProps> = ({
         <Media greaterThan="md">
           <ZoomControl position="bottomright" />
         </Media>
-        {/* <LocateMapControl position="bottomright" /> */}
+        <LocateMapControl position="bottomright" />
         <MapTracker />
       </MapContainer>
     </Box>

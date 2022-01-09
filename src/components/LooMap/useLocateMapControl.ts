@@ -1,6 +1,6 @@
 import React from 'react';
 import L from 'leaflet';
-import { useLeaflet } from 'react-leaflet';
+import { useMap } from 'react-leaflet';
 
 const LocationMarker = L.Marker.extend({
   initialize: function (latlng, options) {
@@ -49,7 +49,7 @@ const useLocateMapControl = ({
   onLocationFound = Function.prototype,
   onStopLocation = Function.prototype,
 }) => {
-  const { map } = useLeaflet();
+  const map = useMap();
 
   const layerRef = React.useRef(null);
   React.useEffect(() => {

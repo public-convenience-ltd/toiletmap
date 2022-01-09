@@ -8445,11 +8445,6 @@ react-is@^16.6.3, react-is@^16.7.0, react-is@^16.8.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-leaflet-control@2.1.2:
-  version "2.1.2"
-  resolved "https://registry.npmjs.org/react-leaflet-control/-/react-leaflet-control-2.1.2.tgz"
-  integrity sha512-xdheoLuLEeDGZ6/FKsnKjMYxC9BlyxsK5L5S27Dd6Z+FYP4jIa1Ekhu7UDgTV7GGSw+Yjjf8uofoheylxggB6w==
-
 react-leaflet@3.2.2:
   version "3.2.2"
   resolved "https://registry.npmjs.org/react-leaflet/-/react-leaflet-3.2.2.tgz"

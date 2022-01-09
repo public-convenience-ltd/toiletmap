@@ -1,7 +1,6 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { variant } from 'styled-system';
-import Control from 'react-leaflet-control';
+import Control from '../Control/Control';
 
 import { useMapState } from '../MapState';
 import useLocateMapControl from './useLocateMapControl';
