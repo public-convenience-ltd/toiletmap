@@ -71,10 +71,11 @@ const MarkerGroup: React.FC<{ geohash: string }> = ({ geohash }) => {
     variables: { geohash },
   });
 
-  const bbox = ngeohash.decode_bbox(geohash);
-  const bounds = L.rectangle(
-    L.latLngBounds(L.latLng(bbox[0], bbox[1]), L.latLng(bbox[2], bbox[3]))
-  );
+  // Uncomment this to calculate the chunk bounds to draw a debug box.
+  // const bbox = ngeohash.decode_bbox(geohash);
+  // const bounds = L.rectangle(
+  //   L.latLngBounds(L.latLng(bbox[0], bbox[1]), L.latLng(bbox[2], bbox[3]))
+  // );
   const initialiseMarker = useCallback(
     (toilet) => {
       return L.marker(new L.LatLng(toilet.location.lat, toilet.location.lng), {
@@ -139,14 +140,15 @@ const MarkerGroup: React.FC<{ geohash: string }> = ({ geohash }) => {
     if (getLooGroupLayers) {
       mcg.clearLayers();
       mcg.addLayers(getLooGroupLayers);
-      mcg.addLayers([bounds]);
+      // uncomment this to highlight the bounds of each marker chunk for easier debugging.
+      //mcg.addLayers([bounds]);
       map.addLayer(mcg);
     }
     return () => {
       mcg.clearLayers();
       map.removeLayer(mcg);
     };
-  }, [bounds, getLooGroupLayers, map, mapState.focus, mcg]);
+  }, [getLooGroupLayers, map, mapState.focus, mcg]);
 
   return null;
 };
