@@ -136,10 +136,12 @@ const LooMap: React.FC<LooMapProps> = ({
         {mapState.focus && <CurrentLooMarker loo={mapState.focus} />}
         <Markers />
 
+        <LocateMapControl position="bottomright" />
+
         <Media greaterThan="md">
           <ZoomControl position="bottomright" />
         </Media>
-        <LocateMapControl position="bottomright" />
+
         <MapTracker />
       </MapContainer>
     </Box>

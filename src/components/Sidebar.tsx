@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import isPropValid from '@emotion/is-prop-valid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -53,7 +52,6 @@ const Sidebar = () => {
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   const filterToggleRef = useRef(null);
   const [mapState, setMapState] = useMapState();
-  const { filters } = mapState;
 
   return (
     <section aria-labelledby="heading-search">
