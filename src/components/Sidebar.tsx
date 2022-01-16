@@ -52,7 +52,6 @@ const Sidebar = () => {
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   const filterToggleRef = useRef(null);
   const [mapState, setMapState] = useMapState();
-
   return (
     <section aria-labelledby="heading-search">
       <Media lessThan="md">

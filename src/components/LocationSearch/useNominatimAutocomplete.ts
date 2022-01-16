@@ -4,7 +4,7 @@ import debounce from 'lodash/debounce';
 const useNominatimAutocomplete = (input: string | any[]) => {
   const [places, setPlaces] = React.useState([]);
 
-  const fetchPlaces = debounce(async (input) => {
+  const fetchHandler = async (input) => {
     const fetchUrl = `https://nominatim.openstreetmap.org/search?q=${input}&countrycodes=gb&limit=5&format=json`;
 
     const response = await fetch(fetchUrl);
@@ -26,23 +26,30 @@ const useNominatimAutocomplete = (input: string | any[]) => {
     );
 
     setPlaces(locationResults);
-  }, 300);
+  };
+
+  const debouncedFetchHandler = React.useMemo(
+    () => debounce(fetchHandler, 300),
+    []
+  );
 
   // Fetch places when input changes
   React.useEffect(() => {
     if (input.length < 3) {
       return;
     }
-
-    fetchPlaces(input);
-  }, [input, fetchPlaces]);
+    debouncedFetchHandler(input);
+    return () => {
+      debouncedFetchHandler.cancel();
+    };
+  }, [debouncedFetchHandler, input]);
 
   // Clear places when input is cleared
   React.useEffect(() => {
     if (input) {
       return;
     }
-
+    console.log('AG');
     setPlaces([]);
   }, [input, setPlaces]);
 
