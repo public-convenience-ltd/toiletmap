@@ -10,6 +10,14 @@ interface MapState {
     lat: number;
     lng: number;
   };
+  searchLocation?: {
+    lat: number;
+    lng: number;
+  };
+  geolocation?: {
+    lat: number;
+    lng: number;
+  };
   zoom?: number;
   filters?: Filter[];
   focus?: Loo;
@@ -33,6 +41,7 @@ export const MapStateProvider = ({ children, loos = [] }) => {
     center: config.fallbackLocation,
     zoom: 16,
     filters: initialFilterState,
+    searchLocation: undefined,
   });
 
   // keep local storage and state in sync

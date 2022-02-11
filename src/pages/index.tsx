@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Box from '../components/Box';
-import Sidebar from '../components/Sidebar';
+import Sidebar from '../components/Sidebar/Sidebar';
 import VisuallyHidden from '../components/VisuallyHidden';
 import { useMapState } from '../components/MapState';
 import config from '../config';
