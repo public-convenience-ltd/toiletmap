@@ -20,6 +20,7 @@ import Filters from '../Filters';
 import Button from '../Button';
 import Drawer from '../Drawer';
 import { useMapState } from '../MapState';
+import useLocateMapControl from '../LooMap/useLocateMapControl';
 
 interface Props {
   isExpanded?: boolean;
@@ -81,16 +82,8 @@ const Sidebar = () => {
         <Box display="flex" justifyContent="center" mt={3}>
           <Button
             type="button"
-            onClick={() => {
-              navigator.geolocation.getCurrentPosition(({ coords }) => {
-                const { latitude: lat, longitude: lng } = coords;
-                const location = { lat, lng };
-
-                setMapState({
-                  geolocation: location,
-                });
-              });
-            }}
+            variant="primary"
+            onClick={() => mapState?.locationServices?.startLocate()}
             aria-label="Find a toilet near me"
           >
             Find a toilet near me
@@ -226,17 +219,7 @@ const Sidebar = () => {
                 type="button"
                 display="flex"
                 alignItems="center"
-                onClick={() => {
-                  navigator.geolocation.getCurrentPosition(({ coords }) => {
-                    const { latitude: lat, longitude: lng } = coords;
-                    const location = { lat, lng };
-
-                    setMapState({
-                      geolocation: location,
-                      center: location,
-                    });
-                  });
-                }}
+                onClick={() => mapState?.locationServices?.startLocate()}
               >
                 <Icon icon={faMapMarkerAlt} fixedWidth size="lg" />
                 <Box mx={2}>
