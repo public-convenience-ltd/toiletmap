@@ -1,5 +1,4 @@
-import { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useRef, useEffect } from 'react';
 import styled from '@emotion/styled';
 import isPropValid from '@emotion/is-prop-valid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,16 +10,16 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 
-import { Media } from './Media';
-import VisuallyHidden from './VisuallyHidden';
-import Box from './Box';
-import Text from './Text';
-import Icon from './Icon';
-import LocationSearch from './LocationSearch';
-import Filters from './Filters';
-import Button from './Button';
-import Drawer from './Drawer';
-import { useMapState } from './MapState';
+import { Media } from '../Media';
+import VisuallyHidden from '../VisuallyHidden';
+import Box from '../Box';
+import Text from '../Text';
+import Icon from '../Icon';
+import LocationSearch from '../LocationSearch';
+import Filters from '../Filters';
+import Button from '../Button';
+import Drawer from '../Drawer';
+import { useMapState } from '../MapState';
 
 interface Props {
   isExpanded?: boolean;
@@ -53,7 +52,6 @@ const Sidebar = () => {
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   const filterToggleRef = useRef(null);
   const [mapState, setMapState] = useMapState();
-  const { filters } = mapState;
 
   return (
     <section aria-labelledby="heading-search">
@@ -63,7 +61,9 @@ const Sidebar = () => {
         </VisuallyHidden>
 
         <LocationSearch
-          onSelectedItemChange={(center) => setMapState({ center })}
+          onSelectedItemChange={(searchLocation) =>
+            setMapState({ searchLocation })
+          }
         />
 
         <Box display="flex" justifyContent="center" mt={3}>
@@ -88,7 +88,6 @@ const Sidebar = () => {
 
                 setMapState({
                   geolocation: location,
-                  center: location,
                 });
               });
             }}
@@ -151,7 +150,9 @@ const Sidebar = () => {
 
           <Box mt={3}>
             <LocationSearch
-              onSelectedItemChange={(center) => setMapState({ center })}
+              onSelectedItemChange={(searchLocation) =>
+                setMapState({ searchLocation })
+              }
             />
           </Box>
 

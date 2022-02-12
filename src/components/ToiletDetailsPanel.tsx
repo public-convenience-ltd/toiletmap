@@ -37,9 +37,6 @@ import { Media } from './Media';
 import { /* getIsOpen, */ WEEKDAYS, isClosed } from '../lib/openingTimes';
 import { useMapState } from './MapState';
 
-// import FIND_LOO_BY_ID_QUERY from '../graphql/findLooById.graphql';
-// import UPDATE_LOO_MUTATION from '../graphql/updateLoo.graphql';
-
 const Grid = styled(Box)`
   display: flex;
   flex-direction: row;
@@ -126,12 +123,13 @@ const ToiletDetailsPanel = ({
     }
   }, [isExpanded]);
 
+  // TODO: use a different method for this as the useComponentSize hook doesn't play well with SSR
   // call onDimensionsChange whenever the dimensions of the container change
   const containerRef = React.useRef(null);
-  const size = useComponentSize(containerRef);
-  React.useEffect(() => {
-    onDimensionsChange(size);
-  }, [size, onDimensionsChange]);
+  // const size = useComponentSize(containerRef);
+  // React.useEffect(() => {
+  //   onDimensionsChange(size);
+  // }, [size, onDimensionsChange]);
 
   if (isLoading) {
     return (

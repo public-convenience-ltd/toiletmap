@@ -11,7 +11,9 @@ import Box from '../Box';
 import { Media } from '../Media';
 import Markers from './Markers';
 import CurrentLooMarker from './CurrentLooMarker';
-import { Loo } from '../../api-client/graphql';
+import LocateMapControl from './LocateMapControl';
+import { useEffect, useState } from 'react';
+import { Map } from 'leaflet';
 
 const MapTracker = () => {
   const [, setMapState] = useMapState();
@@ -47,6 +49,14 @@ const LooMap: React.FC<LooMapProps> = ({
   staticMap = false,
 }) => {
   const [mapState] = useMapState();
+  const [map, setMap] = useState<Map>(null);
+
+  useEffect(() => {
+    if (mapState?.searchLocation) {
+      map?.setView(mapState.searchLocation);
+    }
+  }, [map, mapState.searchLocation]);
+
   return (
     <Box
       position="relative"
@@ -71,6 +81,7 @@ const LooMap: React.FC<LooMapProps> = ({
       ]}
     >
       <MapContainer
+        whenCreated={setMap}
         center={center}
         zoom={zoom}
         minZoom={minZoom}
@@ -136,10 +147,12 @@ const LooMap: React.FC<LooMapProps> = ({
         {mapState.focus && <CurrentLooMarker loo={mapState.focus} />}
         <Markers />
 
+        <LocateMapControl position="bottomright" />
+
         <Media greaterThan="md">
           <ZoomControl position="bottomright" />
         </Media>
-        {/* <LocateMapControl position="bottomright" /> */}
+
         <MapTracker />
       </MapContainer>
     </Box>
