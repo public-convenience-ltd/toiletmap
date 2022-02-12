@@ -1,5 +1,6 @@
 import { stringifyAndCompressLoos } from '../lib/loo';
 import ngeohash from 'ngeohash';
+import { async } from 'hasha';
 
 const { Loo, Report, Area, MapGeo } = require('./db');
 const { GraphQLDateTime } = require('graphql-iso-date');
@@ -102,6 +103,8 @@ const resolvers = {
         page: res.page,
       };
     },
+    looNamesByIds: async (parent, args) =>
+      await Loo.find({ _id: { $in: args.idList } }),
     loosByProximity: async (parent, args) =>
       await Loo.findNear(args.from.lng, args.from.lat, args.from.maxDistance),
     loosByGeohash: async (parent, args, context) => {

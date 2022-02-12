@@ -268,11 +268,7 @@ const LooMap: React.FC<LooMapProps> = ({
               center={center}
             />
 
-            <AccessibilityList
-              toilets={intersectingToilets.map(
-                (toilet: { name: any }) => toilet.name
-              )}
-            />
+            <AccessibilityList toilets={intersectingToilets} />
 
             <VisuallyHidden>
               <div
