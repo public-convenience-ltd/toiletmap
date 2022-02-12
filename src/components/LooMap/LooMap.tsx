@@ -56,7 +56,6 @@ const LooMap: React.FC<LooMapProps> = ({
       map?.setView(mapState.searchLocation);
     }
   }, [map, mapState.searchLocation]);
-
   return (
     <Box
       position="relative"
