@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useRouter } from 'next/router';
 import ToiletMarkerIcon from './ToiletMarkerIcon';
 import * as L from 'leaflet';
@@ -6,11 +13,12 @@ import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { useMap } from 'react-leaflet';
-import { useLoosByGeohashQuery } from '../../api-client/graphql';
+import { Loo, useLoosByGeohashQuery } from '../../api-client/graphql';
 import config, { Filter } from '../../config';
 import { useMapState } from '../MapState';
 import { FILTER_TYPE, getAppliedFiltersAsFilterTypes } from '../../lib/filter';
 import {
+  CompressedLooObject,
   filterCompressedLooByAppliedFilters,
   parseCompressedLoo,
 } from '../../lib/loo';
@@ -18,7 +26,9 @@ import ngeohash from 'ngeohash';
 
 const KEY_ENTER = 13;
 
-const Markers = () => {
+const Markers: React.FC<{
+  setLoadedToilets: (loadedToilets) => void;
+}> = ({ setLoadedToilets }) => {
   const map = useMap();
 
   const isLocalisedView = map.getZoom() < 13;
@@ -37,19 +47,48 @@ const Markers = () => {
   const geohashTile = ngeohash.encode(tileLat, tileLng, hashPrecision);
   const neighbours = ngeohash.neighbors(geohashTile);
   const surroundingTiles = neighbours.flatMap((n) => ngeohash.neighbors(n));
-
   const neighbourSet = new Set([...surroundingTiles]);
+
+  const [mapState] = useMapState();
+
+  useEffect(() => {
+    setLoadedToilets(neighbourSet);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tileLat, tileLng]);
 
   return (
     <>
-      {Array.from(neighbourSet).map((hash) => (
-        <MarkerGroup key={hash} geohash={hash} />
+      {Array.from(neighbourSet).map((geohash) => (
+        <MarkerGroup key={geohash} geohash={geohash} />
       ))}
     </>
   );
 };
 
-const MarkerGroup: React.FC<{ geohash: string }> = ({ geohash }) => {
+const MarkerGroup: React.FC<{
+  geohash: string;
+}> = ({ geohash }) => {
+  const router = useRouter();
+  const [mapState, setMapState] = useMapState();
+  const map = useMap();
+  const { filters } = mapState;
+
+  const { data, called } = useLoosByGeohashQuery({
+    variables: { geohash },
+  });
+
+  useEffect(() => {
+    if (data) {
+      setMapState({
+        loadedGroups: {
+          ...mapState.loadedGroups,
+          [geohash]: data?.loosByGeohash.map(parseCompressedLoo),
+        },
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
   const mcg = useMemo(
     () =>
       L.markerClusterGroup({
@@ -60,22 +99,12 @@ const MarkerGroup: React.FC<{ geohash: string }> = ({ geohash }) => {
     []
   );
 
-  const router = useRouter();
-
-  const [mapState] = useMapState();
-  const { filters } = mapState;
-
-  const map = useMap();
-
-  const { data } = useLoosByGeohashQuery({
-    variables: { geohash },
-  });
-
   // Uncomment this to calculate the chunk bounds to draw a debug box.
   // const bbox = ngeohash.decode_bbox(geohash);
   // const bounds = L.rectangle(
   //   L.latLngBounds(L.latLng(bbox[0], bbox[1]), L.latLng(bbox[2], bbox[3]))
   // );
+
   const initialiseMarker = useCallback(
     (toilet) => {
       return L.marker(new L.LatLng(toilet.location.lat, toilet.location.lng), {

@@ -15,6 +15,11 @@ import LocateMapControl from './LocateMapControl';
 import { useCallback, useEffect, useState } from 'react';
 import { Map } from 'leaflet';
 import useLocateMapControl from './useLocateMapControl';
+import AccessibilityIntersection from './AccessibilityIntersection';
+import AccessibilityList from './AccessibilityList';
+import VisuallyHidden from '../VisuallyHidden';
+import { Loo } from '../../api-client/graphql';
+import { CompressedLooObject } from '../../lib/loo';
 
 const MapTracker = () => {
   const [, setMapState] = useMapState();
@@ -51,6 +56,44 @@ const LooMap: React.FC<LooMapProps> = ({
 }) => {
   const [mapState, setMapState] = useMapState();
 
+  const [loadedToilets, setLoadedToilets] = useState(new Set());
+  const [hydratedToilets, setHydratedToilets] = useState<CompressedLooObject[]>(
+    []
+  );
+  const [intersectingToilets, setIntersectingToilets] = useState([]);
+  const [renderAccessibilityOverlays, setRenderAccessibilityOverlays] =
+    useState(false);
+
+  console.log(intersectingToilets);
+
+  useEffect(() => {
+    const loadedLooValues = Array.from(loadedToilets.values()).flatMap(
+      (v) => mapState.loadedGroups[v as string]
+    );
+    setHydratedToilets(loadedLooValues);
+  }, [loadedToilets, mapState.loadedGroups]);
+
+  // Begin accessibility overlay
+  useEffect(() => {
+    if (mapState.map) {
+      // when focused on the map container, Leaflet allows the user to pan the map by using the arrow keys
+      // without the application role screen reader software overrides these controls
+      //
+      // this also avoids the entire main region being announced
+      mapState.map.getContainer().setAttribute('role', 'application');
+      mapState.map.getContainer().setAttribute('aria-label', 'Map');
+
+      // ensure all map tiles are loaded on Safari
+      // https://github.com/neontribe/gbptm/issues/776
+      setTimeout(() => {
+        mapState.map.invalidateSize({
+          pan: false,
+        });
+      }, 400);
+    }
+  }, [mapState.map]);
+
+  // Load a reference to the leaflet map into application state so components that aren't below in the tree can access.
   const setMap = useCallback(
     (map: Map) => {
       setMapState({ map });
@@ -58,6 +101,14 @@ const LooMap: React.FC<LooMapProps> = ({
     [setMapState]
   );
 
+  // Override the map location with the search result if present.
+  useEffect(() => {
+    if (mapState?.searchLocation && mapState?.map) {
+      mapState.map.setView(mapState.searchLocation);
+    }
+  }, [mapState.map, mapState.searchLocation]);
+
+  // Begin location service initialisation.
   const onLocationFound = useCallback(
     (event: { latitude: any; longitude: any }) => {
       setMapState({
@@ -91,12 +142,7 @@ const LooMap: React.FC<LooMapProps> = ({
       },
     });
   }, [mapState.map, isActive, setMapState, startLocate, stopLocate]);
-
-  useEffect(() => {
-    if (mapState?.searchLocation && mapState?.map) {
-      mapState.map.setView(mapState.searchLocation);
-    }
-  }, [mapState.map, mapState.searchLocation]);
+  // end location service initialisation.
 
   return (
     <Box
@@ -187,7 +233,8 @@ const LooMap: React.FC<LooMapProps> = ({
         />
 
         {mapState.focus && <CurrentLooMarker loo={mapState.focus} />}
-        <Markers />
+
+        <Markers setLoadedToilets={setLoadedToilets} />
 
         <Media greaterThan="md">
           <LocateMapControl position="topright" />
@@ -195,6 +242,35 @@ const LooMap: React.FC<LooMapProps> = ({
         </Media>
 
         <MapTracker />
+
+        {true && (
+          <>
+            <AccessibilityIntersection
+              className="accessibility-box"
+              toilets={hydratedToilets}
+              onIntersection={setIntersectingToilets}
+              onSelection={() => undefined}
+              center={center}
+            />
+
+            {/* <AccessibilityList
+              toilets={intersectingToilets.map(
+                (toilet: { name: any }) => toilet.name
+              )}
+            /> */}
+
+            {/* <VisuallyHidden>
+              <div
+                role="status"
+                aria-atomic="true"
+                aria-live="polite"
+                aria-relevant="additions text"
+              >
+                {announcement}
+              </div>
+            </VisuallyHidden> */}
+          </>
+        )}
       </MapContainer>
     </Box>
   );

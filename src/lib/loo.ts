@@ -10,7 +10,7 @@ export type LooProperties = Omit<Loo, '__typename'> & {
 
 type CompressedLooString = `${string}|${string}|${number}`;
 
-type CompressedLooObject = {
+export type CompressedLooObject = {
   id: string;
   location: {
     lng: number;
