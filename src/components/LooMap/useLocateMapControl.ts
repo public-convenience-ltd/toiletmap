@@ -1,6 +1,5 @@
 import React from 'react';
-import L from 'leaflet';
-import { useMap } from 'react-leaflet';
+import L, { Map } from 'leaflet';
 
 const LocationMarker = L.Marker.extend({
   initialize: function (latlng, options) {
@@ -45,16 +44,29 @@ const LocationMarker = L.Marker.extend({
   },
 });
 
-const useLocateMapControl = ({
-  onLocationFound = Function.prototype,
-  onStopLocation = Function.prototype,
-}) => {
-  const map = useMap();
+interface UseLocateMapControlProps {
+  onLocationFound: (event: { latitude: number; longitude: number }) => void;
+  onStopLocation: () => void;
+  map: Map;
+}
 
+export interface UseLocateMapControl {
+  startLocate: () => void;
+  stopLocate: () => void;
+  isActive: boolean;
+}
+
+const useLocateMapControl = ({
+  onLocationFound,
+  onStopLocation,
+  map,
+}: UseLocateMapControlProps): UseLocateMapControl => {
   const layerRef = React.useRef(null);
   React.useEffect(() => {
-    layerRef.current = new L.LayerGroup();
-    layerRef.current.addTo(map);
+    if (typeof map !== 'undefined') {
+      layerRef.current = new L.LayerGroup();
+      layerRef.current.addTo(map);
+    }
   }, [map]);
 
   const handleLocationFound = React.useCallback(
@@ -85,22 +97,28 @@ const useLocateMapControl = ({
   );
 
   React.useEffect(() => {
-    map.on('locationfound', handleLocationFound);
-    return () => map.off('locationfound', handleLocationFound);
+    if (typeof map !== 'undefined') {
+      map.on('locationfound', handleLocationFound);
+      return () => map.off('locationfound', handleLocationFound);
+    }
   }, [map, handleLocationFound]);
 
   const [isActive, setIsActive] = React.useState(false);
 
-  const startLocate = () => {
+  const startLocate = React.useCallback(() => {
+    if (isActive) {
+      map.stopLocate();
+      layerRef.current.clearLayers();
+    }
     map.locate({ setView: true });
-  };
+  }, [isActive, map]);
 
-  const stopLocate = () => {
+  const stopLocate = React.useCallback(() => {
     map.stopLocate();
     layerRef.current.clearLayers();
     setIsActive(false);
     onStopLocation();
-  };
+  }, [map, onStopLocation]);
 
   return { startLocate, stopLocate, isActive };
 };
