@@ -20,6 +20,8 @@ import AccessibilityList from './AccessibilityList';
 import VisuallyHidden from '../VisuallyHidden';
 import { Loo } from '../../api-client/graphql';
 import { CompressedLooObject } from '../../lib/loo';
+import React from 'react';
+import router from 'next/router';
 
 const MapTracker = () => {
   const [, setMapState] = useMapState();
@@ -60,11 +62,24 @@ const LooMap: React.FC<LooMapProps> = ({
   const [hydratedToilets, setHydratedToilets] = useState<CompressedLooObject[]>(
     []
   );
+  const [announcement, setAnnouncement] = React.useState(null);
   const [intersectingToilets, setIntersectingToilets] = useState([]);
   const [renderAccessibilityOverlays, setRenderAccessibilityOverlays] =
     useState(false);
 
-  console.log(intersectingToilets);
+  const keyboardSelectionHandler = React.useCallback(
+    (selectionIndex: string | number) => {
+      const toilet = intersectingToilets[selectionIndex];
+
+      if (!toilet) {
+        return;
+      }
+
+      setAnnouncement(`${toilet.name || 'Unnamed toilet'} selected`);
+      router.push(`/loos/${toilet.id}`);
+    },
+    [intersectingToilets]
+  );
 
   useEffect(() => {
     const loadedLooValues = Array.from(loadedToilets.values()).flatMap(
@@ -249,17 +264,17 @@ const LooMap: React.FC<LooMapProps> = ({
               className="accessibility-box"
               toilets={hydratedToilets}
               onIntersection={setIntersectingToilets}
-              onSelection={() => undefined}
+              onSelection={keyboardSelectionHandler}
               center={center}
             />
 
-            {/* <AccessibilityList
+            <AccessibilityList
               toilets={intersectingToilets.map(
                 (toilet: { name: any }) => toilet.name
               )}
-            /> */}
+            />
 
-            {/* <VisuallyHidden>
+            <VisuallyHidden>
               <div
                 role="status"
                 aria-atomic="true"
@@ -268,7 +283,7 @@ const LooMap: React.FC<LooMapProps> = ({
               >
                 {announcement}
               </div>
-            </VisuallyHidden> */}
+            </VisuallyHidden>
           </>
         )}
       </MapContainer>

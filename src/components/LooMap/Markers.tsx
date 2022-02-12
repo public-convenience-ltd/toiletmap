@@ -49,8 +49,6 @@ const Markers: React.FC<{
   const surroundingTiles = neighbours.flatMap((n) => ngeohash.neighbors(n));
   const neighbourSet = new Set([...surroundingTiles]);
 
-  const [mapState] = useMapState();
-
   useEffect(() => {
     setLoadedToilets(neighbourSet);
     // eslint-disable-next-line react-hooks/exhaustive-deps
