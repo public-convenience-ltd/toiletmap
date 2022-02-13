@@ -18,7 +18,7 @@ import useLocateMapControl from './useLocateMapControl';
 import AccessibilityIntersection from './AccessibilityIntersection';
 import AccessibilityList from './AccessibilityList';
 import VisuallyHidden from '../VisuallyHidden';
-import { Loo } from '../../api-client/graphql';
+import 'focus-visible';
 import { CompressedLooObject } from '../../lib/loo';
 import React from 'react';
 import router from 'next/router';
@@ -45,6 +45,7 @@ interface LooMapProps {
   controlsOffset?: number;
   showCrosshair?: boolean;
   withAccessibilityOverlays?: boolean;
+  onViewportChanged?: () => void;
 }
 
 const LooMap: React.FC<LooMapProps> = ({
@@ -55,6 +56,8 @@ const LooMap: React.FC<LooMapProps> = ({
   minZoom,
   maxZoom = 18,
   staticMap = false,
+  onViewportChanged = () => {},
+  withAccessibilityOverlays = true,
 }) => {
   const [mapState, setMapState] = useMapState();
 
@@ -66,6 +69,34 @@ const LooMap: React.FC<LooMapProps> = ({
   const [intersectingToilets, setIntersectingToilets] = useState([]);
   const [renderAccessibilityOverlays, setRenderAccessibilityOverlays] =
     useState(false);
+
+  // Load a reference to the leaflet map into application state so components that aren't below in the tree can access.
+  const setMap = useCallback(
+    (map: Map) => {
+      setMapState({ map });
+    },
+    [setMapState]
+  );
+
+  // Begin accessibility overlay
+
+  useEffect(() => {
+    // when focused on the map container, Leaflet allows the user to pan the map by using the arrow keys
+    // without the application role screen reader software overrides these controls
+    //
+    // this also avoids the entire main region being announced
+    const container = mapState.map?.getContainer();
+    container?.setAttribute('role', 'application');
+    container?.setAttribute('aria-label', 'Map');
+
+    // ensure all map tiles are loaded on Safari
+    // https://github.com/neontribe/gbptm/issues/776
+    setTimeout(() => {
+      mapState.map?.invalidateSize({
+        pan: false,
+      });
+    }, 400);
+  }, [mapState.map]);
 
   const keyboardSelectionHandler = React.useCallback(
     (selectionIndex: string | number) => {
@@ -81,40 +112,37 @@ const LooMap: React.FC<LooMapProps> = ({
     [intersectingToilets]
   );
 
+  React.useEffect(() => {
+    if (withAccessibilityOverlays && mapState.map) {
+      const callback = function (mutationsList) {
+        for (let mutation of mutationsList) {
+          const focusVisible = mutation.target.dataset.focusVisibleAdded === '';
+          if (focusVisible !== renderAccessibilityOverlays) {
+            setRenderAccessibilityOverlays(focusVisible);
+          }
+        }
+      };
+
+      const observer = new MutationObserver(callback);
+
+      // only render accessibility overlays when [data="focus-visible-added"] is applied
+      //
+      // we conditionally render instead of toggling CSS display since we want to avoid AccessibilityList being announced
+      // before the map is keyboard focused
+      observer.observe(mapState.map?.getContainer(), { attributes: true });
+
+      return () => {
+        observer.disconnect();
+      };
+    }
+  }, [withAccessibilityOverlays, renderAccessibilityOverlays, mapState.map]);
+
   useEffect(() => {
     const loadedLooValues = Array.from(loadedToilets.values()).flatMap(
       (v) => mapState.loadedGroups[v as string]
     );
     setHydratedToilets(loadedLooValues);
   }, [loadedToilets, mapState.loadedGroups]);
-
-  // Begin accessibility overlay
-  useEffect(() => {
-    if (mapState.map) {
-      // when focused on the map container, Leaflet allows the user to pan the map by using the arrow keys
-      // without the application role screen reader software overrides these controls
-      //
-      // this also avoids the entire main region being announced
-      mapState.map.getContainer().setAttribute('role', 'application');
-      mapState.map.getContainer().setAttribute('aria-label', 'Map');
-
-      // ensure all map tiles are loaded on Safari
-      // https://github.com/neontribe/gbptm/issues/776
-      setTimeout(() => {
-        mapState.map.invalidateSize({
-          pan: false,
-        });
-      }, 400);
-    }
-  }, [mapState.map]);
-
-  // Load a reference to the leaflet map into application state so components that aren't below in the tree can access.
-  const setMap = useCallback(
-    (map: Map) => {
-      setMapState({ map });
-    },
-    [setMapState]
-  );
 
   // Override the map location with the search result if present.
   useEffect(() => {
@@ -184,6 +212,8 @@ const LooMap: React.FC<LooMapProps> = ({
     >
       <MapContainer
         zoomControl={false} // we are overriding this with our own custom placed zoom control
+        tap={false}
+        dragging={!staticMap}
         whenCreated={setMap}
         center={center}
         zoom={zoom}
@@ -258,7 +288,7 @@ const LooMap: React.FC<LooMapProps> = ({
 
         <MapTracker />
 
-        {true && (
+        {renderAccessibilityOverlays && (
           <>
             <AccessibilityIntersection
               className="accessibility-box"

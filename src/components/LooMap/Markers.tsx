@@ -1,11 +1,4 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import ToiletMarkerIcon from './ToiletMarkerIcon';
 import * as L from 'leaflet';
@@ -13,12 +6,11 @@ import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { useMap } from 'react-leaflet';
-import { Loo, useLoosByGeohashQuery } from '../../api-client/graphql';
+import { useLoosByGeohashQuery } from '../../api-client/graphql';
 import config, { Filter } from '../../config';
 import { useMapState } from '../MapState';
 import { FILTER_TYPE, getAppliedFiltersAsFilterTypes } from '../../lib/filter';
 import {
-  CompressedLooObject,
   filterCompressedLooByAppliedFilters,
   parseCompressedLoo,
 } from '../../lib/loo';
@@ -105,15 +97,18 @@ const MarkerGroup: React.FC<{
 
   const initialiseMarker = useCallback(
     (toilet) => {
-      return L.marker(new L.LatLng(toilet.location.lat, toilet.location.lng), {
-        zIndexOffset: 0,
-        icon: new ToiletMarkerIcon({
-          toiletId: toilet.id,
-          isHighlighted: toilet.id === mapState?.focus?.id,
-        }),
-        alt: 'Public Toilet',
-        keyboard: false,
-      })
+      const marker = L.marker(
+        new L.LatLng(toilet.location.lat, toilet.location.lng),
+        {
+          zIndexOffset: 0,
+          icon: new ToiletMarkerIcon({
+            toiletId: toilet.id,
+            isHighlighted: toilet.id === mapState?.focus?.id,
+          }),
+          alt: 'Public Toilet',
+          keyboard: false,
+        }
+      )
         .on('click', () => {
           router.push(`/loos/${toilet.id}`);
         })
@@ -122,6 +117,10 @@ const MarkerGroup: React.FC<{
             router.push(`/loos/${toilet.id}`);
           }
         });
+
+      marker.getElement()?.setAttribute('role', 'link');
+      marker.getElement()?.setAttribute('aria-label', 'Public Toilet');
+      return marker;
     },
     [mapState?.focus?.id, router]
   );
