@@ -84,10 +84,15 @@ const Content = ({ toilets }) => {
   );
 };
 
-const AccessibilityList = ({ toilets, ...props }) => {
+const AccessibilityList = ({
+  toilets,
+  ...props
+}: {
+  toilets: CompressedLooObject[];
+}) => {
   const [showContent, setShowContent] = React.useState(false);
 
-  // Fetch proper loo names
+  // Fetch loo names
   const unorderedNames = useLooNamesByIdsQuery({
     variables: { idList: toilets.map((t) => t?.id) },
   });
@@ -99,11 +104,11 @@ const AccessibilityList = ({ toilets, ...props }) => {
     }, 300);
   }, []);
 
-  const mapIdToName = Object.fromEntries(
+  const nameMap = Object.fromEntries(
     unorderedNames.data?.looNamesByIds.map((e) => [e.id, e.name]) || []
   );
 
-  const names = toilets.map((t) => mapIdToName[t?.id] || 'Toilet Loading');
+  const names = toilets.map((t) => nameMap[t?.id] || 'Name Unknown');
 
   return (
     <div
