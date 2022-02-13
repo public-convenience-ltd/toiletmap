@@ -27,7 +27,7 @@ const iconMap = {
 
 const Filters: React.FC = () => {
   const [mapState, setMapState] = useMapState();
-  const { filters } = mapState;
+  const { appliedFilters: filters } = mapState;
   return (
     <ul>
       {config.filters.map(({ id, label }, index) => (
@@ -53,7 +53,7 @@ const Filters: React.FC = () => {
             onClick={() => {
               setMapState({
                 ...mapState,
-                filters: {
+                appliedFilters: {
                   ...filters,
                   [id]: !filters[id],
                 },

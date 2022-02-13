@@ -61,9 +61,9 @@ const MarkerGroup: React.FC<{
   const router = useRouter();
   const [mapState, setMapState] = useMapState();
   const map = useMap();
-  const { filters } = mapState;
+  const { appliedFilters: filters } = mapState;
 
-  const { data, called } = useLoosByGeohashQuery({
+  const { data } = useLoosByGeohashQuery({
     variables: { geohash },
   });
 
@@ -127,7 +127,11 @@ const MarkerGroup: React.FC<{
 
   const [appliedFilterTypes, setAppliedFilterTypes] = useState<
     Array<FILTER_TYPE>
-  >([]);
+  >(
+    getAppliedFiltersAsFilterTypes(
+      config.filters.filter((filter) => filters[filter.id])
+    )
+  );
 
   useEffect(() => {
     const applied: Array<Filter> = config.filters.filter(

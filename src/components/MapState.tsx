@@ -22,7 +22,7 @@ interface MapState {
     lng: number;
   };
   zoom?: number;
-  filters?: Filter[];
+  appliedFilters?: Filter[];
   focus?: Loo;
   map?: Map;
   locationServices?: UseLocateMapControl;
@@ -46,14 +46,17 @@ export const MapStateProvider = ({ children, loos = [] }) => {
   const [state, setState] = React.useReducer(reducer, {
     center: config.fallbackLocation,
     zoom: 16,
-    filters: initialFilterState,
+    appliedFilters: initialFilterState,
     searchLocation: undefined,
     loadedGroups: {},
   });
 
   // keep local storage and state in sync
   useEffect(() => {
-    window.localStorage.setItem(FILTERS_KEY, JSON.stringify(state.filters));
+    window.localStorage.setItem(
+      FILTERS_KEY,
+      JSON.stringify(state.appliedFilters)
+    );
   }, [state]);
 
   return (
