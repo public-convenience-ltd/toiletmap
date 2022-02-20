@@ -96,8 +96,8 @@ const LooMap: React.FC<LooMapProps> = ({
     if (mapState?.searchLocation && mapState?.map) {
       mapState.map.setView(mapState.searchLocation);
     }
-  }, [mapState.map, mapState.searchLocation]);
-
+  }, [map, mapState.searchLocation]);
+  
   return (
     <Box
       position="relative"

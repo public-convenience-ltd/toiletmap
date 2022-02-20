@@ -96,7 +96,7 @@ const MarkerGroup: React.FC<{ geohash: string }> = ({ geohash }) => {
           }
         });
     },
-    [mapState?.focus?.id, router]
+    [mapState.focus, router]
   );
 
   const [appliedFilterTypes, setAppliedFilterTypes] = useState<
@@ -133,7 +133,7 @@ const MarkerGroup: React.FC<{ geohash: string }> = ({ geohash }) => {
     appliedFilterTypes,
     data?.loosByGeohash,
     initialiseMarker,
-    mapState?.focus?.id,
+    mapState.focus,
   ]);
 
   useEffect(() => {

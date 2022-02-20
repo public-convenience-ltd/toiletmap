@@ -49,7 +49,6 @@ const useNominatimAutocomplete = (input: string | any[]) => {
     if (input) {
       return;
     }
-
     setPlaces([]);
   }, [input, setPlaces]);
 

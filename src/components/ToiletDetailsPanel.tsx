@@ -25,7 +25,6 @@ import getISODay from 'date-fns/getISODay';
 import parseISO from 'date-fns/parseISO';
 import add from 'date-fns/add';
 import Link from 'next/link';
-import useComponentSize from '@rehooks/component-size';
 
 import Box from './Box';
 import Button from './Button';
@@ -34,8 +33,10 @@ import Spacer from './Spacer';
 import Icon from './Icon';
 import { Media } from './Media';
 // Suppress Opening Hours Heading during COVID-19
-import { /* getIsOpen, */ WEEKDAYS, isClosed } from '../lib/openingTimes';
+import { getIsOpen, WEEKDAYS, isClosed } from '../lib/openingTimes';
 import { useMapState } from './MapState';
+import type L from 'leaflet';
+import { useRouter } from 'next/router';
 
 const Grid = styled(Box)`
   display: flex;
@@ -82,11 +83,10 @@ function round(value: number, precision = 0) {
 }
 
 const DistanceTo = ({ from, to }) => {
-  // const fromLatLng = L.latLng(from.lat, from.lng);
+  const fromLatLng = L.latLng(from.lat, from.lng);
 
-  // const toLatLng = L.latLng(to.lat, to.lng);
-  // const metersToLoo = fromLatLng.distanceTo(toLatLng);
-  const metersToLoo = 10000;
+  const toLatLng = L.latLng(to.lat, to.lng);
+  const metersToLoo = fromLatLng.distanceTo(toLatLng);
 
   const distance =
     metersToLoo < 1000
@@ -95,7 +95,7 @@ const DistanceTo = ({ from, to }) => {
 
   return (
     <Text as="span" fontSize="3" fontWeight="bold">
-      FIXME {distance}
+      {distance}
     </Text>
   );
 };
@@ -109,6 +109,7 @@ const ToiletDetailsPanel = ({
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(startExpanded);
 
+  const router = useRouter();
   const submitVerificationReport = async (variables: { id: any }) => {
     alert('Implement me with apollo');
   };
@@ -123,7 +124,7 @@ const ToiletDetailsPanel = ({
     }
   }, [isExpanded]);
 
-  // TODO: use a different method for this as the useComponentSize hook doesn't play well with SSR
+  // TODO (Feb 2022): use a different method for this as the useComponentSize hook doesn't play well with SSR
   // call onDimensionsChange whenever the dimensions of the container change
   const containerRef = React.useRef(null);
   // const size = useComponentSize(containerRef);
@@ -555,6 +556,16 @@ const ToiletDetailsPanel = ({
             data-testid="details-button"
           >
             Details
+          </Button>
+          <Spacer mr={2} />
+          <Button
+            variant="secondary"
+            icon={<Icon icon={faList} />}
+            onClick={() => router.push('/')}
+            aria-expanded="false"
+            data-testid="close-button"
+          >
+            Close
           </Button>
         </Box>
       </Grid>
