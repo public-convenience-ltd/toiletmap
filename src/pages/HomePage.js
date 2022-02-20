@@ -54,7 +54,7 @@ const HomePage = ({ initialPosition, ...props }) => {
       : null
   );
 
-  const { message } = queryString.parse(props.location.search);
+  const { message } = queryString.parse(window.location.search);
 
   // get the filter objects from config for the filters applied by the user
   const applied = config.filters.filter((filter) => filters[filter.id]);
