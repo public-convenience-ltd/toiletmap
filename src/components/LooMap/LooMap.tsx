@@ -12,8 +12,9 @@ import { Media } from '../Media';
 import Markers from './Markers';
 import CurrentLooMarker from './CurrentLooMarker';
 import LocateMapControl from './LocateMapControl';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Map } from 'leaflet';
+import useLocateMapControl from './useLocateMapControl';
 
 const MapTracker = () => {
   const [, setMapState] = useMapState();
@@ -48,14 +49,55 @@ const LooMap: React.FC<LooMapProps> = ({
   maxZoom = 18,
   staticMap = false,
 }) => {
-  const [mapState] = useMapState();
-  const [map, setMap] = useState<Map>(null);
+  const [mapState, setMapState] = useMapState();
+
+  const setMap = useCallback(
+    (map: Map) => {
+      setMapState({ map });
+    },
+    [setMapState]
+  );
+
+  const onLocationFound = useCallback(
+    (event: { latitude: any; longitude: any }) => {
+      setMapState({
+        geolocation: {
+          lat: event.latitude,
+          lng: event.longitude,
+        },
+      });
+    },
+    [setMapState]
+  );
+
+  const onStopLocation = useCallback(() => {
+    setMapState({
+      geolocation: null,
+    });
+  }, [setMapState]);
+
+  const { isActive, startLocate, stopLocate } = useLocateMapControl({
+    onLocationFound,
+    onStopLocation,
+    map: mapState.map,
+  });
 
   useEffect(() => {
-    if (mapState?.searchLocation) {
-      map?.setView(mapState.searchLocation);
+    setMapState({
+      locationServices: {
+        isActive,
+        startLocate,
+        stopLocate,
+      },
+    });
+  }, [mapState.map, isActive, setMapState, startLocate, stopLocate]);
+
+  useEffect(() => {
+    if (mapState?.searchLocation && mapState?.map) {
+      mapState.map.setView(mapState.searchLocation);
     }
   }, [map, mapState.searchLocation]);
+  
   return (
     <Box
       position="relative"
@@ -80,6 +122,7 @@ const LooMap: React.FC<LooMapProps> = ({
       ]}
     >
       <MapContainer
+        zoomControl={false} // we are overriding this with our own custom placed zoom control
         whenCreated={setMap}
         center={center}
         zoom={zoom}
@@ -146,10 +189,9 @@ const LooMap: React.FC<LooMapProps> = ({
         {mapState.focus && <CurrentLooMarker loo={mapState.focus} />}
         <Markers />
 
-        <LocateMapControl position="bottomright" />
-
         <Media greaterThan="md">
-          <ZoomControl position="bottomright" />
+          <LocateMapControl position="topright" />
+          <ZoomControl position="topright" />
         </Media>
 
         <MapTracker />

@@ -3,7 +3,6 @@ import { variant } from 'styled-system';
 import Control from '../Control/Control';
 
 import { useMapState } from '../MapState';
-import useLocateMapControl from './useLocateMapControl';
 
 const ControlButton = styled.button(
   ({ theme }) => `
@@ -35,34 +34,13 @@ const ControlButton = styled.button(
 );
 
 const LocateMapControl = ({ position }) => {
-  const [, setMapState] = useMapState();
-
-  const onLocationFound = (event: { latitude: any; longitude: any }) => {
-    setMapState({
-      geolocation: {
-        lat: event.latitude,
-        lng: event.longitude,
-      },
-    });
-  };
-
-  const onStopLocation = () => {
-    setMapState({
-      geolocation: null,
-    });
-  };
-
-  const { isActive, startLocate, stopLocate } = useLocateMapControl({
-    onLocationFound,
-    onStopLocation,
-  });
+  const [mapState] = useMapState();
 
   const handleClick = () => {
-    if (!isActive) {
-      startLocate();
-    } else {
-      stopLocate();
+    if (!mapState?.locationServices?.isActive) {
+      return mapState?.locationServices?.startLocate();
     }
+    return mapState?.locationServices?.stopLocate();
   };
 
   return (
@@ -71,7 +49,7 @@ const LocateMapControl = ({ position }) => {
         type="button"
         onClick={handleClick}
         aria-label="Locate my position"
-        variant={isActive && 'active'}
+        variant={mapState?.locationServices?.isActive && 'active'}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
