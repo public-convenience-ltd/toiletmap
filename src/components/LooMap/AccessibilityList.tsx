@@ -5,6 +5,8 @@ import { useTheme, css } from '@emotion/react';
 import Box from '../Box';
 import Text from '../Text';
 import Spacer from '../Spacer';
+import { CompressedLooObject } from '../../lib/loo';
+import { useLooNamesByIdsQuery } from '../../api-client/graphql';
 
 const Key = ({ children, ...props }) => (
   <Box
@@ -82,10 +84,18 @@ const Content = ({ toilets }) => {
   );
 };
 
-const AccessibilityList = (
-  props: JSX.IntrinsicAttributes & { toilets: any }
-) => {
+const AccessibilityList = ({
+  toilets,
+  ...props
+}: {
+  toilets: CompressedLooObject[];
+}) => {
   const [showContent, setShowContent] = React.useState(false);
+
+  // Fetch loo names
+  const unorderedNames = useLooNamesByIdsQuery({
+    variables: { idList: toilets.map((t) => t?.id) },
+  });
 
   // to ensure it gets announced, there must be a delay between the existence of the aria live element and the content
   useEffect(() => {
@@ -94,6 +104,12 @@ const AccessibilityList = (
     }, 300);
   }, []);
 
+  const nameMap = Object.fromEntries(
+    unorderedNames.data?.looNamesByIds.map((e) => [e.id, e.name]) || []
+  );
+
+  const names = toilets.map((t) => nameMap[t?.id] || 'Name Unknown');
+
   return (
     <div
       role="status"
@@ -101,7 +117,7 @@ const AccessibilityList = (
       aria-live="polite"
       aria-relevant="additions text"
     >
-      {showContent && <Content {...props} />}
+      {showContent && <Content toilets={names || []} {...props} />}
     </div>
   );
 };

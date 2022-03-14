@@ -18,7 +18,9 @@ import ngeohash from 'ngeohash';
 
 const KEY_ENTER = 13;
 
-const Markers = () => {
+const Markers: React.FC<{
+  setLoadedToilets: (loadedToilets) => void;
+}> = ({ setLoadedToilets }) => {
   const map = useMap();
 
   const isLocalisedView = map.getZoom() < 13;
@@ -37,19 +39,46 @@ const Markers = () => {
   const geohashTile = ngeohash.encode(tileLat, tileLng, hashPrecision);
   const neighbours = ngeohash.neighbors(geohashTile);
   const surroundingTiles = neighbours.flatMap((n) => ngeohash.neighbors(n));
-
   const neighbourSet = new Set([...surroundingTiles]);
+
+  useEffect(() => {
+    setLoadedToilets(neighbourSet);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tileLat, tileLng]);
 
   return (
     <>
-      {Array.from(neighbourSet).map((hash) => (
-        <MarkerGroup key={hash} geohash={hash} />
+      {Array.from(neighbourSet).map((geohash) => (
+        <MarkerGroup key={geohash} geohash={geohash} />
       ))}
     </>
   );
 };
 
-const MarkerGroup: React.FC<{ geohash: string }> = ({ geohash }) => {
+const MarkerGroup: React.FC<{
+  geohash: string;
+}> = ({ geohash }) => {
+  const router = useRouter();
+  const [mapState, setMapState] = useMapState();
+  const map = useMap();
+  const { appliedFilters: filters } = mapState;
+
+  const { data } = useLoosByGeohashQuery({
+    variables: { geohash },
+  });
+
+  useEffect(() => {
+    if (data) {
+      setMapState({
+        loadedGroups: {
+          ...mapState.loadedGroups,
+          [geohash]: data?.loosByGeohash.map(parseCompressedLoo),
+        },
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
   const mcg = useMemo(
     () =>
       L.markerClusterGroup({
@@ -60,33 +89,26 @@ const MarkerGroup: React.FC<{ geohash: string }> = ({ geohash }) => {
     []
   );
 
-  const router = useRouter();
-
-  const [mapState] = useMapState();
-  const { filters } = mapState;
-
-  const map = useMap();
-
-  const { data } = useLoosByGeohashQuery({
-    variables: { geohash },
-  });
-
   // Uncomment this to calculate the chunk bounds to draw a debug box.
   // const bbox = ngeohash.decode_bbox(geohash);
   // const bounds = L.rectangle(
   //   L.latLngBounds(L.latLng(bbox[0], bbox[1]), L.latLng(bbox[2], bbox[3]))
   // );
+
   const initialiseMarker = useCallback(
     (toilet) => {
-      return L.marker(new L.LatLng(toilet.location.lat, toilet.location.lng), {
-        zIndexOffset: 0,
-        icon: new ToiletMarkerIcon({
-          toiletId: toilet.id,
-          isHighlighted: toilet.id === mapState?.focus?.id,
-        }),
-        alt: 'Public Toilet',
-        keyboard: false,
-      })
+      const marker = L.marker(
+        new L.LatLng(toilet.location.lat, toilet.location.lng),
+        {
+          zIndexOffset: 0,
+          icon: new ToiletMarkerIcon({
+            toiletId: toilet.id,
+            isHighlighted: toilet.id === mapState?.focus?.id,
+          }),
+          alt: 'Public Toilet',
+          keyboard: false,
+        }
+      )
         .on('click', () => {
           router.push(`/loos/${toilet.id}`);
         })
@@ -95,13 +117,21 @@ const MarkerGroup: React.FC<{ geohash: string }> = ({ geohash }) => {
             router.push(`/loos/${toilet.id}`);
           }
         });
+
+      marker.getElement()?.setAttribute('role', 'link');
+      marker.getElement()?.setAttribute('aria-label', 'Public Toilet');
+      return marker;
     },
     [mapState.focus, router]
   );
 
   const [appliedFilterTypes, setAppliedFilterTypes] = useState<
     Array<FILTER_TYPE>
-  >([]);
+  >(
+    getAppliedFiltersAsFilterTypes(
+      config.filters.filter((filter) => filters[filter.id])
+    )
+  );
 
   useEffect(() => {
     const applied: Array<Filter> = config.filters.filter(

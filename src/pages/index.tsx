@@ -48,6 +48,7 @@ const HomePage = () => {
           center={mapState.center}
           zoom={mapState.zoom}
           controlsOffset={0}
+          withAccessibilityOverlays={true}
         />
       </Box>
     </>

@@ -105,7 +105,7 @@ const Sidebar = () => {
               <Box
                 as="button"
                 itemType="button"
-                onClick={() => setMapState({ ...mapState, filters: {} })}
+                onClick={() => setMapState({ ...mapState, appliedFilters: {} })}
                 border={0}
                 borderBottom={2}
                 borderStyle="solid"
@@ -177,7 +177,9 @@ const Sidebar = () => {
                   <Box
                     as="button"
                     type="button"
-                    onClick={() => setMapState({ ...mapState, filters: {} })}
+                    onClick={() =>
+                      setMapState({ ...mapState, appliedFilters: {} })
+                    }
                     border={0}
                     borderBottom={2}
                     borderStyle="solid"

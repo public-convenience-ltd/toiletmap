@@ -1,0 +1,6 @@
+query looNamesByIds($idList: [ID]) {
+  looNamesByIds(idList: $idList) {
+    id
+    name
+  }
+}
