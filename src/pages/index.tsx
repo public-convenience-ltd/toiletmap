@@ -6,13 +6,17 @@ import { useMapState } from '../components/MapState';
 import config from '../config';
 import { withApollo } from '../api-client/withApollo';
 import LooMap from '../components/LooMap/LooMapLoader';
+import { useEffect } from 'react';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
 const HomePage = () => {
   const [mapState, setMapState] = useMapState();
-
   const pageTitle = config.getTitle('Home');
+
+  useEffect(() => {
+    setMapState({ focus: undefined });
+  }, [setMapState]);
 
   return (
     <>

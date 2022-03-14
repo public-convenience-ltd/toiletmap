@@ -122,7 +122,7 @@ const MarkerGroup: React.FC<{
       marker.getElement()?.setAttribute('aria-label', 'Public Toilet');
       return marker;
     },
-    [mapState?.focus?.id, router]
+    [mapState.focus, router]
   );
 
   const [appliedFilterTypes, setAppliedFilterTypes] = useState<
@@ -163,7 +163,7 @@ const MarkerGroup: React.FC<{
     appliedFilterTypes,
     data?.loosByGeohash,
     initialiseMarker,
-    mapState?.focus?.id,
+    mapState.focus,
   ]);
 
   useEffect(() => {

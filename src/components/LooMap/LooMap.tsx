@@ -185,7 +185,12 @@ const LooMap: React.FC<LooMapProps> = ({
       },
     });
   }, [mapState.map, isActive, setMapState, startLocate, stopLocate]);
-  // end location service initialisation.
+
+  useEffect(() => {
+    if (mapState?.searchLocation && mapState?.map) {
+      mapState.map.setView(mapState.searchLocation);
+    }
+  }, [map, mapState.searchLocation]);
 
   return (
     <Box
