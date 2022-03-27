@@ -28,7 +28,7 @@ interface IMainMenu {
 }
 
 // Todo: Contact link
-const MainMenu = ({ mapCenter, onMenuItemClick, children }: IMainMenu) => {
+const MainMenu = ({ children }: IMainMenu) => {
   const { user } = useUser();
   const [mapState] = useMapState();
 

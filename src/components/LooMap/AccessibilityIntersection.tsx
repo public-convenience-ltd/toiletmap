@@ -12,7 +12,6 @@ const AccessibilityIntersection = ({
   center,
   onIntersection,
   onSelection,
-  ...props
 }: {
   toilets: CompressedLooObject[];
   center: { lat: number; lng: number };

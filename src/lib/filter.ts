@@ -1,4 +1,3 @@
-import { Loo } from '../api-client/graphql';
 import { Filter } from '../config';
 import { LooProperties } from './loo';
 

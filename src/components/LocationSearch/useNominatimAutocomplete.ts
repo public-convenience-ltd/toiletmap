@@ -1,7 +1,7 @@
 import React from 'react';
 import debounce from 'lodash/debounce';
 
-const useNominatimAutocomplete = (input: string | any[]) => {
+const useNominatimAutocomplete = (input: string | unknown[]) => {
   const [places, setPlaces] = React.useState([]);
 
   const fetchHandler = async (input) => {

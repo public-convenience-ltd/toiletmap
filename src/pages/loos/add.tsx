@@ -27,7 +27,7 @@ const initialFormState = {
 };
 
 const AddPage = () => {
-  const { user, error, isLoading } = useUser();
+  const { user, isLoading } = useUser();
   const [mapState, setMapState] = useMapState();
 
   const router = useRouter();

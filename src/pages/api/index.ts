@@ -12,11 +12,11 @@ const client = jwksClient({
   jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}/.well-known/jwks.json`,
 });
 
-const { dbConnect } = require('../../api/db');
+import { dbConnect } from '../../api/db';
 
 function getKey(header, cb) {
   client.getSigningKey(header.kid, function (err, key) {
-    var signingKey = key.publicKey || key.rsaPublicKey;
+    const signingKey = key.publicKey || key.rsaPublicKey;
     cb(null, signingKey);
   });
 }
@@ -53,7 +53,7 @@ export const server = new ApolloServer({
         });
       } else {
         // We might have a session on toiletmap.org.uk
-        let session = getSession(req, res);
+        const session = getSession(req, res);
         if (session) {
           user = session.user;
         }

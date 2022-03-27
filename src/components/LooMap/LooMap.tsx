@@ -56,7 +56,6 @@ const LooMap: React.FC<LooMapProps> = ({
   minZoom,
   maxZoom = 18,
   staticMap = false,
-  onViewportChanged = () => {},
   withAccessibilityOverlays = true,
 }) => {
   const [mapState, setMapState] = useMapState();
@@ -115,7 +114,7 @@ const LooMap: React.FC<LooMapProps> = ({
   React.useEffect(() => {
     if (withAccessibilityOverlays && mapState.map) {
       const callback = function (mutationsList) {
-        for (let mutation of mutationsList) {
+        for (const mutation of mutationsList) {
           const focusVisible = mutation.target.dataset.focusVisibleAdded === '';
           if (focusVisible !== renderAccessibilityOverlays) {
             setRenderAccessibilityOverlays(focusVisible);

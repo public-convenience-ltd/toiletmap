@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import styled from '@emotion/styled';
 
-import Box, { BoxProps } from '../Box';
+import Box from '../Box';
 
 const HEIGHT = 16;
 const WIDTH = 27;

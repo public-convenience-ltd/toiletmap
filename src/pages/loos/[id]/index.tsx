@@ -26,7 +26,7 @@ const LooPage: PageFindLooByIdComp = (props) => {
     setMapState({ center: props.data.loo.location, focus: props.data.loo });
   }, [mapState.focus, props.data.loo, props.data.loo.location, setMapState]);
 
-  const [_, setToiletPanelDimensions] = React.useState({});
+  const [, setToiletPanelDimensions] = React.useState({});
 
   const router = useRouter();
   const { message } = router.query;

@@ -45,7 +45,7 @@ const usePlacesSessionToken = () => {
   return [token, reset];
 };
 
-const usePlacesAutocomplete = (input: string | any[]) => {
+const usePlacesAutocomplete = (input: string | unknown[]) => {
   const autocompleteService = usePlacesAutocompleteService();
 
   const [sessionToken, resetSessionToken] = usePlacesSessionToken();

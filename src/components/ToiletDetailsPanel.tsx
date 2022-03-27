@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { faClock, faEdit } from '@fortawesome/free-regular-svg-icons';
@@ -33,7 +32,7 @@ import Spacer from './Spacer';
 import Icon from './Icon';
 import { Media } from './Media';
 // Suppress Opening Hours Heading during COVID-19
-import { getIsOpen, WEEKDAYS, isClosed } from '../lib/openingTimes';
+import { WEEKDAYS, isClosed } from '../lib/openingTimes';
 import { useMapState } from './MapState';
 import type L from 'leaflet';
 import { useRouter } from 'next/router';
@@ -103,16 +102,18 @@ const DistanceTo = ({ from, to }) => {
 const ToiletDetailsPanel = ({
   data,
   isLoading,
-  onDimensionsChange,
+  // onDimensionsChange,
   startExpanded = false,
   children,
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(startExpanded);
 
   const router = useRouter();
-  const submitVerificationReport = async (variables: { id: unknown }) => {
-    alert('Implement me with apollo');
-  };
+
+  // TODO: We need to bring back the ability to submit a verification report.
+  // const submitVerificationReport = async (variables: { id: unknown }) => {
+  //   alert('Implement me with apollo');
+  // };
 
   const [mapState] = useMapState();
 

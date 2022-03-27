@@ -190,7 +190,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
   const hasOpeningTimes = Boolean(loo.openingTimes);
 
   const isOpen = loo.openingTimes
-    ? loo.openingTimes.map((x: string | any[]) => !isClosed(x))
+    ? loo.openingTimes.map((x: string | unknown[]) => !isClosed(x))
     : WEEKDAYS.map(() => false);
 
   const { register, control, handleSubmit, formState, setValue, getValues } =

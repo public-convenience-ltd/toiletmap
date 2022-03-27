@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import styled from '@emotion/styled';
 import isPropValid from '@emotion/is-prop-valid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,7 +20,6 @@ import Filters from '../Filters';
 import Button from '../Button';
 import Drawer from '../Drawer';
 import { useMapState } from '../MapState';
-import useLocateMapControl from '../LooMap/useLocateMapControl';
 
 interface Props {
   isExpanded?: boolean;
