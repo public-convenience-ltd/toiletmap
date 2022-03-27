@@ -48,6 +48,10 @@ export const server = new ApolloServer({
   schema,
   context: async ({ req, res }) => {
     let user = null;
+    // TODO: why does this throw an error?
+    // Without try/catch we're getting from /api on our CODE environment:
+    // {"errors":[{"message":"Context creation failed: \"baseURL\" must be a valid uri","extensions":{"code":"INTERNAL_SERVER_ERROR"}}]}
+    // Perhaps a misconfiguration in Vercel somewhere..
     try {
       // Support auth by header (legacy SPA and third-party apps)
       if (req.headers.authorization) {
