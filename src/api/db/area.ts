@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { Polygon } = require('./geojson');
+import mongoose from 'mongoose';
+import { Polygon } from './geojson';
 
 const AreaSchema = new mongoose.Schema(
   {
@@ -37,4 +37,5 @@ AreaSchema.statics.containing = async function (coords) {
   return areas.sort((a, b) => b.priority - a.priority);
 };
 
-module.exports = mongoose.models.Area || new mongoose.model('Area', AreaSchema);
+const Area = mongoose.models.Area || new mongoose.model('Area', AreaSchema);
+export default Area;

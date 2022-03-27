@@ -1,15 +1,15 @@
 import { stringifyAndCompressLoos } from '../lib/loo';
 import ngeohash from 'ngeohash';
 
-const { Loo, Report, Area, MapGeo } = require('./db');
-const { GraphQLDateTime } = require('graphql-iso-date');
-const without = require('lodash/without');
-const OpeningTimesScalar = require('./OpeningTimesScalar');
+import { Loo as DBLoo, Report as DBReport, Area, MapGeo } from './db';
+import { GraphQLDateTime } from 'graphql-iso-date';
+import without from 'lodash/without';
+import OpeningTimesScalar from './OpeningTimesScalar';
 
-const subPropertyResolver = (property) => (parent, args, context, info) =>
+const subPropertyResolver = (property) => (parent, _args, _context, info) =>
   parent[property][info.fieldName];
 const looInfoResolver = (property) => {
-  let resolve = subPropertyResolver(property);
+  const resolve = subPropertyResolver(property);
   return {
     active: resolve,
     area: resolve,
@@ -35,12 +35,12 @@ const looInfoResolver = (property) => {
 
 const resolvers = {
   Query: {
-    loo: async (parent, args) => await Loo.findById(args.id),
-    loos: async (parent, args, context) => {
+    loo: async (_parent, args) => await DBLoo.findById(args.id),
+    loos: async (_parent, args, context) => {
       const REQUIRED_PERMISSION = 'VIEW_CONTRIBUTOR_INFO';
 
       // Construct the search query
-      let query = {
+      const query = {
         'properties.active': args.filters.active,
       };
 
@@ -88,7 +88,7 @@ const resolvers = {
         ];
       }
 
-      let res = await Loo.paginate(query, {
+      const res = await DBLoo.paginate(query, {
         page: args.pagination.page,
         limit: args.pagination.limit,
         sort: args.sort,
@@ -102,18 +102,18 @@ const resolvers = {
         page: res.page,
       };
     },
-    looNamesByIds: async (parent, args) =>
-      await Loo.find({ _id: { $in: args.idList } }),
-    loosByProximity: async (parent, args) =>
-      await Loo.findNear(args.from.lng, args.from.lat, args.from.maxDistance),
-    loosByGeohash: async (parent, args, context) => {
+    looNamesByIds: async (_parent, args) =>
+      await DBLoo.find({ _id: { $in: args.idList } }),
+    loosByProximity: async (_parent, args) =>
+      await DBLoo.findNear(args.from.lng, args.from.lat, args.from.maxDistance),
+    loosByGeohash: async (_parent, args) => {
       const geohash: string = args.geohash ?? '';
       const current = ngeohash.decode_bbox(geohash);
 
       const areaLooData = await Promise.all(
         [current].map(async (boundingBox) => {
           const [minLat, minLon, maxLat, maxLon] = boundingBox;
-          return await Loo.find({ 'properties.active': true })
+          return await DBLoo.find({ 'properties.active': true })
             .where('properties.geometry')
             .box([minLon, minLat], [maxLon, maxLat]);
         })
@@ -122,7 +122,7 @@ const resolvers = {
       return stringifyAndCompressLoos(areaLooData.flat());
     },
     ukLooMarkers: async () => {
-      const loos = await Loo.find({ 'properties.active': true })
+      const loos = await DBLoo.find({ 'properties.active': true })
         .where('properties.geometry')
         .within({
           type: 'Polygon',
@@ -138,7 +138,7 @@ const resolvers = {
         });
       return stringifyAndCompressLoos(loos);
     },
-    areas: async (parent, args) => {
+    areas: async () => {
       const data = await Area.find({}, { name: 1, type: 1 }).exec();
 
       const areas = data.map((area) => {
@@ -150,7 +150,7 @@ const resolvers = {
 
       return areas;
     },
-    mapAreas: async (parent, args) => {
+    mapAreas: async () => {
       let query = {};
       if (args.areaType) {
         query = { areaType: args.areaType };
@@ -161,7 +161,7 @@ const resolvers = {
         return null;
       }
 
-      let geometry = geo.geometry;
+      const geometry = geo.geometry;
 
       geometry.objects.forEach((obj) => {
         obj.value.geometries.forEach((geom) => {
@@ -175,20 +175,20 @@ const resolvers = {
 
       return geometry;
     },
-    report: async (parent, args) => {
+    report: async (_parent, args) => {
       const id = args.id;
-      return await Report.findById(id);
+      return await DBReport.findById(id);
     },
-    counters: async (parent, args) => {
-      let looCounters = await Loo.getCounters();
-      let reportCounters = await Report.getCounters();
+    counters: async () => {
+      const looCounters = await DBLoo.getCounters();
+      const reportCounters = await DBReport.getCounters();
 
       return {
         ...looCounters,
         ...reportCounters,
       };
     },
-    proportions: async (parent, args) => {
+    proportions: async () => {
       const {
         babyChange,
         babyChangeUnknown,
@@ -196,7 +196,7 @@ const resolvers = {
         accessibleLoosUnknown,
         activeLoos,
         totalLoos,
-      } = await Loo.getProportionCounters();
+      } = await DBLoo.getProportionCounters();
 
       return {
         activeLoos: [
@@ -219,8 +219,8 @@ const resolvers = {
         ],
       };
     },
-    areaStats: async (parent, args) => {
-      const areas = await Loo.getAreasCounters();
+    areaStats: async () => {
+      const areas = await DBLoo.getAreasCounters();
 
       return areas.map((area) => {
         return {
@@ -233,8 +233,8 @@ const resolvers = {
         };
       });
     },
-    contributors: async (parent, args) => {
-      const contributors = await Report.aggregate([
+    contributors: async () => {
+      const contributors = await DBReport.aggregate([
         {
           $match: { contributor: { $exists: true } },
         },
@@ -253,17 +253,17 @@ const resolvers = {
   },
 
   MutationResponse: {
-    __resolveType(mutationResponse, context, info) {
+    __resolveType() {
       return null;
     },
   },
 
   Mutation: {
-    submitReport: async (parent, args, context) => {
-      let user = context.user;
-      let { edit, location, ...data } = args.report;
+    submitReport: async (_parent, args, context) => {
+      const user = context.user;
+      const { edit, location, ...data } = args.report;
       // Format report data to match old api
-      let report = {
+      const report = {
         ...data,
         active: true,
         geometry: {
@@ -273,7 +273,7 @@ const resolvers = {
       };
 
       try {
-        let result = await Report.submit(report, user, edit);
+        const result = await DBReport.submit(report, user, edit);
         return {
           code: '200',
           success: true,
@@ -289,14 +289,14 @@ const resolvers = {
         };
       }
     },
-    submitRemovalReport: async (parent, args, context) => {
+    submitRemovalReport: async (_parent, args, context) => {
       const user = context.user;
-      let { edit, reason } = args.report;
+      const { edit, reason } = args.report;
       // We sadly need the current geometry here
-      const loo = await Loo.findById(edit);
+      const loo = await DBLoo.findById(edit);
       const coordinates = loo.properties.geometry.coordinates;
       // Format report data to match old api
-      let report = {
+      const report = {
         active: false,
         removalReason: reason,
         geometry: {
@@ -306,7 +306,7 @@ const resolvers = {
       };
 
       try {
-        let result = await Report.submit(report, user, edit);
+        const result = await DBReport.submit(report, user, edit);
         return {
           code: '200',
           success: true,
@@ -322,13 +322,13 @@ const resolvers = {
         };
       }
     },
-    submitVerificationReport: async (parent, args, context) => {
+    submitVerificationReport: async (_parent, args) => {
       const report = {
         verifiedAt: new Date(),
       };
 
       try {
-        const result = await Report.submit(report, null, args.id);
+        const result = await DBReport.submit(report, null, args.id);
         return {
           code: '200',
           success: true,
@@ -348,7 +348,7 @@ const resolvers = {
 
   Report: {
     id: (r) => r._id.toString(),
-    previous: (r) => Report.findById(r.previous),
+    previous: (r) => DBReport.findById(r.previous),
     location: (r) =>
       r.diff.geometry && {
         lng: r.diff.geometry.coordinates[0],
@@ -360,7 +360,7 @@ const resolvers = {
 
   Loo: {
     id: (l) => l._id.toString(),
-    reports: (l) => Report.find().where('_id').in(l.reports).exec(),
+    reports: (l) => DBReport.find().where('_id').in(l.reports).exec(),
     location: (l) => ({
       lng: l.properties.geometry.coordinates[0],
       lat: l.properties.geometry.coordinates[1],
@@ -378,4 +378,11 @@ const resolvers = {
   OpeningTimes: OpeningTimesScalar,
 };
 
-module.exports = resolvers;
+export const DateTime = resolvers.DateTime;
+export const Loo = resolvers.Loo;
+export const Mutation = resolvers.Mutation;
+export const MutationResponse = resolvers.MutationResponse;
+export const OpeningTimes = resolvers.OpeningTimes;
+export const Query = resolvers.Query;
+export const Report = resolvers.Report;
+export const SortOrder = resolvers.SortOrder;

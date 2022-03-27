@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Rectangle, useMap } from 'react-leaflet';
 import { CompressedLooObject } from '../../lib/loo';
 
-// 0-5
+// Keycodes for numbers 0-5
 // https://github.com/Leaflet/Leaflet/issues/5766
 const KEY_CODES = [48, 49, 50, 51, 52, 53];
 
@@ -12,11 +12,13 @@ const AccessibilityIntersection = ({
   center,
   onIntersection,
   onSelection,
+  className,
 }: {
   toilets: CompressedLooObject[];
   center: { lat: number; lng: number };
-  onIntersection: () => void;
-  onSelection: () => void;
+  onIntersection: (compressedLoos: CompressedLooObject[]) => void;
+  onSelection: (selectionIndex: string | number) => void;
+  className: string;
 }) => {
   const map = useMap();
   const rectangleRef = useRef(null);
@@ -47,6 +49,7 @@ const AccessibilityIntersection = ({
   }, [onSelection]);
   return (
     <Rectangle
+      className={className}
       bounds={map?.getBounds().pad(-0.4)}
       ref={rectangleRef}
     ></Rectangle>

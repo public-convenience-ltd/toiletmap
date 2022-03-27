@@ -1,5 +1,5 @@
-const { GraphQLScalarType } = require('graphql');
-const { Kind } = require('graphql/language');
+import { GraphQLScalarType } from 'graphql';
+import { Kind } from 'graphql/language';
 
 const astToOpeningTimes = (ast) => {
   if (ast.kind !== Kind.LIST) {
@@ -54,11 +54,11 @@ const validateOpeningTimes = (value) => {
 
 const OpeningTimesScalar = new GraphQLScalarType({
   name: 'OpeningTimes',
-  desription:
+  description:
     'An array of 7 elements in which each represent a day\'s opening times. Each element can be either an empty array (closed) or an array of opening and closing times ["09:00", "17:00"]',
   serialize: validateOpeningTimes,
   parseValue: validateOpeningTimes,
   parseLiteral: (ast) => validateOpeningTimes(astToOpeningTimes(ast)),
 });
 
-module.exports = OpeningTimesScalar;
+export default OpeningTimesScalar;
