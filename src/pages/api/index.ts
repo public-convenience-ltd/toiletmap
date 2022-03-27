@@ -1,15 +1,12 @@
 import { ApolloServer } from 'apollo-server-micro';
 import responseCachePlugin from 'apollo-server-plugin-response-cache';
-import { makeExecutableSchema } from '@graphql-tools/schema';
 import jwt, { VerifyOptions } from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { getSession } from '@auth0/nextjs-auth0';
 import Cors from 'cors';
-
-import resolvers from '../../api/resolvers';
+import redactedDirective from '../..//api/directives/redactedDirective';
 import authDirective from '../../api/directives/authDirective';
-import redactedDirective from '../../api/directives/redactedDirective';
-import typeDefs from '../../api/typeDefs';
+import schema from '../../api-client/schema';
 
 const client = jwksClient({
   jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}/.well-known/jwks.json`,
@@ -30,22 +27,11 @@ const options: VerifyOptions = {
   algorithms: ['RS256'],
 };
 
-// Build our executable schema and apply our custom directives
-const { redactedDirectiveTypeDefs, redactedDirectiveTransformer } =
-  redactedDirective('redact');
-const { authDirectiveTypeDefs, authDirectiveTransformer } =
-  authDirective('auth');
-
-export let schema = makeExecutableSchema({
-  typeDefs: [redactedDirectiveTypeDefs, authDirectiveTypeDefs, typeDefs],
-  resolvers,
-});
-schema = redactedDirectiveTransformer(schema);
-schema = authDirectiveTransformer(schema);
-
 // Add GraphQL API
+const finalSchema = schema(authDirective, redactedDirective);
+
 export const server = new ApolloServer({
-  schema,
+  schema: finalSchema,
   context: async ({ req, res }) => {
     let user = null;
     // TODO: why does this throw an error?
