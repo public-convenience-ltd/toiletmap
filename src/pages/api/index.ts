@@ -1,7 +1,7 @@
 import { ApolloServer } from 'apollo-server-micro';
 import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import jwt from 'jsonwebtoken';
+import jwt, { VerifyOptions } from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { getSession } from '@auth0/nextjs-auth0';
 import Cors from 'cors';
@@ -24,7 +24,7 @@ function getKey(header, cb) {
   });
 }
 
-const options = {
+const options: VerifyOptions = {
   audience: process.env.AUTH0_AUDIENCE,
   issuer: process.env.AUTH0_ISSUER_BASE_URL,
   algorithms: ['RS256'],
@@ -48,25 +48,33 @@ export const server = new ApolloServer({
   schema,
   context: async ({ req, res }) => {
     let user = null;
-    // Support auth by header (legacy SPA and third-party apps)
-    if (req.headers.authorization) {
-      const token = req.headers.authorization.replace('Bearer ', '');
-      user = await new Promise((resolve, reject) => {
-        jwt.verify(token, getKey, options, (err, decoded) => {
-          if (err) {
-            return reject(err);
-          }
-          resolve(decoded);
-        });
-      });
-    } else {
-      // We might have a session on toiletmap.org.uk
-      let session = getSession(req, res);
-      if (session) {
-        user = session.user;
-      }
-    }
+    // TODO: why does this throw an error?
+    // Without try/catch we're getting from /api on our CODE environment:
+    // {"errors":[{"message":"Context creation failed: \"baseURL\" must be a valid uri","extensions":{"code":"INTERNAL_SERVER_ERROR"}}]}
+    // Perhaps a misconfiguration in Vercel somewhere..
+    try {
+      // Support auth by header (legacy SPA and third-party apps)
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.replace('Bearer ', '');
 
+        user = await new Promise((resolve, reject) => {
+          jwt.verify(token, getKey, options, (err, decoded) => {
+            if (err) {
+              return reject(err);
+            }
+            resolve(decoded);
+          });
+        });
+      } else {
+        // We might have a session on toiletmap.org.uk
+        let session = getSession(req, res);
+        if (session) {
+          user = session.user;
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
     return {
       user,
     };
