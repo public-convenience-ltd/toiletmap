@@ -1,6 +1,5 @@
 import { stringifyAndCompressLoos } from '../lib/loo';
 import ngeohash from 'ngeohash';
-import { async } from 'hasha';
 
 const { Loo, Report, Area, MapGeo } = require('./db');
 const { GraphQLDateTime } = require('graphql-iso-date');

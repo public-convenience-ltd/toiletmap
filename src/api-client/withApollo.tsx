@@ -1,6 +1,4 @@
 import { NextPage } from 'next';
-import merge from 'deepmerge';
-import isEqual from 'lodash/isEqual';
 
 import {
   ApolloClient,
@@ -11,6 +9,8 @@ import {
 } from '@apollo/client';
 
 import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
+import redactedDirective from '../api/directives/redactedDirective';
+import authDirective from '../api/directives/authDirective';
 import { sha256 } from 'crypto-hash';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
@@ -19,8 +19,10 @@ function createApolloClient() {
   let terminatingLink;
   if (typeof window === 'undefined') {
     const { SchemaLink } = require('@apollo/client/link/schema');
-    const { schema } = require('../pages/api');
-    terminatingLink = new SchemaLink({ schema });
+    const { default: schema } = require('./schema');
+    terminatingLink = new SchemaLink({
+      schema: schema(authDirective, redactedDirective),
+    });
   } else {
     terminatingLink = createHttpLink({
       uri: '/api',
