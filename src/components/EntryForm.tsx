@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { useForm, Controller } from 'react-hook-form';
+import {
+  useForm,
+  Controller,
+  UseFormRegister,
+  FieldValues,
+} from 'react-hook-form';
 import Image from 'next/image';
 import isFunction from 'lodash/isFunction';
 import omit from 'lodash/omit';
@@ -91,7 +96,19 @@ const Radio = React.forwardRef(function MyRadio(props, ref) {
   );
 });
 
-const Section = ({ register, id, title, questions, children }) => (
+interface Question {
+  field: string;
+  label: string | React.ReactElement;
+  value: string;
+  onChange?: ({ target: { value } }) => void;
+}
+
+const Section: React.FC<{
+  register: UseFormRegister<FieldValues>;
+  id: string;
+  title: string;
+  questions: Question[];
+}> = ({ register, id, title, questions, children }) => (
   <div role="group" aria-labelledby={`heading-${id}`}>
     <table
       role="presentation"
@@ -139,7 +156,7 @@ const Section = ({ register, id, title, questions, children }) => (
                 <Radio
                   name={field}
                   value={true}
-                  defaultChecked={value === true}
+                  defaultChecked={false}
                   data-testid={`${field}:no`}
                   {...register(field)}
                 />
@@ -153,7 +170,7 @@ const Section = ({ register, id, title, questions, children }) => (
                   name={field}
                   value={false}
                   aria-labelledby={`${id}-no`}
-                  defaultChecked={value === false}
+                  defaultChecked={false}
                   data-testid={`${field}:no`}
                   {...register(field)}
                 />
