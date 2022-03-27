@@ -5,7 +5,7 @@ import Image from 'next/image';
 import isFunction from 'lodash/isFunction';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
-
+import { ErrorMessage } from '@hookform/error-message';
 import Container from '../components/Container';
 import Notification from '../components/Notification';
 import Box from '../components/Box';
@@ -444,7 +444,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                     maxWidth: '200px',
                   }}
                   {...register('paymentDetails', {
-                    required: true,
+                    required: 'Please specify the toilet payment details.',
                   })}
                 />
               </label>
@@ -589,6 +589,13 @@ const EntryForm = ({ title, loo, children, ...props }) => {
           </label>
 
           <Spacer mt={4} />
+          <Box mx="auto">
+            <ErrorMessage
+              errors={formState.errors}
+              name="singleErrorInput"
+              render={({ message }) => <p>{message}</p>}
+            />
+          </Box>
 
           {isFunction(children) ? children({ isDirty }) : children}
 

@@ -97,7 +97,9 @@ const AddPage = () => {
 
         <Box position="absolute" top={0} left={0} m={3}>
           <LocationSearch
-            onSelectedItemChange={(center) => setMapState({ center })}
+            onSelectedItemChange={(searchLocation) =>
+              setMapState({ searchLocation })
+            }
           />
         </Box>
       </Box>

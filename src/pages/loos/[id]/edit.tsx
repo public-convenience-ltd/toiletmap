@@ -41,10 +41,12 @@ const EditPage: PageFindLooByIdComp = (props) => {
   const save = async (formData: UpdateLooMutationVariables) => {
     formData.id = loo.id;
 
-    try {
-      await updateLooMutation({ variables: { ...formData } });
-    } catch (err) {
-      console.error('save error', err);
+    const { errors } = await updateLooMutation({
+      variables: { ...formData },
+    });
+
+    if (errors) {
+      console.error('save error', errors);
     }
   };
 
@@ -62,8 +64,9 @@ const EditPage: PageFindLooByIdComp = (props) => {
   }
 
   // redirect to index if loo is not active (i.e. removed)
+  console.log(loo, loo.active);
   if (loo && !loo.active) {
-    router.push('/');
+    // router.push('/');
   }
 
   return (
@@ -92,33 +95,30 @@ const EditPage: PageFindLooByIdComp = (props) => {
           saveError={saveError}
           onSubmit={save}
         >
-          {({ isDirty }) => (
-            <Box display="flex" flexDirection="column" alignItems="center">
-              <Button
-                type="submit"
-                disabled={!isDirty}
-                css={{
-                  width: '100%',
-                }}
-                data-testid="update-toilet-button"
-              >
-                Update the toilet
-              </Button>
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Button
+              type="submit"
+              css={{
+                width: '100%',
+              }}
+              data-testid="update-toilet-button"
+            >
+              Update the toilet
+            </Button>
 
-              <Spacer mt={2} />
+            <Spacer mt={2} />
 
-              <Button
-                as={Link}
-                href={`/loos/${loo.id}/remove`}
-                css={{
-                  width: '100%',
-                }}
-                data-testid="remove-toilet-button"
-              >
-                Remove the toilet
-              </Button>
-            </Box>
-          )}
+            <Button
+              as={Link}
+              href={`/loos/${loo.id}/remove`}
+              css={{
+                width: '100%',
+              }}
+              data-testid="remove-toilet-button"
+            >
+              Remove the toilet
+            </Button>
+          </Box>
         </EntryForm>
       )}
     </>

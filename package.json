@@ -40,6 +40,7 @@
     "@fortawesome/react-fontawesome": "0.1.18",
     "@graphql-tools/schema": "8.3.5",
     "@graphql-tools/utils": "8.6.5",
+    "@hookform/error-message": "2.0.0",
     "@rehooks/component-size": "1.0.3",
     "@styled-system/prop-types": "5.1.5",
     "apollo-server-core": "3.6.6",
