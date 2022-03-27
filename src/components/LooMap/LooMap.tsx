@@ -144,13 +144,6 @@ const LooMap: React.FC<LooMapProps> = ({
     setHydratedToilets(loadedLooValues);
   }, [loadedToilets, mapState.loadedGroups]);
 
-  // Override the map location with the search result if present.
-  useEffect(() => {
-    if (mapState?.searchLocation && mapState?.map) {
-      mapState.map.setView(mapState.searchLocation);
-    }
-  }, [mapState.map, mapState.searchLocation]);
-
   // Begin location service initialisation.
   const onLocationFound = useCallback(
     (event: { latitude: any; longitude: any }) => {
@@ -186,11 +179,14 @@ const LooMap: React.FC<LooMapProps> = ({
     });
   }, [mapState.map, isActive, setMapState, startLocate, stopLocate]);
 
+  // Override the map location with the search result if present.
   useEffect(() => {
     if (mapState?.searchLocation && mapState?.map) {
       mapState.map.setView(mapState.searchLocation);
     }
-  }, [mapState.map, mapState.searchLocation]);
+    // Only update the map when the search location changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mapState.searchLocation]);
 
   return (
     <Box

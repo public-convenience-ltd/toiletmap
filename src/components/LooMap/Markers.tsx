@@ -110,10 +110,14 @@ const MarkerGroup: React.FC<{
         }
       )
         .on('click', () => {
+          // Clear the current search upon navigation
+          setMapState({ searchLocation: undefined });
           router.push(`/loos/${toilet.id}`);
         })
         .on('keydown', (event: { originalEvent: { keyCode: number } }) => {
           if (event.originalEvent.keyCode === KEY_ENTER) {
+            // Clear the current search upon navigation
+            setMapState({ searchLocation: undefined });
             router.push(`/loos/${toilet.id}`);
           }
         });
@@ -122,7 +126,7 @@ const MarkerGroup: React.FC<{
       marker.getElement()?.setAttribute('aria-label', 'Public Toilet');
       return marker;
     },
-    [mapState.focus, router]
+    [mapState?.focus?.id, router, setMapState]
   );
 
   const [appliedFilterTypes, setAppliedFilterTypes] = useState<
