@@ -111,7 +111,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
         </Box>
 
         <Input
-          placeholder="search location…"
+          placeholder="Search location…"
           autoComplete="off"
           {...getInputProps({
             onFocus: () => {

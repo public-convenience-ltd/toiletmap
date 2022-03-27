@@ -22,6 +22,7 @@ import {
   useUpdateLooMutation,
 } from '../../../api-client/graphql';
 import { useEffect } from 'react';
+import LocationSearch from '../../../components/LocationSearch';
 
 const EditPage: PageFindLooByIdComp = (props) => {
   const loo = props.data.loo;
@@ -30,7 +31,7 @@ const EditPage: PageFindLooByIdComp = (props) => {
   const [mapState, setMapState] = useMapState();
 
   useEffect(() => {
-    setMapState({ focus: loo });
+    setMapState({ focus: loo, center: loo.location });
   }, [loo, setMapState]);
 
   const [
@@ -41,17 +42,23 @@ const EditPage: PageFindLooByIdComp = (props) => {
   const save = async (formData: UpdateLooMutationVariables) => {
     formData.id = loo.id;
 
-    try {
-      await updateLooMutation({ variables: { ...formData } });
-    } catch (err) {
-      console.error('save error', err);
+    const { errors } = await updateLooMutation({
+      variables: { ...formData },
+    });
+
+    if (errors) {
+      console.error('save error', errors);
     }
   };
 
-  if (saveData) {
-    // redirect to updated toilet entry page
-    router.push(`/loos/${saveData.submitReport.loo.id}?message=updated`);
-  }
+  // redirect to toilet entry page upon successful edit
+  useEffect(() => {
+    if (saveData) {
+      setMapState({ searchLocation: undefined });
+      // redirect to updated toilet entry page
+      router.push(`/loos/${saveData.submitReport.loo.id}?message=updated`);
+    }
+  }, [saveData, router, setMapState]);
 
   if (isLoading) {
     return <PageLoading />;
@@ -80,6 +87,14 @@ const EditPage: PageFindLooByIdComp = (props) => {
           showCrosshair
           controlsOffset={20}
         />
+
+        <Box position="absolute" top={0} left={0} m={3}>
+          <LocationSearch
+            onSelectedItemChange={(searchLocation) =>
+              setMapState({ searchLocation })
+            }
+          />
+        </Box>
       </Box>
 
       <Spacer mt={4} />
@@ -92,33 +107,30 @@ const EditPage: PageFindLooByIdComp = (props) => {
           saveError={saveError}
           onSubmit={save}
         >
-          {({ isDirty }) => (
-            <Box display="flex" flexDirection="column" alignItems="center">
-              <Button
-                type="submit"
-                disabled={!isDirty}
-                css={{
-                  width: '100%',
-                }}
-                data-testid="update-toilet-button"
-              >
-                Update the toilet
-              </Button>
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Button
+              type="submit"
+              css={{
+                width: '100%',
+              }}
+              data-testid="update-toilet-button"
+            >
+              Update the toilet
+            </Button>
 
-              <Spacer mt={2} />
+            <Spacer mt={2} />
 
-              <Button
-                as={Link}
-                href={`/loos/${loo.id}/remove`}
-                css={{
-                  width: '100%',
-                }}
-                data-testid="remove-toilet-button"
-              >
-                Remove the toilet
-              </Button>
-            </Box>
-          )}
+            <Button
+              as={Link}
+              href={`/loos/${loo.id}/remove`}
+              css={{
+                width: '100%',
+              }}
+              data-testid="remove-toilet-button"
+            >
+              Remove the toilet
+            </Button>
+          </Box>
         </EntryForm>
       )}
     </>

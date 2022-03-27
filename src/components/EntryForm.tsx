@@ -5,7 +5,7 @@ import Image from 'next/image';
 import isFunction from 'lodash/isFunction';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
-
+import { ErrorMessage } from '@hookform/error-message';
 import Container from '../components/Container';
 import Notification from '../components/Notification';
 import Box from '../components/Box';
@@ -14,7 +14,6 @@ import Spacer from '../components/Spacer';
 import VisuallyHidden from '../components/VisuallyHidden';
 import Switch from '../components/Switch';
 import { WEEKDAYS, isClosed } from '../lib/openingTimes';
-
 import crosshair from '../../public/crosshair-small.svg';
 import { useMapState } from './MapState';
 
@@ -194,7 +193,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
     : WEEKDAYS.map(() => false);
 
   const { register, control, handleSubmit, formState, setValue, getValues } =
-    useForm();
+    useForm({ criteriaMode: 'all' });
 
   // read the formState before render to subscribe the form state through Proxy
   const { isDirty, dirtyFields } = formState;
@@ -432,22 +431,31 @@ const EntryForm = ({ title, loo, children, ...props }) => {
             ]}
           >
             {noPayment === false && (
-              <label>
-                Payment Details
-                <Input
+              <>
+                <label>
+                  Payment Details
+                  <Input
+                    name="paymentDetails"
+                    type="text"
+                    defaultValue={loo.paymentDetails || ''}
+                    placeholder="The amount e.g. 20p"
+                    data-testid="paymentDetails"
+                    css={{
+                      maxWidth: '200px',
+                    }}
+                    {...register('paymentDetails', {
+                      required: 'Please specify the toilet payment details.',
+                    })}
+                  />
+                </label>
+                <ErrorMessage
+                  errors={formState.errors}
                   name="paymentDetails"
-                  type="text"
-                  defaultValue={loo.paymentDetails || ''}
-                  placeholder="The amount e.g. 20p"
-                  data-testid="paymentDetails"
-                  css={{
-                    maxWidth: '200px',
-                  }}
-                  {...register('paymentDetails', {
-                    required: true,
-                  })}
+                  render={({ message }) => (
+                    <p css={{ color: 'red' }}>{message}</p>
+                  )}
                 />
-              </label>
+              </>
             )}
           </Section>
 
@@ -463,12 +471,12 @@ const EntryForm = ({ title, loo, children, ...props }) => {
               name="has-opening-times"
               control={control}
               defaultValue={hasOpeningTimes}
-              render={({ onChange, value, ...props }) => (
+              render={({ field }) => (
                 <Switch
-                  checked={value}
-                  onChange={onChange}
-                  onClick={onChange}
-                  {...props}
+                  checked={field.value}
+                  onChange={field.onChange}
+                  onClick={field.onChange}
+                  value={field.value}
                 />
               )}
             />
@@ -482,98 +490,97 @@ const EntryForm = ({ title, loo, children, ...props }) => {
 
           <Spacer mt={3} />
 
-          <div
-            data-testid="opening-hours-selection"
-            hidden={!getValues('has-opening-times')}
-          >
-            <ol>
-              {WEEKDAYS.map((day, index) => {
-                const id = `heading-${day.toLowerCase()}`;
+          {getValues('has-opening-times') && (
+            <div data-testid="opening-hours-selection">
+              <ol>
+                {WEEKDAYS.map((day, index) => {
+                  const id = `heading-${day.toLowerCase()}`;
 
-                return (
-                  <Box
-                    as="li"
-                    key={day}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    mt={index === 0 ? undefined : 2}
-                  >
-                    <h3 id={id}>{day}</h3>
-
-                    <Spacer ml={2} />
-
+                  return (
                     <Box
+                      as="li"
+                      key={day}
                       display="flex"
+                      alignItems="center"
                       justifyContent="space-between"
-                      width={['auto', '50%']}
+                      mt={index === 0 ? undefined : 2}
                     >
-                      <Box display="flex" alignItems="center">
-                        <Controller
-                          aria-labelledby={id}
-                          name={`${day.toLowerCase()}-is-open`}
-                          control={control}
-                          defaultValue={isOpen[index]}
-                          render={({ onChange, value, ...props }) => (
-                            <Switch
-                              checked={value}
-                              onChange={onChange}
-                              onClick={onChange}
-                              {...props}
-                            />
-                          )}
-                        />
-                      </Box>
+                      <h3 id={id}>{day}</h3>
 
                       <Spacer ml={2} />
 
-                      {getValues(`${day.toLowerCase()}-is-open`) ? (
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        width={['auto', '50%']}
+                      >
                         <Box display="flex" alignItems="center">
-                          <input
-                            type="time"
-                            pattern="[0-9]{2}:[0-9]{2}"
-                            placeholder="hh:mm"
-                            defaultValue={
-                              loo.openingTimes
-                                ? loo.openingTimes[index][0]
-                                : undefined
-                            }
-                            name={`${day.toLowerCase()}-opens`}
-                            {...register(`${day.toLowerCase()}-opens`, {
-                              required: true,
-                            })}
-                          />
-
-                          <Spacer ml={2} />
-
-                          <span>to</span>
-
-                          <Spacer ml={2} />
-
-                          <input
-                            type="time"
-                            pattern="[0-9]{2}:[0-9]{2}"
-                            placeholder="hh:mm"
-                            defaultValue={
-                              loo.openingTimes
-                                ? loo.openingTimes[index][1]
-                                : undefined
-                            }
-                            name={`${day.toLowerCase()}-closes`}
-                            {...register(`${day.toLowerCase()}-closes`, {
-                              required: true,
-                            })}
+                          <Controller
+                            aria-labelledby={id}
+                            name={`${day.toLowerCase()}-is-open`}
+                            control={control}
+                            defaultValue={isOpen[index]}
+                            render={({ field }) => (
+                              <Switch
+                                checked={field.value}
+                                onChange={field.onChange}
+                                onClick={field.onChange}
+                                value={field.value}
+                              />
+                            )}
                           />
                         </Box>
-                      ) : (
-                        'Closed'
-                      )}
+
+                        <Spacer ml={2} />
+
+                        {getValues(`${day.toLowerCase()}-is-open`) ? (
+                          <Box display="flex" alignItems="center">
+                            <input
+                              type="time"
+                              pattern="[0-9]{2}:[0-9]{2}"
+                              placeholder="hh:mm"
+                              defaultValue={
+                                loo.openingTimes
+                                  ? loo.openingTimes[index][0]
+                                  : undefined
+                              }
+                              name={`${day.toLowerCase()}-opens`}
+                              {...register(`${day.toLowerCase()}-opens`, {
+                                required: true,
+                              })}
+                            />
+
+                            <Spacer ml={2} />
+
+                            <span>to</span>
+
+                            <Spacer ml={2} />
+
+                            <input
+                              type="time"
+                              pattern="[0-9]{2}:[0-9]{2}"
+                              placeholder="hh:mm"
+                              defaultValue={
+                                loo.openingTimes
+                                  ? loo.openingTimes[index][1]
+                                  : undefined
+                              }
+                              name={`${day.toLowerCase()}-closes`}
+                              {...register(`${day.toLowerCase()}-closes`, {
+                                required: true,
+                              })}
+                            />
+                          </Box>
+                        ) : (
+                          'Closed'
+                        )}
+                      </Box>
                     </Box>
-                  </Box>
-                );
-              })}
-            </ol>
-          </div>
+                  );
+                })}
+              </ol>
+            </div>
+          )}
 
           <Spacer mt={4} />
 

@@ -67,9 +67,10 @@ const AddPage = () => {
   // redirect to new toilet entry page upon successful addition
   useEffect(() => {
     if (saveData) {
+      setMapState({ searchLocation: undefined });
       router.push(`/loos/${saveData.submitReport.loo.id}?message=created`);
     }
-  }, [saveData, router]);
+  }, [saveData, router, setMapState]);
 
   if (isLoading) {
     return <PageLoading />;
@@ -97,7 +98,9 @@ const AddPage = () => {
 
         <Box position="absolute" top={0} left={0} m={3}>
           <LocationSearch
-            onSelectedItemChange={(center) => setMapState({ center })}
+            onSelectedItemChange={(searchLocation) =>
+              setMapState({ searchLocation })
+            }
           />
         </Box>
       </Box>
