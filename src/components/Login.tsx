@@ -17,7 +17,7 @@ const ListItem = (props: BoxProps) => (
   <Box as="li" marginTop={2} marginLeft={4} {...props} />
 );
 
-const LoginPage = (props) => {
+const LoginPage = () => {
   const router = useRouter();
   return (
     <Box my={5}>

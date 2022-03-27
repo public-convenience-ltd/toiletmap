@@ -10,7 +10,7 @@ const POSITION_CLASSES = {
 };
 
 const Control = (props): JSX.Element => {
-  const [container, setContainer] = React.useState<any>(
+  const [container, setContainer] = React.useState<HTMLElement>(
     document.createElement('div')
   );
   const positionClass =
@@ -19,7 +19,7 @@ const Control = (props): JSX.Element => {
 
   React.useEffect(() => {
     const targetDiv = document.getElementsByClassName(positionClass);
-    setContainer(targetDiv[0]);
+    setContainer(targetDiv[0] as HTMLElement);
   }, [positionClass]);
 
   const controlContainer = (

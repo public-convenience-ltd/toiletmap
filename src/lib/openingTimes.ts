@@ -3,7 +3,7 @@ import set from 'date-fns/set';
 import setISODay from 'date-fns/setISODay';
 import isWithinInterval from 'date-fns/isWithinInterval';
 
-function isClosed(range: string | any[]) {
+function isClosed(range: string | unknown[]) {
   return Array.isArray(range) && range.length === 0;
 }
 

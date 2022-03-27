@@ -3,9 +3,10 @@ import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils';
 import { GraphQLSchema, defaultFieldResolver } from 'graphql';
 
 export default function authDirective(directiveName: string) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const typeDirectiveArgumentMaps: Record<string, any> = {};
   return {
-    authDirectiveTypeDefs: `directive @${directiveName}(requires: Permission) on OBJECT | FIELD_DEFINITION
+    authDirectiveTypeDefs: `directive @${directiveName}(requires: Permission) on OBJECT |FIELD_DEFINITION
 
     enum Permission {
       SUBMIT_REPORT

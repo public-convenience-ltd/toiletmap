@@ -52,7 +52,7 @@ export default function Search() {
         data={data.loos}
         rowsPerPage={variables.limit}
         handleChangePage={(e, page) => search({ page })}
-        handleChangeRowsPerPage={(e: { target: { value: any; }; }) => search({ limit: e.target.value })}
+        handleChangeRowsPerPage={(e: { target: { value: unknown; }; }) => search({ limit: e.target.value })}
       />
     </>
   );

@@ -21,7 +21,7 @@ import { dbConnect } from '../../../api/db';
 
 const RemovePage: PageFindLooByIdComp = function (props) {
   const loo = props.data.loo;
-  const { user, error, isLoading } = useUser();
+  const { user, isLoading } = useUser();
 
   const [reason, setReason] = useState('');
   const router = useRouter();

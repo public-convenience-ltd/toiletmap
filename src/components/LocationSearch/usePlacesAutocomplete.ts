@@ -45,7 +45,7 @@ const usePlacesSessionToken = () => {
   return [token, reset];
 };
 
-const usePlacesAutocomplete = (input: string | any[]) => {
+const usePlacesAutocomplete = (input: string | unknown[]) => {
   const autocompleteService = usePlacesAutocompleteService();
 
   const [sessionToken, resetSessionToken] = usePlacesSessionToken();
@@ -53,16 +53,19 @@ const usePlacesAutocomplete = (input: string | any[]) => {
   const [places, setPlaces] = React.useState([]);
 
   const fetchPlaces = debounce((input) => {
-    const onFetchCompleted = (places: any[]) => {
+    const onFetchCompleted = (places: unknown[]) => {
       if (!places) {
         return;
       }
 
       const locationResults = places.map(
         (item: {
-          id: any;
-          place_id: any;
-          structured_formatting: { main_text: any; secondary_text: any };
+          id: unknown;
+          place_id: unknown;
+          structured_formatting: {
+            main_text: unknown;
+            secondary_text: unknown;
+          };
         }) => ({
           id: item.id,
           placeId: item.place_id,
@@ -110,7 +113,7 @@ const usePlacesAutocomplete = (input: string | any[]) => {
       placesService.getDetails(
         { placeId, sessionToken },
         (
-          result: { geometry: { location: { lat: any; lng: any } } },
+          result: { geometry: { location: { lat: unknown; lng: unknown } } },
           status
         ) => {
           if (status !== OK) {

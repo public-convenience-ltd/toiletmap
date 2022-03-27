@@ -99,6 +99,7 @@
     "@types/react-dom": "17.0.14",
     "@types/react-leaflet": "2.8.2",
     "@types/styled-system": "5.1.15",
+    "@typescript-eslint/eslint-plugin": "5.16.0",
     "cli-progress": "3.10.0",
     "dotenv": "16.0.0",
     "eslint": "8.12.0",

@@ -36,8 +36,8 @@ const reducer = (state: MapState, newState: MapState) => {
   };
 };
 
-export const MapStateProvider = ({ children, loos = [] }) => {
-  let initialFilterState = config.getSettings(FILTERS_KEY) || [];
+export const MapStateProvider = ({ children }) => {
+  const initialFilterState = config.getSettings(FILTERS_KEY) || [];
   // default any unsaved filters as 'false'
   config.filters.forEach((filter) => {
     initialFilterState[filter.id] = initialFilterState[filter.id] || false;
