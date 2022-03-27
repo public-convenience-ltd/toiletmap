@@ -9,7 +9,6 @@ module.exports = {
   experimental: {
     nftTracing: true,
   },
-  swcMinify: true,
   async rewrites() {
     return [
       // Map lng-lat routes to a single page
