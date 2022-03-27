@@ -1,5 +1,5 @@
-const { Schema } = require('mongoose');
-const { Point } = require('./geojson');
+import { Schema } from 'mongoose';
+import { Point } from './geojson';
 
 /**
  * The core schema of a loo and loo report. This is as a function because:
@@ -7,7 +7,7 @@ const { Point } = require('./geojson');
  * - There may be subtle differences in validation between reports and loos
  * This is volatile work in progress.
  */
-module.exports = exports = new Schema({
+export default new Schema({
   _id: false,
   geometry: Point,
   name: { type: String, trim: true },
