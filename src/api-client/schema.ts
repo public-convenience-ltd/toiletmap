@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { makeExecutableSchema } = require('@graphql-tools/schema');
+const typeDefs = require('../api/typeDefs').default;
+const resolvers = require('../api/resolvers');
+
 const schema = (authDirective, redactedDirective) => {
-  const typeDefs = require('../api/typeDefs');
-  const resolvers = require('../api/resolvers');
-
-  const { makeExecutableSchema } = require('@graphql-tools/schema');
-
   // Build our executable schema and apply our custom directives
   const { redactedDirectiveTypeDefs, redactedDirectiveTransformer } =
     redactedDirective('redact');
@@ -13,11 +13,7 @@ const schema = (authDirective, redactedDirective) => {
   return authDirectiveTransformer(
     redactedDirectiveTransformer(
       makeExecutableSchema({
-        typeDefs: [
-          redactedDirectiveTypeDefs,
-          authDirectiveTypeDefs,
-          typeDefs.default,
-        ],
+        typeDefs: [redactedDirectiveTypeDefs, authDirectiveTypeDefs, typeDefs],
         resolvers,
       })
     )
