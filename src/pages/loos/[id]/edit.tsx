@@ -22,6 +22,7 @@ import {
   useUpdateLooMutation,
 } from '../../../api-client/graphql';
 import { useEffect } from 'react';
+import LocationSearch from '../../../components/LocationSearch';
 
 const EditPage: PageFindLooByIdComp = (props) => {
   const loo = props.data.loo;
@@ -50,10 +51,14 @@ const EditPage: PageFindLooByIdComp = (props) => {
     }
   };
 
-  if (saveData) {
-    // redirect to updated toilet entry page
-    router.push(`/loos/${saveData.submitReport.loo.id}?message=updated`);
-  }
+  // redirect to toilet entry page upon successful edit
+  useEffect(() => {
+    if (saveData) {
+      setMapState({ searchLocation: undefined });
+      // redirect to updated toilet entry page
+      router.push(`/loos/${saveData.submitReport.loo.id}?message=updated`);
+    }
+  }, [saveData, router, setMapState]);
 
   if (isLoading) {
     return <PageLoading />;
@@ -64,9 +69,8 @@ const EditPage: PageFindLooByIdComp = (props) => {
   }
 
   // redirect to index if loo is not active (i.e. removed)
-  console.log(loo, loo.active);
   if (loo && !loo.active) {
-    // router.push('/');
+    router.push('/');
   }
 
   return (
@@ -83,6 +87,14 @@ const EditPage: PageFindLooByIdComp = (props) => {
           showCrosshair
           controlsOffset={20}
         />
+
+        <Box position="absolute" top={0} left={0} m={3}>
+          <LocationSearch
+            onSelectedItemChange={(searchLocation) =>
+              setMapState({ searchLocation })
+            }
+          />
+        </Box>
       </Box>
 
       <Spacer mt={4} />
