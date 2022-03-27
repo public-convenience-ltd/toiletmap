@@ -145,13 +145,13 @@ const Section: React.FC<{
       </thead>
 
       <Box as="tbody" pl={[2, 4]}>
-        {questions.map(({ field, label, value, onChange }) => (
+        {questions.map(({ field, label, onChange }) => (
           <Box as="tr" key={field} mt={3} onChange={onChange}>
             <Box as="td" width="52%" pl={[2, 4]}>
               {label}
             </Box>
             <Text as="td" textAlign="center" css={{ width: '16%' }}>
-              <label>
+              <label htmlFor={field}>
                 <VisuallyHidden>Yes</VisuallyHidden>
                 <Radio
                   name={field}
@@ -164,7 +164,7 @@ const Section: React.FC<{
             </Text>
 
             <Text as="td" textAlign="center" css={{ width: '16%' }}>
-              <label>
+              <label htmlFor={field}>
                 <VisuallyHidden>No</VisuallyHidden>
                 <Radio
                   name={field}
@@ -178,13 +178,13 @@ const Section: React.FC<{
             </Text>
 
             <Text as="td" textAlign="center" css={{ width: '16%' }}>
-              <label>
+              <label htmlFor={field}>
                 <VisuallyHidden>Don&apos;t know</VisuallyHidden>
                 <Radio
                   name={field}
                   value=""
                   aria-labelledby={`${id}-no`}
-                  defaultChecked={value !== true && value !== false}
+                  defaultChecked={true}
                   data-testid={`${field}:no`}
                   {...register(field)}
                 />
@@ -227,6 +227,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
 
     transformed = omit(transformed, ['geometry']);
 
+    // eslint-disable-next-line functional/immutable-data
     transformed.noPayment = data.isFree;
 
     // transform data
@@ -234,15 +235,19 @@ const EntryForm = ({ title, loo, children, ...props }) => {
       const value = transformed[property];
 
       if (value === 'true') {
+        // eslint-disable-next-line functional/immutable-data
         transformed[property] = true;
       } else if (value === 'false') {
+        // eslint-disable-next-line functional/immutable-data
         transformed[property] = false;
       } else if (value === '') {
+        // eslint-disable-next-line functional/immutable-data
         transformed[property] = null;
       }
     });
 
     // map geometry data to expected structure
+    // eslint-disable-next-line functional/immutable-data
     transformed.location = {
       lat: parseFloat(data.geometry.coordinates[0]),
       lng: parseFloat(data.geometry.coordinates[1]),
@@ -251,6 +256,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
     // remove payment details if the isFree field value has changed and is now
     // either Yes or Don't know
     if (dirtyFieldNames.includes('isFree') && data.isFree !== 'false') {
+      // eslint-disable-next-line functional/immutable-data
       transformed.paymentDetails = null;
     }
 
@@ -272,8 +278,10 @@ const EntryForm = ({ title, loo, children, ...props }) => {
           ];
         });
 
+        // eslint-disable-next-line functional/immutable-data
         transformed.openingTimes = openingTimes;
       } else {
+        // eslint-disable-next-line functional/immutable-data
         transformed.openingTimes = null;
       }
     }
@@ -322,7 +330,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
             &nbsp;
             <span>with where you believe the toilet to be</span>
             <VisuallyHidden>
-              <label>
+              <label htmlFor="geometry.coordinates.0">
                 Latitude
                 <Input
                   type="text"
@@ -333,7 +341,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                 />
               </label>
 
-              <label>
+              <label htmlFor="geometry.coordinates.1">
                 Longitude
                 <Input
                   type="text"
@@ -349,7 +357,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
 
           <Spacer mt={4} />
 
-          <label>
+          <label htmlFor="name">
             2. Add a toilet name
             <Input
               name="name"
@@ -449,7 +457,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
           >
             {noPayment === false && (
               <>
-                <label>
+                <label htmlFor="paymentDetails">
                   Payment Details
                   <Input
                     name="paymentDetails"
@@ -601,7 +609,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
 
           <Spacer mt={4} />
 
-          <label>
+          <label htmlFor="notes">
             7. Notes
             <Textarea
               name="notes"

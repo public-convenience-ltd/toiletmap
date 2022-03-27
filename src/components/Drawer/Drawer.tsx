@@ -52,6 +52,7 @@ const Drawer = ({ visible, animateFrom = 'left', ...props }) => {
   );
 };
 
+// eslint-disable-next-line functional/immutable-data
 Drawer.propTypes = {
   /** Determines whether the drawer is on screen */
   visible: PropTypes.bool,
@@ -59,6 +60,7 @@ Drawer.propTypes = {
   animateFrom: PropTypes.oneOf(['left', 'right']),
 };
 
+// eslint-disable-next-line functional/immutable-data
 Drawer.defaultProps = {
   animateFrom: 'right',
 };

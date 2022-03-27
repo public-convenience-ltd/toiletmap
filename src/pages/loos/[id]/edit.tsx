@@ -40,10 +40,8 @@ const EditPage: PageFindLooByIdComp = (props) => {
   ] = useUpdateLooMutation();
 
   const save = async (formData: UpdateLooMutationVariables) => {
-    formData.id = loo.id;
-
     const { errors } = await updateLooMutation({
-      variables: { ...formData },
+      variables: { ...formData, id: loo.id },
     });
 
     if (errors) {
