@@ -1,6 +1,6 @@
 export const FILTERS_KEY = 'filters';
 
-type Filters =
+export type Filters =
   | 'noPayment'
   | 'babyChange'
   | 'accessible'
@@ -73,7 +73,7 @@ const config = {
   },
   getSettings(namespace: string) {
     try {
-      JSON.parse(
+      return JSON.parse(
         (typeof localStorage !== 'undefined' &&
           localStorage.getItem(namespace)) ||
           '{}'
@@ -89,8 +89,7 @@ const config = {
     return val === undefined ? defaultVal : val;
   },
   setSetting(namespace: string, key: string, val: string) {
-    var settings = this.getSettings(namespace);
-    settings[key] = val;
+    const settings = { ...this.getSettings(namespace), [key]: val };
     localStorage.setItem(namespace, JSON.stringify(settings));
   },
   setSettings(namespace: string, obj = {}) {

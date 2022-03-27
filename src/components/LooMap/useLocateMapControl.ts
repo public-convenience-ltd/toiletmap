@@ -1,14 +1,15 @@
 import React from 'react';
-import L, { Map } from 'leaflet';
+import L, { LatLngExpression, Map } from 'leaflet';
 
 const LocationMarker = L.Marker.extend({
   initialize: function (latlng, options) {
     L.Util.setOptions(this, options);
+    // eslint-disable-next-line functional/immutable-data
     this._latlng = latlng;
     this.createIcon();
   },
 
-  _getIcon: function (options: { radius: unknown; weight: unknown }, style) {
+  _getIcon: function (options: { radius: number; weight: number }, style) {
     const { radius, weight } = options;
     const realRadius = radius + weight;
     const diameter = realRadius * 2;
@@ -45,7 +46,9 @@ const LocationMarker = L.Marker.extend({
 });
 
 interface UseLocateMapControlProps {
-  onLocationFound: (event: { latitude: number; longitude: number }) => void;
+  onLocationFound: (
+    event: { latitude: number; longitude: number } | LatLngExpression
+  ) => void;
   onStopLocation: () => void;
   map: Map;
 }
@@ -64,13 +67,14 @@ const useLocateMapControl = ({
   const layerRef = React.useRef(null);
   React.useEffect(() => {
     if (typeof map !== 'undefined') {
+      // eslint-disable-next-line functional/immutable-data
       layerRef.current = new L.LayerGroup();
       layerRef.current.addTo(map);
     }
   }, [map]);
 
   const handleLocationFound = React.useCallback(
-    (event: { accuracy: number; latlng: unknown }) => {
+    (event: { accuracy: number; latlng: LatLngExpression }) => {
       const radius = event.accuracy || 0;
       const latlng = event.latlng;
 

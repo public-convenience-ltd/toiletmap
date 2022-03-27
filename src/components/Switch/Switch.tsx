@@ -61,6 +61,7 @@ const Switch: React.FC<SwitchProps> = React.forwardRef(
   }
 );
 
+// eslint-disable-next-line functional/immutable-data
 Switch.displayName = 'Switch';
 
 /** @component */

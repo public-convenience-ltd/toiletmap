@@ -56,6 +56,7 @@ const AccessibilityIntersection = ({
   );
 };
 
+// eslint-disable-next-line functional/immutable-data
 AccessibilityIntersection.propTypes = {
   toilets: PropTypes.arrayOf(
     PropTypes.shape({

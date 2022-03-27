@@ -1,8 +1,9 @@
 import { Map } from 'leaflet';
 import React, { Dispatch, useEffect } from 'react';
 import { Loo } from '../api-client/graphql';
-import config, { Filter, FILTERS_KEY } from '../config';
+import config, { Filters, FILTERS_KEY } from '../config';
 import { CompressedLooObject } from '../lib/loo';
+
 import { UseLocateMapControl } from './LooMap/useLocateMapControl';
 
 const MapStateContext =
@@ -22,7 +23,7 @@ interface MapState {
     lng: number;
   };
   zoom?: number;
-  appliedFilters?: Filter[];
+  appliedFilters?: Record<Filters, boolean>;
   focus?: Loo;
   map?: Map;
   locationServices?: UseLocateMapControl;
@@ -37,9 +38,11 @@ const reducer = (state: MapState, newState: MapState) => {
 };
 
 export const MapStateProvider = ({ children }) => {
-  const initialFilterState = config.getSettings(FILTERS_KEY) || [];
+  const initialFilterState = config.getSettings(FILTERS_KEY);
+
   // default any unsaved filters as 'false'
   config.filters.forEach((filter) => {
+    // eslint-disable-next-line functional/immutable-data
     initialFilterState[filter.id] = initialFilterState[filter.id] || false;
   });
 

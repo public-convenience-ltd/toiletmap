@@ -46,6 +46,7 @@ const Notification = ({ allowClose, children }) => {
   );
 };
 
+// eslint-disable-next-line functional/immutable-data
 Notification.propTypes = {
   /** Allow the notification to be closed */
   allowClose: PropTypes.bool,
