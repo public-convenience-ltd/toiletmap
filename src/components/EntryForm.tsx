@@ -138,11 +138,11 @@ const Section = ({ register, id, title, questions, children }) => (
               <label>
                 <VisuallyHidden>Yes</VisuallyHidden>
                 <Radio
-                  ref={register}
                   name={field}
                   value={true}
                   defaultChecked={value === true}
                   data-testid={`${field}:no`}
+                  {...register(field)}
                 />
               </label>
             </Text>
@@ -151,12 +151,12 @@ const Section = ({ register, id, title, questions, children }) => (
               <label>
                 <VisuallyHidden>No</VisuallyHidden>
                 <Radio
-                  ref={register}
                   name={field}
                   value={false}
                   aria-labelledby={`${id}-no`}
                   defaultChecked={value === false}
                   data-testid={`${field}:no`}
+                  {...register(field)}
                 />
               </label>
             </Text>
@@ -165,12 +165,12 @@ const Section = ({ register, id, title, questions, children }) => (
               <label>
                 <VisuallyHidden>Don&apos;t know</VisuallyHidden>
                 <Radio
-                  ref={register}
                   name={field}
                   value=""
                   aria-labelledby={`${id}-no`}
                   defaultChecked={value !== true && value !== false}
                   data-testid={`${field}:no`}
+                  {...register(field)}
                 />
               </label>
             </Text>
@@ -309,23 +309,23 @@ const EntryForm = ({ title, loo, children, ...props }) => {
               <label>
                 Latitude
                 <Input
-                  ref={register}
                   type="text"
                   name="geometry.coordinates.0"
                   value={center.lat}
                   readOnly
+                  {...register('geometry.coordinates.0')}
                 />
               </label>
 
               <label>
                 Longitude
                 <Input
-                  ref={register}
                   type="text"
                   name="geometry.coordinates.1"
                   data-testid="loo-name"
                   value={center.lng}
                   readOnly
+                  {...register('geometry.coordinates.1')}
                 />
               </label>
             </VisuallyHidden>
@@ -336,7 +336,6 @@ const EntryForm = ({ title, loo, children, ...props }) => {
           <label>
             2. Add a toilet name
             <Input
-              ref={register}
               name="name"
               type="text"
               defaultValue={loo.name || ''}
@@ -345,6 +344,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
               css={{
                 maxWidth: '400px',
               }}
+              {...register('name')}
             />
           </label>
 
@@ -435,9 +435,6 @@ const EntryForm = ({ title, loo, children, ...props }) => {
               <label>
                 Payment Details
                 <Input
-                  ref={register({
-                    required: true,
-                  })}
                   name="paymentDetails"
                   type="text"
                   defaultValue={loo.paymentDetails || ''}
@@ -446,6 +443,9 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                   css={{
                     maxWidth: '200px',
                   }}
+                  {...register('paymentDetails', {
+                    required: true,
+                  })}
                 />
               </label>
             )}
@@ -539,7 +539,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                                 : undefined
                             }
                             name={`${day.toLowerCase()}-opens`}
-                            ref={register({
+                            {...register(`${day.toLowerCase()}-opens`, {
                               required: true,
                             })}
                           />
@@ -560,7 +560,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                                 : undefined
                             }
                             name={`${day.toLowerCase()}-closes`}
-                            ref={register({
+                            {...register(`${day.toLowerCase()}-closes`, {
                               required: true,
                             })}
                           />
@@ -580,11 +580,11 @@ const EntryForm = ({ title, loo, children, ...props }) => {
           <label>
             7. Notes
             <Textarea
-              ref={register}
               name="notes"
               defaultValue={loo.notes || ''}
               data-testid="notes"
               placeholder="Add any other useful information about the toilet here"
+              {...register('notes')}
             />
           </label>
 
