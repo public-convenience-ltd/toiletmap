@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo, useEffect } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import styled from '@emotion/styled';
 import isPropValid from '@emotion/is-prop-valid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -55,16 +55,17 @@ const Sidebar = () => {
   const filterToggleRef = useRef(null);
 
   // Show the filters panel on first pageload if there is a filter set.
-  useEffect(() => {
-    if (mapState.appliedFilters) {
-      const isThereAFilterSet = Object.values(mapState.appliedFilters).some(
-        (filterState) => filterState
-      );
-      console.log(mapState.appliedFilters);
+  // TODO: Disabled for now until decided how this behaviour should work.
+  // useEffect(() => {
+  //   if (mapState.appliedFilters) {
+  //     const isThereAFilterSet = Object.values(mapState.appliedFilters).some(
+  //       (filterState) => filterState
+  //     );
+  //     console.log(mapState.appliedFilters);
 
-      setIsFilterExpanded(isThereAFilterSet);
-    }
-  }, [mapState.appliedFilters]);
+  //     setIsFilterExpanded(isThereAFilterSet);
+  //   }
+  // }, [mapState.appliedFilters]);
 
   const filterPanel = useMemo(
     () =>

@@ -133,13 +133,13 @@ const MarkerGroup: React.FC<{
     Array<FILTER_TYPE>
   >(
     getAppliedFiltersAsFilterTypes(
-      config.filters.filter((filter) => filters[filter.id])
+      config.filters.filter((filter) => filters?.[filter.id])
     )
   );
 
   useEffect(() => {
     const applied: Array<Filter> = config.filters.filter(
-      (filter) => filters[filter.id]
+      (filter) => filters?.[filter.id]
     );
     const appliedFilterTypes = getAppliedFiltersAsFilterTypes(applied);
     window.setTimeout(() => {

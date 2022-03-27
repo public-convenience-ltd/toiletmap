@@ -1,9 +1,8 @@
-import mongoose from 'mongoose';
-
-export { default as Loo } from './loo';
-export { default as Report } from './report';
-export { default as Area } from './area';
-export { default as MapGeo } from './mapgeo';
+const mongoose = require('mongoose');
+const Loo = require('./loo');
+const Report = require('./report');
+const Area = require('./area');
+const MapGeo = require('./mapgeo');
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -16,11 +15,13 @@ if (!MONGODB_URI) {
  * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
-export const cached = !!global.mongoose
-  ? global.mongoose
-  : (global.mongoose = { conn: null, promise: null });
+let cached = global.mongoose;
 
-export async function dbConnect() {
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+async function dbConnect() {
   if (cached.conn) {
     return cached.conn;
   }
@@ -33,3 +34,11 @@ export async function dbConnect() {
   cached.conn = await cached.promise;
   return cached.conn;
 }
+
+module.exports = {
+  dbConnect,
+  Loo,
+  Report,
+  Area,
+  MapGeo,
+};

@@ -38,12 +38,12 @@ const reducer = (state: MapState, newState: MapState) => {
 };
 
 export const MapStateProvider = ({ children }) => {
-  const initialFilterState = config.getSettings(FILTERS_KEY);
+  const initialFilterState = config.getSettings(FILTERS_KEY) || [];
 
   // default any unsaved filters as 'false'
   config.filters.forEach((filter) => {
     // eslint-disable-next-line functional/immutable-data
-    initialFilterState[filter.id] = initialFilterState[filter.id] || false;
+    initialFilterState[filter.id] = initialFilterState?.[filter.id] || false;
   });
 
   const [state, setState] = React.useReducer(reducer, {
@@ -58,7 +58,7 @@ export const MapStateProvider = ({ children }) => {
   useEffect(() => {
     window.localStorage.setItem(
       FILTERS_KEY,
-      JSON.stringify(state.appliedFilters)
+      JSON.stringify(state.appliedFilters || {})
     );
   }, [state]);
 

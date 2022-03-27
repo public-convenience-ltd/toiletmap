@@ -1,10 +1,10 @@
-import { Schema } from 'mongoose';
+const { Schema } = require('mongoose');
 
 function ofLength(n) {
   return [(list) => list.length === n, `{PATH} must be of length ${n}`];
 }
 
-export const Point = new Schema({
+exports.Point = new Schema({
   type: {
     type: String,
     enum: ['Point'],
@@ -19,7 +19,7 @@ export const Point = new Schema({
 });
 
 // Not just Polygon, but MultiPolygon too!
-export const Polygon = new Schema({
+exports.Polygon = new Schema({
   type: {
     type: String,
     enum: ['MultiPolygon', 'Polygon'],
