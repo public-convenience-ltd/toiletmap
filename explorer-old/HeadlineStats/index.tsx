@@ -24,7 +24,7 @@ const H_RED = '#FF6384';
 const H_GREEN = '#36A2EB';
 const H_YELLOW = '#FFCE56';
 
-function makeDoughnutData(labels: any[], data: any[]) {
+function makeDoughnutData(labels: unknown[], data: unknown[]) {
   return {
     labels,
     datasets: [
@@ -45,14 +45,14 @@ function HeadlineStats() {
 
   let { activeLoos, babyChanging, accessibleLoos } = data.proportions;
 
-  const getNames = (proportions: any[]) => {
-    return proportions.map((chunk: { name: any; }) => {
+  const getNames = (proportions: unknown[]) => {
+    return proportions.map((chunk: { name: unknown; }) => {
       return chunk.name;
     });
   };
 
-  const getValues = (proportions: any[]) => {
-    return proportions.map((chunk: { value: any; }) => {
+  const getValues = (proportions: unknown[]) => {
+    return proportions.map((chunk: { value: unknown; }) => {
       return chunk.value;
     });
   };

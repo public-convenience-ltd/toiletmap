@@ -200,7 +200,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
   const { isDirty, dirtyFields } = formState;
 
   const onSubmit = (data: {
-    [x: string]: any;
+    [x: string]: unknown;
     isFree: string;
     geometry: { coordinates: string[] };
   }) => {

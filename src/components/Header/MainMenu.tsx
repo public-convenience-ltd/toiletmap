@@ -12,7 +12,7 @@ const StyledNavLink = styled(Link)<
     onMouseEnter?: React.MouseEventHandler<Element> | undefined;
     onClick: React.MouseEventHandler;
     href?: string | undefined;
-    ref?: any;
+    ref?: unknown;
   }
 >`
   // active class is added by NavLink component

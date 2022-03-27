@@ -30,7 +30,7 @@ const SCALE = [
 ];
 SCALE.reverse();
 
-function Chloropleth(props: { width?: any; height?: any; setTooltipContent?: any; options?: any; }) {
+function Chloropleth(props: { width?: unknown; height?: unknown; setTooltipContent?: unknown; options?: unknown; }) {
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
   const [transformedStats, setTransformedStats] = useState();
   const [geography, setGeography] = useState();
@@ -68,7 +68,7 @@ function Chloropleth(props: { width?: any; height?: any; setTooltipContent?: any
     // Convert to valid TopoJSON form
     const newGeography = cloneDeep(areasData.mapAreas);
     const newObjects = {};
-    newGeography.objects.forEach((obj: { value: { geometries: any[]; }; name: string | number; }) => {
+    newGeography.objects.forEach((obj: { value: { geometries: unknown[]; }; name: string | number; }) => {
       obj.value.geometries.forEach((geom: { properties: string; }) => {
         geom.properties = JSON.parse(geom.properties);
       });
@@ -102,12 +102,12 @@ function Chloropleth(props: { width?: any; height?: any; setTooltipContent?: any
   }, [opts, geography, statsData]);
 
   // The function used to map the stats data into values
-  let statsFunc = (s: { [x: string]: any; }) => s[opts.statistic];
+  let statsFunc = (s: { [x: string]: unknown; }) => s[opts.statistic];
   if (opts.display === 'density') {
     statsFunc = (s: { [x: string]: number; area: { name: string | number; }; }) => s[opts.statistic] / areaSizes[s.area.name];
   }
 
-  let colourScale: (arg0: any) => any;
+  let colourScale: (arg0: unknown) => any;
   if (statsData && areaSizes) {
     colourScale = scaleQuantile()
       .domain(statsData.areaStats.map(statsFunc))

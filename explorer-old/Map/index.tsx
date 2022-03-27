@@ -12,9 +12,9 @@ const DEFAULT_OPTIONS = {
   display: 'density',
 };
 
-function Options(props: { onOptionChange: (arg0: any,arg1: any) => any; }) {
+function Options(props: { onOptionChange: (arg0: unknown,arg1: unknown) => any; }) {
   const getCallback = (optionName: string) => {
-    return (e: { target: { value: any; }; }) => props.onOptionChange(optionName, e.target.value);
+    return (e: { target: { value: unknown; }; }) => props.onOptionChange(optionName, e.target.value);
   };
 
   const year = new Date().getFullYear();

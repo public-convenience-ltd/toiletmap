@@ -146,7 +146,7 @@ const LooMap: React.FC<LooMapProps> = ({
 
   // Begin location service initialisation.
   const onLocationFound = useCallback(
-    (event: { latitude: any; longitude: any }) => {
+    (event: { latitude: unknown; longitude: unknown }) => {
       setMapState({
         geolocation: {
           lat: event.latitude,

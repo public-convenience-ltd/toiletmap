@@ -36,7 +36,7 @@ const Arrow = styled(
 )`
   transition: transform 0.2s ease;
 
-  ${(props: { isExpanded: any }) =>
+  ${(props: { isExpanded: unknown }) =>
     props.isExpanded &&
     `
     transform: rotate(90deg);

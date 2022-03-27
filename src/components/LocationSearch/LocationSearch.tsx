@@ -38,8 +38,8 @@ const LocationSearch = ({ onSelectedItemChange }) => {
   };
 
   const stateReducer = (
-    state: { isOpen: any; selectedItem: any; inputValue: any },
-    actionAndChanges: { type: any; changes: any }
+    state: { isOpen: unknown; selectedItem: unknown; inputValue: unknown },
+    actionAndChanges: { type: unknown; changes: unknown }
   ) => {
     switch (actionAndChanges.type) {
       case useCombobox.stateChangeTypes.InputBlur:

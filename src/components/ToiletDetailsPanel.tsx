@@ -50,7 +50,7 @@ const UnstyledList = styled.ul`
   list-style: none;
 `;
 
-function getTimeRangeLabel(range: any[]) {
+function getTimeRangeLabel(range: unknown[]) {
   if (isClosed(range)) {
     return 'Closed';
   }
@@ -110,7 +110,7 @@ const ToiletDetailsPanel = ({
   const [isExpanded, setIsExpanded] = React.useState(startExpanded);
 
   const router = useRouter();
-  const submitVerificationReport = async (variables: { id: any }) => {
+  const submitVerificationReport = async (variables: { id: unknown }) => {
     alert('Implement me with apollo');
   };
 
@@ -450,7 +450,7 @@ const ToiletDetailsPanel = ({
               </Box>
               <Spacer mb={[0, 2]} />
               <UnstyledList>
-                {openingTimes.map((timeRange: any[], i) => (
+                {openingTimes.map((timeRange: unknown[], i) => (
                   <Box
                     as="li"
                     display="flex"

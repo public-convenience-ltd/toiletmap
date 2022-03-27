@@ -282,7 +282,7 @@ const LooMap: React.FC<Props> = ({
 
               <AccessibilityList
                 toilets={intersectingToilets.map(
-                  (toilet: { name: any }) => toilet.name
+                  (toilet: { name: unknown }) => toilet.name
                 )}
               />
 
