@@ -6,15 +6,10 @@ module.exports = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
-  // images: {
-  //   loader: 'imgix',
-  //   path: 'https://noop/',
-  // },
   experimental: {
     nftTracing: true,
   },
-
-  // swcMinify: true, .. emotion transform is not working with swc yet
+  swcMinify: true,
   async rewrites() {
     return [
       // Map lng-lat routes to a single page

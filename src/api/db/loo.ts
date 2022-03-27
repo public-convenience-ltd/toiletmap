@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { PipelineStage } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate';
 import CoreSchema from './core';
 
@@ -82,7 +83,7 @@ LooSchema.statics.fromReports = async function (reports, idOverride) {
 };
 
 LooSchema.statics.findNear = function (lon, lat, radius) {
-  const args = [
+  const args: PipelineStage[] = [
     {
       $geoNear: {
         near: {
