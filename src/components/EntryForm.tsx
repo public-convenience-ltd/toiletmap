@@ -490,98 +490,97 @@ const EntryForm = ({ title, loo, children, ...props }) => {
 
           <Spacer mt={3} />
 
-          <div
-            data-testid="opening-hours-selection"
-            hidden={!getValues('has-opening-times')}
-          >
-            <ol>
-              {WEEKDAYS.map((day, index) => {
-                const id = `heading-${day.toLowerCase()}`;
+          {getValues('has-opening-times') && (
+            <div data-testid="opening-hours-selection">
+              <ol>
+                {WEEKDAYS.map((day, index) => {
+                  const id = `heading-${day.toLowerCase()}`;
 
-                return (
-                  <Box
-                    as="li"
-                    key={day}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    mt={index === 0 ? undefined : 2}
-                  >
-                    <h3 id={id}>{day}</h3>
-
-                    <Spacer ml={2} />
-
+                  return (
                     <Box
+                      as="li"
+                      key={day}
                       display="flex"
+                      alignItems="center"
                       justifyContent="space-between"
-                      width={['auto', '50%']}
+                      mt={index === 0 ? undefined : 2}
                     >
-                      <Box display="flex" alignItems="center">
-                        <Controller
-                          aria-labelledby={id}
-                          name={`${day.toLowerCase()}-is-open`}
-                          control={control}
-                          defaultValue={isOpen[index]}
-                          render={({ field }) => (
-                            <Switch
-                              checked={field.value}
-                              onChange={field.onChange}
-                              onClick={field.onChange}
-                              value={field.value}
-                            />
-                          )}
-                        />
-                      </Box>
+                      <h3 id={id}>{day}</h3>
 
                       <Spacer ml={2} />
 
-                      {getValues(`${day.toLowerCase()}-is-open`) ? (
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        width={['auto', '50%']}
+                      >
                         <Box display="flex" alignItems="center">
-                          <input
-                            type="time"
-                            pattern="[0-9]{2}:[0-9]{2}"
-                            placeholder="hh:mm"
-                            defaultValue={
-                              loo.openingTimes
-                                ? loo.openingTimes[index][0]
-                                : undefined
-                            }
-                            name={`${day.toLowerCase()}-opens`}
-                            {...register(`${day.toLowerCase()}-opens`, {
-                              required: true,
-                            })}
-                          />
-
-                          <Spacer ml={2} />
-
-                          <span>to</span>
-
-                          <Spacer ml={2} />
-
-                          <input
-                            type="time"
-                            pattern="[0-9]{2}:[0-9]{2}"
-                            placeholder="hh:mm"
-                            defaultValue={
-                              loo.openingTimes
-                                ? loo.openingTimes[index][1]
-                                : undefined
-                            }
-                            name={`${day.toLowerCase()}-closes`}
-                            {...register(`${day.toLowerCase()}-closes`, {
-                              required: true,
-                            })}
+                          <Controller
+                            aria-labelledby={id}
+                            name={`${day.toLowerCase()}-is-open`}
+                            control={control}
+                            defaultValue={isOpen[index]}
+                            render={({ field }) => (
+                              <Switch
+                                checked={field.value}
+                                onChange={field.onChange}
+                                onClick={field.onChange}
+                                value={field.value}
+                              />
+                            )}
                           />
                         </Box>
-                      ) : (
-                        'Closed'
-                      )}
+
+                        <Spacer ml={2} />
+
+                        {getValues(`${day.toLowerCase()}-is-open`) ? (
+                          <Box display="flex" alignItems="center">
+                            <input
+                              type="time"
+                              pattern="[0-9]{2}:[0-9]{2}"
+                              placeholder="hh:mm"
+                              defaultValue={
+                                loo.openingTimes
+                                  ? loo.openingTimes[index][0]
+                                  : undefined
+                              }
+                              name={`${day.toLowerCase()}-opens`}
+                              {...register(`${day.toLowerCase()}-opens`, {
+                                required: true,
+                              })}
+                            />
+
+                            <Spacer ml={2} />
+
+                            <span>to</span>
+
+                            <Spacer ml={2} />
+
+                            <input
+                              type="time"
+                              pattern="[0-9]{2}:[0-9]{2}"
+                              placeholder="hh:mm"
+                              defaultValue={
+                                loo.openingTimes
+                                  ? loo.openingTimes[index][1]
+                                  : undefined
+                              }
+                              name={`${day.toLowerCase()}-closes`}
+                              {...register(`${day.toLowerCase()}-closes`, {
+                                required: true,
+                              })}
+                            />
+                          </Box>
+                        ) : (
+                          'Closed'
+                        )}
+                      </Box>
                     </Box>
-                  </Box>
-                );
-              })}
-            </ol>
-          </div>
+                  );
+                })}
+              </ol>
+            </div>
+          )}
 
           <Spacer mt={4} />
 

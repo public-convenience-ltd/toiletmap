@@ -31,7 +31,7 @@ const EditPage: PageFindLooByIdComp = (props) => {
   const [mapState, setMapState] = useMapState();
 
   useEffect(() => {
-    setMapState({ focus: loo });
+    setMapState({ focus: loo, center: loo.location });
   }, [loo, setMapState]);
 
   const [
