@@ -1,5 +1,4 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useEffect, useState } from 'react';
+import React, { InputHTMLAttributes, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import {
   useForm,
@@ -22,6 +21,8 @@ import Switch from '../components/Switch';
 import { WEEKDAYS, isClosed } from '../lib/openingTimes';
 import crosshair from '../../public/crosshair-small.svg';
 import { useMapState } from './MapState';
+import Icon from './Icon';
+import { faAsterisk } from '@fortawesome/free-solid-svg-icons';
 
 const openingTimesFields = WEEKDAYS.flatMap((day: string) => {
   return [
@@ -88,7 +89,10 @@ const RadioInput = styled.input`
   }
 `;
 
-const Radio = React.forwardRef(function MyRadio(props, ref) {
+const Radio = React.forwardRef<
+  HTMLInputElement,
+  InputHTMLAttributes<HTMLInputElement>
+>(function MyRadio(props, ref) {
   return (
     <>
       <RadioInput type="radio" ref={ref} {...props} />
@@ -100,8 +104,8 @@ const Radio = React.forwardRef(function MyRadio(props, ref) {
 interface Question {
   field: string;
   label: string | React.ReactElement;
-  value: string;
-  onChange?: ({ target: { value } }) => void;
+  value: boolean | null | '';
+  onChange?: React.FormEventHandler<HTMLDivElement>;
 }
 
 const Section: React.FC<{
@@ -147,17 +151,20 @@ const Section: React.FC<{
 
       <Box as="tbody" pl={[2, 4]}>
         {questions.map(({ field, label, value, onChange }) => {
+          console.log(field, value);
           return (
             <Box as="tr" key={field} mt={3} onChange={onChange}>
               <Box as="td" width="52%" pl={[2, 4]}>
                 {label}
               </Box>
               <Text as="td" textAlign="center" css={{ width: '16%' }}>
-                <label>
+                <label htmlFor={`${field}:yes`}>
                   <VisuallyHidden>Yes</VisuallyHidden>
+
                   <Radio
                     name={field}
-                    value={true}
+                    id={`${field}:yes`}
+                    value={'true'}
                     defaultChecked={value === true}
                     aria-labelledby={`${id}-yes`}
                     data-testid={`${field}:yes`}
@@ -167,13 +174,15 @@ const Section: React.FC<{
               </Text>
 
               <Text as="td" textAlign="center" css={{ width: '16%' }}>
-                <label>
+                <label htmlFor={`${field}:no`}>
                   <VisuallyHidden>No</VisuallyHidden>
+
                   <Radio
                     name={field}
-                    value={false}
-                    aria-labelledby={`${id}-no`}
+                    id={`${field}:no`}
+                    value={'false'}
                     defaultChecked={value === false}
+                    aria-labelledby={`${id}-no`}
                     data-testid={`${field}:no`}
                     {...register(field)}
                   />
@@ -181,13 +190,15 @@ const Section: React.FC<{
               </Text>
 
               <Text as="td" textAlign="center" css={{ width: '16%' }}>
-                <label>
+                <label htmlFor={`${field}:na`}>
                   <VisuallyHidden>Don&apos;t know</VisuallyHidden>
+
                   <Radio
+                    id={`${field}:na`}
                     name={field}
                     value=""
                     aria-labelledby={`${id}-na`}
-                    defaultChecked={value !== true && value !== false}
+                    defaultChecked={value == undefined || value === ''}
                     data-testid={`${field}:na`}
                     {...register(field)}
                   />
@@ -334,47 +345,41 @@ const EntryForm = ({ title, loo, children, ...props }) => {
             &nbsp;
             <span>with where you believe the toilet to be</span>
             <VisuallyHidden>
-              <label>
-                Latitude
-                <Input
-                  type="text"
-                  name="geometry.coordinates.0"
-                  value={center.lat}
-                  readOnly
-                  {...register('geometry.coordinates.0')}
-                />
-              </label>
+              <label htmlFor="geometry.coordinates.0">Latitude </label>
+              <Input
+                type="text"
+                name="geometry.coordinates.0"
+                value={center.lat}
+                readOnly
+                {...register('geometry.coordinates.0')}
+              />
 
-              <label>
-                Longitude
-                <Input
-                  type="text"
-                  name="geometry.coordinates.1"
-                  data-testid="loo-name"
-                  value={center.lng}
-                  readOnly
-                  {...register('geometry.coordinates.1')}
-                />
-              </label>
+              <label htmlFor="geometry.coordinates.1">Longitude</label>
+              <Input
+                type="text"
+                name="geometry.coordinates.1"
+                data-testid="loo-name"
+                value={center.lng}
+                readOnly
+                {...register('geometry.coordinates.1')}
+              />
             </VisuallyHidden>
           </Box>
 
           <Spacer mt={4} />
 
-          <label>
-            2. Add a toilet name
-            <Input
-              name="name"
-              type="text"
-              defaultValue={loo.name || ''}
-              placeholder="e.g. Sainsburys or street name"
-              data-testid="toilet-name"
-              css={{
-                maxWidth: '400px',
-              }}
-              {...register('name')}
-            />
-          </label>
+          <label htmlFor="name"> 2. Add a toilet name</label>
+          <Input
+            name="name"
+            type="text"
+            defaultValue={loo.name || ''}
+            placeholder="e.g. Sainsburys or street name"
+            data-testid="toilet-name"
+            css={{
+              maxWidth: '400px',
+            }}
+            {...register('name')}
+          />
 
           <Spacer mt={4} />
 
@@ -452,36 +457,39 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                 field: 'isFree',
                 label: <VisuallyHidden>Is this toilet free?</VisuallyHidden>,
                 value: noPayment === null ? '' : noPayment,
-                onChange: ({ target: { value } }) => {
+                onChange: (event) => {
+                  const input = event.target as HTMLInputElement;
                   // payment is required if the toilet is not free
-                  setNoPayment(value === '' ? null : value === 'true');
+                  setNoPayment(
+                    input.value === '' ? null : input.value === 'true'
+                  );
                 },
               },
             ]}
           >
             {noPayment === false && (
               <>
-                <label>
-                  Payment Details
-                  <Input
-                    name="paymentDetails"
-                    type="text"
-                    defaultValue={loo.paymentDetails || ''}
-                    placeholder="The amount e.g. 20p"
-                    data-testid="paymentDetails"
-                    css={{
-                      maxWidth: '200px',
-                    }}
-                    {...register('paymentDetails', {
-                      required: 'Please specify the toilet payment details.',
-                    })}
-                  />
-                </label>
+                <label htmlFor="paymentDetails">Payment Details</label>
+                <Input
+                  name="paymentDetails"
+                  type="text"
+                  defaultValue={loo.paymentDetails || ''}
+                  placeholder="The amount e.g. 20p"
+                  data-testid="paymentDetails"
+                  css={{
+                    maxWidth: '200px',
+                  }}
+                  {...register('paymentDetails', {
+                    required: 'Please specify the toilet payment details.',
+                  })}
+                />
                 <ErrorMessage
                   errors={formState.errors}
                   name="paymentDetails"
                   render={({ message }) => (
-                    <p css={{ color: 'red' }}>{message}</p>
+                    <p role="alert" css={{ color: 'red' }}>
+                      {message}
+                    </p>
                   )}
                 />
               </>
@@ -575,8 +583,26 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                               }
                               name={`${day.toLowerCase()}-opens`}
                               {...register(`${day.toLowerCase()}-opens`, {
-                                required: true,
+                                required: `Please specify an opening time on ${day}`,
                               })}
+                            />
+                            <Spacer ml={1} />
+                            <ErrorMessage
+                              errors={formState.errors}
+                              name={`${day.toLowerCase()}-opens`}
+                              render={({ message }) => (
+                                <>
+                                  <Icon
+                                    aria-hidden={true}
+                                    color="red"
+                                    size="xs"
+                                    icon={faAsterisk}
+                                  ></Icon>
+                                  <VisuallyHidden as={'span'} role="alert">
+                                    {message}
+                                  </VisuallyHidden>
+                                </>
+                              )}
                             />
 
                             <Spacer ml={2} />
@@ -596,8 +622,26 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                               }
                               name={`${day.toLowerCase()}-closes`}
                               {...register(`${day.toLowerCase()}-closes`, {
-                                required: true,
+                                required: `Please specify a closing time on ${day}`,
                               })}
+                            />
+                            <Spacer ml={1} />
+                            <ErrorMessage
+                              errors={formState.errors}
+                              name={`${day.toLowerCase()}-closes`}
+                              render={({ message }) => (
+                                <>
+                                  <Icon
+                                    aria-hidden={true}
+                                    color="red"
+                                    size="xs"
+                                    icon={faAsterisk}
+                                  ></Icon>
+                                  <VisuallyHidden as={'span'} role="alert">
+                                    {message}
+                                  </VisuallyHidden>
+                                </>
+                              )}
                             />
                           </Box>
                         ) : (
@@ -613,7 +657,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
 
           <Spacer mt={4} />
 
-          <label>
+          <label htmlFor="notes">
             7. Notes
             <Textarea
               name="notes"
