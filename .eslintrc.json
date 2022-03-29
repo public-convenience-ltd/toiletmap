@@ -4,8 +4,7 @@
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
     "plugin:jsx-a11y/recommended",
-    "plugin:functional/no-mutations",
-    "plugin:react-hooks/recommended"
+    "plugin:functional/no-mutations"
   ],
   "parserOptions": {
     "ecmaFeatures": {
