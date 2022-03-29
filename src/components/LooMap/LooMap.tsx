@@ -279,7 +279,13 @@ const LooMap: React.FC<LooMapProps> = ({
         <Markers setLoadedToilets={setLoadedToilets} />
 
         <Media greaterThan="md">
-          <div className="leaflet-bar leaflet-top leaflet-right">
+          <div
+            className={
+              mapState.focus
+                ? 'leaflet-bar leaflet-top leaflet-right'
+                : 'leaflet-bar leaflet-bottom leaflet-right'
+            }
+          >
             <LocateMapControl />
             <ZoomControl />
           </div>
