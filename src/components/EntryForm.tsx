@@ -22,6 +22,8 @@ import Switch from '../components/Switch';
 import { WEEKDAYS, isClosed } from '../lib/openingTimes';
 import crosshair from '../../public/crosshair-small.svg';
 import { useMapState } from './MapState';
+import Icon from './Icon';
+import { faAsterisk } from '@fortawesome/free-solid-svg-icons';
 
 const openingTimesFields = WEEKDAYS.flatMap((day: string) => {
   return [
@@ -481,7 +483,9 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                   errors={formState.errors}
                   name="paymentDetails"
                   render={({ message }) => (
-                    <p css={{ color: 'red' }}>{message}</p>
+                    <p role="alert" css={{ color: 'red' }}>
+                      {message}
+                    </p>
                   )}
                 />
               </>
@@ -575,8 +579,26 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                               }
                               name={`${day.toLowerCase()}-opens`}
                               {...register(`${day.toLowerCase()}-opens`, {
-                                required: true,
+                                required: `Please specify an opening time on ${day}`,
                               })}
+                            />
+                            <Spacer ml={1} />
+                            <ErrorMessage
+                              errors={formState.errors}
+                              name={`${day.toLowerCase()}-opens`}
+                              render={({ message }) => (
+                                <>
+                                  <Icon
+                                    aria-hidden={true}
+                                    color="red"
+                                    size="xs"
+                                    icon={faAsterisk}
+                                  ></Icon>
+                                  <VisuallyHidden as={'span'} role="alert">
+                                    {message}
+                                  </VisuallyHidden>
+                                </>
+                              )}
                             />
 
                             <Spacer ml={2} />
@@ -596,8 +618,26 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                               }
                               name={`${day.toLowerCase()}-closes`}
                               {...register(`${day.toLowerCase()}-closes`, {
-                                required: true,
+                                required: `Please specify a closing time on ${day}`,
                               })}
+                            />
+                            <Spacer ml={1} />
+                            <ErrorMessage
+                              errors={formState.errors}
+                              name={`${day.toLowerCase()}-closes`}
+                              render={({ message }) => (
+                                <>
+                                  <Icon
+                                    aria-hidden={true}
+                                    color="red"
+                                    size="xs"
+                                    icon={faAsterisk}
+                                  ></Icon>
+                                  <VisuallyHidden as={'span'} role="alert">
+                                    {message}
+                                  </VisuallyHidden>
+                                </>
+                              )}
                             />
                           </Box>
                         ) : (
