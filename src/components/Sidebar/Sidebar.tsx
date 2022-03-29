@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import styled from '@emotion/styled';
 import isPropValid from '@emotion/is-prop-valid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -48,10 +48,37 @@ const StyledNavLink = styled(Link)`
 `;
 
 const Sidebar = () => {
+  const [mapState, setMapState] = useMapState();
+
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   const filterToggleRef = useRef(null);
-  const [mapState, setMapState] = useMapState();
+
+  // Show the filters panel on first pageload if there is a filter set.
+  // TODO: Disabled for now until decided how this behaviour should work.
+  // useEffect(() => {
+  //   if (mapState.appliedFilters) {
+  //     const isThereAFilterSet = Object.values(mapState.appliedFilters).some(
+  //       (filterState) => filterState
+  //     );
+  //     console.log(mapState.appliedFilters);
+
+  //     setIsFilterExpanded(isThereAFilterSet);
+  //   }
+  // }, [mapState.appliedFilters]);
+
+  const filterPanel = useMemo(
+    () =>
+      (isFilterExpanded || isFiltersExpanded) && (
+        <Filters
+          appliedFilters={mapState.appliedFilters}
+          onChange={(appliedFilters) => {
+            setMapState({ ...mapState, appliedFilters: { ...appliedFilters } });
+          }}
+        />
+      ),
+    [isFilterExpanded, isFiltersExpanded, mapState, setMapState]
+  );
 
   return (
     <section aria-labelledby="heading-search">
@@ -104,7 +131,9 @@ const Sidebar = () => {
               <Box
                 as="button"
                 itemType="button"
-                onClick={() => setMapState({ ...mapState, appliedFilters: {} })}
+                onClick={() =>
+                  setMapState({ ...mapState, appliedFilters: undefined })
+                }
                 border={0}
                 borderBottom={2}
                 borderStyle="solid"
@@ -114,7 +143,7 @@ const Sidebar = () => {
             </Text>
           </Box>
 
-          <Filters />
+          {filterPanel}
 
           <Box display="flex" justifyContent="center" mt={4}>
             <Button
@@ -177,7 +206,7 @@ const Sidebar = () => {
                     as="button"
                     type="button"
                     onClick={() =>
-                      setMapState({ ...mapState, appliedFilters: {} })
+                      setMapState({ ...mapState, appliedFilters: undefined })
                     }
                     border={0}
                     borderBottom={2}
@@ -190,7 +219,7 @@ const Sidebar = () => {
             </Box>
 
             <Box pt={4} hidden={!isFilterExpanded}>
-              <Filters />
+              {filterPanel}
             </Box>
           </Box>
 

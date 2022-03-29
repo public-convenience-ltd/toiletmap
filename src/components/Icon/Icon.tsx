@@ -7,6 +7,7 @@ const Icon = styled(FontAwesomeIcon)`
   ${color}
 `;
 
+// eslint-disable-next-line functional/immutable-data
 Icon.propTypes = {
   ...createPropTypes(color.propNames),
 };

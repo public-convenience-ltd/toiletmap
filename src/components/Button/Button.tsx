@@ -83,6 +83,7 @@ const Button = ({ children, icon, ...props }) => (
   </StyledButton>
 );
 
+// eslint-disable-next-line functional/immutable-data
 Button.defaultProps = {
   variant: 'primary',
   as: 'button',

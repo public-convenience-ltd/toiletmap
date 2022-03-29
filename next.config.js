@@ -1,3 +1,4 @@
+/* eslint-disable functional/immutable-data */
 module.exports = {
   typescript: {
     // !! WARN !!
@@ -5,9 +6,6 @@ module.exports = {
     // your project has type errors.
     // !! WARN !!
     ignoreBuildErrors: true,
-  },
-  experimental: {
-    nftTracing: true,
   },
   async rewrites() {
     return [
@@ -17,5 +15,21 @@ module.exports = {
         destination: '/map',
       },
     ];
+  },
+  webpack: (config, {}) => {
+    return {
+      ...config,
+      module: {
+        ...config.module,
+        rules: [
+          ...config.module.rules,
+          {
+            test: /\.(graphql|gql)$/,
+            exclude: /node_modules/,
+            loader: 'graphql-tag/loader',
+          },
+        ],
+      },
+    };
   },
 };

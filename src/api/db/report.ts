@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
-import hasha from 'hasha';
-import isEqual from 'lodash/isEqual';
+const mongoose = require('mongoose');
+const hasha = require('hasha');
+const isEqual = require('lodash/isEqual');
 
-import CoreSchema from './core';
+const CoreSchema = require('./core');
 
 const ReportSchema = new mongoose.Schema(
   {
@@ -90,8 +90,7 @@ const ReportSchema = new mongoose.Schema(
  * Produce an array of all the reports in the current roll preceeding and including the current target
  */
 ReportSchema.methods.unroll = async function () {
-  const looroll = [];
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  let looroll = [];
   let report = this;
 
   while (report) {
@@ -108,8 +107,8 @@ ReportSchema.methods.unroll = async function () {
 
 ReportSchema.methods.generateLoo = async function (idOverride) {
   idOverride = idOverride || null;
-  const looroll = await this.unroll();
-  const loo = await this.model('NewLoo').fromReports(looroll, idOverride);
+  let looroll = await this.unroll();
+  let loo = await this.model('NewLoo').fromReports(looroll, idOverride);
   return loo;
 };
 
@@ -142,12 +141,12 @@ ReportSchema.methods.nameSuccessor = function (next) {
 ReportSchema.methods.suggestLooId = function () {
   // Using the timestamp, the diff, and the contributor should be sufficiently unique
   // whilst also being stable
-  const input = JSON.stringify({
+  let input = JSON.stringify({
     coords: this.diff.geometry.coordinates,
     created: this.createdAt,
     by: this.contributor,
   });
-  const hash = hasha(input, { algorithm: 'md5', encoding: 'hex' }).slice(0, 24);
+  let hash = hasha(input, { algorithm: 'md5', encoding: 'hex' }).slice(0, 24);
   return hash;
 };
 
@@ -180,13 +179,13 @@ ReportSchema.statics.submit = async function (data, user, from) {
     }
   }
 
-  const report = new this(reportData);
+  let report = new this(reportData);
 
   let looId = null;
   if (from) {
-    const oldloo = await this.model('NewLoo').findById(from);
-    const lastReportId = oldloo.reports[oldloo.reports.length - 1];
-    const previous = await this.model('NewReport').findById(lastReportId);
+    let oldloo = await this.model('NewLoo').findById(from);
+    let lastReportId = oldloo.reports[oldloo.reports.length - 1];
+    let previous = await this.model('NewReport').findById(lastReportId);
     await report.deriveFrom(previous);
     if (oldloo) {
       looId = oldloo._id;
@@ -225,7 +224,5 @@ ReportSchema.statics.getCounters = async function () {
   };
 };
 
-const Report =
+module.exports =
   mongoose.models.NewReport || new mongoose.model('NewReport', ReportSchema);
-
-export default Report;

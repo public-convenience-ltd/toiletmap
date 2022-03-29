@@ -13,6 +13,7 @@ const usePlacesAutocompleteService = () => {
       return;
     }
 
+    // eslint-disable-next-line functional/immutable-data
     autocompleteService.current = new window[
       'google'
     ].maps.places.AutocompleteService();

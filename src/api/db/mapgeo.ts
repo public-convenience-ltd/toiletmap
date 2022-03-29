@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const TopoGeometrySchema = new mongoose.Schema({
   type: {
@@ -47,6 +47,5 @@ const MapGeoSchema = new mongoose.Schema(
 
 MapGeoSchema.index({ areaType: 'text' });
 
-const MapGeo =
+module.exports =
   mongoose.models.MapGeo || new mongoose.model('MapGeo', MapGeoSchema);
-export default MapGeo;

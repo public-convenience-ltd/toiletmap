@@ -90,7 +90,9 @@ const LocationSearch = ({ onSelectedItemChange }) => {
   return (
     <>
       <VisuallyHidden>
-        <label {...getLabelProps()}>Search for a location</label>
+        <label htmlFor="searchLocation" {...getLabelProps()}>
+          Search for a location
+        </label>
       </VisuallyHidden>
 
       <Box position="relative" {...getComboboxProps()}>
@@ -112,6 +114,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
 
         <Input
           placeholder="Search location…"
+          name="searchLocation"
           autoComplete="off"
           {...getInputProps({
             onFocus: () => {
@@ -179,6 +182,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
   );
 };
 
+// eslint-disable-next-line functional/immutable-data
 LocationSearch.propTypes = {
   onSelectedItemChange: PropTypes.func.isRequired,
 };

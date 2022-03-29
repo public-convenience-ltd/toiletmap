@@ -53,10 +53,8 @@ const AddPage = () => {
 
   const saveLoo = async (formData: UpdateLooMutationVariables) => {
     // add the active state for which there's no user-facing form control as yet
-    formData.active = true;
-
     const { errors } = await updateLooMutation({
-      variables: { ...formData },
+      variables: { ...formData, active: true },
     });
 
     if (errors) {

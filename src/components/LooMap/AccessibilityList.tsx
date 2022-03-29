@@ -122,6 +122,7 @@ const AccessibilityList = ({
   );
 };
 
+// eslint-disable-next-line functional/immutable-data
 AccessibilityList.propTypes = {
   toilets: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

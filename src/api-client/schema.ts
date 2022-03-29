@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { makeExecutableSchema } = require('@graphql-tools/schema');
-const typeDefs = require('../api/typeDefs').default;
-const resolvers = require('../api/resolvers');
+import typeDefs from '../api/schema.graphql';
+import * as resolvers from '../api/resolvers';
 
 const schema = (authDirective, redactedDirective) => {
   // Build our executable schema and apply our custom directives

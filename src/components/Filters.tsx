@@ -11,9 +11,7 @@ import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 import Box from './Box';
 import Switch from './Switch';
 import Icon from './Icon';
-
-import config from '../config';
-import { useMapState } from './MapState';
+import config, { Filters } from '../config';
 
 const iconMap = {
   noPayment: faPoundSign,
@@ -24,9 +22,10 @@ const iconMap = {
   automatic: faCog,
 };
 
-const Filters: React.FC = () => {
-  const [mapState, setMapState] = useMapState();
-  const { appliedFilters: filters } = mapState;
+const Filters: React.FC<{
+  appliedFilters: Record<Filters, boolean>;
+  onChange: (changedFilters: Record<Filters, boolean>) => void;
+}> = ({ appliedFilters, onChange }) => {
   return (
     <ul>
       {config.filters.map(({ id, label }, index) => (
@@ -47,15 +46,12 @@ const Filters: React.FC = () => {
 
           <Switch
             name={id}
-            checked={filters[id] || false}
+            checked={appliedFilters?.[id] || false}
             aria-labelledby={`filter-${id}`}
             onClick={() => {
-              setMapState({
-                ...mapState,
-                appliedFilters: {
-                  ...filters,
-                  [id]: !filters[id],
-                },
+              onChange({
+                ...appliedFilters,
+                [id]: !appliedFilters?.[id],
               });
             }}
           />

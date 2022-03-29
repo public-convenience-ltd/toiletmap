@@ -26,9 +26,7 @@ const Header = ({ children }) => {
       >
         <Box flexShrink={0}>
           <Link href="/" passHref>
-            <a>
-              <Logo />
-            </a>
+            <Logo />
           </Link>
         </Box>
 

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import {
@@ -145,53 +146,56 @@ const Section: React.FC<{
       </thead>
 
       <Box as="tbody" pl={[2, 4]}>
-        {questions.map(({ field, label, value, onChange }) => (
-          <Box as="tr" key={field} mt={3} onChange={onChange}>
-            <Box as="td" width="52%" pl={[2, 4]}>
-              {label}
+        {questions.map(({ field, label, value, onChange }) => {
+          return (
+            <Box as="tr" key={field} mt={3} onChange={onChange}>
+              <Box as="td" width="52%" pl={[2, 4]}>
+                {label}
+              </Box>
+              <Text as="td" textAlign="center" css={{ width: '16%' }}>
+                <label>
+                  <VisuallyHidden>Yes</VisuallyHidden>
+                  <Radio
+                    name={field}
+                    value={true}
+                    defaultChecked={value === true}
+                    aria-labelledby={`${id}-yes`}
+                    data-testid={`${field}:yes`}
+                    {...register(field)}
+                  />
+                </label>
+              </Text>
+
+              <Text as="td" textAlign="center" css={{ width: '16%' }}>
+                <label>
+                  <VisuallyHidden>No</VisuallyHidden>
+                  <Radio
+                    name={field}
+                    value={false}
+                    aria-labelledby={`${id}-no`}
+                    defaultChecked={value === false}
+                    data-testid={`${field}:no`}
+                    {...register(field)}
+                  />
+                </label>
+              </Text>
+
+              <Text as="td" textAlign="center" css={{ width: '16%' }}>
+                <label>
+                  <VisuallyHidden>Don&apos;t know</VisuallyHidden>
+                  <Radio
+                    name={field}
+                    value=""
+                    aria-labelledby={`${id}-na`}
+                    defaultChecked={value !== true && value !== false}
+                    data-testid={`${field}:na`}
+                    {...register(field)}
+                  />
+                </label>
+              </Text>
             </Box>
-            <Text as="td" textAlign="center" css={{ width: '16%' }}>
-              <label>
-                <VisuallyHidden>Yes</VisuallyHidden>
-                <Radio
-                  name={field}
-                  value={true}
-                  defaultChecked={false}
-                  data-testid={`${field}:no`}
-                  {...register(field)}
-                />
-              </label>
-            </Text>
-
-            <Text as="td" textAlign="center" css={{ width: '16%' }}>
-              <label>
-                <VisuallyHidden>No</VisuallyHidden>
-                <Radio
-                  name={field}
-                  value={false}
-                  aria-labelledby={`${id}-no`}
-                  defaultChecked={false}
-                  data-testid={`${field}:no`}
-                  {...register(field)}
-                />
-              </label>
-            </Text>
-
-            <Text as="td" textAlign="center" css={{ width: '16%' }}>
-              <label>
-                <VisuallyHidden>Don&apos;t know</VisuallyHidden>
-                <Radio
-                  name={field}
-                  value=""
-                  aria-labelledby={`${id}-no`}
-                  defaultChecked={value !== true && value !== false}
-                  data-testid={`${field}:no`}
-                  {...register(field)}
-                />
-              </label>
-            </Text>
-          </Box>
-        ))}
+          );
+        })}
       </Box>
     </table>
 
@@ -226,7 +230,8 @@ const EntryForm = ({ title, loo, children, ...props }) => {
     let transformed = pick(data, dirtyFieldNames);
 
     transformed = omit(transformed, ['geometry']);
-
+    console.log(data.geometry);
+    // eslint-disable-next-line functional/immutable-data
     transformed.noPayment = data.isFree;
 
     // transform data
@@ -234,15 +239,19 @@ const EntryForm = ({ title, loo, children, ...props }) => {
       const value = transformed[property];
 
       if (value === 'true') {
+        // eslint-disable-next-line functional/immutable-data
         transformed[property] = true;
       } else if (value === 'false') {
+        // eslint-disable-next-line functional/immutable-data
         transformed[property] = false;
       } else if (value === '') {
+        // eslint-disable-next-line functional/immutable-data
         transformed[property] = null;
       }
     });
 
     // map geometry data to expected structure
+    // eslint-disable-next-line functional/immutable-data
     transformed.location = {
       lat: parseFloat(data.geometry.coordinates[0]),
       lng: parseFloat(data.geometry.coordinates[1]),
@@ -251,6 +260,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
     // remove payment details if the isFree field value has changed and is now
     // either Yes or Don't know
     if (dirtyFieldNames.includes('isFree') && data.isFree !== 'false') {
+      // eslint-disable-next-line functional/immutable-data
       transformed.paymentDetails = null;
     }
 
@@ -272,8 +282,10 @@ const EntryForm = ({ title, loo, children, ...props }) => {
           ];
         });
 
+        // eslint-disable-next-line functional/immutable-data
         transformed.openingTimes = openingTimes;
       } else {
+        // eslint-disable-next-line functional/immutable-data
         transformed.openingTimes = null;
       }
     }

@@ -1,7 +1,6 @@
-import mongoose from 'mongoose';
-import { PipelineStage } from 'mongoose';
-import mongoosePaginate from 'mongoose-paginate';
-import CoreSchema from './core';
+const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
+const CoreSchema = require('./core');
 
 const LooSchema = new mongoose.Schema(
   {
@@ -83,7 +82,7 @@ LooSchema.statics.fromReports = async function (reports, idOverride) {
 };
 
 LooSchema.statics.findNear = function (lon, lat, radius) {
-  const args: PipelineStage[] = [
+  let args = [
     {
       $geoNear: {
         near: {
@@ -212,6 +211,5 @@ LooSchema.statics.getAreasCounters = async function () {
   return areas;
 };
 
-const Loo = mongoose.models.NewLoo || new mongoose.model('NewLoo', LooSchema);
-
-export default Loo;
+module.exports =
+  mongoose.models.NewLoo || new mongoose.model('NewLoo', LooSchema);

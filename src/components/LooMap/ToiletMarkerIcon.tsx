@@ -2,7 +2,7 @@ import L from 'leaflet';
 
 const ICON_DIMENSIONS = [22, 34];
 const LARGE_ICON_DIMENSSIONS = ICON_DIMENSIONS.map((i) => i * 1.5);
-const getIconAnchor = (dimensions: unknown[]) => [
+const getIconAnchor = (dimensions: number[]) => [
   dimensions[0] / 2,
   dimensions[1],
 ];
@@ -30,6 +30,7 @@ const ToiletMarkerIcon = L.DivIcon.extend({
     isHighlighted: unknown;
     toiletId: unknown;
   }) {
+    // eslint-disable-next-line functional/immutable-data
     this.options = {
       ...this.options,
       iconSize: options.isHighlighted
