@@ -2,7 +2,7 @@ import { createMedia } from '@artsy/fresnel';
 
 import theme from '../theme';
 
-const { MediaContextProvider, Media } = createMedia({
+const GBPTMMedia = createMedia({
   breakpoints: {
     sm: 0,
     md: parseInt(theme.breakpoints[0]),
@@ -11,4 +11,5 @@ const { MediaContextProvider, Media } = createMedia({
   },
 });
 
-export { MediaContextProvider, Media };
+export const mediaStyle = GBPTMMedia.createMediaStyle();
+export const { MediaContextProvider, Media } = GBPTMMedia;

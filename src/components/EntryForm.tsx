@@ -151,7 +151,6 @@ const Section: React.FC<{
 
       <Box as="tbody" pl={[2, 4]}>
         {questions.map(({ field, label, value, onChange }) => {
-          console.log(field, value);
           return (
             <Box as="tr" key={field} mt={3} onChange={onChange}>
               <Box as="td" width="52%" pl={[2, 4]}>
@@ -241,7 +240,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
     let transformed = pick(data, dirtyFieldNames);
 
     transformed = omit(transformed, ['geometry']);
-    console.log(data.geometry);
+
     // eslint-disable-next-line functional/immutable-data
     transformed.noPayment = data.isFree;
 
