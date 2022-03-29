@@ -7,7 +7,9 @@ module.exports = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
-  experimental: {},
+  experimental: {
+    runtime: 'edge',
+  },
   async rewrites() {
     return [
       // Map lng-lat routes to a single page
