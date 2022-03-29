@@ -59,7 +59,7 @@ export const server = new ApolloServer({
         }
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
     return {
       user,

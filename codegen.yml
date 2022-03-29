@@ -20,13 +20,7 @@ generates:
       importDocumentNodeExternallyFrom: ./graphql
       reactApolloVersion: 3
       withHooks: true
-      # withHOC: false
-      # excludePatterns: 'getComments'
-      # excludePatternsOptions: 'i'
-      # customDataIdFromObjectName: 'test'
-      # customDataIdFromObjectImport: 'abc'
       apolloClientInstanceImport: './withApollo'
-      # apolloStateKey: '__APOLLO_STATE__'
     preset: import-types
     presetConfig:
       typesPath: ./graphql
