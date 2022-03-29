@@ -125,6 +125,27 @@ const ToiletDetailsPanel = ({
     }
   }, [isExpanded]);
 
+  const escapeKeyHandler = React.useCallback(
+    (event) => {
+      if (event.key === 'Escape') {
+        if (isExpanded) {
+          setIsExpanded(false);
+        } else {
+          router.push('/');
+        }
+      }
+    },
+    [isExpanded, router]
+  );
+
+  React.useEffect(() => {
+    document.addEventListener('keydown', escapeKeyHandler, false);
+
+    return () => {
+      document.removeEventListener('keydown', escapeKeyHandler, false);
+    };
+  }, [escapeKeyHandler]);
+
   // TODO (Feb 2022): use a different method for this as the useComponentSize hook doesn't play well with SSR
   // call onDimensionsChange whenever the dimensions of the container change
   const containerRef = React.useRef(null);

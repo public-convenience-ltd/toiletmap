@@ -1,16 +1,13 @@
 import styled from '@emotion/styled';
 import { variant } from 'styled-system';
-import Control from '../Control/Control';
 
 import { useMapState } from '../MapState';
 
-const ControlButton = styled.button(
+export const ControlButton = styled.button(
   ({ theme }) => `
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
   background-color: ${theme.colors.white};
   color: ${theme.colors.primary};
   border: 1px solid ${theme.colors.primary};
@@ -33,7 +30,7 @@ const ControlButton = styled.button(
   })
 );
 
-const LocateMapControl = ({ position }) => {
+const LocateMapControl = () => {
   const [mapState] = useMapState();
 
   const handleClick = () => {
@@ -44,8 +41,9 @@ const LocateMapControl = ({ position }) => {
   };
 
   return (
-    <Control position={position}>
+    <div className="leaflet-control">
       <ControlButton
+        className="locate-map-control"
         type="button"
         onClick={handleClick}
         aria-label="Locate my position"
@@ -84,7 +82,7 @@ const LocateMapControl = ({ position }) => {
           </g>
         </svg>
       </ControlButton>
-    </Control>
+    </div>
   );
 };
 

@@ -1,10 +1,5 @@
 import { useMapState } from '../MapState';
-import {
-  MapContainer,
-  TileLayer,
-  ZoomControl,
-  useMapEvents,
-} from 'react-leaflet';
+import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { css } from '@emotion/react';
 import Box from '../Box';
@@ -22,6 +17,7 @@ import 'focus-visible';
 import { CompressedLooObject } from '../../lib/loo';
 import React from 'react';
 import router from 'next/router';
+import ZoomControl from './ZoomControl';
 
 const MapTracker = () => {
   const [, setMapState] = useMapState();
@@ -236,8 +232,9 @@ const LooMap: React.FC<LooMapProps> = ({
           }
 
           a.leaflet-bar-part,
-          a.leaflet-control-zoom-in,
-          a.leaflet-control-zoom-out {
+          button.leaflet-control-zoom-in,
+          button.leaflet-control-zoom-out,
+          button.locate-map-control {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -282,8 +279,16 @@ const LooMap: React.FC<LooMapProps> = ({
         <Markers setLoadedToilets={setLoadedToilets} />
 
         <Media greaterThan="md">
-          <LocateMapControl position="topright" />
-          <ZoomControl position="topright" />
+          <div
+            className={
+              mapState.focus
+                ? 'leaflet-bar leaflet-top leaflet-right'
+                : 'leaflet-bar leaflet-bottom leaflet-right'
+            }
+          >
+            <LocateMapControl />
+            <ZoomControl />
+          </div>
         </Media>
 
         <MapTracker />
