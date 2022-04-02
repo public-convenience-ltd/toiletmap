@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { faClock, faEdit } from '@fortawesome/free-regular-svg-icons';
@@ -115,7 +115,7 @@ const ToiletDetailsPanel = ({
   //   alert('Implement me with apollo');
   // };
 
-  const [mapState] = useMapState();
+  const [mapState, setMapState] = useMapState();
 
   // programmatically set focus on close button when panel expands
   const closeButtonRef = React.useRef(null);
@@ -125,17 +125,22 @@ const ToiletDetailsPanel = ({
     }
   }, [isExpanded]);
 
+  const navigateAway = useCallback(() => {
+    setMapState({ searchLocation: undefined });
+    router.push('/');
+  }, [router, setMapState]);
+
   const escapeKeyHandler = React.useCallback(
     (event) => {
       if (event.key === 'Escape') {
         if (isExpanded) {
           setIsExpanded(false);
         } else {
-          router.push('/');
+          navigateAway();
         }
       }
     },
-    [isExpanded, router]
+    [isExpanded, navigateAway]
   );
 
   React.useEffect(() => {
@@ -583,7 +588,7 @@ const ToiletDetailsPanel = ({
           <Button
             variant="secondary"
             icon={<Icon icon={faList} />}
-            onClick={() => router.push('/')}
+            onClick={navigateAway}
             aria-expanded="false"
             data-testid="close-button"
           >
