@@ -80,7 +80,7 @@ const startServer = server.start();
 // Initializing the cors middleware
 const cors = Cors({
   methods: ['GET', 'HEAD', 'POST'],
-  origin: 'https://studio.apollographql.com',
+  origin: ['https://studio.apollographql.com', 'http://localhost:6006'],
 });
 
 // Helper method to wait for a middleware to execute before continuing

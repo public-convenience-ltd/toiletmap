@@ -1,14 +1,11 @@
 import React from 'react';
 import { DecoratorFn } from '@storybook/react';
-import { ThemeProvider } from '@emotion/react';
-import theme from '../src/theme';
-import globalStyles from '../src/globalStyles';
+import Providers from '../src/components/Providers';
 
-const clientStateDecorator: DecoratorFn = (StoryToDecorate, context) => (
-  <ThemeProvider theme={theme}>
-    {globalStyles}
+const providersDecorator: DecoratorFn = (StoryToDecorate, context) => (
+  <Providers>
     <StoryToDecorate />
-  </ThemeProvider>
+  </Providers>
 );
 
-export default clientStateDecorator;
+export default providersDecorator;

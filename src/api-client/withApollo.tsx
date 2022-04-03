@@ -25,7 +25,7 @@ function createApolloClient() {
     });
   } else {
     terminatingLink = createHttpLink({
-      uri: '/api',
+      uri: 'http://localhost:3000/api',
       credentials: 'same-origin',
       fetch,
     });
@@ -52,6 +52,7 @@ export function getApolloClient(
   initialState: NormalizedCacheObject | null = null
 ) {
   const _apolloClient = apolloClient ?? createApolloClient();
+
   // If a page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
   if (initialState) {
