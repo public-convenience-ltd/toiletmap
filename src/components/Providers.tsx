@@ -1,4 +1,3 @@
-import { UserProvider } from '@auth0/nextjs-auth0';
 import { ThemeProvider } from '@emotion/react';
 import PlausibleProvider from 'next-plausible';
 import React, { useEffect, useState } from 'react';
@@ -23,18 +22,16 @@ const Providers: React.FC = ({ children }) => {
       domain="toiletmap.org.uk"
       customDomain="https://stats.toiletmap.org.uk/"
     >
-      <UserProvider>
-        <MapStateProvider>
-          <ThemeProvider theme={theme}>
-            {globalStyles}
-            <MediaContextProvider
-              disableDynamicMediaQueries={disableDynamicMediaQueries}
-            >
-              {children}
-            </MediaContextProvider>
-          </ThemeProvider>
-        </MapStateProvider>
-      </UserProvider>
+      <MapStateProvider>
+        <ThemeProvider theme={theme}>
+          {globalStyles}
+          <MediaContextProvider
+            disableDynamicMediaQueries={disableDynamicMediaQueries}
+          >
+            {children}
+          </MediaContextProvider>
+        </ThemeProvider>
+      </MapStateProvider>
     </PlausibleProvider>
   );
 };

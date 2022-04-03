@@ -1,4 +1,4 @@
-import { StoryContext } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import React from 'react';
 
 import PrivacyPage from '../pages/privacy';
@@ -6,7 +6,7 @@ import PrivacyPage from '../pages/privacy';
 export default {
   name: 'Privacy page',
   component: PrivacyPage,
-} as StoryContext;
+} as Meta;
 
 /**
  * Privacy page

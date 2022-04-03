@@ -1,4 +1,4 @@
-import { StoryContext } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import React from 'react';
 
 import AboutPage from '../pages/about';
@@ -6,7 +6,7 @@ import AboutPage from '../pages/about';
 export default {
   name: 'About page',
   component: AboutPage,
-} as StoryContext;
+} as Meta;
 
 /**
  * About page
