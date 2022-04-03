@@ -1,3 +1,4 @@
+import React from 'react';
 import Box from '../components/Box';
 import Spacer from '../components/Spacer';
 import Text from '../components/Text';

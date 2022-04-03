@@ -1,10 +1,10 @@
 import { Meta } from '@storybook/react';
 import React from 'react';
 
-import PrivacyPage from '../pages/privacy';
+import PrivacyPage from './privacy';
 
 export default {
-  name: 'Privacy page',
+  name: 'Privacy',
   component: PrivacyPage,
 } as Meta;
 

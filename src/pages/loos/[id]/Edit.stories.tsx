@@ -1,13 +1,16 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import { PageFindLooByIdComp } from '../api-client/page';
-import { default as EditPageNext } from '../pages/loos/[id]/edit';
+import { PageFindLooByIdComp } from '../../../api-client/page';
+import { default as EditPageNext } from './edit';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  name: 'Contribute',
+  name: 'Pages',
   component: EditPageNext,
   args: {
+    user: {
+      email: 'hi@email.com',
+    },
     data: {
       loo: {
         __typename: 'Loo',
@@ -44,8 +47,8 @@ export default {
 } as Meta<PageFindLooByIdComp>;
 
 /**
- * Contribute
+ * Edit
  */
-export const Contribute = (props) => {
+export const Edit = (props) => {
   return <EditPageNext {...props} />;
 };

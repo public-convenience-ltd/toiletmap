@@ -1,13 +1,15 @@
-import React from 'react';
 import { Meta } from '@storybook/react';
-import { PageFindLooByIdComp } from '../api-client/page';
-import { default as LooPageNext } from '../pages/loos/[id]/index';
+import React from 'react';
 
-// eslint-disable-next-line import/no-anonymous-default-export
+import RemovePage from './remove';
+
 export default {
-  name: 'Loo',
-  component: LooPageNext,
+  name: 'Pages',
+  component: RemovePage,
   args: {
+    user: {
+      email: 'hi@email.com',
+    },
     data: {
       loo: {
         __typename: 'Loo',
@@ -41,11 +43,11 @@ export default {
       },
     },
   },
-} as Meta<PageFindLooByIdComp>;
+} as Meta;
 
 /**
- * Loo
+ * Remove page
  */
-export const Loo = (props) => {
-  return <LooPageNext {...props} />;
+export const Remove = (props) => {
+  return <RemovePage {...props} />;
 };
