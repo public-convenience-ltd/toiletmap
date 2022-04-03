@@ -1,11 +1,9 @@
 import React from 'react';
 import { DecoratorFn } from '@storybook/react';
-import Providers from '../src/components/Providers';
+import App from '../src/pages/_app';
 
 const providersDecorator: DecoratorFn = (StoryToDecorate, context) => (
-  <Providers>
-    <StoryToDecorate />
-  </Providers>
+  <App Component={StoryToDecorate} pageProps={context} />
 );
 
 export default providersDecorator;
