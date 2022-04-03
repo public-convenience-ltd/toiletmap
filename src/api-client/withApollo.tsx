@@ -25,7 +25,7 @@ function createApolloClient() {
     });
   } else {
     terminatingLink = createHttpLink({
-      uri: 'http://localhost:3000/api',
+      uri: '/api',
       credentials: 'same-origin',
       fetch,
     });
