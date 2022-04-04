@@ -30,4 +30,4 @@ out
 
 # Storybook build
 storybook-static
-
+public/storybook

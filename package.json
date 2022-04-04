@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "description": "",
   "scripts": {
-    "build": "next build && build-storybook",
+    "build": "next build && yarn build-storybook",
     "dev": "next dev",
     "start": "next start",
     "lint": "next lint",
@@ -17,7 +17,7 @@
     "prepare": "husky install && cp ./node_modules/graphql-voyager/dist/voyager.worker.js ./public && yarn codegen",
     "codegen": "graphql-codegen --config codegen.yml",
     "storybook": "start-storybook -p 6006 -s ./public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -o ./public/storybook"
   },
   "repository": {
     "type": "git",
