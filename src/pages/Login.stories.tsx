@@ -2,8 +2,8 @@ import React from 'react';
 import { Meta } from '@storybook/react';
 import { PageFindLooByIdComp } from '../api-client/page';
 import LoginPageNext from './login';
+import Main from '../components/Main';
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   name: 'Pages',
   component: LoginPageNext,
@@ -47,5 +47,5 @@ export default {
  * Login
  */
 export const Login = (props) => {
-  return <LoginPageNext {...props} />;
+  return <Main Component={LoginPageNext} pageProps={props} />;
 };

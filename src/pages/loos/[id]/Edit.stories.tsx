@@ -2,8 +2,8 @@ import React from 'react';
 import { Meta } from '@storybook/react';
 import { PageFindLooByIdComp } from '../../../api-client/page';
 import { default as EditPageNext } from './edit';
+import Main from '../../../components/Main';
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   name: 'Pages',
   component: EditPageNext,
@@ -50,5 +50,5 @@ export default {
  * Edit
  */
 export const Edit = (props) => {
-  return <EditPageNext {...props} />;
+  return <Main Component={EditPageNext} pageProps={props} />;
 };

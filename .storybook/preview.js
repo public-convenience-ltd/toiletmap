@@ -10,7 +10,7 @@ Object.defineProperty(NextImage, 'default', {
 // Polyfills
 import 'resize-observer-polyfill';
 
-import themeDecorator from './themeDecorator';
+import providersDecorator from './providersDecorator';
 import { MockedProvider } from '@apollo/client/testing';
 
 export const parameters = {
@@ -27,4 +27,4 @@ export const parameters = {
   },
 };
 
-export const decorators = [themeDecorator];
+export const decorators = [providersDecorator];

@@ -1,6 +1,8 @@
 import { Meta } from '@storybook/react';
 import React from 'react';
 
+import Main from '../../../components/Main';
+
 import RemovePage from './remove';
 
 export default {
@@ -49,5 +51,5 @@ export default {
  * Remove page
  */
 export const Remove = (props) => {
-  return <RemovePage {...props} />;
+  return <Main Component={RemovePage} pageProps={props} />;
 };

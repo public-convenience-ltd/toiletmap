@@ -1,6 +1,8 @@
 import { Meta } from '@storybook/react';
 import React from 'react';
 
+import Main from '../components/Main';
+
 import PrivacyPage from './privacy';
 
 export default {
@@ -12,5 +14,5 @@ export default {
  * Privacy page
  */
 export const Privacy = (props) => {
-  return <PrivacyPage {...props} />;
+  return <Main Component={PrivacyPage} pageProps={props} />;
 };

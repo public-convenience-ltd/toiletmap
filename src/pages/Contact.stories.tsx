@@ -1,5 +1,6 @@
 import { Meta } from '@storybook/react';
 import React from 'react';
+import Main from '../components/Main';
 
 import ContactPage from './contact';
 
@@ -8,4 +9,6 @@ export default {
   component: ContactPage,
 } as Meta;
 // This is the only named export in the file, and it matches the component name
-export const Contact = (args) => <ContactPage {...args} />;
+export const Contact = (props) => (
+  <Main Component={ContactPage} pageProps={props} />
+);

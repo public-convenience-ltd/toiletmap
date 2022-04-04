@@ -1,12 +1,13 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import { PageFindLooByIdComp } from '../../api-client/page';
+import { PageFindLooByIdComp } from '../../../api-client/page';
 import { default as LooPageNext } from './index';
+import Main from '../../../components/Main';
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   name: 'Pages',
   component: LooPageNext,
+
   args: {
     data: {
       loo: {
@@ -47,5 +48,5 @@ export default {
  * Loo
  */
 export const Loo = (props) => {
-  return <LooPageNext {...props} />;
+  return <Main Component={LooPageNext} pageProps={props} />;
 };
