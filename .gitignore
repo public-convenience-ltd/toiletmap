@@ -26,3 +26,8 @@ build
 # nextjs
 .next
 .loos
+out
+
+# Storybook build
+storybook-static
+

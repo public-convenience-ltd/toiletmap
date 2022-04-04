@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "description": "",
   "scripts": {
-    "build": "next build",
+    "build": "next build && build-storybook",
     "dev": "next dev",
     "start": "next start",
     "lint": "next lint",
@@ -16,8 +16,8 @@
     "areas": "node -r dotenv/config ./src/api/db/manage/areaToDatabase/index.js",
     "prepare": "husky install && cp ./node_modules/graphql-voyager/dist/voyager.worker.js ./public && yarn codegen",
     "codegen": "graphql-codegen --config codegen.yml",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "storybook": "start-storybook -p 6006 -s ./public",
+    "build-storybook": "build-storybook -s public"
   },
   "repository": {
     "type": "git",
