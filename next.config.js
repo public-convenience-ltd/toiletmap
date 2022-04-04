@@ -15,7 +15,7 @@ module.exports = {
   experimental: {
     runtime: 'edge',
   },
-  pageExtensions: ['page.tsx'],
+  pageExtensions: ['page.tsx', 'page.ts'],
   async rewrites() {
     return [
       // Map lng-lat routes to a single page
