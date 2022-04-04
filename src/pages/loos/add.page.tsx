@@ -7,7 +7,7 @@ import Box from '../../components/Box';
 import Spacer from '../../components/Spacer';
 import Button from '../../components/Button';
 import LocationSearch from '../../components/LocationSearch';
-import Login from '../login';
+import Login from '../login.page';
 
 import { useMapState } from '../../components/MapState';
 

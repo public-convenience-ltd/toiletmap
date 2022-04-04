@@ -3,7 +3,7 @@ import React from 'react';
 
 import Main from '../components/Main';
 
-import IndexPageNext from '../pages/index';
+import IndexPageNext from './index.page';
 
 export default {
   name: 'Pages',

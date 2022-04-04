@@ -8,7 +8,7 @@ import Button from '../../../components/Button';
 import Spacer from '../../../components/Spacer';
 import EntryForm from '../../../components/EntryForm';
 import Box from '../../../components/Box';
-import Login from '../../login';
+import Login from '../../login.page';
 import PageLoading from '../../../components/PageLoading';
 import LooMap from '../../../components/LooMap/LooMapLoader';
 

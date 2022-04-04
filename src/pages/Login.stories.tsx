@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
 import { PageFindLooByIdComp } from '../api-client/page';
-import LoginPageNext from './login';
+import LoginPageNext from './login.page';
 import Main from '../components/Main';
 
 export default {

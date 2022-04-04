@@ -10,7 +10,7 @@ import Spacer from '../../../components/Spacer';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
 import Notification from '../../../components/Notification';
-import Login from '../../login';
+import Login from '../../login.page';
 import PageLoading from '../../../components/PageLoading';
 import { useRouter } from 'next/router';
 import { useRemoveLooMutation } from '../../../api-client/graphql';

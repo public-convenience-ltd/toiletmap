@@ -3,7 +3,7 @@ import React from 'react';
 
 import Main from '../components/Main';
 
-import PrivacyPage from './privacy';
+import PrivacyPage from './privacy.page';
 
 export default {
   name: 'Privacy',

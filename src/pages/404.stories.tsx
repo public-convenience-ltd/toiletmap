@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
 
-import NotFoundPage from './404';
+import NotFoundPage from './404.page';
 import Main from '../components/Main';
 
 export default {
