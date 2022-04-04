@@ -18,6 +18,7 @@ import { CompressedLooObject } from '../../lib/loo';
 import React from 'react';
 import router from 'next/router';
 import ZoomControl from './ZoomControl';
+import crosshairSvg from '../../../public/crosshair.svg';
 
 const MapTracker = () => {
   const [, setMapState] = useMapState();
@@ -41,6 +42,7 @@ interface LooMapProps {
   controlsOffset?: number;
   showCrosshair?: boolean;
   withAccessibilityOverlays?: boolean;
+  showAccessibilityOverlay?: boolean;
   onViewportChanged?: () => void;
 }
 
@@ -53,6 +55,7 @@ const LooMap: React.FC<LooMapProps> = ({
   maxZoom = 18,
   staticMap = false,
   withAccessibilityOverlays = true,
+  showAccessibilityOverlay = false,
 }) => {
   const [mapState, setMapState] = useMapState();
 
@@ -63,7 +66,7 @@ const LooMap: React.FC<LooMapProps> = ({
   const [announcement, setAnnouncement] = React.useState(null);
   const [intersectingToilets, setIntersectingToilets] = useState([]);
   const [renderAccessibilityOverlays, setRenderAccessibilityOverlays] =
-    useState(false);
+    useState(showAccessibilityOverlay);
 
   // Load a reference to the leaflet map into application state so components that aren't below in the tree can access.
   const setMap = useCallback(
@@ -192,7 +195,7 @@ const LooMap: React.FC<LooMapProps> = ({
         showCrosshair
           ? css`
               &:after {
-                content: url(/crosshair.svg);
+                content: url(/${crosshairSvg.src});
                 position: absolute;
                 top: 50%;
                 left: 50%;
