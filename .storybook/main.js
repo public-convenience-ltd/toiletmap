@@ -1,7 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
 
+// eslint-disable-next-line functional/immutable-data
 module.exports = {
-  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: ['../src'],
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
@@ -23,7 +25,7 @@ module.exports = {
     options.presets.push('@emotion/babel-preset-css-prop');
     return options;
   },
-  webpackFinal: async (config, { configType }) => {
+  webpackFinal: async (config) => {
     config.module.rules.push({
       test: /\.graphql$/,
       exclude: /node_modules/,

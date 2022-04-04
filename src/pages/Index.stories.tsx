@@ -3,7 +3,7 @@ import React from 'react';
 
 import Main from '../components/Main';
 
-import IndexPageNext from './index.page';
+import IndexPageNext from '../pages/index.page';
 
 export default {
   name: 'Pages',
@@ -16,3 +16,4 @@ export default {
 export const Index = (props) => {
   return <Main Component={IndexPageNext} pageProps={props} />;
 };
+Index.storyName = 'Home Page';

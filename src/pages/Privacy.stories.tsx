@@ -3,10 +3,10 @@ import React from 'react';
 
 import Main from '../components/Main';
 
-import PrivacyPage from './privacy.page';
+import PrivacyPage from '../pages/privacy.page';
 
 export default {
-  name: 'Privacy',
+  name: 'Pages/Privacy',
   component: PrivacyPage,
 } as Meta;
 

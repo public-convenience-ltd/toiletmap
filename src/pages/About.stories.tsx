@@ -1,11 +1,10 @@
 import { Meta } from '@storybook/react';
 import React from 'react';
 
-import AboutPage from './about.page';
+import AboutPage from '../pages/about.page';
 import Main from '../components/Main';
 
 export default {
-  name: 'Pages',
   component: AboutPage,
 } as Meta;
 

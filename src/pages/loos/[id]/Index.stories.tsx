@@ -1,13 +1,12 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
 import { PageFindLooByIdComp } from '../../../api-client/page';
-import { default as LooPageNext } from './index.page';
+import { default as LooPageNext } from '../../../pages/loos/[id]/index.page';
 import Main from '../../../components/Main';
 
 export default {
   name: 'Pages',
   component: LooPageNext,
-
   args: {
     data: {
       loo: {

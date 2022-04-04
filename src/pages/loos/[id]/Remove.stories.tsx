@@ -3,7 +3,7 @@ import React from 'react';
 
 import Main from '../../../components/Main';
 
-import RemovePage from './remove.page';
+import RemovePage from '../../../pages/loos/[id]/remove.page';
 
 export default {
   name: 'Pages',
