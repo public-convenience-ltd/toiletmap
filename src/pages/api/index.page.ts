@@ -4,7 +4,7 @@ import jwt, { VerifyOptions } from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { getSession } from '@auth0/nextjs-auth0';
 import Cors from 'cors';
-import redactedDirective from '../..//api/directives/redactedDirective';
+import redactedDirective from '../../api/directives/redactedDirective';
 import authDirective from '../../api/directives/authDirective';
 import schema from '../../api-client/schema';
 
