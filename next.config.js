@@ -12,9 +12,6 @@ module.exports = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
-  experimental: {
-    runtime: 'edge',
-  },
   pageExtensions: ['page.tsx', 'page.ts'],
   async rewrites() {
     return [
