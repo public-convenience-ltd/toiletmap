@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -6,7 +8,7 @@ import Button from '../../../components/Button';
 import Spacer from '../../../components/Spacer';
 import EntryForm from '../../../components/EntryForm';
 import Box from '../../../components/Box';
-import Login from '../../../components/Login';
+import Login from '../../login.page';
 import PageLoading from '../../../components/PageLoading';
 import LooMap from '../../../components/LooMap/LooMapLoader';
 
@@ -16,7 +18,6 @@ import { useRouter } from 'next/router';
 import { withApollo } from '../../../api-client/withApollo';
 import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
 import { GetServerSideProps } from 'next';
-import { dbConnect } from '../../../api/db';
 import {
   UpdateLooMutationVariables,
   useUpdateLooMutation,
@@ -136,6 +137,7 @@ const EditPage: PageFindLooByIdComp = (props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { dbConnect } = await import('../../../api/db');
   await dbConnect();
   const res = await ssrFindLooById.getServerPage(
     {

@@ -10,14 +10,13 @@ import Spacer from '../../../components/Spacer';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
 import Notification from '../../../components/Notification';
-import Login from '../../../components/Login';
+import Login from '../../login.page';
 import PageLoading from '../../../components/PageLoading';
 import { useRouter } from 'next/router';
 import { useRemoveLooMutation } from '../../../api-client/graphql';
 import { withApollo } from '../../../api-client/withApollo';
 import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
 import { GetServerSideProps } from 'next';
-import { dbConnect } from '../../../api/db';
 
 const RemovePage: PageFindLooByIdComp = function (props) {
   const loo = props.data.loo;
@@ -119,6 +118,7 @@ const RemovePage: PageFindLooByIdComp = function (props) {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { dbConnect } = await import('../../../api/db');
   await dbConnect();
   const res = await ssrFindLooById.getServerPage(
     {

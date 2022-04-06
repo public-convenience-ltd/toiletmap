@@ -1,11 +1,11 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
-import Container from './Container';
-import Button from './Button';
-import Text from './Text';
-import Spacer from './Spacer';
-import Box, { BoxProps } from './Box';
+import Container from '../components/Container';
+import Button from '../components/Button';
+import Text from '../components/Text';
+import Spacer from '../components/Spacer';
+import Box, { BoxProps } from '../components/Box';
 
 import config from '../config';
 

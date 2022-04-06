@@ -7,10 +7,8 @@ import { useMapState } from '../../../components/MapState';
 import config from '../../../config';
 import { withApollo } from '../../../api-client/withApollo';
 import { GetServerSideProps } from 'next';
-
 import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
 import { useRouter } from 'next/router';
-import { dbConnect } from '../../../api/db';
 import ToiletDetailsPanel from '../../../components/ToiletDetailsPanel';
 import Notification from '../../../components/Notification';
 import LooMap from '../../../components/LooMap/LooMapLoader';
@@ -104,6 +102,7 @@ const LooPage: PageFindLooByIdComp = (props) => {
 };
 
 export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
+  const { dbConnect } = await import('../../../api/db');
   await dbConnect();
   const res = await ssrFindLooById.getServerPage(
     {
@@ -111,13 +110,11 @@ export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
     },
     { req }
   );
-
   if (res.props.error || !res.props.data) {
     return {
       notFound: true,
     };
   }
-
   return res;
 };
 

@@ -1,4 +1,9 @@
-/* eslint-disable functional/immutable-data */
+// @ts-check
+
+/**
+ * @type {import('next').NextConfig}
+ **/
+// eslint-disable-next-line functional/immutable-data
 module.exports = {
   typescript: {
     // !! WARN !!
@@ -7,9 +12,7 @@ module.exports = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
-  experimental: {
-    runtime: 'edge',
-  },
+  pageExtensions: ['page.tsx', 'page.ts'],
   async rewrites() {
     return [
       // Map lng-lat routes to a single page

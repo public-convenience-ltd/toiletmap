@@ -1,3 +1,4 @@
+import React from 'react';
 import Head from 'next/head';
 import Box from '../components/Box';
 import Sidebar from '../components/Sidebar/Sidebar';

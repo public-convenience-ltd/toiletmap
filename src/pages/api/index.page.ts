@@ -4,7 +4,7 @@ import jwt, { VerifyOptions } from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { getSession } from '@auth0/nextjs-auth0';
 import Cors from 'cors';
-import redactedDirective from '../..//api/directives/redactedDirective';
+import redactedDirective from '../../api/directives/redactedDirective';
 import authDirective from '../../api/directives/authDirective';
 import schema from '../../api-client/schema';
 
@@ -80,7 +80,7 @@ const startServer = server.start();
 // Initializing the cors middleware
 const cors = Cors({
   methods: ['GET', 'HEAD', 'POST'],
-  origin: 'https://studio.apollographql.com',
+  origin: ['https://studio.apollographql.com', 'http://localhost:6006'],
 });
 
 // Helper method to wait for a middleware to execute before continuing

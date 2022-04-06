@@ -11,7 +11,8 @@ import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 import Box from './Box';
 import Switch from './Switch';
 import Icon from './Icon';
-import config, { Filters } from '../config';
+import config from '../config';
+import type { Filters as FilterTypes } from '../config';
 
 const iconMap = {
   noPayment: faPoundSign,
@@ -23,8 +24,8 @@ const iconMap = {
 };
 
 const Filters: React.FC<{
-  appliedFilters: Record<Filters, boolean>;
-  onChange: (changedFilters: Record<Filters, boolean>) => void;
+  appliedFilters: Record<FilterTypes, boolean>;
+  onChange: (changedFilters: Record<FilterTypes, boolean>) => void;
 }> = ({ appliedFilters, onChange }) => {
   return (
     <ul>
