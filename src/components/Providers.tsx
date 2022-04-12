@@ -6,7 +6,7 @@ import theme from '../theme';
 import { MapStateProvider } from './MapState';
 import { MediaContextProvider } from './Media';
 
-const Providers: React.FC = ({ children }) => {
+const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [disableDynamicMediaQueries, setDisableDynamicMediaQueries] =
     useState(true);
 

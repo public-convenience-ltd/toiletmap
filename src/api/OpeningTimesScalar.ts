@@ -1,9 +1,13 @@
+import { ApolloError } from 'apollo-server-core';
 import { GraphQLScalarType } from 'graphql';
 import { Kind } from 'graphql/language';
 
 const astToOpeningTimes = (ast) => {
   if (ast.kind !== Kind.LIST) {
-    throw new Error('Type OpeningTimes must be an array');
+    throw new ApolloError(
+      'Type OpeningTimes must be an array',
+      'OPENING_TIMES'
+    );
   }
 
   const traverseValues = (values) =>
@@ -20,7 +24,10 @@ const astToOpeningTimes = (ast) => {
 
 const validateOpeningTimes = (value) => {
   if (value.length !== 7) {
-    throw new Error('Type OpeningTimes must be an array of length 7');
+    throw new ApolloError(
+      'Type OpeningTimes must be an array of length 7',
+      'OPENING_TIMES'
+    );
   }
 
   const elementsAreValid = value.every((item) => {
@@ -44,8 +51,9 @@ const validateOpeningTimes = (value) => {
   });
 
   if (!elementsAreValid) {
-    throw new Error(
-      'Type OpeningTimes must be an array of [] or ["XX:XX", "XX:XX"] elements'
+    throw new ApolloError(
+      'Type OpeningTimes must be an array of [] or ["XX:XX", "XX:XX"] elements',
+      'OPENING_TIMES'
     );
   }
 
