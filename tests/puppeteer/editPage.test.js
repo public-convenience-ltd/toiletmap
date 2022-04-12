@@ -6,7 +6,10 @@ describe('Homepage', () => {
     await page.setViewport({ width: 1000, height: 1000 });
     await page.evaluateOnNewDocument(() => {
       localStorage.clear();
-      localStorage.setItem('expires_at', '1640995200000');
+      localStorage.setItem(
+        'expires_at',
+        5940995200000 // the far future
+      );
       localStorage.setItem('access_token', 'e');
       localStorage.setItem('id_token', 'ee');
       localStorage.setItem('name', 'test');
@@ -30,6 +33,7 @@ describe('Homepage', () => {
       await expect(page).toMatchElement('[data-testid=toilet-details]');
       await page.click('[data-testid=details-button]');
       await page.click('[data-testid=edit-button]');
+
       // wait for the edit form to be visible (page has loaded fully)
       await page.waitForSelector('form');
       // assert that we have, in fact, reached the edit page.
