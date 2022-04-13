@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Image from 'next/image';
-import logo from './logo.svg';
 import Box from '../Box';
+import logo from '../../../public/logo.svg';
 
 const Logo = React.forwardRef<HTMLDivElement>((props, ref) => (
   <Box width="150px" ref={ref}>
@@ -10,6 +10,7 @@ const Logo = React.forwardRef<HTMLDivElement>((props, ref) => (
       src={logo}
       alt="The Great British Toilet Map"
       layout="responsive"
+      unoptimized={!!process.env.STORYBOOK}
       {...props}
     />
   </Box>
