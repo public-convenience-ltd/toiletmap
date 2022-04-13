@@ -32,6 +32,16 @@ module.exports = {
       loader: 'graphql-tag/loader',
     });
 
-    return config;
+    return {
+      ...config,
+      resolve: {
+        ...config.resolve,
+        fallback: {
+          ...(config.resolve || {}).fallback,
+          https: false,
+          zlib: false,
+        },
+      },
+    };
   },
 };

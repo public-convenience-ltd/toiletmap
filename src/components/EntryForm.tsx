@@ -338,6 +338,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                 src={crosshair}
                 alt="crosshair"
                 css={{ height: '1.5em' }}
+                unoptimized={!!process.env.STORYBOOK}
               />
               &nbsp;)
             </Box>
