@@ -19,9 +19,8 @@ import ngeohash from 'ngeohash';
 
 const KEY_ENTER = 13;
 
-const Markers: React.FC<{
-  setLoadedToilets: (loadedToilets) => void;
-}> = ({ setLoadedToilets }) => {
+const Markers = () => {
+  const [mapState, setMapState] = useMapState();
   const map = useMap();
 
   const isLocalisedView = map.getZoom() < 13;
@@ -39,17 +38,22 @@ const Markers: React.FC<{
 
   const geohashTile = ngeohash.encode(tileLat, tileLng, hashPrecision);
   const neighbours = ngeohash.neighbors(geohashTile);
+
   const surroundingTiles = neighbours.flatMap((n) => ngeohash.neighbors(n));
+
+  // Spread surrounding tiles into set to de-duplicate geohash entries.
   const neighbourSet = new Set([...surroundingTiles]);
 
+  const loadedGeohashes = Array.from(neighbourSet);
+
   useEffect(() => {
-    setLoadedToilets(neighbourSet);
+    setMapState({ ...mapState, currentlyLoadedGeohashes: loadedGeohashes });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tileLat, tileLng]);
+  }, [JSON.stringify(loadedGeohashes)]);
 
   return (
     <>
-      {Array.from(neighbourSet).map((geohash) => (
+      {loadedGeohashes.map((geohash) => (
         <MarkerGroup key={geohash} geohash={geohash} />
       ))}
     </>
@@ -67,18 +71,6 @@ const MarkerGroup: React.FC<{
   const { data } = useLoosByGeohashQuery({
     variables: { geohash },
   });
-
-  useEffect(() => {
-    if (data) {
-      setMapState({
-        loadedGroups: {
-          ...mapState.loadedGroups,
-          [geohash]: data?.loosByGeohash.map(parseCompressedLoo),
-        },
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
 
   const mcg = useMemo(
     () =>

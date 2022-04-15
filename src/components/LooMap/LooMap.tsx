@@ -19,6 +19,8 @@ import React from 'react';
 import router from 'next/router';
 import ZoomControl from './ZoomControl';
 import crosshairSvg from '../../../public/crosshair.svg';
+import { getApolloClient } from '../../api-client/withApollo';
+import loosByGeohash from '../../api-client/operations/loosByGeohash.graphql';
 
 const MapTracker = () => {
   const [, setMapState] = useMapState();
@@ -59,12 +61,24 @@ const LooMap: React.FC<LooMapProps> = ({
 }) => {
   const [mapState, setMapState] = useMapState();
 
-  const [loadedToilets, setLoadedToilets] = useState(new Set());
-  const [hydratedToilets, setHydratedToilets] = useState<CompressedLooObject[]>(
-    []
-  );
+  const [hydratedToilets] = useState<CompressedLooObject[]>([]);
   const [announcement, setAnnouncement] = React.useState(null);
   const [intersectingToilets, setIntersectingToilets] = useState([]);
+  const apolloClient = getApolloClient();
+  useEffect(() => {
+    for (const hashy of mapState.currentlyLoadedGeohashes) {
+      console.log(
+        apolloClient.cache.readQuery({
+          query: loosByGeohash,
+          variables: {
+            geohash: hashy,
+          },
+          optimistic: true,
+        })
+      );
+    }
+  }, [apolloClient.cache, mapState.currentlyLoadedGeohashes]);
+
   const [renderAccessibilityOverlays, setRenderAccessibilityOverlays] =
     useState(showAccessibilityOverlay);
 
@@ -134,13 +148,6 @@ const LooMap: React.FC<LooMapProps> = ({
       };
     }
   }, [withAccessibilityOverlays, renderAccessibilityOverlays, mapState.map]);
-
-  useEffect(() => {
-    const loadedLooValues = Array.from(loadedToilets.values()).flatMap(
-      (v) => mapState.loadedGroups[v as string]
-    );
-    setHydratedToilets(loadedLooValues);
-  }, [loadedToilets, mapState.loadedGroups]);
 
   // Begin location service initialisation.
   const onLocationFound = useCallback(
@@ -279,7 +286,7 @@ const LooMap: React.FC<LooMapProps> = ({
 
         {mapState.focus && <CurrentLooMarker loo={mapState.focus} />}
 
-        <Markers setLoadedToilets={setLoadedToilets} />
+        <Markers />
 
         <Media greaterThan="md">
           <div

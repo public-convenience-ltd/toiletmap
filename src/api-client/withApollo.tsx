@@ -71,32 +71,10 @@ function createApolloClient() {
 
 /**
  * The big trick here is to merge the initialState from the pageprops with the client's current state see: https://developers.wpengine.com/blog/apollo-client-cache-rehydration-in-next-js
- * When we don't do theis the accumulates apolloState gets wiped out by any incoming static page props
+ * When we don't do the is the accumulates apolloState gets wiped out by any incoming static page props
  */
-export function getApolloClient(
-  initialState: NormalizedCacheObject | null = null
-) {
+export function getApolloClient() {
   const _apolloClient = apolloClient ?? createApolloClient();
-
-  // If a page has Next.js data fetching methods that use Apollo Client, the initial state
-  // gets hydrated here
-  if (initialState) {
-    // Get existing cache, loaded during client side data fetching
-    const existingCache = _apolloClient.extract();
-
-    // Merge the existing cache into data passed from getStaticProps/getServerSideProps
-    // const data = merge(initialState, existingCache, {
-    //   arrayMerge: (destinationArray, sourceArray) => [
-    //     ...sourceArray,
-    //     ...destinationArray.filter((d) =>
-    //       sourceArray.every((s) => !isEqual(d, s))
-    //     ),
-    //   ],
-    // });
-
-    // Restore the cache with the merged data
-    _apolloClient.cache.restore(existingCache);
-  }
 
   // For SSG and SSR always create a new Apollo Client
   if (typeof window === 'undefined') return _apolloClient;
@@ -110,7 +88,7 @@ export function getApolloClient(
 export const withApollo = (Comp: NextPage) =>
   function ApolloWrapper(props: unknown) {
     return (
-      <ApolloProvider client={getApolloClient(props.apolloState)}>
+      <ApolloProvider client={getApolloClient()}>
         <Comp {...props} />
       </ApolloProvider>
     );

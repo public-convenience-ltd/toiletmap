@@ -2,7 +2,7 @@ import { Map } from 'leaflet';
 import React, { Dispatch, useEffect } from 'react';
 import { Loo } from '../api-client/graphql';
 import config, { Filters, FILTERS_KEY } from '../config';
-import { CompressedLooObject } from '../lib/loo';
+// import { CompressedLooObject } from '../lib/loo';
 
 import { UseLocateMapControl } from './LooMap/useLocateMapControl';
 
@@ -27,7 +27,7 @@ interface MapState {
   focus?: Loo;
   map?: Map;
   locationServices?: UseLocateMapControl;
-  loadedGroups?: Record<string, CompressedLooObject>;
+  currentlyLoadedGeohashes?: string[];
 }
 
 const reducer = (state: MapState, newState: MapState) => {
@@ -51,7 +51,7 @@ export const MapStateProvider = ({ children }) => {
     zoom: 16,
     appliedFilters: initialFilterState,
     searchLocation: undefined,
-    loadedGroups: {},
+    currentlyLoadedGeohashes: [],
   });
 
   // keep local storage and state in sync
