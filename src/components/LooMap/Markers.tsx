@@ -46,10 +46,10 @@ const Markers = () => {
       const hashPrecision = isInternationalView
         ? 2
         : isNationalView
-        ? 2
-        : isBirdsEyeView
         ? 3
-        : 4;
+        : isBirdsEyeView
+        ? 4
+        : 5;
 
       const bbSouth =
         boundingBox.getSouth() > 49.699282 ? boundingBox.getSouth() : 49.699282;
