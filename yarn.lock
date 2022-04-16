@@ -5043,7 +5043,7 @@
 
 "@types/leaflet.markercluster@^1.4.6":
   version "1.4.6"
-  resolved "https://registry.npmjs.org/@types/leaflet.markercluster/-/leaflet.markercluster-1.4.6.tgz"
+  resolved "https://registry.yarnpkg.com/@types/leaflet.markercluster/-/leaflet.markercluster-1.4.6.tgz#1159460b374ba5e329cb678d0e427f99dca75be5"
   integrity sha512-MD+bUDzxHznY0zOlSBUAMNQUGB2+xpJPKrR2MNEoBAAKa3QTKJJySBtCqWyGLvYNNO+Cdyc2c64aF2IFwe4fcQ==
   dependencies:
     "@types/leaflet" "*"
