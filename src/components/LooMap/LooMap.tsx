@@ -64,23 +64,30 @@ const LooMap: React.FC<LooMapProps> = ({
   const [hydratedToilets] = useState<CompressedLooObject[]>([]);
   const [announcement, setAnnouncement] = React.useState(null);
   const [intersectingToilets, setIntersectingToilets] = useState([]);
-  const apolloClient = getApolloClient();
-  useEffect(() => {
-    for (const hashy of mapState.currentlyLoadedGeohashes) {
-      console.log(
-        apolloClient.cache.readQuery({
-          query: loosByGeohash,
-          variables: {
-            geohash: hashy,
-          },
-          optimistic: true,
-        })
-      );
-    }
-  }, [apolloClient.cache, mapState.currentlyLoadedGeohashes]);
 
   const [renderAccessibilityOverlays, setRenderAccessibilityOverlays] =
     useState(showAccessibilityOverlay);
+
+  const apolloClient = getApolloClient();
+  useEffect(() => {
+    if (mapState.markersLoading === false) {
+      const geohashMap = mapState.currentlyLoadedGeohashes.flatMap((geohash) =>
+        apolloClient.cache.readQuery({
+          query: loosByGeohash,
+          variables: {
+            geohash,
+          },
+        })
+      );
+
+      console.log(geohashMap);
+    }
+  }, [
+    apolloClient.cache,
+    mapState.currentlyLoadedGeohashes,
+    mapState.markersLoading,
+    renderAccessibilityOverlays,
+  ]);
 
   // Load a reference to the leaflet map into application state so components that aren't below in the tree can access.
   const setMap = useCallback(

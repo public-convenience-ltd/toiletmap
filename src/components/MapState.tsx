@@ -28,6 +28,7 @@ interface MapState {
   map?: Map;
   locationServices?: UseLocateMapControl;
   currentlyLoadedGeohashes?: string[];
+  markersLoading?: boolean;
 }
 
 const reducer = (state: MapState, newState: MapState) => {
@@ -52,7 +53,8 @@ export const MapStateProvider = ({ children }) => {
     appliedFilters: initialFilterState,
     searchLocation: undefined,
     currentlyLoadedGeohashes: [],
-  });
+    markersLoading: false,
+  } as MapState);
 
   // keep local storage and state in sync
   useEffect(() => {

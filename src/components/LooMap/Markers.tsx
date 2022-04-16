@@ -20,41 +20,84 @@ import ngeohash from 'ngeohash';
 const KEY_ENTER = 13;
 
 const Markers = () => {
+  const [loadedGroupCount, setLoadedGroupCount] = useState(0);
   const [mapState, setMapState] = useMapState();
+  const [userInteraction, setUserInteraction] = useState(false);
+
   const map = useMap();
 
-  const isLocalisedView = map.getZoom() < 13;
-  const isBirdsEyeView = map.getZoom() < 10;
-  const isNationalView = map.getZoom() < 8;
-  const hashPrecision = isNationalView
-    ? 2
-    : isBirdsEyeView
-    ? 3
-    : isLocalisedView
-    ? 4
-    : 5;
-  const tileLat = isNationalView ? 51.509865 : map.getCenter().lat;
-  const tileLng = isNationalView ? -0.118092 : map.getCenter().lng;
-
-  const geohashTile = ngeohash.encode(tileLat, tileLng, hashPrecision);
-  const neighbours = ngeohash.neighbors(geohashTile);
-
-  const surroundingTiles = neighbours.flatMap((n) => ngeohash.neighbors(n));
-
-  // Spread surrounding tiles into set to de-duplicate geohash entries.
-  const neighbourSet = new Set([...surroundingTiles]);
-
-  const loadedGeohashes = Array.from(neighbourSet);
+  const boundingBox = map.getBounds();
+  const centre = map.getCenter();
 
   useEffect(() => {
-    setMapState({ ...mapState, currentlyLoadedGeohashes: loadedGeohashes });
+    map.on('moveend', () => setTimeout(() => setUserInteraction(false), 2000));
+    map.on('zoomend', () => setTimeout(() => setUserInteraction(false), 2000));
+
+    map.on('zoomstart', () => setUserInteraction(true));
+    map.on('movestart', () => setUserInteraction(true));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(loadedGeohashes)]);
+  }, []);
+
+  useEffect(() => {
+    if (userInteraction === false) {
+      const isBirdsEyeView = map.getZoom() < 13;
+      const isNationalView = map.getZoom() < 10;
+      const isInternationalView = map.getZoom() < 8;
+      const hashPrecision = isInternationalView
+        ? 2
+        : isNationalView
+        ? 2
+        : isBirdsEyeView
+        ? 3
+        : 4;
+
+      const bbSouth =
+        boundingBox.getSouth() > 49.699282 ? boundingBox.getSouth() : 49.699282;
+      const bbNorth =
+        boundingBox.getNorth() < 62.957486 ? boundingBox.getNorth() : 62.957486;
+      const bbWest =
+        boundingBox.getWest() > -11.227341 ? boundingBox.getWest() : -11.227341;
+      const bbEast =
+        boundingBox.getEast() < 3.010941 ? boundingBox.getEast() : 3.010941;
+
+      const loadedGeohashes = ngeohash.bboxes(
+        bbSouth,
+        bbWest,
+        bbNorth,
+        bbEast,
+        hashPrecision
+      );
+
+      setLoadedGroupCount(0);
+
+      setMapState({
+        ...mapState,
+        currentlyLoadedGeohashes: loadedGeohashes,
+        markersLoading: true,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [centre.lat, centre.lng, map.getZoom, userInteraction]);
+
+  useEffect(() => {
+    if (loadedGroupCount === mapState.currentlyLoadedGeohashes.length - 1) {
+      setMapState({ ...mapState, markersLoading: false });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadedGroupCount]);
+
+  const incrLoadedGroupCount = useCallback(() => {
+    setLoadedGroupCount(loadedGroupCount + 1);
+  }, [loadedGroupCount]);
 
   return (
     <>
-      {loadedGeohashes.map((geohash) => (
-        <MarkerGroup key={geohash} geohash={geohash} />
+      {mapState.currentlyLoadedGeohashes.map((geohash) => (
+        <MarkerGroup
+          key={geohash}
+          geohash={geohash}
+          incrLoadedGroupCount={incrLoadedGroupCount}
+        />
       ))}
     </>
   );
@@ -62,13 +105,14 @@ const Markers = () => {
 
 const MarkerGroup: React.FC<{
   geohash: string;
-}> = ({ geohash }) => {
+  incrLoadedGroupCount: () => void;
+}> = ({ geohash, incrLoadedGroupCount }) => {
   const router = useRouter();
   const [mapState, setMapState] = useMapState();
   const map = useMap();
   const { appliedFilters: filters } = mapState;
 
-  const { data } = useLoosByGeohashQuery({
+  const { data, loading } = useLoosByGeohashQuery({
     variables: { geohash },
   });
 
@@ -82,6 +126,13 @@ const MarkerGroup: React.FC<{
     []
   );
 
+  useEffect(() => {
+    if (loading === false) {
+      incrLoadedGroupCount();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
+
   // Uncomment this to calculate the chunk bounds to draw a debug box.
   // const bbox = ngeohash.decode_bbox(geohash);
   // const bounds = L.rectangle(
@@ -94,9 +145,9 @@ const MarkerGroup: React.FC<{
         new L.LatLng(toilet.location.lat, toilet.location.lng),
         {
           zIndexOffset: 0,
-          icon: new ToiletMarkerIcon({
-            toiletId: toilet.id,
-            isHighlighted: toilet.id === mapState?.focus?.id,
+          icon: ToiletMarkerIcon({
+            toiletId: toilet.id as string,
+            isHighlighted: (toilet.id as string) === mapState?.focus?.id,
           }),
           alt: 'Public Toilet',
           keyboard: false,
@@ -168,7 +219,7 @@ const MarkerGroup: React.FC<{
       mcg.clearLayers();
       mcg.addLayers(getLooGroupLayers);
       // uncomment this to highlight the bounds of each marker chunk for easier debugging.
-      //mcg.addLayers([bounds]);
+      // mcg.addLayers([bounds]);
       map.addLayer(mcg);
     }
     return () => {

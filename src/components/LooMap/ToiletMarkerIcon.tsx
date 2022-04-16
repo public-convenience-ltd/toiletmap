@@ -7,7 +7,7 @@ const getIconAnchor = (dimensions: number[]) => [
   dimensions[1],
 ];
 
-const getSVGHTML = ({ isHighlighted }) => {
+const getSVGHTML = ({ isHighlighted = false }) => {
   return `
     <svg viewBox="-1 -1 21 33" xmlns="http://www.w3.org/2000/svg">
       <path d="M10 0C4.47632 0 0 4.47529 0 10C0 19.5501 10 32 10 32C10 32 20 19.5501 20 10C20 4.47529 15.5237 0 10 0Z" fill="#ED3D63" stroke="white"/>
@@ -20,34 +20,30 @@ const getSVGHTML = ({ isHighlighted }) => {
   `;
 };
 
-const ToiletMarkerIcon = L.DivIcon.extend({
-  options: {
-    highlight: false,
-    toiletId: null,
-  },
+const ToiletMarkerIcon = ({ isHighlighted = false, toiletId = undefined }) =>
+  new (L.DivIcon.extend({
+    options: {
+      highlight: isHighlighted,
+      toiletId,
+    },
 
-  initialize: function (options: {
-    isHighlighted: unknown;
-    toiletId: unknown;
-  }) {
-    // eslint-disable-next-line functional/immutable-data
-    this.options = {
-      ...this.options,
-      iconSize: options.isHighlighted
-        ? LARGE_ICON_DIMENSSIONS
-        : ICON_DIMENSIONS,
-      iconAnchor: options.isHighlighted
-        ? getIconAnchor(LARGE_ICON_DIMENSSIONS)
-        : getIconAnchor(ICON_DIMENSIONS),
-      html: `
-        <div data-testid="toiletMarker:${options.toiletId}">
-          ${getSVGHTML(options)}
+    initialize: function () {
+      // eslint-disable-next-line functional/immutable-data
+      this.options = {
+        ...this.options,
+        iconSize: isHighlighted ? LARGE_ICON_DIMENSSIONS : ICON_DIMENSIONS,
+        iconAnchor: isHighlighted
+          ? getIconAnchor(LARGE_ICON_DIMENSSIONS)
+          : getIconAnchor(ICON_DIMENSIONS),
+        html: `
+        <div data-testid="toiletMarker:${toiletId}">
+          ${getSVGHTML({ toiletId, isHighlighted })}
         </div>
       `,
-    };
+      };
 
-    L.Util.setOptions(this, options);
-  },
-});
+      L.Util.setOptions(this, { toiletId, isHighlighted });
+    },
+  }))();
 
 export default ToiletMarkerIcon;
