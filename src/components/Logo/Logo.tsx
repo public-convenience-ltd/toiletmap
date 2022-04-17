@@ -11,6 +11,7 @@ const Logo = React.forwardRef<HTMLDivElement>((props, ref) => (
       alt="The Great British Toilet Map"
       layout="responsive"
       unoptimized={!!process.env.STORYBOOK}
+      priority={true}
       {...props}
     />
   </Box>
