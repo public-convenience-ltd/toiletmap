@@ -129,8 +129,10 @@ const MarkerGroup: React.FC<{
             setMapState({ searchLocation: undefined });
             router.push(`/loos/${toilet.id}`);
           }
+        })
+        .on('mouseover', () => {
+          router.prefetch(`/loos/${toilet.id}`);
         });
-
       marker.getElement()?.setAttribute('role', 'link');
       marker.getElement()?.setAttribute('aria-label', 'Public Toilet');
       return marker;
