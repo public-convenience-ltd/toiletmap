@@ -14,13 +14,10 @@ import AccessibilityIntersection from './AccessibilityIntersection';
 import AccessibilityList from './AccessibilityList';
 import VisuallyHidden from '../VisuallyHidden';
 import 'focus-visible';
-import { CompressedLooObject } from '../../lib/loo';
 import React from 'react';
 import router from 'next/router';
 import ZoomControl from './ZoomControl';
 import crosshairSvg from '../../../public/crosshair.svg';
-import { getApolloClient } from '../../api-client/withApollo';
-import loosByGeohash from '../../api-client/operations/loosByGeohash.graphql';
 
 const MapTracker = () => {
   const [, setMapState] = useMapState();
@@ -61,33 +58,12 @@ const LooMap: React.FC<LooMapProps> = ({
 }) => {
   const [mapState, setMapState] = useMapState();
 
-  const [hydratedToilets] = useState<CompressedLooObject[]>([]);
+  // const [hydratedToilets, setHydratedToilets] = useState<CompressedLooObject[]>([]);
   const [announcement, setAnnouncement] = React.useState(null);
   const [intersectingToilets, setIntersectingToilets] = useState([]);
 
   const [renderAccessibilityOverlays, setRenderAccessibilityOverlays] =
     useState(showAccessibilityOverlay);
-
-  const apolloClient = getApolloClient();
-  useEffect(() => {
-    if (mapState.markersLoading === false) {
-      const geohashMap = mapState.currentlyLoadedGeohashes.flatMap((geohash) =>
-        apolloClient.cache.readQuery({
-          query: loosByGeohash,
-          variables: {
-            geohash,
-          },
-        })
-      );
-
-      console.log(geohashMap);
-    }
-  }, [
-    apolloClient.cache,
-    mapState.currentlyLoadedGeohashes,
-    mapState.markersLoading,
-    renderAccessibilityOverlays,
-  ]);
 
   // Load a reference to the leaflet map into application state so components that aren't below in the tree can access.
   const setMap = useCallback(
@@ -314,10 +290,8 @@ const LooMap: React.FC<LooMapProps> = ({
           <>
             <AccessibilityIntersection
               className="accessibility-box"
-              toilets={hydratedToilets}
               onIntersection={setIntersectingToilets}
               onSelection={keyboardSelectionHandler}
-              center={center}
             />
 
             <AccessibilityList toilets={intersectingToilets} />

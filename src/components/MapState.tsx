@@ -28,7 +28,7 @@ interface MapState {
   map?: Map;
   locationServices?: UseLocateMapControl;
   currentlyLoadedGeohashes?: string[];
-  markersLoading?: boolean;
+  geohashLoadState?: Record<string, boolean>;
 }
 
 const reducer = (state: MapState, newState: MapState) => {
@@ -52,8 +52,8 @@ export const MapStateProvider = ({ children }) => {
     zoom: 16,
     appliedFilters: initialFilterState,
     searchLocation: undefined,
+    geohashLoadState: {},
     currentlyLoadedGeohashes: [],
-    markersLoading: false,
   } as MapState);
 
   // keep local storage and state in sync

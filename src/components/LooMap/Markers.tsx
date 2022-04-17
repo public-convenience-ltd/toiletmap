@@ -16,13 +16,16 @@ import {
   parseCompressedLoo,
 } from '../../lib/loo';
 import ngeohash from 'ngeohash';
+import {
+  useIsUserInteractingWithMap,
+  useMapClusterRadius,
+  useMapGeohashPrecision,
+} from './hooks';
 
 const KEY_ENTER = 13;
 
 const Markers = () => {
-  const [loadedGroupCount, setLoadedGroupCount] = useState(0);
   const [mapState, setMapState] = useMapState();
-  const [userInteractingWithMap, setUserInteractingWithMap] = useState(false);
 
   const map = useMap();
 
@@ -33,49 +36,9 @@ const Markers = () => {
   const { lat: boundingBoxSouth, lng: boundingBoxWest } =
     boundingBox.getSouthWest();
 
-  const zoom = map.getZoom();
-
-  useEffect(() => {
-    map.on('moveend', () =>
-      setTimeout(() => setUserInteractingWithMap(false), 100)
-    );
-    map.on('zoomend', () =>
-      setTimeout(() => setUserInteractingWithMap(false), 100)
-    );
-
-    map.on('zoomstart', () => setUserInteractingWithMap(true));
-    map.on('movestart', () => setUserInteractingWithMap(true));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const geohashPrecision = useMemo(() => {
-    console.log(zoom);
-    switch (true) {
-      case zoom < 8:
-        return 2;
-      case zoom < 11:
-        return 3;
-      case zoom < 13:
-        return 4;
-      default:
-        return 5;
-    }
-  }, [zoom]);
-
-  const maxClusterRadius = useMemo(() => {
-    switch (true) {
-      case zoom < 8:
-        return 200;
-      case zoom < 10:
-        return 150;
-      case zoom < 13:
-        return 125;
-      case zoom < 15:
-        return 100;
-      default:
-        return 10;
-    }
-  }, [zoom]);
+  const userInteractingWithMap = useIsUserInteractingWithMap();
+  const geohashPrecision = useMapGeohashPrecision();
+  const maxClusterRadius = useMapClusterRadius();
 
   const geohashesToLoad = useMemo(() => {
     const bbSouth = boundingBoxSouth > 49.699282 ? boundingBoxSouth : 49.699282;
@@ -92,28 +55,12 @@ const Markers = () => {
   ]);
 
   useEffect(() => {
-    if (userInteractingWithMap === false) {
-      setLoadedGroupCount(0);
-
-      setMapState({
-        ...mapState,
-        currentlyLoadedGeohashes: geohashesToLoad,
-        markersLoading: true,
-      });
-    }
+    setMapState({
+      ...mapState,
+      currentlyLoadedGeohashes: geohashesToLoad,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [geohashesToLoad, userInteractingWithMap]);
-
-  useEffect(() => {
-    if (loadedGroupCount === mapState.currentlyLoadedGeohashes.length - 1) {
-      setMapState({ ...mapState, markersLoading: false });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedGroupCount]);
-
-  const incrLoadedGroupCount = useCallback(() => {
-    setLoadedGroupCount(loadedGroupCount + 1);
-  }, [loadedGroupCount]);
 
   return (
     <>
@@ -121,7 +68,6 @@ const Markers = () => {
         <MarkerGroup
           key={geohash}
           geohash={geohash}
-          incrLoadedGroupCount={incrLoadedGroupCount}
           maxClusterRadius={maxClusterRadius}
         />
       ))}
@@ -132,15 +78,14 @@ const Markers = () => {
 const MarkerGroup: React.FC<{
   geohash: string;
   maxClusterRadius: number;
-  incrLoadedGroupCount: () => void;
-}> = ({ geohash, incrLoadedGroupCount, maxClusterRadius }) => {
+}> = ({ geohash, maxClusterRadius }) => {
   const router = useRouter();
   const [mapState, setMapState] = useMapState();
   const map = useMap();
 
   const { appliedFilters: filters } = mapState;
 
-  const { data, loading } = useLoosByGeohashQuery({
+  const { data } = useLoosByGeohashQuery({
     variables: { geohash },
   });
 
@@ -152,13 +97,6 @@ const MarkerGroup: React.FC<{
       }),
     [maxClusterRadius]
   );
-
-  useEffect(() => {
-    if (loading === false) {
-      incrLoadedGroupCount();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading]);
 
   // Uncomment this to calculate the chunk bounds to draw a debug box.
   // const bbox = ngeohash.decode_bbox(geohash);
@@ -240,6 +178,18 @@ const MarkerGroup: React.FC<{
     initialiseMarker,
     mapState.focus,
   ]);
+
+  useEffect(() => {
+    if (getLooGroupLayers && mapState.geohashLoadState[geohash] === undefined) {
+      setMapState({
+        ...mapState,
+        geohashLoadState: {
+          ...mapState.geohashLoadState,
+          [geohash]: true,
+        },
+      });
+    }
+  }, [geohash, getLooGroupLayers, mapState, setMapState]);
 
   useEffect(() => {
     if (getLooGroupLayers) {

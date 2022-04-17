@@ -14,9 +14,14 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "jsxImportSource": "@emotion/react",
-    "incremental": true,
-    "types": ["./src/@types/clusterGroup.d.ts"]
+    "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "next.config.js",
+    "src/@types/clusterGroup.d.ts"
+  ],
   "exclude": ["node_modules"]
 }
