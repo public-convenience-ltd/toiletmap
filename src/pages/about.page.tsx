@@ -61,35 +61,71 @@ const AboutPage = () => {
           joint venture between researchers Dr Jo-Anne Bichard and Gail Ramster
           (who created the map at the RCA Helen Hamlyn Centre for Design) and
           software development company{' '}
-          <Button
-            variant="link"
-            as="a"
-            href="https://www.neontribe.co.uk/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Neontribe
-          </Button>{' '}
+          <Link passHref href="https://www.neontribe.co.uk/">
+            <Button
+              variant="link"
+              as="a"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Neontribe
+            </Button>
+          </Link>{' '}
           (who designed and built it).
         </p>
         <p>
           The information comes from the public - anyone can go on the website
           and{' '}
-          <Button variant="link" as={Link} href="/">
-            add, edit or remove toilets
-          </Button>
+          <Link href="/" passHref>
+            <Button variant="link">add, edit or remove toilets</Button>
+          </Link>
           . We also use open data and request information from councils,{' '}
+          <Link passHref href="https://www.openstreetmap.org/">
+            <Button
+              variant="link"
+              as="a"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OpenStreetMap
+            </Button>
+          </Link>
+          , private companies and organisations.
+        </p>
+        <SubHeading id="contributing">Contributing</SubHeading>
+        <p>
+          We cover each feature of the map and how you can go about using them
+          to add or edit toilets yourself in our Volunteer Help Guide, available
+          to download below.
+        </p>
+        <Spacer mb={2} />
+        <Link passHref href="Toilet.Map.Volunteer.Help.Guide.pdf">
           <Button
-            variant="link"
             as="a"
-            href="https://www.openstreetmap.org/"
+            variant="primary"
             target="_blank"
             rel="noopener noreferrer"
           >
-            OpenStreetMap
+            Download volunteer help guide
           </Button>
-          , private companies and organisations.
+        </Link>
+        <Spacer mb={3} />
+        <p>
+          A handy printable checklist designed to make it easier for you to
+          collect data away from the computer for submitting to the map later is
+          also available for download.
         </p>
+        <Spacer mb={2} />
+        <Link passHref href={'/GBPTM.Toilet.Checklist.pdf'}>
+          <Button
+            as="a"
+            variant="primary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Download toilet checklist
+          </Button>
+        </Link>
         <SubHeading>Publicly Accessible Toilets</SubHeading>
         <p>
           The project aims to map all publicly-accessible toilets - that means
@@ -128,16 +164,20 @@ const AboutPage = () => {
         <p>
           If you have any problems updating the toilets, or wish to send us
           toilet details or comments, please contact{' '}
-          <Button variant="link" as="a" href="mailto:gbtoiletmap@gmail.com">
-            gbtoiletmap@gmail.com
-          </Button>
+          <Link passHref href="mailto:gbtoiletmap@gmail.com">
+            <Button variant="link" as="a">
+              gbtoiletmap@gmail.com
+            </Button>
+          </Link>
           .
         </p>
         <SubHeading>The Explorer</SubHeading>
         <p>
-          <Button variant="link" as="a" href="">
-            <Link href="/explorer">Visit the Explorer</Link>
-          </Button>
+          <Link passHref href="/explorer">
+            <Button variant="link" as="a">
+              Visit the Explorer
+            </Button>
+          </Link>
           &nbsp;to get an overview of the statistics and details related to the
           Toilet Map. These statistics are calculated on-demand, so will be up
           to date, and can help to provide a overview of public toilet coverage

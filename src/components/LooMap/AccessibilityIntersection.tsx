@@ -1,38 +1,72 @@
-import React, { useRef, useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Rectangle, useMap } from 'react-leaflet';
 import { CompressedLooObject } from '../../lib/loo';
+import { Rectangle, useMap } from 'react-leaflet';
+import ngeohash from 'ngeohash';
+import {
+  useIsUserInteractingWithMap,
+  useMapGeohashPrecision,
+  useRetrieveCachedLoos,
+} from './hooks';
 
 // Keycodes for numbers 0-5
 // https://github.com/Leaflet/Leaflet/issues/5766
 const KEY_CODES = [48, 49, 50, 51, 52, 53];
 
 const AccessibilityIntersection = ({
-  toilets,
-  center,
   onIntersection,
   onSelection,
   className,
 }: {
-  toilets: CompressedLooObject[];
-  center: { lat: number; lng: number };
   onIntersection: (compressedLoos: CompressedLooObject[]) => void;
   onSelection: (selectionIndex: string | number) => void;
   className: string;
 }) => {
   const map = useMap();
-  const rectangleRef = useRef(null);
+
+  const bounds = map?.getBounds().pad(-0.4);
+  const { lat: boundingBoxNorth, lng: boundingBoxEast } = bounds.getNorthEast();
+  const { lat: boundingBoxSouth, lng: boundingBoxWest } = bounds.getSouthWest();
+
+  const userInteractingWithMap = useIsUserInteractingWithMap();
+
+  const geohashPrecision = useMapGeohashPrecision();
+
+  const geohashIntersections = useMemo(() => {
+    if (bounds) {
+      return ngeohash.bboxes(
+        boundingBoxSouth,
+        boundingBoxWest,
+        boundingBoxNorth,
+        boundingBoxEast,
+        geohashPrecision
+      );
+    }
+
+    return [];
+  }, [
+    bounds,
+    boundingBoxSouth,
+    boundingBoxWest,
+    boundingBoxNorth,
+    boundingBoxEast,
+    geohashPrecision,
+  ]);
+
+  const loos = useRetrieveCachedLoos(geohashIntersections);
+
   useEffect(() => {
-    const rectangle = rectangleRef.current;
+    if (userInteractingWithMap === false) {
+      const contains = loos
+        ?.filter((toilet) => toilet && bounds.contains(toilet.location))
+        .slice(0, KEY_CODES.length);
+      if (contains) {
+        onIntersection(contains);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userInteractingWithMap]);
 
-    const contains = toilets
-      .filter(
-        (toilet) => toilet && rectangle?.getBounds().contains(toilet.location)
-      )
-      .slice(0, KEY_CODES.length);
-
-    onIntersection(contains);
-  }, [center, toilets, onIntersection]);
   useEffect(() => {
     const keyDownHandler = (event: { keyCode: number }) => {
       const selectionIndex = KEY_CODES.indexOf(event.keyCode);
@@ -47,31 +81,13 @@ const AccessibilityIntersection = ({
       document.removeEventListener('keydown', keyDownHandler);
     };
   }, [onSelection]);
-  return (
-    <Rectangle
-      className={className}
-      bounds={map?.getBounds().pad(-0.4)}
-      ref={rectangleRef}
-    ></Rectangle>
-  );
+  return <Rectangle className={className} bounds={bounds}></Rectangle>;
 };
 
 // eslint-disable-next-line functional/immutable-data
 AccessibilityIntersection.propTypes = {
-  toilets: PropTypes.arrayOf(
-    PropTypes.shape({
-      location: PropTypes.shape({
-        lat: PropTypes.number.isRequired,
-        lng: PropTypes.number.isRequired,
-      }).isRequired,
-    })
-  ),
   onIntersection: PropTypes.func.isRequired,
   onSelection: PropTypes.func.isRequired,
-  center: PropTypes.shape({
-    lat: PropTypes.number,
-    lng: PropTypes.number,
-  }).isRequired,
 };
 
 export default AccessibilityIntersection;

@@ -36,6 +36,7 @@ export const parseCompressedLoo = (
   const loo = compressedLoo.split('|');
   const [looId, geohash, filterBitmask] = loo;
   const { latitude, longitude } = ngeohash.decode(geohash);
+
   return {
     id: looId,
     location: {

@@ -71,7 +71,6 @@ const LooPage: PageFindLooByIdComp = (props) => {
           >
             <ToiletDetailsPanel
               data={props?.data?.loo}
-              isLoading={false}
               startExpanded={true}
               onDimensionsChange={setToiletPanelDimensions}
             >

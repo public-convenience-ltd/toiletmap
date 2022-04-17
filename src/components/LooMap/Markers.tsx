@@ -16,41 +16,60 @@ import {
   parseCompressedLoo,
 } from '../../lib/loo';
 import ngeohash from 'ngeohash';
+import {
+  useIsUserInteractingWithMap,
+  useMapClusterRadius,
+  useMapGeohashPrecision,
+} from './hooks';
 
 const KEY_ENTER = 13;
 
-const Markers: React.FC<{
-  setLoadedToilets: (loadedToilets) => void;
-}> = ({ setLoadedToilets }) => {
+const Markers = () => {
+  const [mapState, setMapState] = useMapState();
+
   const map = useMap();
 
-  const isLocalisedView = map.getZoom() < 13;
-  const isBirdsEyeView = map.getZoom() < 10;
-  const isNationalView = map.getZoom() < 8;
-  const hashPrecision = isNationalView
-    ? 2
-    : isBirdsEyeView
-    ? 3
-    : isLocalisedView
-    ? 4
-    : 5;
-  const tileLat = isNationalView ? 51.509865 : map.getCenter().lat;
-  const tileLng = isNationalView ? -0.118092 : map.getCenter().lng;
+  const boundingBox = map.getBounds();
 
-  const geohashTile = ngeohash.encode(tileLat, tileLng, hashPrecision);
-  const neighbours = ngeohash.neighbors(geohashTile);
-  const surroundingTiles = neighbours.flatMap((n) => ngeohash.neighbors(n));
-  const neighbourSet = new Set([...surroundingTiles]);
+  const { lat: boundingBoxNorth, lng: boundingBoxEast } =
+    boundingBox.getNorthEast();
+  const { lat: boundingBoxSouth, lng: boundingBoxWest } =
+    boundingBox.getSouthWest();
+
+  const userInteractingWithMap = useIsUserInteractingWithMap();
+  const geohashPrecision = useMapGeohashPrecision();
+  const maxClusterRadius = useMapClusterRadius();
+
+  const geohashesToLoad = useMemo(() => {
+    const bbSouth = boundingBoxSouth > 49.699282 ? boundingBoxSouth : 49.699282;
+    const bbNorth = boundingBoxNorth < 62.957486 ? boundingBoxNorth : 62.957486;
+    const bbWest = boundingBoxWest > -11.227341 ? boundingBoxWest : -11.227341;
+    const bbEast = boundingBoxEast < 3.010941 ? boundingBoxEast : 3.010941;
+    return ngeohash.bboxes(bbSouth, bbWest, bbNorth, bbEast, geohashPrecision);
+  }, [
+    boundingBoxEast,
+    geohashPrecision,
+    boundingBoxNorth,
+    boundingBoxSouth,
+    boundingBoxWest,
+  ]);
 
   useEffect(() => {
-    setLoadedToilets(neighbourSet);
+    setMapState({
+      ...mapState,
+      currentlyLoadedGeohashes: geohashesToLoad,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tileLat, tileLng]);
+  }, [geohashesToLoad, userInteractingWithMap]);
 
   return (
     <>
-      {Array.from(neighbourSet).map((geohash) => (
-        <MarkerGroup key={geohash} geohash={geohash} />
+      {mapState.currentlyLoadedGeohashes.map((geohash) => (
+        <MarkerGroup
+          key={geohash}
+          geohash={geohash}
+          maxClusterRadius={maxClusterRadius}
+        />
       ))}
     </>
   );
@@ -58,36 +77,25 @@ const Markers: React.FC<{
 
 const MarkerGroup: React.FC<{
   geohash: string;
-}> = ({ geohash }) => {
+  maxClusterRadius: number;
+}> = ({ geohash, maxClusterRadius }) => {
   const router = useRouter();
   const [mapState, setMapState] = useMapState();
   const map = useMap();
+
   const { appliedFilters: filters } = mapState;
 
   const { data } = useLoosByGeohashQuery({
     variables: { geohash },
   });
 
-  useEffect(() => {
-    if (data) {
-      setMapState({
-        loadedGroups: {
-          ...mapState.loadedGroups,
-          [geohash]: data?.loosByGeohash.map(parseCompressedLoo),
-        },
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
-
   const mcg = useMemo(
     () =>
       L.markerClusterGroup({
-        chunkedLoading: true,
+        maxClusterRadius,
         showCoverageOnHover: false,
-        chunkInterval: 500,
       }),
-    []
+    [maxClusterRadius]
   );
 
   // Uncomment this to calculate the chunk bounds to draw a debug box.
@@ -102,9 +110,9 @@ const MarkerGroup: React.FC<{
         new L.LatLng(toilet.location.lat, toilet.location.lng),
         {
           zIndexOffset: 0,
-          icon: new ToiletMarkerIcon({
-            toiletId: toilet.id,
-            isHighlighted: toilet.id === mapState?.focus?.id,
+          icon: ToiletMarkerIcon({
+            toiletId: toilet.id as string,
+            isHighlighted: (toilet.id as string) === mapState?.focus?.id,
           }),
           alt: 'Public Toilet',
           keyboard: false,
@@ -121,8 +129,10 @@ const MarkerGroup: React.FC<{
             setMapState({ searchLocation: undefined });
             router.push(`/loos/${toilet.id}`);
           }
+        })
+        .on('mouseover', () => {
+          router.prefetch(`/loos/${toilet.id}`);
         });
-
       marker.getElement()?.setAttribute('role', 'link');
       marker.getElement()?.setAttribute('aria-label', 'Public Toilet');
       return marker;
@@ -172,11 +182,23 @@ const MarkerGroup: React.FC<{
   ]);
 
   useEffect(() => {
+    if (getLooGroupLayers && mapState.geohashLoadState[geohash] === undefined) {
+      setMapState({
+        ...mapState,
+        geohashLoadState: {
+          ...mapState.geohashLoadState,
+          [geohash]: true,
+        },
+      });
+    }
+  }, [geohash, getLooGroupLayers, mapState, setMapState]);
+
+  useEffect(() => {
     if (getLooGroupLayers) {
       mcg.clearLayers();
       mcg.addLayers(getLooGroupLayers);
       // uncomment this to highlight the bounds of each marker chunk for easier debugging.
-      //mcg.addLayers([bounds]);
+      // mcg.addLayers([bounds]);
       map.addLayer(mcg);
     }
     return () => {

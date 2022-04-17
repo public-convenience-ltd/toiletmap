@@ -16,6 +16,12 @@
     "jsxImportSource": "@emotion/react",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "next.config.js",
+    "src/@types/clusterGroup.d.ts"
+  ],
   "exclude": ["node_modules"]
 }

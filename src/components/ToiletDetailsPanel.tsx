@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { faClock, faEdit } from '@fortawesome/free-regular-svg-icons';
@@ -17,6 +17,7 @@ import {
   faCog,
   faQuestion,
   faChevronDown,
+  faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
 import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 import lightFormat from 'date-fns/lightFormat';
@@ -36,6 +37,7 @@ import { WEEKDAYS, isClosed } from '../lib/openingTimes';
 import { useMapState } from './MapState';
 import type L from 'leaflet';
 import { useRouter } from 'next/router';
+import { useSubmitVerificationReportMutationMutation } from '../api-client/graphql';
 
 const Grid = styled(Box)`
   display: flex;
@@ -101,7 +103,6 @@ const DistanceTo = ({ from, to }) => {
 
 const ToiletDetailsPanel = ({
   data,
-  isLoading,
   // onDimensionsChange,
   startExpanded = false,
   children,
@@ -110,10 +111,17 @@ const ToiletDetailsPanel = ({
 
   const router = useRouter();
 
-  // TODO: We need to bring back the ability to submit a verification report.
-  // const submitVerificationReport = async (variables: { id: unknown }) => {
-  //   alert('Implement me with apollo');
-  // };
+  const [submitVerificationReportMutation, verificationReportState] =
+    useSubmitVerificationReportMutationMutation();
+
+  useEffect(() => {
+    if (verificationReportState.error) {
+      console.error(
+        'There was a problem submitting the verification report.',
+        verificationReportState.error
+      );
+    }
+  }, [verificationReportState.error]);
 
   const [mapState, setMapState] = useMapState();
 
@@ -159,25 +167,6 @@ const ToiletDetailsPanel = ({
   //   onDimensionsChange(size);
   // }, [size, onDimensionsChange]);
 
-  if (isLoading) {
-    return (
-      <Box
-        width="100%"
-        color="primary"
-        bg="white"
-        minHeight={100}
-        borderTopLeftRadius={4}
-        borderTopRightRadius={4}
-        padding={4}
-        display="flex"
-        alignItems="center"
-        ref={containerRef}
-      >
-        Loading toilet...
-      </Box>
-    );
-  }
-
   const titleFragment = (
     <Box display="flex" justifyContent="space-between">
       <Text fontWeight="bold" fontSize={[3, 4]} lineHeight={1.2}>
@@ -192,18 +181,25 @@ const ToiletDetailsPanel = ({
   );
 
   const getDirectionsFragment = (
-    <Button
-      icon={<Icon icon={faDirections} />}
-      as="a"
+    <Link
+      passHref
       href={`https://maps.apple.com/?dirflg=w&daddr=${[
         data.location.lat,
         data.location.lng,
       ]}`}
-      target="_blank"
-      rel="noopener noreferrer"
     >
-      Directions
-    </Button>
+      <Button
+        variant="primary"
+        as="a"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Box mr="2">
+          <Icon icon={faDirections} />
+        </Box>
+        Directions
+      </Button>
+    </Link>
   );
 
   const crossIconFragment = (
@@ -297,40 +293,61 @@ const ToiletDetailsPanel = ({
     }
   }
 
-  const lastVerifiedFragment = (
-    <Box>
-      <Text fontWeight="bold">
-        <h2>Is this information correct?</h2>
-      </Text>
-      <Spacer mb={2} />
-      <Box display="flex" alignItems="center">
-        <Button
-          onClick={() => submitVerificationReport({ id: data.id })}
-          disabled={'submitVerificationLoading'}
-        >
-          Yes
-        </Button>
-        <Spacer mr={4} />
+  const lastVerifiedFragment = useMemo(
+    () => (
+      <Box>
+        <Text fontWeight="bold">
+          <h2>Is this information correct?</h2>
+        </Text>
+        <Spacer mb={2} />
         <Box display="flex" alignItems="center">
-          No?
-          <Spacer mr={2} />
           <Button
-            variant="secondary"
-            icon={<Icon icon={faEdit} />}
-            as={Link}
-            href={editUrl}
-            data-testid="edit-button"
+            variant="primary"
+            onClick={() => {
+              // TOOD: Add plausible .
+              submitVerificationReportMutation({
+                variables: { id: data.id },
+                notifyOnNetworkStatusChange: true,
+              });
+            }}
+            disabled={verificationReportState.loading === true}
           >
-            Edit
+            Yes
+            {verificationReportState.loading === true && (
+              <Box ml="2">
+                <Icon spin={true} icon={faSpinner} />
+              </Box>
+            )}
           </Button>
+          <Spacer mr={4} />
+          <Box display="flex" alignItems="center">
+            No?
+            <Spacer mr={2} />
+            <Link passHref href={editUrl}>
+              <Button as="a" variant="secondary" data-testid="edit-button">
+                <Box mr={2}>
+                  <Icon icon={faEdit} />
+                </Box>
+                Edit
+              </Button>
+            </Link>
+          </Box>
         </Box>
+        <Spacer mb={[0, 2]} />
+        Last {verifiedOrUpdated}:{' '}
+        <Link href={`/explorer/loos/${data.id}`}>
+          {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
+        </Link>
       </Box>
-      <Spacer mb={[0, 2]} />
-      Last {verifiedOrUpdated}:{' '}
-      <Link href={`/explorer/loos/${data.id}`}>
-        {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
-      </Link>
-    </Box>
+    ),
+    [
+      data.id,
+      editUrl,
+      submitVerificationReportMutation,
+      verificationReportState.loading,
+      verifiedOrUpdated,
+      verifiedOrUpdatedDate,
+    ]
   );
 
   if (isExpanded) {
@@ -495,14 +512,11 @@ const ToiletDetailsPanel = ({
               <Text fontSize={1} color="grey">
                 Hours may vary with national holidays or seasonal changes. If
                 you know these hours to be out of date please{' '}
-                <Button
-                  as={Link}
-                  href={editUrl}
-                  variant="link"
-                  data-testid="edit-link"
-                >
-                  edit this toilet
-                </Button>
+                <Link passHref href={editUrl}>
+                  <Button as="a" variant="link" data-testid="edit-link">
+                    edit this toilet
+                  </Button>
+                </Link>
                 .
               </Text>
 

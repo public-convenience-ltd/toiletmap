@@ -8,6 +8,7 @@ import Spacer from '../components/Spacer';
 import Box, { BoxProps } from '../components/Box';
 
 import config from '../config';
+import Link from 'next/link';
 
 const List = styled.ul`
   list-style: initial;
@@ -20,7 +21,7 @@ const ListItem = (props: BoxProps) => (
 const LoginPage = () => {
   const router = useRouter();
   return (
-    <Box my={5}>
+    <Box mt={5}>
       <Head>
         <title>{config.getTitle('Contributing')}</title>
       </Head>
@@ -39,7 +40,11 @@ const LoginPage = () => {
           Up:
         </p>
         <Spacer mb={3} />
-        <a href={`/api/auth/login?returnTo=${router.asPath}`}>Log In/Sign Up</a>
+        <Link passHref href={`/api/auth/login?returnTo=${router.asPath}`}>
+          <Button as={'a'} variant="primary">
+            Log In/Sign Up
+          </Button>
+        </Link>
         <Spacer mb={4} />
         <Text fontSize={3} fontWeight="bold">
           <h2>Examples of Public toilets</h2>

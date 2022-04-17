@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import { useTheme, css } from '@emotion/react';
 
 import Box from '../Box';
@@ -93,7 +92,7 @@ const AccessibilityList = ({
   const [showContent, setShowContent] = React.useState(false);
 
   // Fetch loo names
-  const unorderedNames = useLooNamesByIdsQuery({
+  const { data } = useLooNamesByIdsQuery({
     variables: { idList: toilets.map((t) => t?.id) },
   });
 
@@ -104,11 +103,20 @@ const AccessibilityList = ({
     }, 300);
   }, []);
 
-  const nameMap = Object.fromEntries(
-    unorderedNames.data?.looNamesByIds.map((e) => [e.id, e.name]) || []
-  );
+  const [loadedNames, setLoadedNames] = useState([]);
 
-  const names = toilets.map((t) => nameMap[t?.id] || 'Name Unknown');
+  useEffect(() => {
+    if (data && data?.looNamesByIds) {
+      const nameMap = Object.fromEntries(
+        data.looNamesByIds.map((e) => [e.id, e.name]) || []
+      );
+
+      const names = toilets.map((t) => nameMap[t?.id] || 'Name Unknown');
+
+      setLoadedNames(names);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   return (
     <div
@@ -117,14 +125,9 @@ const AccessibilityList = ({
       aria-live="polite"
       aria-relevant="additions text"
     >
-      {showContent && <Content toilets={names || []} {...props} />}
+      {showContent && <Content toilets={loadedNames} {...props} />}
     </div>
   );
-};
-
-// eslint-disable-next-line functional/immutable-data
-AccessibilityList.propTypes = {
-  toilets: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default AccessibilityList;
