@@ -18,7 +18,7 @@ const ListItem = (props: BoxProps) => (
   <Box as="li" marginTop={2} marginLeft={4} {...props} />
 );
 
-const LoginPage = () => {
+const LoginPage = ({ baseurl, vercelurl }) => {
   const router = useRouter();
   return (
     <Box mt={5}>
@@ -45,6 +45,10 @@ const LoginPage = () => {
             Log In/Sign Up
           </Button>
         </Link>
+        <p>
+          {baseurl}
+          {vercelurl}
+        </p>
         <Spacer mb={4} />
         <Text fontSize={3} fontWeight="bold">
           <h2>Examples of Public toilets</h2>
@@ -97,5 +101,14 @@ const LoginPage = () => {
     </Box>
   );
 };
+
+export async function getStaticProps() {
+  return {
+    props: {
+      baseurl: process.env.AUTH0_BASE_URL,
+      vercelurl: process.env.VERCEL_URL,
+    },
+  };
+}
 
 export default LoginPage;
