@@ -136,7 +136,7 @@ const MarkerGroup: React.FC<{
           zIndexOffset: 0,
           icon: ToiletMarkerIcon({
             toiletId: toilet.id as string,
-            isHighlighted: (toilet.id as string) === mapState?.focus?.id,
+            isHighlighted: false,
           }),
           alt: 'Public Toilet',
           keyboard: false,
@@ -159,7 +159,7 @@ const MarkerGroup: React.FC<{
       marker.getElement()?.setAttribute('aria-label', 'Public Toilet');
       return marker;
     },
-    [mapState?.focus?.id, router, setMapState]
+    [router, setMapState]
   );
 
   const [appliedFilterTypes, setAppliedFilterTypes] = useState<
@@ -235,7 +235,7 @@ const MarkerGroup: React.FC<{
       mcg._spiderfierOnRemove = undefined;
       map.removeLayer(mcg);
     };
-  }, [parsedAndFilteredMarkers, map, mapState.focus, mcg]);
+  }, [parsedAndFilteredMarkers, map, mcg]);
 
   return null;
 };

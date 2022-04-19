@@ -24,7 +24,6 @@ const LooPage: PageFindLooByIdComp = (props) => {
   // This way you can click loos on the map without the map jerking about
   useEffect(() => {
     if (!router.isReady) {
-      console.log('hi');
       setMapState({ center: props.data.loo.location, focus: props.data.loo });
     }
   }, [
