@@ -21,6 +21,7 @@ import {
   useMapClusterRadius,
   useMapGeohashPrecision,
 } from './hooks';
+import _ from 'lodash';
 
 const KEY_ENTER = 13;
 
@@ -28,7 +29,7 @@ const Markers = () => {
   const [mapState, setMapState] = useMapState();
 
   const map = useMap();
-
+  const router = useRouter();
   const boundingBox = map.getBounds();
 
   const { lat: boundingBoxNorth, lng: boundingBoxEast } =
@@ -54,11 +55,33 @@ const Markers = () => {
     boundingBoxWest,
   ]);
 
+  const throttledPrefetch = useMemo(() => {
+    return _.throttle((id) => {
+      router.prefetch(id);
+      console.log(id);
+    }, 1000);
+  }, [router]);
+
+  const prefetchVisibleToilets = useCallback(() => {
+    const visibleMarkers = document.getElementsByClassName('toilet-marker');
+    for (const marker of visibleMarkers) {
+      if (marker instanceof HTMLElement) {
+        const toiletId = marker.dataset?.toiletid;
+        throttledPrefetch(`/loos/${toiletId}`);
+      }
+    }
+  }, [throttledPrefetch]);
+
   useEffect(() => {
     setMapState({
       ...mapState,
       currentlyLoadedGeohashes: geohashesToLoad,
     });
+
+    if (!userInteractingWithMap) {
+      prefetchVisibleToilets();
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [geohashesToLoad, userInteractingWithMap]);
 
@@ -94,6 +117,7 @@ const MarkerGroup: React.FC<{
       L.markerClusterGroup({
         maxClusterRadius,
         showCoverageOnHover: false,
+        chunkedLoading: true,
       }),
     [maxClusterRadius]
   );
@@ -129,10 +153,8 @@ const MarkerGroup: React.FC<{
             setMapState({ searchLocation: undefined });
             router.push(`/loos/${toilet.id}`);
           }
-        })
-        .on('mouseover', () => {
-          router.prefetch(`/loos/${toilet.id}`);
         });
+
       marker.getElement()?.setAttribute('role', 'link');
       marker.getElement()?.setAttribute('aria-label', 'Public Toilet');
       return marker;
@@ -158,7 +180,7 @@ const MarkerGroup: React.FC<{
     }, 200);
   }, [filters]);
 
-  const getLooGroupLayers = useMemo(() => {
+  const parsedAndFilteredMarkers = useMemo(() => {
     if (!data?.loosByGeohash) {
       return null;
     }
@@ -182,7 +204,10 @@ const MarkerGroup: React.FC<{
   ]);
 
   useEffect(() => {
-    if (getLooGroupLayers && mapState.geohashLoadState[geohash] === undefined) {
+    if (
+      parsedAndFilteredMarkers &&
+      mapState.geohashLoadState[geohash] === undefined
+    ) {
       setMapState({
         ...mapState,
         geohashLoadState: {
@@ -191,21 +216,26 @@ const MarkerGroup: React.FC<{
         },
       });
     }
-  }, [geohash, getLooGroupLayers, mapState, setMapState]);
+  }, [geohash, parsedAndFilteredMarkers, mapState, setMapState]);
 
   useEffect(() => {
-    if (getLooGroupLayers) {
+    if (parsedAndFilteredMarkers) {
       mcg.clearLayers();
-      mcg.addLayers(getLooGroupLayers);
+      mcg.addLayers(parsedAndFilteredMarkers);
       // uncomment this to highlight the bounds of each marker chunk for easier debugging.
       // mcg.addLayers([bounds]);
       map.addLayer(mcg);
     }
     return () => {
       mcg.clearLayers();
+      // We're not using the spiderifier and it causes an internal -
+      // leaflet warning when we remove the layer if it is defined.
+      // So we set it to undefined to suppress the warning.
+      // eslint-disable-next-line functional/immutable-data
+      mcg._spiderfierOnRemove = undefined;
       map.removeLayer(mcg);
     };
-  }, [getLooGroupLayers, map, mapState.focus, mcg]);
+  }, [parsedAndFilteredMarkers, map, mapState.focus, mcg]);
 
   return null;
 };

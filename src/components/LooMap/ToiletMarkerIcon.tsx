@@ -36,7 +36,7 @@ const ToiletMarkerIcon = ({ isHighlighted = false, toiletId = undefined }) =>
           ? getIconAnchor(LARGE_ICON_DIMENSSIONS)
           : getIconAnchor(ICON_DIMENSIONS),
         html: `
-        <div data-testid="toiletMarker:${toiletId}">
+        <div data-toiletid="${toiletId}" class="toilet-marker">
           ${getSVGHTML({ toiletId, isHighlighted })}
         </div>
       `,
