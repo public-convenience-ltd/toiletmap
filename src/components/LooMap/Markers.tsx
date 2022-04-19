@@ -180,7 +180,7 @@ const MarkerGroup: React.FC<{
     }, 200);
   }, [filters]);
 
-  const getLooGroupLayers = useMemo(() => {
+  const parsedAndFilteredMarkers = useMemo(() => {
     if (!data?.loosByGeohash) {
       return null;
     }
@@ -204,7 +204,10 @@ const MarkerGroup: React.FC<{
   ]);
 
   useEffect(() => {
-    if (getLooGroupLayers && mapState.geohashLoadState[geohash] === undefined) {
+    if (
+      parsedAndFilteredMarkers &&
+      mapState.geohashLoadState[geohash] === undefined
+    ) {
       setMapState({
         ...mapState,
         geohashLoadState: {
@@ -213,21 +216,26 @@ const MarkerGroup: React.FC<{
         },
       });
     }
-  }, [geohash, getLooGroupLayers, mapState, setMapState]);
+  }, [geohash, parsedAndFilteredMarkers, mapState, setMapState]);
 
   useEffect(() => {
-    if (getLooGroupLayers) {
+    if (parsedAndFilteredMarkers) {
       mcg.clearLayers();
-      mcg.addLayers(getLooGroupLayers);
+      mcg.addLayers(parsedAndFilteredMarkers);
       // uncomment this to highlight the bounds of each marker chunk for easier debugging.
       // mcg.addLayers([bounds]);
       map.addLayer(mcg);
     }
     return () => {
       mcg.clearLayers();
+      // We're not using the spiderifier and it causes an internal -
+      // leaflet warning when we remove the layer if it is defined.
+      // So we set it to undefined to suppress the warning.
+      // eslint-disable-next-line functional/immutable-data
+      mcg._spiderfierOnRemove = undefined;
       map.removeLayer(mcg);
     };
-  }, [getLooGroupLayers, map, mapState.focus, mcg]);
+  }, [parsedAndFilteredMarkers, map, mapState.focus, mcg]);
 
   return null;
 };
