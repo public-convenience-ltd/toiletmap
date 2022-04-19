@@ -116,6 +116,7 @@
     "babel-loader": "^8.2.4",
     "chromatic": "^6.5.4",
     "cli-progress": "^3.10.0",
+    "cypress": "^9.5.4",
     "dotenv": "^16.0.0",
     "eslint": "^8.13.0",
     "eslint-config-next": "^12.1.5",

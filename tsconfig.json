@@ -15,7 +15,8 @@
     "jsx": "preserve",
     "jsxImportSource": "@emotion/react",
     "incremental": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "types": ["cypress"]
   },
   "include": [
     "next-env.d.ts",

@@ -18,15 +18,25 @@ const SIDEBAR_BOTTOM_MARGIN = 32;
 const LooPage: PageFindLooByIdComp = (props) => {
   const [mapState, setMapState] = useMapState();
 
+  const router = useRouter();
+
   // Just set our center when this page is an ingress route
   // This way you can click loos on the map without the map jerking about
   useEffect(() => {
-    setMapState({ center: props.data.loo.location, focus: props.data.loo });
-  }, [mapState.focus, props.data.loo, props.data.loo.location, setMapState]);
+    if (!router.isReady) {
+      console.log('hi');
+      setMapState({ center: props.data.loo.location, focus: props.data.loo });
+    }
+  }, [
+    mapState.focus,
+    props.data.loo,
+    props.data.loo.location,
+    router,
+    setMapState,
+  ]);
 
   const [, setToiletPanelDimensions] = React.useState({});
 
-  const router = useRouter();
   const { message } = router.query;
 
   const pageTitle = config.getTitle('Home');

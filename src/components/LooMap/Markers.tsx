@@ -144,14 +144,14 @@ const MarkerGroup: React.FC<{
       )
         .on('click', () => {
           // Clear the current search upon navigation
-          setMapState({ searchLocation: undefined });
           router.push(`/loos/${toilet.id}`);
+          setMapState({ searchLocation: undefined, focus: toilet });
         })
         .on('keydown', (event: { originalEvent: { keyCode: number } }) => {
           if (event.originalEvent.keyCode === KEY_ENTER) {
             // Clear the current search upon navigation
-            setMapState({ searchLocation: undefined });
             router.push(`/loos/${toilet.id}`);
+            setMapState({ searchLocation: undefined, focus: toilet });
           }
         });
 
@@ -200,7 +200,7 @@ const MarkerGroup: React.FC<{
     appliedFilterTypes,
     data?.loosByGeohash,
     initialiseMarker,
-    mapState.focus,
+    mapState?.focus?.id,
   ]);
 
   useEffect(() => {
