@@ -1,9 +1,8 @@
 import dynamic from 'next/dynamic';
-
-const MapLoader = () => <p>Loading map...</p>;
+import PageLoading from '../PageLoading';
 
 const LooMap = dynamic(() => import('./LooMap'), {
-  loading: MapLoader,
+  loading: PageLoading,
   ssr: false,
 });
 

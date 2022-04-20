@@ -201,7 +201,7 @@ const LooMap: React.FC<LooMapProps> = ({
         showCrosshair
           ? css`
               &:after {
-                content: url(/${crosshairSvg.src});
+                content: url(${crosshairSvg.src});
                 position: absolute;
                 top: 50%;
                 left: 50%;
