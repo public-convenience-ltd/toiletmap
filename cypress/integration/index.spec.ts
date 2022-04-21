@@ -97,8 +97,8 @@ describe('Home page tests', () => {
     cy.visit('/');
     cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').click();
     cy.url().should('include', '/loos/51f6b4d8b792e3531efe5152');
-    cy.get('[aria-label="Close toilet details"]').click();
-    cy.contains('Close').click();
+    cy.get('[aria-label="Close toilet details"]').scrollIntoView().click();
+    cy.contains('Close').scrollIntoView().click();
     cy.url().should('not.include', '/loos/51f6b4d8b792e3531efe5152');
   });
 
@@ -120,7 +120,7 @@ describe('Home page tests', () => {
   it('should go to the edit page if the toilet edit button is clicked', () => {
     cy.visit('/');
     cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').click();
-    cy.findByText('Edit').click();
+    cy.findByText('Edit').scrollIntoView().click();
     cy.url().should('include', 'loos/51f6b4d8b792e3531efe5152/edit');
     cy.contains('Want to Contribute Toilet Data?');
   });
@@ -128,7 +128,9 @@ describe('Home page tests', () => {
   it('should open directions if the directions button is clicked', () => {
     cy.visit('/');
     cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').click();
+
     cy.findByText('Directions')
+      .scrollIntoView()
       .invoke('attr', 'href')
       .should('include', 'https://maps.apple.com/?dirflg=w&daddr=');
   });
@@ -141,7 +143,6 @@ describe('Home page tests', () => {
         'submitVerificationReportMutation'
       );
     });
-    cy.findByText('Yes').click().should('be.disabled');
-    cy.findByText('Yes').should('not.be.disabled');
+    cy.findByText('Yes').click();
   });
 });

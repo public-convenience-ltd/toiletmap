@@ -2,7 +2,7 @@
   "baseUrl": "http://localhost:3000",
   "video": false,
   "chromeWebSecurity": false,
-  "defaultCommandTimeout": 12000,
-  "responseTimeout": 12000,
-  "requestTimeout": 12000
+  "defaultCommandTimeout": 15000,
+  "responseTimeout": 15000,
+  "requestTimeout": 15000
 }
