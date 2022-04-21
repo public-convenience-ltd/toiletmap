@@ -20,7 +20,7 @@ describe('Home page tests', () => {
 
   it('should load different toilets when the map is dragged', () => {
     // Drag the map and check that we have fewer markers than when we started
-    cy.visit('/');
+    cy.visit('/').wait(500);
     cy.get('.toilet-marker').should('have.length.above', 50);
     cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').should('exist');
     cy.get('[data-toiletid=1dd0f403d1694d6f7dd33f9a]').should('not.exist');
@@ -43,7 +43,7 @@ describe('Home page tests', () => {
   });
 
   it('should open the toilet details panel when a marker is clicked', () => {
-    cy.visit('/');
+    cy.visit('/').wait(500);
     cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').click();
 
     cy.url().should('include', '/loos/51f6b4d8b792e3531efe5152');
@@ -71,7 +71,7 @@ describe('Home page tests', () => {
   });
 
   it('should collapse the toilet panel when the close button is clicked and reopen when details is clicked', () => {
-    cy.visit('/');
+    cy.visit('/').wait(500);
     cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').click();
     cy.get('[aria-label="Close toilet details"]').click();
 
@@ -86,8 +86,7 @@ describe('Home page tests', () => {
       .invoke('attr', 'href')
       .should('include', 'https://maps.apple.com/?dirflg=w&daddr=');
 
-    const detailsExpandButton = cy.contains('Details');
-    detailsExpandButton.click();
+    cy.contains('Details').scrollIntoView().click();
 
     cy.contains('Features');
     cy.contains('Opening Hours');
@@ -103,7 +102,7 @@ describe('Home page tests', () => {
   });
 
   it('should close the toilet panel when the esc key is pressed', () => {
-    cy.visit('/');
+    cy.visit('/').wait(500);
     cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').click();
     cy.url().should('include', '/loos/51f6b4d8b792e3531efe5152');
     cy.contains('Test loo 2.1');
@@ -118,7 +117,7 @@ describe('Home page tests', () => {
   });
 
   it('should go to the edit page if the toilet edit button is clicked', () => {
-    cy.visit('/');
+    cy.visit('/').wait(500);
     cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').click();
     cy.findByText('Edit').scrollIntoView().click();
     cy.url().should('include', 'loos/51f6b4d8b792e3531efe5152/edit');
@@ -126,7 +125,7 @@ describe('Home page tests', () => {
   });
 
   it('should open directions if the directions button is clicked', () => {
-    cy.visit('/');
+    cy.visit('/').wait(500);
     cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').click();
 
     cy.findByText('Directions')
@@ -136,7 +135,7 @@ describe('Home page tests', () => {
   });
 
   it('should allow users to confirm that the toilet information is correct', () => {
-    cy.visit('/');
+    cy.visit('/').wait(500);
     cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').click();
     cy.intercept('POST', '/api', (req) => {
       expect(req.body.operationName).to.equal(
