@@ -42,12 +42,20 @@ describe('Home page tests', () => {
     cy.get('[data-toiletid=1dd0f403d1694d6f7dd33f9a]').should('exist');
   });
 
-  it.only('should open the toilet details panel when a marker is clicked', () => {
+  it('should open the toilet details panel when a marker is clicked', () => {
     cy.visit('/');
     cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').click();
 
     cy.url().should('include', '/loos/51f6b4d8b792e3531efe5152');
 
+    // Check that the loo we picked is now highlighted.
+    cy.get('#highlighted-loo').invoke(
+      'attr',
+      'data-toiletid',
+      '51f6b4d8b792e3531efe5152'
+    );
+
+    // Check standard loo panel stuff is there.
     cy.contains('Test loo 2.1');
     cy.contains('Features');
     cy.contains('Opening Hours');
@@ -60,8 +68,6 @@ describe('Home page tests', () => {
     cy.findByText(dayOfWeekName)
       .parent()
       .should('have.css', 'background-color', 'rgb(210, 255, 242)');
-
-    // Check that the marker is highlighted.
   });
 
   it('should collapse the toilet panel when the close button is clicked and reopen when details is clicked', () => {
@@ -96,6 +102,21 @@ describe('Home page tests', () => {
     cy.url().should('not.include', '/loos/51f6b4d8b792e3531efe5152');
   });
 
+  it('should close the toilet panel when the esc key is pressed', () => {
+    cy.visit('/');
+    cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').click();
+    cy.url().should('include', '/loos/51f6b4d8b792e3531efe5152');
+    cy.contains('Test loo 2.1');
+    cy.contains('Features');
+    cy.contains('Opening Hours');
+    cy.get('body').trigger('keydown', { key: 'Escape' });
+    cy.contains('Test loo 2.1');
+    cy.contains('Features').should('not.exist');
+    cy.contains('Opening Hours').should('not.exist');
+    cy.get('body').trigger('keydown', { key: 'Escape' });
+    cy.url().should('not.include', '/loos/51f6b4d8b792e3531efe5152');
+  });
+
   it('should go to the edit page if the toilet edit button is clicked', () => {
     cy.visit('/');
     cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').click();
@@ -116,19 +137,9 @@ describe('Home page tests', () => {
     cy.visit('/');
     cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').click();
     cy.intercept('POST', '/api', (req) => {
-      expect(req.body).to.deep.equal({
-        operationName: 'submitVerificationReportMutation',
-        variables: {
-          id: '51f6b4d8b792e3531efe5152',
-        },
-        extensions: {
-          persistedQuery: {
-            version: 1,
-            sha256Hash:
-              'b619c58bb4c1067a19e225e48f0c9b3821e306daa7f0b6944f5ea624e4e92098',
-          },
-        },
-      });
+      expect(req.body.operationName).to.equal(
+        'submitVerificationReportMutation'
+      );
     });
     cy.findByText('Yes').click().should('be.disabled');
     cy.findByText('Yes').should('not.be.disabled');
