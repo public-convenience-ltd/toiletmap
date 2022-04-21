@@ -11,11 +11,12 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "jsx": "preserve",
     "jsxImportSource": "@emotion/react",
     "incremental": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "types": ["cypress"],
+    "isolatedModules": true
   },
   "include": [
     "next-env.d.ts",

@@ -136,7 +136,7 @@ const MarkerGroup: React.FC<{
           zIndexOffset: 0,
           icon: ToiletMarkerIcon({
             toiletId: toilet.id as string,
-            isHighlighted: (toilet.id as string) === mapState?.focus?.id,
+            isHighlighted: false,
           }),
           alt: 'Public Toilet',
           keyboard: false,
@@ -144,14 +144,14 @@ const MarkerGroup: React.FC<{
       )
         .on('click', () => {
           // Clear the current search upon navigation
-          setMapState({ searchLocation: undefined });
           router.push(`/loos/${toilet.id}`);
+          setMapState({ searchLocation: undefined, focus: toilet });
         })
         .on('keydown', (event: { originalEvent: { keyCode: number } }) => {
           if (event.originalEvent.keyCode === KEY_ENTER) {
             // Clear the current search upon navigation
-            setMapState({ searchLocation: undefined });
             router.push(`/loos/${toilet.id}`);
+            setMapState({ searchLocation: undefined, focus: toilet });
           }
         });
 
@@ -159,7 +159,7 @@ const MarkerGroup: React.FC<{
       marker.getElement()?.setAttribute('aria-label', 'Public Toilet');
       return marker;
     },
-    [mapState?.focus?.id, router, setMapState]
+    [router, setMapState]
   );
 
   const [appliedFilterTypes, setAppliedFilterTypes] = useState<
@@ -200,7 +200,7 @@ const MarkerGroup: React.FC<{
     appliedFilterTypes,
     data?.loosByGeohash,
     initialiseMarker,
-    mapState.focus,
+    mapState?.focus?.id,
   ]);
 
   useEffect(() => {
@@ -235,7 +235,7 @@ const MarkerGroup: React.FC<{
       mcg._spiderfierOnRemove = undefined;
       map.removeLayer(mcg);
     };
-  }, [parsedAndFilteredMarkers, map, mapState.focus, mcg]);
+  }, [parsedAndFilteredMarkers, map, mcg]);
 
   return null;
 };

@@ -66,12 +66,27 @@ const LooMap: React.FC<LooMapProps> = ({
     useState(showAccessibilityOverlay);
 
   // Load a reference to the leaflet map into application state so components that aren't below in the tree can access.
-  const setMap = useCallback(
-    (map: Map) => {
-      setMapState({ map });
-    },
-    [setMapState]
-  );
+  // const setMap = useCallback(
+  //   (map: Map) => {
+  //     if (map !== null) {
+  //       setMapState({ map });
+  //     }
+  //   },
+  //   [setMapState]
+  // );
+
+  const mapRef = React.createRef<Map>();
+
+  useEffect(() => {
+    if (
+      mapRef.current !== null &&
+      (mapState.map === null ||
+        mapState.map === undefined ||
+        mapRef.current !== mapState.map)
+    ) {
+      setMapState({ map: mapRef.current });
+    }
+  }, [mapRef, mapState.map, setMapState]);
 
   // Begin accessibility overlay
 
@@ -102,9 +117,10 @@ const LooMap: React.FC<LooMapProps> = ({
       }
 
       setAnnouncement(`${toilet.name || 'Unnamed toilet'} selected`);
+      setMapState({ searchLocation: undefined, focus: toilet });
       router.push(`/loos/${toilet.id}`);
     },
-    [intersectingToilets]
+    [intersectingToilets, setMapState]
   );
 
   React.useEffect(() => {
@@ -185,7 +201,7 @@ const LooMap: React.FC<LooMapProps> = ({
         showCrosshair
           ? css`
               &:after {
-                content: url(/${crosshairSvg.src});
+                content: url(${crosshairSvg.src});
                 position: absolute;
                 top: 50%;
                 left: 50%;
@@ -200,10 +216,11 @@ const LooMap: React.FC<LooMapProps> = ({
       ]}
     >
       <MapContainer
+        id="gbptm-map"
         zoomControl={false} // we are overriding this with our own custom placed zoom control
         tap={false}
         dragging={!staticMap}
-        whenCreated={setMap}
+        ref={mapRef}
         center={center}
         zoom={zoom}
         minZoom={minZoom}

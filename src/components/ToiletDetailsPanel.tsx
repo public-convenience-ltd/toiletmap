@@ -134,7 +134,7 @@ const ToiletDetailsPanel = ({
   }, [isExpanded]);
 
   const navigateAway = useCallback(() => {
-    setMapState({ searchLocation: undefined });
+    setMapState({ searchLocation: undefined, focus: undefined });
     router.push('/');
   }, [router, setMapState]);
 
