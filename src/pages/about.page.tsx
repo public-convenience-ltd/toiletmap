@@ -115,17 +115,35 @@ const AboutPage = () => {
           collect data away from the computer for submitting to the map later is
           also available for download.
         </p>
-        <Spacer mb={2} />
-        <Link passHref href={'/GBPTM.Toilet.Checklist.pdf'}>
+        <SubHeading id="contributing">Contributing</SubHeading>
+        <p>
+          We cover each feature of the map and how you can go about using them
+          to add or edit toilets yourself in our Volunteer Help Guide, available
+          to download below.
+          <Spacer mb={2} />
           <Button
             as="a"
-            variant="primary"
+            href="Toilet.Map.Volunteer.Help.Guide.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Download volunteer help guide
+          </Button>
+        </p>
+        <p>
+          A handy printable checklist designed to make it easier for you to
+          collect data away from the computer for submitting to the map later is
+          also available for download.
+          <Spacer mb={2} />
+          <Button
+            as="a"
+            href="GBPTM.Toilet.Checklist.pdf"
             target="_blank"
             rel="noopener noreferrer"
           >
             Download toilet checklist
           </Button>
-        </Link>
+        </p>
         <SubHeading>Publicly Accessible Toilets</SubHeading>
         <p>
           The project aims to map all publicly-accessible toilets - that means

@@ -61,13 +61,12 @@ const PrivacyPage = () => {
         </p>
         <p>
           A full list of a contributor’s activities will only be accessible to
-          Public Convenience Ltd for moderating the dataset. A contributor’s
-          full email address will never be disclosed or shared and is only
-          visible to Public Convenience Ltd.
+          Public Convenience Ltd, for
+          moderating the dataset. A contributor’s full email address will never
+          be disclosed or shared and is only visible to Public Convenience Ltd.
         </p>
 
         <Spacer mb={4} />
-
         <p>
           If you&apos;d like to know what we&apos;ve stored about you, or ask us
           to forget you, or to let us know about something you&apos;d like

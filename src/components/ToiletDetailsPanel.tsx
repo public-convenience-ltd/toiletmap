@@ -109,7 +109,24 @@ const ToiletDetailsPanel = ({
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(startExpanded);
 
-  const router = useRouter();
+  const [submitVerificationMutation, { loading: submitVerificationLoading }] =
+    useMutation(SUBMIT_VERIFICATION_REPORT_MUTATION);
+
+  const submitVerificationReport = async (variables) => {
+    const responseData = await submitVerificationMutation(variables);
+
+    // update the local cache with the new data
+    mutate(
+      [FIND_LOO_BY_ID_QUERY, JSON.stringify({ id: data.id })],
+      {
+        loo: {
+          ...data,
+          verifiedAt: responseData.submitVerificationReport.loo.verifiedAt,
+        },
+      },
+      false
+    );
+  };
 
   const [submitVerificationReportMutation, verificationReportState] =
     useSubmitVerificationReportMutationMutation();
@@ -293,13 +310,23 @@ const ToiletDetailsPanel = ({
     }
   }
 
-  const lastVerifiedFragment = useMemo(
-    () => (
-      <Box>
-        <Text fontWeight="bold">
-          <h2>Is this information correct?</h2>
-        </Text>
-        <Spacer mb={2} />
+  const lastVerifiedFragment = (
+    <Box>
+      <Text fontWeight="bold">
+        <h2>Is this information correct?</h2>
+      </Text>
+      <Spacer mb={2} />
+      <Box display="flex" alignItems="center">
+        <Button
+          onClick={() => {
+            window.plausible('Verification Report');
+            submitVerificationReport({ id: data.id });
+          }}
+          disabled={submitVerificationLoading}
+        >
+          Yes
+        </Button>
+        <Spacer mr={4} />
         <Box display="flex" alignItems="center">
           <Button
             variant="primary"
