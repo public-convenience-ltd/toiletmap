@@ -108,7 +108,8 @@ const Sidebar = () => {
         <Box display="flex" justifyContent="center" mt={3}>
           <Button
             type="button"
-            onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
+            variant="primary"
+            onClick={() => mapState?.locationServices?.startLocate()}
             aria-label="Find a toilet near me"
           >
             Find a toilet near me
