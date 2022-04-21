@@ -99,10 +99,7 @@ const Sidebar = () => {
             variant="secondary"
             icon={<FontAwesomeIcon icon={faFilter} />}
             aria-expanded={isFiltersExpanded}
-            onClick={() => {
-              window.plausible('Open Filters Panel');
-              setIsFiltersExpanded(!isFiltersExpanded)
-            }}
+            onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
           >
             Filter Map
           </Button>
@@ -111,18 +108,7 @@ const Sidebar = () => {
         <Box display="flex" justifyContent="center" mt={3}>
           <Button
             type="button"
-            onClick={() => {
-              navigator.geolocation.getCurrentPosition(({ coords }) => {
-                const { latitude: lat, longitude: lng } = coords;
-                const location = { lat, lng };
-
-                setMapState({
-                  geolocation: location,
-                  center: location,
-                });
-
-              });
-            }}
+            onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
             aria-label="Find a toilet near me"
           >
             Find a toilet near me
@@ -262,18 +248,7 @@ const Sidebar = () => {
                 type="button"
                 display="flex"
                 alignItems="center"
-                onClick={() => {
-                  navigator.geolocation.getCurrentPosition(({ coords }) => {
-                    const { latitude: lat, longitude: lng } = coords;
-                    const location = { lat, lng };
-
-                    setMapState({
-                      geolocation: location,
-                      center: location,
-                    });
-
-                  });
-                }}
+                onClick={() => mapState?.locationServices?.startLocate()}
               >
                 <Icon icon={faMapMarkerAlt} fixedWidth size="lg" />
                 <Box mx={2}>

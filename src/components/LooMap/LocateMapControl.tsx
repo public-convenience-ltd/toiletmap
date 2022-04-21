@@ -34,11 +34,10 @@ const LocateMapControl = () => {
   const [mapState] = useMapState();
 
   const handleClick = () => {
-    if (!isActive) {
-      startLocate();
-    } else {
-      stopLocate()
+    if (!mapState?.locationServices?.isActive) {
+      return mapState?.locationServices?.startLocate();
     }
+    return mapState?.locationServices?.stopLocate();
   };
 
   return (
