@@ -18,12 +18,14 @@
     "migrate": "migrate-mongo up",
     "generate": "node -r dotenv/config ./src/api/db/manage/generate/index.js --confirm",
     "areas": "node -r dotenv/config ./src/api/db/manage/areaToDatabase/index.js",
-    "startMemoryMongo": "MONGODB_URI=mongodb://localhost:27017/toiletmap TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node --transpileOnly ./scripts/setupAndStartMemoryMongo.ts",
-    "generateMocks": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node --transpileOnly ./scripts/generateMocks.ts",
+    "startMemoryMongo": "MONGODB_URI=mongodb://localhost:27017/toiletmap TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' yarn ts-node --transpileOnly ./scripts/setupAndStartMemoryMongo.ts",
+    "generateMocks": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' yarn ts-node --transpileOnly ./scripts/generateMocks.ts",
     "prepare": "husky install && cp ./node_modules/graphql-voyager/dist/voyager.worker.js ./public && yarn codegen",
     "codegen": "graphql-codegen --config codegen.yml",
     "start-storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook -o ./public/storybook"
+    "build-storybook": "build-storybook -o ./public/storybook",
+    "wait-on:server": "yarn wait-on http://localhost:3000/ -t 60000",
+    "wait-on:memoryMongo": "yarn wait-on http://localhost:9999/ -t 100000"
   },
   "repository": {
     "type": "git",
@@ -146,7 +148,9 @@
     "storybook-addon-next": "^1.6.2",
     "topojson-server": "^3.0.1",
     "topojson-simplify": "^3.0.3",
+    "ts-node": "^10.7.0",
     "typescript": "^4.6.3",
+    "wait-on": "^6.0.1",
     "webpack": "^5.72.0"
   },
   "browser": {
