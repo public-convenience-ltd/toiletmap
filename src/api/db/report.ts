@@ -160,7 +160,7 @@ ReportSchema.methods.getLoo = async function () {
   });
 };
 
-ReportSchema.statics.submit = async function (data, user, from) {
+ReportSchema.statics.submit = async function (data, user, from, looIdOverride) {
   const reportData = {
     diff: {
       ...data,
@@ -181,7 +181,7 @@ ReportSchema.statics.submit = async function (data, user, from) {
 
   let report = new this(reportData);
 
-  let looId = null;
+  let looId = looIdOverride ?? null;
   if (from) {
     let oldloo = await this.model('NewLoo').findById(from);
     let lastReportId = oldloo.reports[oldloo.reports.length - 1];

@@ -4,8 +4,9 @@ describe('Home page tests', () => {
     cy.title().should('equal', 'Toilet Map: Home');
   });
 
-  it('renders toilet markers', () => {
+  it.only('renders toilet markers', () => {
     cy.visit('/');
+
     cy.get('.toilet-marker').should('exist');
   });
 

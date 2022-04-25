@@ -1,4 +1,4 @@
-const { Report, dbConnect } = require('../../index.js');
+const { Report, dbConnect } = require('../../index.ts');
 const mongoose = require('mongoose');
 const cliProgress = require('cli-progress');
 
