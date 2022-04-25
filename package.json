@@ -23,7 +23,9 @@
     "prepare": "husky install && cp ./node_modules/graphql-voyager/dist/voyager.worker.js ./public && yarn codegen",
     "codegen": "graphql-codegen --config codegen.yml",
     "start-storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook -o ./public/storybook"
+    "build-storybook": "build-storybook -o ./public/storybook",
+    "wait-on:server": "wait-on http://localhost:3000/ -t 60000",
+    "wait-on:memoryMongo": "wait-on http://localhost:9999/ -t 100000"
   },
   "repository": {
     "type": "git",

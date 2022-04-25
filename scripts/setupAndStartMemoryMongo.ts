@@ -1,8 +1,8 @@
-const { dbConnect, Report } = require('../src/api/db/index.ts');
+const { dbConnect, Report, Loo } = require('../src/api/db/index.ts');
 import reports from './mock-reports.json';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import areaToDatabase from '../src/api/db/manage/areaToDatabase/lib';
-
+import http from 'http';
 import { SingleBar } from 'cli-progress';
 
 (async () => {
@@ -49,5 +49,12 @@ import { SingleBar } from 'cli-progress';
 
   console.log('====');
 
-  console.log('Server started');
+  const server = http.createServer(async (req, res) => {
+    const loos = await Loo.find({});
+    res.writeHead(200);
+    res.end(JSON.stringify(loos));
+  });
+  server.listen(9999, 'localhost', () => {
+    console.log('Server started');
+  });
 })();

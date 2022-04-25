@@ -12,6 +12,7 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: 'yarn'
+      - run: yarn startMemoryMongo & yarn wait-on:memoryMongo
       - name: Cypress run
         uses: cypress-io/github-action@v2
         env:
