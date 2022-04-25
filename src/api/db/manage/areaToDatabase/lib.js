@@ -2,6 +2,8 @@
 
 /* eslint no-loop-func: "off" */
 
+import path from 'path';
+
 const config = require('./config.json');
 const fs = require('fs');
 const http = require('http');
@@ -35,38 +37,56 @@ function loadJSON(src, log) {
         return resolve(geo);
       });
     } else {
-      // Internet resource
-      const url = new URL(src.url);
-      let moduleToUse;
-      if (url.protocol === 'https:') {
-        moduleToUse = https;
-      } else if (url.protocol === 'http:') {
-        moduleToUse = http;
+      // First try and see if we already have it downloaded
+      const cachePath = path.join(__dirname, '.areaInfo.geojson');
+      if (fs.existsSync(cachePath)) {
+        // Local file
+        fs.readFile(cachePath, 'utf-8', (error, res) => {
+          if (error) {
+            log(`Error reading file: ${error.message}`);
+            return resolve(false);
+          }
+          const geo = JSON.parse(res);
+          return resolve(geo);
+        });
       } else {
-        log(`Unrecognised protocol '${url.protocol}'`);
-        return resolve(false);
-      }
-
-      moduleToUse.get(url, (res) => {
-        if (res.statusCode !== 200) {
-          log(`Response failed: code ${res.statusCode} recieved`);
+        // Internet resource
+        const url = new URL(src.url);
+        let moduleToUse;
+        if (url.protocol === 'https:') {
+          moduleToUse = https;
+        } else if (url.protocol === 'http:') {
+          moduleToUse = http;
+        } else {
+          log(`Unrecognised protocol '${url.protocol}'`);
           return resolve(false);
         }
-        res.setEncoding('utf8');
-        let rawData = '';
-        res.on('data', (chunk) => {
-          rawData += chunk;
-        });
-        res.on('end', () => {
-          try {
-            const geo = JSON.parse(rawData);
-            resolve(geo);
-          } catch (e) {
-            log(`Error parsing response body: ${e.message}`);
-            resolve(false);
+
+        moduleToUse.get(url, (res) => {
+          if (res.statusCode !== 200) {
+            log(`Response failed: code ${res.statusCode} recieved`);
+            return resolve(false);
           }
+          res.setEncoding('utf8');
+          let rawData = '';
+          res.on('data', (chunk) => {
+            rawData += chunk;
+          });
+          res.on('end', () => {
+            try {
+              fs.writeFileSync(
+                path.join(__dirname, '.areaInfo.geojson'),
+                rawData
+              );
+              const geo = JSON.parse(rawData);
+              resolve(geo);
+            } catch (e) {
+              log(`Error parsing response body: ${e.message}`);
+              resolve(false);
+            }
+          });
         });
-      });
+      }
     }
   });
 }

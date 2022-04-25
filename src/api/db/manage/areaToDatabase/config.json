@@ -3,8 +3,8 @@
     {
       "id": 1,
       "src": {
-        "remote": false,
-        "url": "authbound.geojson"
+        "remote": true,
+        "url": "https://opendata.arcgis.com/datasets/0e07a8196454415eab18c40a54dfbbef_0.geojson"
       },
       "version": 2,
       "priority": 5,
