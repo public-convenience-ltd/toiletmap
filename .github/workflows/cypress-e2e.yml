@@ -12,6 +12,12 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: 'yarn'
+      - name: CacheAreas
+        id: cache-areas
+        uses: actions/cache@v3
+        with:
+          path: ./src/api/db/manage/areaToDatabase/.areaInfo.geojson
+          key: ${{ runner.os }}-areaInfo
       - run: yarn
       - run: yarn startMemoryMongo & yarn wait-on:memoryMongo
       - name: Cypress run

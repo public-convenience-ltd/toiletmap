@@ -10,7 +10,7 @@
     "cypress": "cypress open",
     "cypress:headless": "cypress run",
     "e2e": "NODE_ENV=test yarn build && NODE_ENV=test start-server-and-test start http://localhost:3000 cypress",
-    "e2e:headless": "NODE_ENV=test yarn build && start-server-and-test start http://localhost:3000 cypress:headless",
+    "e2e:headless": "NODE_ENV=test yarn build &&NODE_ENV=test start-server-and-test start http://localhost:3000 cypress:headless",
     "lint": "next lint",
     "check": "tsc -p tsconfig.json --noEmit",
     "format": "prettier --write .",
