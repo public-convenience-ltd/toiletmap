@@ -31,3 +31,5 @@ out
 # Storybook build
 storybook-static
 public/storybook
+
+.areaInfo.geojson

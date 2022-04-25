@@ -136,6 +136,7 @@ const resolvers = {
             ],
           ],
         });
+
       return stringifyAndCompressLoos(loos);
     },
     areas: async () => {
