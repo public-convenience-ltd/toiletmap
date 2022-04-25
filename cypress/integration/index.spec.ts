@@ -34,10 +34,76 @@ describe('Home page tests', () => {
       .wait(100)
       .trigger('mousedown', { which: 1 })
       .trigger('mousemove', { which: 1, x: 500, y: 0 })
-      .trigger('mouseup')
-      .trigger('wheel', { deltaY: 10 });
+      .trigger('mouseup');
     cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').should('not.exist');
     cy.get('[data-toiletid=cc4e5e9b83de8dd9ba87b3eb]').should('exist');
+  });
+
+  it('should update the accessibility overlay list when the user pans or zooms', () => {
+    cy.visit('/').wait(500);
+    cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+    cy.get('#gbptm-map').focus();
+    cy.contains("Use number keys to show a toilet's details");
+    cy.contains('Arrow keys pan the map');
+    cy.contains('change the map zoom level');
+    cy.get('.accessibility-list-item').should('not.exist');
+    // zoom out and confirm that toilets are intersecting the focus window
+    // and that they are added to the list.
+    cy.get('#gbptm-map').focus().type('{-}{-}{-}', { delay: 500 });
+    cy.contains('guilty illiteracy');
+    cy.contains('bite-sized academy');
+    cy.contains('cheery zither');
+    cy.contains('cold group');
+    cy.contains('negative eve');
+    cy.contains('lasting event');
+    cy.get('#gbptm-map').type('{downarrow}', { delay: 500 });
+    // these toilets have now moved outside of the selection window
+    cy.contains('negative eve').should('not.exist');
+    cy.contains('cold group').should('not.exist');
+    cy.contains('lasting event').should('not.exist');
+    // these toilets are now the top suggestions in the selection window
+    cy.contains('bland lunch');
+    cy.contains('bite-sized academy');
+    cy.contains('cheery zither');
+    cy.contains('rosy medal');
+    cy.contains('worldly file');
+    cy.contains('inconsequential sparrow');
+  });
+
+  it.only('should select a toilet using the number key associated with the accessibility overlay list', () => {
+    cy.visit('/').wait(500);
+    cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+    cy.get('#gbptm-map').focus();
+    cy.contains("Use number keys to show a toilet's details");
+    cy.contains('Arrow keys pan the map');
+    cy.contains('change the map zoom level');
+    cy.get('.accessibility-list-item').should('not.exist');
+    // zoom out and confirm that toilets are intersecting the focus window
+    // and that they are added to the list.
+    cy.get('#gbptm-map').focus().type('{-}{-}{-}4', { delay: 500 });
+
+    cy.url().should('include', '/loos/ddad1ed1b91d99ed2bf3bcdf');
+
+    // Check that the loo we picked is now highlighted.
+    cy.get('#highlighted-loo').invoke(
+      'attr',
+      'data-toiletid',
+      'ddad1ed1b91d99ed2bf3bcdf'
+    );
+
+    // Check standard loo panel stuff is there.
+    cy.contains('negative eve');
+    cy.contains('Features');
+    cy.contains('Opening Hours');
+
+    // Check that today is highlighted
+    const dayOfWeekName = new Date().toLocaleString('default', {
+      weekday: 'long',
+    });
+
+    cy.findByText(dayOfWeekName)
+      .parent()
+      .should('have.css', 'background-color', 'rgb(210, 255, 242)');
   });
 
   it('should open the toilet details panel when a marker is clicked', () => {

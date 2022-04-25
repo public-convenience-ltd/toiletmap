@@ -50,6 +50,7 @@ const Content = ({ toilets }) => {
         <ul>
           {toilets.map((toilet, index) => (
             <Box
+              className="accessibility-list-item"
               as="li"
               key={index}
               display="flex"
