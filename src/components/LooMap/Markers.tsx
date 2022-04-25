@@ -1,7 +1,7 @@
 import React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
-import ToiletMarkerIcon from './ToiletMarkerIcon';
+import ToiletMarkerIcon, { getSVGHTML, MarkeyIcon } from './ToiletMarkerIcon';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
@@ -22,6 +22,8 @@ import {
   useMapGeohashPrecision,
 } from './hooks';
 import _ from 'lodash';
+import { motion } from 'framer-motion';
+import { hydrateRoot, createRoot } from 'react-dom/client';
 
 const KEY_ENTER = 13;
 
@@ -157,6 +159,7 @@ const MarkerGroup: React.FC<{
 
       marker.getElement()?.setAttribute('role', 'link');
       marker.getElement()?.setAttribute('aria-label', 'Public Toilet');
+
       return marker;
     },
     [router, setMapState]
@@ -217,6 +220,37 @@ const MarkerGroup: React.FC<{
       });
     }
   }, [geohash, parsedAndFilteredMarkers, mapState, setMapState]);
+
+  const hydrateMarkers = () => {
+    const hydrateList = document.getElementsByClassName('get-me');
+    for (const icon of hydrateList) {
+      if (icon.parentElement.dataset['loaded'] !== 'true') {
+        const rooty = createRoot(icon.parentElement, {
+          identifierPrefix: icon.dataset['toiletid'],
+        });
+
+        icon.parentElement.setAttribute('data-loaded', 'true');
+
+        rooty.render(
+          <motion.div
+            data-toiletid={icon.dataset['toiletid']}
+            data-loaded={true}
+            className="toilet-marker get-me"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.8 }}
+            id={icon.dataset['toiletid']}
+          >
+            {getSVGHTML({ toiletId: icon.dataset['toiletid'] })}
+          </motion.div>
+        );
+      }
+    }
+  };
+
+  useEffect(() => {
+    map.on('layeradd', hydrateMarkers);
+    map.on('layerremove', hydrateMarkers);
+  }, []);
 
   useEffect(() => {
     if (parsedAndFilteredMarkers) {
