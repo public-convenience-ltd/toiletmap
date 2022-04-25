@@ -1,5 +1,4 @@
 const { dbConnect, Report } = require('../src/api/db/index.ts');
-
 import reports from './mock-reports.json';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import areaToDatabase from '../src/api/db/manage/areaToDatabase/lib';
@@ -45,5 +44,10 @@ import { SingleBar } from 'cli-progress';
   }
 
   bar.stop();
+
   console.log('Done.');
+
+  console.log('====');
+
+  console.log('Server started');
 })();
