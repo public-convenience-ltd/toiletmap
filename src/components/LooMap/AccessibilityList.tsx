@@ -64,7 +64,7 @@ const Content = ({ toilets }) => {
 
               <Spacer ml={2} />
 
-              {toilet || 'Unnamed Toilet'}
+              <span>{toilet || 'Unnamed Toilet'}</span>
             </Box>
           ))}
         </ul>
