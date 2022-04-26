@@ -1,7 +1,7 @@
 import React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
-import ToiletMarkerIcon, { getSVGHTML, MarkeyIcon } from './ToiletMarkerIcon';
+import ToiletMarkerIcon, { MarkerIcon } from './ToiletMarkerIcon';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
@@ -22,8 +22,8 @@ import {
   useMapGeohashPrecision,
 } from './hooks';
 import _ from 'lodash';
-import { motion } from 'framer-motion';
-import { hydrateRoot, createRoot } from 'react-dom/client';
+import { motion, MotionConfig } from 'framer-motion';
+import { createRoot } from 'react-dom/client';
 
 const KEY_ENTER = 13;
 
@@ -99,6 +99,49 @@ const Markers = () => {
     </>
   );
 };
+const MotionMarker = ({
+  toilet,
+  highlighted,
+  loading,
+  clickHighlighted,
+  id,
+}) => {
+  const bounceTransition = {
+    y: {
+      duration: 0.3,
+      yoyo: Infinity,
+      ease: 'easeOut',
+    },
+    backgroundColor: {
+      duration: 0,
+      yoyo: Infinity,
+      ease: 'easeOut',
+      repeatDelay: 0.8,
+    },
+  };
+  return (
+    <MotionConfig reducedMotion="user">
+      <motion.div
+        data-toiletid={toilet.id}
+        data-loaded={true}
+        className="toilet-marker hydrate"
+        whileHover={{ scale: highlighted ? 1.4 : 1.1 }}
+        whileTap={{ scale: highlighted ? 1.3 : 0.8 }}
+        style={{ scale: highlighted ? 1.5 : 1.0 }}
+        transition={loading && clickHighlighted ? bounceTransition : undefined}
+        animate={
+          loading && clickHighlighted
+            ? {
+                y: ['20%', '-20%'],
+              }
+            : undefined
+        }
+      >
+        <MarkerIcon isHighlighted={highlighted} />
+      </motion.div>
+    </MotionConfig>
+  );
+};
 
 const MarkerGroup: React.FC<{
   geohash: string;
@@ -130,15 +173,27 @@ const MarkerGroup: React.FC<{
   //   L.latLngBounds(L.latLng(bbox[0], bbox[1]), L.latLng(bbox[2], bbox[3]))
   // );
 
+  const [loading, setLoading] = useState(false);
+  const [clickedToilet, setClickedToilet] = useState('');
+  useEffect(() => {
+    router.events.on('routeChangeStart', () => setLoading(true));
+    router.events.on('routeChangeComplete', () => {
+      setLoading(false);
+      setClickedToilet('');
+    });
+  }, [router.events]);
+
   const initialiseMarker = useCallback(
     (toilet) => {
+      const highlighted = toilet.id === mapState.focus?.id;
+
       const marker = L.marker(
         new L.LatLng(toilet.location.lat, toilet.location.lng),
         {
           zIndexOffset: 0,
           icon: ToiletMarkerIcon({
             toiletId: toilet.id as string,
-            isHighlighted: false,
+            isHighlighted: highlighted,
           }),
           alt: 'Public Toilet',
           keyboard: false,
@@ -147,13 +202,49 @@ const MarkerGroup: React.FC<{
         .on('click', () => {
           // Clear the current search upon navigation
           router.push(`/loos/${toilet.id}`);
-          setMapState({ searchLocation: undefined, focus: toilet });
+          setMapState({ searchLocation: undefined });
+          setClickedToilet(toilet.id);
         })
         .on('keydown', (event: { originalEvent: { keyCode: number } }) => {
           if (event.originalEvent.keyCode === KEY_ENTER) {
             // Clear the current search upon navigation
             router.push(`/loos/${toilet.id}`);
-            setMapState({ searchLocation: undefined, focus: toilet });
+            setMapState({ searchLocation: undefined });
+            setClickedToilet(toilet.id);
+          }
+        })
+        .on('add', (e) => {
+          const parent = e.target?._icon;
+          const child = parent.children[0];
+          const clickHighlighted = clickedToilet === toilet.id;
+          if (parent instanceof HTMLElement && child instanceof HTMLElement) {
+            const hydrated = parent.dataset.hydrated === 'true';
+            if (!hydrated) {
+              const markerRoot = createRoot(parent);
+              parent.setAttribute('data-hydrated', 'true');
+
+              if (loading) {
+                if (clickHighlighted) {
+                  markerRoot.render(
+                    <MotionMarker
+                      clickHighlighted={clickHighlighted}
+                      highlighted={highlighted}
+                      loading={loading}
+                      toilet={toilet}
+                    />
+                  );
+                }
+              } else {
+                markerRoot.render(
+                  <MotionMarker
+                    clickHighlighted={clickHighlighted}
+                    highlighted={highlighted}
+                    loading={loading}
+                    toilet={toilet}
+                  />
+                );
+              }
+            }
           }
         });
 
@@ -162,7 +253,7 @@ const MarkerGroup: React.FC<{
 
       return marker;
     },
-    [router, setMapState]
+    [mapState.focus?.id, setMapState, loading, clickedToilet]
   );
 
   const [appliedFilterTypes, setAppliedFilterTypes] = useState<
@@ -194,11 +285,19 @@ const MarkerGroup: React.FC<{
         filterCompressedLooByAppliedFilters(compressedLoo, appliedFilterTypes)
       );
 
-    return parsedAndFilteredMarkers
-      .filter((toilet) => {
-        return toilet.id !== mapState?.focus?.id;
-      })
-      .map(initialiseMarker);
+    const parsedAndFilteredMarkersWithoutFocusedMarker =
+      parsedAndFilteredMarkers.map(initialiseMarker);
+
+    const focusedMarker = parsedAndFilteredMarkers.find(
+      (m) => m.id === mapState?.focus?.id
+    );
+
+    return {
+      focusedMarker: focusedMarker
+        ? initialiseMarker(focusedMarker)
+        : undefined,
+      parsedAndFilteredMarkersWithoutFocusedMarker,
+    };
   }, [
     appliedFilterTypes,
     data?.loosByGeohash,
@@ -208,7 +307,7 @@ const MarkerGroup: React.FC<{
 
   useEffect(() => {
     if (
-      parsedAndFilteredMarkers &&
+      parsedAndFilteredMarkers?.parsedAndFilteredMarkersWithoutFocusedMarker &&
       mapState.geohashLoadState[geohash] === undefined
     ) {
       setMapState({
@@ -221,41 +320,20 @@ const MarkerGroup: React.FC<{
     }
   }, [geohash, parsedAndFilteredMarkers, mapState, setMapState]);
 
-  const hydrateMarkers = () => {
-    const hydrateList = document.getElementsByClassName('get-me');
-    for (const icon of hydrateList) {
-      if (icon.parentElement.dataset['loaded'] !== 'true') {
-        const rooty = createRoot(icon.parentElement, {
-          identifierPrefix: icon.dataset['toiletid'],
-        });
-
-        icon.parentElement.setAttribute('data-loaded', 'true');
-
-        rooty.render(
-          <motion.div
-            data-toiletid={icon.dataset['toiletid']}
-            data-loaded={true}
-            className="toilet-marker get-me"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.8 }}
-            id={icon.dataset['toiletid']}
-          >
-            {getSVGHTML({ toiletId: icon.dataset['toiletid'] })}
-          </motion.div>
-        );
-      }
-    }
-  };
-
+  const [selectedMarkerLayer, setSelectedMarkerLayer] = useState();
   useEffect(() => {
-    map.on('layeradd', hydrateMarkers);
-    map.on('layerremove', hydrateMarkers);
-  }, []);
+    // if (parsedAndFilteredMarkers?.focusedMarker) {
+    //   setSelectedMarkerLayer(parsedAndFilteredMarkers?.focusedMarker);
+    //   map.addLayer(parsedAndFilteredMarkers?.focusedMarker);
+    // }
 
-  useEffect(() => {
-    if (parsedAndFilteredMarkers) {
+    if (
+      parsedAndFilteredMarkers?.parsedAndFilteredMarkersWithoutFocusedMarker
+    ) {
       mcg.clearLayers();
-      mcg.addLayers(parsedAndFilteredMarkers);
+      mcg.addLayers(
+        parsedAndFilteredMarkers.parsedAndFilteredMarkersWithoutFocusedMarker
+      );
       // uncomment this to highlight the bounds of each marker chunk for easier debugging.
       // mcg.addLayers([bounds]);
       map.addLayer(mcg);
@@ -269,7 +347,7 @@ const MarkerGroup: React.FC<{
       mcg._spiderfierOnRemove = undefined;
       map.removeLayer(mcg);
     };
-  }, [parsedAndFilteredMarkers, map, mcg]);
+  }, [parsedAndFilteredMarkers, map, mcg, selectedMarkerLayer]);
 
   return null;
 };

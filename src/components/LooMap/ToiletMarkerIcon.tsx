@@ -1,15 +1,12 @@
-import React, { useEffect, useId, useState } from 'react';
 import L from 'leaflet';
 import { renderToString } from 'react-dom/server';
-import { motion } from 'framer-motion';
 const ICON_DIMENSIONS = [22, 34];
-const LARGE_ICON_DIMENSSIONS = ICON_DIMENSIONS.map((i) => i * 1.5);
 const getIconAnchor = (dimensions: number[]) => [
   dimensions[0] / 2,
   dimensions[1],
 ];
 
-export const getSVGHTML = ({ isHighlighted = false }) => {
+export const MarkerIcon = ({ isHighlighted = false }) => {
   return (
     <svg viewBox="-1 -1 21 33" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -30,15 +27,25 @@ export const getSVGHTML = ({ isHighlighted = false }) => {
   );
 };
 
-export const MarkeyIcon = ({ isHighlighted = false, toiletId = undefined }) => {
+export const MarkerContainer = ({
+  isHighlighted = false,
+  toiletId = undefined,
+}) => {
   return (
-    <div data-toiletid={toiletId} id={toiletId} className="get-me">
-      {getSVGHTML({ toiletId })}
+    <div
+      data-toiletid={toiletId}
+      className="toilet-marker hydrate"
+      id={isHighlighted ? 'highlighted-loo' : ''}
+    >
+      <MarkerIcon isHighlighted={isHighlighted} />
     </div>
   );
 };
 
-const ToiletMarkerIcon = ({ isHighlighted = false, toiletId = undefined }) =>
+const ToiletMarkerIcon: ({
+  isHighlighted: boolean,
+  toiletId: string,
+}) => void = ({ isHighlighted = false, toiletId = undefined }) =>
   new (L.DivIcon.extend({
     options: {
       highlight: isHighlighted,
@@ -49,12 +56,10 @@ const ToiletMarkerIcon = ({ isHighlighted = false, toiletId = undefined }) =>
       // eslint-disable-next-line functional/immutable-data
       this.options = {
         ...this.options,
-        iconSize: isHighlighted ? LARGE_ICON_DIMENSSIONS : ICON_DIMENSIONS,
-        iconAnchor: isHighlighted
-          ? getIconAnchor(LARGE_ICON_DIMENSSIONS)
-          : getIconAnchor(ICON_DIMENSIONS),
+        iconSize: ICON_DIMENSIONS,
+        iconAnchor: getIconAnchor(ICON_DIMENSIONS),
         html: renderToString(
-          <MarkeyIcon isHighlighted={isHighlighted} toiletId={toiletId} />
+          <MarkerContainer isHighlighted={isHighlighted} toiletId={toiletId} />
         ),
       };
 

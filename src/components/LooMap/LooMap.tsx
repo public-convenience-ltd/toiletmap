@@ -284,7 +284,7 @@ const LooMap: React.FC<LooMapProps> = ({
           maxZoom={maxZoom}
         />
 
-        {mapState.focus && <CurrentLooMarker loo={mapState.focus} />}
+        {/* {mapState.focus && <CurrentLooMarker loo={mapState.focus} />} */}
 
         <Markers />
 
