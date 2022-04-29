@@ -222,17 +222,14 @@ const MarkerGroup: React.FC<{
     if (parsedAndFilteredMarkers) {
       mcg.clearLayers();
       mcg.addLayers(parsedAndFilteredMarkers);
+
       // uncomment this to highlight the bounds of each marker chunk for easier debugging.
       // mcg.addLayers([bounds]);
       map.addLayer(mcg);
     }
     return () => {
       mcg.clearLayers();
-      // We're not using the spiderifier and it causes an internal -
-      // leaflet warning when we remove the layer if it is defined.
-      // So we set it to undefined to suppress the warning.
-      // eslint-disable-next-line functional/immutable-data
-      mcg._spiderfierOnRemove = undefined;
+      map.on('zoomanim', mcg._unspiderfyZoomAnim, mcg);
       map.removeLayer(mcg);
     };
   }, [parsedAndFilteredMarkers, map, mcg]);

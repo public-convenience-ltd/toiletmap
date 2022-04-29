@@ -1,3 +1,5 @@
+import { isPermissionAllowed } from 'cypress-browser-permissions';
+
 describe('Home page tests', () => {
   it('is correctly titled', () => {
     cy.visit('/');
@@ -18,8 +20,42 @@ describe('Home page tests', () => {
     cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
   });
 
-  it.skip('should bundle and un-bundle markers based on the zoom level', () => {
+  it('should bundle and un-bundle markers based on the zoom level', () => {
     cy.visit('/').wait(500);
+    cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+    cy.get('#gbptm-map').trigger('wheel', {
+      deltaY: 66.666666,
+      wheelDelta: 120,
+      wheelDeltaX: 0,
+      wheelDeltaY: -500,
+      bubbles: true,
+    });
+    cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
+    cy.wait(500);
+    cy.get('#gbptm-map').trigger('wheel', {
+      deltaY: 66.666666,
+      wheelDelta: 120,
+      wheelDeltaX: 0,
+      wheelDeltaY: 500,
+      bubbles: true,
+    });
+    cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+  });
+
+  it('should unbundle markers when the bundle is clicked', () => {
+    cy.visit('/').wait(500);
+    cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+    cy.get('#gbptm-map').trigger('wheel', {
+      deltaY: 66.666666,
+      wheelDelta: 120,
+      wheelDeltaX: 0,
+      wheelDeltaY: -500,
+      bubbles: true,
+    });
+    cy.wait(500);
+    cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
+    cy.get('span').contains('9').click();
+    cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
   });
 
   it('should load different toilets when the map is dragged', () => {
@@ -42,6 +78,78 @@ describe('Home page tests', () => {
     cy.get('[data-toiletid=51f6b4d8b792e3531efe5152]').should('not.exist');
     cy.get('[data-toiletid=cc4e5e9b83de8dd9ba87b3eb]').should('exist');
   });
+
+  isPermissionAllowed('geolocation') &&
+    it.only('should geolocate the user when the "find a toilet near me" button is clicked', () => {
+      cy.on('window:before:load', (win) => {
+        const latitude = 51.5,
+          longitude = -0.3,
+          accuracy = 1.0;
+
+        cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake(
+          (callback) => {
+            return callback({ coords: { latitude, longitude, accuracy } });
+          }
+        );
+      });
+      cy.visit('/').wait(500);
+
+      cy.get('b').contains('Find').click();
+
+      cy.get('#gbptm-map')
+        .trigger('wheel', {
+          deltaY: 66.666666,
+          wheelDelta: 120,
+          wheelDeltaX: 0,
+          wheelDeltaY: -500,
+          bubbles: true,
+        })
+        .wait(500);
+
+      // Check that we land in Ealing
+      cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]')
+        .should('exist')
+        .click();
+
+      // Check that the distance to the toilet is listed
+      cy.contains('fabulous bandwidth');
+      cy.contains('423m');
+    });
+
+  isPermissionAllowed('geolocation') &&
+    it('should allow user to search after geolocating', () => {
+      cy.on('window:before:load', (win) => {
+        const latitude = 51.5,
+          longitude = -0.3,
+          accuracy = 1.0;
+
+        cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake(
+          (callback) => {
+            return callback({ coords: { latitude, longitude, accuracy } });
+          }
+        );
+      });
+      cy.visit('/').wait(500);
+
+      cy.get('b').contains('Find').click();
+
+      cy.get('#gbptm-map').trigger('wheel', {
+        deltaY: 66.666666,
+        wheelDelta: 120,
+        wheelDeltaX: 0,
+        wheelDeltaY: -500,
+        bubbles: true,
+      });
+
+      // Check that we land in Ealing
+      cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');
+
+      cy.findByPlaceholderText('Search location…').type('Hammersmith');
+      cy.findByText(
+        'Hammersmith, Greater London, England, W6 9YA, United Kingdom'
+      ).click();
+      cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
+    });
 
   it('should update the accessibility overlay list when the user pans or zooms', () => {
     cy.visit('/').wait(500);
