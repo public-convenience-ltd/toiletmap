@@ -80,7 +80,7 @@ describe('Home page tests', () => {
   });
 
   isPermissionAllowed('geolocation') &&
-    it.only('should geolocate the user when the "find a toilet near me" button is clicked', () => {
+    it('should geolocate the user when the "find a toilet near me" button is clicked', () => {
       cy.on('window:before:load', (win) => {
         const latitude = 51.5,
           longitude = -0.3,

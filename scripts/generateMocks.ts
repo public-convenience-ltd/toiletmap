@@ -22,6 +22,8 @@ const generateReports = () => {
           type: 'Point',
           coordinates: location,
         },
+        men: faker.datatype.boolean(),
+        noPayment: faker.datatype.boolean(),
       },
     ]);
   }
