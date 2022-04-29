@@ -263,6 +263,15 @@ describe('Home page tests', () => {
       .parent()
       .should('have.css', 'background-color', 'rgb(210, 255, 242)');
 
+    // Check the opening hours are as expected
+    cy.findByText('Monday').siblings().contains('10:09 - 14:01');
+    cy.findByText('Tuesday').siblings().contains('02:34 - 07:26');
+    cy.findByText('Wednesday').siblings().contains('01:07 - 23:04');
+    cy.findByText('Thursday').siblings().contains('10:30 - 21:51');
+    cy.findByText('Friday').siblings().contains('00:42 - 15:07');
+    cy.findByText('Saturday').siblings().contains('20:31 - 23:34');
+    cy.findByText('Sunday').siblings().contains('03:43 - 03:52');
+
     // Check that the feature values are as expected
     cy.findByText('Women')
       .siblings()
