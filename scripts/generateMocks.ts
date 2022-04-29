@@ -2,6 +2,7 @@ import faker from '@faker-js/faker';
 import fs from 'fs';
 import path from 'path';
 import { Types } from 'mongoose';
+import _ from 'lodash';
 
 const generateReports = () => {
   const reports = [];
@@ -42,15 +43,16 @@ const generateReports = () => {
           ' ' +
           faker.word.verb() +
           '!',
-        openingTimes: [
-          ['09:00', '17:00'],
-          ['09:00', '17:00'],
-          ['09:00', '17:00'],
-          ['09:00', '17:00'],
-          ['09:00', '17:00'],
-          ['09:00', '17:00'],
-          ['09:00', '17:00'],
-        ],
+        openingTimes: _.times(7, () =>
+          faker.date
+            .betweens('2020-01-01T00:00:00.000Z', '2020-01-01T23:59:59.000Z', 2)
+            .map(
+              (v) =>
+                `${('0' + v.getHours()).slice(-2)}:${(
+                  '0' + v.getMinutes()
+                ).slice(-2)}`
+            )
+        ),
       },
     ]);
   }

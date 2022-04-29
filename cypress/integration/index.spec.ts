@@ -18,6 +18,8 @@ describe('Home page tests', () => {
       'Hammersmith, Greater London, England, W6 9YA, United Kingdom'
     ).click();
     cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
+    cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').click();
+    cy.contains('limping comfort');
   });
 
   it('should bundle and un-bundle markers based on the zoom level', () => {
@@ -234,7 +236,7 @@ describe('Home page tests', () => {
       });
   });
 
-  it('should open the toilet details panel when a marker is clicked', () => {
+  it.only('should open the toilet details panel when a marker is clicked', () => {
     cy.visit('/').wait(500);
     cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').click({ force: true });
 
@@ -260,6 +262,41 @@ describe('Home page tests', () => {
     cy.findByText(dayOfWeekName)
       .parent()
       .should('have.css', 'background-color', 'rgb(210, 255, 242)');
+
+    // Check that the feature values are as expected
+    cy.findByText('Women')
+      .siblings()
+      .contains(/^available/);
+    cy.findByText('Men')
+      .siblings()
+      .contains(/^available/);
+    cy.findByText('Accessible')
+      .siblings()
+      .contains(/^unavailable/);
+    cy.findByText('Gender Neutral')
+      .siblings()
+      .contains(/^available/);
+    cy.findByText('Children')
+      .siblings()
+      .contains(/^unavailable/);
+    cy.findByText('Baby Changing')
+      .siblings()
+      .contains(/^available/);
+    cy.findByText('Urinal Only')
+      .siblings()
+      .contains(/^available/);
+    cy.findByText('Automatic')
+      .siblings()
+      .contains(/^unknown/);
+    cy.findByText('Free')
+      .siblings()
+      .contains(/^available/);
+
+    // Check the notes
+    cy.contains('vigilant toilet!! indeed photoreceptor crown!');
+
+    // Check last verified
+    cy.contains('Last verified: 03/05/2022');
   });
 
   it('should collapse the toilet panel when the close button is clicked and reopen when details is clicked', () => {
