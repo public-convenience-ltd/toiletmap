@@ -4,7 +4,10 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.3
 
-declare namespace L {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as L from 'leaflet';
+
+declare module 'leaflet' {
   class MarkerCluster extends Marker {
     /*
      * Recursively retrieve all child markers of this cluster.
@@ -198,6 +201,8 @@ declare namespace L {
      * calls the callback when the marker is visible on the map.
      */
     zoomToShowLayer(layer: Layer, callback?: () => void): void;
+
+    _spiderfierOnRemove: () => void;
   }
 
   /*
