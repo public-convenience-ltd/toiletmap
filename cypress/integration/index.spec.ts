@@ -17,7 +17,8 @@ describe('Home page tests', () => {
     cy.findByText(
       'Hammersmith, Greater London, England, W6 9YA, United Kingdom'
     ).click();
-    cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
+    cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist').click();
+    cy.contains('limping comfort');
   });
 
   it('should bundle and un-bundle markers based on the zoom level', () => {

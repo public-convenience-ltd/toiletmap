@@ -23,7 +23,25 @@ const generateReports = () => {
           coordinates: location,
         },
         men: faker.datatype.boolean(),
+        women: faker.datatype.boolean(),
+        children: faker.datatype.boolean(),
         noPayment: faker.datatype.boolean(),
+        babyChange: faker.datatype.boolean(),
+        urinalOnly: faker.datatype.boolean(),
+        radar: faker.datatype.boolean(),
+        accessible: faker.datatype.boolean(),
+        allGender: faker.datatype.boolean(),
+        verifiedAt: faker.date.future(),
+        paymentDetails: `£${faker.finance.amount(0, 10)} on entry`,
+        notes:
+          faker.word.adjective() +
+          ' toilet!! ' +
+          faker.word.conjunction() +
+          ' ' +
+          faker.word.noun() +
+          ' ' +
+          faker.word.verb() +
+          '!',
       },
     ]);
   }
