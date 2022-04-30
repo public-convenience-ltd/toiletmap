@@ -112,16 +112,6 @@ const MarkerGroup: React.FC<{
     variables: { geohash },
   });
 
-  const mcg = useMemo(
-    () =>
-      L.markerClusterGroup({
-        maxClusterRadius,
-        showCoverageOnHover: false,
-        chunkedLoading: true,
-      }),
-    [maxClusterRadius]
-  );
-
   // Uncomment this to calculate the chunk bounds to draw a debug box.
   // const bbox = ngeohash.decode_bbox(geohash);
   // const bounds = L.rectangle(
@@ -218,21 +208,52 @@ const MarkerGroup: React.FC<{
     }
   }, [geohash, parsedAndFilteredMarkers, mapState, setMapState]);
 
-  useEffect(() => {
-    if (parsedAndFilteredMarkers) {
-      mcg.clearLayers();
-      mcg.addLayers(parsedAndFilteredMarkers);
+  const mcg = useMemo(() => {
+    return L.markerClusterGroup({
+      maxClusterRadius,
+      showCoverageOnHover: false,
+      chunkedLoading: true,
+      iconCreateFunction: (cluster) => {
+        const childCount = cluster.getChildCount();
+        const children = cluster.getAllChildMarkers();
+        const containedIds = children
+          .map((child) => child.getIcon().options?.toiletId)
+          .join(',');
 
-      // uncomment this to highlight the bounds of each marker chunk for easier debugging.
-      // mcg.addLayers([bounds]);
+        let c = ' marker-cluster-';
+        if (childCount < 10) {
+          c += 'small';
+        } else if (childCount < 100) {
+          c += 'medium';
+        } else {
+          c += 'large';
+        }
+
+        return new L.DivIcon({
+          html: `<div data-toilets=${containedIds}><span>${childCount}</span></div>`,
+          className: 'marker-cluster' + c,
+          iconSize: new L.Point(40, 40),
+        });
+      },
+    });
+  }, [maxClusterRadius]);
+
+  useEffect(() => {
+    mcg.clearLayers();
+
+    if (parsedAndFilteredMarkers) {
+      mcg.addLayers(parsedAndFilteredMarkers);
       map.addLayer(mcg);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [parsedAndFilteredMarkers, mcg]);
+
+  useEffect(() => {
     return () => {
-      mcg.clearLayers();
-      map.on('zoomanim', mcg._unspiderfyZoomAnim, mcg);
-      map.removeLayer(mcg);
+      mcg?.clearLayers();
     };
-  }, [parsedAndFilteredMarkers, map, mcg]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mcg]);
 
   return null;
 };
