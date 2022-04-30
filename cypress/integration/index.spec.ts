@@ -99,18 +99,22 @@ describe('Home page tests', () => {
 
         cy.findByText('Find a toilet near me').click();
 
-        cy.get('#gbptm-map').trigger('wheel', {
-          deltaY: 66.666666,
-          wheelDelta: 120,
-          wheelDeltaX: 0,
-          wheelDeltaY: -700,
-          bubbles: true,
-        });
+        cy.get('#gbptm-map')
+          .trigger('wheel', {
+            deltaY: 66.666666,
+            wheelDelta: 120,
+            wheelDeltaX: 0,
+            wheelDeltaY: -700,
+            bubbles: true,
+          })
+          .wait(500);
 
         // Check that we land in Ealing
-        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click({
+        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').click({
           force: true,
         });
+
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click();
 
         // Check that the distance to the toilet is listed
         cy.contains('fabulous bandwidth');
@@ -134,15 +138,21 @@ describe('Home page tests', () => {
 
         cy.findByText('Find a toilet near me').click();
 
-        cy.get('#gbptm-map').trigger('wheel', {
-          deltaY: 66.666666,
-          wheelDelta: 120,
-          wheelDeltaX: 0,
-          wheelDeltaY: -500,
-          bubbles: true,
-        });
+        cy.get('#gbptm-map')
+          .trigger('wheel', {
+            deltaY: 66.666666,
+            wheelDelta: 120,
+            wheelDeltaX: 0,
+            wheelDeltaY: -500,
+            bubbles: true,
+          })
+          .wait(500);
 
         // Check that we land in Ealing
+        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').click({
+          force: true,
+        });
+
         cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');
 
         cy.findByPlaceholderText('Search location…').type('Hammersmith');
@@ -504,11 +514,8 @@ describe('Home page tests', () => {
         wheelDeltaY: -500,
         bubbles: true,
       });
-      cy.wait(500);
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
-      cy.get(
-        '[data-toilets="1e6b3abdeb6c5e7c375f6cfd,ddad1ed1b91d99ed2bf3bcdf,dfab8062dbc4a2170f8a9c88"]'
-      ).click();
+      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').click();
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
     });
 
@@ -579,9 +586,11 @@ describe('Home page tests', () => {
           .wait(500);
 
         // Check that we land in Ealing
-        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]')
-          .should('exist')
-          .click();
+        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').click({
+          force: true,
+        });
+
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click();
 
         // Check that the distance to the toilet is listed
         cy.contains('fabulous bandwidth');
@@ -605,16 +614,18 @@ describe('Home page tests', () => {
 
         cy.get('b').contains('Find').click();
 
-        cy.get('#gbptm-map').trigger('wheel', {
-          deltaY: 66.666666,
-          wheelDelta: 120,
-          wheelDeltaX: 0,
-          wheelDeltaY: -500,
-          bubbles: true,
-        });
+        cy.get('#gbptm-map')
+          .trigger('wheel', {
+            deltaY: 66.666666,
+            wheelDelta: 120,
+            wheelDeltaX: 0,
+            wheelDeltaY: -500,
+            bubbles: true,
+          })
+          .wait(500);
 
         // Check that we land in Ealing
-        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');
+        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').should('exist');
 
         cy.findByPlaceholderText('Search location…').type('Hammersmith');
         cy.findByText(
