@@ -33,8 +33,8 @@ const LooPage: PageFindLooByIdComp = (props) => {
   }, [
     firstLoad,
     mapState.focus,
-    props.data.loo,
-    props.data.loo.location,
+    props.data?.loo,
+    props.data?.loo?.location,
     router,
     setMapState,
   ]);

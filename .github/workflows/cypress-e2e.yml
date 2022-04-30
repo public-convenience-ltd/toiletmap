@@ -47,4 +47,4 @@ jobs:
           wait-on: 'http://localhost:3000/'
           wait-on-timeout: 60
           browser: chrome
-          spec: cypress/integration/*.ts
+          spec: cypress/integration/**/*.ts

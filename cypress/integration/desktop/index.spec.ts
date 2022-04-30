@@ -106,7 +106,7 @@ describe('Home page tests', () => {
     });
 
     isPermissionAllowed('geolocation') &&
-      it.only('should not break when the geolocate button is clicked multiple times', () => {
+      it('should not break when the geolocate button is clicked multiple times', () => {
         cy.on('window:before:load', (win) => {
           const latitude = 51.5,
             longitude = -0.3,
