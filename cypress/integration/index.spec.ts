@@ -15,15 +15,13 @@ describe('Home page tests', () => {
       cy.get('.toilet-marker').should('exist');
     });
 
-    it('should let you search by location', () => {
+    it.only('should let you search by location', () => {
       cy.visit('/');
       cy.findByPlaceholderText('Search location…').type('Hammersmith');
       cy.findByText(
         'Hammersmith, Greater London, England, W6 9YA, United Kingdom'
       ).click();
       cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
-      cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').click();
-      cy.contains('limping comfort');
     });
 
     it('should bundle and un-bundle markers based on the zoom level', () => {
@@ -302,9 +300,34 @@ describe('Home page tests', () => {
       cy.contains('Last verified: 03/05/2022');
     });
 
-    it.skip('should filter toilets based on applied filter toggles', () => {
+    // Just a cursory test on mobile —heavy testing of filters is done in desktop suite.
+    it('should filter toilets based on applied filter toggles', () => {
       cy.visit('/').wait(500);
-      cy.findByText('Filter').click();
+      cy.get('#gbptm-map').trigger('wheel', {
+        deltaY: 66.666666,
+        wheelDelta: 120,
+        wheelDeltaX: 0,
+        wheelDeltaY: -150,
+        bubbles: true,
+      });
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.findByText('Filter Map').click();
+      cy.findByText('Baby Changing')
+        .siblings()
+        .get('[aria-labelledby=filter-babyChange]')
+        .click();
+      cy.findByText('Done').click();
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('not.exist');
+      cy.findByText('Filter Map').click();
+      cy.findByText('Baby Changing')
+        .siblings()
+        .get('[aria-labelledby=filter-babyChange]')
+        .click();
+      cy.findByText('Done').click();
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
     });
 
     it('should collapse the toilet panel when the close button is clicked and reopen when details is clicked', () => {
