@@ -7,8 +7,8 @@
 // You can read more here:
 // https://on.cypress.io/plugins-guide
 // ***********************************************************
-
-const pluginConfig: Cypress.PluginConfig = (on) => {
+import { cypressBrowserPermissionsPlugin } from 'cypress-browser-permissions';
+const pluginConfig: Cypress.PluginConfig = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
 
@@ -24,6 +24,10 @@ const pluginConfig: Cypress.PluginConfig = (on) => {
       return null;
     },
   });
+
+  // eslint-disable-next-line no-param-reassign
+  config = cypressBrowserPermissionsPlugin(on, config);
+  return config;
 };
 
 export default pluginConfig;
