@@ -228,6 +228,9 @@ const MarkerGroup: React.FC<{
         } else {
           c += 'large';
         }
+        if (containedIds.indexOf('ddad1ed1b91d99ed2bf3bcdf') > -1) {
+          console.log(containedIds);
+        }
 
         return new L.DivIcon({
           html: `<div data-toilets=${containedIds}><span>${childCount}</span></div>`,
