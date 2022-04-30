@@ -15,7 +15,7 @@ describe('Home page tests', () => {
       cy.get('.toilet-marker').should('exist');
     });
 
-    it.only('should let you search by location', () => {
+    it('should let you search by location', () => {
       cy.visit('/');
       cy.findByPlaceholderText('Search location…').type('Hammersmith');
       cy.findByText(
