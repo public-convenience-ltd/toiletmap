@@ -27,6 +27,7 @@ describe('Home page tests', () => {
     it('should bundle and un-bundle markers based on the zoom level', () => {
       cy.visit('/').wait(500);
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
       cy.get('#gbptm-map').trigger('wheel', {
         deltaY: 66.666666,
         wheelDelta: 120,
@@ -35,6 +36,7 @@ describe('Home page tests', () => {
         bubbles: true,
       });
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
+      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.wait(500);
       cy.get('#gbptm-map').trigger('wheel', {
         deltaY: 66.666666,
@@ -43,6 +45,7 @@ describe('Home page tests', () => {
         wheelDeltaY: 500,
         bubbles: true,
       });
+      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
     });
 
@@ -457,9 +460,9 @@ describe('Home page tests', () => {
     });
   });
 
-  context('desktop', () => {
+  context.only('desktop', () => {
     beforeEach(() => {
-      cy.viewport('macbook-13');
+      cy.viewport('macbook-16');
     });
     it('is correctly titled', () => {
       cy.visit('/');
@@ -485,6 +488,7 @@ describe('Home page tests', () => {
     it('should bundle and un-bundle markers based on the zoom level', () => {
       cy.visit('/').wait(500);
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
       cy.get('#gbptm-map').trigger('wheel', {
         deltaY: 66.666666,
         wheelDelta: 120,
@@ -493,6 +497,7 @@ describe('Home page tests', () => {
         bubbles: true,
       });
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
+      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.wait(500);
       cy.get('#gbptm-map').trigger('wheel', {
         deltaY: 66.666666,
@@ -502,6 +507,7 @@ describe('Home page tests', () => {
         bubbles: true,
       });
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
     });
 
     it('should unbundle markers when the bundle is clicked', () => {
@@ -646,22 +652,21 @@ describe('Home page tests', () => {
       // zoom out and confirm that toilets are intersecting the focus window
       // and that they are added to the list.
       cy.get('#gbptm-map').focus().type('{-}{-}{-}', { delay: 500 });
-      cy.contains('guilty illiteracy');
+      cy.contains('slow decoration');
+      cy.contains('agile energy');
       cy.contains('bite-sized academy');
       cy.contains('cheery zither');
-      cy.contains('cold group');
+      cy.contains('worldly file');
       cy.contains('radiant spiderling');
       cy.get('#gbptm-map').type('{downarrow}', { delay: 500 }).wait(500);
       // these toilets have now moved outside of the selection window
       cy.contains('radiant spiderling').should('not.exist');
-      cy.contains('cold group').should('not.exist');
-      cy.contains('lasting event').should('not.exist');
-      cy.contains('guilty illiteracy').should('not.exist');
+      cy.contains('cheery zither').should('not.exist');
       // these toilets are now the top suggestions in the selection window
+      cy.contains('slow decoration');
       cy.contains('bland lunch');
       cy.contains('bite-sized academy');
-      cy.contains('cheery zither');
-      cy.contains('rosy medal');
+      cy.contains('unused champion');
       cy.contains('entire caddy');
     });
 
@@ -833,8 +838,8 @@ describe('Home page tests', () => {
         .siblings()
         .get('[aria-labelledby=filter-babyChange]')
         .click();
-
       cy.findByText('Filter').click();
+
       cy.get('[data-toiletid=be23c4bb6fdbbdc6ee6e2aad]').click();
       cy.findByText('Details').click();
       cy.findByText('Free')
