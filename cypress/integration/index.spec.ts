@@ -527,25 +527,25 @@ describe('Home page tests', () => {
       cy.get('[data-toiletid=cc4e5e9b83de8dd9ba87b3eb]').should('not.exist');
       cy.get('#gbptm-map')
         .trigger('mousedown', { which: 1 })
-        .trigger('mousemove', { which: 1, x: 900, y: 0 })
+        .trigger('mousemove', { which: 1, x: 1000, y: 0 })
         .trigger('mouseup')
         .wait(100)
         .trigger('mousedown', { which: 1 })
-        .trigger('mousemove', { which: 1, x: 900, y: 0 })
+        .trigger('mousemove', { which: 1, x: 1000, y: 0 })
         .trigger('mouseup')
         .wait(100)
         .trigger('mousedown', { which: 1 })
-        .trigger('mousemove', { which: 1, x: 500, y: 0 })
+        .trigger('mousemove', { which: 1, x: 600, y: 0 })
+        .trigger('mouseup')
+        .wait(100)
+        .trigger('mousedown', { which: 1 })
+        .trigger('mousemove', { which: 1, x: 600, y: 0 })
+        .trigger('mouseup')
+        .wait(100)
+        .trigger('mousedown', { which: 1 })
+        .trigger('mousemove', { which: 1, x: 600, y: 0 })
         .trigger('mouseup');
-      // cy.get('#gbptm-map')
-      //   .trigger('wheel', {
-      //     deltaY: 66.666666,
-      //     wheelDelta: 120,
-      //     wheelDeltaX: 0,
-      //     wheelDeltaY: -100,
-      //     bubbles: true,
-      //   })
-      // .wait(500);
+
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
       cy.get('[data-toiletid=cc4e5e9b83de8dd9ba87b3eb]').should('exist');
     });
