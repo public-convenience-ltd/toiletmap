@@ -106,6 +106,47 @@ describe('Home page tests', () => {
     });
 
     isPermissionAllowed('geolocation') &&
+      it.only('should not break when the geolocate button is clicked multiple times', () => {
+        cy.on('window:before:load', (win) => {
+          const latitude = 51.5,
+            longitude = -0.3,
+            accuracy = 1.0;
+
+          cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake(
+            (callback) => {
+              return callback({ coords: { latitude, longitude, accuracy } });
+            }
+          );
+        });
+        cy.visit('/').wait(500);
+
+        cy.get('b').contains('Find').click();
+        cy.get('b').contains('Find').click();
+        cy.get('b').contains('Find').click();
+
+        cy.get('#gbptm-map')
+          .trigger('wheel', {
+            deltaY: 66.666666,
+            wheelDelta: 120,
+            wheelDeltaX: 0,
+            wheelDeltaY: -500,
+            bubbles: true,
+          })
+          .wait(500);
+
+        // Check that we land in Ealing
+        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').click({
+          force: true,
+        });
+
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click();
+
+        // Check that the distance to the toilet is listed
+        cy.contains('fabulous bandwidth');
+        cy.contains('423m');
+      });
+
+    isPermissionAllowed('geolocation') &&
       it('should geolocate the user when the "find a toilet near me" button is clicked', () => {
         cy.on('window:before:load', (win) => {
           const latitude = 51.5,

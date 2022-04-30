@@ -55,10 +55,10 @@ const Markers = () => {
     boundingBoxWest,
   ]);
 
+  // TODO:fix this
   const throttledPrefetch = useMemo(() => {
     return _.throttle((id) => {
       router.prefetch(id);
-      console.log(id);
     }, 1000);
   }, [router]);
 
@@ -227,9 +227,6 @@ const MarkerGroup: React.FC<{
           c += 'medium';
         } else {
           c += 'large';
-        }
-        if (containedIds.indexOf('ddad1ed1b91d99ed2bf3bcdf') > -1) {
-          console.log(containedIds);
         }
 
         return new L.DivIcon({
