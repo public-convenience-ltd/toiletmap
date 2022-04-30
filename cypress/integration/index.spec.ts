@@ -754,6 +754,159 @@ describe('Home page tests', () => {
     it('should filter toilets based on applied filter toggles', () => {
       cy.visit('/').wait(500);
       cy.findByText('Filter').click();
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.findByText('Baby Changing')
+        .siblings()
+        .get('[aria-labelledby=filter-babyChange]')
+        .click();
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('not.exist');
+      cy.findByText('Baby Changing')
+        .siblings()
+        .get('[aria-labelledby=filter-babyChange]')
+        .click();
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
+    });
+
+    it('should apply multiple filters', () => {
+      cy.visit('/').wait(500);
+      cy.findByText('Filter').click();
+      cy.get('#gbptm-map')
+        .trigger('wheel', {
+          deltaY: 66.666666,
+          wheelDelta: 120,
+          wheelDeltaX: 0,
+          wheelDeltaY: -1000,
+          bubbles: true,
+        })
+        .wait(500);
+      cy.findByText('Free')
+        .siblings()
+        .get('[aria-labelledby=filter-noPayment]')
+        .click();
+      cy.findByText('Filter').click();
+
+      cy.get('[data-toiletid=05a8ddcad8fdca635f5dbdb0]').click();
+      cy.findByText('Free')
+        .siblings()
+        .contains(/^available/);
+      cy.get('body').trigger('keydown', { key: 'Escape' });
+      cy.findByText('Filter').click();
+      cy.findByText('Baby Changing')
+        .siblings()
+        .get('[aria-labelledby=filter-babyChange]')
+        .click();
+
+      cy.findByText('Filter').click();
+      cy.get('[data-toiletid=be23c4bb6fdbbdc6ee6e2aad]').click();
+      cy.findByText('Details').click();
+      cy.findByText('Free')
+        .siblings()
+        .contains(/^available/);
+      cy.findByText('Baby Changing')
+        .siblings()
+        .contains(/^available/);
+      cy.get('body').trigger('keydown', { key: 'Escape' });
+      cy.findByText('Filter').click();
+
+      cy.findByText('Accessible')
+        .siblings()
+        .get('[aria-labelledby=filter-accessible]')
+        .click();
+      cy.findByText('Filter').click();
+      cy.get('[data-toiletid=3f8b1fff5d1107ff2cac636b]').click();
+      cy.findByText('Details').click();
+      cy.findByText('Free')
+        .siblings()
+        .contains(/^available/);
+      cy.findByText('Baby Changing')
+        .siblings()
+        .contains(/^available/);
+      cy.findByText('Accessible')
+        .siblings()
+        .contains(/^available/);
+      cy.get('body').trigger('keydown', { key: 'Escape' });
+      cy.findByText('Filter').click();
+
+      cy.findByText('Gender Neutral')
+        .siblings()
+        .get('[aria-labelledby=filter-allGender]')
+        .click();
+      cy.findByText('Filter').click();
+      cy.get('[data-toiletid=c109d92ff0a706bab071ed8f]').click();
+      cy.findByText('Details').click();
+      cy.findByText('Free')
+        .siblings()
+        .contains(/^available/);
+      cy.findByText('Baby Changing')
+        .siblings()
+        .contains(/^available/);
+      cy.findByText('Accessible')
+        .siblings()
+        .contains(/^available/);
+      cy.findByText('Gender Neutral')
+        .siblings()
+        .contains(/^available/);
+      cy.get('body').trigger('keydown', { key: 'Escape' });
+      cy.findByText('Filter').click();
+
+      cy.findByText('Radar Key')
+        .siblings()
+        .get('[aria-labelledby=filter-radar]')
+        .click();
+      cy.findByText('Filter').click();
+      cy.get('[data-toiletid=3ae59cf0efe2c64aefd15ed7]').click({ force: true });
+      cy.findByText('Details').click();
+      cy.findByText('Free')
+        .siblings()
+        .contains(/^available/);
+      cy.findByText('Baby Changing')
+        .siblings()
+        .contains(/^available/);
+      cy.findByText('Accessible')
+        .siblings()
+        .contains(/^available/);
+      cy.findByText('Gender Neutral')
+        .siblings()
+        .contains(/^available/);
+      cy.findByText('RADAR Key')
+        .siblings()
+        .contains(/^available/);
+      cy.findByText('Automatic')
+        .siblings()
+        .contains(/^unknown/);
+      cy.get('body').trigger('keydown', { key: 'Escape' });
+      cy.findByText('Filter').click();
+    });
+
+    it('should retain filters when the page is reloaded and reset them when reset button clicked', () => {
+      cy.visit('/').wait(500);
+      cy.findByText('Filter').click();
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.findByText('Baby Changing')
+        .siblings()
+        .get('[aria-labelledby=filter-babyChange]')
+        .click();
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('not.exist');
+
+      cy.reload().wait(500);
+
+      cy.findByText('Filter').click();
+
+      cy.findByText('Baby Changing')
+        .siblings()
+        .get('[aria-labelledby=filter-babyChange]');
+
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('not.exist');
+
+      cy.findByText('Reset Filter').click();
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
     });
 
     it('should collapse the toilet panel when the close button is clicked and reopen when details is clicked', () => {
