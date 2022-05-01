@@ -2,7 +2,7 @@ import { isPermissionAllowed } from 'cypress-browser-permissions';
 
 describe('Home page tests', () => {
   context('desktop', () => {
-    before(() => {
+    beforeEach(() => {
       cy.viewport('macbook-16');
     });
     it('is correctly titled', () => {

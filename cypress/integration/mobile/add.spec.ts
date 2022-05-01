@@ -3,8 +3,10 @@ import _ from 'lodash';
 
 describe('Adding new toilets to the platform', () => {
   context('Mobile', () => {
-    before(() => {
+    beforeEach(() => {
       cy.viewport('iphone-8');
+    });
+    before(() => {
       cy.login();
     });
 
@@ -71,7 +73,7 @@ describe('Adding new toilets to the platform', () => {
       return { inputChoices, detailChecks, isRadarHidden };
     };
 
-    it.only('should add a toilet at the specified latitude and longitude after submitting the form', () => {
+    it('should add a toilet at the specified latitude and longitude after submitting the form', () => {
       cy.visit('/loos/add?lat=51.92008861374827&lng=0.10883331298828125');
       const toiletName = faker.word.adjective() + ' ' + faker.word.noun();
       cy.findByPlaceholderText('e.g. Sainsburys or street name').type(
