@@ -8,6 +8,8 @@
 // https://on.cypress.io/plugins-guide
 // ***********************************************************
 import { cypressBrowserPermissionsPlugin } from 'cypress-browser-permissions';
+import encrypt from 'cypress-nextjs-auth0/encrypt';
+
 const pluginConfig: Cypress.PluginConfig = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
@@ -23,6 +25,7 @@ const pluginConfig: Cypress.PluginConfig = (on, config) => {
 
       return null;
     },
+    encrypt,
   });
 
   // eslint-disable-next-line no-param-reassign
