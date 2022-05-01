@@ -264,8 +264,7 @@ describe('Home page tests', () => {
       // zoom out and confirm that toilets are intersecting the focus window
       // and that they are added to the list.
       cy.get('#gbptm-map').focus().type('{-}{-}', { delay: 300 });
-      cy.get('span')
-        .contains('negative eve')
+      cy.findByText('negative eve')
         .siblings()
         .find('b')
         .invoke('text')
