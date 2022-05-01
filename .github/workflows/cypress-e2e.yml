@@ -41,6 +41,15 @@ jobs:
           AUTH0_AUDIENCE: https://www.toiletmap.org.uk/graphql
           AUTH0_PERMISSIONS_KEY: https://toiletmap.org.uk/permissions
           AUTH0_PROFILE_KEY: https://toiletmap.org.uk/profile
+          CYPRESS_auth0SessionCookieName: 'appSession'
+          CYPRESS_auth0Username: ${{ secrets.CYPRESS_AUTH0USERNAME }}
+          CYPRESS_auth0Password: ${{ secrets.CYPRESS_AUTH0PASSWORD }}
+          CYPRESS_auth0Scope: 'openid profile email'
+          CYPRESS_auth0Domain: 'gbptm.eu.auth0.com'
+          CYPRESS_auth0Audience: https://www.toiletmap.org.uk/graphql
+          CYPRESS_auth0ClientSecret: ${{ secrets.CYPRESS_AUTH0CLIENTSECRET }}
+          CYPRESS_auth0ClientId: ${{ secrets.CYPRESS_AUTH0CLIENTID }}
+          CYPRESS_auth0CookieSecret: ${{ secrets.CYPRESS_AUTH0COOKIESECRET }}
         with:
           build: yarn build
           start: yarn start
