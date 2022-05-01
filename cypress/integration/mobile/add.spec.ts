@@ -114,6 +114,20 @@ describe('Adding new toilets to the platform', () => {
 
         cy.findByText(detail[0]).siblings().contains(detail[1]);
       }
+
+      cy.contains('I ran out of loo roll! Otherwise good.');
+
+      cy.findByText('Edit').click();
+
+      cy.contains('Align the crosshair');
+      cy.findByDisplayValue(toiletName);
+      cy.findByText('I ran out of loo roll! Otherwise good.').should('exist');
+      if (isToiletNotFree) {
+        cy.findByDisplayValue(paymentText);
+      }
+      for (const choice of inputChoices) {
+        cy.findByTestId(choice).should('be.checked');
+      }
     });
   });
 });
