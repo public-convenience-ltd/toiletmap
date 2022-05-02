@@ -31,7 +31,12 @@ const LooPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
   // Just set our center when this page is an ingress route
   // This way you can click loos on the map without the map jerking about
   useEffect(() => {
-    if (!router.isReady && firstLoad) {
+    if (
+      !router.isReady &&
+      firstLoad &&
+      typeof props?.data?.loo !== 'undefined' &&
+      mapState?.locationServices?.isActive !== true
+    ) {
       setMapState({
         center: props?.data?.loo?.location,
         focus: props?.data?.loo,
@@ -40,8 +45,9 @@ const LooPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
   }, [
     firstLoad,
     mapState.focus,
-    props.data?.loo,
-    props.data?.loo?.location,
+    mapState?.locationServices?.isActive,
+    props?.data?.loo,
+    props?.data?.loo?.location,
     router,
     setMapState,
   ]);
