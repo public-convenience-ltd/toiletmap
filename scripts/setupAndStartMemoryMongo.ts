@@ -14,14 +14,19 @@ import { SingleBar } from 'cli-progress';
     },
   });
 
-  process.once('SIGUSR2', async function () {
+  process.on('SIGUSR2', async function () {
     await mongoInstance.stop();
     process.kill(process.pid, 'SIGUSR2');
   });
 
-  process.once('exit', async function () {
+  process.on('exit', async function () {
     await mongoInstance.stop();
-    process.kill(process.pid, 'SIGUSR2');
+    process.exit();
+  });
+
+  process.on('SIGINT', async function () {
+    await mongoInstance.stop();
+    process.exit();
   });
 
   await dbConnect();
