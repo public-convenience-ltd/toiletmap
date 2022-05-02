@@ -1,7 +1,7 @@
 describe('Contact page tests', () => {
-  context('Desktop', () => {
+  context('Mobile', () => {
     beforeEach(() => {
-      cy.viewport('macbook-16');
+      cy.viewport('iphone-8');
     });
     it('is correctly titled', () => {
       cy.visit('/contact');

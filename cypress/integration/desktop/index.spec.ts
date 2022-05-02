@@ -1,7 +1,7 @@
 import { isPermissionAllowed } from 'cypress-browser-permissions';
 
 describe('Home page tests', () => {
-  context('desktop', () => {
+  context('Desktop', () => {
     beforeEach(() => {
       cy.viewport('macbook-16');
     });

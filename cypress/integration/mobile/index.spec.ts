@@ -1,7 +1,7 @@
 import { isPermissionAllowed } from 'cypress-browser-permissions';
 
 describe('Home page tests', () => {
-  context('mobile', () => {
+  context('Mobile', () => {
     beforeEach(() => {
       cy.viewport('iphone-8');
     });

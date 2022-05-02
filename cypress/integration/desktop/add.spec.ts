@@ -2,9 +2,9 @@ import faker from '@faker-js/faker';
 import _ from 'lodash';
 
 describe('Adding new toilets to the platform', () => {
-  context('Mobile', () => {
+  context('Desktop', () => {
     beforeEach(() => {
-      cy.viewport('iphone-8');
+      cy.viewport('macbook-16');
     });
     before(() => {
       cy.login();
