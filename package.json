@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "cypress": "cypress open --browser firefox",
+    "cypress": "cypress open",
     "cypress:headless": "cypress run --headless",
     "e2e": "./scripts/e2e.sh",
     "e2e:headless": "./scripts/e2e.sh -h",
