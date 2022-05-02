@@ -150,7 +150,7 @@ describe('Edit page tests', () => {
     });
 
     it('should update the location of the toilet when the locator map is dragged', () => {
-      cy.visit('loos/b5cdcf44d4f09eaf34fa4b6f/edit');
+      cy.visit('loos/ca6249ebcd1490e2aaccc5be/edit');
       cy.findByPlaceholderText('Search location…').type('Norwich');
       cy.findByText(
         'Norwich, Norfolk, East of England, England, United Kingdom'
@@ -176,7 +176,7 @@ describe('Edit page tests', () => {
         .wait(500);
 
       // TODO: Once we have implemented invalidation of map chunks on update, check that it is updated without having to zoom out to an unloaded geohash
-      cy.get('[data-toiletid=b5cdcf44d4f09eaf34fa4b6f]').should('exist');
+      cy.get('[data-toiletid=ca6249ebcd1490e2aaccc5be]').should('exist');
     });
   });
 });
