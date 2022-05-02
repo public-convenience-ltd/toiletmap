@@ -4,7 +4,7 @@ import Spacer from '../components/Spacer';
 import Text from '../components/Text';
 import Button from '../components/Button';
 
-const NotFound = ({ children }) => (
+const ThereWasAProblem = ({ children }) => (
   <>
     {children}
     <Box my={5}>
@@ -19,14 +19,18 @@ const NotFound = ({ children }) => (
       >
         <div>
           <Text fontSize={20} fontWeight="bold">
-            <h1>Page not found</h1>
+            <h1>Oh dear — There seems to have been a problem on our end</h1>
           </Text>
 
           <Spacer mt={3} />
 
           <p>
-            This could be because the page has moved, or you typed an address
-            wrong.
+            Please try again later or, if the problem persists, please contact
+            us at{' '}
+            <Button variant="link" as="a" href="mailto:gbtoiletmap@gmail.com">
+              gbtoiletmap@gmail.com
+            </Button>
+            .
           </p>
 
           <Spacer mt={4} />
@@ -40,4 +44,4 @@ const NotFound = ({ children }) => (
   </>
 );
 
-export default NotFound;
+export default ThereWasAProblem;

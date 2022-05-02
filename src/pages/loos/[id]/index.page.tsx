@@ -12,10 +12,14 @@ import { useRouter } from 'next/router';
 import ToiletDetailsPanel from '../../../components/ToiletDetailsPanel';
 import Notification from '../../../components/Notification';
 import LooMap from '../../../components/LooMap/LooMapLoader';
+import NotFound from '../../404.page';
+import { css } from '@emotion/react';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
-const LooPage: PageFindLooByIdComp = (props) => {
+const LooPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
+  props
+) => {
   const [mapState, setMapState] = useMapState();
   const [firstLoad, setFirstLoad] = useState(true);
   const router = useRouter();
@@ -28,7 +32,10 @@ const LooPage: PageFindLooByIdComp = (props) => {
   // This way you can click loos on the map without the map jerking about
   useEffect(() => {
     if (!router.isReady && firstLoad) {
-      setMapState({ center: props.data.loo.location, focus: props.data.loo });
+      setMapState({
+        center: props?.data?.loo?.location,
+        focus: props?.data?.loo,
+      });
     }
   }, [
     firstLoad,
@@ -44,6 +51,42 @@ const LooPage: PageFindLooByIdComp = (props) => {
   const { message } = router.query;
 
   const pageTitle = config.getTitle('Home');
+
+  if (props?.notFound) {
+    return (
+      <>
+        <Head>
+          <title>{pageTitle}</title>
+        </Head>
+
+        <Box display="flex" height="40vh">
+          <Box
+            my={4}
+            mx="auto"
+            css={css`
+              max-width: 360px; /* fallback */
+              max-width: fit-content;
+            `}
+          >
+            <NotFound>
+              <Box
+                my={4}
+                mx="auto"
+                css={css`
+                  max-width: 360px; /* fallback */
+                  max-width: fit-content;
+                `}
+              >
+                <Notification allowClose>
+                  Error fetching toilet data
+                </Notification>
+              </Box>
+            </NotFound>
+          </Box>
+        </Box>
+      </>
+    );
+  }
 
   return (
     <>
@@ -117,18 +160,28 @@ const LooPage: PageFindLooByIdComp = (props) => {
 export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
   const { dbConnect } = await import('../../../api/db');
   await dbConnect();
-  const res = await ssrFindLooById.getServerPage(
-    {
-      variables: { id: params.id as string },
-    },
-    { req }
-  );
-  if (res.props.error || !res.props.data) {
+  try {
+    const res = await ssrFindLooById.getServerPage(
+      {
+        variables: { id: params.id as string },
+      },
+      { req }
+    );
+    if (res.props.error || !res.props.data) {
+      return {
+        props: {
+          notFound: true,
+        },
+      };
+    }
+    return res;
+  } catch {
     return {
-      notFound: true,
+      props: {
+        notFound: true,
+      },
     };
   }
-  return res;
 };
 
 export const getStaticPaths = async () => {

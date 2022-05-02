@@ -17,123 +17,171 @@ import { useRemoveLooMutation } from '../../../api-client/graphql';
 import { withApollo } from '../../../api-client/withApollo';
 import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
 import { GetServerSideProps } from 'next';
+import NotFound from '../../404.page';
+import { css } from '@emotion/react';
 
-const RemovePage: PageFindLooByIdComp = function (props) {
-  const loo = props.data.loo;
-  const { user, isLoading } = useUser();
+const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
+  function (props) {
+    const loo = props?.data?.loo;
+    const { user, isLoading } = useUser();
 
-  const [reason, setReason] = useState('');
-  const router = useRouter();
+    const [reason, setReason] = useState('');
+    const router = useRouter();
 
-  const [removeLooMutation, { loading: loadingRemove, error: removeError }] =
-    useRemoveLooMutation();
+    const [removeLooMutation, { loading: loadingRemove, error: removeError }] =
+      useRemoveLooMutation();
 
-  const updateReason = (evt) => {
-    setReason(evt.currentTarget.value);
-  };
+    const updateReason = (evt) => {
+      setReason(evt.currentTarget.value);
+    };
 
-  const onSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
+    const onSubmit = async (e: { preventDefault: () => void }) => {
+      e.preventDefault();
 
-    await removeLooMutation({
-      variables: {
-        id: loo.id,
-        reason,
-      },
-    });
+      await removeLooMutation({
+        variables: {
+          id: loo?.id,
+          reason,
+        },
+      });
 
-    router.push(`/loos/${loo.id}?message=removed`);
-  };
+      router.push(`/loos/${loo?.id}?message=removed`);
+    };
 
-  if (removeError) {
-    console.error(removeError);
-  }
+    if (props?.notFound) {
+      return (
+        <>
+          <Head>
+            <title>{config.getTitle('Remove Toilet')}</title>
+          </Head>
 
-  if (!loo.active) {
-    router.push('/');
-  }
+          <Box display="flex" height="40vh">
+            <Box
+              my={4}
+              mx="auto"
+              css={css`
+                max-width: 360px; /* fallback */
+                max-width: fit-content;
+              `}
+            >
+              <NotFound>
+                <Box
+                  my={4}
+                  mx="auto"
+                  css={css`
+                    max-width: 360px; /* fallback */
+                    max-width: fit-content;
+                  `}
+                >
+                  <Notification allowClose>
+                    Error fetching toilet data
+                  </Notification>
+                </Box>
+              </NotFound>
+            </Box>
+          </Box>
+        </>
+      );
+    }
 
-  if (isLoading) {
-    return <PageLoading />;
-  }
+    if (removeError) {
+      console.error(removeError);
+    }
 
-  if (!user) {
-    return <Login />;
-  }
+    if (!loo.active) {
+      router.push('/');
+    }
 
-  return (
-    <Box my={5}>
-      <Head>
-        <title>{config.getTitle('Remove Toilet')}</title>
-      </Head>
+    if (isLoading) {
+      return <PageLoading />;
+    }
 
-      <Container maxWidth={845}>
-        <Text fontSize={6} fontWeight="bold" textAlign="center">
-          <h1>Toilet Remover</h1>
-        </Text>
+    if (!user) {
+      return <Login />;
+    }
 
-        <Spacer mb={5} />
+    return (
+      <Box my={5}>
+        <Head>
+          <title>{config.getTitle('Remove Toilet')}</title>
+        </Head>
 
-        <p>
-          Please let us know why you&apos;re removing this toilet from the map
-          using the form below.
-        </p>
+        <Container maxWidth={845}>
+          <Text fontSize={6} fontWeight="bold" textAlign="center">
+            <h1>Toilet Remover</h1>
+          </Text>
 
-        <Spacer mb={3} />
+          <Spacer mb={5} />
 
-        <form onSubmit={onSubmit}>
-          <label>
-            <b>Reason for removal</b>
-            <textarea
-              type="text"
-              name="reason"
-              value={reason}
-              onChange={updateReason}
-              required
-              css={{
-                height: '100px',
-                width: '100%',
-              }}
-            />
-          </label>
+          <p>
+            Please let us know why you&apos;re removing this toilet from the map
+            using the form below.
+          </p>
 
           <Spacer mb={3} />
 
-          <Button type="submit">Remove</Button>
-        </form>
+          <form onSubmit={onSubmit}>
+            <label>
+              <b>Reason for removal</b>
+              <textarea
+                type="text"
+                name="reason"
+                value={reason}
+                onChange={updateReason}
+                required
+                css={{
+                  height: '100px',
+                  width: '100%',
+                }}
+              />
+            </label>
 
-        {loadingRemove && (
-          <Notification>Submitting removal report&hellip;</Notification>
-        )}
+            <Spacer mb={3} />
 
-        {removeError && (
-          <Notification>
-            Oops. We can&lsquo;t submit your report at this time. Try again
-            later.
-          </Notification>
-        )}
-      </Container>
-    </Box>
-  );
-};
+            <Button type="submit">Remove</Button>
+          </form>
+
+          {loadingRemove && (
+            <Notification>Submitting removal report&hellip;</Notification>
+          )}
+
+          {removeError && (
+            <Notification>
+              Oops. We can&lsquo;t submit your report at this time. Try again
+              later.
+            </Notification>
+          )}
+        </Container>
+      </Box>
+    );
+  };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { dbConnect } = await import('../../../api/db');
   await dbConnect();
-  const res = await ssrFindLooById.getServerPage(
-    {
-      variables: { id: ctx.params.id as string },
-    },
-    ctx
-  );
 
-  if (res.props.error || !res.props.data) {
+  try {
+    const res = await ssrFindLooById.getServerPage(
+      {
+        variables: { id: ctx.params.id as string },
+      },
+      ctx
+    );
+
+    if (res.props.error || !res.props.data) {
+      return {
+        notFound: true,
+      };
+    }
+
+    return res;
+  } catch {
     return {
-      notFound: true,
+      props: {
+        notFound: true,
+      },
     };
   }
-
-  return res;
 };
 
 export default withApollo(RemovePage);

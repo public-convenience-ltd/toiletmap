@@ -11,7 +11,7 @@ import Box from '../../../components/Box';
 import Login from '../../login.page';
 import PageLoading from '../../../components/PageLoading';
 import LooMap from '../../../components/LooMap/LooMapLoader';
-
+import Notification from '../../../components/Notification';
 import config from '../../../config';
 import { useMapState } from '../../../components/MapState';
 import { useRouter } from 'next/router';
@@ -24,15 +24,19 @@ import {
 } from '../../../api-client/graphql';
 import { useEffect } from 'react';
 import LocationSearch from '../../../components/LocationSearch';
+import { css } from '@emotion/react';
+import NotFound from '../../404.page';
 
-const EditPage: PageFindLooByIdComp = (props) => {
-  const loo = props.data.loo;
+const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
+  props
+) => {
+  const loo = props?.data?.loo;
   const router = useRouter();
   const { isLoading, user } = useUser();
   const [mapState, setMapState] = useMapState();
 
   useEffect(() => {
-    setMapState({ focus: loo, center: loo.location });
+    setMapState({ focus: loo, center: loo?.location });
   }, [loo, setMapState]);
 
   const [
@@ -61,6 +65,42 @@ const EditPage: PageFindLooByIdComp = (props) => {
 
   if (isLoading) {
     return <PageLoading />;
+  }
+
+  if (props?.notFound) {
+    return (
+      <>
+        <Head>
+          <title>{config.getTitle('Edit Toilet')}</title>
+        </Head>
+
+        <Box display="flex" height="40vh">
+          <Box
+            my={4}
+            mx="auto"
+            css={css`
+              max-width: 360px; /* fallback */
+              max-width: fit-content;
+            `}
+          >
+            <NotFound>
+              <Box
+                my={4}
+                mx="auto"
+                css={css`
+                  max-width: 360px; /* fallback */
+                  max-width: fit-content;
+                `}
+              >
+                <Notification allowClose>
+                  Error fetching toilet data
+                </Notification>
+              </Box>
+            </NotFound>
+          </Box>
+        </Box>
+      </>
+    );
   }
 
   if (!user) {
@@ -139,20 +179,28 @@ const EditPage: PageFindLooByIdComp = (props) => {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { dbConnect } = await import('../../../api/db');
   await dbConnect();
-  const res = await ssrFindLooById.getServerPage(
-    {
-      variables: { id: ctx.params.id as string },
-    },
-    ctx
-  );
-
-  if (res.props.error || !res.props.data) {
+  try {
+    const res = await ssrFindLooById.getServerPage(
+      {
+        variables: { id: ctx.params.id as string },
+      },
+      ctx
+    );
+    if (res.props.error || !res.props.data) {
+      return {
+        props: {
+          notFound: true,
+        },
+      };
+    }
+    return res;
+  } catch {
     return {
-      notFound: true,
+      props: {
+        notFound: true,
+      },
     };
   }
-
-  return res;
 };
 
 export default withApollo(EditPage);
