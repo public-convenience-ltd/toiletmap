@@ -5,9 +5,6 @@ jobs:
     name: Cypress E2E Firefox
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    container:
-      image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
-      options: --user 1001
     steps:
       - name: Checkout
         uses: actions/checkout@v2
