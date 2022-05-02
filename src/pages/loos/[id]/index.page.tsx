@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Box from '../../../components/Box';
 import Sidebar from '../../../components/Sidebar/Sidebar';
@@ -17,19 +17,24 @@ const SIDEBAR_BOTTOM_MARGIN = 32;
 
 const LooPage: PageFindLooByIdComp = (props) => {
   const [mapState, setMapState] = useMapState();
-
+  const [firstLoad, setFirstLoad] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    setFirstLoad(false);
+  }, []);
 
   // Just set our center when this page is an ingress route
   // This way you can click loos on the map without the map jerking about
   useEffect(() => {
-    if (!router.isReady) {
+    if (!router.isReady && firstLoad) {
       setMapState({ center: props.data.loo.location, focus: props.data.loo });
     }
   }, [
+    firstLoad,
     mapState.focus,
-    props.data.loo,
-    props.data.loo.location,
+    props.data?.loo,
+    props.data?.loo?.location,
     router,
     setMapState,
   ]);

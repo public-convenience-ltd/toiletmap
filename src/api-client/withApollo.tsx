@@ -46,6 +46,7 @@ function createApolloClient() {
         if (graphQLErrors)
           graphQLErrors.forEach(({ message, locations, path, extensions }) => {
             const { code } = extensions;
+            console.log(code);
             if (HANDLED_ERRORS.indexOf(code) > -1) {
               console.log(
                 `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`

@@ -368,7 +368,28 @@ const EntryForm = ({ title, loo, children, ...props }) => {
 
           <Spacer mt={4} />
 
-          <label htmlFor="name"> 2. Add a toilet name</label>
+          <span>
+            <label htmlFor="name"> 2. Add a toilet name</label>
+            <ErrorMessage
+              errors={formState.errors}
+              name={'name'}
+              render={({ message }) => (
+                <>
+                  <Icon
+                    aria-hidden={true}
+                    color="red"
+                    size="xs"
+                    css={{ marginLeft: '.5rem' }}
+                    icon={faAsterisk}
+                  ></Icon>
+                  <VisuallyHidden as={'span'} role="alert">
+                    {message}
+                  </VisuallyHidden>
+                </>
+              )}
+            />
+          </span>
+
           <Input
             name="name"
             type="text"
@@ -378,7 +399,9 @@ const EntryForm = ({ title, loo, children, ...props }) => {
             css={{
               maxWidth: '400px',
             }}
-            {...register('name')}
+            {...register('name', {
+              required: 'Please specify a toilet name',
+            })}
           />
 
           <Spacer mt={4} />
@@ -510,6 +533,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
               defaultValue={hasOpeningTimes}
               render={({ field }) => (
                 <Switch
+                  {...field}
                   checked={field.value}
                   onChange={field.onChange}
                   onClick={field.onChange}
@@ -559,6 +583,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                             defaultValue={isOpen[index]}
                             render={({ field }) => (
                               <Switch
+                                {...field}
                                 checked={field.value}
                                 onChange={field.onChange}
                                 onClick={field.onChange}
