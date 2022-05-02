@@ -391,7 +391,7 @@ describe('Home page tests', () => {
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
     });
 
-    it('should apply multiple filters', () => {
+    it.only('should apply multiple filters', () => {
       cy.clearLocalStorage();
       cy.visit('/').wait(500);
       cy.findByText('Filter').click();
@@ -412,7 +412,7 @@ describe('Home page tests', () => {
         })
         .wait(500);
 
-      cy.get('[data-toiletid=05a8ddcad8fdca635f5dbdb0]').click();
+      cy.get('[data-toiletid=05a8ddcad8fdca635f5dbdb0]').click({ force: true });
       cy.findByText('Free')
         .siblings()
         .contains(/^available/);
@@ -424,8 +424,18 @@ describe('Home page tests', () => {
         .click();
       cy.findByText('Filter').click();
 
-      cy.get('[data-toiletid=be23c4bb6fdbbdc6ee6e2aad]').click();
-      cy.findByText('Details').click();
+      cy.reload();
+      cy.get('#gbptm-map')
+        .trigger('wheel', {
+          deltaY: 66.666666,
+          wheelDelta: 120,
+          wheelDeltaX: 0,
+          wheelDeltaY: -1000,
+          bubbles: true,
+        })
+        .wait(500);
+
+      cy.get('[data-toiletid=be23c4bb6fdbbdc6ee6e2aad]').click({ force: true });
       cy.findByText('Free')
         .siblings()
         .contains(/^available/);
@@ -434,14 +444,24 @@ describe('Home page tests', () => {
         .contains(/^available/);
       cy.get('body').trigger('keydown', { key: 'Escape' });
       cy.findByText('Filter').click();
-
       cy.findByText('Accessible')
         .siblings()
         .get('[aria-labelledby=filter-accessible]')
         .click();
       cy.findByText('Filter').click();
-      cy.get('[data-toiletid=3f8b1fff5d1107ff2cac636b]').click();
-      cy.findByText('Details').click();
+
+      cy.reload();
+      cy.get('#gbptm-map')
+        .trigger('wheel', {
+          deltaY: 66.666666,
+          wheelDelta: 120,
+          wheelDeltaX: 0,
+          wheelDeltaY: -1000,
+          bubbles: true,
+        })
+        .wait(500);
+
+      cy.get('[data-toiletid=3f8b1fff5d1107ff2cac636b]').click({ force: true });
       cy.findByText('Free')
         .siblings()
         .contains(/^available/);
@@ -453,15 +473,24 @@ describe('Home page tests', () => {
         .contains(/^available/);
       cy.get('body').trigger('keydown', { key: 'Escape' });
       cy.findByText('Filter').click();
-
       cy.findByText('Gender Neutral')
         .siblings()
         .get('[aria-labelledby=filter-allGender]')
         .click();
       cy.findByText('Filter').click();
 
-      cy.get('[data-toiletid=c109d92ff0a706bab071ed8f]').click();
-      cy.findByText('Details').click();
+      cy.reload();
+      cy.get('#gbptm-map')
+        .trigger('wheel', {
+          deltaY: 66.666666,
+          wheelDelta: 120,
+          wheelDeltaX: 0,
+          wheelDeltaY: -1000,
+          bubbles: true,
+        })
+        .wait(500);
+
+      cy.get('[data-toiletid=c109d92ff0a706bab071ed8f]').click({ force: true });
       cy.findByText('Free')
         .siblings()
         .contains(/^available/);
@@ -476,15 +505,24 @@ describe('Home page tests', () => {
         .contains(/^available/);
       cy.get('body').trigger('keydown', { key: 'Escape' });
       cy.findByText('Filter').click();
-
       cy.findByText('Radar Key')
         .siblings()
         .get('[aria-labelledby=filter-radar]')
         .click();
       cy.findByText('Filter').click();
 
+      cy.reload();
+      cy.get('#gbptm-map')
+        .trigger('wheel', {
+          deltaY: 66.666666,
+          wheelDelta: 120,
+          wheelDeltaX: 0,
+          wheelDeltaY: -1000,
+          bubbles: true,
+        })
+        .wait(500);
+
       cy.get('[data-toiletid=3ae59cf0efe2c64aefd15ed7]').click({ force: true });
-      cy.findByText('Details').click();
       cy.findByText('Free')
         .siblings()
         .contains(/^available/);

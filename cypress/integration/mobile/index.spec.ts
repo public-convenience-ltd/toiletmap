@@ -187,7 +187,6 @@ describe('Home page tests', () => {
       // these toilets are now the top suggestions in the selection window
       cy.contains('inconsequential sparrow');
       cy.contains('rowdy hamster');
-      cy.contains('that footnote');
     });
 
     it('should select a toilet using the number key associated with the accessibility overlay list', () => {
