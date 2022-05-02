@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { dbConnect, Report, Loo } = require('../src/api/db/index.ts');
 import reports from './mock-reports.json';
 import { MongoMemoryServer } from 'mongodb-memory-server';
@@ -14,6 +15,11 @@ import { SingleBar } from 'cli-progress';
   });
 
   process.once('SIGUSR2', async function () {
+    await mongoInstance.stop();
+    process.kill(process.pid, 'SIGUSR2');
+  });
+
+  process.once('exit', async function () {
     await mongoInstance.stop();
     process.kill(process.pid, 'SIGUSR2');
   });

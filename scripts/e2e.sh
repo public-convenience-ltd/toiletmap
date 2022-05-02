@@ -1,6 +1,4 @@
 #!/bin/bash
-
-
 set -ae
 
 trap 'kill $(jobs -p)' INT TERM EXIT
