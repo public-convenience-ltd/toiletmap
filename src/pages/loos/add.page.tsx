@@ -58,6 +58,7 @@ const AddPage = () => {
     });
 
     if (errors) {
+      console.log(formData);
       console.error('save error', errors);
     }
   };

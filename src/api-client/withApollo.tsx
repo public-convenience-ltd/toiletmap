@@ -35,7 +35,7 @@ function createApolloClient() {
     });
   }
 
-  const HANDLED_ERRORS = ['OPENING_TIMES'];
+  const HANDLED_ERRORS = ['OPENING_TIMES', 'INTERNAL_SERVER_ERROR'];
 
   const link = createPersistedQueryLink({
     sha256,

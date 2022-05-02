@@ -13,7 +13,7 @@
     "cypress:headless": "cypress run",
     "e2e": "./scripts/e2e.sh",
     "e2e:headless": "./scripts/e2e.sh -h",
-    "e2e:dev": "./scripts/e2e.sh -d",
+    "e2e:dev": "./scripts/e2e.sh -d d",
     "wait-on:server": "yarn wait-on http://localhost:3000/ -t 60000",
     "wait-on:memoryMongo": "yarn wait-on http://localhost:9999/ -t 100000",
     "storybook": "start-storybook -p 6006",

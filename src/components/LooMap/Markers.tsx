@@ -21,7 +21,6 @@ import {
   useMapClusterRadius,
   useMapGeohashPrecision,
 } from './hooks';
-import _ from 'lodash';
 
 const KEY_ENTER = 13;
 
@@ -29,7 +28,6 @@ const Markers = () => {
   const [mapState, setMapState] = useMapState();
 
   const map = useMap();
-  const router = useRouter();
   const boundingBox = map.getBounds();
 
   const { lat: boundingBoxNorth, lng: boundingBoxEast } =
@@ -56,21 +54,21 @@ const Markers = () => {
   ]);
 
   // TODO:fix this
-  const throttledPrefetch = useMemo(() => {
-    return _.throttle((id) => {
-      router.prefetch(id);
-    }, 1000);
-  }, [router]);
+  // const throttledPrefetch = useMemo(() => {
+  //   return _.throttle((id) => {
+  //     // router.prefetch(id);
+  //   }, 1000);
+  // }, [router]);
 
-  const prefetchVisibleToilets = useCallback(() => {
-    const visibleMarkers = document.getElementsByClassName('toilet-marker');
-    for (const marker of visibleMarkers) {
-      if (marker instanceof HTMLElement) {
-        const toiletId = marker.dataset?.toiletid;
-        throttledPrefetch(`/loos/${toiletId}`);
-      }
-    }
-  }, [throttledPrefetch]);
+  // const prefetchVisibleToilets = useCallback(() => {
+  //   const visibleMarkers = document.getElementsByClassName('toilet-marker');
+  //   for (const marker of visibleMarkers) {
+  //     if (marker instanceof HTMLElement) {
+  //       const toiletId = marker.dataset?.toiletid;
+  //       throttledPrefetch(`/loos/${toiletId}`);
+  //     }
+  //   }
+  // }, [throttledPrefetch]);
 
   useEffect(() => {
     setMapState({
@@ -78,9 +76,9 @@ const Markers = () => {
       currentlyLoadedGeohashes: geohashesToLoad,
     });
 
-    if (!userInteractingWithMap) {
-      prefetchVisibleToilets();
-    }
+    // if (!userInteractingWithMap) {
+    //   prefetchVisibleToilets();
+    // }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [geohashesToLoad, userInteractingWithMap]);

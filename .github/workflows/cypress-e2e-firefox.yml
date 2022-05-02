@@ -1,8 +1,8 @@
-name: E2E Cypress Tests (Chrome)
+name: E2E Cypress Tests (Firefox)
 on: push
 jobs:
-  cypress-e2e-chrome:
-    name: Cypress E2E Chrome
+  cypress-e2e-firefox:
+    name: Cypress E2E Firefox
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -55,5 +55,5 @@ jobs:
           start: yarn start
           wait-on: 'http://localhost:3000/'
           wait-on-timeout: 60
-          browser: chrome
+          browser: firefox
           spec: cypress/integration/**/*.ts
