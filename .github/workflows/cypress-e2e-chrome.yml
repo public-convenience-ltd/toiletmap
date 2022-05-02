@@ -5,6 +5,9 @@ jobs:
     name: Cypress E2E Chrome
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    container:
+      image: cypress/browsers:node16.14.0-chrome99-ff97
+      options: --user 1001
     steps:
       - name: Checkout
         uses: actions/checkout@v2

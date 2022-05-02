@@ -59,4 +59,5 @@ jobs:
           wait-on: 'http://localhost:3000/'
           wait-on-timeout: 60
           browser: firefox
+          headless: true
           spec: cypress/integration/**/*.ts

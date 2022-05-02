@@ -14,7 +14,7 @@ while getopts 'lhd:' OPTION; do
   case "$OPTION" in
     h)
       echo "Running cypress tests in headless mode"
-      NODE_ENV=production yarn build
+      yarn build
       yarn start-server-and-test start http://localhost:3000 cypress:headless
       exit 1
       ;;
@@ -31,5 +31,5 @@ while getopts 'lhd:' OPTION; do
 done
 
 echo "Running cypress tests"
-NODE_ENV=production yarn build
+yarn build
 yarn start-server-and-test start http://localhost:3000 cypress

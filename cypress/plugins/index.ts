@@ -28,6 +28,9 @@ const pluginConfig: Cypress.PluginConfig = (on, config) => {
     encrypt,
   });
 
+  // eslint-disable-next-line no-param-reassign
+  config = cypressBrowserPermissionsPlugin(on, config);
+
   on('before:browser:launch', (browser, launchOptions) => {
     if (browser.family === 'firefox') {
       // launchOptions.preferences is a map of preference names to values
@@ -42,9 +45,6 @@ const pluginConfig: Cypress.PluginConfig = (on, config) => {
     // whatever you return here becomes the launchOptions
     return launchOptions;
   });
-
-  // eslint-disable-next-line no-param-reassign
-  config = cypressBrowserPermissionsPlugin(on, config);
   return config;
 };
 
