@@ -72,14 +72,29 @@ describe('Home page tests', () => {
 
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.get('[data-toiletid=cc4e5e9b83de8dd9ba87b3eb]').should('not.exist');
-      cy.get('#gbptm-map')
-        .trigger('touchstart', { which: 1 })
-        .trigger('touchmove', 1000, -1800, { which: 1, force: true })
-        .trigger('touchend')
-        .wait(100)
-        .trigger('touchstart', { which: 1 })
-        .trigger('touchmove', -600, 1100, { which: 1, force: true })
-        .trigger('touchend');
+      // touchstart, touchmove etc are not supported in Firefox
+
+      if (Cypress.isBrowser('firefox')) {
+        cy.get('#gbptm-map')
+          .trigger('mousedown', { which: 1 })
+          .trigger('mousemove', 1000, -1800, { which: 1, force: true })
+          .trigger('mouseup')
+          .wait(100)
+          .trigger('mousedown', { which: 1 })
+          .trigger('mousemove', -600, 1100, { which: 1, force: true })
+          .trigger('mouseup')
+          .wait(500);
+      } else {
+        cy.get('#gbptm-map')
+          .trigger('touchstart', { which: 1 })
+          .trigger('touchmove', 1000, -1800, { which: 1, force: true })
+          .trigger('touchend')
+          .wait(100)
+          .trigger('touchstart', { which: 1 })
+          .trigger('touchmove', -600, 1100, { which: 1, force: true })
+          .trigger('touchend')
+          .wait(500);
+      }
 
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
       cy.get('[data-toiletid=cc4e5e9b83de8dd9ba87b3eb]').should('exist');
@@ -173,7 +188,6 @@ describe('Home page tests', () => {
       cy.contains("Use number keys to show a toilet's details");
       cy.contains('Arrow keys pan the map');
       cy.contains('change the map zoom level');
-      cy.get('.accessibility-list-item').should('not.exist');
       // zoom out and confirm that toilets are intersecting the focus window
       // and that they are added to the list.
       cy.get('#gbptm-map').focus().type('{-}{-}{-}', { delay: 500 });
@@ -197,10 +211,9 @@ describe('Home page tests', () => {
       cy.contains("Use number keys to show a toilet's details");
       cy.contains('Arrow keys pan the map');
       cy.contains('change the map zoom level');
-      cy.get('.accessibility-list-item').should('not.exist');
       // zoom out and confirm that toilets are intersecting the focus window
       // and that they are added to the list.
-      cy.get('#gbptm-map').focus().type('{-}{-}{-}', { delay: 300 });
+      cy.get('#gbptm-map').focus().type('{-}{-}{-}', { delay: 300 }).wait(500);
 
       cy.get('span')
         .contains('negative eve')

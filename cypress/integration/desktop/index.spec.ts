@@ -16,7 +16,9 @@ describe('Home page tests', () => {
     });
 
     it('should let you search by location', () => {
+      cy.reload();
       cy.visit('/');
+
       cy.findByPlaceholderText('Search location…').type('Hammersmith');
       cy.findByText(
         'Hammersmith, Greater London, England, W6 9YA, United Kingdom'
@@ -230,7 +232,6 @@ describe('Home page tests', () => {
       cy.contains("Use number keys to show a toilet's details");
       cy.contains('Arrow keys pan the map');
       cy.contains('change the map zoom level');
-      cy.get('.accessibility-list-item').should('not.exist');
       // zoom out and confirm that toilets are intersecting the focus window
       // and that they are added to the list.
       cy.get('#gbptm-map').focus().type('{-}{-}{-}', { delay: 500 });
@@ -260,7 +261,6 @@ describe('Home page tests', () => {
       cy.contains("Use number keys to show a toilet's details");
       cy.contains('Arrow keys pan the map');
       cy.contains('change the map zoom level');
-      cy.get('.accessibility-list-item').should('not.exist');
       // zoom out and confirm that toilets are intersecting the focus window
       // and that they are added to the list.
       cy.get('#gbptm-map').focus().type('{-}{-}', { delay: 300 });
@@ -391,7 +391,7 @@ describe('Home page tests', () => {
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
     });
 
-    it.only('should apply multiple filters', () => {
+    it('should apply multiple filters', () => {
       cy.clearLocalStorage();
       cy.visit('/').wait(500);
       cy.findByText('Filter').click();

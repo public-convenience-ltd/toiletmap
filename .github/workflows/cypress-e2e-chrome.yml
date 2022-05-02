@@ -1,0 +1,59 @@
+name: E2E Cypress Tests (Chrome)
+on: push
+jobs:
+  cypress-e2e-chrome:
+    name: Cypress E2E Chrome
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+      - name: CacheAreas
+        id: cache-areas
+        uses: actions/cache@v3
+        with:
+          path: ./src/api/db/manage/areaToDatabase/.areaInfo.geojson
+          key: ${{ runner.os }}-areaInfo
+      - run: yarn
+      - run: yarn startMemoryMongo & yarn wait-on:memoryMongo
+      - name: NextCache
+        uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          # If source files changed but packages didn't, rebuild from a prior cache.
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        env:
+          MONGODB_URI: mongodb://localhost:27017/toiletmap
+          DATABASE_NAME: toiletmap
+          AUTH0_SECRET: ${{ secrets.AUTH0_SECRET }}
+          AUTH0_ISSUER_BASE_URL: https://gbptm.eu.auth0.com
+          AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
+          AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
+          AUTH0_AUDIENCE: https://www.toiletmap.org.uk/graphql
+          AUTH0_PERMISSIONS_KEY: https://toiletmap.org.uk/permissions
+          AUTH0_PROFILE_KEY: https://toiletmap.org.uk/profile
+          CYPRESS_auth0SessionCookieName: 'appSession'
+          CYPRESS_auth0Username: ${{ secrets.CYPRESS_AUTH0USERNAME }}
+          CYPRESS_auth0Password: ${{ secrets.CYPRESS_AUTH0PASSWORD }}
+          CYPRESS_auth0Scope: 'openid profile email'
+          CYPRESS_auth0Domain: 'gbptm.eu.auth0.com'
+          CYPRESS_auth0Audience: https://www.toiletmap.org.uk/graphql
+          CYPRESS_auth0ClientSecret: ${{ secrets.CYPRESS_AUTH0CLIENTSECRET }}
+          CYPRESS_auth0ClientId: ${{ secrets.CYPRESS_AUTH0CLIENTID }}
+          CYPRESS_auth0CookieSecret: ${{ secrets.CYPRESS_AUTH0COOKIESECRET }}
+        with:
+          build: yarn build
+          start: yarn start
+          wait-on: 'http://localhost:3000/'
+          wait-on-timeout: 60
+          browser: chrome
+          spec: cypress/integration/**/*.ts

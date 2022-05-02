@@ -19,7 +19,7 @@ describe('About page tests', () => {
       cy.findByText('Download volunteer help guide')
         .scrollIntoView()
         .invoke('attr', 'href')
-        .should('eq', 'Toilet.Map.Volunteer.Help.Guide.pdf');
+        .should('contain', 'Toilet.Map.Volunteer.Help.Guide.pdf');
     });
 
     it('has a download for the toilet checklist', () => {
@@ -28,7 +28,7 @@ describe('About page tests', () => {
       cy.findByText('Download toilet checklist')
         .scrollIntoView()
         .invoke('attr', 'href')
-        .should('eq', '/GBPTM.Toilet.Checklist.pdf');
+        .should('contain', '/GBPTM.Toilet.Checklist.pdf');
     });
   });
 });
