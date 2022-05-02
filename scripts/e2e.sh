@@ -4,7 +4,13 @@ set -ae
 trap 'kill $(jobs -p)' INT TERM EXIT
 
 echo "loading environment variables"
-source .env
+
+if [[ ! -f ".env.test.local" ]]; then
+  echo "No test configuration found. Please create and populate .env.test.local"
+  exit 1
+fi
+
+source .env.test.local
 
 NODE_ENV=test
 
