@@ -10,5 +10,9 @@
     "browserPermissions": {
       "geolocation": "allow"
     }
+  },
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
   }
 }
