@@ -31,7 +31,6 @@ describe('Adding new toilets to the platform', () => {
 
       cy.findByPlaceholderText('Search location…').should('exist');
       cy.findByAltText('crosshair').should('exist');
-      cy.get('.toilet-marker').should('not.exist');
     });
 
     it('should load the add toilet page at the specified latitude and longitude', () => {
