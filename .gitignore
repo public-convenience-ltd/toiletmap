@@ -10,7 +10,7 @@ node_modules
 *.sublime*
 
 # Local config
-.env
+.env*.local
 .now
 .vscode
 
@@ -27,6 +27,7 @@ build
 .next
 .loos
 out
+
 
 # Storybook build
 storybook-static
