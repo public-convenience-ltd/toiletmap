@@ -4,7 +4,7 @@ jobs:
   cypress-e2e-chrome:
     name: Cypress E2E Chrome
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     container:
       image: cypress/browsers:node16.14.0-chrome99-ff97
       options: --user 1001
