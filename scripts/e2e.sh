@@ -25,6 +25,8 @@ while getopts 'lha:' OPTION; do
       echo "Running cypress tests in development mode"
       yarn dev
       yarn start-server-and-test start http://localhost:3000 cypress
+      exit 1
+      ;;
     ?)
       echo "script usage: $(basename \$0) [-h]" >&2
       exit 1
