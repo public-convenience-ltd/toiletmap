@@ -321,7 +321,7 @@ describe('Home page tests', () => {
       cy.contains('vigilant toilet!! indeed photoreceptor crown!');
 
       // Check last verified
-      cy.contains('Last verified: 03/05/2022');
+      cy.contains('03/05/2022');
     });
 
     // Just a cursory test on mobile —heavy testing of filters is done in desktop suite.
