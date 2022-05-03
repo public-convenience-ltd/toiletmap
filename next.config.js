@@ -12,7 +12,6 @@ module.exports = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
-  swcMinify: true,
   pageExtensions: ['page.tsx', 'page.ts'],
   async rewrites() {
     return [
