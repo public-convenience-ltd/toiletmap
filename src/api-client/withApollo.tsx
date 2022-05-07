@@ -66,10 +66,11 @@ function createApolloClient() {
     .concat(terminatingLink);
 
   const cache = new InMemoryCache();
+  const isRunningOnServer = typeof window === 'undefined';
   return new ApolloClient({
-    ssrMode: typeof window === 'undefined',
+    ssrMode: isRunningOnServer,
     link: link,
-    cache: process.NODE_ENV === 'development' ? undefined : cache,
+    cache,
   });
 }
 
