@@ -113,7 +113,7 @@ const LooPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
           right={0}
           m={3}
           maxWidth={326}
-          maxHeight={`calc(100% - 0px - ${SIDEBAR_BOTTOM_MARGIN}px)`}
+          maxHeight={`calc(100% - 0px - ${SIDEBAR_BOTTOM_MARGIN}px)`} // TODO:fix this for mobile viewports (extra vertical scroll area)
           // center on small viewports
           mx={['auto', 0]}
         >

@@ -6,7 +6,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { id } = req.query;
-
   try {
     // Check that the user has a valid session before allowing revalidation.
     // We might have a session on toiletmap.org.uk.
@@ -19,6 +18,6 @@ export default async function handler(
   } catch (err) {
     // If there was an error, Next.js will continue
     // to show the last successfully generated page
-    return res.redirect(`/loos/${id}?message=auth_needed`);
+    return res.redirect(`/loos/${id}?message=generic_error`);
   }
 }
