@@ -12,6 +12,7 @@ export default async function handler(
     const { user } = getSession(req, res);
     if (user) {
       await res.unstable_revalidate(`/loos/${id}`);
+      await res.unstable_revalidate('/');
       return res.redirect(`/loos/${id}?message=updated`);
     }
     return res.redirect(`/loos/${id}?message=auth_needed`);
