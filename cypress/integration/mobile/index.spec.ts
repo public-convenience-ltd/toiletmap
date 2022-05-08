@@ -18,7 +18,7 @@ describe('Home page tests', () => {
     it('should let you search by location', () => {
       cy.visit('/');
       cy.findByPlaceholderText('Search location…').type('Hammersmith');
-      cy.findByText('W6 9YA, United Kingdom', { exact: false }).click();
+      cy.get('#search-results-item-0').click();
       cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
     });
 
@@ -172,7 +172,7 @@ describe('Home page tests', () => {
         cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');
 
         cy.findByPlaceholderText('Search location…').type('Hammersmith');
-        cy.findByText('W6 9YA, United Kingdom', { exact: false }).click();
+        cy.get('#search-results-item-0').click();
         cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
       });
 
