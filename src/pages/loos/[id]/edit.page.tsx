@@ -44,20 +44,15 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
   const [
     updateLooMutation,
     { data: saveData, loading: saveLoading, error: saveError },
-  ] = useUpdateLooMutation({
-    refetchQueries: [
-      LoosByGeohashDocument, // DocumentNode object parsed with gql
-    ],
-    awaitRefetchQueries: true,
-  });
+  ] = useUpdateLooMutation();
 
   const save = async (formData: UpdateLooMutationVariables) => {
     const { errors } = await updateLooMutation({
       variables: { ...formData, id: loo.id },
       refetchQueries: [
         LoosByGeohashDocument, // DocumentNode object parsed with gql
+        'loosByGeohash',
       ],
-      awaitRefetchQueries: true,
     });
 
     if (errors) {
