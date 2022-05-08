@@ -150,20 +150,16 @@ describe('Edit page tests', () => {
     });
 
     it('should update the location of the toilet when the locator map is dragged', () => {
-      cy.visit('loos/ca6249ebcd1490e2aaccc5be/edit');
+      cy.visit('loos/ca6249ebcd1490e2aaccc5be/edit').wait(500);
       cy.findByPlaceholderText('Search location…').type('Norwich');
-      cy.findByText(
-        'Norwich, Norfolk, East of England, England, United Kingdom'
-      ).click();
+      cy.get('#search-results-item-0').click();
       cy.findByText('Update the toilet').click();
 
       cy.contains('Thank you, details updated!');
 
       cy.visit('/');
       cy.findByPlaceholderText('Search location…').type('Norwich');
-      cy.findByText(
-        'Norwich, Norfolk, East of England, England, United Kingdom'
-      ).click();
+      cy.get('#search-results-item-0').click();
 
       cy.get('#gbptm-map')
         .trigger('wheel', {
