@@ -58,9 +58,7 @@ describe('Home page tests', () => {
         bubbles: true,
       });
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
-      cy.get(
-        '[data-toilets="1e6b3abdeb6c5e7c375f6cfd,ddad1ed1b91d99ed2bf3bcdf,dfab8062dbc4a2170f8a9c88"]'
-      ).click({ force: true });
+      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').click({ force: true });
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
     });
 
@@ -317,7 +315,11 @@ describe('Home page tests', () => {
       cy.contains('vigilant toilet!! indeed photoreceptor crown!');
 
       // Check last verified
-      cy.contains('03/05/2022');
+      cy.contains(
+        new Date(Date.now())
+          .toLocaleString(new Intl.Locale('en-gb'))
+          .split(',')[0]
+      );
     });
 
     // Just a cursory test on mobile —heavy testing of filters is done in desktop suite.

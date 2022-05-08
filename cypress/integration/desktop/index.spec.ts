@@ -365,7 +365,11 @@ describe('Home page tests', () => {
       cy.contains('vigilant toilet!! indeed photoreceptor crown!');
 
       // Check last verified
-      cy.contains('03/05/2022');
+      cy.contains(
+        new Date(Date.now())
+          .toLocaleString(new Intl.Locale('en-gb'))
+          .split(',')[0]
+      );
     });
 
     it('should filter toilets based on applied filter toggles', () => {
