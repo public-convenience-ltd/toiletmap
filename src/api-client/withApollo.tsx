@@ -46,7 +46,10 @@ function createApolloClient() {
         if (graphQLErrors)
           graphQLErrors.forEach(({ message, locations, path, extensions }) => {
             const { code } = extensions;
-            console.log(code);
+            console.error(
+              'A caught Apollo client error was experienced: ',
+              message
+            );
             if (HANDLED_ERRORS.indexOf(code) > -1) {
               console.log(
                 `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
@@ -63,8 +66,9 @@ function createApolloClient() {
     .concat(terminatingLink);
 
   const cache = new InMemoryCache();
+  const isRunningOnServer = typeof window === 'undefined';
   return new ApolloClient({
-    ssrMode: typeof window === 'undefined',
+    ssrMode: isRunningOnServer,
     link: link,
     cache,
   });

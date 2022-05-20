@@ -5,6 +5,7 @@
  **/
 // eslint-disable-next-line functional/immutable-data
 module.exports = {
+  reactStrictMode: true,
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if

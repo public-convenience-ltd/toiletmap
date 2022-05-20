@@ -152,18 +152,14 @@ describe('Edit page tests', () => {
     it('should update the location of the toilet when the locator map is dragged', () => {
       cy.visit('loos/e0ba1aeea36ecf58d5ae6dd2/edit').wait(500);
       cy.findByPlaceholderText('Search location…').type('birmingham');
-      cy.findByText(
-        'Birmingham, West Midlands Combined Authority, West Midlands, England, B2 4AJ, United Kingdom'
-      ).click();
+      cy.get('#search-results-item-0').click();
       cy.findByText('Update the toilet').click();
 
       cy.contains('Thank you, details updated!');
 
       cy.visit('/');
       cy.findByPlaceholderText('Search location…').type('birmingham');
-      cy.findByText(
-        'Birmingham, West Midlands Combined Authority, West Midlands, England, B2 4AJ, United Kingdom'
-      ).click();
+      cy.get('#search-results-item-0').click();
 
       cy.get('#gbptm-map')
         .trigger('wheel', {

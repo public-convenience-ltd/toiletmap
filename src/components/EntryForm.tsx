@@ -349,7 +349,6 @@ const EntryForm = ({ title, loo, children, ...props }) => {
               <Input
                 type="text"
                 name="geometry.coordinates.0"
-                value={center.lat}
                 readOnly
                 {...register('geometry.coordinates.0')}
               />
@@ -358,8 +357,6 @@ const EntryForm = ({ title, loo, children, ...props }) => {
               <Input
                 type="text"
                 name="geometry.coordinates.1"
-                data-testid="loo-name"
-                value={center.lng}
                 readOnly
                 {...register('geometry.coordinates.1')}
               />
