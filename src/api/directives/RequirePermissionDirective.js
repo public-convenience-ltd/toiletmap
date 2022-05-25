@@ -3,7 +3,7 @@ const {
   AuthenticationError,
 } = require('apollo-server');
 const { defaultFieldResolver } = require('graphql');
-const config = require('../config');
+const checkRole = require('./checkRole');
 
 class RequirePermissionDirective extends SchemaDirectiveVisitor {
   visitObject(type) {
@@ -40,10 +40,9 @@ class RequirePermissionDirective extends SchemaDirectiveVisitor {
 
         const [, , ctx] = args;
         if (ctx && ctx.user) {
-          if (
-            requiredRole &&
-            !ctx.user[config.auth0.permissionsKey].includes(requiredRole)
-          ) {
+          // Test the current use data for a permissions array (for signed-in user), or a scope (for a machine to machine token)
+          // matching the requiredRole
+          if (!checkRole(ctx.user, requiredRole)) {
             throw new AuthenticationError(
               'You are not authorized to perform this operation.'
             );

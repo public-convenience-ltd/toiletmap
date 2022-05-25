@@ -224,6 +224,7 @@ const resolvers = {
   Mutation: {
     submitReport: async (parent, args, context) => {
       let user = context.user;
+
       let { edit, location, ...data } = args.report;
       // Format report data to match old api
       let report = {

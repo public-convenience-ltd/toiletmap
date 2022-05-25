@@ -169,13 +169,12 @@ ReportSchema.statics.submit = async function (data, user, from) {
   };
 
   reportData.contributor = config.reports.anonContributor;
-
   if (user) {
     if (user.sub) {
       reportData.contributorId = user.sub;
     }
 
-    if (user[config.auth0.profileKey].nickname) {
+    if (user[config.auth0.profileKey]?.nickname) {
       reportData.contributor = user[config.auth0.profileKey].nickname;
     }
   }

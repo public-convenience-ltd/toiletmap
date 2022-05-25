@@ -1,6 +1,6 @@
 const { SchemaDirectiveVisitor } = require('apollo-server');
 const { defaultFieldResolver } = require('graphql');
-const config = require('../config');
+const checkRole = require('./checkRole');
 
 class RedactionDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field) {
@@ -9,10 +9,7 @@ class RedactionDirective extends SchemaDirectiveVisitor {
     field.resolve = async function (...args) {
       const [, , ctx] = args;
       if (ctx && ctx.user) {
-        if (
-          requires &&
-          !ctx.user[config.auth0.permissionsKey].includes(requires)
-        ) {
+        if (!checkRole(ctx.user, requires)) {
           return replace;
         } else {
           const result = await resolve.apply(this, args);
