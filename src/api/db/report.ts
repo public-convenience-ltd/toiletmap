@@ -174,7 +174,7 @@ ReportSchema.statics.submit = async function (data, user, from, looIdOverride) {
       reportData.contributorId = user.sub;
     }
 
-    if (user[process.env.AUTH0_PROFILE_KEY].nickname) {
+    if (user[process.env.AUTH0_PROFILE_KEY]?.nickname) {
       reportData.contributor = user[process.env.AUTH0_PROFILE_KEY].nickname;
     }
   }
