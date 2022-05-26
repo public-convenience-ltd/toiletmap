@@ -1,5 +1,6 @@
 import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils';
 import { GraphQLSchema, defaultFieldResolver } from 'graphql';
+import checkRole from './checkRole'
 
 export default function redactedDirective(directiveName: string) {
   return {
@@ -19,12 +20,7 @@ export default function redactedDirective(directiveName: string) {
             fieldConfig.resolve = async function (...args) {
               const [, , ctx] = args;
               if (ctx && ctx.user) {
-                if (
-                  requires &&
-                  !ctx.user[process.env.AUTH0_PERMISSIONS_KEY].includes(
-                    requires
-                  )
-                ) {
+                if (!checkRole(ctx.user, requires)) {
                   return replace;
                 } else {
                   const result = await resolve.apply(this, args);

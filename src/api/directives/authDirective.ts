@@ -1,6 +1,7 @@
 import { AuthenticationError } from 'apollo-server-errors';
 import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils';
 import { GraphQLSchema, defaultFieldResolver } from 'graphql';
+import checkRole from './checkRole'
 
 export default function authDirective(directiveName: string) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,12 +34,7 @@ export default function authDirective(directiveName: string) {
               const { resolve = defaultFieldResolver } = fieldConfig;
               fieldConfig.resolve = function (source, args, context, info) {
                 if (context && context.user) {
-                  if (
-                    requires &&
-                    !context.user[process.env.AUTH0_PERMISSIONS_KEY].includes(
-                      requires
-                    )
-                  ) {
+                  if (!checkRole(context.user, requires)) {
                     throw new AuthenticationError(
                       'You are not authorized to perform this operation.'
                     );
