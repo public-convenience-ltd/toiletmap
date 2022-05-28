@@ -40,6 +40,8 @@ module.exports = {
           ...(config.resolve || {}).fallback,
           https: false,
           zlib: false,
+          fs: false,
+          os: false,
         },
       },
     };
