@@ -53,34 +53,6 @@ const LooPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
     ]
   );
 
-  // const [firstLoad, setFirstLoad] = useState(true);
-  // useEffect(() => {
-  //   setFirstLoad(false);
-  // }, []);
-
-  // // Just set our center when this page is an ingress route
-  // // This way you can click loos on the map without the map jerking about
-  // useEffect(() => {
-  //   if (
-  //     (!router.isReady || typeof message !== 'undefined') &&
-  //     firstLoad &&
-  //     typeof props?.data?.loo !== 'undefined' &&
-  //     mapState?.locationServices?.isActive !== true
-  //   ) {
-  //     setMapState({
-  //       center: props?.data?.loo?.location,
-  //       focus: props?.data?.loo,
-  //     });
-  //   }
-  // }, [
-  //   firstLoad,
-  //   mapState?.locationServices?.isActive,
-  //   message,
-  //   props?.data?.loo,
-  //   router.isReady,
-  //   setMapState,
-  // ]);
-
   const [, setToiletPanelDimensions] = React.useState({});
 
   const pageTitle = config.getTitle('Home');

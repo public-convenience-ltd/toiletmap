@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
+import React, { useCallback, useState } from 'react';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 import Box from '../Box';
@@ -10,10 +9,19 @@ import Icon from '../Icon';
 import Logo from '../Logo';
 
 import MainMenu from './MainMenu';
+import { useMapState } from '../MapState';
+import { useRouter } from 'next/router';
+import Button from '../Button';
 
 const Header = ({ children }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
+  const router = useRouter();
+  const [, setMapState] = useMapState();
+  const navigateAway = useCallback(() => {
+    setMapState({ searchLocation: undefined, focus: undefined });
+    router.push('/');
+  }, [router, setMapState]);
   return (
     <Box as="header">
       <Box
@@ -25,9 +33,14 @@ const Header = ({ children }) => {
         minHeight={60}
       >
         <Box flexShrink={0}>
-          <Link href="/" passHref>
+          <Button
+            role="link"
+            onClick={navigateAway}
+            variant="link"
+            aria-label="Navigate to the home page"
+          >
             <Logo />
-          </Link>
+          </Button>
         </Box>
 
         <Box as="nav" width="100%" aria-labelledby="menu-main">
