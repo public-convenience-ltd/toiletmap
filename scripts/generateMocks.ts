@@ -9,8 +9,8 @@ const generateReports = () => {
   for (let i = 0; i < 5000; i++) {
     faker.seed(new Array(5).fill(i));
     const location = [
-      parseFloat(faker.address.longitude(0.2, -0.6, 6)),
-      parseFloat(faker.address.latitude(51.7, 51.3, 6)),
+      parseFloat(faker.address.longitude(0.2, -0.6, 15)),
+      parseFloat(faker.address.latitude(51.7, 51.3, 15)),
     ];
 
     // Populate the database with some London toilets.
@@ -32,7 +32,7 @@ const generateReports = () => {
         radar: faker.datatype.boolean(),
         accessible: faker.datatype.boolean(),
         allGender: faker.datatype.boolean(),
-        verifiedAt: faker.date.future(),
+        verifiedAt: faker.date.past(),
         paymentDetails: `£${faker.finance.amount(0, 10)} on entry`,
         notes:
           faker.word.adjective() +

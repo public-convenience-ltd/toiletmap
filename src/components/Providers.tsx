@@ -3,7 +3,6 @@ import PlausibleProvider from 'next-plausible';
 import React, { useEffect, useState } from 'react';
 import globalStyles from '../globalStyles';
 import theme from '../theme';
-import { MapStateProvider } from './MapState';
 import { MediaContextProvider } from './Media';
 
 const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -22,16 +21,14 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       domain="toiletmap.org.uk"
       customDomain="https://stats.toiletmap.org.uk/"
     >
-      <MapStateProvider>
-        <ThemeProvider theme={theme}>
-          {globalStyles}
-          <MediaContextProvider
-            disableDynamicMediaQueries={disableDynamicMediaQueries}
-          >
-            {children}
-          </MediaContextProvider>
-        </ThemeProvider>
-      </MapStateProvider>
+      <ThemeProvider theme={theme}>
+        {globalStyles}
+        <MediaContextProvider
+          disableDynamicMediaQueries={disableDynamicMediaQueries}
+        >
+          {children}
+        </MediaContextProvider>
+      </ThemeProvider>
     </PlausibleProvider>
   );
 };

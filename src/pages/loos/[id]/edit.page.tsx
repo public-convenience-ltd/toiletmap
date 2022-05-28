@@ -38,7 +38,11 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
   const [mapState, setMapState] = useMapState();
 
   useEffect(() => {
-    setMapState({ focus: loo, center: loo?.location });
+    setMapState({
+      focus: loo,
+      center: loo?.location,
+      searchLocation: undefined,
+    });
   }, [loo, setMapState]);
 
   const [
@@ -125,13 +129,15 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
       </Head>
 
       <Box display="flex" height="40vh">
-        <LooMap
-          center={loo.location}
-          zoom={mapState.zoom}
-          minZoom={config.editMinZoom}
-          showCrosshair
-          controlsOffset={20}
-        />
+        {loo && (
+          <LooMap
+            center={loo.location}
+            zoom={mapState.zoom}
+            minZoom={config.editMinZoom}
+            showCrosshair
+            controlsOffset={20}
+          />
+        )}
 
         <Box position="absolute" top={0} left={0} m={3}>
           <LocationSearch
