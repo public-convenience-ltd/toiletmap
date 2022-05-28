@@ -6,33 +6,30 @@ import Box from '../components/Box';
 import { Media } from '../components/Media';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { MapStateProvider } from './MapState';
 
 const Main = ({ Component, pageProps }) => {
   return (
-    <MapStateProvider>
-      <Box display="flex" flexDirection="column" height="100%">
-        <Header>
-          <Footer />
-        </Header>
-        <Box position="relative" display="flex" flexGrow={1}>
-          <Box
-            as="main"
-            flexGrow={1}
-            // support screen readers in ie11
-            role="main"
-          >
-            <Component {...pageProps} />
-          </Box>
-        </Box>
-
-        <Box mt="auto">
-          <Media greaterThan="sm">
-            <Footer />
-          </Media>
+    <Box display="flex" flexDirection="column" height="100%">
+      <Header>
+        <Footer />
+      </Header>
+      <Box position="relative" display="flex" flexGrow={1}>
+        <Box
+          as="main"
+          flexGrow={1}
+          // support screen readers in ie11
+          role="main"
+        >
+          <Component {...pageProps} />
         </Box>
       </Box>
-    </MapStateProvider>
+
+      <Box mt="auto">
+        <Media greaterThan="sm">
+          <Footer />
+        </Media>
+      </Box>
+    </Box>
   );
 };
 
