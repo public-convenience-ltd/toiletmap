@@ -48,11 +48,14 @@ const filters: Array<Filter> = [
   },
 ];
 
-const messages = {
+export const alertMessages = {
   created: 'Thank you, toilet added!',
   updated: 'Thank you, details updated!',
   removed: 'Thank you, toilet removed!',
-};
+  auth_needed:
+    'There was a problem checking your authentication. Please try and sign in again.',
+  generic_error: 'Uh oh! We encountered a problem, please try again soon.',
+} as const;
 
 const title = 'Toilet Map';
 
@@ -61,7 +64,7 @@ const config = {
     mobile: 567,
   },
   filters,
-  messages,
+  alertMessages,
   initialZoom: 16,
   minZoom: 11,
   maxZoom: 18,
