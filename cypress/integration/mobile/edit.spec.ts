@@ -153,6 +153,7 @@ describe('Edit page tests', () => {
       cy.visit('loos/ca6249ebcd1490e2aaccc5be/edit').wait(500);
       cy.findByPlaceholderText('Search location…').type('Norwich');
       cy.get('#search-results-item-0').click();
+      cy.wait(500);
       cy.findByText('Update the toilet').click();
 
       cy.contains('Thank you, details updated!');
