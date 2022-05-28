@@ -9,8 +9,8 @@ const generateReports = () => {
   for (let i = 0; i < 5000; i++) {
     faker.seed(new Array(5).fill(i));
     const location = [
-      parseFloat(faker.address.longitude(0.2, -0.6, 6)),
-      parseFloat(faker.address.latitude(51.7, 51.3, 6)),
+      parseFloat(faker.address.longitude(0.2, -0.6, 15)),
+      parseFloat(faker.address.latitude(51.7, 51.3, 15)),
     ];
 
     // Populate the database with some London toilets.

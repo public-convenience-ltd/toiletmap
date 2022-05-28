@@ -21,40 +21,67 @@ const LooPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
   props
 ) => {
   const [mapState, setMapState] = useMapState();
-  const [firstLoad, setFirstLoad] = useState(true);
+
   const router = useRouter();
+  const { message } = router.query;
+
+  const [firstLoad, setFirstLoad] = useState(true);
 
   useEffect(() => {
     setFirstLoad(false);
   }, []);
 
-  // Just set our center when this page is an ingress route
-  // This way you can click loos on the map without the map jerking about
-  useEffect(() => {
-    if (
-      !router.isReady &&
-      firstLoad &&
-      typeof props?.data?.loo !== 'undefined' &&
-      mapState?.locationServices?.isActive !== true
-    ) {
-      setMapState({
-        center: props?.data?.loo?.location,
-        focus: props?.data?.loo,
-      });
-    }
-  }, [
-    firstLoad,
-    mapState.focus,
-    mapState?.locationServices?.isActive,
-    props?.data?.loo,
-    props?.data?.loo?.location,
-    router,
-    setMapState,
-  ]);
+  const looCentre = props?.data?.loo;
+  useEffect(
+    function setInitialMapCentre() {
+      if (
+        (!router.isReady || typeof message !== 'undefined') &&
+        looCentre &&
+        firstLoad &&
+        mapState?.locationServices?.isActive !== true
+      ) {
+        setMapState({ center: looCentre?.location, focus: looCentre });
+      }
+    },
+    [
+      firstLoad,
+      looCentre,
+      mapState?.locationServices?.isActive,
+      message,
+      router.isReady,
+      setMapState,
+    ]
+  );
+
+  // const [firstLoad, setFirstLoad] = useState(true);
+  // useEffect(() => {
+  //   setFirstLoad(false);
+  // }, []);
+
+  // // Just set our center when this page is an ingress route
+  // // This way you can click loos on the map without the map jerking about
+  // useEffect(() => {
+  //   if (
+  //     (!router.isReady || typeof message !== 'undefined') &&
+  //     firstLoad &&
+  //     typeof props?.data?.loo !== 'undefined' &&
+  //     mapState?.locationServices?.isActive !== true
+  //   ) {
+  //     setMapState({
+  //       center: props?.data?.loo?.location,
+  //       focus: props?.data?.loo,
+  //     });
+  //   }
+  // }, [
+  //   firstLoad,
+  //   mapState?.locationServices?.isActive,
+  //   message,
+  //   props?.data?.loo,
+  //   router.isReady,
+  //   setMapState,
+  // ]);
 
   const [, setToiletPanelDimensions] = React.useState({});
-
-  const { message } = router.query;
 
   const pageTitle = config.getTitle('Home');
 
@@ -119,11 +146,13 @@ const LooPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
         >
           <Sidebar />
         </Box>
-        <LooMap
-          center={mapState.center}
-          zoom={mapState.zoom}
-          controlsOffset={0}
-        />
+        {!firstLoad && (
+          <LooMap
+            center={mapState.center}
+            zoom={mapState.zoom}
+            controlsOffset={0}
+          />
+        )}
         {props?.data?.loo && (
           <Box
             position="absolute"

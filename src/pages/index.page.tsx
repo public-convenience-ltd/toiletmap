@@ -16,7 +16,7 @@ const HomePage = () => {
   const pageTitle = config.getTitle('Home');
 
   useEffect(() => {
-    setMapState({ focus: undefined });
+    setMapState({ focus: undefined, searchLocation: undefined });
   }, [setMapState]);
 
   return (

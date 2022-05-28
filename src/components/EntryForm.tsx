@@ -215,7 +215,29 @@ const Section: React.FC<{
 
 const EntryForm = ({ title, loo, children, ...props }) => {
   const [noPayment, setNoPayment] = useState(loo.noPayment);
-  const [{ center }] = useMapState();
+  const [mapState] = useMapState();
+  const [mapMoved, setMapMoved] = useState(false);
+
+  useEffect(
+    function registerMapMovedHandler() {
+      if (mapState?.map) {
+        mapState?.map?.on('dragend', () => {
+          setMapMoved(true);
+        });
+      }
+    },
+    [mapState?.map]
+  );
+
+  useEffect(
+    function setMapMovedIfSearchHappened() {
+      if (mapState.searchLocation) {
+        console.log(mapState.searchLocation);
+        setMapMoved(true);
+      }
+    },
+    [mapState.searchLocation]
+  );
 
   const hasOpeningTimes = Boolean(loo.openingTimes);
 
@@ -310,12 +332,29 @@ const EntryForm = ({ title, loo, children, ...props }) => {
     props.onSubmit(transformed);
   };
 
+  // Only base the new location on the map centre if the map has been moved.
+  // Otherwise set it based on the coordinates of the loo in question.
   useEffect(() => {
-    // readonly fields won't fire a change event
-    // setValue ensures that the fields will be marked as dirty
-    setValue('geometry.coordinates.0', center.lat);
-    setValue('geometry.coordinates.1', center.lng);
-  }, [center, setValue]);
+    if (mapMoved) {
+      // readonly fields won't fire a change event
+      // setValue ensures that the fields will be marked as dirty
+      setValue('geometry.coordinates.0', mapState.center.lat);
+      setValue('geometry.coordinates.1', mapState.center.lng);
+    } else {
+      const locationToSet = loo?.location ?? mapState.center;
+      setValue('geometry.coordinates.0', locationToSet.lat);
+      setValue('geometry.coordinates.1', locationToSet.lng);
+    }
+  }, [
+    loo?.location,
+    loo?.location?.lat,
+    loo?.location?.lng,
+    mapMoved,
+    mapState.center,
+    mapState.center.lat,
+    mapState.center.lng,
+    setValue,
+  ]);
 
   return (
     <Container maxWidth={846}>
