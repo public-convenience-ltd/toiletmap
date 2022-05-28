@@ -32,7 +32,7 @@ const generateReports = () => {
         radar: faker.datatype.boolean(),
         accessible: faker.datatype.boolean(),
         allGender: faker.datatype.boolean(),
-        verifiedAt: faker.date.future(),
+        verifiedAt: faker.date.past(),
         paymentDetails: `£${faker.finance.amount(0, 10)} on entry`,
         notes:
           faker.word.adjective() +
