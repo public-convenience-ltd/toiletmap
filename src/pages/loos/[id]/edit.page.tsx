@@ -69,7 +69,9 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
     if (saveData) {
       setMapState({ searchLocation: undefined });
       // redirect to updated toilet entry page
-      router.push(`/api/loos/${saveData.submitReport.loo.id}/revalidate`);
+      router.push(
+        `/api/loos/${saveData.submitReport.loo.id}/revalidate?message=updated`
+      );
     }
   }, [saveData, router, setMapState]);
 

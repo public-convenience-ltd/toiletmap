@@ -166,7 +166,7 @@ const LooPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
               startExpanded={true}
               onDimensionsChange={setToiletPanelDimensions}
             >
-              {config.messages[message as string] && (
+              {config.alertMessages[message as string] && (
                 <Box
                   position="absolute"
                   left={0}
@@ -180,7 +180,7 @@ const LooPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
                   bg={['white', 'white', 'transparent']}
                 >
                   <Notification allowClose>
-                    {config.messages[message as string]}
+                    {config.alertMessages[message as string]}
                   </Notification>
                 </Box>
               )}

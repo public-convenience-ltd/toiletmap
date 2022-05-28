@@ -67,8 +67,10 @@ const AddPage = () => {
   useEffect(() => {
     if (saveData) {
       setMapState({ searchLocation: undefined });
-
-      router.push(`/loos/${saveData.submitReport.loo.id}?message=created`);
+      // redirect to updated toilet entry page
+      router.push(
+        `/api/loos/${saveData.submitReport.loo.id}/revalidate?message=created`
+      );
     }
   }, [saveData, router, setMapState]);
 
