@@ -68,8 +68,8 @@ describe('Home page tests', () => {
 
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.get('[data-toiletid=cc4e5e9b83de8dd9ba87b3eb]').should('not.exist');
-      // touchstart, touchmove etc are not supported in Firefox
 
+      // touchstart, touchmove etc are not supported in Firefox
       if (Cypress.isBrowser('firefox')) {
         cy.get('#gbptm-map')
           .trigger('mousedown', { which: 1 })

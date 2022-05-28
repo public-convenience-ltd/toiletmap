@@ -149,7 +149,40 @@ describe('Edit page tests', () => {
       cy.contains('I ran out of loo roll! Otherwise good.');
     });
 
-    it('should update the location of the toilet when the locator map is dragged', () => {
+    it('should update the location of the toilet to where the map is dragged', () => {
+      cy.visit('loos/e0ba1aeea36ecf58d5ae6dd2/edit').wait(500);
+      cy.get('#gbptm-map')
+        .trigger('mousedown', { which: 1, force: true })
+        .trigger('mousemove', { which: 1, x: 1000, y: 0 })
+        .trigger('mouseup', { force: true })
+        .wait(100)
+        .trigger('mousedown', { which: 1, force: true })
+        .trigger('mousemove', { which: 1, x: 1000, y: 0 })
+        .trigger('mouseup', { force: true })
+        .wait(100)
+        .trigger('mousedown', { which: 1, force: true })
+        .trigger('mousemove', { which: 1, x: 1000, y: 0 })
+        .trigger('mouseup', { force: true })
+        .wait(100)
+        .trigger('mousedown', { which: 1, force: true })
+        .trigger('mousemove', { which: 1, x: 1000, y: 0 })
+        .trigger('mouseup', { force: true })
+        .wait(100)
+        .trigger('mousedown', { which: 1, force: true })
+        .trigger('mousemove', { which: 1, x: 1000, y: 0 })
+        .trigger('mouseup', { force: true });
+      cy.findByText('Update the toilet').click();
+
+      cy.contains('Thank you, details updated!');
+
+      cy.visit('/');
+      cy.findByPlaceholderText('Search location…').type('ashford common');
+      cy.get('#search-results-item-0').click();
+
+      cy.get('[data-toiletid=e0ba1aeea36ecf58d5ae6dd2]').should('exist');
+    });
+
+    it('should update the location of the toilet through a location search', () => {
       cy.visit('loos/e0ba1aeea36ecf58d5ae6dd2/edit').wait(500);
       cy.findByPlaceholderText('Search location…').type('birmingham');
       cy.get('#search-results-item-0').click();
@@ -162,17 +195,6 @@ describe('Edit page tests', () => {
       cy.findByPlaceholderText('Search location…').type('birmingham');
       cy.get('#search-results-item-0').click();
 
-      cy.get('#gbptm-map')
-        .trigger('wheel', {
-          deltaY: 66.666666,
-          wheelDelta: 120,
-          wheelDeltaX: 0,
-          wheelDeltaY: -1500,
-          bubbles: true,
-        })
-        .wait(500);
-
-      // TODO: Once we have implemented invalidation of map chunks on update, check that it is updated without having to zoom out to an unloaded geohash
       cy.get('[data-toiletid=e0ba1aeea36ecf58d5ae6dd2]').should('exist');
     });
   });
