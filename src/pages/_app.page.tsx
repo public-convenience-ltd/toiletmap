@@ -13,9 +13,9 @@ const App = (props) => {
     sharedStatePaths.indexOf(router.pathname) > -1 ? 'shared' : router.asPath;
 
   return (
-    <Providers>
+    <Providers key={key}>
       <UserProvider>
-        <Main {...props} key={key} />
+        <Main {...props} />
       </UserProvider>
     </Providers>
   );

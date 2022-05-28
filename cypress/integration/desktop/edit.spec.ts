@@ -1,7 +1,7 @@
 import faker from '@faker-js/faker';
 import _ from 'lodash';
 describe('Edit page tests', () => {
-  context('Mobile', () => {
+  context('Desktop', () => {
     beforeEach(() => {
       cy.viewport('macbook-16');
     });
@@ -153,6 +153,7 @@ describe('Edit page tests', () => {
       cy.visit('loos/e0ba1aeea36ecf58d5ae6dd2/edit').wait(500);
       cy.findByPlaceholderText('Search location…').type('birmingham');
       cy.get('#search-results-item-0').click();
+      cy.wait(500);
       cy.findByText('Update the toilet').click();
 
       cy.contains('Thank you, details updated!');
