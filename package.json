@@ -148,7 +148,7 @@
     "prettier": "^2.6.2",
     "start-server-and-test": "^1.14.0",
     "storybook-addon-apollo-client": "^4.0.11",
-    "storybook-addon-next": "^1.6.5",
+    "storybook-addon-next": "^1.6.6",
     "topojson-server": "^3.0.1",
     "topojson-simplify": "^3.0.3",
     "ts-node": "^10.8.0",

@@ -17262,10 +17262,10 @@ storybook-addon-apollo-client@^4.0.11:
   dependencies:
     tslib "^2.3.0"
 
-storybook-addon-next@^1.6.5:
-  version "1.6.5"
-  resolved "https://registry.yarnpkg.com/storybook-addon-next/-/storybook-addon-next-1.6.5.tgz#ba0b5ca87cc1b31f70267f34d225e9d42f92bf88"
-  integrity sha512-1poxyUStFpnnZ13PJ2VSMQBhs/irlZnXN0sT7oB1MKhz8obm2ifRNtp7L1kKPFdLtmX33uZ2QU9eLa0niMPyrg==
+storybook-addon-next@^1.6.6:
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/storybook-addon-next/-/storybook-addon-next-1.6.6.tgz#0fe8430c70f8ed4985b4bc7c903bcb24e08299ed"
+  integrity sha512-HbGY7DM+qW925rgladudF2PJK+Iq06bRTPseGn6qXnIgC9L/FvBzI1UvDcguYMYWUOzGCbFl11DpHcU/pE1KkQ==
   dependencies:
     "@storybook/addons" "^6.4.10"
     image-size "^1.0.0"

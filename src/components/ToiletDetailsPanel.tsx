@@ -38,6 +38,7 @@ import { useMapState } from './MapState';
 import type L from 'leaflet';
 import { useRouter } from 'next/router';
 import { useSubmitVerificationReportMutationMutation } from '../api-client/graphql';
+import { usePlausible } from 'next-plausible';
 
 const Grid = styled(Box)`
   display: flex;
@@ -293,6 +294,8 @@ const ToiletDetailsPanel = ({
     }
   }
 
+  const plausible = usePlausible();
+
   const lastVerifiedFragment = useMemo(
     () => (
       <Box>
@@ -304,7 +307,7 @@ const ToiletDetailsPanel = ({
           <Button
             variant="primary"
             onClick={() => {
-              // TOOD: Add plausible .
+              plausible('Verification Report');
               submitVerificationReportMutation({
                 variables: { id: data.id },
                 notifyOnNetworkStatusChange: true,
@@ -343,6 +346,7 @@ const ToiletDetailsPanel = ({
     [
       data.id,
       editUrl,
+      plausible,
       submitVerificationReportMutation,
       verificationReportState.loading,
       verifiedOrUpdated,
