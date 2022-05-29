@@ -19,22 +19,22 @@ export default function Explorer() {
         <Route exact path={`${match.path}/`}>
           <Home />
         </Route>
-        <Route path={`${match.path}/loos/:id`}>
+        <Route exact path={`/loos/:id`}>
           <Loo />
         </Route>
-        <Route path={`${match.path}/statistics`}>
+        <Route exact path={`/statistics`}>
           <HeadlineStats />
         </Route>
-        <Route path={`${match.path}/areas`}>
+        <Route exact path={`/areas`}>
           <Areas />
         </Route>
-        <Route path={`${match.path}/search`}>
+        <Route exact path={`/search`}>
           <Search />
         </Route>
-        <Route path={`${match.path}/voyager`}>
+        <Route exact path={`/voyager`}>
           <Voyager />
         </Route>
-        <Route exact path={`${match.path}/map`}>
+        <Route exact path={`/map`}>
           <Map />
         </Route>
       </Switch>

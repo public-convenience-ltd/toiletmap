@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useRouteMatch, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -39,14 +39,9 @@ const CentredListItem = withStyles({
 })(ListItem);
 
 function SidebarItem(props) {
-  const match = useRouteMatch();
-
   return (
     <CentredListItem button>
-      <Link
-        to={`${match.path}/${props.pathName}`}
-        style={{ textDecoration: 'none' }}
-      >
+      <Link to={`/${props.pathName}`} style={{ textDecoration: 'none' }}>
         <div className={styles.centredLink}>
           <ListItemIcon>{props.icon}</ListItemIcon>
           <NewListItemText primary={props.name} />
