@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import styled from '@emotion/styled';
 import isPropValid from '@emotion/is-prop-valid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,6 +20,7 @@ import Filters from '../Filters';
 import Button from '../Button';
 import Drawer from '../Drawer';
 import { useMapState } from '../MapState';
+import config from '../../config';
 
 interface Props {
   isExpanded?: boolean;
@@ -80,6 +81,23 @@ const Sidebar = () => {
     [isFilterExpanded, isFiltersExpanded, mapState, setMapState]
   );
 
+  const [appliedFilterCount, setAppliedFilterCount] = useState(0);
+
+  useEffect(
+    function setTheAmountOfAppliedFilters() {
+      setAppliedFilterCount(
+        config.filters
+          .map(({ id }) => mapState.appliedFilters?.[id] === true)
+          .reduce((v, c) => +c + v, 0)
+      );
+    },
+    [mapState.appliedFilters]
+  );
+
+  const appliedFilterCountRendered = useMemo(() => {
+    return appliedFilterCount > 0 && <b>({appliedFilterCount})</b>;
+  }, [appliedFilterCount]);
+
   return (
     <section aria-labelledby="heading-search">
       <Media lessThan="md">
@@ -93,29 +111,29 @@ const Sidebar = () => {
           }
         />
 
-        <Box display="flex" justifyContent="center" mt={3}>
-          <Button
-            ref={filterToggleRef}
-            variant="secondary"
-            icon={<FontAwesomeIcon icon={faFilter} />}
-            aria-expanded={isFiltersExpanded}
-            onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
-          >
-            Filter Map
-          </Button>
+        <Box display="flex" flexWrap="wrap" justifyContent="center">
+          <Box display="flex" mt={3} mr={1}>
+            <Button
+              ref={filterToggleRef}
+              variant="secondary"
+              icon={<FontAwesomeIcon icon={faFilter} />}
+              aria-expanded={isFiltersExpanded}
+              onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
+            >
+              Filter Map
+            </Button>
+          </Box>
+          <Box display="flex" mt={3}>
+            <Button
+              type="button"
+              variant="primary"
+              onClick={() => mapState?.locationServices?.startLocate()}
+              aria-label="Find a toilet near me"
+            >
+              Find a toilet near me
+            </Button>
+          </Box>
         </Box>
-
-        <Box display="flex" justifyContent="center" mt={3}>
-          <Button
-            type="button"
-            variant="primary"
-            onClick={() => mapState?.locationServices?.startLocate()}
-            aria-label="Find a toilet near me"
-          >
-            Find a toilet near me
-          </Button>
-        </Box>
-
         <Drawer visible={isFiltersExpanded} animateFrom="left">
           <Box display="flex" justifyContent="space-between" mb={4}>
             <Box display="flex" alignItems="flex-end">
@@ -123,6 +141,7 @@ const Sidebar = () => {
               <Box as="h2" mx={2}>
                 <Text lineHeight={1}>
                   <b>Filter</b>
+                  {appliedFilterCountRendered}
                 </Text>
               </Box>
             </Box>
@@ -179,7 +198,9 @@ const Sidebar = () => {
 
           <Box as="section" my={4} aria-labelledby="heading-filters">
             <h2 id="heading-filters">
-              <VisuallyHidden>Filters</VisuallyHidden>
+              <VisuallyHidden>
+                Filters — {appliedFilterCount} filters are applied.
+              </VisuallyHidden>
             </h2>
 
             <Box display="flex" justifyContent="space-between">
@@ -194,7 +215,8 @@ const Sidebar = () => {
                 <Icon icon={faFilter} fixedWidth size="lg" />
                 <Box mx={2}>
                   <Text lineHeight={1}>
-                    <b>Filter</b>
+                    <b>Filter </b>
+                    {appliedFilterCountRendered}
                   </Text>
                 </Box>
                 <Arrow isExpanded={isFilterExpanded} />

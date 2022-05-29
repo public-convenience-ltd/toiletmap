@@ -232,7 +232,6 @@ const EntryForm = ({ title, loo, children, ...props }) => {
   useEffect(
     function setMapMovedIfSearchHappened() {
       if (mapState.searchLocation) {
-        console.log(mapState.searchLocation);
         setMapMoved(true);
       }
     },

@@ -149,7 +149,44 @@ describe('Edit page tests', () => {
       cy.contains('I ran out of loo roll! Otherwise good.');
     });
 
-    it('should update the location of the toilet when the locator map is dragged', () => {
+    it('should update the location of the toilet to where the map is dragged', () => {
+      cy.visit('loos/ca6249ebcd1490e2aaccc5be/edit').wait(500);
+
+      // touchstart, touchmove etc are not supported in Firefox
+      if (Cypress.isBrowser('firefox')) {
+        cy.get('#gbptm-map')
+          .trigger('mousedown', { which: 1, force: true })
+          .trigger('mousemove', 1000, -1800, { which: 1, force: true })
+          .trigger('mouseup', { force: true })
+          .wait(100)
+          .trigger('mousedown', { which: 1, force: true })
+          .trigger('mousemove', -1500, 1100, { which: 1, force: true })
+          .trigger('mouseup', { force: true })
+          .wait(500);
+      } else {
+        cy.get('#gbptm-map')
+          .trigger('touchstart', { which: 1, force: true })
+          .trigger('touchmove', 1000, -1800, { which: 1, force: true })
+          .trigger('touchend', { force: true })
+          .wait(100)
+          .trigger('touchstart', { which: 1, force: true })
+          .trigger('touchmove', -1500, 1100, { which: 1, force: true })
+          .trigger('touchend', { force: true })
+          .wait(500);
+      }
+
+      cy.findByText('Update the toilet').click();
+
+      cy.contains('Thank you, details updated!');
+
+      cy.visit('/');
+      cy.findByPlaceholderText('Search location…').type('ditton park manor');
+      cy.get('#search-results-item-0').click();
+
+      cy.get('[data-toiletid=ca6249ebcd1490e2aaccc5be]').should('exist');
+    });
+
+    it('should update the location of the toilet through a location search', () => {
       cy.visit('loos/ca6249ebcd1490e2aaccc5be/edit').wait(500);
       cy.findByPlaceholderText('Search location…').type('Norwich');
       cy.get('#search-results-item-0').click();
@@ -162,17 +199,6 @@ describe('Edit page tests', () => {
       cy.findByPlaceholderText('Search location…').type('Norwich');
       cy.get('#search-results-item-0').click();
 
-      cy.get('#gbptm-map')
-        .trigger('wheel', {
-          deltaY: 66.666666,
-          wheelDelta: 120,
-          wheelDeltaX: 0,
-          wheelDeltaY: -1500,
-          bubbles: true,
-        })
-        .wait(500);
-
-      // TODO: Once we have implemented invalidation of map chunks on update, check that it is updated without having to zoom out to an unloaded geohash
       cy.get('[data-toiletid=ca6249ebcd1490e2aaccc5be]').should('exist');
     });
   });

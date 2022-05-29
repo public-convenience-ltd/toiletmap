@@ -16,9 +16,7 @@ describe('Home page tests', () => {
     });
 
     it('should let you search by location', () => {
-      cy.reload();
       cy.visit('/');
-
       cy.findByPlaceholderText('Search location…').type('Hammersmith');
       cy.get('#search-results-item-0').click();
       cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
