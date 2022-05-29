@@ -11,7 +11,7 @@ export default async function handler(
   const isMessageValid =
     Object.keys(alertMessages).indexOf(message as string) > -1;
 
-  const finalMessage = isMessageValid ? message : 'generic_error';
+  const finalMessage = isMessageValid ? message : '';
 
   try {
     // Check that the user has a valid session before allowing revalidation.
@@ -19,7 +19,6 @@ export default async function handler(
     const { user } = getSession(req, res);
     if (user) {
       await res.unstable_revalidate(`/loos/${id}`);
-      return res.redirect(`/loos/${id}?message=${finalMessage}`);
     }
     return res.redirect(`/loos/${id}?message=${finalMessage}`);
   } catch (err) {
