@@ -111,29 +111,29 @@ const Sidebar = () => {
           }
         />
 
-        <Box display="flex" justifyContent="center" mt={3}>
-          <Button
-            ref={filterToggleRef}
-            variant="secondary"
-            icon={<FontAwesomeIcon icon={faFilter} />}
-            aria-expanded={isFiltersExpanded}
-            onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
-          >
-            Filter Map
-          </Button>
+        <Box display="flex" flexWrap="wrap" justifyContent="center">
+          <Box display="flex" mt={3} mr={1}>
+            <Button
+              ref={filterToggleRef}
+              variant="secondary"
+              icon={<FontAwesomeIcon icon={faFilter} />}
+              aria-expanded={isFiltersExpanded}
+              onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
+            >
+              Filter Map
+            </Button>
+          </Box>
+          <Box display="flex" mt={3}>
+            <Button
+              type="button"
+              variant="primary"
+              onClick={() => mapState?.locationServices?.startLocate()}
+              aria-label="Find a toilet near me"
+            >
+              Find a toilet near me
+            </Button>
+          </Box>
         </Box>
-
-        <Box display="flex" justifyContent="center" mt={3}>
-          <Button
-            type="button"
-            variant="primary"
-            onClick={() => mapState?.locationServices?.startLocate()}
-            aria-label="Find a toilet near me"
-          >
-            Find a toilet near me
-          </Button>
-        </Box>
-
         <Drawer visible={isFiltersExpanded} animateFrom="left">
           <Box display="flex" justifyContent="space-between" mb={4}>
             <Box display="flex" alignItems="flex-end">
