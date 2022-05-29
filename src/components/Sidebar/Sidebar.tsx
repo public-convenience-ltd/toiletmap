@@ -120,7 +120,8 @@ const Sidebar = () => {
               icon={<FontAwesomeIcon icon={faFilter} />}
               aria-expanded={isFiltersExpanded}
               onClick={() => {
-                plausible('Open Filters Panel');
+                const stateText = isFiltersExpanded ? 'Close' : 'Open';
+                plausible(`${stateText} Filters Panel`);
                 setIsFiltersExpanded(!isFiltersExpanded);
               }}
             >
@@ -144,7 +145,7 @@ const Sidebar = () => {
               <FontAwesomeIcon icon={faFilter} fixedWidth size="lg" />
               <Box as="h2" mx={2}>
                 <Text lineHeight={1}>
-                  <b>Filter</b>
+                  <b>Filter </b>
                   {appliedFilterCountRendered}
                 </Text>
               </Box>
@@ -214,7 +215,11 @@ const Sidebar = () => {
                 display="flex"
                 alignItems="center"
                 aria-expanded={isFilterExpanded}
-                onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+                onClick={() => {
+                  const stateText = isFilterExpanded ? 'Close' : 'Open';
+                  plausible(`${stateText} Filters Panel`);
+                  setIsFilterExpanded(!isFilterExpanded);
+                }}
               >
                 <Icon icon={faFilter} fixedWidth size="lg" />
                 <Box mx={2}>
