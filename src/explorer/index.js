@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import Layout from './Layout';
 import Home from './Home';
@@ -11,12 +11,10 @@ import Voyager from './Voyager';
 import Map from './Map';
 
 export default function Explorer() {
-  let match = useRouteMatch();
-
   return (
     <Layout>
       <Switch>
-        <Route exact path={`${match.path}/`}>
+        <Route exact path={`/`}>
           <Home />
         </Route>
         <Route exact path={`/loos/:id`}>
