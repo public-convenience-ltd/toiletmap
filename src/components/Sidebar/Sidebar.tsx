@@ -21,6 +21,7 @@ import Button from '../Button';
 import Drawer from '../Drawer';
 import { useMapState } from '../MapState';
 import config from '../../config';
+import { usePlausible } from 'next-plausible';
 
 interface Props {
   isExpanded?: boolean;
@@ -97,7 +98,7 @@ const Sidebar = () => {
   const appliedFilterCountRendered = useMemo(() => {
     return appliedFilterCount > 0 && <b>({appliedFilterCount})</b>;
   }, [appliedFilterCount]);
-
+  const plausible = usePlausible();
   return (
     <section aria-labelledby="heading-search">
       <Media lessThan="md">
@@ -118,7 +119,10 @@ const Sidebar = () => {
               variant="secondary"
               icon={<FontAwesomeIcon icon={faFilter} />}
               aria-expanded={isFiltersExpanded}
-              onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
+              onClick={() => {
+                plausible('Open Filters Panel');
+                setIsFiltersExpanded(!isFiltersExpanded);
+              }}
             >
               Filter Map
             </Button>

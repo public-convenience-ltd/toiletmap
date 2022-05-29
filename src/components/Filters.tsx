@@ -13,6 +13,7 @@ import Switch from './Switch';
 import Icon from './Icon';
 import config from '../config';
 import type { Filters as FilterTypes } from '../config';
+import { usePlausible } from 'next-plausible';
 
 const iconMap = {
   noPayment: faPoundSign,
@@ -27,6 +28,8 @@ const Filters: React.FC<{
   appliedFilters: Record<FilterTypes, boolean>;
   onChange: (changedFilters: Record<FilterTypes, boolean>) => void;
 }> = ({ appliedFilters, onChange }) => {
+  const plausible = usePlausible();
+
   return (
     <ul>
       {config.filters.map(({ id, label }, index) => (
@@ -50,6 +53,7 @@ const Filters: React.FC<{
             checked={appliedFilters?.[id] || false}
             aria-labelledby={`filter-${id}`}
             onClick={() => {
+              plausible('Toggle Filter', { props: { filter: label } });
               onChange({
                 ...appliedFilters,
                 [id]: !appliedFilters?.[id],
