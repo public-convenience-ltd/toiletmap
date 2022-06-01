@@ -30,7 +30,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         env:
           MONGODB_URI: mongodb://localhost:27017/toiletmap
           DATABASE_NAME: toiletmap
@@ -57,4 +57,4 @@ jobs:
           wait-on: 'http://localhost:3000/'
           wait-on-timeout: 60
           browser: chrome
-          spec: cypress/integration/**/*.ts
+          spec: cypress/e2e/**/*.ts
