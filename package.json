@@ -9,6 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
+    "cypress:open": "cypress open",
+    "cypress:headless": "cypress run --headless",
     "e2e": "./scripts/e2e.sh",
     "e2e:headless": "./scripts/e2e.sh -h",
     "e2e:dev": "./scripts/e2e.sh -d d",

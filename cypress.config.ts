@@ -36,6 +36,9 @@ export default defineConfig({
         encrypt,
       });
 
+      // eslint-disable-next-line no-param-reassign
+      config = cypressBrowserPermissionsPlugin(on, config);
+
       on('before:browser:launch', (browser, launchOptions) => {
         if (browser.family === 'firefox') {
           // launchOptions.preferences is a map of preference names to values
@@ -51,7 +54,7 @@ export default defineConfig({
         return launchOptions;
       });
 
-      return cypressBrowserPermissionsPlugin(on, config);
+      return config;
     },
     baseUrl: 'http://localhost:3000',
   },
