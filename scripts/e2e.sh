@@ -24,7 +24,7 @@ while getopts 'lhd:' OPTION; do
       ;;
     d)
       echo "Running cypress tests in development mode"
-      yarn start-server-and-test dev http://localhost:3000 cypress
+      yarn start-server-and-test dev http://localhost:3000 cypress:open
       exit 1
       ;;
     ?)
@@ -36,4 +36,4 @@ done
 
 echo "Running cypress tests"
 yarn build
-yarn start-server-and-test start http://localhost:3000 cypress
+yarn start-server-and-test start http://localhost:3000 cypress:open
