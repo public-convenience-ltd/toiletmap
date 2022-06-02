@@ -21,6 +21,10 @@ module.exports = {
         source: '/map/:lng/:lat',
         destination: '/map',
       },
+      {
+        source: '/explorer',
+        destination: 'https://explorer.toiletmap.org.uk/',
+      },
     ];
   },
   webpack: (config, {}) => {
