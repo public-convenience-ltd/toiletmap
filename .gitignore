@@ -36,3 +36,6 @@ public/storybook
 cypress/screenshots
 
 .areaInfo.geojson
+
+# Sentry
+.sentryclirc

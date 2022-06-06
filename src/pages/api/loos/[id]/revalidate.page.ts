@@ -1,11 +1,9 @@
 import { getSession } from '@auth0/nextjs-auth0';
+import { withSentry } from '@sentry/nextjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { alertMessages } from '../../../../config';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id, message } = req.query;
 
   const isMessageValid =
@@ -27,3 +25,5 @@ export default async function handler(
     return res.redirect(`/loos/${id}?message=${finalMessage}`);
   }
 }
+
+export default withSentry(handler);

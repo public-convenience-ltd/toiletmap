@@ -1,4 +1,5 @@
 import { ApolloServer } from 'apollo-server-micro';
+import { withSentry } from '@sentry/nextjs';
 import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import jwt, { VerifyOptions } from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
@@ -98,7 +99,7 @@ function runMiddleware(req, res, fn) {
   });
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   await runMiddleware(req, res, cors);
   // We'll need a mongodb connection
   await dbConnect();
@@ -107,3 +108,5 @@ export default async function handler(req, res) {
     path: '/api',
   })(req, res);
 }
+
+export default withSentry(handler);
