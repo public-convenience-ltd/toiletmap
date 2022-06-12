@@ -20,9 +20,14 @@ const moduleExports = {
         source: '/map/:lng/:lat',
         destination: '/map',
       },
+    ];
+  },
+  async redirects() {
+    return [
       {
         source: '/explorer',
         destination: 'https://explorer.toiletmap.org.uk/',
+        permanent: false,
       },
     ];
   },
