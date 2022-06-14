@@ -11,9 +11,9 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-export default function Map ({lat, lng}) {
+export default function Map({ lat, lng }) {
   return (
-    <div style={{height: '300px', width: '100%'}}>
+    <div style={{ height: '300px', width: '100%' }}>
       <LeafletMap
         center={[lat, lng]}
         zoomControl={false}

@@ -10,12 +10,8 @@ import TablePagination from '@material-ui/core/TablePagination';
 import ResultRow from './Row';
 
 function Results(props) {
-  const {
-    data,
-    rowsPerPage,
-    handleChangePage,
-    handleChangeRowsPerPage,
-  } = props;
+  const { data, rowsPerPage, handleChangePage, handleChangeRowsPerPage } =
+    props;
 
   return (
     <Table>

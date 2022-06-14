@@ -15,6 +15,6 @@ module.exports = {
     sourceType: 'module',
   },
   globals: {
-    "browser": "readonly"
-  }
+    browser: 'readonly',
+  },
 };

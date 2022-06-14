@@ -33,10 +33,11 @@ export default function Search() {
   let { path } = useRouteMatch();
   let variables = useSearchVariables();
 
-  const { isValidating: loading, data, error } = useSWR([
-    SEARCH_QUERY,
-    JSON.stringify(variables),
-  ]);
+  const {
+    isValidating: loading,
+    data,
+    error,
+  } = useSWR([SEARCH_QUERY, JSON.stringify(variables)]);
 
   function search(params) {
     let query = stringify({ ...variables, ...params });

@@ -5,9 +5,9 @@ import parseISO from 'date-fns/parseISO';
 import lightFormat from 'date-fns/lightFormat';
 
 import Typography from '@material-ui/core/Typography';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import PropertyTable from './PropertyTable';
@@ -22,22 +22,22 @@ export default function ExpandableReport(props) {
     '__typename'
   );
   return (
-    <ExpansionPanel
+    <Accordion
       key={report.id}
       expanded={expanded}
       onChange={() => setExpanded(!expanded)}
     >
-      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography>Report from: {report.contributor}</Typography>
         <Typography>
           Created:{' '}
           {lightFormat(parseISO(report.createdAt), 'dd/MM/yyyy, hh:mm aa')}
         </Typography>
-      </ExpansionPanelSummary>
+      </AccordionSummary>
 
-      <ExpansionPanelDetails>
+      <AccordionDetails>
         <PropertyTable items={displayProperties} />
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+      </AccordionDetails>
+    </Accordion>
   );
 }

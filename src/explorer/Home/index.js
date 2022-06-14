@@ -22,7 +22,7 @@ const SubTypography = withStyles({
   },
 })(Typography);
 
-export default () => {
+const Home = () => {
   return (
     <div className={styles.main}>
       <div className={styles.intro}>
@@ -115,3 +115,5 @@ export default () => {
     </div>
   );
 };
+
+export default Home;

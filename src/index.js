@@ -9,11 +9,8 @@ import { Router, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { SWRConfig } from 'swr';
 
-import PageLoading from './components/PageLoading';
-
 import AuthProvider from './Auth';
 import fetcher from './graphql/fetcher';
-import { MapStateProvider } from './components/MapState';
 
 import Explorer from './explorer/index';
 
@@ -26,15 +23,13 @@ ReactDOM.render(
         fetcher,
       }}
     >
-      <MapStateProvider>
-        <Router history={history}>
-          <Suspense fallback={<PageLoading />}>
-            <Switch>
-              <Explorer />
-            </Switch>
-          </Suspense>
-        </Router>
-      </MapStateProvider>
+      <Router history={history}>
+        <Suspense fallback={<h1>Loading</h1>}>
+          <Switch>
+            <Explorer />
+          </Switch>
+        </Suspense>
+      </Router>
     </SWRConfig>
   </AuthProvider>,
   document.getElementById('root')
