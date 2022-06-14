@@ -17,7 +17,7 @@ import { dbConnect } from '../../api/db';
 
 function getKey(header, cb) {
   client.getSigningKey(header.kid, function (err, key) {
-    const signingKey = key.publicKey || key.rsaPublicKey;
+    const signingKey = key['publicKey'] || key['rsaPublicKey'];
     cb(null, signingKey);
   });
 }
