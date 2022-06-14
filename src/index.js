@@ -17,10 +17,6 @@ import { MapStateProvider } from './components/MapState';
 
 import Explorer from './explorer/index';
 
-if (process.env.REACT_APP_MOCKS) {
-  require('./mocks');
-}
-
 const history = createBrowserHistory();
 
 ReactDOM.render(
