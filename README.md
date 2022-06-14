@@ -31,10 +31,9 @@ To run the toiletmap locally for the first time:
 yarn dev
 ```
 
-Before long you should be looking at a browser window showing the UI! You have a hot-reloading development server ready to make changes to the UI. It is running against an instance of the toiletmap API hosted elsewhere. If you'd like to run the API locally as well see below.
-
+Before long you should be looking at a browser window showing the UI! 
 If you'd like to make contributions to the project this is a good time to read our [contributing guidelines](https://github.com/neontribe/gbptm/blob/master/.github/CONTRIBUTING.md) and our [code of conduct](https://github.com/neontribe/gbptm/blob/master/.github/CODE_OF_CONDUCT.md).
 
 ### Development
 
-The toiletmap UI is built with [create-react-app](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md). The API is written in GraphQL with [Apollo Server](https://www.npmjs.com/package/apollo-server) and data is stored in a MongoDB instance via [mongoose](https://mongoosejs.com/). Authentication is handled by [Auth0](https://auth0.com/) and the site is deployed to [vercel](https://vercel.com)
+The toiletmap UI is built with Next.js. The API is written in GraphQL with [Apollo Server](https://www.npmjs.com/package/apollo-server) and data is stored in a MongoDB instance via [mongoose](https://mongoosejs.com/). Authentication is handled by [Auth0](https://auth0.com/) and the site is deployed to [vercel](https://vercel.com)
