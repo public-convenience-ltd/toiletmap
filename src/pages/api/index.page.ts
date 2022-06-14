@@ -10,7 +10,7 @@ import authDirective from '../../api/directives/authDirective';
 import schema from '../../api-client/schema';
 
 const client = jwksClient({
-  jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}/.well-known/jwks.json`,
+  jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}.well-known/jwks.json`,
 });
 
 import { dbConnect } from '../../api/db';
