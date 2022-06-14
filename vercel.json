@@ -9,5 +9,11 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+        "source": "/api",
+        "destination": "https://toiletmap.org.uk/api"
+    }
   ]
 }

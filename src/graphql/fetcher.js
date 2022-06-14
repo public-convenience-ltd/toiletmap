@@ -3,7 +3,7 @@ import { GraphQLClient } from 'graphql-request';
 
 import { isAuthenticated, getAccessToken } from '../Auth';
 
-const API_ENDPOINT = 'https://toiletmap.org.uk/api';
+const API_ENDPOINT = '/api';
 
 const fetcher = (query, variables) => {
   const graphQLClient = new GraphQLClient(API_ENDPOINT);
