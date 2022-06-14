@@ -78,6 +78,7 @@ const startServer = server.start();
 const cors = Cors({
   methods: ['GET', 'HEAD', 'POST'],
   origin: [
+    'https://explorer.toiletmap.org.uk',
     'https://studio.apollographql.com',
     'http://localhost:6006',
     'http://localhost:3000',
