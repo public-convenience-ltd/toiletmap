@@ -3,7 +3,7 @@ name: 'Chromatic'
 # Event for the workflow
 on:
   push:
-    branches: [next]
+    branches: [main]
   pull_request:
     types: ['review_requested']
 
