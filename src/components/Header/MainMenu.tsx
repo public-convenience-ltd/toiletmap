@@ -67,9 +67,6 @@ const MainMenu = ({ children }: IMainMenu) => {
             </StyledNavLink>
           </Box>
 
-          <Box as="li" mt={['auto', 0]} ml={[0, 'auto']}>
-            <StyledNavLink href="/about">About</StyledNavLink>
-          </Box>
           <Box as="li" mt={[3, 0]} mb={['auto', 0]} ml={[0, 4]}>
             <StyledNavLink href="/contact">Contact</StyledNavLink>
           </Box>

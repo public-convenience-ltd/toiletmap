@@ -171,8 +171,6 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
               Update the toilet
             </Button>
 
-            <Spacer mt={2} />
-
             <Button
               as={Link}
               href={`/loos/${loo.id}/remove`}

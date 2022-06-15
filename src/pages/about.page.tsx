@@ -37,7 +37,7 @@ const AboutPage = () => {
 
       <Container maxWidth={845}>
         <Text fontSize={6} fontWeight="bold" textAlign="center">
-          <h1>About the Toilet Map</h1>
+          <h1>Hello NorDevCon, this is me from the past 👻</h1>
         </Text>
         <Spacer mb={5} />
         <p>

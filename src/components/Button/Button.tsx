@@ -5,7 +5,7 @@ import { variant } from 'styled-system';
 import Box from '../Box';
 import Text from '../Text';
 
-const BUTTON_HEIGHT = 34;
+const BUTTON_HEIGHT = 64;
 
 const StyledButton = styled.button(
   (props) =>
