@@ -1,4 +1,4 @@
-# Toiletmap.org.uk
+# Toiletmap.org.uk for Loocation
 
 [Public Convenience Ltd](https://www.publicconvenience.org/)'s _[Great British Public Toilet Map](https://www.toiletmap.org.uk)_
 
