@@ -65,7 +65,11 @@ const sentryWebpackPluginOptions = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const withTM = require('next-transpile-modules')(['react-leaflet']);
+const withTM = require('next-transpile-modules')([
+  '@react-leaflet/core',
+  'react-leaflet',
+  'leaflet.markercluster',
+]);
 
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins
