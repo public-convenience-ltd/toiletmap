@@ -11,7 +11,7 @@ Sentry.init({
     SENTRY_DSN ||
     'https://6935d02f879c4536aecfe8fa07ae1d3a@o1270901.ingest.sentry.io/6462188',
   // Adjust this value in production, or use tracesSampler for greater control
-  tracesSampleRate: 0.1,
+  tracesSampleRate: 0.01,
   environment: process.env.NEXT_PUBLIC_VERCEL_ENV || 'development',
   enabled: process.env.NEXT_PUBLIC_VERCEL_ENV === 'production',
   // ...
