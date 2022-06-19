@@ -21,7 +21,7 @@ const Footer = ({ children = null }) => {
         py={[0, 2]}
         bg={['transparent', 'lightGrey']}
         color="primary"
-        height={['auto', 60]}
+        height={['auto', 'auto']}
       >
         <Box order={[-1, 0]} mb={[4, 0]}>
           <Text fontSize={[12, 16]}>
