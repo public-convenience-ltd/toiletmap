@@ -10,7 +10,7 @@ import EntryForm from '../../../components/EntryForm';
 import Box from '../../../components/Box';
 import Login from '../../login.page';
 import PageLoading from '../../../components/PageLoading';
-import LooMap from '../../../components/LooMap/LooMapLoader';
+import { LooMapLoader } from '../../../components/LooMap/LooMapLoader';
 import Notification from '../../../components/Notification';
 import config from '../../../config';
 import { useMapState } from '../../../components/MapState';
@@ -132,7 +132,7 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
 
       <Box display="flex" height="40vh">
         {loo && (
-          <LooMap
+          <LooMapLoader
             center={loo.location}
             zoom={mapState.zoom}
             minZoom={config.editMinZoom}

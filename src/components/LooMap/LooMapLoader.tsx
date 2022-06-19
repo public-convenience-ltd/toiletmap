@@ -1,9 +1,23 @@
 import dynamic from 'next/dynamic';
+import { withApollo } from '../../api-client/withApollo';
+import { useMapState } from '../MapState';
 import PageLoading from '../PageLoading';
 
-const LooMap = dynamic(() => import('./LooMap'), {
+export const LooMapLoader = dynamic(() => import('./LooMap'), {
   loading: PageLoading,
   ssr: false,
 });
 
-export default LooMap;
+const LooMap = () => {
+  const [mapState] = useMapState();
+  return (
+    <LooMapLoader
+      center={mapState.center}
+      zoom={mapState.zoom}
+      controlsOffset={0}
+      withAccessibilityOverlays={true}
+    />
+  );
+};
+
+export default withApollo(LooMap);

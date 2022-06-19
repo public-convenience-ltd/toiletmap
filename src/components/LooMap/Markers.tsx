@@ -134,6 +134,7 @@ const MarkerGroup: React.FC<{
         .on('click', () => {
           // Clear the current search upon navigation
           router.push(`/loos/${toilet.id}`);
+
           setMapState({ searchLocation: undefined, focus: toilet });
         })
         .on('keydown', (event: { originalEvent: { keyCode: number } }) => {

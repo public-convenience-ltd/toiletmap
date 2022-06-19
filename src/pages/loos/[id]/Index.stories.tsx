@@ -3,6 +3,7 @@ import { Meta } from '@storybook/react';
 import { PageFindLooByIdComp } from '../../../api-client/page';
 import { default as LooPageNext } from '../../../pages/loos/[id]/index.page';
 import Main from '../../../components/Main';
+import LooMap from '../../../components/LooMap/LooMapLoader';
 
 export default {
   name: 'Pages',
@@ -47,5 +48,5 @@ export default {
  * Loo
  */
 export const Loo = (props) => {
-  return <Main Component={LooPageNext} pageProps={props} />;
+  return <Main Component={LooPageNext} pageProps={props} map={<LooMap />} />;
 };
