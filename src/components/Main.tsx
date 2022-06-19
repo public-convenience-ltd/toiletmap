@@ -7,7 +7,7 @@ import { Media } from '../components/Media';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-const Main = ({ Component, pageProps }) => {
+const Main = ({ Component, pageProps, map = undefined }) => {
   return (
     <Box display="flex" flexDirection="column" height="100%">
       <Header>
@@ -20,7 +20,14 @@ const Main = ({ Component, pageProps }) => {
           // support screen readers in ie11
           role="main"
         >
-          <Component {...pageProps} />
+          {map ? (
+            <Box height="100%" display="flex" position="relative">
+              <Component {...pageProps} />
+              {map}
+            </Box>
+          ) : (
+            <Component {...pageProps} />
+          )}
         </Box>
       </Box>
 

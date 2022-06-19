@@ -8,7 +8,7 @@ import config from '../../config';
 import { useRouter } from 'next/router';
 import { withApollo } from '../../api-client/withApollo';
 import { NextPage } from 'next';
-import LooMap from '../../components/LooMap/LooMapLoader';
+import { LooMapLoader } from '../../components/LooMap/LooMapLoader';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
@@ -52,7 +52,7 @@ const MapPage: NextPage = () => {
           <Sidebar />
         </Box>
 
-        <LooMap center={center} zoom={mapState.zoom} controlsOffset={0} />
+        <LooMapLoader center={center} zoom={mapState.zoom} controlsOffset={0} />
       </Box>
     </>
   );

@@ -19,7 +19,7 @@ import {
   useUpdateLooMutation,
 } from '../../api-client/graphql';
 import PageLoading from '../../components/PageLoading';
-import LooMap from '../../components/LooMap/LooMapLoader';
+import { LooMapLoader } from '../../components/LooMap/LooMapLoader';
 
 const initialFormState = {
   active: null,
@@ -89,7 +89,7 @@ const AddPage = () => {
       </Head>
 
       <Box position="relative" display="flex" height="40vh">
-        <LooMap
+        <LooMapLoader
           center={mapState.center}
           zoom={mapState.zoom}
           minZoom={config.editMinZoom}

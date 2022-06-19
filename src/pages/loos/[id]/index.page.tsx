@@ -11,7 +11,6 @@ import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
 import { useRouter } from 'next/router';
 import ToiletDetailsPanel from '../../../components/ToiletDetailsPanel';
 import Notification from '../../../components/Notification';
-import LooMap from '../../../components/LooMap/LooMapLoader';
 import NotFound from '../../404.page';
 import { css } from '@emotion/react';
 
@@ -103,63 +102,49 @@ const LooPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
         <h1>{pageTitle}</h1>
       </VisuallyHidden>
 
-      <Box height="100%" display="flex" position="relative">
-        <Box
-          position="absolute"
-          zIndex={1}
-          top={0}
-          left={[0, 3]}
-          right={0}
-          m={3}
-          maxWidth={326}
-          maxHeight={`calc(100% - 0px - ${SIDEBAR_BOTTOM_MARGIN}px)`} // TODO:fix this for mobile viewports (extra vertical scroll area)
-          // center on small viewports
-          mx={['auto', 0]}
-        >
-          <Sidebar />
-        </Box>
-        {!firstLoad && (
-          <LooMap
-            center={mapState.center}
-            zoom={mapState.zoom}
-            controlsOffset={0}
-          />
-        )}
-        {props?.data?.loo && (
-          <Box
-            position="absolute"
-            left={0}
-            bottom={0}
-            width="100%"
-            zIndex={100}
-          >
-            <ToiletDetailsPanel
-              data={props?.data?.loo}
-              startExpanded={true}
-              onDimensionsChange={setToiletPanelDimensions}
-            >
-              {config.alertMessages[message as string] && (
-                <Box
-                  position="absolute"
-                  left={0}
-                  right={0}
-                  bottom={0}
-                  display="flex"
-                  justifyContent="center"
-                  p={4}
-                  pt={1}
-                  pb={[4, 3, 4]}
-                  bg={['white', 'white', 'transparent']}
-                >
-                  <Notification allowClose>
-                    {config.alertMessages[message as string]}
-                  </Notification>
-                </Box>
-              )}
-            </ToiletDetailsPanel>
-          </Box>
-        )}
+      <Box
+        position="absolute"
+        zIndex={1}
+        top={0}
+        left={[0, 3]}
+        right={0}
+        m={3}
+        maxWidth={326}
+        maxHeight={`calc(100% - 0px - ${SIDEBAR_BOTTOM_MARGIN}px)`} // TODO:fix this for mobile viewports (extra vertical scroll area)
+        // center on small viewports
+        mx={['auto', 0]}
+      >
+        <Sidebar />
       </Box>
+
+      {props?.data?.loo && (
+        <Box position="absolute" left={0} bottom={0} width="100%" zIndex={100}>
+          <ToiletDetailsPanel
+            data={props?.data?.loo}
+            startExpanded={true}
+            onDimensionsChange={setToiletPanelDimensions}
+          >
+            {config.alertMessages[message as string] && (
+              <Box
+                position="absolute"
+                left={0}
+                right={0}
+                bottom={0}
+                display="flex"
+                justifyContent="center"
+                p={4}
+                pt={1}
+                pb={[4, 3, 4]}
+                bg={['white', 'white', 'transparent']}
+              >
+                <Notification allowClose>
+                  {config.alertMessages[message as string]}
+                </Notification>
+              </Box>
+            )}
+          </ToiletDetailsPanel>
+        </Box>
+      )}
     </>
   );
 };
