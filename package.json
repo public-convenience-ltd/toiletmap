@@ -79,6 +79,7 @@
     "mongoose-paginate": "^5.0.3",
     "next": "^12.1.6",
     "next-plausible": "^3.2.0",
+    "next-transpile-modules": "^9.0.0",
     "ngeohash": "^0.6.3",
     "nodemon": "^2.0.16",
     "prop-types": "^15.8.1",
