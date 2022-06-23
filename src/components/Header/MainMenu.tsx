@@ -12,6 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@chakra-ui/react';
+import Feedback from '../Feedback/Feedback';
 
 const StyledNavLink = styled(Link)<
   LinkProps & {
@@ -81,7 +82,9 @@ const MainMenu = ({ children }: IMainMenu) => {
                 <button>Feedback</button>
               </PopoverTrigger>
               <PopoverContent>
-                <PopoverBody>Test</PopoverBody>
+                <PopoverBody>
+                  <Feedback />
+                </PopoverBody>
               </PopoverContent>
             </Popover>
           </Box>
