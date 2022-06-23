@@ -4,7 +4,6 @@ import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import jwt, { VerifyOptions } from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { getSession } from '@auth0/nextjs-auth0';
-import Cors from 'cors';
 import redactedDirective from '../../api/directives/redactedDirective';
 import authDirective from '../../api/directives/authDirective';
 import schema from '../../api-client/schema';
@@ -56,7 +55,7 @@ export const server = new ApolloServer({
         }
       }
     } catch (e) {
-      console.error(e);
+      throw e;
     }
     return {
       user,
@@ -75,33 +74,18 @@ export const config = {
 const startServer = server.start();
 
 // Initializing the cors middleware
-const cors = Cors({
-  methods: ['GET', 'HEAD', 'POST'],
-  origin: [
-    'https://explorer.toiletmap.org.uk',
-    'https://studio.apollographql.com',
-    'http://localhost:6006',
-    'http://localhost:3000',
-    'http://localhost:3001',
-  ],
-});
-
-// Helper method to wait for a middleware to execute before continuing
-// And to throw an error when an error happens in a middleware
-function runMiddleware(req, res, fn) {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
-
-      return resolve(result);
-    });
-  });
-}
+// const cors = Cors({
+//   methods: ['GET', 'HEAD', 'POST'],
+//   origin: [
+//     'https://explorer.toiletmap.org.uk',
+//     'https://studio.apollographql.com',
+//     'http://localhost:6006',
+//     'http://localhost:3000',
+//     'http://localhost:3001',
+//   ],
+// });
 
 async function handler(req, res) {
-  await runMiddleware(req, res, cors);
   // We'll need a mongodb connection
   await dbConnect();
   await startServer;

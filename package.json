@@ -58,7 +58,6 @@
     "apollo-server-core": "^3.8.2",
     "apollo-server-micro": "^3.8.2",
     "apollo-server-plugin-response-cache": "^3.6.0",
-    "cors": "^2.8.5",
     "crypto-hash": "^2.0.1",
     "date-fns": "^2.28.0",
     "deepmerge": "^4.2.2",
