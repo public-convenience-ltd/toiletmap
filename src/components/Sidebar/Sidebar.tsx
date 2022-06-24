@@ -124,6 +124,8 @@ const Sidebar = () => {
                 plausible(`${stateText} Filters Panel`);
                 setIsFiltersExpanded(!isFiltersExpanded);
               }}
+              aria-label="Filters Panel"
+              data-cy="mobile-filter"
             >
               Filter
             </Button>

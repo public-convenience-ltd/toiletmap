@@ -1,3 +1,4 @@
+import React from 'react';
 import { Fade, Stack, Textarea } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
 import Button from '../Button';
