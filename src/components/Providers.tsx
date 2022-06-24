@@ -24,10 +24,9 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       customDomain="https://stats.toiletmap.org.uk/"
     >
       <MapStateProvider>
-        <ChakraProvider>
+        <ChakraProvider resetCSS={false}>
+          {globalStyles}
           <ThemeProvider theme={theme}>
-            {globalStyles}
-
             <MediaContextProvider
               disableDynamicMediaQueries={disableDynamicMediaQueries}
             >

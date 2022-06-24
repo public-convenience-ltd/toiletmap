@@ -125,7 +125,7 @@ const Sidebar = () => {
                 setIsFiltersExpanded(!isFiltersExpanded);
               }}
             >
-              Filter Map
+              Filter
             </Button>
           </Box>
           <Box display="flex" mt={3}>

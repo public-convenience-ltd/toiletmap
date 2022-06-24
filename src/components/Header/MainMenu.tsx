@@ -13,6 +13,8 @@ import {
   PopoverTrigger,
 } from '@chakra-ui/react';
 import Feedback from '../Feedback/Feedback';
+import Icon from '../Icon';
+import { faComments } from '@fortawesome/free-solid-svg-icons';
 
 const StyledNavLink = styled(Link)<
   LinkProps & {
@@ -74,20 +76,41 @@ const MainMenu = ({ children }: IMainMenu) => {
           </Box>
 
           <Box as="li" mt={['auto', 0]} ml={[0, 'auto']}>
+            <Media greaterThan="md">
+              <Popover>
+                <PopoverTrigger>
+                  <button>
+                    Feedback <Icon icon={faComments} size="1x" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <PopoverBody>
+                    <Feedback />
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
+            </Media>
+
+            <Media at="md">
+              <Popover>
+                <PopoverTrigger>
+                  <button>
+                    <Icon icon={faComments} size="1x" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <PopoverBody>
+                    <Feedback />
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
+            </Media>
+          </Box>
+
+          <Box as="li" mt={['auto', 0]} ml={[0, 4]}>
             <StyledNavLink href="/about">About</StyledNavLink>
           </Box>
-          <Box as="li" mt={['auto', 0]} ml={[0, 4]}>
-            <Popover>
-              <PopoverTrigger>
-                <button>Feedback</button>
-              </PopoverTrigger>
-              <PopoverContent>
-                <PopoverBody>
-                  <Feedback />
-                </PopoverBody>
-              </PopoverContent>
-            </Popover>
-          </Box>
+
           <Box as="li" mt={[3, 0]} mb={['auto', 0]} ml={[0, 4]}>
             <StyledNavLink href="/contact">Contact</StyledNavLink>
           </Box>
