@@ -35,7 +35,26 @@ yarn
 
 ### Run, Toiletmap, Run
 
-To run the toiletmap locally for the first time:
+First we need a set of local environment variables:
+
+```
+cp .env.local.example .env.local
+```
+
+Next you'll need to set up a local instance of mongodb based on our mocked loo data:
+
+```
+yarn startMemoryMongo
+>Populating the database from mock-reports.json
+> progress [✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨]
+> Done.
+> ====
+> Server started
+```
+
+When you run this command, 5000 mocked loos will be loaded into an in-memory mongodb instance from [mock-reports.json](./scripts/mock-reports.json). These loos are pre-generated using faker.js in [generateMocks.ts](./scripts/generateMocks.ts). Because the faker generation is set with a persistent seed, the values remain the same between generations. This is important, because we depend upon the values remaining the same in our [cypress tests](./cypress/e2e//desktop/index.cy.ts).
+
+Once you have a local mongodb instance running you can then run this to spin up your local development server:
 
 ```
 yarn dev
@@ -46,7 +65,7 @@ If you'd like to make contributions to the project this is a good time to read o
 
 ### Development
 
-The toiletmap UI is built with Next.js. The API is written in GraphQL with [Apollo Server](https://www.npmjs.com/package/apollo-server) and data is stored in a MongoDB instance via [mongoose](https://mongoosejs.com/). Authentication is handled by [Auth0](https://auth0.com/) and the site is deployed to [vercel](https://vercel.com)
+The Toilet Map UI is built with [Next.js](https://nextjs.org/). The API is written in GraphQL with [GraphQL Yoga Server](https://github.com/dotansimha/graphql-yoga) and data is stored in a MongoDB instance via [mongoose](https://mongoosejs.com/). We use Redis as a short term cache to improve the performance of loading toilet information. Authentication is handled by [Auth0](https://auth0.com/) and the site is deployed to [vercel](https://vercel.com)
 
 ## Sponsors
 
