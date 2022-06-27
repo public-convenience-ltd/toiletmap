@@ -334,7 +334,7 @@ describe('Home page tests', () => {
       });
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
-      cy.findByText('Filter Map').click();
+      cy.get('[data-cy="mobile-filter"]').click();
       cy.findByText('Baby Changing')
         .siblings()
         .get('[aria-labelledby=filter-babyChange]')
@@ -342,7 +342,7 @@ describe('Home page tests', () => {
       cy.findByText('Done').click();
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('not.exist');
-      cy.findByText('Filter Map').click();
+      cy.get('[data-cy="mobile-filter"]').click();
       cy.findByText('Baby Changing')
         .siblings()
         .get('[aria-labelledby=filter-babyChange]')

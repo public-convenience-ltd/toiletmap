@@ -23,6 +23,7 @@ import crosshair from '../../public/crosshair-small.svg';
 import { useMapState } from './MapState';
 import Icon from './Icon';
 import { faAsterisk } from '@fortawesome/free-solid-svg-icons';
+import { css } from '@emotion/react';
 
 const openingTimesFields = WEEKDAYS.flatMap((day: string) => {
   return [
@@ -633,6 +634,9 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                         {getValues(`${day.toLowerCase()}-is-open`) ? (
                           <Box display="flex" alignItems="center">
                             <input
+                              css={css`
+                                border: 1px solid;
+                              `}
                               type="time"
                               pattern="[0-9]{2}:[0-9]{2}"
                               placeholder="hh:mm"
@@ -672,6 +676,9 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                             <Spacer ml={2} />
 
                             <input
+                              css={css`
+                                border: 1px solid;
+                              `}
                               type="time"
                               pattern="[0-9]{2}:[0-9]{2}"
                               placeholder="hh:mm"

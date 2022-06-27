@@ -1,3 +1,4 @@
+import { ChakraProvider } from '@chakra-ui/react';
 import { ThemeProvider } from '@emotion/react';
 import PlausibleProvider from 'next-plausible';
 import React, { useEffect, useState } from 'react';
@@ -23,14 +24,16 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       customDomain="https://stats.toiletmap.org.uk/"
     >
       <MapStateProvider>
-        <ThemeProvider theme={theme}>
+        <ChakraProvider resetCSS={false}>
           {globalStyles}
-          <MediaContextProvider
-            disableDynamicMediaQueries={disableDynamicMediaQueries}
-          >
-            {children}
-          </MediaContextProvider>
-        </ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <MediaContextProvider
+              disableDynamicMediaQueries={disableDynamicMediaQueries}
+            >
+              {children}
+            </MediaContextProvider>
+          </ThemeProvider>
+        </ChakraProvider>
       </MapStateProvider>
     </PlausibleProvider>
   );

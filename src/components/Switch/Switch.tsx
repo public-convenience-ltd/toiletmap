@@ -32,9 +32,9 @@ const Switch: React.FC<SwitchProps> = React.forwardRef(
         aria-checked={checked}
         position="relative"
         bg={checked ? 'tertiary' : 'primary'}
-        height={HEIGHT}
-        width={WIDTH}
-        borderRadius={18}
+        height={`${HEIGHT}px`}
+        width={`${WIDTH}px`}
+        borderRadius={'18px'}
         onClick={() => {
           if (onClick) {
             onClick();
@@ -51,8 +51,8 @@ const Switch: React.FC<SwitchProps> = React.forwardRef(
           left={
             checked ? `calc(100% - ${LENGTH}px - ${OFFSET}px)` : `${OFFSET}px`
           }
-          height={LENGTH}
-          width={LENGTH}
+          height={`${LENGTH}px`}
+          width={`${LENGTH}px`}
           borderRadius="50%"
           bg="white"
         />

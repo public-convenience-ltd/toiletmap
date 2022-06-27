@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faComments } from '@fortawesome/free-solid-svg-icons';
 
 import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
@@ -12,6 +12,14 @@ import MainMenu from './MainMenu';
 import { useMapState } from '../MapState';
 import { useRouter } from 'next/router';
 import Button from '../Button';
+import {
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+  Tooltip,
+} from '@chakra-ui/react';
+import Feedback from '../Feedback/Feedback';
 
 const Header = ({ children }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -30,7 +38,7 @@ const Header = ({ children }) => {
         px={[3, 4]}
         py={2}
         bg="white"
-        minHeight={60}
+        minHeight={'60px'}
       >
         <Box flexShrink={0}>
           <Button
@@ -49,14 +57,33 @@ const Header = ({ children }) => {
           </h2>
 
           <Media at="sm" css={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button
-              type="button"
-              aria-expanded={isMenuVisible}
-              onClick={() => setIsMenuVisible(!isMenuVisible)}
-            >
-              <VisuallyHidden>Toggle main menu</VisuallyHidden>
-              <Icon icon={faBars} size="2x" />
-            </button>
+            <Popover>
+              <PopoverTrigger>
+                <Box>
+                  <Tooltip label="Feedback" aria-label="Submit feedback">
+                    <button>
+                      <Icon icon={faComments} size="2x" />
+                    </button>
+                  </Tooltip>
+                </Box>
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverBody>
+                  <Feedback />
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
+
+            <Box ml={4}>
+              <button
+                type="button"
+                aria-expanded={isMenuVisible}
+                onClick={() => setIsMenuVisible(!isMenuVisible)}
+              >
+                <VisuallyHidden>Toggle main menu</VisuallyHidden>
+                <Icon icon={faBars} size="2x" />
+              </button>
+            </Box>
 
             <Drawer visible={isMenuVisible} zIndex={200}>
               <MainMenu onMenuItemClick={() => setIsMenuVisible(false)}>
