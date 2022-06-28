@@ -96,6 +96,8 @@ const AddPage = () => {
           showCrosshair
           controlsOffset={20}
           withAccessibilityOverlays={false}
+          alwaysShowGeolocateButton={true}
+          controlPositionOverride="bottom"
         />
 
         <Box position="absolute" top={0} left={0} m={3}>
