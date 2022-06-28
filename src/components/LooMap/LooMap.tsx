@@ -293,7 +293,7 @@ const LooMap: React.FC<LooMapProps> = ({
         `}
       >
         <TileLayer
-          attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+          attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors | <a href='https://vercel.com/?utm_source=public-convenience-ltd&utm_campaign=oss'>Powered by Vercel &#9650;</a>"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           minZoom={minZoom}
           maxZoom={maxZoom}

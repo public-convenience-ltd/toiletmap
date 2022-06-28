@@ -4,6 +4,8 @@
 
 This documentation is oriented towards developers, if you'd like to learn more about our data and how to access it please refer to [Toilet Map Explorer](https://www.toiletmap.org.uk/explorer).
 
+![Powered by Vercel](./public/powered-by-vercel.svg)
+
 ## Getting Started
 
 ### Prerequisites
@@ -31,7 +33,7 @@ To run the toiletmap locally for the first time:
 yarn dev
 ```
 
-Before long you should be looking at a browser window showing the UI! 
+Before long you should be looking at a browser window showing the UI!
 If you'd like to make contributions to the project this is a good time to read our [contributing guidelines](https://github.com/neontribe/gbptm/blob/master/.github/CONTRIBUTING.md) and our [code of conduct](https://github.com/neontribe/gbptm/blob/master/.github/CODE_OF_CONDUCT.md).
 
 ### Development

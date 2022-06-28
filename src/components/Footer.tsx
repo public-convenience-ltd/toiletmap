@@ -3,6 +3,9 @@ import Link from 'next/link';
 
 import Box from './Box';
 import Text from './Text';
+import Image from 'next/image';
+
+import poweredByVercel from '../../public/powered-by-vercel.svg';
 
 const Footer = ({ children = null }) => {
   const [mounted, setMounted] = React.useState(false);
@@ -35,6 +38,24 @@ const Footer = ({ children = null }) => {
               </Box>
             </Box>
           </Text>
+        </Box>
+        <Box display="flex">
+          <Link
+            href={
+              'https://vercel.com/?utm_source=public-convenience-ltd&utm_campaign=oss'
+            }
+            passHref
+          >
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <Box
+              as="a"
+              display={'flex'}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image src={poweredByVercel} alt="Powered by Vercel" />
+            </Box>
+          </Link>
         </Box>
       </Box>
     )
