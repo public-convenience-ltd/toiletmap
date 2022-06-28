@@ -4,7 +4,7 @@
 
 This documentation is oriented towards developers, if you'd like to learn more about our data and how to access it please refer to [Toilet Map Explorer](https://www.toiletmap.org.uk/explorer).
 
-![Powered by Vercel](./public/powered-by-vercel.svg)
+[![Powered by Vercel](./public/powered-by-vercel.svg)](https://vercel.com/?utm_source=public-convenience-ltd&utm_campaign=oss)
 
 ## Getting Started
 
