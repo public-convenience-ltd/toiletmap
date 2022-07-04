@@ -251,7 +251,7 @@ const LooMap: React.FC<LooMapProps> = ({
           }
 
           .leaflet-bar {
-            border: none;
+            border: none !important; // override leaflet default border
             box-shadow: none;
           }
 
