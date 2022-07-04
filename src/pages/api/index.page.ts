@@ -33,6 +33,7 @@ const finalSchema = schema(authDirective, redactedDirective);
 
 export const server = new ApolloServer({
   schema: finalSchema,
+  cache: 'bounded',
   context: async ({ req, res }) => {
     let user = null;
     try {
