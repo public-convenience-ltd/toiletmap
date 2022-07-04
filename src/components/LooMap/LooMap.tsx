@@ -42,8 +42,15 @@ interface LooMapProps {
   showCrosshair?: boolean;
   withAccessibilityOverlays?: boolean;
   showAccessibilityOverlay?: boolean;
+  alwaysShowGeolocateButton?: boolean;
+  controlPositionOverride?: 'top' | 'bottom';
   onViewportChanged?: () => void;
 }
+
+const controlPositionClassNames = {
+  top: 'leaflet-bar leaflet-top leaflet-right',
+  bottom: 'leaflet-bar leaflet-bottom leaflet-right',
+};
 
 const LooMap: React.FC<LooMapProps> = ({
   showCrosshair,
@@ -55,6 +62,8 @@ const LooMap: React.FC<LooMapProps> = ({
   staticMap = false,
   withAccessibilityOverlays = true,
   showAccessibilityOverlay = false,
+  alwaysShowGeolocateButton = false,
+  controlPositionOverride,
 }) => {
   const [mapState, setMapState] = useMapState();
 
@@ -192,6 +201,11 @@ const LooMap: React.FC<LooMapProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapState.searchLocation]);
 
+  const controlPosition =
+    controlPositionOverride !== undefined
+      ? controlPositionClassNames[controlPositionOverride]
+      : undefined;
+
   return (
     <Box
       position="relative"
@@ -232,7 +246,7 @@ const LooMap: React.FC<LooMapProps> = ({
           position: relative;
           z-index: 0;
 
-          .leaflet-bottom {
+          .leaflet-bar {
             bottom: ${controlsOffset}px;
           }
 
@@ -289,18 +303,21 @@ const LooMap: React.FC<LooMapProps> = ({
 
         <Markers />
 
-        <Media greaterThan="md">
-          <div
-            className={
-              mapState.focus
-                ? 'leaflet-bar leaflet-top leaflet-right'
-                : 'leaflet-bar leaflet-bottom leaflet-right'
-            }
-          >
-            <LocateMapControl />
+        <div
+          className={
+            controlPosition !== undefined
+              ? controlPosition
+              : mapState.focus
+              ? controlPositionClassNames['top']
+              : controlPositionClassNames['bottom']
+          }
+        >
+          {alwaysShowGeolocateButton && <LocateMapControl />}
+          <Media greaterThan="md">
+            {!alwaysShowGeolocateButton && <LocateMapControl />}
             <ZoomControl />
-          </div>
-        </Media>
+          </Media>
+        </div>
 
         <MapTracker />
 

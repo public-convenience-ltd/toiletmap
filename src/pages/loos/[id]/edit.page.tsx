@@ -136,8 +136,10 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
             center={loo.location}
             zoom={mapState.zoom}
             minZoom={config.editMinZoom}
-            showCrosshair
             controlsOffset={20}
+            showCrosshair
+            alwaysShowGeolocateButton={true}
+            controlPositionOverride="bottom"
           />
         )}
 
