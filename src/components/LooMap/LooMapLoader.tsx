@@ -14,7 +14,7 @@ const LooMap = () => {
     <LooMapLoader
       center={mapState.center}
       zoom={mapState.zoom}
-      controlsOffset={0}
+      controlsOffset={20}
       withAccessibilityOverlays={true}
     />
   );
