@@ -203,20 +203,24 @@ const ToiletDetailsPanel = ({
     </Link>
   );
 
-  const crossIconFragment = (
-    <Icon icon={faTimes} color="tertiary" title="unavailable" />
-  );
-  const questionIconFragment = (
-    <Icon icon={faQuestion} color="tertiary" title="unknown" />
-  );
-  const checkIconFragment = <Icon icon={faCheck} title="available" />;
-
   const getFeatureValueIcon = (value) => {
     if (value === null) {
-      return questionIconFragment;
+      return (
+        <Box title="Unknown">
+          <Icon icon={faQuestion} color="tertiary" />
+        </Box>
+      );
     }
 
-    return value ? checkIconFragment : crossIconFragment;
+    return value ? (
+      <Box title="Available">
+        <Icon icon={faCheck} />
+      </Box>
+    ) : (
+      <Box title="Unavailable">
+        <Icon icon={faTimes} color="tertiary" />
+      </Box>
+    );
   };
 
   const features = [
