@@ -207,18 +207,18 @@ const ToiletDetailsPanel = ({
     if (value === null) {
       return (
         <Box title="Unknown">
-          <Icon icon={faQuestion} color="tertiary" />
+          <Icon icon={faQuestion} color="tertiary" aria-label="Unknown" />
         </Box>
       );
     }
 
     return value ? (
       <Box title="Available">
-        <Icon icon={faCheck} />
+        <Icon icon={faCheck} aria-label="Available" />
       </Box>
     ) : (
       <Box title="Unavailable">
-        <Icon icon={faTimes} color="tertiary" />
+        <Icon icon={faTimes} color="tertiary" aria-label="Unavailable" />
       </Box>
     );
   };

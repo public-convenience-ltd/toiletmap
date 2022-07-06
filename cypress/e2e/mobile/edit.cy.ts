@@ -48,7 +48,7 @@ describe('Edit page tests', () => {
 
     const generateToiletSettings = () => {
       const inputStates = ['yes', 'no', 'na'];
-      const detailStates = [/^available/, /^unavailable/, /^unknown/];
+      const detailStates = ['Available', 'Unavailable', 'Unknown'];
 
       const indexPicks = _.times(11, () => _.random(0, 2, false));
 
@@ -139,7 +139,8 @@ describe('Edit page tests', () => {
           continue;
         }
 
-        cy.findByText(detail[0]).siblings().contains(detail[1]);
+        cy.findByText(detail[0]).siblings().get(`[aria-label=${detail[1]}]`);
+        cy.findByText(detail[0]).parent().get(`[title=${detail[1]}]`);
       }
 
       cy.contains('08:00 - 19:00');

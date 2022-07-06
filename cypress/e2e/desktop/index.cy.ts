@@ -331,33 +331,15 @@ describe('Home page tests', () => {
       cy.findByText('Sunday').siblings().contains('03:43 - 03:52');
 
       // Check that the feature values are as expected
-      cy.findByText('Women')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Men')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Accessible')
-        .siblings()
-        .contains(/^unavailable/);
-      cy.findByText('Gender Neutral')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Children')
-        .siblings()
-        .contains(/^unavailable/);
-      cy.findByText('Baby Changing')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Urinal Only')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Automatic')
-        .siblings()
-        .contains(/^unknown/);
-      cy.findByText('Free')
-        .siblings()
-        .contains(/^available/);
+      cy.findByText('Women').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Men').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Accessible').siblings().get(`[aria-label=Unavailable]`);
+      cy.findByText('Gender Neutral').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Children').siblings().get(`[aria-label=Unavailable]`);
+      cy.findByText('Baby Changing').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Urinal Only').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Automatic').siblings().get(`[aria-label=Unknown]`);
+      cy.findByText('Free').siblings().get(`[aria-label=Available]`);
 
       // Check the notes
       cy.contains('vigilant toilet!! indeed photoreceptor crown!');
@@ -411,9 +393,7 @@ describe('Home page tests', () => {
         .wait(500);
 
       cy.get('[data-toiletid=05a8ddcad8fdca635f5dbdb0]').click({ force: true });
-      cy.findByText('Free')
-        .siblings()
-        .contains(/^available/);
+      cy.findByText('Free').siblings().get(`[aria-label=Available]`);
       cy.get('body').trigger('keydown', { key: 'Escape' });
       cy.findByText('Filter').click();
       cy.findByText('Baby Changing')
@@ -434,12 +414,8 @@ describe('Home page tests', () => {
         .wait(500);
 
       cy.get('[data-toiletid=be23c4bb6fdbbdc6ee6e2aad]').click({ force: true });
-      cy.findByText('Free')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Baby Changing')
-        .siblings()
-        .contains(/^available/);
+      cy.findByText('Free').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Baby Changing').siblings().get(`[aria-label=Available]`);
       cy.get('body').trigger('keydown', { key: 'Escape' });
       cy.findByText('Filter').click();
       cy.findByText('Accessible')
@@ -460,15 +436,9 @@ describe('Home page tests', () => {
         .wait(500);
 
       cy.get('[data-toiletid=3f8b1fff5d1107ff2cac636b]').click({ force: true });
-      cy.findByText('Free')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Baby Changing')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Accessible')
-        .siblings()
-        .contains(/^available/);
+      cy.findByText('Free').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Baby Changing').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Accessible').siblings().get(`[aria-label=Available]`);
       cy.get('body').trigger('keydown', { key: 'Escape' });
       cy.findByText('Filter').click();
       cy.findByText('Gender Neutral')
@@ -489,18 +459,10 @@ describe('Home page tests', () => {
         .wait(500);
 
       cy.get('[data-toiletid=c109d92ff0a706bab071ed8f]').click({ force: true });
-      cy.findByText('Free')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Baby Changing')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Accessible')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Gender Neutral')
-        .siblings()
-        .contains(/^available/);
+      cy.findByText('Free').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Baby Changing').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Accessible').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Gender Neutral').siblings().get(`[aria-label=Available]`);
       cy.get('body').trigger('keydown', { key: 'Escape' });
       cy.findByText('Filter').click();
       cy.findByText('Radar Key')
@@ -521,24 +483,12 @@ describe('Home page tests', () => {
         .wait(500);
 
       cy.get('[data-toiletid=3ae59cf0efe2c64aefd15ed7]').click({ force: true });
-      cy.findByText('Free')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Baby Changing')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Accessible')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Gender Neutral')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('RADAR Key')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Automatic')
-        .siblings()
-        .contains(/^unknown/);
+      cy.findByText('Free').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Baby Changing').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Accessible').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Gender Neutral').siblings().get(`[aria-label=Available]`);
+      cy.findByText('RADAR Key').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Automatic').siblings().get(`[aria-label=Unknown]`);
       cy.get('body').trigger('keydown', { key: 'Escape' });
       cy.findByText('Filter').click();
 

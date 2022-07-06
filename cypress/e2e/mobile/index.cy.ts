@@ -283,33 +283,15 @@ describe('Home page tests', () => {
       cy.findByText('Sunday').siblings().contains('03:43 - 03:52');
 
       // Check that the feature values are as expected
-      cy.findByText('Women')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Men')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Accessible')
-        .siblings()
-        .contains(/^unavailable/);
-      cy.findByText('Gender Neutral')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Children')
-        .siblings()
-        .contains(/^unavailable/);
-      cy.findByText('Baby Changing')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Urinal Only')
-        .siblings()
-        .contains(/^available/);
-      cy.findByText('Automatic')
-        .siblings()
-        .contains(/^unknown/);
-      cy.findByText('Free')
-        .siblings()
-        .contains(/^available/);
+      cy.findByText('Women').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Men').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Accessible').siblings().get(`[aria-label=Unavailable]`);
+      cy.findByText('Gender Neutral').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Children').siblings().get(`[aria-label=Unavailable]`);
+      cy.findByText('Baby Changing').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Urinal Only').siblings().get(`[aria-label=Available]`);
+      cy.findByText('Automatic').siblings().get(`[aria-label=Unknown]`);
+      cy.findByText('Free').siblings().get(`[aria-label=Available]`);
 
       // Check the notes
       cy.contains('vigilant toilet!! indeed photoreceptor crown!');
