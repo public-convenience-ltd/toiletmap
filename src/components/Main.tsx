@@ -3,7 +3,6 @@ import 'resize-observer-polyfill';
 
 import React from 'react';
 import Box from '../components/Box';
-import { Media } from '../components/Media';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -32,9 +31,7 @@ const Main = ({ Component, pageProps, map = undefined }) => {
       </Box>
 
       <Box mt="auto">
-        <Media greaterThan="sm">
-          <Footer />
-        </Media>
+        <Footer />
       </Box>
     </Box>
   );
