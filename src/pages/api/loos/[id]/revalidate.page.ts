@@ -16,7 +16,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     // We might have a session on toiletmap.org.uk.
     const { user } = getSession(req, res);
     if (user) {
-      await res.unstable_revalidate(`/loos/${id}`);
+      await res.revalidate(`/loos/${id}`);
     }
     return res.redirect(`/loos/${id}?message=${finalMessage}`);
   } catch (err) {

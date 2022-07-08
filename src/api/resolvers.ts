@@ -1,3 +1,4 @@
+/* eslint-disable functional/immutable-data */
 import { stringifyAndCompressLoos } from '../lib/loo';
 import ngeohash from 'ngeohash';
 
@@ -107,6 +108,8 @@ const resolvers = {
     loosByProximity: async (_parent, args) =>
       await DBLoo.findNear(args.from.lng, args.from.lat, args.from.maxDistance),
     loosByGeohash: async (_parent, args) => {
+      console.log('RUNNING RESOLVER FOR: ', args?.geohash);
+
       const geohash: string = args.geohash ?? '';
       const current = ngeohash.decode_bbox(geohash);
 
