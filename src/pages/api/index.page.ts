@@ -64,16 +64,7 @@ export const server = new ApolloServer({
     };
   },
   introspection: true,
-  plugins: [
-    responseCachePlugin({
-      shouldReadFromCache: async (props) => {
-        const { request } = props;
-        console.log('=======');
-        console.log(request);
-        return false;
-      },
-    }),
-  ],
+  plugins: [responseCachePlugin({})],
 });
 
 export const config = {
