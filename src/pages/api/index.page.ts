@@ -13,7 +13,7 @@ const client = jwksClient({
   jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}.well-known/jwks.json`,
 });
 
-import { dbConnect } from '../../api/db';
+import { checkMongoConnected } from '../../api/db/init';
 
 function getKey(header, cb) {
   client.getSigningKey(header.kid, function (err, key) {
@@ -102,13 +102,17 @@ function runMiddleware(req, res, fn) {
 }
 
 async function handler(req, res) {
-  await runMiddleware(req, res, cors);
-  // We'll need a mongodb connection
-  await dbConnect();
-  await startServer;
-  await server.createHandler({
-    path: '/api',
-  })(req, res);
+  try {
+    await checkMongoConnected;
+    await runMiddleware(req, res, cors);
+    await startServer;
+    await server.createHandler({
+      path: '/api',
+    })(req, res);
+  } catch (error) {
+    console.log('Problem with mongo connection');
+    throw error;
+  }
 }
 
 export default withSentry(handler);

@@ -108,7 +108,7 @@ const MarkerGroup: React.FC<{
 
   const { data } = useLoosByGeohashQuery({
     variables: { geohash },
-    initialFetchPolicy: 'cache-first',
+    fetchPolicy: 'cache-first',
   });
 
   // Uncomment this to calculate the chunk bounds to draw a debug box.
