@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import fs from 'fs';
 import path from 'path';
 import { Types } from 'mongoose';

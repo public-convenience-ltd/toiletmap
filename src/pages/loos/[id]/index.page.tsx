@@ -13,6 +13,7 @@ import ToiletDetailsPanel from '../../../components/ToiletDetailsPanel';
 import Notification from '../../../components/Notification';
 import NotFound from '../../404.page';
 import { css } from '@emotion/react';
+import { checkMongoConnected } from '../../../api/db/init';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
@@ -150,9 +151,9 @@ const LooPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
 };
 
 export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
-  const { dbConnect } = await import('../../../api/db');
-  await dbConnect();
   try {
+    await checkMongoConnected;
+
     const res = await ssrFindLooById.getServerPage(
       {
         variables: { id: params.id as string },

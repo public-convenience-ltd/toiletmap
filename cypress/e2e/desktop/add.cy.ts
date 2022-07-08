@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import _ from 'lodash';
 
 describe('Adding new toilets to the platform', () => {

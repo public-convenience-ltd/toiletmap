@@ -1,3 +1,4 @@
+/* eslint-disable functional/immutable-data */
 import { stringifyAndCompressLoos } from '../lib/loo';
 import ngeohash from 'ngeohash';
 

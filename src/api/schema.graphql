@@ -205,7 +205,7 @@ type Query {
   ): [Loo!]!
   looNamesByIds(idList: [ID]): [Loo!]!
   ukLooMarkers: [String!]! @cacheControl(maxAge: 360, scope: PUBLIC)
-  "Retrieve a list of areas in existance, name and type only"
+  "Retrieve a list of areas in existence, name and type only"
   areas: [AdminGeo!]!
   loosByGeohash(geohash: String!): [String!]!
   "Retrieve the explorer map TopoJSON data"
