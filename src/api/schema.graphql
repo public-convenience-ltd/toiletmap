@@ -208,6 +208,7 @@ type Query {
   "Retrieve a list of areas in existence, name and type only"
   areas: [AdminGeo!]!
   loosByGeohash(geohash: String!): [String!]!
+    @cacheControl(maxAge: 360, scope: PUBLIC)
   "Retrieve the explorer map TopoJSON data"
   mapAreas(areaType: String): TopoGeo
   "Retrieve a report by ID"

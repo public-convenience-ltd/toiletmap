@@ -31,6 +31,7 @@ function createApolloClient() {
     terminatingLink = createHttpLink({
       uri: '/api',
       credentials: 'same-origin',
+
       fetch,
     });
   }

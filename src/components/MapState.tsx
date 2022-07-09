@@ -28,6 +28,7 @@ interface MapState {
   locationServices?: UseLocateMapControl;
   currentlyLoadedGeohashes?: string[];
   geohashLoadState?: Record<string, boolean>;
+  invalidateTileCache?: boolean;
 }
 
 const reducer = (state: MapState, newState: MapState) => {
@@ -53,6 +54,7 @@ export const MapStateProvider = ({ children }) => {
     searchLocation: undefined,
     geohashLoadState: {},
     currentlyLoadedGeohashes: [],
+    invalidateTileCache: false,
   } as MapState);
 
   // keep local storage and state in sync

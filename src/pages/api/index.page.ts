@@ -36,6 +36,7 @@ export const server = new ApolloServer({
   cache: 'bounded',
   context: async ({ req, res }) => {
     let user = null;
+    const invalidateCache = req.headers?.invalidatecache === 'true';
     try {
       // Support auth by header (legacy SPA and third-party apps)
       if (req.headers.authorization) {
@@ -61,10 +62,19 @@ export const server = new ApolloServer({
     }
     return {
       user,
+      invalidateCache,
     };
   },
   introspection: true,
-  plugins: [responseCachePlugin({})],
+  plugins: [
+    responseCachePlugin({
+      shouldReadFromCache: async (req) => {
+        const invalidateCache = req.context.invalidateCache;
+        console.log(invalidateCache, "WHAT'S HAPPENING");
+        return false;
+      },
+    }),
+  ],
 });
 
 export const config = {
@@ -84,6 +94,7 @@ const cors = Cors({
     'http://localhost:6006',
     'http://localhost:3000',
     'http://localhost:3001',
+    'http://192.168.1.88:3000',
   ],
 });
 
