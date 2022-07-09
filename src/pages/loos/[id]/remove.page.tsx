@@ -20,8 +20,6 @@ import { GetServerSideProps } from 'next';
 import NotFound from '../../404.page';
 import { css } from '@emotion/react';
 
-import { checkMongoConnected } from '../../../api/db/init';
-
 const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
   function (props) {
     const loo = props?.data?.loo;
@@ -159,9 +157,10 @@ const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
   };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  try {
-    await checkMongoConnected;
+  const { dbConnect } = await import('../../../api/db');
+  await dbConnect();
 
+  try {
     const res = await ssrFindLooById.getServerPage(
       {
         variables: { id: ctx.params.id as string },
