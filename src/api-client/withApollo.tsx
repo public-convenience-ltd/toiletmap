@@ -31,7 +31,16 @@ function createApolloClient() {
     terminatingLink = createHttpLink({
       uri: '/api',
       credentials: 'same-origin',
-      fetch,
+      fetch: (input, init) => {
+        return fetch(input, {
+          ...init,
+          headers: {
+            ...init.headers,
+            'cache-control': 'no-cache',
+            pragma: 'no-cache',
+          },
+        });
+      },
     });
   }
 
@@ -66,12 +75,15 @@ function createApolloClient() {
     .concat(terminatingLink);
 
   const cache = new InMemoryCache();
+
   const isRunningOnServer = typeof window === 'undefined';
-  return new ApolloClient({
+  const client = new ApolloClient({
     ssrMode: isRunningOnServer,
     link: link,
     cache,
   });
+
+  return client;
 }
 
 /**
