@@ -46,7 +46,7 @@ function createApolloClient() {
         if (graphQLErrors)
           graphQLErrors.forEach(({ message, locations, path, extensions }) => {
             const { code } = extensions;
-            console.error(
+            console.log(
               'A caught Apollo client error was experienced: ',
               message
             );

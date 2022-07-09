@@ -111,4 +111,6 @@ async function handler(req, res) {
   })(req, res);
 }
 
-export default withSentry(handler);
+export default process.env.VERCEL_ENV === 'production'
+  ? withSentry(handler)
+  : handler;

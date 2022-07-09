@@ -22,8 +22,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   } catch (err) {
     // If there was an error, Next.js will continue
     // to show the last successfully generated page
-    return res.redirect(`/loos/${id}?message=${finalMessage}`);
+    return res.redirect(`/loos/${id}?message=generic_error`);
   }
 }
 
-export default withSentry(handler);
+export default process.env.VERCEL_ENV === 'production'
+  ? withSentry(handler)
+  : handler;
