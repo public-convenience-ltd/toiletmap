@@ -68,7 +68,10 @@ export const server = new ApolloServer({
   introspection: true,
   plugins: [
     responseCachePlugin({
-      shouldReadFromCache: async () => false,
+      shouldReadFromCache: async ({ context }) => {
+        const shouldReadFromCache = context?.invalidateCache !== true;
+        return shouldReadFromCache;
+      },
     }),
   ],
 });

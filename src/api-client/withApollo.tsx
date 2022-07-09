@@ -32,12 +32,15 @@ function createApolloClient() {
       uri: '/api',
       credentials: 'same-origin',
       fetch: (input, init) => {
+        // Make sure we don't cache on the HTTP layer when we ask not to do so.
+        const shouldInvalidateCache = init.headers['invalidatecache'];
         return fetch(input, {
           ...init,
           headers: {
             ...init.headers,
-            'cache-control': 'no-cache',
-            pragma: 'no-cache',
+            ...(shouldInvalidateCache === true
+              ? { 'cache-control': 'no-cache', pragma: 'no-cache' }
+              : {}),
           },
         });
       },

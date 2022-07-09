@@ -8,7 +8,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { useMap } from 'react-leaflet';
 import { useLoosByGeohashQuery } from '../../api-client/graphql';
-import config, { Filter } from '../../config';
+import config, { alertMessages, Filter } from '../../config';
 import { useMapState } from '../MapState';
 import { FILTER_TYPE, getAppliedFiltersAsFilterTypes } from '../../lib/filter';
 import {
@@ -106,12 +106,17 @@ const MarkerGroup: React.FC<{
 
   const { appliedFilters: filters } = mapState;
 
+  const { message } = router.query;
+
+  const isMessageValid =
+    Object.keys(alertMessages).indexOf(message as string) > -1;
+
   const { data } = useLoosByGeohashQuery({
     variables: { geohash },
     fetchPolicy: 'cache-first',
     context: {
       headers: {
-        invalidateCache: true,
+        invalidateCache: isMessageValid, // invalidate the cache if we've gone through the revalidation process
       },
     },
   });

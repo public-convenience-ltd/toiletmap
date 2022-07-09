@@ -27,9 +27,6 @@ import LocationSearch from '../../../components/LocationSearch';
 import { css } from '@emotion/react';
 import NotFound from '../../404.page';
 
-import { LoosByGeohashDocument } from '../../../api-client/graphql';
-import { useApolloClient } from '@apollo/client';
-
 const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
   props
 ) => {
@@ -51,18 +48,10 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
     { data: saveData, loading: saveLoading, error: saveError },
   ] = useUpdateLooMutation();
 
-  const client = useApolloClient();
-
   const save = async (formData: UpdateLooMutationVariables) => {
     const { errors } = await updateLooMutation({
       variables: { ...formData, id: loo.id },
-      refetchQueries: [
-        LoosByGeohashDocument, // DocumentNode object parsed with gql
-        'loosByGeohash',
-      ],
     });
-
-    client.clearStore();
 
     if (errors) {
       console.error('save error', errors);
