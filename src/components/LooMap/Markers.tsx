@@ -8,7 +8,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { useMap } from 'react-leaflet';
 import { useLoosByGeohashQuery } from '../../api-client/graphql';
-import config, { alertMessages, Filter } from '../../config';
+import config, { Filter } from '../../config';
 import { useMapState } from '../MapState';
 import { FILTER_TYPE, getAppliedFiltersAsFilterTypes } from '../../lib/filter';
 import {
@@ -102,21 +102,31 @@ const MarkerGroup: React.FC<{
 }> = ({ geohash, maxClusterRadius }) => {
   const router = useRouter();
   const [mapState, setMapState] = useMapState();
+  const [lastContribution, setLastContribution] = useState<
+    number | undefined
+  >();
   const map = useMap();
 
   const { appliedFilters: filters } = mapState;
 
-  const { message } = router.query;
+  useEffect(() => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; LAST_CONTRIBUTION=`);
+    const timestamp = parts.pop().split(';').shift();
+    if (timestamp) {
+      setLastContribution(parseInt(timestamp, 10));
+    }
+  }, []);
 
-  const isMessageValid =
-    Object.keys(alertMessages).indexOf(message as string) > -1;
-
+  const delta = lastContribution ? Date.now() - lastContribution : 0;
+  console.log(delta < 36000);
   const { data } = useLoosByGeohashQuery({
     variables: { geohash },
     fetchPolicy: 'cache-first',
     context: {
       headers: {
-        invalidateCache: isMessageValid, // invalidate the cache if we've gone through the revalidation process
+        // invalidate the cache if we've gone through the revalidation process in the last minute
+        invalidateCache: delta < 36000,
       },
     },
   });

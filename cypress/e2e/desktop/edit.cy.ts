@@ -190,7 +190,7 @@ describe('Edit page tests', () => {
       cy.wait(500);
       cy.findByText('Update the toilet').click();
 
-      cy.contains('Thank you, details updated!');
+      cy.contains('Thank you, details updated!').wait(2000);
 
       cy.visit('/');
       cy.findByPlaceholderText('Search location…').type('birmingham');
