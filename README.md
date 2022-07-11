@@ -6,6 +6,10 @@ This documentation is oriented towards developers, if you'd like to learn more a
 
 [![Powered by Vercel](./public/powered-by-vercel.svg)](https://vercel.com/?utm_source=public-convenience-ltd&utm_campaign=oss)
 
+Logging is kindly sponsored by Sentry:
+
+[<img src="https://user-images.githubusercontent.com/1771189/178340599-94f9d130-dd82-4389-a4ac-69b9fb014d8a.svg" width="212" alt="Logging is kindly sponsored by Sentry">](https://sentry.io)
+
 ## Getting Started
 
 ### Prerequisites
