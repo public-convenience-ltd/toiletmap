@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@apollo/utils.keyvadapter": "^1.1.0",
     "@artsy/fresnel": "^3.5.0",
     "@auth0/nextjs-auth0": "^1.9.1",
     "@chakra-ui/react": "^2.2.3",
@@ -53,6 +54,7 @@
     "@graphql-tools/schema": "^8.5.0",
     "@graphql-tools/utils": "^8.8.0",
     "@hookform/error-message": "^2.0.0",
+    "@keyv/redis": "^2.3.7",
     "@rehooks/component-size": "^1.0.3",
     "@sentry/nextjs": "^7.6.0",
     "@styled-system/prop-types": "^5.1.5",
@@ -72,6 +74,7 @@
     "hasha": "^5.2.2",
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^2.1.4",
+    "keyv": "^4.3.2",
     "leaflet": "^1.8.0",
     "leaflet.markercluster": "^1.5.3",
     "lodash": "^4.17.21",

@@ -119,10 +119,10 @@ const MarkerGroup: React.FC<{
   }, []);
 
   const delta = lastContribution ? Date.now() - lastContribution : 0;
-  console.log(delta < 36000);
   const { data } = useLoosByGeohashQuery({
     variables: { geohash },
-    fetchPolicy: 'cache-first',
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first',
     context: {
       headers: {
         // invalidate the cache if we've gone through the revalidation process in the last minute

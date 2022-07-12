@@ -8,6 +8,8 @@ import Cors from 'cors';
 import redactedDirective from '../../api/directives/redactedDirective';
 import authDirective from '../../api/directives/authDirective';
 import schema from '../../api-client/schema';
+import Keyv from 'keyv';
+import { KeyvAdapter } from '@apollo/utils.keyvadapter';
 
 const client = jwksClient({
   jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}.well-known/jwks.json`,
@@ -31,9 +33,16 @@ const options: VerifyOptions = {
 // Add GraphQL API
 const finalSchema = schema(authDirective, redactedDirective);
 
+const redisCache = new KeyvAdapter(
+  new Keyv(
+    `redis://default:${process.env.REDIS_PASSWORD}@${process.env.REDIS_URI}`
+  ),
+  { disableBatchReads: true }
+);
+
 export const server = new ApolloServer({
   schema: finalSchema,
-  cache: 'bounded',
+  cache: redisCache,
   context: async ({ req, res }) => {
     let user = null;
     const invalidateCache = req.headers?.invalidatecache === 'true';
@@ -68,8 +77,9 @@ export const server = new ApolloServer({
   introspection: true,
   plugins: [
     responseCachePlugin({
+      cache: redisCache,
       shouldReadFromCache: async ({ context }) => !context.user,
-      shouldWriteToCache: async ({ context }) => !!context.user,
+      shouldWriteToCache: async ({ context }) => !context.user,
     }),
   ],
 });
@@ -91,7 +101,6 @@ const cors = Cors({
     'http://localhost:6006',
     'http://localhost:3000',
     'http://localhost:3001',
-    'http://192.168.1.88:3000',
   ],
 });
 
