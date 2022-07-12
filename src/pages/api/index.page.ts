@@ -83,16 +83,23 @@ export const server = new ApolloServer({
   introspection: true,
   plugins: [
     responseCachePlugin({
-      generateCacheKey: (stuff) => {
-        return stuff.request.variables?.geohash;
+      generateCacheKey: ({ request, queryHash }) => {
+        const geohash = request.variables?.geohash;
+        if (geohash) {
+          const key = `${process.env.NODE_ENV}—${geohash}`;
+          return key;
+        }
+        return queryHash;
       },
-
       shouldReadFromCache: async ({ context, cache, request }) => {
-        if (!!context.user) {
-          await cache.delete(request.variables.geohash);
+        if (!!context?.user && context?.invalidateCache) {
+          const geohash = request.variables?.geohash;
+          if (geohash) {
+            const key = `${process.env.NODE_ENV}—${geohash}`;
+            await cache.delete(key);
+          }
           return false;
         }
-
         return true;
       },
     }),
