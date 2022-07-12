@@ -144,7 +144,7 @@
     "eslint-plugin-functional": "^4.2.1",
     "eslint-plugin-jsx-a11y": "^6.6.0",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-storybook": "^0.6.0",
+    "eslint-plugin-storybook": "^0.6.1",
     "geojson-precision": "^1.0.0",
     "graphql-codegen-apollo-next-ssr": "^1.7.3",
     "husky": "^8.0.1",
