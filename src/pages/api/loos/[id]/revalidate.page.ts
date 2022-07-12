@@ -18,7 +18,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (user) {
       await res.revalidate(`/loos/${id}`);
     }
-    res.setHeader('Set-Cookie', `LAST_CONTRIBUTION=${Date.now()}; Path=/`);
+    // res.setHeader('Set-Cookie', `LAST_CONTRIBUTION=${Date.now()}; Path=/`);
     return res.redirect(`/loos/${id}?message=${finalMessage}`);
   } catch (err) {
     // If there was an error, Next.js will continue

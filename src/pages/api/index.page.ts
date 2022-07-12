@@ -9,6 +9,7 @@ import redactedDirective from '../../api/directives/redactedDirective';
 import authDirective from '../../api/directives/authDirective';
 import schema from '../../api-client/schema';
 import Keyv from 'keyv';
+import KeyvRedis from '@keyv/redis';
 import { KeyvAdapter } from '@apollo/utils.keyvadapter';
 
 const client = jwksClient({
@@ -33,16 +34,21 @@ const options: VerifyOptions = {
 // Add GraphQL API
 const finalSchema = schema(authDirective, redactedDirective);
 
-const redisCache = new KeyvAdapter(
-  new Keyv(
-    `redis://default:${process.env.REDIS_PASSWORD}@${process.env.REDIS_URI}`
-  ),
-  { disableBatchReads: true }
-);
+const cacheStrategy = process.env.REDIS_URI
+  ? new KeyvAdapter(
+      new Keyv({
+        store: new KeyvRedis(
+          `rediss://default:${process.env.REDIS_PASSWORD}@${process.env.REDIS_URI}`
+        ),
+      }),
+      { disableBatchReads: true }
+    )
+  : undefined;
 
 export const server = new ApolloServer({
   schema: finalSchema,
-  cache: redisCache,
+  cache: cacheStrategy ?? 'bounded',
+  persistedQueries: false,
   context: async ({ req, res }) => {
     let user = null;
     const invalidateCache = req.headers?.invalidatecache === 'true';
@@ -77,9 +83,18 @@ export const server = new ApolloServer({
   introspection: true,
   plugins: [
     responseCachePlugin({
-      cache: redisCache,
-      shouldReadFromCache: async ({ context }) => !context.user,
-      shouldWriteToCache: async ({ context }) => !context.user,
+      generateCacheKey: (stuff) => {
+        return stuff.request.variables?.geohash;
+      },
+
+      shouldReadFromCache: async ({ context, cache, request }) => {
+        if (!!context.user) {
+          await cache.delete(request.variables.geohash);
+          return false;
+        }
+
+        return true;
+      },
     }),
   ],
 });
