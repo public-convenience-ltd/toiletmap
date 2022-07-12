@@ -32,6 +32,12 @@ const options: VerifyOptions = {
 // Add GraphQL API
 const finalSchema = schema(authDirective, redactedDirective);
 
+// Compute a unique key specific to application instance given a geohash
+// This is used to cache each geohash tile that is loaded by users
+// .. and later delete it if we want to refresh the tile
+const cacheKeyFromGeohash = (geohash: string) =>
+  `${process.env?.VERCEL_URL ?? 'local'}—${process.env?.NODE_ENV}—${geohash}`;
+
 const cacheStrategy = process.env.REDIS_URI
   ? new KeyvAdapter(
       new Keyv({
@@ -84,8 +90,7 @@ export const server = new ApolloServer({
       generateCacheKey: ({ request, queryHash }) => {
         const geohash = request.variables?.geohash;
         if (geohash) {
-          const key = `${process.env.NODE_ENV}—${geohash}`;
-          return key;
+          return cacheKeyFromGeohash(geohash);
         }
         return queryHash;
       },
@@ -93,8 +98,7 @@ export const server = new ApolloServer({
         if (!!context?.user && context?.invalidateCache) {
           const geohash = request.variables?.geohash;
           if (geohash) {
-            const key = `${process.env.NODE_ENV}—${geohash}`;
-            await cache.delete(key);
+            await cache.delete(cacheKeyFromGeohash(geohash));
           }
           return false;
         }
