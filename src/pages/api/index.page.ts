@@ -36,7 +36,7 @@ const cacheStrategy = process.env.REDIS_URI
   ? new KeyvAdapter(
       new Keyv({
         store: new KeyvRedis(
-          `rediss://default:${process.env.REDIS_PASSWORD}@${process.env.REDIS_URI}`
+          `redis://default:${process.env.REDIS_PASSWORD}@${process.env.REDIS_URI}`
         ),
       }),
       { disableBatchReads: true }
