@@ -187,8 +187,6 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { dbConnect } = await import('../../../api/db');
-  await dbConnect();
   try {
     const res = await ssrFindLooById.getServerPage(
       {

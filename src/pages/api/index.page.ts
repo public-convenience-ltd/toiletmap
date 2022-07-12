@@ -16,8 +16,6 @@ const client = jwksClient({
   jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}.well-known/jwks.json`,
 });
 
-import { dbConnect } from '../../api/db';
-
 function getKey(header, cb) {
   client.getSigningKey(header.kid, function (err, key) {
     const signingKey = key['publicKey'] || key['rsaPublicKey'];
@@ -142,8 +140,7 @@ function runMiddleware(req, res, fn) {
 
 async function handler(req, res) {
   await runMiddleware(req, res, cors);
-  // We'll need a mongodb connection
-  await dbConnect();
+
   await startServer;
   await server.createHandler({
     path: '/api',
