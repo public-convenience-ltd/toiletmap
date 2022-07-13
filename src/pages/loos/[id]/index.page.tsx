@@ -154,6 +154,7 @@ export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
     const res = await ssrFindLooById.getServerPage(
       {
         variables: { id: params.id as string },
+        fetchPolicy: 'no-cache',
       },
       { req }
     );

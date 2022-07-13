@@ -27,8 +27,6 @@ import LocationSearch from '../../../components/LocationSearch';
 import { css } from '@emotion/react';
 import NotFound from '../../404.page';
 
-import { LoosByGeohashDocument } from '../../../api-client/graphql';
-
 const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
   props
 ) => {
@@ -53,10 +51,6 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
   const save = async (formData: UpdateLooMutationVariables) => {
     const { errors } = await updateLooMutation({
       variables: { ...formData, id: loo.id },
-      refetchQueries: [
-        LoosByGeohashDocument, // DocumentNode object parsed with gql
-        'loosByGeohash',
-      ],
     });
 
     if (errors) {

@@ -1,4 +1,3 @@
-import { withSentry } from '@sentry/nextjs';
 import jwt, { VerifyOptions } from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { getSession } from '@auth0/nextjs-auth0';
@@ -8,6 +7,7 @@ import authDirective from '../../api/directives/authDirective';
 import schema from '../../api-client/schema';
 import { createServer } from '@graphql-yoga/node';
 import { createInMemoryCache, useResponseCache } from '@envelop/response-cache';
+import { useSentry } from '@envelop/sentry';
 
 const client = jwksClient({
   jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}.well-known/jwks.json`,
@@ -70,6 +70,8 @@ export const server = createServer({
       session: () => null,
       cache,
     }),
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useSentry(),
   ],
 });
 
@@ -110,6 +112,4 @@ async function handler(req, res) {
   return server(req, res);
 }
 
-export default process.env.VERCEL_ENV === 'production'
-  ? withSentry(handler)
-  : handler;
+export default handler;
