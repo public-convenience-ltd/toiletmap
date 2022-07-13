@@ -2771,15 +2771,15 @@
     tslib "^2.3.1"
 
 "@graphql-yoga/node@^2.13.2":
-  version "2.13.3"
-  resolved "https://registry.yarnpkg.com/@graphql-yoga/node/-/node-2.13.3.tgz#e37d704965452154fdf43a6cca9d14fb509085a8"
-  integrity sha512-n0uVY808w4IEKzZWpwsRa5wr/K+Mr9gE6cqrO/0zJPV5pUZHcgYUryJDctsvKN/vLdLPOO+wv3Kjc39Pljr5Ug==
+  version "2.13.2"
+  resolved "https://registry.yarnpkg.com/@graphql-yoga/node/-/node-2.13.2.tgz#2a2c8c69f1832a36b2eba292f52d4db66216dd96"
+  integrity sha512-vydvyPVFhQbSWG9BBJ0QEMqvbQdfaBgG75SQV+WBs7+H+1mS4PXD/byW6pAkcTyJylqXCW1BB6s1dTCjrdSHgg==
   dependencies:
     "@envelop/core" "^2.4.0"
     "@graphql-tools/utils" "^8.8.0"
     "@graphql-yoga/common" "^2.12.2"
     "@graphql-yoga/subscription" "^2.2.2"
-    cross-undici-fetch "^0.4.13"
+    cross-undici-fetch "^0.4.2"
     tslib "^2.3.1"
 
 "@graphql-yoga/subscription@^2.2.2":
@@ -7942,10 +7942,10 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-cross-undici-fetch@^0.4.11, cross-undici-fetch@^0.4.13, cross-undici-fetch@^0.4.2:
-  version "0.4.13"
-  resolved "https://registry.yarnpkg.com/cross-undici-fetch/-/cross-undici-fetch-0.4.13.tgz#cc693121267f8203217e0c8768d3d4cf97889b44"
-  integrity sha512-7g4hCZcq/9DiYhF43lRWgtZjPqg8tMrjG3eO94QiFQcdFR4TcmcT0Czdu7H+brXDkdbWJQrjYCV93ggE61INDA==
+cross-undici-fetch@^0.4.11, cross-undici-fetch@^0.4.2:
+  version "0.4.11"
+  resolved "https://registry.yarnpkg.com/cross-undici-fetch/-/cross-undici-fetch-0.4.11.tgz#bef38dc729a01db6e07c84fee6de1089b5d3d0a4"
+  integrity sha512-pRp+EWewyOPYIeUvwOqCIqylCFWqlBwwr6nlZB38v3PhWxS1RYfSgHUJApYTT8jm71SbL5p4qg5kUQv6ZyS24A==
   dependencies:
     abort-controller "^3.0.0"
     busboy "^1.6.0"
@@ -11570,7 +11570,7 @@ jest-config@^28.1.3:
     slash "^3.0.0"
     strip-json-comments "^3.1.1"
 
-jest-diff@^28.1.3:
+jest-diff@^28.1.1, jest-diff@^28.1.3:
   version "28.1.3"
   resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-28.1.3.tgz#948a192d86f4e7a64c5264ad4da4877133d8792f"
   integrity sha512-8RqP1B/OXzjjTWkqMX67iqgwBVJRgCyKD3L9nq+6ZqJMdvjE8RgHktqZ6jNrkdMT+dJuYNI3rhQpxaz7drJHfw==
@@ -14426,7 +14426,7 @@ pretty-format@^27.0.2:
     ansi-styles "^5.0.0"
     react-is "^17.0.1"
 
-pretty-format@^28.0.0, pretty-format@^28.1.3:
+pretty-format@^28.0.0, pretty-format@^28.1.1, pretty-format@^28.1.3:
   version "28.1.3"
   resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-28.1.3.tgz#c9fba8cedf99ce50963a11b27d982a9ae90970d5"
   integrity sha512-8gFb/To0OmxHR9+ZTb14Df2vNxdGCX8g1xWGUTqUw5TiZvcQf5sHKObd5UcPyLLyowNwDAMTF3XWOG1B6mxl1Q==
