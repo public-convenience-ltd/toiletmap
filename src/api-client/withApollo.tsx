@@ -37,6 +37,12 @@ function createApolloClient() {
     ssrMode: isRunningOnServer,
     link: terminatingLink,
     cache,
+    defaultOptions: {
+      query: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'all',
+      },
+    },
   });
 }
 

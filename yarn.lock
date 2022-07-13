@@ -2268,6 +2268,11 @@
     fast-json-stable-stringify "^2.1.0"
     lru-cache "^6.0.0"
 
+"@envelop/sentry@^3.6.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@envelop/sentry/-/sentry-3.6.0.tgz#960552c4298aa45d4cccfe8e6aa9e531a1b59cb4"
+  integrity sha512-rEVDKQMl6g7fHzMS3ZBFVCRdeo2xkGwLIgxChBn0SyiCFAGK5BSgRKIlxi41DlODcoI5A9Dx0E0BBC6dQpiHjQ==
+
 "@envelop/types@2.3.0":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@envelop/types/-/types-2.3.0.tgz#d633052eb3c7e7913380165ce041e2c0e358d5b6"
@@ -3580,7 +3585,7 @@
     localforage "^1.8.1"
     tslib "^1.9.3"
 
-"@sentry/nextjs@^7.7.0":
+"@sentry/nextjs@^7.6.0":
   version "7.7.0"
   resolved "https://registry.yarnpkg.com/@sentry/nextjs/-/nextjs-7.7.0.tgz#c257458a1d430a712bc6908fad5092a3362953e7"
   integrity sha512-mC1fdX6ajGFYVo1fyDR2h6XmUjpI5JP414pxca/77H8wmOXci+2o9WfgZzB/jkLSbo91C4vGcuD7kvH5ytjTDQ==
@@ -3621,7 +3626,7 @@
     hoist-non-react-statics "^3.3.2"
     tslib "^1.9.3"
 
-"@sentry/tracing@7.7.0":
+"@sentry/tracing@7.7.0", "@sentry/tracing@^7.6.0":
   version "7.7.0"
   resolved "https://registry.yarnpkg.com/@sentry/tracing/-/tracing-7.7.0.tgz#67324b755a28e115289755e44a0b8b467a63d0b2"
   integrity sha512-HNmvTwemuc21q/K6HXsSp9njkne6N1JQ71TB+QGqYU5VtxsVgYSUhhYqV6WcHz7LK4Hj6TvNFoeu69/rO0ysgw==
