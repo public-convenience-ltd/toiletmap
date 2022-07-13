@@ -129,8 +129,6 @@ const resolvers = {
     loosByGeohash: async (_parent, args) => {
       await dbConnect();
       const geohash: string = args.geohash ?? '';
-
-      console.log('recompute ', geohash);
       const current = ngeohash.decode_bbox(geohash);
 
       const areaLooData = await Promise.all(
