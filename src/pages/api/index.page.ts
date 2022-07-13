@@ -1,6 +1,4 @@
-import { ApolloServer } from 'apollo-server-micro';
 import { withSentry } from '@sentry/nextjs';
-import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import jwt, { VerifyOptions } from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { getSession } from '@auth0/nextjs-auth0';
@@ -8,12 +6,12 @@ import Cors from 'cors';
 import redactedDirective from '../../api/directives/redactedDirective';
 import authDirective from '../../api/directives/authDirective';
 import schema from '../../api-client/schema';
+import { createServer } from '@graphql-yoga/node';
+import { createInMemoryCache, useResponseCache } from '@envelop/response-cache';
 
 const client = jwksClient({
   jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}.well-known/jwks.json`,
 });
-
-import { dbConnect } from '../../api/db';
 
 function getKey(header, cb) {
   client.getSigningKey(header.kid, function (err, key) {
@@ -31,9 +29,11 @@ const options: VerifyOptions = {
 // Add GraphQL API
 const finalSchema = schema(authDirective, redactedDirective);
 
-export const server = new ApolloServer({
+const cache = createInMemoryCache();
+
+export const server = createServer({
+  endpoint: '/api',
   schema: finalSchema,
-  cache: 'bounded',
   context: async ({ req, res }) => {
     let user = null;
     try {
@@ -63,8 +63,14 @@ export const server = new ApolloServer({
       user,
     };
   },
-  introspection: true,
-  plugins: [responseCachePlugin({})],
+  plugins: [
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useResponseCache({
+      enabled: (context) => !context?.user,
+      session: () => null,
+      cache,
+    }),
+  ],
 });
 
 export const config = {
@@ -72,8 +78,6 @@ export const config = {
     bodyParser: false,
   },
 };
-
-const startServer = server.start();
 
 // Initializing the cors middleware
 const cors = Cors({
@@ -103,12 +107,9 @@ function runMiddleware(req, res, fn) {
 
 async function handler(req, res) {
   await runMiddleware(req, res, cors);
-  // We'll need a mongodb connection
-  await dbConnect();
-  await startServer;
-  await server.createHandler({
-    path: '/api',
-  })(req, res);
+  return server(req, res);
 }
 
-export default withSentry(handler);
+export default process.env.VERCEL_ENV === 'production'
+  ? withSentry(handler)
+  : handler;

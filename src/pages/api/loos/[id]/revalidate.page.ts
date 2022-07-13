@@ -26,4 +26,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withSentry(handler);
+export default process.env.VERCEL_ENV === 'production'
+  ? withSentry(handler)
+  : handler;

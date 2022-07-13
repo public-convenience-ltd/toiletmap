@@ -4,10 +4,11 @@ import { motion } from 'framer-motion';
 
 import Box from '../Box';
 import Portal from '../Portal';
+import { css } from '@emotion/react';
 
 const MENU_HEIGHT = 60; // px
 
-const Drawer = ({ visible, animateFrom = 'left', ...props }) => {
+const Drawer = ({ visible, animateFrom = 'left', zIndex, ...props }) => {
   const animateTo = animateFrom === 'right' ? 'left' : 'right';
 
   const variants = {
@@ -36,8 +37,10 @@ const Drawer = ({ visible, animateFrom = 'left', ...props }) => {
         height={`calc(100vh - ${MENU_HEIGHT}px)`}
         width="100%"
         bg="white"
+        css={css`
+          z-index: ${zIndex || 150};
+        `}
         p={3}
-        zIndex={150}
         {...props}
         // motion props
         variants={variants}

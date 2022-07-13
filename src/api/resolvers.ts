@@ -2,7 +2,13 @@
 import { stringifyAndCompressLoos } from '../lib/loo';
 import ngeohash from 'ngeohash';
 
-import { Loo as DBLoo, Report as DBReport, Area, MapGeo } from './db';
+import {
+  Loo as DBLoo,
+  Report as DBReport,
+  Area,
+  MapGeo,
+  dbConnect,
+} from './db';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import without from 'lodash/without';
 import OpeningTimesScalar from './OpeningTimesScalar';
@@ -36,8 +42,13 @@ const looInfoResolver = (property) => {
 
 const resolvers = {
   Query: {
-    loo: async (_parent, args) => await DBLoo.findById(args.id),
+    loo: async (_parent, args) => {
+      await dbConnect();
+      return await DBLoo.findById(args.id);
+    },
     loos: async (_parent, args, context) => {
+      await dbConnect();
+
       const REQUIRED_PERMISSION = 'VIEW_CONTRIBUTOR_INFO';
 
       // Construct the search query
@@ -103,12 +114,24 @@ const resolvers = {
         page: res.page,
       };
     },
-    looNamesByIds: async (_parent, args) =>
-      await DBLoo.find({ _id: { $in: args.idList } }),
-    loosByProximity: async (_parent, args) =>
-      await DBLoo.findNear(args.from.lng, args.from.lat, args.from.maxDistance),
+    looNamesByIds: async (_parent, args) => {
+      await dbConnect();
+      return await DBLoo.find({ _id: { $in: args.idList } });
+    },
+    loosByProximity: async (_parent, args) => {
+      await dbConnect();
+      return await DBLoo.findNear(
+        args.from.lng,
+        args.from.lat,
+        args.from.maxDistance
+      );
+    },
     loosByGeohash: async (_parent, args) => {
+      await dbConnect();
+
       const geohash: string = args.geohash ?? '';
+
+      console.log('recompute ', geohash);
       const current = ngeohash.decode_bbox(geohash);
 
       const areaLooData = await Promise.all(
@@ -123,6 +146,7 @@ const resolvers = {
       return stringifyAndCompressLoos(areaLooData.flat());
     },
     ukLooMarkers: async () => {
+      await dbConnect();
       const loos = await DBLoo.find({ 'properties.active': true })
         .where('properties.geometry')
         .within({
@@ -141,6 +165,7 @@ const resolvers = {
       return stringifyAndCompressLoos(loos);
     },
     areas: async () => {
+      await dbConnect();
       const data = await Area.find({}, { name: 1, type: 1 }).exec();
 
       const areas = data.map((area) => {
@@ -153,6 +178,7 @@ const resolvers = {
       return areas;
     },
     mapAreas: async () => {
+      await dbConnect();
       let query = {};
       if (args.areaType) {
         query = { areaType: args.areaType };
@@ -178,10 +204,12 @@ const resolvers = {
       return geometry;
     },
     report: async (_parent, args) => {
+      await dbConnect();
       const id = args.id;
       return await DBReport.findById(id);
     },
     counters: async () => {
+      await dbConnect();
       const looCounters = await DBLoo.getCounters();
       const reportCounters = await DBReport.getCounters();
 
@@ -191,6 +219,7 @@ const resolvers = {
       };
     },
     proportions: async () => {
+      await dbConnect();
       const {
         babyChange,
         babyChangeUnknown,
@@ -222,6 +251,7 @@ const resolvers = {
       };
     },
     areaStats: async () => {
+      await dbConnect();
       const areas = await DBLoo.getAreasCounters();
 
       return areas.map((area) => {
@@ -236,6 +266,7 @@ const resolvers = {
       });
     },
     contributors: async () => {
+      await dbConnect();
       const contributors = await DBReport.aggregate([
         {
           $match: { contributor: { $exists: true } },
@@ -262,6 +293,7 @@ const resolvers = {
 
   Mutation: {
     submitReport: async (_parent, args, context) => {
+      await dbConnect();
       const user = context.user;
       const { edit, location, ...data } = args.report;
       // Format report data to match old api
@@ -292,6 +324,7 @@ const resolvers = {
       }
     },
     submitRemovalReport: async (_parent, args, context) => {
+      await dbConnect();
       const user = context.user;
       const { edit, reason } = args.report;
       // We sadly need the current geometry here
@@ -325,6 +358,7 @@ const resolvers = {
       }
     },
     submitVerificationReport: async (_parent, args) => {
+      await dbConnect();
       const report = {
         verifiedAt: new Date(),
       };
