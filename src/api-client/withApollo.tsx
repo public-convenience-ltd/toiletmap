@@ -28,6 +28,7 @@ function createApolloClient() {
       uri: '/api',
       credentials: 'same-origin',
       fetch,
+      useGETForQueries: true,
     });
   }
 
@@ -38,7 +39,13 @@ function createApolloClient() {
     link: terminatingLink,
     cache,
     defaultOptions: {
+      watchQuery: {
+        // fetchPolicy: "cache-and-network",
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'ignore',
+      },
       query: {
+        // fetchPolicy: "network-only",
         fetchPolicy: 'no-cache',
         errorPolicy: 'all',
       },
