@@ -28,7 +28,6 @@ function createApolloClient() {
       uri: '/api',
       credentials: 'same-origin',
       fetch,
-      useGETForQueries: true,
     });
   }
 
@@ -38,25 +37,9 @@ function createApolloClient() {
     ssrMode: isRunningOnServer,
     link: terminatingLink,
     cache,
-    defaultOptions: {
-      watchQuery: {
-        // fetchPolicy: "cache-and-network",
-        fetchPolicy: 'no-cache',
-        errorPolicy: 'ignore',
-      },
-      query: {
-        // fetchPolicy: "network-only",
-        fetchPolicy: 'no-cache',
-        errorPolicy: 'all',
-      },
-    },
   });
 }
 
-/**
- * The big trick here is to merge the initialState from the pageprops with the client's current state see: https://developers.wpengine.com/blog/apollo-client-cache-rehydration-in-next-js
- * When we don't do the is the accumulates apolloState gets wiped out by any incoming static page props
- */
 export function getApolloClient() {
   const _apolloClient = apolloClient ?? createApolloClient();
 
