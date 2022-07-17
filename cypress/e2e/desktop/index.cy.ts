@@ -133,9 +133,6 @@ describe('Home page tests', () => {
           .wait(500);
 
         // Check that we land in Ealing
-        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').click({
-          force: true,
-        });
 
         cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click();
 
@@ -172,9 +169,6 @@ describe('Home page tests', () => {
           .wait(500);
 
         // Check that we land in Ealing
-        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').click({
-          force: true,
-        });
 
         cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click();
 
@@ -211,7 +205,7 @@ describe('Home page tests', () => {
           .wait(500);
 
         // Check that we land in Ealing
-        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').should('exist');
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');
 
         cy.findByPlaceholderText('Search location…').type('Hammersmith');
         cy.get('#search-results-item-0').click();
