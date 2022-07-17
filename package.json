@@ -11,6 +11,7 @@
     "test": "jest",
     "cypress:open": "cypress open",
     "cypress:headless": "cypress run --headless",
+    "cypress:headless:record": "cypress run --headless --record",
     "e2e": "./scripts/e2e.sh",
     "e2e:headless": "./scripts/e2e.sh -h",
     "e2e:dev": "./scripts/e2e.sh -d d",

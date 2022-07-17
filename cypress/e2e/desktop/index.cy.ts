@@ -59,8 +59,9 @@ describe('Home page tests', () => {
         wheelDeltaY: -500,
         bubbles: true,
       });
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
-      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').click().wait(500);
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]')
+        .should('not.exist')
+        .wait(500);
       cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').click();
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
     });
@@ -370,7 +371,7 @@ describe('Home page tests', () => {
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
     });
 
-    it.only('should apply multiple filters', () => {
+    it('should apply multiple filters', () => {
       cy.clearLocalStorage();
       cy.visit('/').wait(500);
       cy.findByText('Filter').click();
