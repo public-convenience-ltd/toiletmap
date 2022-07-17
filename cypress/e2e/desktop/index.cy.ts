@@ -59,7 +59,9 @@ describe('Home page tests', () => {
         wheelDeltaY: -500,
         bubbles: true,
       });
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]')
+        .should('not.exist')
+        .wait(500);
       cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').click();
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
     });
@@ -133,11 +135,10 @@ describe('Home page tests', () => {
           .wait(500);
 
         // Check that we land in Ealing
-        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').click({
+
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click({
           force: true,
         });
-
-        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click();
 
         // Check that the distance to the toilet is listed
         cy.contains('fabulous bandwidth');
@@ -172,11 +173,10 @@ describe('Home page tests', () => {
           .wait(500);
 
         // Check that we land in Ealing
-        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').click({
+
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click({
           force: true,
         });
-
-        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click();
 
         // Check that the distance to the toilet is listed
         cy.contains('fabulous bandwidth');
@@ -211,7 +211,7 @@ describe('Home page tests', () => {
           .wait(500);
 
         // Check that we land in Ealing
-        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').should('exist');
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');
 
         cy.findByPlaceholderText('Search location…').type('Hammersmith');
         cy.get('#search-results-item-0').click();
@@ -231,20 +231,20 @@ describe('Home page tests', () => {
       cy.get('#gbptm-map').focus().type('{-}{-}{-}', { delay: 500 });
       cy.contains('slow decoration');
       cy.contains('agile energy');
-      cy.contains('bite-sized academy');
-      cy.contains('cheery zither');
+      cy.contains('firm marmalade');
+      cy.contains('cold group');
       cy.contains('worldly file');
-      cy.contains('radiant spiderling');
+      cy.contains('negative eve');
       cy.get('#gbptm-map').type('{downarrow}', { delay: 500 }).wait(500);
       // these toilets have now moved outside of the selection window
       cy.contains('radiant spiderling').should('not.exist');
       cy.contains('cheery zither').should('not.exist');
       // these toilets are now the top suggestions in the selection window
       cy.contains('slow decoration');
-      cy.contains('bland lunch');
-      cy.contains('bite-sized academy');
-      cy.contains('unused champion');
+      cy.contains('rosy medal');
       cy.contains('entire caddy');
+      cy.contains('agile energy');
+      cy.contains('bland lunch');
     });
 
     it('should select a toilet using the number key associated with the accessibility overlay list', () => {
@@ -392,6 +392,12 @@ describe('Home page tests', () => {
         })
         .wait(500);
 
+      cy.get('[data-toilets*=05a8ddcad8fdca635f5dbdb0]')
+        .click({ force: true })
+        .wait(500);
+      cy.get('[data-toilets*=05a8ddcad8fdca635f5dbdb0]')
+        .click({ force: true })
+        .wait(500);
       cy.get('[data-toiletid=05a8ddcad8fdca635f5dbdb0]').click({ force: true });
       cy.findByText('Free').siblings().get(`[aria-label=Available]`);
       cy.get('body').trigger('keydown', { key: 'Escape' });

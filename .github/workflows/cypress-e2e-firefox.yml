@@ -54,6 +54,7 @@ jobs:
           CYPRESS_auth0ClientSecret: ${{ secrets.CYPRESS_AUTH0CLIENTSECRET }}
           CYPRESS_auth0ClientId: ${{ secrets.CYPRESS_AUTH0CLIENTID }}
           CYPRESS_auth0CookieSecret: ${{ secrets.CYPRESS_AUTH0COOKIESECRET }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         with:
           build: yarn build
           start: yarn start
@@ -62,3 +63,4 @@ jobs:
           browser: firefox
           headless: true
           spec: cypress/e2e/**/*.ts
+          record: true

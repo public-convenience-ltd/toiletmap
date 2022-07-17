@@ -4,6 +4,7 @@ import encrypt from 'cypress-nextjs-auth0/encrypt';
 
 export default defineConfig({
   port: 3001,
+  projectId: '2pry2v',
   chromeWebSecurity: false,
   video: false,
   defaultCommandTimeout: 15000,
