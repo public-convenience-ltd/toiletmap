@@ -245,6 +245,7 @@ const MarkerGroup: React.FC<{
       mcg.addLayers(parsedAndFilteredMarkers);
       map.addLayer(mcg);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parsedAndFilteredMarkers, mcg]);
 
