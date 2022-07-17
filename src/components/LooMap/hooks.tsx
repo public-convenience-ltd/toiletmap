@@ -41,13 +41,13 @@ export const useMapClusterRadius = () => {
       case zoom < 8:
         return 200;
       case zoom < 10:
-        return 125;
-      case zoom < 13:
+        return 100;
+      case zoom < 14:
         return 100;
       case zoom < 17:
-        return 80;
+        return 60;
       case zoom < 18:
-        return 50;
+        return 20;
       default:
         return 0;
     }

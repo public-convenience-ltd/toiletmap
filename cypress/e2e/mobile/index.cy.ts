@@ -58,6 +58,9 @@ describe('Home page tests', () => {
         bubbles: true,
       });
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
+      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]')
+        .click({ force: true })
+        .wait(500);
       cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').click({ force: true });
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
     });
