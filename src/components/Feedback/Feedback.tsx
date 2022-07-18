@@ -60,7 +60,9 @@ const Feedback = () => {
           _placeholder={{ fontWeight: 'thin', fontStyle: 'italic' }}
           resize={'none'}
           height="16rem"
-          placeholder="The Toilet Map is a free and open source project that we maintain in our spare time. Let us know if you have any suggestions about how we can improve the service through this form."
+          placeholder={`The Toilet Map is a free and open source project that we maintain in our spare time.
+
+We'd be so grateful if you could take a moment to give us feedback on how we could make your experience even better.`}
         />
         <Button onClick={submitFeedback}>Submit</Button>
       </Stack>
