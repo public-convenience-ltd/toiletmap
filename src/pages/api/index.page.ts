@@ -12,11 +12,7 @@ import Redis from 'ioredis';
 import { createRedisCache } from '@envelop/response-cache-redis';
 
 const setupCache = () => {
-  if (
-    (process.env.NODE_ENV === 'development' ||
-      process.env.NODE_ENV === 'test') &&
-    process.env.ENABLE_REDIS_CACHE !== 'true'
-  ) {
+  if (process.env.ENABLE_REDIS_CACHE !== 'true') {
     return createInMemoryCache();
   }
 
