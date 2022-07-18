@@ -6,10 +6,6 @@ This documentation is oriented towards developers, if you'd like to learn more a
 
 [![Powered by Vercel](./public/powered-by-vercel.svg)](https://vercel.com/?utm_source=public-convenience-ltd&utm_campaign=oss)
 
-Logging is kindly sponsored by Sentry:
-
-[<img src="https://user-images.githubusercontent.com/1771189/178340599-94f9d130-dd82-4389-a4ac-69b9fb014d8a.svg" width="212" alt="Logging is kindly sponsored by Sentry">](https://sentry.io)
-
 ## Getting Started
 
 ### Prerequisites
@@ -43,3 +39,23 @@ If you'd like to make contributions to the project this is a good time to read o
 ### Development
 
 The toiletmap UI is built with Next.js. The API is written in GraphQL with [Apollo Server](https://www.npmjs.com/package/apollo-server) and data is stored in a MongoDB instance via [mongoose](https://mongoosejs.com/). Authentication is handled by [Auth0](https://auth0.com/) and the site is deployed to [vercel](https://vercel.com)
+
+## Sponsors
+Our brilliant sponsors help us to bring a stable and high quality service to our users.
+
+### Sentry
+
+[<img src="https://user-images.githubusercontent.com/1771189/178340599-94f9d130-dd82-4389-a4ac-69b9fb014d8a.svg" width="212" alt="Logging is kindly sponsored by Sentry">](https://sentry.io)
+
+Our client and server side logging in production is kindly sponsored by Sentry.
+
+### Cypress
+
+[<img src="https://www.cypress.io/static/33498b5f95008093f5f94467c61d20ab/c0bf4/cypress-logo.webp" width="212" alt="Cypress dashboard enhances our development workflow when working with our Cypress test suite">](https://www.cypress.io/dashboard)
+
+Cypress Dashboard speeds up and enhances our testing workflow, helping us to deliver changes faster and with fewer bugs.
+
+---
+
+Could your company help?
+[Let us know](https://www.toiletmap.org.uk/contact)
