@@ -8,6 +8,29 @@ import schema from '../../api-client/schema';
 import { createServer } from '@graphql-yoga/node';
 import { createInMemoryCache, useResponseCache } from '@envelop/response-cache';
 import { useSentry } from '@envelop/sentry';
+import Redis from 'ioredis';
+import { createRedisCache } from '@envelop/response-cache-redis';
+
+const setupCache = () => {
+  if (
+    (process.env.NODE_ENV === 'development' ||
+      process.env.NODE_ENV === 'test') &&
+    process.env.ENABLE_REDIS_CACHE !== 'true'
+  ) {
+    return createInMemoryCache();
+  }
+
+  const redis = new Redis({
+    host: process.env.REDIS_URI,
+    username: 'default',
+    port: 11345,
+    password: process.env.REDIS_PASSWORD,
+  });
+
+  return createRedisCache({ redis });
+};
+
+const cache = setupCache();
 
 const client = jwksClient({
   jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}.well-known/jwks.json`,
@@ -28,8 +51,6 @@ const options: VerifyOptions = {
 
 // Add GraphQL API
 const finalSchema = schema(authDirective, redactedDirective);
-
-const cache = createInMemoryCache();
 
 export const server = createServer({
   endpoint: '/api',
