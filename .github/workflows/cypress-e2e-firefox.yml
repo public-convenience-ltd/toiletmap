@@ -67,6 +67,10 @@ jobs:
           CYPRESS_auth0ClientId: ${{ secrets.CYPRESS_AUTH0CLIENTID }}
           CYPRESS_auth0CookieSecret: ${{ secrets.CYPRESS_AUTH0COOKIESECRET }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          ENABLE_REDIS_CACHE: true
+          REDIS_URI: 'localhost'
+          REDIS_PASSWORD: ''
+
         with:
           build: yarn build
           start: yarn start
