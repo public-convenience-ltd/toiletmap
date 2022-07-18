@@ -59,7 +59,7 @@ const Feedback = () => {
           ref={textArea}
           resize={'none'}
           height="16rem"
-          placeholder="Tell us about your experience..."
+          placeholder="The Toilet Map is a free and open source project that we maintain in our spare time. Please feel free to leave us some constructive feedback about your experience through this form."
         />
         <Button onClick={submitFeedback}>Submit</Button>
       </Stack>
