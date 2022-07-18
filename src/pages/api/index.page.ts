@@ -20,10 +20,14 @@ const setupCache = () => {
     return createInMemoryCache();
   }
 
+  const port = process.env.REDIS_PORT
+    ? parseInt(process.env.REDIS_PORT, 10)
+    : 11345;
+
   const redis = new Redis({
     host: process.env.REDIS_URI,
     username: 'default',
-    port: 11345,
+    port,
     password: process.env.REDIS_PASSWORD,
   });
 

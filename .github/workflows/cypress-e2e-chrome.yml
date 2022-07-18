@@ -67,6 +67,7 @@ jobs:
           ENABLE_REDIS_CACHE: true
           REDIS_URI: 'localhost'
           REDIS_PASSWORD: ''
+          REDIS_PORT: 6379
         with:
           build: yarn build
           start: yarn start
