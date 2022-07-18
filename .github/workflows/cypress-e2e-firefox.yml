@@ -8,6 +8,18 @@ jobs:
       image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
       options: --user 1001
     timeout-minutes: 15
+    services:
+      redis:
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps Redis port 6379 on service container to the host
+          - 6379:6379
     steps:
       - name: Checkout
         uses: actions/checkout@v2

@@ -2778,16 +2778,16 @@
     dset "^3.1.1"
     tslib "^2.3.1"
 
-"@graphql-yoga/node@^2.13.2":
-  version "2.13.2"
-  resolved "https://registry.yarnpkg.com/@graphql-yoga/node/-/node-2.13.2.tgz#2a2c8c69f1832a36b2eba292f52d4db66216dd96"
-  integrity sha512-vydvyPVFhQbSWG9BBJ0QEMqvbQdfaBgG75SQV+WBs7+H+1mS4PXD/byW6pAkcTyJylqXCW1BB6s1dTCjrdSHgg==
+"@graphql-yoga/node@^2.13.3":
+  version "2.13.3"
+  resolved "https://registry.yarnpkg.com/@graphql-yoga/node/-/node-2.13.3.tgz#e37d704965452154fdf43a6cca9d14fb509085a8"
+  integrity sha512-n0uVY808w4IEKzZWpwsRa5wr/K+Mr9gE6cqrO/0zJPV5pUZHcgYUryJDctsvKN/vLdLPOO+wv3Kjc39Pljr5Ug==
   dependencies:
     "@envelop/core" "^2.4.0"
     "@graphql-tools/utils" "^8.8.0"
     "@graphql-yoga/common" "^2.12.2"
     "@graphql-yoga/subscription" "^2.2.2"
-    cross-undici-fetch "^0.4.2"
+    cross-undici-fetch "^0.4.13"
     tslib "^2.3.1"
 
 "@graphql-yoga/subscription@^2.2.2":
@@ -4989,10 +4989,10 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@^28.1.5":
-  version "28.1.5"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-28.1.5.tgz#4337404efa059adbf96c4ac53b28fdc0af514475"
-  integrity sha512-TLAC2zXxGnohSP3GxgIyJn7yrTeRPDEyVFyCY1NE2wzg392auI+69uk5EPGjUXuhkq/K208J/TWpLG7J8ebIEQ==
+"@types/jest@^28.1.6":
+  version "28.1.6"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-28.1.6.tgz#d6a9cdd38967d2d746861fb5be6b120e38284dd4"
+  integrity sha512-0RbGAFMfcBJKOmqRazM8L98uokwuwD5F8rHrv/ZMbrZBwVOWZUyPG6VFNscjYr/vjM3Vu4fRrCPbOs42AfemaQ==
   dependencies:
     jest-matcher-utils "^28.0.0"
     pretty-format "^28.0.0"
@@ -7973,6 +7973,19 @@ cross-undici-fetch@^0.4.11, cross-undici-fetch@^0.4.2:
     undici "5.5.1"
     web-streams-polyfill "^3.2.0"
 
+cross-undici-fetch@^0.4.13:
+  version "0.4.13"
+  resolved "https://registry.yarnpkg.com/cross-undici-fetch/-/cross-undici-fetch-0.4.13.tgz#cc693121267f8203217e0c8768d3d4cf97889b44"
+  integrity sha512-7g4hCZcq/9DiYhF43lRWgtZjPqg8tMrjG3eO94QiFQcdFR4TcmcT0Czdu7H+brXDkdbWJQrjYCV93ggE61INDA==
+  dependencies:
+    abort-controller "^3.0.0"
+    busboy "^1.6.0"
+    form-data-encoder "^1.7.1"
+    formdata-node "^4.3.1"
+    node-fetch "^2.6.7"
+    undici "5.5.1"
+    web-streams-polyfill "^3.2.0"
+
 crypto-browserify@^3.11.0:
   version "3.12.0"
   resolved "https://registry.yarnpkg.com/crypto-browserify/-/crypto-browserify-3.12.0.tgz#396cf9f3137f03e4b8e532c58f698254e00f80ec"
@@ -9766,10 +9779,10 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
-framer-motion@^6.5.0:
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-6.5.0.tgz#aea138fd47cebaf197901d030da4c5cc77b41a09"
-  integrity sha512-nd6IrudXz5jDdlfps54QArUAEqbCJHcm/r8TB4OSBrylQMULsJc+kKDFHn3Lk5R6yakRqOXeFZ/3W8WrwlodAQ==
+framer-motion@^6.5.1:
+  version "6.5.1"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-6.5.1.tgz#802448a16a6eb764124bf36d8cbdfa6dd6b931a7"
+  integrity sha512-o1BGqqposwi7cgDrtg0dNONhkmPsUFDaLcKXigzuTFC5x58mE8iyTazxSudFzmT6MEyJKfjjU8ItoMe3W+3fiw==
   dependencies:
     "@motionone/dom" "10.12.0"
     framesync "6.0.1"
