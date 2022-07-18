@@ -57,9 +57,10 @@ const Feedback = () => {
 
         <Textarea
           ref={textArea}
+          _placeholder={{ fontWeight: 'thin', fontStyle: 'italic' }}
           resize={'none'}
           height="16rem"
-          placeholder="The Toilet Map is a free and open source project that we maintain in our spare time. Please feel free to leave us some constructive feedback about your experience through this form."
+          placeholder="The Toilet Map is a free and open source project that we maintain in our spare time. Let us know if you have any suggestions about how we can improve the service through this form."
         />
         <Button onClick={submitFeedback}>Submit</Button>
       </Stack>
