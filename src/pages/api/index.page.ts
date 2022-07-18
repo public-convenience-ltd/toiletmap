@@ -6,7 +6,11 @@ import redactedDirective from '../../api/directives/redactedDirective';
 import authDirective from '../../api/directives/authDirective';
 import schema from '../../api-client/schema';
 import { createServer } from '@graphql-yoga/node';
-import { createInMemoryCache, useResponseCache } from '@envelop/response-cache';
+import {
+  createInMemoryCache,
+  defaultBuildResponseCacheKey,
+  useResponseCache,
+} from '@envelop/response-cache';
 import { useSentry } from '@envelop/sentry';
 import Redis from 'ioredis';
 import { createRedisCache } from '@envelop/response-cache-redis';
@@ -89,6 +93,23 @@ export const server = createServer({
       enabled: (context) => !context?.user || !context?.revalidate,
       session: () => null,
       cache,
+      ttl: 60 * 1000 * 60, // cache tiles for 60 mins by default
+      buildResponseCacheKey: async (params) => {
+        const geohash = params.variableValues?.geohash;
+        // prefer the VERCEL_URL env variable so cache is unique for each staging deploy
+        // otherwise we share the cache between production instances so it is retained
+        // between deploys.
+        const env =
+          process.env.VERCEL_ENV !== 'production'
+            ? process.env.VERCEL_URL ?? process.env.NODE_ENV
+            : 'production';
+
+        if (geohash) {
+          return `${env}-maptile-${geohash}`;
+        }
+
+        return await defaultBuildResponseCacheKey(params);
+      },
     }),
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useSentry(),
