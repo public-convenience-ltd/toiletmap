@@ -24,11 +24,7 @@ function Loo(props) {
   const auth = useAuth();
   let { id } = useParams();
 
-  const {
-    isValidating: loading,
-    data,
-    error,
-  } = useSWR([LOO_DETAILS, JSON.stringify({ id })]);
+  const { isValidating: loading, data, error } = useSWR([LOO_DETAILS, { id }]);
 
   if (loading || !data) return <p>Loading Loo Info</p>;
   if (error) return <p>Failed to fetch loo :(</p>;
