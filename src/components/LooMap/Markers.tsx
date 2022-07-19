@@ -40,11 +40,13 @@ const Markers = () => {
   const maxClusterRadius = useMapClusterRadius();
 
   const geohashesToLoad = useMemo(() => {
-    const bbSouth = boundingBoxSouth > 49.699282 ? boundingBoxSouth : 49.699282;
-    const bbNorth = boundingBoxNorth < 62.957486 ? boundingBoxNorth : 62.957486;
-    const bbWest = boundingBoxWest > -11.227341 ? boundingBoxWest : -11.227341;
-    const bbEast = boundingBoxEast < 3.010941 ? boundingBoxEast : 3.010941;
-    return ngeohash.bboxes(bbSouth, bbWest, bbNorth, bbEast, geohashPrecision);
+    return ngeohash.bboxes(
+      boundingBoxSouth,
+      boundingBoxWest,
+      boundingBoxNorth,
+      boundingBoxEast,
+      geohashPrecision
+    );
   }, [
     boundingBoxEast,
     geohashPrecision,
