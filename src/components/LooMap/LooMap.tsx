@@ -32,7 +32,7 @@ const MapTracker = () => {
   return null;
 };
 
-interface LooMapProps {
+export interface LooMapProps {
   center: { lat: number; lng: number };
   zoom?: number;
   minZoom?: number;

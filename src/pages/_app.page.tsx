@@ -20,7 +20,7 @@ const App = (props) => {
     () =>
       key === 'shared' ? (
         <Suspense>
-          <LooMap />
+          <LooMap minZoom={5} />
         </Suspense>
       ) : undefined,
     [key]
