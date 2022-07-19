@@ -11,26 +11,20 @@ import config, { Filter } from '../../config';
 import { getAppliedFiltersAsFilterTypes } from '../../lib/filter';
 
 export const useMapGeohashPrecision = () => {
-  // const map = useMap();
-  // const zoom = map.getZoom();
+  const map = useMap();
+  const zoom = map.getZoom();
   return useMemo(() => {
-    // For now we abandon a more dynamic system in favour of only loading tiles at once scale
-    // This is to save the number of requests that we make to the api (and subsequently mongo)
-    // for each individual client, until we figure out an efficient caching system for our
-    // tiles.
-    return 3;
-
-    // switch (true) {
-    //   case zoom < 8:
-    //     return 2;
-    //   case zoom < 11:
-    //     return 3;
-    //   case zoom < 13:
-    //     return 4;
-    //   default:
-    //     return 5;
-    // }
-  }, []);
+    switch (true) {
+      case zoom < 8:
+        return 2;
+      case zoom < 11:
+        return 3;
+      case zoom < 13:
+        return 4;
+      default:
+        return 5;
+    }
+  }, [zoom]);
 };
 
 export const useMapClusterRadius = () => {

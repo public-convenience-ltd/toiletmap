@@ -8,12 +8,8 @@ import {
   createHttpLink,
 } from '@apollo/client';
 
-import { onError } from '@apollo/client/link/error';
-
-import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
 import redactedDirective from '../api/directives/redactedDirective';
 import authDirective from '../api/directives/authDirective';
-import { sha256 } from 'crypto-hash';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -32,52 +28,31 @@ function createApolloClient() {
       uri: '/api',
       credentials: 'same-origin',
       fetch,
+      useGETForQueries: true,
     });
   }
-
-  const HANDLED_ERRORS = ['OPENING_TIMES', 'INTERNAL_SERVER_ERROR'];
-
-  const link = createPersistedQueryLink({
-    sha256,
-    useGETForHashedQueries: true,
-  })
-    .concat(
-      onError(({ graphQLErrors, response, networkError }) => {
-        if (graphQLErrors)
-          graphQLErrors.forEach(({ message, locations, path, extensions }) => {
-            const { code } = extensions;
-            console.error(
-              'A caught Apollo client error was experienced: ',
-              message
-            );
-            if (HANDLED_ERRORS.indexOf(code) > -1) {
-              console.log(
-                `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-              );
-              // eslint-disable-next-line functional/immutable-data
-              response.errors = response.errors.filter((error) => {
-                error.extensions?.code === code;
-              });
-            }
-          });
-        if (networkError) console.log(`[Network error]: ${networkError}`);
-      })
-    )
-    .concat(terminatingLink);
 
   const cache = new InMemoryCache();
   const isRunningOnServer = typeof window === 'undefined';
   return new ApolloClient({
     ssrMode: isRunningOnServer,
-    link: link,
+    link: terminatingLink,
     cache,
+    defaultOptions: {
+      watchQuery: {
+        // fetchPolicy: "cache-and-network",
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'ignore',
+      },
+      query: {
+        // fetchPolicy: "network-only",
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'all',
+      },
+    },
   });
 }
 
-/**
- * The big trick here is to merge the initialState from the pageprops with the client's current state see: https://developers.wpengine.com/blog/apollo-client-cache-rehydration-in-next-js
- * When we don't do the is the accumulates apolloState gets wiped out by any incoming static page props
- */
 export function getApolloClient() {
   const _apolloClient = apolloClient ?? createApolloClient();
 

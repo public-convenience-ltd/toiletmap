@@ -1,6 +1,3 @@
-import { ApolloServer } from 'apollo-server-micro';
-import { withSentry } from '@sentry/nextjs';
-import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import jwt, { VerifyOptions } from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { getSession } from '@auth0/nextjs-auth0';
@@ -8,12 +5,40 @@ import Cors from 'cors';
 import redactedDirective from '../../api/directives/redactedDirective';
 import authDirective from '../../api/directives/authDirective';
 import schema from '../../api-client/schema';
+import { createServer } from '@graphql-yoga/node';
+import {
+  createInMemoryCache,
+  defaultBuildResponseCacheKey,
+  useResponseCache,
+} from '@envelop/response-cache';
+import { useSentry } from '@envelop/sentry';
+import Redis from 'ioredis';
+import { createRedisCache } from '@envelop/response-cache-redis';
+
+const setupCache = () => {
+  if (process.env.ENABLE_REDIS_CACHE !== 'true') {
+    return createInMemoryCache();
+  }
+
+  const port = process.env.REDIS_PORT
+    ? parseInt(process.env.REDIS_PORT, 10)
+    : 11345;
+
+  const redis = new Redis({
+    host: process.env.REDIS_URI,
+    username: 'default',
+    port,
+    password: process.env.REDIS_PASSWORD,
+  });
+
+  return createRedisCache({ redis });
+};
+
+const cache = setupCache();
 
 const client = jwksClient({
   jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}.well-known/jwks.json`,
 });
-
-import { dbConnect } from '../../api/db';
 
 function getKey(header, cb) {
   client.getSigningKey(header.kid, function (err, key) {
@@ -31,10 +56,11 @@ const options: VerifyOptions = {
 // Add GraphQL API
 const finalSchema = schema(authDirective, redactedDirective);
 
-export const server = new ApolloServer({
+export const server = createServer({
+  endpoint: '/api',
   schema: finalSchema,
-  cache: 'bounded',
   context: async ({ req, res }) => {
+    const revalidate = req.headers.referer.indexOf('message=') > -1;
     let user = null;
     try {
       // Support auth by header (legacy SPA and third-party apps)
@@ -59,12 +85,39 @@ export const server = new ApolloServer({
     } catch (e) {
       console.error(e);
     }
+
     return {
       user,
+      revalidate,
     };
   },
-  introspection: true,
-  plugins: [responseCachePlugin({})],
+  plugins: [
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useResponseCache({
+      enabled: (context) => !context?.user || !context?.revalidate,
+      session: () => null,
+      cache,
+      ttl: 60 * 1000 * 60, // cache tiles for 60 mins by default
+      buildResponseCacheKey: async (params) => {
+        const geohash = params.variableValues?.geohash;
+        // prefer the VERCEL_URL env variable so cache is unique for each staging deploy
+        // otherwise we share the cache between production instances so it is retained
+        // between deploys.
+        const env =
+          process.env.VERCEL_ENV !== 'production'
+            ? process.env.VERCEL_URL ?? process.env.NODE_ENV
+            : 'production';
+
+        if (geohash) {
+          return `${env}-maptile-${geohash}`;
+        }
+
+        return await defaultBuildResponseCacheKey(params);
+      },
+    }),
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useSentry(),
+  ],
 });
 
 export const config = {
@@ -72,8 +125,6 @@ export const config = {
     bodyParser: false,
   },
 };
-
-const startServer = server.start();
 
 // Initializing the cors middleware
 const cors = Cors({
@@ -103,12 +154,7 @@ function runMiddleware(req, res, fn) {
 
 async function handler(req, res) {
   await runMiddleware(req, res, cors);
-  // We'll need a mongodb connection
-  await dbConnect();
-  await startServer;
-  await server.createHandler({
-    path: '/api',
-  })(req, res);
+  return server(req, res);
 }
 
-export default withSentry(handler);
+export default handler;

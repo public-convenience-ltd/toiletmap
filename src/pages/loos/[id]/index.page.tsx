@@ -150,12 +150,11 @@ const LooPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
 };
 
 export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
-  const { dbConnect } = await import('../../../api/db');
-  await dbConnect();
   try {
     const res = await ssrFindLooById.getServerPage(
       {
         variables: { id: params.id as string },
+        fetchPolicy: 'no-cache',
       },
       { req }
     );
