@@ -221,14 +221,16 @@ describe('Home page tests', () => {
     it('should update the accessibility overlay list when the user pans or zooms', () => {
       cy.visit('/').wait(500);
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
-      cy.get('#gbptm-map').focus().wait(200);
+      cy.get('#gbptm-map').focus().wait(500);
       cy.get('.accessibility-box').should('exist');
       cy.contains("Use number keys to show a toilet's details");
       cy.contains('Arrow keys pan the map');
       cy.contains('change the map zoom level');
       // zoom out and confirm that toilets are intersecting the focus window
       // and that they are added to the list.
-      cy.get('#gbptm-map').focus().type('{-}{-}{-}', { delay: 500 });
+      cy.get('#gbptm-map')
+        .focus()
+        .type('{-}{-}{-}', { delay: 500, force: true });
       cy.contains('slow decoration');
       cy.contains('agile energy');
       cy.contains('bite-sized academy');
@@ -258,7 +260,7 @@ describe('Home page tests', () => {
       cy.contains('change the map zoom level');
       // zoom out and confirm that toilets are intersecting the focus window
       // and that they are added to the list.
-      cy.get('#gbptm-map').focus().type('{-}{-}', { delay: 300 });
+      cy.get('#gbptm-map').type('{-}{-}', { delay: 300, force: true });
       cy.findByText('negative eve')
         .siblings()
         .find('b')

@@ -182,7 +182,7 @@ describe('Home page tests', () => {
       cy.contains('change the map zoom level');
       // zoom out and confirm that toilets are intersecting the focus window
       // and that they are added to the list.
-      cy.get('#gbptm-map').focus().type('{-}{-}{-}', { delay: 500 });
+      cy.get('#gbptm-map').type('{-}{-}{-}', { delay: 500, force: true });
       cy.contains('cold group');
       cy.contains('negative eve');
       cy.get('#gbptm-map').type('{downarrow}', { delay: 500 }).wait(500);
@@ -205,7 +205,9 @@ describe('Home page tests', () => {
       cy.contains('change the map zoom level');
       // zoom out and confirm that toilets are intersecting the focus window
       // and that they are added to the list.
-      cy.get('#gbptm-map').focus().type('{-}{-}{-}', { delay: 300 }).wait(500);
+      cy.get('#gbptm-map')
+        .type('{-}{-}{-}', { delay: 300, force: true })
+        .wait(500);
 
       cy.get('span')
         .contains('negative eve')
