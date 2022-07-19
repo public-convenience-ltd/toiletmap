@@ -37,7 +37,7 @@ export default function Search() {
     isValidating: loading,
     data,
     error,
-  } = useSWR([SEARCH_QUERY, JSON.stringify(variables)]);
+  } = useSWR([SEARCH_QUERY, variables]);
 
   function search(params) {
     let query = stringify({ ...variables, ...params });
