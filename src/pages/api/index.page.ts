@@ -97,7 +97,7 @@ export const server = createServer({
       enabled: (context) => !context?.user || !context?.revalidate,
       session: () => null,
       cache,
-      ttl: 60 * 1000 * 60, // cache tiles for 60 mins by default
+      ttl: 60 * 1000 * 60 * 6, // cache tiles for 6 hours
       buildResponseCacheKey: async (params) => {
         const geohash = params.variableValues?.geohash;
         // prefer the VERCEL_URL env variable so cache is unique for each staging deploy
