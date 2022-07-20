@@ -24,10 +24,9 @@ import { useMapState } from '../../../components/MapState';
 const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
   function (props) {
     const loo = props?.data?.loo;
-    const { user, isLoading } = useUser();
-
-    const [reason, setReason] = useState('');
     const router = useRouter();
+    const { user, isLoading } = useUser();
+    const [reason, setReason] = useState('');
     const [, setMapState] = useMapState();
 
     const [
@@ -63,6 +62,10 @@ const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
         );
       }
     }, [removeData, router, setMapState]);
+
+    if (isLoading) {
+      return <PageLoading />;
+    }
 
     if (props?.notFound) {
       return (
@@ -106,10 +109,6 @@ const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
 
     if (!loo.active) {
       router.push('/');
-    }
-
-    if (isLoading) {
-      return <PageLoading />;
     }
 
     if (!user) {
@@ -183,7 +182,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
     if (res.props.error || !res.props.data) {
       return {
-        notFound: true,
+        props: {
+          notFound: true,
+        },
       };
     }
 
