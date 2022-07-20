@@ -32,13 +32,22 @@ describe('Remove page tests', () => {
 
       cy.get('[data-toiletid="1dd2dd8c7cb5c3fd8e956fce"]').should('exist');
 
+      // Ensure the successful removal toast is displayed.
       cy.contains('Thank you, toilet removed!');
-      cy.contains('Removed');
+
+      // Check that the removed chip is displayed along with the associated tooltip.
+      cy.contains('Removed').trigger('mouseover');
+      cy.contains(
+        'I am removing this toilet because it has been closed for a looooooooong time'
+      );
 
       cy.get('body').trigger('keydown', { key: 'Escape' });
 
-      // Check that the removed chip is displayed
-      cy.contains('Removed');
+      // Check that the removed chip is displayed along with the associated tooltip.
+      cy.contains('Removed').trigger('mouseover');
+      cy.contains(
+        'I am removing this toilet because it has been closed for a looooooooong time'
+      );
 
       cy.get('body').trigger('keydown', { key: 'Escape' });
 

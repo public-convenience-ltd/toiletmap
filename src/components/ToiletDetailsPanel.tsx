@@ -18,6 +18,7 @@ import {
   faQuestion,
   faChevronDown,
   faSpinner,
+  faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 import lightFormat from 'date-fns/lightFormat';
@@ -445,7 +446,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
                   aria-label={`Removal reason: ${data?.removalReason}`}
                 >
                   <Badge colorScheme="red" fontSize={'sm'}>
-                    Removed
+                    Removed <Icon icon={faInfoCircle} />
                   </Badge>
                 </Tooltip>
               )}
@@ -597,7 +598,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
               aria-label={`Removal reason: ${data?.removalReason}`}
             >
               <Badge colorScheme="red" fontSize={'sm'}>
-                Removed
+                Removed <Icon icon={faInfoCircle} />
               </Badge>
             </Tooltip>
           )}
