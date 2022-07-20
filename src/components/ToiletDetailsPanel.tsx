@@ -26,6 +26,8 @@ import parseISO from 'date-fns/parseISO';
 import add from 'date-fns/add';
 import Link from 'next/link';
 
+import { Badge } from '@chakra-ui/react';
+
 import Box from './Box';
 import Button from './Button';
 import Text from './Text';
@@ -102,12 +104,7 @@ const DistanceTo = ({ from, to }) => {
   );
 };
 
-const ToiletDetailsPanel = ({
-  data,
-  // onDimensionsChange,
-  startExpanded = false,
-  children,
-}) => {
+const ToiletDetailsPanel = ({ data, startExpanded = false, children }) => {
   const [isExpanded, setIsExpanded] = React.useState(startExpanded);
 
   const router = useRouter();
@@ -430,7 +427,12 @@ const ToiletDetailsPanel = ({
               id="#toilet-details-heading"
             >
               {titleFragment}
-              <Spacer mb={2} />
+              {data?.active === false && (
+                <Badge colorScheme="red" fontSize={'sm'}>
+                  Removed
+                </Badge>
+              )}
+              <Spacer mb={3} />
               {getDirectionsFragment}
               <Media greaterThanOrEqual="md">
                 <Spacer mb={4} />
@@ -571,8 +573,12 @@ const ToiletDetailsPanel = ({
     >
       <Grid>
         <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
-          {titleFragment}
-          <Spacer mb={2} />
+          {titleFragment} <Spacer mb={2} />
+          {data?.active === false && (
+            <Badge colorScheme="red" fontSize={'sm'}>
+              Removed
+            </Badge>
+          )}
         </Box>
 
         <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
