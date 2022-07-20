@@ -1,7 +1,7 @@
 describe('Remove page tests', () => {
-  context('Mobile', () => {
+  context('Desktop', () => {
     beforeEach(() => {
-      cy.viewport('iphone-8');
+      cy.viewport('macbook-16');
     });
     before(() => {
       cy.login();
@@ -16,7 +16,7 @@ describe('Remove page tests', () => {
     });
 
     it('should remove a toilet successfully when going through the removal flow', () => {
-      cy.visit('/loos/ea0abca4b3f96bbea983f2ab/remove');
+      cy.visit('/loos/1dd2dd8c7cb5c3fd8e956fce/remove');
 
       // Check the page content.
       cy.contains('Toilet Remover');
@@ -30,7 +30,7 @@ describe('Remove page tests', () => {
         );
       cy.findByText('Remove').click();
 
-      cy.get('[data-toiletid="ea0abca4b3f96bbea983f2ab"]').should('exist');
+      cy.get('[data-toiletid="1dd2dd8c7cb5c3fd8e956fce"]').should('exist');
 
       // Ensure the successful removal toast is displayed.
       cy.contains('Thank you, toilet removed!');
@@ -52,7 +52,7 @@ describe('Remove page tests', () => {
       cy.get('body').trigger('keydown', { key: 'Escape' });
 
       // Ensure that the toilet is removed from the geohash tile cache
-      cy.get('[data-toiletid="ea0abca4b3f96bbea983f2ab"]').should('not.exist');
+      cy.get('[data-toiletid="1dd2dd8c7cb5c3fd8e956fce"]').should('not.exist');
     });
   });
 });

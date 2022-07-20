@@ -18,6 +18,7 @@ import {
   faQuestion,
   faChevronDown,
   faSpinner,
+  faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 import lightFormat from 'date-fns/lightFormat';
@@ -25,6 +26,10 @@ import getISODay from 'date-fns/getISODay';
 import parseISO from 'date-fns/parseISO';
 import add from 'date-fns/add';
 import Link from 'next/link';
+
+import { Loo } from '../api-client/graphql';
+
+import { Badge, Tooltip } from '@chakra-ui/react';
 
 import Box from './Box';
 import Button from './Button';
@@ -102,9 +107,14 @@ const DistanceTo = ({ from, to }) => {
   );
 };
 
-const ToiletDetailsPanel = ({
+interface ToiletDetailsPanelProps {
+  data: Loo;
+  startExpanded?: boolean;
+  children?: React.ReactNode;
+}
+
+const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
   data,
-  // onDimensionsChange,
   startExpanded = false,
   children,
 }) => {
@@ -430,7 +440,17 @@ const ToiletDetailsPanel = ({
               id="#toilet-details-heading"
             >
               {titleFragment}
-              <Spacer mb={2} />
+              {data?.active === false && (
+                <Tooltip
+                  label={`Removal reason: ${data?.removalReason}`}
+                  aria-label={`Removal reason: ${data?.removalReason}`}
+                >
+                  <Badge colorScheme="red" fontSize={'sm'}>
+                    Removed <Icon icon={faInfoCircle} />
+                  </Badge>
+                </Tooltip>
+              )}
+              <Spacer mb={3} />
               {getDirectionsFragment}
               <Media greaterThanOrEqual="md">
                 <Spacer mb={4} />
@@ -571,8 +591,17 @@ const ToiletDetailsPanel = ({
     >
       <Grid>
         <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
-          {titleFragment}
-          <Spacer mb={2} />
+          {titleFragment} <Spacer mb={2} />
+          {data?.active === false && (
+            <Tooltip
+              label={`Removal reason: ${data?.removalReason}`}
+              aria-label={`Removal reason: ${data?.removalReason}`}
+            >
+              <Badge colorScheme="red" fontSize={'sm'}>
+                Removed <Icon icon={faInfoCircle} />
+              </Badge>
+            </Tooltip>
+          )}
         </Box>
 
         <Box width={['100%', '50%', '25%']} padding={[3, 4]}>

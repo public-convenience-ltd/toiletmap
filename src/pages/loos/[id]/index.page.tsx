@@ -7,18 +7,24 @@ import { useMapState } from '../../../components/MapState';
 import config from '../../../config';
 import { withApollo } from '../../../api-client/withApollo';
 import { GetServerSideProps } from 'next';
-import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
+import { ssrFindLooById } from '../../../api-client/page';
 import { useRouter } from 'next/router';
 import ToiletDetailsPanel from '../../../components/ToiletDetailsPanel';
 import Notification from '../../../components/Notification';
 import NotFound from '../../404.page';
 import { css } from '@emotion/react';
+import { FindLooByIdQuery } from '../../../api-client/graphql';
+import { ApolloError } from '@apollo/client';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
-const LooPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
-  props
-) => {
+type CustomLooByIdComp = React.FC<{
+  data?: FindLooByIdQuery;
+  error?: ApolloError;
+  notFound?: boolean;
+}>;
+
+const LooPage: CustomLooByIdComp = (props) => {
   const [mapState, setMapState] = useMapState();
 
   const router = useRouter();
@@ -51,8 +57,6 @@ const LooPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
       setMapState,
     ]
   );
-
-  const [, setToiletPanelDimensions] = React.useState({});
 
   const pageTitle = config.getTitle('Home');
 
@@ -119,11 +123,7 @@ const LooPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
 
       {props?.data?.loo && (
         <Box position="absolute" left={0} bottom={0} width="100%" zIndex={100}>
-          <ToiletDetailsPanel
-            data={props?.data?.loo}
-            startExpanded={true}
-            onDimensionsChange={setToiletPanelDimensions}
-          >
+          <ToiletDetailsPanel data={props?.data?.loo} startExpanded={true}>
             {config.alertMessages[message as string] && (
               <Box
                 position="absolute"

@@ -12,6 +12,11 @@ const moduleExports = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  compiler: {
+    removeConsole: {
+      exclude: ['error'],
+    },
+  },
   pageExtensions: ['page.tsx', 'page.ts'],
   async rewrites() {
     return [

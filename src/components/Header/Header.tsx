@@ -17,7 +17,6 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
-  Tooltip,
   Text as ChakraText,
 } from '@chakra-ui/react';
 import Feedback from '../Feedback/Feedback';
@@ -61,13 +60,11 @@ const Header = ({ children }) => {
             <Popover>
               <PopoverTrigger>
                 <Box>
-                  <Tooltip label="Feedback" aria-label="Submit feedback">
-                    <button>
-                      <Icon icon={faComments} size="2x" />
+                  <button>
+                    <Icon icon={faComments} size="2x" />
 
-                      <ChakraText fontSize={'xs'}>Feedback</ChakraText>
-                    </button>
-                  </Tooltip>
+                    <ChakraText fontSize={'xs'}>Feedback</ChakraText>
+                  </button>
                 </Box>
               </PopoverTrigger>
               <PopoverContent>

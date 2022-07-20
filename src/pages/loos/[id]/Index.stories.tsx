@@ -50,3 +50,23 @@ export default {
 export const Loo = (props) => {
   return <Main Component={LooPageNext} pageProps={props} map={<LooMap />} />;
 };
+
+export const RemovedLoo = (props) => {
+  return (
+    <Main
+      Component={LooPageNext}
+      pageProps={{
+        ...props,
+        data: {
+          ...props.data,
+          loo: {
+            ...props.data.loo,
+            active: false,
+            removalReason: 'A removal reason goes here',
+          },
+        },
+      }}
+      map={<LooMap />}
+    />
+  );
+};

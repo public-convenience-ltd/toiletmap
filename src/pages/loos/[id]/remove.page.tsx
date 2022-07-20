@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useUser } from '@auth0/nextjs-auth0';
 
@@ -19,17 +19,20 @@ import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
 import { GetServerSideProps } from 'next';
 import NotFound from '../../404.page';
 import { css } from '@emotion/react';
+import { useMapState } from '../../../components/MapState';
 
 const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
   function (props) {
     const loo = props?.data?.loo;
-    const { user, isLoading } = useUser();
-
-    const [reason, setReason] = useState('');
     const router = useRouter();
+    const { user, isLoading } = useUser();
+    const [reason, setReason] = useState('');
+    const [, setMapState] = useMapState();
 
-    const [removeLooMutation, { loading: loadingRemove, error: removeError }] =
-      useRemoveLooMutation();
+    const [
+      removeLooMutation,
+      { loading: loadingRemove, error: removeError, data: removeData },
+    ] = useRemoveLooMutation();
 
     const updateReason = (evt) => {
       setReason(evt.currentTarget.value);
@@ -38,15 +41,31 @@ const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
     const onSubmit = async (e: { preventDefault: () => void }) => {
       e.preventDefault();
 
-      await removeLooMutation({
+      const { errors } = await removeLooMutation({
         variables: {
           id: loo?.id,
           reason,
         },
       });
-
-      router.push(`/loos/${loo?.id}?message=removed`);
+      if (errors) {
+        console.error('remove error', errors);
+      }
     };
+
+    // redirect to toilet entry page upon successful removal
+    useEffect(() => {
+      if (removeData) {
+        setMapState({ searchLocation: undefined });
+        // redirect to updated toilet entry page
+        router.push(
+          `/api/loos/${removeData.submitRemovalReport.loo.id}/revalidate?message=removed`
+        );
+      }
+    }, [removeData, router, setMapState]);
+
+    if (isLoading) {
+      return <PageLoading />;
+    }
 
     if (props?.notFound) {
       return (
@@ -90,10 +109,6 @@ const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
 
     if (!loo.active) {
       router.push('/');
-    }
-
-    if (isLoading) {
-      return <PageLoading />;
     }
 
     if (!user) {
@@ -167,7 +182,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
     if (res.props.error || !res.props.data) {
       return {
-        notFound: true,
+        props: {
+          notFound: true,
+        },
       };
     }
 
