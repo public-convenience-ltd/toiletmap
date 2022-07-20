@@ -1,10 +1,18 @@
-# Toiletmap.org.uk
+# toiletmap.org.uk
 
 [Public Convenience Ltd](https://www.publicconvenience.org/)'s _[Great British Public Toilet Map](https://www.toiletmap.org.uk)_
 
-This documentation is oriented towards developers, if you'd like to learn more about our data and how to access it please refer to [Toilet Map Explorer](https://www.toiletmap.org.uk/explorer).
+[<img src="./public/powered-by-vercel.svg" width="150" alt="Powered by Vercel">](https://vercel.com/?utm_source=public-convenience-ltd&utm_campaign=oss)
 
-[![Powered by Vercel](./public/powered-by-vercel.svg)](https://vercel.com/?utm_source=public-convenience-ltd&utm_campaign=oss)
+## What is the Toilet Map?
+
+Everyone will, at some point in the day, need to use the toilet. Some people will need facilities more than others, and some will need to find toilets sooner rather than later.
+
+The Great British Public Toilet Map aims to be a complete, up-to-date, sustainable source of toilet locations. It's the UK's largest database of publicly-accessible toilets, with over 14,000 facilities.
+
+The project is completely open source and is supported by a fantastic set of [Sponsors](#sponsors) who help us make the service as good as it can possibly be.
+
+This documentation is oriented towards developers, if you'd like to learn more about our data and how to access it please refer to [Toilet Map Explorer](https://www.toiletmap.org.uk/explorer).
 
 ## Getting Started
 
@@ -41,7 +49,14 @@ If you'd like to make contributions to the project this is a good time to read o
 The toiletmap UI is built with Next.js. The API is written in GraphQL with [Apollo Server](https://www.npmjs.com/package/apollo-server) and data is stored in a MongoDB instance via [mongoose](https://mongoosejs.com/). Authentication is handled by [Auth0](https://auth0.com/) and the site is deployed to [vercel](https://vercel.com)
 
 ## Sponsors
+
 Our brilliant sponsors help us to bring a stable and high quality service to our users.
+
+### Vercel
+
+[<img src="./public/powered-by-vercel.svg" width="212" alt="Powered by Vercel">](https://vercel.com/?utm_source=public-convenience-ltd&utm_campaign=oss)
+
+Vercel sponsor the hosting and deployment of the Next.js based Toilet Map, allowing us to scale confidently and iterate quickly using their versatile platform.
 
 ### Sentry
 
