@@ -26,7 +26,9 @@ import parseISO from 'date-fns/parseISO';
 import add from 'date-fns/add';
 import Link from 'next/link';
 
-import { Badge } from '@chakra-ui/react';
+import { Loo } from '../api-client/graphql';
+
+import { Badge, Tooltip } from '@chakra-ui/react';
 
 import Box from './Box';
 import Button from './Button';
@@ -104,7 +106,17 @@ const DistanceTo = ({ from, to }) => {
   );
 };
 
-const ToiletDetailsPanel = ({ data, startExpanded = false, children }) => {
+interface ToiletDetailsPanelProps {
+  data: Loo;
+  startExpanded?: boolean;
+  children?: React.ReactNode;
+}
+
+const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
+  data,
+  startExpanded = false,
+  children,
+}) => {
   const [isExpanded, setIsExpanded] = React.useState(startExpanded);
 
   const router = useRouter();
@@ -428,9 +440,14 @@ const ToiletDetailsPanel = ({ data, startExpanded = false, children }) => {
             >
               {titleFragment}
               {data?.active === false && (
-                <Badge colorScheme="red" fontSize={'sm'}>
-                  Removed
-                </Badge>
+                <Tooltip
+                  label={`Removal reason: ${data?.removalReason}`}
+                  aria-label={`Removal reason: ${data?.removalReason}`}
+                >
+                  <Badge colorScheme="red" fontSize={'sm'}>
+                    Removed
+                  </Badge>
+                </Tooltip>
               )}
               <Spacer mb={3} />
               {getDirectionsFragment}
@@ -575,9 +592,14 @@ const ToiletDetailsPanel = ({ data, startExpanded = false, children }) => {
         <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
           {titleFragment} <Spacer mb={2} />
           {data?.active === false && (
-            <Badge colorScheme="red" fontSize={'sm'}>
-              Removed
-            </Badge>
+            <Tooltip
+              label={`Removal reason: ${data?.removalReason}`}
+              aria-label={`Removal reason: ${data?.removalReason}`}
+            >
+              <Badge colorScheme="red" fontSize={'sm'}>
+                Removed
+              </Badge>
+            </Tooltip>
           )}
         </Box>
 

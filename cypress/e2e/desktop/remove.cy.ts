@@ -17,6 +17,8 @@ describe('Remove page tests', () => {
 
     it('should remove a toilet successfully when going through the removal flow', () => {
       cy.visit('/loos/1dd2dd8c7cb5c3fd8e956fce/remove');
+
+      // Check the page content.
       cy.contains('Toilet Remover');
       cy.contains(
         "Please let us know why you're removing this toilet from the map using the form below."
@@ -35,9 +37,12 @@ describe('Remove page tests', () => {
 
       cy.get('body').trigger('keydown', { key: 'Escape' });
 
+      // Check that the removed chip is displayed
       cy.contains('Removed');
 
       cy.get('body').trigger('keydown', { key: 'Escape' });
+
+      // Ensure that the toilet is removed from the geohash tile cache
       cy.get('[data-toiletid="1dd2dd8c7cb5c3fd8e956fce"]').should('not.exist');
     });
   });
