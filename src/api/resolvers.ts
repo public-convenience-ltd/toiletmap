@@ -13,6 +13,32 @@ import { GraphQLDateTime } from 'graphql-iso-date';
 import without from 'lodash/without';
 import OpeningTimesScalar from './OpeningTimesScalar';
 
+import { prisma } from './db/prisma/db';
+
+// Temporary home for methods pulled from Mongoose schemas
+const findNear = (lat, lng, radius) => [
+  {
+    $geoNear: {
+      near: {
+        type: 'Point',
+        coordinates: [lat, lng],
+      },
+      distanceField: 'distance',
+      maxDistance: radius,
+      spherical: true,
+    },
+  },
+  {
+    $match: {
+      'properties.active': true,
+    },
+  },
+];
+
+const fixRawQueryLoosIds = (loos) =>
+  loos.map((loo) => ({ ...loo, id: loo['_id']['$oid'] }));
+// end of the temporary home
+
 const subPropertyResolver = (property) => (parent, _args, _context, info) =>
   parent[property][info.fieldName];
 const looInfoResolver = (property) => {
@@ -42,13 +68,9 @@ const looInfoResolver = (property) => {
 
 const resolvers = {
   Query: {
-    loo: async (_parent, args) => {
-      await dbConnect();
-      return await DBLoo.findById(args.id);
-    },
+    loo: (_parent, args) =>
+      prisma.newloos.findUnique({ where: { id: args.id } }),
     loos: async (_parent, args, context) => {
-      await dbConnect();
-
       const REQUIRED_PERMISSION = 'VIEW_CONTRIBUTOR_INFO';
 
       // Construct the search query
@@ -100,6 +122,22 @@ const resolvers = {
         ];
       }
 
+      // const results = await prisma.post.findMany({
+      //   skip: 40,
+      //   take: 10,
+      //   where: {
+      //     email: {
+      //       contains: 'prisma.io',
+      //     },
+      //   },
+      // })
+
+      // prisma.newloos.findMany({
+      //   skip: args.pagination.page * args.pagination.limit,
+      //   take: args.pagination.limit,
+      //   orderBy: {},
+      // });
+
       const res = await DBLoo.paginate(query, {
         page: args.pagination.page,
         limit: args.pagination.limit,
@@ -114,52 +152,63 @@ const resolvers = {
         page: res.page,
       };
     },
-    looNamesByIds: async (_parent, args) => {
-      await dbConnect();
-      return await DBLoo.find({ _id: { $in: args.idList } });
-    },
-    loosByProximity: async (_parent, args) => {
-      await dbConnect();
-      return await DBLoo.findNear(
-        args.from.lng,
-        args.from.lat,
-        args.from.maxDistance
-      );
-    },
+    looNamesByIds: (_parent, args) =>
+      prisma.newloos.findMany({
+        where: { id: { in: args.idList } },
+      }),
+    loosByProximity: (_parent, args) =>
+      prisma.newloos.aggregateRaw({
+        pipeline: findNear(args.from.lng, args.from.lat, args.from.maxDistance),
+      }),
     loosByGeohash: async (_parent, args) => {
-      await dbConnect();
       const geohash: string = args.geohash ?? '';
       const current = ngeohash.decode_bbox(geohash);
 
       const areaLooData = await Promise.all(
         [current].map(async (boundingBox) => {
           const [minLat, minLon, maxLat, maxLon] = boundingBox;
-          return await DBLoo.find({ 'properties.active': true })
-            .where('properties.geometry')
-            .box([minLon, minLat], [maxLon, maxLat]);
+          return await prisma.newloos.findRaw({
+            filter: {
+              'properties.active': true,
+              'properties.geometry': {
+                $geoWithin: {
+                  $box: [
+                    [minLon, minLat],
+                    [maxLon, maxLat],
+                  ],
+                },
+              },
+            },
+          });
         })
       );
 
-      return stringifyAndCompressLoos(areaLooData.flat());
+      return stringifyAndCompressLoos(fixRawQueryLoosIds(areaLooData.flat()));
     },
     ukLooMarkers: async () => {
-      await dbConnect();
-      const loos = await DBLoo.find({ 'properties.active': true })
-        .where('properties.geometry')
-        .within({
-          type: 'Polygon',
-          coordinates: [
-            [
-              [-0.3515625, 61.44927080076419],
-              [-15.5126953125, 55.7642131648377],
-              [-7.66845703125, 48.151428143221224],
-              [2.35107421875, 51.34433866059924],
-              [-0.3515625, 61.44927080076419],
-            ],
-          ],
-        });
+      const loos = await prisma.newloos.findRaw({
+        filter: {
+          'properties.active': true,
+          'properties.geometry': {
+            $geoWithin: {
+              $geometry: {
+                type: 'Polygon',
+                coordinates: [
+                  [
+                    [-0.3515625, 61.44927080076419],
+                    [-15.5126953125, 55.7642131648377],
+                    [-7.66845703125, 48.151428143221224],
+                    [2.35107421875, 51.34433866059924],
+                    [-0.3515625, 61.44927080076419],
+                  ],
+                ],
+              },
+            },
+          },
+        },
+      });
 
-      return stringifyAndCompressLoos(loos);
+      return stringifyAndCompressLoos(fixRawQueryLoosIds(loos));
     },
     areas: async () => {
       await dbConnect();
@@ -380,20 +429,35 @@ const resolvers = {
   },
 
   Report: {
-    id: (r) => r._id.toString(),
-    previous: (r) => DBReport.findById(r.previous),
+    id: (l) => {
+      // handle results from raw queries, which return a nested object for _id
+      const oid = l?.['_id']?.['$oid'];
+      if (oid) {
+        return oid;
+      }
+      return l.id;
+    },
+    previous: (r) => prisma.newloos.findUnique({ where: { id: r.previous } }),
     location: (r) =>
       r.diff.geometry && {
         lng: r.diff.geometry.coordinates[0],
         lat: r.diff.geometry.coordinates[1],
       },
     ...looInfoResolver('diff'),
-    loo: (r) => r.getLoo(),
+    loo: (r) => prisma.newloos.findFirst({ where: { reports: { has: r.id } } }),
   },
 
   Loo: {
-    id: (l) => l._id.toString(),
-    reports: (l) => DBReport.find().where('_id').in(l.reports).exec(),
+    id: (l) => {
+      // handle results from raw queries, which return a nested object for _id
+      const oid = l?.['_id']?.['$oid'];
+      if (oid) {
+        return oid;
+      }
+      return l.id;
+    },
+    reports: (l) =>
+      prisma.newreports.findMany({ where: { id: { in: l.reports } } }),
     location: (l) => ({
       lng: l.properties.geometry.coordinates[0],
       lat: l.properties.geometry.coordinates[1],
