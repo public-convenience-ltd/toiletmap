@@ -26,7 +26,7 @@
     "areas": "node -r dotenv/config ./src/api/db/manage/areaToDatabase/index.js",
     "startMemoryMongo": "MONGODB_URI=mongodb://localhost:27017/toiletmap TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' yarn ts-node --transpileOnly ./scripts/setupAndStartMemoryMongo.ts",
     "generateMocks": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' yarn ts-node --transpileOnly ./scripts/generateMocks.ts",
-    "prepare": "husky install && cp ./node_modules/graphql-voyager/dist/voyager.worker.js ./public && yarn codegen",
+    "prepare": "husky install && cp ./node_modules/graphql-voyager/dist/voyager.worker.js ./public && yarn codegen && prisma generate --data-proxy",
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "repository": {
