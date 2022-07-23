@@ -2,13 +2,7 @@
 import { stringifyAndCompressLoos } from '../lib/loo';
 import ngeohash from 'ngeohash';
 
-import {
-  Loo as DBLoo,
-  Report as DBReport,
-  Area,
-  MapGeo,
-  dbConnect,
-} from './db';
+import { Loo as DBLoo, Report as DBReport, MapGeo, dbConnect } from './db';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import without from 'lodash/without';
 import OpeningTimesScalar from './OpeningTimesScalar';
@@ -36,7 +30,15 @@ const findNear = (lat, lng, radius) => [
 ];
 
 const fixRawQueryLoosIds = (loos) =>
-  loos.map((loo) => ({ ...loo, id: loo['_id']['$oid'] }));
+  loos.map((loo) => ({ ...loo, id: oidMapper(loo) }));
+
+const oidMapper = (loo) => {
+  const oid = loo?.['_id']?.['$oid'];
+  if (oid) {
+    return oid;
+  }
+  return loo?.id;
+};
 // end of the temporary home
 
 const subPropertyResolver = (property) => (parent, _args, _context, info) =>
@@ -122,22 +124,6 @@ const resolvers = {
         ];
       }
 
-      // const results = await prisma.post.findMany({
-      //   skip: 40,
-      //   take: 10,
-      //   where: {
-      //     email: {
-      //       contains: 'prisma.io',
-      //     },
-      //   },
-      // })
-
-      // prisma.newloos.findMany({
-      //   skip: args.pagination.page * args.pagination.limit,
-      //   take: args.pagination.limit,
-      //   orderBy: {},
-      // });
-
       const res = await DBLoo.paginate(query, {
         page: args.pagination.page,
         limit: args.pagination.limit,
@@ -210,19 +196,13 @@ const resolvers = {
 
       return stringifyAndCompressLoos(fixRawQueryLoosIds(loos));
     },
-    areas: async () => {
-      await dbConnect();
-      const data = await Area.find({}, { name: 1, type: 1 }).exec();
-
-      const areas = data.map((area) => {
+    areas: async () =>
+      (await prisma.areas.findMany()).map((area) => {
         return {
           type: area.type,
           name: area.name,
         };
-      });
-
-      return areas;
-    },
+      }),
     mapAreas: async () => {
       await dbConnect();
       let query = {};
@@ -249,11 +229,8 @@ const resolvers = {
 
       return geometry;
     },
-    report: async (_parent, args) => {
-      await dbConnect();
-      const id = args.id;
-      return await DBReport.findById(id);
-    },
+    report: (_parent, args) =>
+      prisma.newreports.findUnique({ where: { id: args.id } }),
     counters: async () => {
       await dbConnect();
       const looCounters = await DBLoo.getCounters();
@@ -429,14 +406,8 @@ const resolvers = {
   },
 
   Report: {
-    id: (l) => {
-      // handle results from raw queries, which return a nested object for _id
-      const oid = l?.['_id']?.['$oid'];
-      if (oid) {
-        return oid;
-      }
-      return l.id;
-    },
+    // handle results from raw queries, which return a nested object for _id
+    id: oidMapper,
     previous: (r) => prisma.newloos.findUnique({ where: { id: r.previous } }),
     location: (r) =>
       r.diff.geometry && {
@@ -448,14 +419,7 @@ const resolvers = {
   },
 
   Loo: {
-    id: (l) => {
-      // handle results from raw queries, which return a nested object for _id
-      const oid = l?.['_id']?.['$oid'];
-      if (oid) {
-        return oid;
-      }
-      return l.id;
-    },
+    id: oidMapper,
     reports: (l) =>
       prisma.newreports.findMany({ where: { id: { in: l.reports } } }),
     location: (l) => ({
