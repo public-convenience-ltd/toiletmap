@@ -53,6 +53,7 @@ jobs:
         uses: cypress-io/github-action@v4
         env:
           MONGODB_URI: mongodb://localhost:27017/toiletmap
+          PRISMA_DATA_PROXY_URL: mongodb://localhost:27017/toiletmap
           DATABASE_NAME: toiletmap
           VERCEL_URL: http://localhost:3000
           AUTH0_SECRET: ${{ secrets.AUTH0_SECRET }}
