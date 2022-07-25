@@ -5,7 +5,6 @@ const { withSentryConfig } = require('@sentry/nextjs');
  **/
 const moduleExports = {
   reactStrictMode: true,
-  eslint: { ignoreDuringBuilds: true },
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
