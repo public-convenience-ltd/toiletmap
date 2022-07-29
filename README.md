@@ -25,12 +25,16 @@ This documentation is oriented towards developers, if you'd like to learn more a
 
 ### Installation
 
-_Clone or download and unpack the project and change into its directory and then:_
+_Clone or download and unpack the project and change into its directory and then use your favourite node version manager to switch to the version defined in our `.nvmrc`. We use [fnm](https://github.com/Schniz/fnm) as a demonstration, although alternative are available such as `asdf` and `nvm`:_
 
 ```
-nvm install && nvm use
-npm install -g yarn
-yarn
+fnm use
+```
+
+_Now we install the dependencies using the `yarn` package manager:_
+
+```
+yarn install
 ```
 
 ### Run, Toiletmap, Run
@@ -41,7 +45,7 @@ First we need a set of local environment variables:
 cp .env.local.example .env.local
 ```
 
-Next you'll need to set up a local instance of mongodb based on our mocked loo data:
+Next you'll need to set up a local instance of mongodb based on our mocked loo data. This is so that you can load something on your local instance of the Toilet Map. It's also possible to connect directly to our staging database, although you'll need to ask for those credentials should you need them.
 
 ```
 yarn startMemoryMongo
@@ -52,15 +56,18 @@ yarn startMemoryMongo
 > Server started
 ```
 
-When you run this command, 5000 mocked loos will be loaded into an in-memory mongodb instance from [mock-reports.json](./scripts/mock-reports.json). These loos are pre-generated using faker.js in [generateMocks.ts](./scripts/generateMocks.ts). Because the faker generation is set with a persistent seed, the values remain the same between generations. This is important, because we depend upon the values remaining the same in our [cypress tests](./cypress/e2e//desktop/index.cy.ts).
+When you run this command, 5000 mocked loos will be loaded into an in-memory mongodb instance from [mock-reports.json](./scripts/mock-reports.json). These loos are pre-generated using faker.js in [generateMocks.ts](./scripts/generateMocks.ts).
 
-Once you have a local mongodb instance running you can then run this to spin up your local development server:
+Because the faker generation is set with a static seed, the values remain the same between generations. This is important, because we depend upon the values remaining the same in our [cypress tests](./cypress/e2e//desktop/index.cy.ts) so we have a deterministic set of data to rely upon across our test runs.
+
+Once you have a local mongodb instance running you'll then be able to spin up a local development server using the following command:
 
 ```
 yarn dev
 ```
 
-Before long you should be looking at a browser window showing the UI!
+Once this is running, navigate to [http://localhost:3000](http://localhost:3000) and you should be presented with your very own instance of the Toilet Map that is connected to the in-memory mongodb server that we stood up in the following step.
+
 If you'd like to make contributions to the project this is a good time to read our [contributing guidelines](https://github.com/neontribe/gbptm/blob/master/.github/CONTRIBUTING.md) and our [code of conduct](https://github.com/neontribe/gbptm/blob/master/.github/CODE_OF_CONDUCT.md).
 
 ### Development
