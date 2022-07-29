@@ -16,6 +16,8 @@ This documentation is oriented towards developers, if you'd like to learn more a
 
 ## Getting Started
 
+The following is a "quick start" guide aimed at getting you started with a development environment to start hacking on the map. If you'd like to configure Auth0 for local authentication or run our end to end tests locally please take a look at our more in-depth [setup](./docs/setup.md) documentation.
+
 ### Prerequisites
 
 - [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) (or a node version matching the one specified in [.nvmrc](./nvmrc))
@@ -71,6 +73,8 @@ Once this is running, navigate to [http://localhost:3000](http://localhost:3000)
 If you'd like to make contributions to the project this is a good time to read our [contributing guidelines](https://github.com/neontribe/gbptm/blob/master/.github/CONTRIBUTING.md) and our [code of conduct](https://github.com/neontribe/gbptm/blob/master/.github/CODE_OF_CONDUCT.md).
 
 ### Development
+
+### Architecture
 
 The Toilet Map UI is built with [Next.js](https://nextjs.org/). The API is written in GraphQL with [GraphQL Yoga Server](https://github.com/dotansimha/graphql-yoga) and data is stored in a MongoDB instance via [mongoose](https://mongoosejs.com/). We use Redis as a short term cache to improve the performance of loading toilet information. Authentication is handled by [Auth0](https://auth0.com/) and the site is deployed to [vercel](https://vercel.com)
 
