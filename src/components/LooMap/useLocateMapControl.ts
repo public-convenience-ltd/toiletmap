@@ -96,8 +96,9 @@ const useLocateMapControl = ({
 
       setIsActive(true);
       onLocationFound(event);
+      map.setZoom(15);
     },
-    [onLocationFound]
+    [onLocationFound, map]
   );
 
   React.useEffect(() => {
