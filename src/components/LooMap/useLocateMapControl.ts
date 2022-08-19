@@ -1,5 +1,6 @@
 import React from 'react';
 import L, { LatLngExpression, Map } from 'leaflet';
+import ngeohash from 'ngeohash';
 
 const LocationMarker = L.Marker.extend({
   initialize: function (latlng, options) {
@@ -94,10 +95,24 @@ const useLocateMapControl = ({
         radius: 9,
       }).addTo(layerRef.current);
 
+      //find neighbours of the user's location and set the map bounds to fit them
+      const encodedLocationFound = ngeohash.encode(latlng.lat, latlng.lng, 6);
+      const neighbors = ngeohash.neighbors(encodedLocationFound);
+      const { latitude: cornerNWLat, longitude: cornerNWLon } = ngeohash.decode(
+        neighbors[7]
+      );
+      const { latitude: cornerSELat, longitude: cornerSELon } = ngeohash.decode(
+        neighbors[3]
+      );
+      map.fitBounds([
+        [cornerNWLat, cornerNWLon],
+        [cornerSELat, cornerSELon],
+      ]);
+
       setIsActive(true);
       onLocationFound(event);
     },
-    [onLocationFound]
+    [onLocationFound, map]
   );
 
   React.useEffect(() => {
