@@ -313,7 +313,7 @@ const LooMap: React.FC<LooMapProps> = ({
           }
         >
           {alwaysShowGeolocateButton && <LocateMapControl />}
-          <Media greaterThan="md">
+          <Media greaterThanOrEqual="sm">
             {!alwaysShowGeolocateButton && <LocateMapControl />}
             <ZoomControl />
           </Media>
