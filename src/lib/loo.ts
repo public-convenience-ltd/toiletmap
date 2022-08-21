@@ -1,3 +1,4 @@
+import { LatLngLiteral } from 'leaflet';
 import ngeohash from 'ngeohash';
 import { Loo } from '../api-client/graphql';
 import { FILTER_TYPE, genLooFilterBitmask } from './filter';
@@ -63,4 +64,27 @@ export const filterCompressedLooByAppliedFilters = (
   }, true);
 
   return passesAll;
+};
+
+export const fitMapBoundsToUserLocationNeighbours = (
+  userLocation: LatLngLiteral,
+  map: L.Map
+) => {
+  //find neighbours of the user's location and set the map bounds to fit them
+  const encodedLocationFound = ngeohash.encode(
+    userLocation.lat,
+    userLocation.lng,
+    6
+  );
+  const neighbors = ngeohash.neighbors(encodedLocationFound);
+  const { latitude: cornerNWLat, longitude: cornerNWLon } = ngeohash.decode(
+    neighbors[7]
+  );
+  const { latitude: cornerSELat, longitude: cornerSELon } = ngeohash.decode(
+    neighbors[3]
+  );
+  map.fitBounds([
+    [cornerNWLat, cornerNWLon],
+    [cornerSELat, cornerSELon],
+  ]);
 };
