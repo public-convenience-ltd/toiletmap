@@ -17,10 +17,15 @@ interface MapState {
     lat: number;
     lng: number;
   };
+  homeLocation?: {
+    lat: number;
+    lng: number;
+  };
   geolocation?: {
     lat: number;
     lng: number;
   };
+  settingHomeLocation?: boolean;
   zoom?: number;
   appliedFilters?: Record<Filters, boolean>;
   focus?: Loo;
@@ -51,6 +56,8 @@ export const MapStateProvider = ({ children }) => {
     zoom: 16,
     appliedFilters: initialFilterState,
     searchLocation: undefined,
+    settingHomeLocation: false,
+    homeLocation: undefined,
     geohashLoadState: {},
     currentlyLoadedGeohashes: [],
   } as MapState);

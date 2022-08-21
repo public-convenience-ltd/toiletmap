@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo, useEffect } from 'react';
+import { useState, useRef, useMemo, useEffect, useCallback } from 'react';
 import styled from '@emotion/styled';
 import isPropValid from '@emotion/is-prop-valid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,9 +7,9 @@ import {
   faAngleRight,
   faPlusCircle,
   faMapMarkerAlt,
+  faHouse,
 } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-
 import { Media } from '../Media';
 import VisuallyHidden from '../VisuallyHidden';
 import Box from '../Box';
@@ -98,6 +98,19 @@ const Sidebar = () => {
   const appliedFilterCountRendered = useMemo(() => {
     return appliedFilterCount > 0 && <b>({appliedFilterCount})</b>;
   }, [appliedFilterCount]);
+
+  const currentLatLng = useMemo(() => {
+    return mapState.center;
+  }, [mapState.center]);
+
+  const isSettingHomeLocation = useMemo(() => {
+    return mapState.settingHomeLocation;
+  }, [mapState.settingHomeLocation]);
+
+  const toggleShowSetHomeLocation = useCallback(() => {
+    setMapState({ ...mapState, settingHomeLocation: !isSettingHomeLocation });
+  }, [isSettingHomeLocation, mapState, setMapState]);
+
   const plausible = usePlausible();
   return (
     <section aria-labelledby="heading-search">
@@ -291,6 +304,49 @@ const Sidebar = () => {
                   </Text>
                 </Box>
                 <Arrow isExpanded={false} />
+              </Box>
+            </Box>
+            <Box as="section" mt={4} aria-labelledby="heading-set-home">
+              <h2 id="heading-set-home">
+                <VisuallyHidden>Set your home location</VisuallyHidden>
+              </h2>
+              <Box
+                as="button"
+                type="button"
+                display="flex"
+                alignItems="center"
+                onClick={toggleShowSetHomeLocation}
+              >
+                <Icon icon={faHouse} fixedWidth size="lg" />
+                <Box mx={2}>
+                  <Text lineHeight={1}>
+                    <b>Set your home location</b>
+                  </Text>
+                </Box>
+                <Arrow isExpanded={isSettingHomeLocation} />
+              </Box>
+
+              <Box pt={2} pl={4} hidden={isSettingHomeLocation === false}>
+                <Text>
+                  Choose a starting location for when you open the map
+                </Text>
+                <Text>
+                  {currentLatLng.lat} , {currentLatLng.lng}
+                </Text>
+                <Box
+                  display="flex"
+                  mt={2}
+                  flexDirection="row"
+                  flexWrap="wrap"
+                  justifyContent="flex-start"
+                >
+                  <Box mr="2">
+                    <Button variant="secondary">Cancel</Button>
+                  </Box>
+                  <Box display="flex">
+                    <Button variant="primary">Done</Button>
+                  </Box>
+                </Box>
               </Box>
             </Box>
           </Box>

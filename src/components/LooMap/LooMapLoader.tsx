@@ -16,6 +16,7 @@ const LooMap = (props: LooMapProps) => {
   useEffect(() => {
     setLoaded(true);
   }, []);
+  const showSetHomeLocationCrosshair = mapState.settingHomeLocation;
   return (
     loaded && (
       <LooMapLoader
@@ -23,6 +24,7 @@ const LooMap = (props: LooMapProps) => {
         zoom={mapState.zoom}
         controlsOffset={20}
         withAccessibilityOverlays={true}
+        showCrosshair={showSetHomeLocationCrosshair}
         {...props}
       />
     )
