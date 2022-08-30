@@ -1,4 +1,4 @@
-import { LatLngLiteral } from 'leaflet';
+import type { LatLngLiteral } from 'leaflet';
 import ngeohash from 'ngeohash';
 import { Loo } from '../api-client/graphql';
 import { FILTER_TYPE, genLooFilterBitmask } from './filter';
@@ -66,11 +66,11 @@ export const filterCompressedLooByAppliedFilters = (
   return passesAll;
 };
 
-export const fitMapBoundsToUserLocationNeighbours = (
+export const fitMapBoundsToUserLocationNeighbouringTiles = (
   userLocation: LatLngLiteral,
   map: L.Map
 ) => {
-  //find neighbours of the user's location and set the map bounds to fit them
+  //find neighbouring tiles of the user's location and set the map bounds to fit them
   const encodedLocationFound = ngeohash.encode(
     userLocation.lat,
     userLocation.lng,

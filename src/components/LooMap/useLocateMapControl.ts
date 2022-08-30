@@ -1,6 +1,6 @@
 import React from 'react';
-import L, { LatLngExpression, Map } from 'leaflet';
-import { fitMapBoundsToUserLocationNeighbours } from '../../lib/loo';
+import L, { LatLngLiteral, Map } from 'leaflet';
+import { fitMapBoundsToUserLocationNeighbouringTiles } from '../../lib/loo';
 
 const LocationMarker = L.Marker.extend({
   initialize: function (latlng, options) {
@@ -48,7 +48,7 @@ const LocationMarker = L.Marker.extend({
 
 interface UseLocateMapControlProps {
   onLocationFound: (
-    event: { latitude: number; longitude: number } | LatLngExpression
+    event: { latitude: number; longitude: number } | LatLngLiteral
   ) => void;
   onStopLocation: () => void;
   map: Map;
@@ -75,7 +75,7 @@ const useLocateMapControl = ({
   }, [map]);
 
   const handleLocationFound = React.useCallback(
-    (event: { accuracy: number; latlng: LatLngExpression }) => {
+    (event: { accuracy: number; latlng: LatLngLiteral }) => {
       const radius = event.accuracy || 0;
       const latlng = event.latlng;
 
@@ -95,8 +95,8 @@ const useLocateMapControl = ({
         radius: 9,
       }).addTo(layerRef.current);
 
-      //find neighbours of the user's location and set the map bounds to fit them
-      fitMapBoundsToUserLocationNeighbours(latlng, map);
+      //find neighbouring tiles of the user's location and set the map bounds to fit them
+      fitMapBoundsToUserLocationNeighbouringTiles(latlng, map);
 
       setIsActive(true);
       onLocationFound(event);
