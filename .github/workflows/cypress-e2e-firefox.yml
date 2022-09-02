@@ -1,5 +1,8 @@
 name: E2E Cypress Tests (Firefox)
-on: push
+on:
+  push: []
+  pull_request:
+    types: ['review_requested']
 jobs:
   cypress-e2e-firefox:
     name: Cypress E2E Firefox
