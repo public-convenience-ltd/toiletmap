@@ -3,10 +3,14 @@ on:
   push: []
   pull_request:
     types: ['review_requested']
+  pull_request_target:
+    types: [labeled]
 jobs:
   cypress-e2e-chrome:
     name: Cypress E2E Chrome
     runs-on: ubuntu-latest
+    # Only run the e2e tests if a maintainer has labeled the PR as 'safe to test'.
+    if: contains(github.event.pull_request.labels.*.name, 'safe to test')
     timeout-minutes: 15
     strategy:
       # when one test fails, DO NOT cancel the other
