@@ -6,7 +6,6 @@ name: CI
 on:
   pull_request:
     branches: [main, next]
-
 jobs:
   test:
     name: Tests
