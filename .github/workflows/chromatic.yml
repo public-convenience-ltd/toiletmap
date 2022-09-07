@@ -6,8 +6,8 @@ on:
     branches: [main]
   pull_request:
     types: ['review_requested']
-  pull_request_target:
-    types: [labeled]
+  # pull_request_target:
+  #   types: [labeled]
 
 # List of jobs
 jobs:
@@ -15,7 +15,7 @@ jobs:
     # Operating System
     runs-on: ubuntu-latest
     # Only run the Chromatic workflow if a maintainer has labeled the PR as 'safe to test'.
-    if: contains(github.event.pull_request.labels.*.name, 'safe to test')
+    # if: contains(github.event.pull_request.labels.*.name, 'safe to test')
     # Job steps
     steps:
       - uses: actions/checkout@v1
