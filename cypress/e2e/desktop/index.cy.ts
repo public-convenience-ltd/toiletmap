@@ -106,7 +106,7 @@ describe('Home page tests', () => {
     });
 
     isPermissionAllowed('geolocation') &&
-      it.only('should not break when the geolocate button is clicked multiple times', () => {
+      it('should not break when the geolocate button is clicked multiple times', () => {
         cy.on('window:before:load', (win) => {
           const latitude = 51.5,
             longitude = -0.3,
@@ -138,7 +138,7 @@ describe('Home page tests', () => {
       });
 
     isPermissionAllowed('geolocation') &&
-      it.only('should geolocate the user when the "find a toilet near me" button is clicked', () => {
+      it('should geolocate the user when the "find a toilet near me" button is clicked', () => {
         cy.on('window:before:load', (win) => {
           const latitude = 51.5,
             longitude = -0.3,
@@ -168,7 +168,7 @@ describe('Home page tests', () => {
       });
 
     isPermissionAllowed('geolocation') &&
-      it.only('should allow user to search after geolocating', () => {
+      it('should allow user to search after geolocating', () => {
         cy.on('window:before:load', (win) => {
           const latitude = 51.5,
             longitude = -0.3,
