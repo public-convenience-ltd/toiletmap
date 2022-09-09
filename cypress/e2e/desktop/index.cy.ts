@@ -122,83 +122,67 @@ describe('Home page tests', () => {
 
         cy.get('b').contains('Find').click();
         cy.get('b').contains('Find').click();
-        cy.get('b').contains('Find').click();
+        cy.get('b').contains('Find').click().wait(500);
 
         // Check that we land in Ealing
 
-        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click({
-          force: true,
-        });
-
-        // Check that the distance to the toilet is listed
-        cy.contains('fabulous bandwidth');
-        cy.contains('423m');
-      });
-
-    isPermissionAllowed('geolocation') &&
-      it('should geolocate the user when the "find a toilet near me" button is clicked', () => {
-        cy.on('window:before:load', (win) => {
-          const latitude = 51.5,
-            longitude = -0.3,
-            accuracy = 1.0;
-
-          cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake(
-            (callback) => {
-              return callback({ coords: { latitude, longitude, accuracy } });
-            }
-          );
-        });
-        cy.visit('/').wait(500);
-
-        cy.get('b').contains('Find').click();
-
-        cy.get('#gbptm-map')
-          .trigger('wheel', {
-            deltaY: 66.666666,
-            wheelDelta: 120,
-            wheelDeltaX: 0,
-            wheelDeltaY: -500,
-            bubbles: true,
-          })
-          .wait(1000);
-
-        // Check that we land in Ealing
-
-        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click({
-          force: true,
-        });
-
-        // Check that the distance to the toilet is listed
-        cy.contains('fabulous bandwidth');
-        cy.contains('423m');
-      });
-
-    isPermissionAllowed('geolocation') &&
-      it('should allow user to search after geolocating', () => {
-        cy.on('window:before:load', (win) => {
-          const latitude = 51.5,
-            longitude = -0.3,
-            accuracy = 1.0;
-
-          cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake(
-            (callback) => {
-              return callback({ coords: { latitude, longitude, accuracy } });
-            }
-          );
-        });
-        cy.visit('/').wait(500);
-
-        cy.get('b').contains('Find').click();
-
-        cy.get('#gbptm-map')
-          .trigger('wheel', {
-            deltaY: 66.666666,
-            wheelDelta: 120,
-            wheelDeltaX: 0,
-            wheelDeltaY: -500,
-            bubbles: true,
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]')
+          .click({
+            force: true,
           })
           .wait(500);
+
+        // Check that the distance to the toilet is listed
+        cy.contains('fabulous bandwidth');
+        cy.contains('423m');
+      });
+
+    isPermissionAllowed('geolocation') &&
+      it.only('should geolocate the user when the "find a toilet near me" button is clicked', () => {
+        cy.on('window:before:load', (win) => {
+          const latitude = 51.5,
+            longitude = -0.3,
+            accuracy = 1.0;
+
+          cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake(
+            (callback) => {
+              return callback({ coords: { latitude, longitude, accuracy } });
+            }
+          );
+        });
+        cy.visit('/').wait(500);
+
+        cy.get('b').contains('Find').click().wait(500);
+
+        // Check that we land in Ealing
+
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]')
+          .click({
+            force: true,
+          })
+          .wait(500);
+
+        // Check that the distance to the toilet is listed
+        cy.contains('fabulous bandwidth');
+        cy.contains('423m');
+      });
+
+    isPermissionAllowed('geolocation') &&
+      it.only('should allow user to search after geolocating', () => {
+        cy.on('window:before:load', (win) => {
+          const latitude = 51.5,
+            longitude = -0.3,
+            accuracy = 1.0;
+
+          cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake(
+            (callback) => {
+              return callback({ coords: { latitude, longitude, accuracy } });
+            }
+          );
+        });
+        cy.visit('/').wait(500);
+
+        cy.get('b').contains('Find').click();
 
         // Check that we land in Ealing
         cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');

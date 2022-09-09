@@ -116,24 +116,25 @@ describe('Home page tests', () => {
 
         cy.findByText('Find a toilet near me').click();
 
-        cy.get('#gbptm-map')
-          .trigger('wheel', {
-            deltaY: 66.666666,
-            wheelDelta: 120,
-            wheelDeltaX: 0,
-            wheelDeltaY: -700,
-            bubbles: true,
+        // Check that we land in Ealing
+
+        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]')
+          .click({
+            force: true,
           })
           .wait(500);
 
-        // Check that we land in Ealing
-        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').click({
-          force: true,
-        });
+        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]')
+          .click({
+            force: true,
+          })
+          .wait(500);
 
-        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click({
-          force: true,
-        });
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]')
+          .click({
+            force: true,
+          })
+          .wait(500);
 
         // Check that the distance to the toilet is listed
         cy.contains('fabulous bandwidth');
@@ -141,7 +142,7 @@ describe('Home page tests', () => {
       });
 
     isPermissionAllowed('geolocation') &&
-      it('should allow user to search after geolocating', () => {
+      it.only('should allow user to search after geolocating', () => {
         cy.on('window:before:load', (win) => {
           const latitude = 51.5,
             longitude = -0.3,
@@ -157,20 +158,18 @@ describe('Home page tests', () => {
 
         cy.findByText('Find a toilet near me').click();
 
-        cy.get('#gbptm-map')
-          .trigger('wheel', {
-            deltaY: 66.666666,
-            wheelDelta: 120,
-            wheelDeltaX: 0,
-            wheelDeltaY: -500,
-            bubbles: true,
+        // Check that we land in Ealing
+        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]')
+          .click({
+            force: true,
           })
           .wait(500);
 
-        // Check that we land in Ealing
-        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').click({
-          force: true,
-        });
+        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]')
+          .click({
+            force: true,
+          })
+          .wait(500);
 
         cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');
 
