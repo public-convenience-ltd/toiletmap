@@ -106,7 +106,7 @@ describe('Home page tests', () => {
     });
 
     isPermissionAllowed('geolocation') &&
-      it('should not break when the geolocate button is clicked multiple times', () => {
+      it.only('should not break when the geolocate button is clicked multiple times', () => {
         cy.on('window:before:load', (win) => {
           const latitude = 51.5,
             longitude = -0.3,
@@ -124,21 +124,7 @@ describe('Home page tests', () => {
         cy.get('b').contains('Find').click();
         cy.get('b').contains('Find').click();
 
-        cy.get('#gbptm-map')
-          .trigger('wheel', {
-            deltaY: 66.666666,
-            wheelDelta: 120,
-            wheelDeltaX: 0,
-            wheelDeltaY: -500,
-            bubbles: true,
-          })
-          .wait(500);
-
         // Check that we land in Ealing
-
-        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').click({
-          force: true,
-        });
 
         cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click({
           force: true,
@@ -174,7 +160,7 @@ describe('Home page tests', () => {
             wheelDeltaY: -500,
             bubbles: true,
           })
-          .wait(500);
+          .wait(1000);
 
         // Check that we land in Ealing
 
