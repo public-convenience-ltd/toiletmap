@@ -5,9 +5,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    types: ['review_requested']
-  # pull_request_target:
-  #   types: [labeled]
+    types: ['review_requested', 'labeled']
 
 # List of jobs
 jobs:
