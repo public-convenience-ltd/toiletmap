@@ -114,16 +114,9 @@ describe('Home page tests', () => {
         });
         cy.visit('/').wait(500);
 
-        cy.findByText('Find a toilet near me').click();
+        cy.findByText('Find a toilet near me').click().wait(500);
 
         // Check that we land in Ealing
-
-        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]')
-          .click({
-            force: true,
-          })
-          .wait(500);
-
         cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]')
           .click({
             force: true,
@@ -142,7 +135,7 @@ describe('Home page tests', () => {
       });
 
     isPermissionAllowed('geolocation') &&
-      it.only('should allow user to search after geolocating', () => {
+      it('should allow user to search after geolocating', () => {
         cy.on('window:before:load', (win) => {
           const latitude = 51.5,
             longitude = -0.3,
@@ -156,14 +149,7 @@ describe('Home page tests', () => {
         });
         cy.visit('/').wait(500);
 
-        cy.findByText('Find a toilet near me').click();
-
-        // Check that we land in Ealing
-        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]')
-          .click({
-            force: true,
-          })
-          .wait(500);
+        cy.findByText('Find a toilet near me').click().wait(500);
 
         cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]')
           .click({

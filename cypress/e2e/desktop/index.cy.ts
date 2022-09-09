@@ -182,7 +182,7 @@ describe('Home page tests', () => {
         });
         cy.visit('/').wait(500);
 
-        cy.get('b').contains('Find').click();
+        cy.get('b').contains('Find').click().wait(500);
 
         // Check that we land in Ealing
         cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');
