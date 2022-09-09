@@ -66,7 +66,8 @@ Our client and server side logging in production is kindly sponsored by Sentry.
 
 ### Cypress
 
-[<img src="https://www.cypress.io/static/33498b5f95008093f5f94467c61d20ab/c0bf4/cypress-logo.webp" width="212" alt="Cypress dashboard enhances our development workflow when working with our Cypress test suite">](https://www.cypress.io/dashboard)
+[<img src="https://user-images.githubusercontent.com/1771189/189427407-8d7fb6b2-1756-4e10-8dd7-9a4ae01986d8.png" width="212" alt="Cypress dashboard enhances our development workflow when working with our Cypress test suite">](https://www.cypress.io/dashboard)
+
 
 Cypress Dashboard speeds up and enhances our testing workflow, helping us to deliver changes faster and with fewer bugs.
 
