@@ -136,6 +136,10 @@ describe('Home page tests', () => {
 
         // Check that we land in Ealing
 
+        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').click({
+          force: true,
+        });
+
         cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click({
           force: true,
         });

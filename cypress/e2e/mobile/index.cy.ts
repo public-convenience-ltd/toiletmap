@@ -127,6 +127,10 @@ describe('Home page tests', () => {
           .wait(500);
 
         // Check that we land in Ealing
+        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').click({
+          force: true,
+        });
+
         cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click({
           force: true,
         });
@@ -164,6 +168,9 @@ describe('Home page tests', () => {
           .wait(500);
 
         // Check that we land in Ealing
+        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]').click({
+          force: true,
+        });
 
         cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');
 
