@@ -1,3 +1,5 @@
+**Important: This documentation is a work in progress, sections are incomplete and may not reflect the current reality of working on the project**
+
 # Setup
 
 An in-depth look at the intricacies of setting up a working local development environment
