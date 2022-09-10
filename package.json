@@ -15,8 +15,8 @@
     "e2e": "./scripts/e2e.sh",
     "e2e:headless": "./scripts/e2e.sh -h",
     "e2e:dev": "./scripts/e2e.sh -d d",
-    "wait-on:server": "yarn wait-on http://localhost:3000/ -t 60000",
-    "wait-on:memoryMongo": "yarn wait-on http://localhost:9999/ -t 100000",
+    "wait-on:server": "pnpm wait-on http://localhost:3000/ -t 60000",
+    "wait-on:memoryMongo": "pnpm wait-on http://localhost:9999/ -t 100000",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook -o ./public/storybook",
     "check": "tsc -p tsconfig.json --noEmit",
@@ -24,9 +24,9 @@
     "migrate": "migrate-mongo up",
     "generate": "node -r dotenv/config ./src/api/db/manage/generate/index.js --confirm",
     "areas": "node -r dotenv/config ./src/api/db/manage/areaToDatabase/index.js",
-    "startMemoryMongo": "MONGODB_URI=mongodb://localhost:27017/toiletmap TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' yarn ts-node --transpileOnly ./scripts/setupAndStartMemoryMongo.ts",
-    "generateMocks": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' yarn ts-node --transpileOnly ./scripts/generateMocks.ts",
-    "prepare": "husky install && yarn codegen",
+    "startMemoryMongo": "MONGODB_URI=mongodb://localhost:27017/toiletmap TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' pnpm ts-node --transpileOnly ./scripts/setupAndStartMemoryMongo.ts",
+    "generateMocks": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' pnpm ts-node --transpileOnly ./scripts/generateMocks.ts",
+    "prepare": "husky install && pnpm codegen",
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "repository": {
