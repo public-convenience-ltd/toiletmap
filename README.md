@@ -20,7 +20,7 @@ The following is a "quick start" guide aimed at getting you started with a devel
 
 ### Prerequisites
 
-- [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) (or a node version matching the one specified in [.nvmrc](./nvmrc))
+- [fnm](https://github.com/Schniz/fnm) (or a node version matching the one specified in [.nvmrc](./nvmrc))
 - [yarn](https://yarnpkg.com/getting-started/install)
 - Vercel CLI (optional)
 - mongodb (optional)
