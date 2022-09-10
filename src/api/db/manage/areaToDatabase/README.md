@@ -4,7 +4,7 @@ Previously existed at https://github.com/jthistle/areaToDatabase.
 
 ## Installation
 
-`yarn`
+`pnpm install`
 
 ## Config
 
