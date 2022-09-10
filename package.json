@@ -164,6 +164,7 @@
     "wait-on": "^6.0.1",
     "webpack": "^5.74.0"
   },
+  "packageManager": "pnpm@7.11.0",
   "browser": {
     "fs": false,
     "path": false,
