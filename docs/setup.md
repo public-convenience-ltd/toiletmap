@@ -8,13 +8,15 @@ If you've already followed the quick setup guide in the readme you will have a l
 
 However there may be scenarios whilst developing a new feature you might need to have environment variables set up to allow authentication via Auth0 for your local instance — for example if you are writing end to end tests that require authentication.
 
-## Quick guide
+## Getting a local instance running, with mocked loo data.
 
 This is likely all you need to get up and running as a contributor to the toilet map. This guide will get you set up with a local mongodb server based on 5000 mocked toilet records.
 
 What it won't let you do is allow you to authenticate against Auth0 or run cypress tests that involve authentication.
 
 If you need to develop against an instance of the Toilet Map with this functionality, please read on!
+
+**Incomplete: Content will live here**
 
 ## Auth0
 
@@ -30,4 +32,8 @@ Auth0 provide this handy guide: https://auth0.com/docs/quickstart/webapp/nextjs/
 
 ## Developing against the staging server
 
-## e2e tests
+**Incomplete: Content will live here**
+
+## Running the end-to-end tests
+
+**Incomplete: Content will live here**
