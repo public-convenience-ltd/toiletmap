@@ -1,5 +1,6 @@
 package.json
 explorer-old
+pnpm-lock.yaml
 yarn.lock
 .next
 public
