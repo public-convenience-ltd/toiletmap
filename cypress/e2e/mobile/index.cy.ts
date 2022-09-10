@@ -114,22 +114,20 @@ describe('Home page tests', () => {
         });
         cy.visit('/').wait(500);
 
-        cy.findByText('Find a toilet near me').click();
+        cy.findByText('Find a toilet near me').click().wait(500);
 
-        cy.get('#gbptm-map')
-          .trigger('wheel', {
-            deltaY: 66.666666,
-            wheelDelta: 120,
-            wheelDeltaX: 0,
-            wheelDeltaY: -700,
-            bubbles: true,
+        // Check that we land in Ealing
+        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]')
+          .click({
+            force: true,
           })
           .wait(500);
 
-        // Check that we land in Ealing
-        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click({
-          force: true,
-        });
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]')
+          .click({
+            force: true,
+          })
+          .wait(500);
 
         // Check that the distance to the toilet is listed
         cy.contains('fabulous bandwidth');
@@ -151,19 +149,13 @@ describe('Home page tests', () => {
         });
         cy.visit('/').wait(500);
 
-        cy.findByText('Find a toilet near me').click();
+        cy.findByText('Find a toilet near me').click().wait(500);
 
-        cy.get('#gbptm-map')
-          .trigger('wheel', {
-            deltaY: 66.666666,
-            wheelDelta: 120,
-            wheelDeltaX: 0,
-            wheelDeltaY: -500,
-            bubbles: true,
+        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]')
+          .click({
+            force: true,
           })
           .wait(500);
-
-        // Check that we land in Ealing
 
         cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');
 

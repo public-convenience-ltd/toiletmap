@@ -5,13 +5,15 @@ on:
   push:
     branches: [main]
   pull_request:
-    types: ['review_requested']
+    types: ['review_requested', 'labeled']
 
 # List of jobs
 jobs:
   chromatic-deployment:
     # Operating System
     runs-on: ubuntu-latest
+    # Only run the Chromatic workflow if a maintainer has labeled the PR as 'safe to test'.
+    # if: contains(github.event.pull_request.labels.*.name, 'safe to test')
     # Job steps
     steps:
       - uses: actions/checkout@v1
@@ -29,3 +31,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # 👇 Chromatic projectToken, refer to the manage page to obtain it.
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          # Enables TurboSnap so we can save our quota: https://www.chromatic.com/docs/turbosnap
+          onlyChanged: true

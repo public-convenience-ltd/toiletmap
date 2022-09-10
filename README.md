@@ -16,37 +16,65 @@ This documentation is oriented towards developers, if you'd like to learn more a
 
 ## Getting Started
 
+The following is a "quick start" guide aimed at getting you started with a development environment to start hacking on the map. If you'd like to configure Auth0 for local authentication or run our end to end tests locally please take a look at our more in-depth [setup](./docs/setup.md) documentation.
+
 ### Prerequisites
 
-- [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) (or a node version matching the one specified in [.nvmrc](./nvmrc))
+- [fnm](https://github.com/Schniz/fnm) (or a node version matching the one specified in [.nvmrc](./nvmrc))
 - [yarn](https://yarnpkg.com/getting-started/install)
 - Vercel CLI (optional)
 - mongodb (optional)
 
 ### Installation
 
-_Clone or download and unpack the project and change into its directory and then:_
+_Clone or download and unpack the project and change into its directory and then use your favourite node version manager to switch to the version defined in our `.nvmrc`. We use [fnm](https://github.com/Schniz/fnm) as a demonstration, although alternative are available such as `asdf` and `nvm`:_
 
 ```
-nvm install && nvm use
-npm install -g yarn
-yarn
+fnm use
+```
+
+_Now we install the dependencies using the `yarn` package manager:_
+
+```
+yarn install
 ```
 
 ### Run, Toiletmap, Run
 
-To run the toiletmap locally for the first time:
+First we need a set of local environment variables:
+
+```
+cp .env.local.example .env.local
+```
+
+Next you'll need to set up a local instance of mongodb based on our mocked loo data. This is so that you can load something on your local instance of the Toilet Map. It's also possible to connect directly to our staging database, although you'll need to ask for those credentials should you need them.
+
+```
+yarn startMemoryMongo
+>Populating the database from mock-reports.json
+> progress [✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨]
+> Done.
+> ====
+> Server started
+```
+
+When you run this command, 5000 mocked loos will be loaded into an in-memory mongodb instance from [mock-reports.json](./scripts/mock-reports.json). These loos are pre-generated using faker.js in [generateMocks.ts](./scripts/generateMocks.ts).
+
+Because the faker generation is set with a static seed, the values remain the same between generations. This is important, because we depend upon the values remaining the same in our [cypress tests](./cypress/e2e//desktop/index.cy.ts) so we have a deterministic set of data to rely upon across our test runs.
+
+Once you have a local mongodb instance running you'll then be able to spin up a local development server using the following command:
 
 ```
 yarn dev
 ```
 
-Before long you should be looking at a browser window showing the UI!
+Once this is running, navigate to [http://localhost:3000](http://localhost:3000) and you should be presented with your very own instance of the Toilet Map that is connected to the in-memory mongodb server that we stood up in the following step.
+
 If you'd like to make contributions to the project this is a good time to read our [contributing guidelines](https://github.com/neontribe/gbptm/blob/master/.github/CONTRIBUTING.md) and our [code of conduct](https://github.com/neontribe/gbptm/blob/master/.github/CODE_OF_CONDUCT.md).
 
-### Development
+### Architecture
 
-The toiletmap UI is built with Next.js. The API is written in GraphQL with [Apollo Server](https://www.npmjs.com/package/apollo-server) and data is stored in a MongoDB instance via [mongoose](https://mongoosejs.com/). Authentication is handled by [Auth0](https://auth0.com/) and the site is deployed to [vercel](https://vercel.com)
+The Toilet Map UI is built with [Next.js](https://nextjs.org/). The API is written in GraphQL with [GraphQL Yoga Server](https://github.com/dotansimha/graphql-yoga) and data is stored in a MongoDB instance via [mongoose](https://mongoosejs.com/). We use Redis as a short term cache to improve the performance of loading toilet information. Authentication is handled by [Auth0](https://auth0.com/) and the site is deployed to [vercel](https://vercel.com)
 
 ## Sponsors
 
@@ -66,7 +94,8 @@ Our client and server side logging in production is kindly sponsored by Sentry.
 
 ### Cypress
 
-[<img src="https://www.cypress.io/static/33498b5f95008093f5f94467c61d20ab/c0bf4/cypress-logo.webp" width="212" alt="Cypress dashboard enhances our development workflow when working with our Cypress test suite">](https://www.cypress.io/dashboard)
+[<img src="https://user-images.githubusercontent.com/1771189/189427407-8d7fb6b2-1756-4e10-8dd7-9a4ae01986d8.png" width="212" alt="Cypress dashboard enhances our development workflow when working with our Cypress test suite">](https://www.cypress.io/dashboard)
+
 
 Cypress Dashboard speeds up and enhances our testing workflow, helping us to deliver changes faster and with fewer bugs.
 

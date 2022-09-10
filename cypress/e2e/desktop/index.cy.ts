@@ -122,23 +122,15 @@ describe('Home page tests', () => {
 
         cy.get('b').contains('Find').click();
         cy.get('b').contains('Find').click();
-        cy.get('b').contains('Find').click();
-
-        cy.get('#gbptm-map')
-          .trigger('wheel', {
-            deltaY: 66.666666,
-            wheelDelta: 120,
-            wheelDeltaX: 0,
-            wheelDeltaY: -500,
-            bubbles: true,
-          })
-          .wait(500);
+        cy.get('b').contains('Find').click().wait(500);
 
         // Check that we land in Ealing
 
-        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click({
-          force: true,
-        });
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]')
+          .click({
+            force: true,
+          })
+          .wait(500);
 
         // Check that the distance to the toilet is listed
         cy.contains('fabulous bandwidth');
@@ -160,23 +152,15 @@ describe('Home page tests', () => {
         });
         cy.visit('/').wait(500);
 
-        cy.get('b').contains('Find').click();
-
-        cy.get('#gbptm-map')
-          .trigger('wheel', {
-            deltaY: 66.666666,
-            wheelDelta: 120,
-            wheelDeltaX: 0,
-            wheelDeltaY: -500,
-            bubbles: true,
-          })
-          .wait(500);
+        cy.get('b').contains('Find').click().wait(500);
 
         // Check that we land in Ealing
 
-        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').click({
-          force: true,
-        });
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]')
+          .click({
+            force: true,
+          })
+          .wait(500);
 
         // Check that the distance to the toilet is listed
         cy.contains('fabulous bandwidth');
@@ -198,17 +182,7 @@ describe('Home page tests', () => {
         });
         cy.visit('/').wait(500);
 
-        cy.get('b').contains('Find').click();
-
-        cy.get('#gbptm-map')
-          .trigger('wheel', {
-            deltaY: 66.666666,
-            wheelDelta: 120,
-            wheelDeltaX: 0,
-            wheelDeltaY: -500,
-            bubbles: true,
-          })
-          .wait(500);
+        cy.get('b').contains('Find').click().wait(500);
 
         // Check that we land in Ealing
         cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');
