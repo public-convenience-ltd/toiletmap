@@ -72,8 +72,6 @@ Once this is running, navigate to [http://localhost:3000](http://localhost:3000)
 
 If you'd like to make contributions to the project this is a good time to read our [contributing guidelines](https://github.com/neontribe/gbptm/blob/master/.github/CONTRIBUTING.md) and our [code of conduct](https://github.com/neontribe/gbptm/blob/master/.github/CODE_OF_CONDUCT.md).
 
-### Development
-
 ### Architecture
 
 The Toilet Map UI is built with [Next.js](https://nextjs.org/). The API is written in GraphQL with [GraphQL Yoga Server](https://github.com/dotansimha/graphql-yoga) and data is stored in a MongoDB instance via [mongoose](https://mongoosejs.com/). We use Redis as a short term cache to improve the performance of loading toilet information. Authentication is handled by [Auth0](https://auth0.com/) and the site is deployed to [vercel](https://vercel.com)
