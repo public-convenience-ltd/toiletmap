@@ -34,6 +34,7 @@ jobs:
           # Maps Redis port 6379 on service container to the host
           - 6379:6379
     steps:
+      - uses: actions/checkout@v3
       # enables use to use the cache in actions/setup-node
       - uses: pnpm/action-setup@v2.2.2
       - uses: actions/setup-node@v3
