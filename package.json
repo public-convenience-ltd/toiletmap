@@ -27,7 +27,8 @@
     "startMemoryMongo": "MONGODB_URI=mongodb://localhost:27017/toiletmap TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' pnpm ts-node --transpileOnly ./scripts/setupAndStartMemoryMongo.ts",
     "generateMocks": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' pnpm ts-node --transpileOnly ./scripts/generateMocks.ts",
     "prepare": "husky install && cp ./node_modules/graphql-voyager/dist/voyager.worker.js ./public && pnpm codegen",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "codegen": "graphql-codegen --config codegen.yml",
+    "release:changesets": "pnpm build && changeset publish"
   },
   "repository": {
     "type": "git",
@@ -101,6 +102,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.19.0",
+    "@changesets/cli": "^2.24.4",
     "@commitlint/cli": "17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@emotion/babel-preset-css-prop": "^11.10.0",
