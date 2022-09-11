@@ -64,6 +64,7 @@ specifiers:
   cli-progress: ^3.11.2
   cors: ^2.8.5
   crypto-hash: ^2.0.1
+  css-loader: ^6.7.1
   cypress: ^10.7.0
   cypress-browser-permissions: ^1.1.0
   cypress-nextjs-auth0: ^2.1.0
@@ -83,6 +84,7 @@ specifiers:
   graphql: ^16.6.0
   graphql-codegen-apollo-next-ssr: ^1.7.4
   graphql-iso-date: ^3.6.1
+  graphql-tag: ^2.12.6
   graphql-voyager: ^1.0.0-rc.31
   hasha: ^5.2.2
   husky: ^8.0.1
@@ -104,6 +106,7 @@ specifiers:
   next-transpile-modules: ^9.0.0
   ngeohash: ^0.6.3
   nodemon: ^2.0.19
+  postcss-loader: ^7.0.1
   prettier: ^2.7.1
   prop-types: ^15.8.1
   query-string: ^7.1.1
@@ -117,6 +120,7 @@ specifiers:
   start-server-and-test: ^1.14.0
   storybook-addon-apollo-client: ^4.0.12
   storybook-addon-next: ^1.6.9
+  style-loader: ^3.3.1
   styled-system: ^5.1.5
   topojson-server: ^3.0.1
   topojson-simplify: ^3.0.3
@@ -196,7 +200,7 @@ devDependencies:
   '@graphql-codegen/import-types-preset': 2.2.3_graphql@16.6.0
   '@graphql-codegen/typescript': 2.7.3_graphql@16.6.0
   '@graphql-codegen/typescript-operations': 2.5.3_graphql@16.6.0
-  '@graphql-codegen/typescript-react-apollo': 3.3.3_graphql@16.6.0
+  '@graphql-codegen/typescript-react-apollo': 3.3.3_sy4knu3obj4ys7pjcqbyfxmqle
   '@mapbox/geojson-area': 0.2.2
   '@mapbox/geojson-rewind': 0.5.2
   '@storybook/addon-actions': 6.5.10_biqbaboplfbrettd7655fr4n2y
@@ -223,6 +227,7 @@ devDependencies:
   babel-loader: 8.2.5_z22tmofudeh3tyeifpjvwjl5ei
   chromatic: 6.9.0
   cli-progress: 3.11.2
+  css-loader: 6.7.1_webpack@5.74.0
   cypress: 10.7.0
   cypress-browser-permissions: 1.1.0_cypress@10.7.0
   cypress-nextjs-auth0: 2.1.0
@@ -235,16 +240,19 @@ devDependencies:
   eslint-plugin-storybook: 0.6.4_itqs5654cmlnjraw6gjzqacppi
   geojson-precision: 1.0.0
   graphql-codegen-apollo-next-ssr: 1.7.4_graphql@16.6.0
+  graphql-tag: 2.12.6_graphql@16.6.0
   husky: 8.0.1
   jest: 29.0.3_tnjgtfvshbjaakxmfwf4wfzw7u
   lint-staged: 13.0.3
   migrate-mongo: 9.0.0
   mongodb-memory-server: 8.9.1
   next-transpile-modules: 9.0.0
+  postcss-loader: 7.0.1_webpack@5.74.0
   prettier: 2.7.1
   start-server-and-test: 1.14.0
   storybook-addon-apollo-client: 4.0.12_biqbaboplfbrettd7655fr4n2y
   storybook-addon-next: 1.6.9_cem5b6z6bzawknwlncv5zkzsc4
+  style-loader: 3.3.1_webpack@5.74.0
   topojson-server: 3.0.1
   topojson-simplify: 3.0.3
   ts-node: 10.9.1_jq3ovzqw3j7j4aj2v37zonaj5u
@@ -3648,7 +3656,7 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-codegen/typescript-react-apollo/3.3.3_graphql@16.6.0:
+  /@graphql-codegen/typescript-react-apollo/3.3.3_sy4knu3obj4ys7pjcqbyfxmqle:
     resolution: {integrity: sha512-FixkcfEfChA1+VPkvdcK+JYnBfqhT+Nz7WJFJ3ZKVsHjwJbTWKu19cKn2nkd3EVgdhJXlNsE8DgenVMqi5X5Ug==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
@@ -3659,6 +3667,7 @@ packages:
       auto-bind: 4.0.0
       change-case-all: 1.0.14
       graphql: 16.6.0
+      graphql-tag: 2.12.6_graphql@16.6.0
       tslib: 2.4.0
     transitivePeerDependencies:
       - encoding
@@ -9850,6 +9859,23 @@ packages:
       postcss-modules-values: 4.0.0_postcss@8.4.16
       postcss-value-parser: 4.2.0
       schema-utils: 3.1.1
+      semver: 7.3.7
+      webpack: 5.74.0
+    dev: true
+
+  /css-loader/6.7.1_webpack@5.74.0:
+    resolution: {integrity: sha512-yB5CNFa14MbPJcomwNh3wLThtkZgcNyI2bNMRt8iE5Z8Vwl7f8vQXFAzn2HDOJvtDq2NTZBUGMSUNNyrv3/+cw==}
+    engines: {node: '>= 12.13.0'}
+    peerDependencies:
+      webpack: ^5.0.0
+    dependencies:
+      icss-utils: 5.1.0_postcss@8.4.16
+      postcss: 8.4.16
+      postcss-modules-extract-imports: 3.0.0_postcss@8.4.16
+      postcss-modules-local-by-default: 4.0.0_postcss@8.4.16
+      postcss-modules-scope: 3.0.0_postcss@8.4.16
+      postcss-modules-values: 4.0.0_postcss@8.4.16
+      postcss-value-parser: 4.2.0
       semver: 7.3.7
       webpack: 5.74.0
     dev: true
@@ -16187,6 +16213,19 @@ packages:
       webpack: 5.74.0
     dev: true
 
+  /postcss-loader/7.0.1_webpack@5.74.0:
+    resolution: {integrity: sha512-VRviFEyYlLjctSM93gAZtcJJ/iSkPZ79zWbN/1fSH+NisBByEiVLqpdVDrPLVSi8DX0oJo12kL/GppTBdKVXiQ==}
+    engines: {node: '>= 14.15.0'}
+    peerDependencies:
+      postcss: ^7.0.0 || ^8.0.1
+      webpack: ^5.0.0
+    dependencies:
+      cosmiconfig: 7.0.1
+      klona: 2.0.5
+      semver: 7.3.7
+      webpack: 5.74.0
+    dev: true
+
   /postcss-modules-extract-imports/2.0.0:
     resolution: {integrity: sha512-LaYLDNS4SG8Q5WAWqIJgdHPJrDDr/Lv775rMBFUbgjTz6j34lUznACHcdRWroPvXANP2Vj7yNK57vp9eFqzLWQ==}
     engines: {node: '>= 6'}
@@ -18292,6 +18331,15 @@ packages:
     dependencies:
       loader-utils: 2.0.2
       schema-utils: 3.1.1
+      webpack: 5.74.0
+    dev: true
+
+  /style-loader/3.3.1_webpack@5.74.0:
+    resolution: {integrity: sha512-GPcQ+LDJbrcxHORTRes6Jy2sfvK2kS6hpSfI/fXhPt+spVzxF6LJ1dHLN9zIGmVaaP044YKaIatFaufENRiDoQ==}
+    engines: {node: '>= 12.13.0'}
+    peerDependencies:
+      webpack: ^5.0.0
+    dependencies:
       webpack: 5.74.0
     dev: true
 
