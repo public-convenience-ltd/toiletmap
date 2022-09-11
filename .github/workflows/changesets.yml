@@ -1,0 +1,34 @@
+name: Manage Changesets
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  changesets-version:
+    name: Manage Changesets Pull Request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+        # enables use to use the cache in actions/setup-node
+      - uses: pnpm/action-setup@v2.2.2
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: yarn release:changesets
+          title: 'Bump `toiletmap` version'
+          commit: 'Bump version'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
