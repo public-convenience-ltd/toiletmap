@@ -13,9 +13,13 @@ const moduleExports = {
     ignoreBuildErrors: true,
   },
   compiler: {
-    removeConsole: {
-      exclude: ['error'],
-    },
+    ...(process.env.VERCEL_ENV === 'production'
+      ? {
+          removeConsole: {
+            exclude: ['error'],
+          },
+        }
+      : {}),
   },
   pageExtensions: ['page.tsx', 'page.ts'],
   async rewrites() {
