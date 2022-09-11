@@ -1,10 +1,6 @@
 name: E2E Cypress Tests (Firefox)
 on:
   push: []
-  pull_request:
-    types: ['review_requested']
-  # pull_request_target:
-  #   types: [labeled]
 jobs:
   cypress-e2e-firefox:
     name: Cypress E2E Firefox
