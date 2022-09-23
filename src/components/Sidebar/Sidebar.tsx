@@ -18,10 +18,12 @@ import Icon from '../Icon';
 import LocationSearch from '../LocationSearch';
 import Filters from '../Filters';
 import Button from '../Button';
-import Drawer from '../Drawer';
 import { useMapState } from '../MapState';
 import config from '../../config';
 import { usePlausible } from 'next-plausible';
+import dynamic from 'next/dynamic';
+
+const Drawer = dynamic(() => import('../Drawer'), { ssr: false });
 
 interface Props {
   isExpanded?: boolean;

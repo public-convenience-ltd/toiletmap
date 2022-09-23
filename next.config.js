@@ -80,10 +80,15 @@ const withTM = require('next-transpile-modules')([
   'leaflet.markercluster',
 ]);
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const withNextAnalyser = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins
 // eslint-disable-next-line functional/immutable-data
 module.exports = withSentryConfig(
-  withTM(moduleExports),
+  withTM(withNextAnalyser(moduleExports)),
   sentryWebpackPluginOptions
 );

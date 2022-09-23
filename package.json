@@ -112,6 +112,7 @@
     "@graphql-codegen/typescript-react-apollo": "^3.3.3",
     "@mapbox/geojson-area": "^0.2.2",
     "@mapbox/geojson-rewind": "^0.5.2",
+    "@next/bundle-analyzer": "^12.3.1",
     "@storybook/addon-actions": "^6.5.12",
     "@storybook/addon-essentials": "^6.5.12",
     "@storybook/addon-interactions": "^6.5.12",

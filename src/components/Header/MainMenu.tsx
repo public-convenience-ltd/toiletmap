@@ -12,9 +12,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@chakra-ui/react';
-import Feedback from '../Feedback/Feedback';
 import Icon from '../Icon';
 import { faComments } from '@fortawesome/free-solid-svg-icons';
+import dynamic from 'next/dynamic';
+
+const Feedback = dynamic(() => import('../Feedback/Feedback'));
 
 const StyledNavLink = styled(Link)<
   LinkProps & {
