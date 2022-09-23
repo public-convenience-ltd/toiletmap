@@ -20,7 +20,7 @@
     "functional/prefer-readonly-type": 0,
     "functional/no-method-signature": 0,
     "functional/immutable-data": [
-      "error",
+      "warn",
       {
         "ignoreImmediateMutation": true
       }
