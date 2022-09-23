@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Box from '../../../components/Box';
-import Sidebar from '../../../components/Sidebar/Sidebar';
 import VisuallyHidden from '../../../components/VisuallyHidden';
 import { useMapState } from '../../../components/MapState';
 import config from '../../../config';
@@ -15,8 +14,11 @@ import NotFound from '../../404.page';
 import { css } from '@emotion/react';
 import { FindLooByIdQuery } from '../../../api-client/graphql';
 import { ApolloError } from '@apollo/client';
+import dynamic from 'next/dynamic';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
+
+const Sidebar = dynamic(() => import('../../../components/Sidebar/Sidebar'));
 
 type CustomLooByIdComp = React.FC<{
   data?: FindLooByIdQuery;

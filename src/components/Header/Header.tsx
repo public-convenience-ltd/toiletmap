@@ -4,7 +4,6 @@ import { faBars, faComments } from '@fortawesome/free-solid-svg-icons';
 import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
 import { Media } from '../Media';
-import Drawer from '../Drawer';
 import Icon from '../Icon';
 import Logo from '../Logo';
 
@@ -19,7 +18,10 @@ import {
   PopoverTrigger,
   Text as ChakraText,
 } from '@chakra-ui/react';
-import Feedback from '../Feedback/Feedback';
+import dynamic from 'next/dynamic';
+
+const Feedback = dynamic(() => import('../Feedback/Feedback'));
+const Drawer = dynamic(() => import('../Drawer'));
 
 const Header = ({ children }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
