@@ -211,7 +211,7 @@ const MarkerGroup: React.FC<{
   }, [geohash, parsedAndFilteredMarkers, mapState, setMapState]);
 
   const mcg = useMemo(() => {
-    return L.markerClusterGroup({
+    return window.L.markerClusterGroup({
       maxClusterRadius,
       showCoverageOnHover: false,
       chunkedLoading: true,

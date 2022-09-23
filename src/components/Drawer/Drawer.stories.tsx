@@ -1,6 +1,6 @@
 import { faStickyNote } from '@fortawesome/free-solid-svg-icons';
 import { Meta } from '@storybook/react';
-import _ from 'lodash';
+import times from 'lodash/times';
 import React, { useState } from 'react';
 
 import { default as DrawerComponent } from '.';
@@ -30,7 +30,7 @@ export const Default = (props) => {
       <DrawerComponent visible={isDrawerOpen} animateFrom={'left'} {...props}>
         <Box width={'10rem'} border="1px solid black">
           <ul>
-            {_.times(5).map((_, i) => (
+            {times(5).map((_, i) => (
               <Box
                 key={i}
                 as="li"

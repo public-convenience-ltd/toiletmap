@@ -1,7 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
 import Box from '../../components/Box';
-import Sidebar from '../../components/Sidebar/Sidebar';
 import VisuallyHidden from '../../components/VisuallyHidden';
 import { useMapState } from '../../components/MapState';
 import config from '../../config';
@@ -9,6 +8,9 @@ import { useRouter } from 'next/router';
 import { withApollo } from '../../api-client/withApollo';
 import { NextPage } from 'next';
 import { LooMapLoader } from '../../components/LooMap/LooMapLoader';
+import dynamic from 'next/dynamic';
+
+const Sidebar = dynamic(() => import('../../components/Sidebar/Sidebar'));
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 

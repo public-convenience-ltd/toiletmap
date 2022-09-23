@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useCombobox } from 'downshift';
 import { useTheme } from '@emotion/react';
@@ -24,6 +24,7 @@ const Input = styled.input(
 const LocationSearch = ({ onSelectedItemChange }) => {
   const [query, setQuery] = React.useState('');
   const theme = useTheme();
+  const inputRef = useRef(null);
 
   const { places, getPlaceLatLng } = useNominatimAutocomplete(query);
 
@@ -31,10 +32,10 @@ const LocationSearch = ({ onSelectedItemChange }) => {
     if (!selectedItem) {
       return;
     }
-
     const { lat, lng } = await getPlaceLatLng(selectedItem);
-
     onSelectedItemChange({ lat, lng });
+    // Remove focus from the input box, ensuring that the dropdown closes on mobile.
+    inputRef.current.blur();
   };
 
   const stateReducer = (
@@ -117,6 +118,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
           name="searchLocation"
           autoComplete="off"
           {...getInputProps({
+            ref: inputRef,
             onFocus: () => {
               if (isOpen) {
                 return;
