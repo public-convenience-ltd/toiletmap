@@ -29,6 +29,7 @@ const setupCache = () => {
     username: 'default',
     port,
     password: process.env.REDIS_PASSWORD,
+    tls: process.env.REDIS_SSL_ENABLED === 'true' ? {} : undefined,
   });
 
   return createRedisCache({ redis });
