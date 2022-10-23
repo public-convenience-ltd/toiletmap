@@ -43,5 +43,17 @@ model toilets {
   allGender      Boolean?
   children       Boolean?
   geohash        String?                   @default(dbgenerated("st_geohash(geometry)"))
-  reports        Json[]
+  verifiedAt     DateTime?                 @db.Date
+  reports        Json?
+}
+
+model areas {
+  legacy_id  String?                   @unique(map: "legacy_area_id") @db.Char(24)
+  id         Int                       @id(map: "area_id")
+  geometry   Unsupported("geography")?
+  name       String?
+  priority   Int?
+  type       String?
+  dataset_id Int?
+  version    Int?
 }
