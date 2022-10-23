@@ -86,6 +86,13 @@ Our brilliant sponsors help us to bring a stable and high quality service to our
 
 Vercel sponsor the hosting and deployment of the Next.js based Toilet Map, allowing us to scale confidently and iterate quickly using their versatile platform.
 
+### Upstash
+
+
+[<img src="https://user-images.githubusercontent.com/1771189/197402054-9603c89c-e6bc-40dc-8808-a2c65278c759.png" width="212" alt="Upstash help us cache toilet map tiles for faster load times">](https://vercel.com/?utm_source=public-convenience-ltd&utm_campaign=oss)
+
+Upstash kindly provide us with a sponsored Redis instance. We use this to cache Toilet Map tile information; providing our users with quick load times when zooming and panning the map.
+
 ### Sentry
 
 [<img src="https://user-images.githubusercontent.com/1771189/178340599-94f9d130-dd82-4389-a4ac-69b9fb014d8a.svg" width="212" alt="Logging is kindly sponsored by Sentry">](https://sentry.io)
