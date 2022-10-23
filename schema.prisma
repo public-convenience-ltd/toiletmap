@@ -1,0 +1,47 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "./generated/prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("POSTGRES_URL")
+  extensions = [postgis(schema: "public")]
+}
+
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @db.VarChar(256)
+  auth_srid Int?
+  srtext    String? @db.VarChar(2048)
+  proj4text String? @db.VarChar(2048)
+}
+
+model toilets {
+  id             Int                       @id(map: "toilet_id") @default(autoincrement())
+  legacy_id      String                    @unique(map: "legacy_toilet_id") @db.Char(24)
+  created_at     DateTime?                 @db.Date
+  contributors   String[]
+  accessible     Boolean?
+  active         Boolean?
+  attended       Boolean?
+  automatic      Boolean?
+  babyChange     Boolean?
+  men            Boolean?
+  name           String?
+  noPayment      Boolean?
+  notes          String?
+  paymentDetails String?
+  radar          Boolean?
+  removalReason  String?
+  women          Boolean?
+  updated_at     DateTime?                 @db.Date
+  geometry       Unsupported("geography")?
+  openingTimes   String[]
+  urinalOnly     Boolean?
+  allGender      Boolean?
+  children       Boolean?
+  geohash        String?                   @default(dbgenerated("st_geohash(geometry)"))
+  reports        Json[]
+}

@@ -41,3 +41,7 @@ cypress/screenshots
 .sentryclirc
 
 tsconfig.tsbuildinfo
+
+# Prisma
+
+generated
