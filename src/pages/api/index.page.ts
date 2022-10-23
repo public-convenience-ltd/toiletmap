@@ -11,7 +11,6 @@ import {
   defaultBuildResponseCacheKey,
   useResponseCache,
 } from '@envelop/response-cache';
-import { useSentry } from '@envelop/sentry';
 import Redis from 'ioredis';
 import { createRedisCache } from '@envelop/response-cache-redis';
 
@@ -116,8 +115,6 @@ export const server = createServer({
         return await defaultBuildResponseCacheKey(params);
       },
     }),
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useSentry(),
   ],
 });
 

@@ -3135,11 +3135,6 @@
     "@envelop/types" "2.4.0"
     tslib "2.4.0"
 
-"@envelop/on-resolve@^2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@envelop/on-resolve/-/on-resolve-2.0.2.tgz#eae549ad0bbd933e81829c7a64601d93b266c104"
-  integrity sha512-EoVdZAQZq/3SyskRKDC6U7Do2r2qB2PzknEkckfisU8Hxi8tf26azddjIUSaMUOg6dhV4RTozrCVgGbWl6zQkw==
-
 "@envelop/parser-cache@^4.6.0":
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/@envelop/parser-cache/-/parser-cache-4.7.0.tgz#fc438d8ed390c88fa24bf56da3e4da36f088e3fc"
@@ -3165,14 +3160,6 @@
     "@graphql-tools/utils" "^8.8.0"
     fast-json-stable-stringify "^2.1.0"
     lru-cache "^6.0.0"
-    tslib "^2.4.0"
-
-"@envelop/sentry@^4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@envelop/sentry/-/sentry-4.0.2.tgz#951c14ffc1624eaaf5b83a3a8843dca285c61a98"
-  integrity sha512-gUGJ/ruji7vDkSUbbajhFW1MNE/TGz+RjmGPFysf4vfvMVmcnjuRQJIFzFvEB+aoKSbKOeQhJvL9e2npkEERrw==
-  dependencies:
-    "@envelop/on-resolve" "^2.0.2"
     tslib "^2.4.0"
 
 "@envelop/types@2.4.0":
@@ -9420,10 +9407,10 @@ dotenv@^8.0.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.6.0.tgz#061af664d19f7f4d8fc6e4ff9b584ce237adcb8b"
   integrity sha512-IrPdXQsk2BbzvCBGBOTmmSH5SodmqZNt4ERAZDmW4CT+tL8VtvinqywuANaFu4bOMWki16nqf0e4oC0QIaDr/g==
 
-downshift@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-7.0.0.tgz#33d7e7f8df8040ac1289055dba04fc43a358afc4"
-  integrity sha512-OOoWt2e5iS91ERvHdMg07yCTUea6svP20eV0gspLpc78YMTGy1xiSx4VwV34NV+XsbhVI3uz2iIgkethVSBRjQ==
+downshift@^6.1.12:
+  version "6.1.12"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-6.1.12.tgz#f14476b41a6f6fd080c340bad1ddf449f7143f6f"
+  integrity sha512-7XB/iaSJVS4T8wGFT3WRXmSF1UlBHAA40DshZtkrIscIN+VC+Lh363skLxFTvJwtNgHxAMDGEHT4xsyQFWL+UA==
   dependencies:
     "@babel/runtime" "^7.14.8"
     compute-scroll-into-view "^1.0.17"
