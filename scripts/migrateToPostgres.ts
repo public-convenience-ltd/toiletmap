@@ -3,24 +3,74 @@ import { PrismaClient as PrismaClientMongo } from '../generated/schemaMongo';
 import { SingleBar } from 'cli-progress';
 
 (async () => {
+  console.log('Connecting to MongoDB...');
   const mongoPrisma = new PrismaClientMongo();
-  mongoPrisma.$connect();
+  await mongoPrisma.$connect();
+  console.log('Connecting to PostgreSQL...');
+  const psqlPrisma = new PrismaClient();
+  await psqlPrisma.$connect();
 
-  // const allMongoAreas = await mongoPrisma.areas.findMany();
+  const upsertAreas = async () => {
+    console.log('fetching areas from mongo...');
+    const allMongoAreas = await mongoPrisma.areas.findMany();
+    console.log('upserting areas to postgres...');
+
+    const bar = new SingleBar({
+      stopOnComplete: true,
+      etaBuffer: 30,
+      barCompleteChar: '✨',
+    });
+
+    bar.start(allMongoAreas.length, 0);
+
+    let index = 0;
+
+    for (const area of allMongoAreas) {
+      await psqlPrisma.areas.upsert({
+        where: { legacy_id: area.id },
+        create: {
+          legacy_id: area.id,
+          name: area.name,
+          dataset_id: area.datasetId,
+          priority: area.priority,
+          type: area.type,
+          version: area.version,
+        },
+        update: {
+          legacy_id: area.id,
+          name: area.name,
+          dataset_id: area.datasetId,
+          priority: area.priority,
+          type: area.type,
+          version: area.version,
+        },
+      });
+
+      await psqlPrisma.$executeRaw`
+        UPDATE areas SET
+          geometry = ST_GeomFromGeoJSON(${JSON.stringify(area.geometry)})
+        WHERE legacy_id = ${area.id}
+    `;
+
+      bar.update(index++);
+    }
+
+    bar.stop();
+
+    console.log('Done upserting areas.');
+  };
 
   const upsertLoos = async () => {
-    console.log('Fetching data from Mongo...');
+    console.log('Fetching loo data from Mongo...');
     const allMongoLoos = await mongoPrisma.newloos.findMany();
+    console.log('Fetching report data from Mongo...');
     const allMongoReports = await mongoPrisma.newreports.findMany();
     const mappedMongoReports = {};
     for (const report of allMongoReports) {
       mappedMongoReports[report.id] = report;
     }
 
-    const psqlPrisma = new PrismaClient();
-    psqlPrisma.$connect();
-
-    console.log('Upserting loos...');
+    console.log('Beginning upsert of loos...');
 
     const bar = new SingleBar({
       stopOnComplete: true,
@@ -33,96 +83,56 @@ import { SingleBar } from 'cli-progress';
     let index = 0;
 
     for (const loo of allMongoLoos) {
-      const {
-        accessible,
-        active,
-        // area,
-        attended,
-        automatic,
-        babyChange,
-        men,
-        noPayment,
-        notes,
-        openingTimes,
-        paymentDetails,
-        radar,
-        removalReason,
-        urinalOnly,
-        allGender,
-        children,
-        women,
-        name,
-        verifiedAt,
-      } = loo.properties;
-
       const resolvedReports = {};
       for (const report of loo.reports) {
         resolvedReports[report] = mappedMongoReports[report];
       }
 
+      const mappedData = {
+        accessible: loo.properties.accessible,
+        active: loo.properties.active,
+        attended: loo.properties.attended,
+        automatic: loo.properties.automatic,
+        babyChange: loo.properties.babyChange,
+        men: loo.properties.men,
+        noPayment: loo.properties.noPayment,
+        notes: loo.properties.notes,
+        paymentDetails: loo.properties.paymentDetails,
+        radar: loo.properties.radar,
+        removalReason: loo.properties.removalReason,
+        women: loo.properties.women,
+        created_at: loo.createdAt,
+        updated_at: loo.updatedAt,
+        contributors: loo.contributors,
+        urinalOnly: loo.properties.urinalOnly,
+        allGender: loo.properties.allGender,
+        children: loo.properties.children,
+        openingTimes: (loo.properties.openingTimes ?? undefined)?.flat(),
+        verifiedAt: loo.properties.verifiedAt,
+        reports: resolvedReports,
+        name: loo.properties.name,
+      };
+
       const upsertLoo = psqlPrisma.toilets.upsert({
         where: { legacy_id: loo.id },
         create: {
-          name,
           legacy_id: loo.id,
-          accessible,
-          active,
-          attended,
-          automatic,
-          babyChange,
-          men,
-          noPayment,
-          notes,
-          paymentDetails,
-          radar,
-          removalReason,
-          women,
-          created_at: loo.createdAt,
-          updated_at: loo.updatedAt,
-          contributors: loo.contributors,
-          urinalOnly,
-          allGender,
-          children,
-          openingTimes: (openingTimes ?? undefined)?.flat(),
-          verifiedAt,
-          reports: resolvedReports,
+          ...mappedData,
         },
         update: {
-          accessible,
-          active,
-          attended,
-          automatic,
-          babyChange,
-          men,
-          noPayment,
-          notes,
-          paymentDetails,
-          radar,
-          removalReason,
-          women,
-          created_at: loo.createdAt,
-          updated_at: loo.updatedAt,
-          contributors: loo.contributors,
-          urinalOnly,
-          allGender,
-          children,
-          openingTimes: (openingTimes ?? undefined)?.flat(),
-          reports: resolvedReports,
-          verifiedAt,
+          ...mappedData,
         },
       });
 
-      const result = await upsertLoo;
-      if (!result.geohash) {
-        const geometry = loo.properties.geometry;
-        const updateLooGeometry = psqlPrisma.$executeRaw`
+      await upsertLoo;
+
+      await psqlPrisma.$executeRaw`
         UPDATE toilets SET
-        geometry = ST_SetSRID(ST_MakePoint(${geometry.coordinates[0]}, ${geometry.coordinates[1]}), 4326)
+        geometry = ST_GeomFromGeoJSON(${JSON.stringify(
+          loo.properties.geometry
+        )})
         WHERE legacy_id = ${loo.id}
       `;
-
-        await updateLooGeometry;
-      }
 
       bar.update(index++);
     }
@@ -130,7 +140,11 @@ import { SingleBar } from 'cli-progress';
     bar.stop();
 
     console.log('Done.');
+
+    // TODO: Check for data integrity
   };
+
+  await upsertAreas();
 
   await upsertLoos();
 })();

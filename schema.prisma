@@ -49,11 +49,11 @@ model toilets {
 
 model areas {
   legacy_id  String?                   @unique(map: "legacy_area_id") @db.Char(24)
-  id         Int                       @id(map: "area_id")
   geometry   Unsupported("geography")?
   name       String?
   priority   Int?
   type       String?
   dataset_id Int?
   version    Int?
+  id         Int                       @id(map: "area_id") @default(autoincrement())
 }
