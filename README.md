@@ -89,7 +89,7 @@ Vercel sponsor the hosting and deployment of the Next.js based Toilet Map, allow
 ### Upstash
 
 
-[<img src="https://user-images.githubusercontent.com/1771189/197402054-9603c89c-e6bc-40dc-8808-a2c65278c759.png" width="212" alt="Upstash help us cache toilet map tiles for faster load times">](https://vercel.com/?utm_source=public-convenience-ltd&utm_campaign=oss)
+[<img src="https://user-images.githubusercontent.com/1771189/197402054-9603c89c-e6bc-40dc-8808-a2c65278c759.png" width="212" alt="Upstash help us cache toilet map tiles for faster load times">](https://upstash.com/)
 
 Upstash kindly provide us with a sponsored Redis instance. We use this to cache Toilet Map tile information; providing our users with quick load times when zooming and panning the map.
 
