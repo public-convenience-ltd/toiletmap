@@ -156,13 +156,18 @@ const resolvers: Resolvers<Context> = {
         })
       ).map((loo) => ({ id: loo.legacy_id, name: loo.name }));
     },
-    loosByProximity: async (_parent, args) => {
-      await dbConnect();
-      return await DBLoo.findNear(
-        args.from.lng,
-        args.from.lat,
-        args.from.maxDistance
-      );
+    loosByProximity: async (_parent, args, { prisma }) => {
+      const nearbyLoos = await prisma.$queryRaw`
+        SELECT name from toilets t
+        where st_distancesphere(
+          t.geography::geometry,
+          ST_MakePoint(${args.from.lng}, ${args.from.lat})
+        ) <= ${args.from.maxDistance}
+      `;
+
+      console.log('hah', nearbyLoos);
+
+      return undefined;
     },
     loosByGeohash: async (_parent, args) => {
       await dbConnect();
