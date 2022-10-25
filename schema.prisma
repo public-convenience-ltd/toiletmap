@@ -7,7 +7,7 @@ generator client {
 datasource db {
   provider   = "postgresql"
   url        = env("POSTGRES_URL")
-  extensions = [postgis(schema: "public"), uuid_ossp(map: "uuid-ossp", schema: "extensions")]
+  extensions = [postgis(schema: "public"), uuid_ossp(map: "uuid-ossp", schema: "public")]
 }
 
 model spatial_ref_sys {
