@@ -10,9 +10,9 @@ import {
   dbConnect,
 } from './db';
 import { GraphQLDateTime } from 'graphql-iso-date';
-import without from 'lodash/without';
 import OpeningTimesScalar from './OpeningTimesScalar';
 import { Context } from './prisma/prismaContext';
+import { toilets, areas } from '@prisma/client';
 
 const subPropertyResolver = (property) => (parent, _args, _context, info) =>
   parent[property][info.fieldName];
@@ -41,6 +41,33 @@ const looInfoResolver = (property) => {
   };
 };
 
+const convertPostgresLoo = (loo: toilets, area?: Partial<areas>) => ({
+  id: loo.legacy_id,
+  women: loo.women,
+  men: loo.men,
+  name: loo.name,
+  noPayment: loo.noPayment,
+  notes: loo.notes,
+  openingTimes: loo.openingTimes,
+  paymentDetails: loo.paymentDetails,
+  accessible: loo.accessible,
+  active: loo.active,
+  allGender: loo.allGender,
+  area: [area],
+  attended: loo.attended,
+  automatic: loo.automatic,
+  babyChange: loo.babyChange,
+  children: loo.children,
+  createdAt: loo.created_at,
+  location: { lat: loo.coordinates[0], lng: loo.coordinates[1] },
+  removalReason: loo.removalReason,
+  radar: loo.radar,
+  urinalOnly: loo.urinalOnly,
+  verifiedAt: loo.verifiedAt,
+  reports: [],
+  updatedAt: loo.updated_at,
+});
+
 const resolvers: Resolvers<Context> = {
   Query: {
     loo: async (_parent, args, { prisma }) => {
@@ -49,104 +76,85 @@ const resolvers: Resolvers<Context> = {
         where: { legacy_id: args.id },
       });
 
-      return {
-        id: loo.legacy_id,
-        women: loo.women,
-        men: loo.men,
-        name: loo.name,
-        noPayment: loo.noPayment,
-        notes: loo.notes,
-        openingTimes: loo.openingTimes,
-        paymentDetails: loo.paymentDetails,
-        accessible: loo.accessible,
-        active: loo.active,
-        allGender: loo.allGender,
-        area: [loo.areas],
-        attended: loo.attended,
-        automatic: loo.automatic,
-        babyChange: loo.babyChange,
-        children: loo.children,
-        createdAt: loo.created_at,
-        location: { lat: loo.coordinates[0], lng: loo.coordinates[1] },
-        removalReason: loo.removalReason,
-        radar: loo.radar,
-        urinalOnly: loo.urinalOnly,
-        verifiedAt: loo.verifiedAt,
-        reports: [],
-        updatedAt: loo.updated_at,
-      };
+      return convertPostgresLoo(loo, loo.areas);
     },
-    loos: async (_parent, args, context) => {
-      await dbConnect();
-
-      const REQUIRED_PERMISSION = 'VIEW_CONTRIBUTOR_INFO';
-
-      // Construct the search query
-      const query = {
-        'properties.active': args.filters.active,
-      };
-
-      if (args.filters.noPayment) {
-        query['properties.noPayment'] = true;
-      }
-
-      if (args.filters.areaName) {
-        query['properties.area.name'] = args.filters.areaName;
-      }
-
-      // Text search for the loo name
-      if (args.filters.text) {
-        query.$or = [{ $text: { $search: args.filters.text } }];
-      }
-
-      // Bound by dates
-      if (args.filters.fromDate || args.filters.toDate) {
-        query.updatedAt = {};
-      }
-
-      if (args.filters.fromDate) {
-        query.updatedAt.$gte = args.filters.fromDate;
-      }
-
-      if (args.filters.toDate) {
-        query.updatedAt.$lte = args.filters.toDate;
-      }
-
-      // Check the context for proper auth - we can't allow people to query by contributors when
-      // they don't have permission to view who has contributed info for each report
-      args.filters.contributors = without(args.filters.contributors, null);
-      if (
-        args.filters.contributors &&
-        args.filters.contributors.length &&
-        context.user &&
-        context.user[process.env.AUTH0_PERMISSIONS_KEY].includes(
-          REQUIRED_PERMISSION
-        )
-      ) {
-        query.$and = [
-          {
-            contributors: { $all: args.filters.contributors },
+    loos: async (_parent, args, { prisma }) => {
+      const loos = await prisma.toilets.findMany({
+        include: { areas: { select: { name: true, type: true } } },
+        where: {
+          active: args.filters.active ?? false,
+          noPayment: args.filters.noPayment ? true : undefined,
+          areas: {
+            name: {
+              equals: args.filters.areaName,
+            },
           },
-        ];
-      }
-
-      const res = await DBLoo.paginate(query, {
-        page: args.pagination.page,
-        limit: args.pagination.limit,
-        sort: args.sort,
+          updated_at: {
+            gte: args.filters.fromDate,
+            lte: args.filters.toDate,
+          },
+          OR: [
+            {
+              name: {
+                mode: 'insensitive',
+                contains: args.filters.text,
+              },
+            },
+          ],
+        },
       });
 
+      // TODO: Get this to work with Prisma
+
+      // const REQUIRED_PERMISSION = 'VIEW_CONTRIBUTOR_INFO';
+      // Check the context for proper auth - we can't allow people to query by contributors when
+      // they don't have permission to view who has contributed info for each report
+      // args.filters.contributors = without(args.filters.contributors, null);
+      // if (
+      //   args.filters.contributors &&
+      //   args.filters.contributors.length &&
+      //   context.user &&
+      //   context.user[process.env.AUTH0_PERMISSIONS_KEY].includes(
+      //     REQUIRED_PERMISSION
+      //   )
+      // ) {
+      //   query.$and = [
+      //     {
+      //       contributors: { $all: args.filters.contributors },
+      //     },
+      //   ];
+      // }
+
+      // TODO: Get pagination to work with Prisma
+
+      // const res = await DBLoo.paginate(query, {
+      //   page: args.pagination.page,
+      //   limit: args.pagination.limit,
+      //   sort: args.sort,
+      // });
+
       return {
-        loos: res.docs,
-        total: res.total,
-        pages: res.pages,
-        limit: res.limit,
-        page: res.page,
+        loos: loos.map((loo) => convertPostgresLoo(loo)),
+        total: loos.length,
+        pages: 1,
+        limit: 1,
+        page: 1,
       };
     },
-    looNamesByIds: async (_parent, args) => {
-      await dbConnect();
-      return await DBLoo.find({ _id: { $in: args.idList } });
+    looNamesByIds: async (_parent, args, { prisma }) => {
+      return (
+        await prisma.toilets.findMany({
+          where: {
+            legacy_id: {
+              in: args.idList,
+            },
+          },
+          select: {
+            legacy_id: true,
+            name: true,
+          },
+        })
+      ).map((loo) => ({ id: loo.legacy_id, name: loo.name }));
     },
     loosByProximity: async (_parent, args) => {
       await dbConnect();
