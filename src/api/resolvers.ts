@@ -1,7 +1,7 @@
 /* eslint-disable functional/immutable-data */
 import { stringifyAndCompressLoos } from '../lib/loo';
 import ngeohash from 'ngeohash';
-
+import { Resolvers } from './resolvers-types';
 import {
   Loo as DBLoo,
   Report as DBReport,
@@ -40,7 +40,7 @@ const looInfoResolver = (property) => {
   };
 };
 
-const resolvers = {
+const resolvers: Resolvers = {
   Query: {
     loo: async (_parent, args) => {
       await dbConnect();
