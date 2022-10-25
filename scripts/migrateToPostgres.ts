@@ -1,4 +1,4 @@
-import { PrismaClient, toilets } from '../generated/prisma-client-js';
+import { PrismaClient, toilets } from '@prisma/client';
 import { PrismaClient as PrismaClientMongo } from '../generated/schemaMongo';
 import { SingleBar } from 'cli-progress';
 

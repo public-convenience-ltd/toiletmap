@@ -1,7 +1,7 @@
 /* eslint-disable functional/immutable-data */
 import { stringifyAndCompressLoos } from '../lib/loo';
 import ngeohash from 'ngeohash';
-import { Loo, Resolvers } from './resolvers-types';
+import { Loo as LooT, Resolvers } from './resolvers-types';
 import {
   Loo as DBLoo,
   Report as DBReport,
@@ -44,21 +44,31 @@ const looInfoResolver = (property) => {
 const resolvers: Resolvers<Context> = {
   Query: {
     loo: async (_parent, args, { prisma }) => {
+      await prisma.$connect();
       const loo = await prisma.toilets.findUnique({
-        where: { legacy_id: args.id },
-        include: { areas: true },
+        // include: { areas: { select: { name: true, type: true } } },
+        where: { legacy_id: '9f1caf8506c691627e59ba6b' },
       });
 
       const { latitude, longitude } = ngeohash.decode(loo.geohash);
 
-      const finalLoo: Loo = {
+      const openingTimes = loo.openingTimes.reduce((acc, curr, i) => {
+        if (i % 2 === 0) {
+          acc.push([curr]);
+        } else {
+          acc[acc.length - 1].push(curr);
+        }
+        return acc;
+      }, []);
+
+      const finalLoo: LooT = {
         id: loo.legacy_id,
         women: loo.women,
         men: loo.men,
         name: loo.name,
         noPayment: loo.noPayment,
         notes: loo.notes,
-        openingTimes: loo.openingTimes,
+        openingTimes: openingTimes,
         paymentDetails: loo.paymentDetails,
         accessible: loo.accessible,
         active: loo.active,
@@ -426,13 +436,13 @@ const resolvers: Resolvers<Context> = {
   },
 
   Loo: {
-    id: (l) => l._id.toString(),
-    reports: (l) => DBReport.find().where('_id').in(l.reports).exec(),
-    location: (l) => ({
-      lng: l.properties.geometry.coordinates[0],
-      lat: l.properties.geometry.coordinates[1],
-    }),
-    ...looInfoResolver('properties'),
+    // id: (l) => l._id.toString(),
+    // reports: (l) => DBReport.find().where('_id').in(l.reports).exec(),
+    // location: (l) => ({
+    //   lng: l.properties.geometry.coordinates[0],
+    //   lat: l.properties.geometry.coordinates[1],
+    // }),
+    // ...looInfoResolver('properties'),
   },
 
   DateTime: GraphQLDateTime,
