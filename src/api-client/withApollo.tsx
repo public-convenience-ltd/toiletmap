@@ -20,8 +20,11 @@ function createApolloClient() {
     const { SchemaLink } = require('@apollo/client/link/schema');
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { default: schema } = require('./schema');
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { context } = require('../api/prisma/prismaContext');
     terminatingLink = new SchemaLink({
       schema: schema(authDirective, redactedDirective),
+      context,
     });
   } else {
     terminatingLink = createHttpLink({
@@ -66,7 +69,7 @@ export function getApolloClient() {
 }
 
 export const withApollo = (Comp: NextPage) =>
-  (function ApolloWrapper(props: unknown) {
+  function ApolloWrapper(props: object) {
     return (
       <ApolloProvider client={getApolloClient()}>
         <Comp {...props} />

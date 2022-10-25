@@ -1,7 +1,7 @@
 /* eslint-disable functional/immutable-data */
 import { stringifyAndCompressLoos } from '../lib/loo';
 import ngeohash from 'ngeohash';
-import { Loo as LooT, Resolvers } from './resolvers-types';
+import { Resolvers } from './resolvers-types';
 import {
   Loo as DBLoo,
   Report as DBReport,
@@ -46,25 +46,24 @@ const resolvers: Resolvers<Context> = {
     loo: async (_parent, args, { prisma }) => {
       await prisma.$connect();
       const loo = await prisma.toilets.findUnique({
-        // include: { areas: { select: { name: true, type: true } } },
-        where: { legacy_id: '9f1caf8506c691627e59ba6b' },
+        include: { areas: { select: { name: true, type: true } } },
+        where: { legacy_id: args.id },
       });
 
       const { latitude, longitude } = ngeohash.decode(loo.geohash);
-
-      const finalLoo: LooT = {
+      return {
         id: loo.legacy_id,
         women: loo.women,
         men: loo.men,
         name: loo.name,
         noPayment: loo.noPayment,
         notes: loo.notes,
-        openingTimes: openingTimes,
+        openingTimes: loo.openingTimes,
         paymentDetails: loo.paymentDetails,
         accessible: loo.accessible,
         active: loo.active,
         allGender: loo.allGender,
-        // area: loo.area_id,
+        area: [loo.areas],
         attended: loo.attended,
         automatic: loo.automatic,
         babyChange: loo.babyChange,
@@ -78,8 +77,6 @@ const resolvers: Resolvers<Context> = {
         reports: [],
         updatedAt: loo.updated_at,
       };
-
-      return finalLoo;
     },
     loos: async (_parent, args, context) => {
       await dbConnect();
@@ -426,15 +423,7 @@ const resolvers: Resolvers<Context> = {
     loo: (r) => r.getLoo(),
   },
 
-  Loo: {
-    // id: (l) => l._id.toString(),
-    // reports: (l) => DBReport.find().where('_id').in(l.reports).exec(),
-    // location: (l) => ({
-    //   lng: l.properties.geometry.coordinates[0],
-    //   lat: l.properties.geometry.coordinates[1],
-    // }),
-    // ...looInfoResolver('properties'),
-  },
+  Loo: {},
 
   DateTime: GraphQLDateTime,
 
@@ -447,7 +436,6 @@ const resolvers: Resolvers<Context> = {
 };
 
 export const DateTime = resolvers.DateTime;
-export const Loo = resolvers.Loo;
 export const Mutation = resolvers.Mutation;
 export const MutationResponse = resolvers.MutationResponse;
 export const OpeningTimes = resolvers.OpeningTimes;

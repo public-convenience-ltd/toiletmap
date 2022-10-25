@@ -51,6 +51,8 @@ model spatial_ref_sys {
   @@schema("public")
 }
 
+
+
 model toilets {
   id             Int                       @id(map: "toilet_id") @default(autoincrement())
   legacy_id      String                    @unique(map: "legacy_toilet_id") @db.Char(24)
@@ -71,7 +73,6 @@ model toilets {
   women          Boolean?
   updated_at     DateTime?                 @db.Date
   geometry       Unsupported("geography")?
-  openingTimes   String[]
   urinalOnly     Boolean?
   allGender      Boolean?
   children       Boolean?
@@ -79,6 +80,7 @@ model toilets {
   verifiedAt     DateTime?                 @db.Date
   reports        Json?
   area_id        Int?
+  openingTimes   Json?
   areas          areas?                    @relation(fields: [area_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "toilets___area_id_fk")
 
   @@schema("public")

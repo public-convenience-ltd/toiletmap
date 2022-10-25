@@ -107,7 +107,7 @@ import { SingleBar } from 'cli-progress';
         urinalOnly: loo.properties.urinalOnly,
         allGender: loo.properties.allGender,
         children: loo.properties.children,
-        openingTimes: (loo.properties.openingTimes ?? undefined)?.flat(),
+        openingTimes: loo.properties.openingTimes ?? undefined,
         verifiedAt: loo.properties.verifiedAt,
         reports: resolvedReports,
         name: loo.properties.name,
