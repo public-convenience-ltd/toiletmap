@@ -1,7 +1,7 @@
 /* eslint-disable functional/immutable-data */
 import { stringifyAndCompressLoos } from '../lib/loo';
 import ngeohash from 'ngeohash';
-import { Resolvers } from './resolvers-types';
+import { Loo, Resolvers } from './resolvers-types';
 import {
   Loo as DBLoo,
   Report as DBReport,
@@ -12,6 +12,7 @@ import {
 import { GraphQLDateTime } from 'graphql-iso-date';
 import without from 'lodash/without';
 import OpeningTimesScalar from './OpeningTimesScalar';
+import { Context } from './prisma/prismaContext';
 
 const subPropertyResolver = (property) => (parent, _args, _context, info) =>
   parent[property][info.fieldName];
@@ -40,11 +41,44 @@ const looInfoResolver = (property) => {
   };
 };
 
-const resolvers: Resolvers = {
+const resolvers: Resolvers<Context> = {
   Query: {
-    loo: async (_parent, args) => {
-      await dbConnect();
-      return await DBLoo.findById(args.id);
+    loo: async (_parent, args, { prisma }) => {
+      const loo = await prisma.toilets.findUnique({
+        where: { legacy_id: args.id },
+        include: { areas: true },
+      });
+
+      const { latitude, longitude } = ngeohash.decode(loo.geohash);
+
+      const finalLoo: Loo = {
+        id: loo.legacy_id,
+        women: loo.women,
+        men: loo.men,
+        name: loo.name,
+        noPayment: loo.noPayment,
+        notes: loo.notes,
+        openingTimes: loo.openingTimes,
+        paymentDetails: loo.paymentDetails,
+        accessible: loo.accessible,
+        active: loo.active,
+        allGender: loo.allGender,
+        // area: loo.area_id,
+        attended: loo.attended,
+        automatic: loo.automatic,
+        babyChange: loo.babyChange,
+        children: loo.children,
+        createdAt: loo.created_at,
+        location: { lat: latitude, lng: longitude },
+        removalReason: loo.removalReason,
+        radar: loo.radar,
+        urinalOnly: loo.urinalOnly,
+        verifiedAt: loo.verifiedAt,
+        reports: [],
+        updatedAt: loo.updated_at,
+      };
+
+      return finalLoo;
     },
     loos: async (_parent, args, context) => {
       await dbConnect();
