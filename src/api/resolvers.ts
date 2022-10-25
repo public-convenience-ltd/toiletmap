@@ -52,15 +52,6 @@ const resolvers: Resolvers<Context> = {
 
       const { latitude, longitude } = ngeohash.decode(loo.geohash);
 
-      const openingTimes = loo.openingTimes.reduce((acc, curr, i) => {
-        if (i % 2 === 0) {
-          acc.push([curr]);
-        } else {
-          acc[acc.length - 1].push(curr);
-        }
-        return acc;
-      }, []);
-
       const finalLoo: LooT = {
         id: loo.legacy_id,
         women: loo.women,

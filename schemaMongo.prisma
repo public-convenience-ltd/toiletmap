@@ -5,7 +5,7 @@ generator client {
 
 datasource mongodb {
   provider = "mongodb"
-  url      = env("MONGO_URL")
+  url      = env("MONGODB_URI")
 }
 
 type AreasGeometry {
@@ -84,6 +84,7 @@ type NewreportsDiff {
   attended       Boolean?
   automatic      Boolean?
   babyChange     Boolean?
+  campaignUOL    Boolean?
   children       Boolean?
   geometry       NewreportsDiffGeometry?
   men            Boolean?
@@ -94,6 +95,7 @@ type NewreportsDiff {
   paymentDetails String?
   radar          Boolean?
   removalReason  String?
+  type           String?
   urinalOnly     Boolean?
   verifiedAt     DateTime?               @mongodb.Date
   women          Boolean?
