@@ -128,7 +128,7 @@ import { SingleBar } from 'cli-progress';
 
       await psqlPrisma.$executeRaw`
           UPDATE toilets SET
-          geometry = ST_GeomFromGeoJSON(${JSON.stringify(
+          geography = ST_GeomFromGeoJSON(${JSON.stringify(
             loo.properties.geometry
           )})
           WHERE legacy_id = ${loo.id}

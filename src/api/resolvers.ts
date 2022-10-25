@@ -44,13 +44,11 @@ const looInfoResolver = (property) => {
 const resolvers: Resolvers<Context> = {
   Query: {
     loo: async (_parent, args, { prisma }) => {
-      await prisma.$connect();
       const loo = await prisma.toilets.findUnique({
         include: { areas: { select: { name: true, type: true } } },
         where: { legacy_id: args.id },
       });
 
-      const { latitude, longitude } = ngeohash.decode(loo.geohash);
       return {
         id: loo.legacy_id,
         women: loo.women,
@@ -69,7 +67,7 @@ const resolvers: Resolvers<Context> = {
         babyChange: loo.babyChange,
         children: loo.children,
         createdAt: loo.created_at,
-        location: { lat: latitude, lng: longitude },
+        location: { lat: loo.coordinates[0], lng: loo.coordinates[1] },
         removalReason: loo.removalReason,
         radar: loo.radar,
         urinalOnly: loo.urinalOnly,

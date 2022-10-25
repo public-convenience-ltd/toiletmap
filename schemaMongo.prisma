@@ -95,6 +95,7 @@ type NewreportsDiff {
   paymentDetails String?
   radar          Boolean?
   removalReason  String?
+  type           String?
   urinalOnly     Boolean?
   verifiedAt     DateTime?               @mongodb.Date
   women          Boolean?
