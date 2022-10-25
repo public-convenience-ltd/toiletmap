@@ -7,7 +7,7 @@ generator client {
 datasource db {
   provider   = "postgresql"
   url        = env("POSTGRES_URL")
-  extensions = [postgis(schema: "public")]
+  extensions = [postgis(schema: "public"), uuid_ossp(map: "uuid-ossp", schema: "extensions")]
 }
 
 model spatial_ref_sys {
@@ -45,15 +45,18 @@ model toilets {
   geohash        String?                   @default(dbgenerated("st_geohash(geometry)"))
   verifiedAt     DateTime?                 @db.Date
   reports        Json?
+  area_id        Int?
+  areas          areas?                    @relation(fields: [area_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "toilets___area_id_fk")
 }
 
 model areas {
   legacy_id  String?                   @unique(map: "legacy_area_id") @db.Char(24)
   geometry   Unsupported("geography")?
-  name       String?
+  name       String?                   @unique(map: "area_name")
   priority   Int?
   type       String?
   dataset_id Int?
   version    Int?
   id         Int                       @id(map: "area_id") @default(autoincrement())
+  toilets    toilets[]
 }

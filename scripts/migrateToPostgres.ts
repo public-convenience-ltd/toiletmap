@@ -1,4 +1,4 @@
-import { PrismaClient } from '../generated/prisma-client-js';
+import { PrismaClient, toilets } from '../generated/prisma-client-js';
 import { PrismaClient as PrismaClientMongo } from '../generated/schemaMongo';
 import { SingleBar } from 'cli-progress';
 
@@ -111,7 +111,7 @@ import { SingleBar } from 'cli-progress';
         verifiedAt: loo.properties.verifiedAt,
         reports: resolvedReports,
         name: loo.properties.name,
-      };
+      } as toilets;
 
       const upsertLoo = psqlPrisma.toilets.upsert({
         where: { legacy_id: loo.id },
@@ -127,12 +127,25 @@ import { SingleBar } from 'cli-progress';
       await upsertLoo;
 
       await psqlPrisma.$executeRaw`
-        UPDATE toilets SET
-        geometry = ST_GeomFromGeoJSON(${JSON.stringify(
-          loo.properties.geometry
-        )})
-        WHERE legacy_id = ${loo.id}
+          UPDATE toilets SET
+          geometry = ST_GeomFromGeoJSON(${JSON.stringify(
+            loo.properties.geometry
+          )})
+          WHERE legacy_id = ${loo.id}
       `;
+
+      // const areaID = await psqlPrisma.$queryRaw`
+      //   SELECT a.id from
+      //   toilets inner join areas a on ST_WITHIN(toilets.geometry::geometry, a.geometry::geometry)
+      //   WHERE toilets.legacy_id = ${loo.id}
+      // `;
+
+      // await psqlPrisma.toilets.update({
+      //   where: { legacy_id: loo.id },
+      //   data: {
+      //     area_id: areaID[0]?.id,
+      //   },
+      // });
 
       bar.update(index++);
     }
