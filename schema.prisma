@@ -1,13 +1,45 @@
 generator client {
   provider        = "prisma-client-js"
   output          = "./generated/prisma-client-js"
-  previewFeatures = ["postgresqlExtensions"]
+  previewFeatures = ["multiSchema", "postgresqlExtensions"]
 }
 
 datasource db {
   provider   = "postgresql"
   url        = env("POSTGRES_URL")
   extensions = [postgis(schema: "public"), uuid_ossp(map: "uuid-ossp", schema: "public")]
+  schemas    = ["audit", "public"]
+}
+
+model record_version {
+  id            BigInt              @id @default(autoincrement())
+  record_id     String?             @db.Uuid
+  old_record_id String?             @db.Uuid
+  op            operation
+  ts            DateTime            @default(now()) @db.Timestamptz(6)
+  table_oid     Int                 @db.Oid
+  table_schema  Unsupported("name")
+  table_name    Unsupported("name")
+  record        Json?
+  old_record    Json?
+
+  @@index([table_oid], map: "record_version_table_oid")
+  @@index([ts], map: "record_version_ts", type: Brin)
+  @@schema("audit")
+}
+
+model areas {
+  legacy_id  String?                   @unique(map: "legacy_area_id") @db.Char(24)
+  geometry   Unsupported("geography")?
+  name       String?                   @unique(map: "area_name")
+  priority   Int?
+  type       String?
+  dataset_id Int?
+  version    Int?
+  id         Int                       @id(map: "area_id") @default(autoincrement())
+  toilets    toilets[]
+
+  @@schema("public")
 }
 
 model spatial_ref_sys {
@@ -16,6 +48,8 @@ model spatial_ref_sys {
   auth_srid Int?
   srtext    String? @db.VarChar(2048)
   proj4text String? @db.VarChar(2048)
+
+  @@schema("public")
 }
 
 model toilets {
@@ -47,16 +81,15 @@ model toilets {
   reports        Json?
   area_id        Int?
   areas          areas?                    @relation(fields: [area_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "toilets___area_id_fk")
+
+  @@schema("public")
 }
 
-model areas {
-  legacy_id  String?                   @unique(map: "legacy_area_id") @db.Char(24)
-  geometry   Unsupported("geography")?
-  name       String?                   @unique(map: "area_name")
-  priority   Int?
-  type       String?
-  dataset_id Int?
-  version    Int?
-  id         Int                       @id(map: "area_id") @default(autoincrement())
-  toilets    toilets[]
+enum operation {
+  INSERT
+  UPDATE
+  DELETE
+  TRUNCATE
+
+  @@schema("audit")
 }
