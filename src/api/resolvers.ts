@@ -159,19 +159,18 @@ const resolvers: Resolvers<Context> = {
     loosByProximity: async (_parent, args, { prisma }) => {
       const nearbyLoos = await prisma.$queryRaw`
         SELECT
-          id,
-          legacy_id,
-          name,
-          active,
-          men,
-          women,
-          no_payment,
-          notes,
-          opening_times,
-          payment_details,
-          accessible,
-          active,
-          all_gender,
+          t.legacy_id,
+          t.name,
+          t.active,
+          t.men,
+          t.women,
+          t.no_payment,
+          t.notes,
+          t.opening_times,
+          t.payment_details,
+          t.accessible,
+          t.active,
+          t.all_gender,
           attended,
           automatic,
           location,
@@ -182,14 +181,28 @@ const resolvers: Resolvers<Context> = {
           radar,
           urinal_only,
           verified_at,
-          updated_at from toilets t
-        where st_distancesphere(
-          t.geography::geometry,
-          ST_MakePoint(${args.from.lng}, ${args.from.lat})
-        ) <= ${args.from.maxDistance}
+          updated_at,
+          st_distancesphere(
+            geography::geometry,
+            ST_MakePoint(${args.from.lng}, ${args.from.lat})
+          ) as distance,
+          a.name as area_name,
+          a.type as area_type from toilets t inner join areas a on a.id = t.area_id
+          where st_distancesphere(
+            t.geography::geometry,
+            ST_MakePoint(${args.from.lng}, ${args.from.lat})
+          ) <= ${args.from.maxDistance ?? 1000}
       `;
 
-      return nearbyLoos?.map((loo) => convertPostgresLoo(loo)) ?? [];
+      return (
+        nearbyLoos?.map((loo) => {
+          const hasArea = loo?.area_name && loo?.area_type;
+          const area = hasArea
+            ? { name: loo?.area_name, type: loo?.area_type }
+            : undefined;
+          return { ...convertPostgresLoo(loo, area) };
+        }) ?? []
+      );
     },
     loosByGeohash: async (_parent, args) => {
       await dbConnect();
