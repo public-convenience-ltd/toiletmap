@@ -220,7 +220,6 @@ export type Query = {
   proportions: Proportions;
   /** Retrieve a report by ID */
   report?: Maybe<Report>;
-  ukLooMarkers: Array<Scalars['String']>;
 };
 
 
@@ -645,7 +644,6 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   mapAreas?: Resolver<Maybe<ResolversTypes['TopoGeo']>, ParentType, ContextType, Partial<QueryMapAreasArgs>>;
   proportions?: Resolver<ResolversTypes['Proportions'], ParentType, ContextType>;
   report?: Resolver<Maybe<ResolversTypes['Report']>, ParentType, ContextType, RequireFields<QueryReportArgs, 'id'>>;
-  ukLooMarkers?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
 export type ReportResolvers<ContextType = any, ParentType extends ResolversParentTypes['Report'] = ResolversParentTypes['Report']> = {

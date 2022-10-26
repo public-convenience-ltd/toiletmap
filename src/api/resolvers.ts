@@ -1,6 +1,5 @@
 /* eslint-disable functional/immutable-data */
 import { stringifyAndCompressLoos } from '../lib/loo';
-import ngeohash from 'ngeohash';
 import { Resolvers } from './resolvers-types';
 import {
   Loo as DBLoo,
@@ -13,6 +12,7 @@ import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
 import { Context } from './prisma/prismaContext';
 import { toilets, areas } from '@prisma/client';
+import { Loo } from '../api-client/graphql';
 
 const subPropertyResolver = (property) => (parent, _args, _context, info) =>
   parent[property][info.fieldName];
@@ -41,7 +41,10 @@ const looInfoResolver = (property) => {
   };
 };
 
-const convertPostgresLoo = (loo: toilets, area?: Partial<areas>) => ({
+const convertPostgresLooToGraphQL = (
+  loo: toilets,
+  area?: Partial<areas>
+): Loo => ({
   id: loo.legacy_id,
   women: loo.women,
   men: loo.men,
@@ -75,8 +78,7 @@ const resolvers: Resolvers<Context> = {
         include: { areas: { select: { name: true, type: true } } },
         where: { legacy_id: args.id },
       });
-
-      return convertPostgresLoo(loo, loo.areas);
+      return convertPostgresLooToGraphQL(loo, loo.areas);
     },
     loos: async (_parent, args, { prisma }) => {
       const loos = await prisma.toilets.findMany({
@@ -134,7 +136,7 @@ const resolvers: Resolvers<Context> = {
       // });
 
       return {
-        loos: loos.map((loo) => convertPostgresLoo(loo)),
+        loos: loos.map((loo) => convertPostgresLooToGraphQL(loo)),
         total: loos.length,
         pages: 1,
         limit: 1,
@@ -157,7 +159,7 @@ const resolvers: Resolvers<Context> = {
       ).map((loo) => ({ id: loo.legacy_id, name: loo.name }));
     },
     loosByProximity: async (_parent, args, { prisma }) => {
-      const nearbyLoos = await prisma.$queryRaw`
+      const nearbyLoos = (await prisma.$queryRaw`
         SELECT
           loo.legacy_id,
           loo.name,
@@ -192,7 +194,13 @@ const resolvers: Resolvers<Context> = {
             loo.geography::geometry,
             ST_MakePoint(${args.from.lng}, ${args.from.lat})
           ) <= ${args.from.maxDistance ?? 1000}
-      `;
+      `) as (toilets & {
+        distance: number;
+        area_name?: string;
+        area_type?: string;
+      })[];
+
+      // TODO: Zod to verify this?
 
       return (
         nearbyLoos?.map((loo) => {
@@ -200,44 +208,29 @@ const resolvers: Resolvers<Context> = {
           const area = hasArea
             ? { name: loo?.area_name, type: loo?.area_type }
             : undefined;
-          return { ...convertPostgresLoo(loo, area) };
+          return { ...convertPostgresLooToGraphQL(loo, area) };
         }) ?? []
       );
     },
-    loosByGeohash: async (_parent, args) => {
-      await dbConnect();
-      const geohash: string = args.geohash ?? '';
-      const current = ngeohash.decode_bbox(geohash);
-
-      const areaLooData = await Promise.all(
-        [current].map(async (boundingBox) => {
-          const [minLat, minLon, maxLat, maxLon] = boundingBox;
-          return await DBLoo.find({ 'properties.active': true })
-            .where('properties.geometry')
-            .box([minLon, minLat], [maxLon, maxLat]);
-        })
-      );
-
-      return stringifyAndCompressLoos(areaLooData.flat());
-    },
-    ukLooMarkers: async () => {
-      await dbConnect();
-      const loos = await DBLoo.find({ 'properties.active': true })
-        .where('properties.geometry')
-        .within({
-          type: 'Polygon',
-          coordinates: [
-            [
-              [-0.3515625, 61.44927080076419],
-              [-15.5126953125, 55.7642131648377],
-              [-7.66845703125, 48.151428143221224],
-              [2.35107421875, 51.34433866059924],
-              [-0.3515625, 61.44927080076419],
-            ],
+    loosByGeohash: async (_parent, args, { prisma }) => {
+      const loos = await prisma.toilets.findMany({
+        where: {
+          geohash: {
+            startsWith: args.geohash,
+          },
+          AND: [
+            {
+              active: {
+                equals: true,
+              },
+            },
           ],
-        });
+        },
+      });
 
-      return stringifyAndCompressLoos(loos);
+      return stringifyAndCompressLoos(
+        loos.map((loo) => convertPostgresLooToGraphQL(loo)).flat()
+      );
     },
     areas: async () => {
       await dbConnect();
