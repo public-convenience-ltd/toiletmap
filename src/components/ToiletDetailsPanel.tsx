@@ -198,7 +198,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         data.location.lat,
         data.location.lng,
       ]}`}
-    >
+      legacyBehavior>
       <Button
         variant="primary"
         as="a"
@@ -340,7 +340,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
           <Box display="flex" alignItems="center">
             No?
             <Spacer mr={2} />
-            <Link passHref href={editUrl}>
+            <Link passHref href={editUrl} legacyBehavior>
               <Button as="a" variant="secondary" data-testid="edit-button">
                 <Box mr={2}>
                   <Icon icon={faEdit} />
@@ -352,7 +352,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         </Box>
         <Spacer mb={[0, 2]} />
         Last {verifiedOrUpdated}:{' '}
-        <Link href={`/explorer/loos/${data.id}`}>
+        <Link href={`/explorer/loos/${data.id}`} legacyBehavior>
           {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
         </Link>
       </Box>
@@ -540,7 +540,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
               <Text fontSize={1} color="grey">
                 Hours may vary with national holidays or seasonal changes. If
                 you know these hours to be out of date please{' '}
-                <Link passHref href={editUrl}>
+                <Link passHref href={editUrl} legacyBehavior>
                   <Button as="a" variant="link" data-testid="edit-link">
                     edit this toilet
                   </Button>

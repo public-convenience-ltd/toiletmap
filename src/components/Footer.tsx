@@ -40,7 +40,7 @@ const Footer = ({ children = null }) => {
             'https://vercel.com/?utm_source=public-convenience-ltd&utm_campaign=oss'
           }
           passHref
-        >
+          legacyBehavior>
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <Box
             as="a"
