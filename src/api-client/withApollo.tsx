@@ -75,4 +75,4 @@ export const withApollo = (Comp: NextPage) =>
         <Comp {...props} />
       </ApolloProvider>
     );
-  });
+  };
