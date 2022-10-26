@@ -159,18 +159,18 @@ const resolvers: Resolvers<Context> = {
     loosByProximity: async (_parent, args, { prisma }) => {
       const nearbyLoos = await prisma.$queryRaw`
         SELECT
-          t.legacy_id,
-          t.name,
-          t.active,
-          t.men,
-          t.women,
-          t.no_payment,
-          t.notes,
-          t.opening_times,
-          t.payment_details,
-          t.accessible,
-          t.active,
-          t.all_gender,
+          loo.legacy_id,
+          loo.name,
+          active,
+          men,
+          women,
+          no_payment,
+          notes,
+          opening_times,
+          payment_details,
+          accessible,
+          active,
+          all_gender,
           attended,
           automatic,
           location,
@@ -186,10 +186,10 @@ const resolvers: Resolvers<Context> = {
             geography::geometry,
             ST_MakePoint(${args.from.lng}, ${args.from.lat})
           ) as distance,
-          a.name as area_name,
-          a.type as area_type from toilets t inner join areas a on a.id = t.area_id
+          area.name as area_name,
+          area.type as area_type from toilets loo inner join areas area on area.id = loo.area_id
           where st_distancesphere(
-            t.geography::geometry,
+            loo.geography::geometry,
             ST_MakePoint(${args.from.lng}, ${args.from.lat})
           ) <= ${args.from.maxDistance ?? 1000}
       `;
