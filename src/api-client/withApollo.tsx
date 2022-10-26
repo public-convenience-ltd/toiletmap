@@ -66,10 +66,10 @@ export function getApolloClient() {
 }
 
 export const withApollo = (Comp: NextPage) =>
-  function ApolloWrapper(props: unknown) {
+  (function ApolloWrapper(props: unknown) {
     return (
       <ApolloProvider client={getApolloClient()}>
         <Comp {...props} />
       </ApolloProvider>
     );
-  };
+  });

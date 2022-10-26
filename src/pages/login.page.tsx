@@ -40,7 +40,10 @@ const LoginPage = () => {
           Up:
         </p>
         <Spacer mb={3} />
-        <Link passHref href={`/api/auth/login?returnTo=${router.asPath}`}>
+        <Link
+          passHref
+          href={`/api/auth/login?returnTo=${router.asPath}`}
+          legacyBehavior>
           <Button as={'a'} variant="primary">
             Log In/Sign Up
           </Button>
