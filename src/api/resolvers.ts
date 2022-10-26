@@ -43,6 +43,7 @@ const convertPostgresLooToGraphQL = (
   loo: toilets & { areas?: Partial<areas> }
 ): Loo => ({
   id: loo.id.toString(),
+  legacy_id: loo.legacy_id,
   women: loo.women,
   men: loo.men,
   name: loo.name,
@@ -71,7 +72,8 @@ const convertPostgresLooToGraphQL = (
 const resolvers: Resolvers<Context> = {
   Query: {
     loo: async (_parent, args, { prisma }) => {
-      if (isNaN(args.id as unknown as number)) {
+      const isLegacyId = isNaN(args.id as unknown as number);
+      if (isLegacyId) {
         return convertPostgresLooToGraphQL(await getLooById(prisma, args.id));
       }
 
@@ -81,7 +83,7 @@ const resolvers: Resolvers<Context> = {
     },
     looNamesByIds: async (_parent, args, { prisma }) => {
       const looNames = await getLooNamesByIds(prisma, args.idList);
-      return looNames;
+      return looNames.map((loo) => ({ id: loo.id.toString(), name: loo.name }));
     },
     loosByProximity: async (_parent, args, { prisma }) => {
       const result = await getLoosByProximity(

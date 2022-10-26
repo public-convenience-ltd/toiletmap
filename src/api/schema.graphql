@@ -37,6 +37,7 @@ The data representing a toilet is computed from its **Report**s
 """
 type Loo {
   id: ID
+  legacy_id: ID
   createdAt: DateTime
   updatedAt: DateTime
   verifiedAt: DateTime

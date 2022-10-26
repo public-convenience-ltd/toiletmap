@@ -53,6 +53,7 @@ export type Loo = {
   children?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   id?: Maybe<Scalars['ID']>;
+  legacy_id?: Maybe<Scalars['ID']>;
   location?: Maybe<Point>;
   men?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
@@ -396,6 +397,7 @@ export type LooResolvers<ContextType = any, ParentType extends ResolversParentTy
   children?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  legacy_id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   location?: Resolver<Maybe<ResolversTypes['Point']>, ParentType, ContextType>;
   men?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
