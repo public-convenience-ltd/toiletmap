@@ -6,6 +6,11 @@ import OpeningTimesScalar from './OpeningTimesScalar';
 import { Context } from './prisma/prismaContext';
 import { toilets, areas } from '@prisma/client';
 import { Loo } from '../api-client/graphql';
+import {
+  getLooById,
+  getLooNamesByIds,
+  getLoosByProximity,
+} from './prisma/queries';
 
 const subPropertyResolver = (property) => (parent, _args, _context, info) =>
   parent[property][info.fieldName];
@@ -65,86 +70,27 @@ const convertPostgresLooToGraphQL = (
 
 const resolvers: Resolvers<Context> = {
   Query: {
-    loo: async (_parent, args, { prisma }) =>
-      convertPostgresLooToGraphQL(
-        await prisma.toilets.findUnique({
-          include: { areas: { select: { name: true, type: true } } },
-          where: { legacy_id: args.id },
-        })
-      ),
+    loo: async (_parent, args, { prisma }) => {
+      if (isNaN(args.id as unknown as number)) {
+        return convertPostgresLooToGraphQL(await getLooById(prisma, args.id));
+      }
+
+      return convertPostgresLooToGraphQL(
+        await getLooById(prisma, parseInt(args.id))
+      );
+    },
     looNamesByIds: async (_parent, args, { prisma }) => {
-      return (
-        await prisma.toilets.findMany({
-          where: {
-            legacy_id: {
-              in: args.idList,
-            },
-          },
-          select: {
-            legacy_id: true,
-            name: true,
-          },
-        })
-      ).map((loo) => ({ id: loo.legacy_id, name: loo.name }));
+      const looNames = await getLooNamesByIds(prisma, args.idList);
+      return looNames;
     },
     loosByProximity: async (_parent, args, { prisma }) => {
-      const nearbyLoos = (await prisma.$queryRaw`
-        SELECT
-          loo.legacy_id,
-          loo.name,
-          active,
-          men,
-          women,
-          no_payment,
-          notes,
-          opening_times,
-          payment_details,
-          accessible,
-          active,
-          all_gender,
-          attended,
-          automatic,
-          location,
-          baby_change,
-          children,
-          created_at,
-          removal_reason,
-          radar,
-          urinal_only,
-          verified_at,
-          updated_at,
-          st_distancesphere(
-            geography::geometry,
-            ST_MakePoint(${args.from.lng}, ${args.from.lat})
-          ) as distance,
-          area.name as area_name,
-          area.type as area_type from toilets loo inner join areas area on area.id = loo.area_id
-          where st_distancesphere(
-            loo.geography::geometry,
-            ST_MakePoint(${args.from.lng}, ${args.from.lat})
-          ) <= ${args.from.maxDistance ?? 1000}
-      `) as (toilets & {
-        distance: number;
-        area_name?: string;
-        area_type?: string;
-      })[];
-
-      // TODO: Zod to verify this response?
-
-      return (
-        nearbyLoos?.map((loo) => {
-          const hasArea = loo?.area_name && loo?.area_type;
-
-          return {
-            ...convertPostgresLooToGraphQL({
-              ...loo,
-              areas: hasArea
-                ? { name: loo?.area_name, type: loo?.area_type }
-                : undefined,
-            }),
-          };
-        }) ?? []
+      const result = await getLoosByProximity(
+        prisma,
+        args.from.lat,
+        args.from.lng,
+        args.from.maxDistance
       );
+      return result.map(convertPostgresLooToGraphQL);
     },
     loosByGeohash: async (_parent, args, { prisma }) =>
       stringifyAndCompressLoos(
@@ -290,11 +236,6 @@ const resolvers: Resolvers<Context> = {
 
   DateTime: GraphQLDateTime,
 
-  SortOrder: {
-    NEWEST_FIRST: { updatedAt: 'desc' },
-    OLDEST_FIRST: { updatedAt: 'asc' },
-  },
-
   OpeningTimes: OpeningTimesScalar,
 };
 
@@ -304,4 +245,3 @@ export const MutationResponse = resolvers.MutationResponse;
 export const OpeningTimes = resolvers.OpeningTimes;
 export const Query = resolvers.Query;
 export const Report = resolvers.Report;
-export const SortOrder = resolvers.SortOrder;
