@@ -161,7 +161,6 @@ export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
       { req }
     );
     if (res.props.error || !res.props.data) {
-      console.log(res.props.error);
       return {
         props: {
           notFound: true,
