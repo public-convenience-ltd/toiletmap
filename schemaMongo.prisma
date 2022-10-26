@@ -52,6 +52,7 @@ type NewloosProperties {
   attended       Boolean?
   automatic      Boolean?
   babyChange     Boolean?
+  campaignUOL    Boolean?
   children       Boolean?
   geometry       NewloosPropertiesGeometry
   men            Boolean?
