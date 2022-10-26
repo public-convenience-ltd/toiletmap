@@ -1,4 +1,3 @@
-/* eslint-disable functional/immutable-data */
 import { stringifyAndCompressLoos } from '../lib/loo';
 import { Resolvers } from './resolvers-types';
 import { Loo as DBLoo, Report as DBReport, dbConnect } from './db';
@@ -73,69 +72,6 @@ const resolvers: Resolvers<Context> = {
           where: { legacy_id: args.id },
         })
       ),
-    loos: async (_parent, args, { prisma }) => {
-      const loos = await prisma.toilets.findMany({
-        include: { areas: { select: { name: true, type: true } } },
-        where: {
-          active: args.filters.active ?? false,
-          no_payment: args.filters.noPayment ? true : undefined,
-          areas: {
-            name: {
-              equals: args.filters.areaName,
-            },
-          },
-          updated_at: {
-            gte: args.filters.fromDate,
-            lte: args.filters.toDate,
-          },
-          OR: [
-            {
-              name: {
-                mode: 'insensitive',
-                contains: args.filters.text,
-              },
-            },
-          ],
-        },
-      });
-
-      // TODO: Get this to work with Prisma
-
-      // const REQUIRED_PERMISSION = 'VIEW_CONTRIBUTOR_INFO';
-      // Check the context for proper auth - we can't allow people to query by contributors when
-      // they don't have permission to view who has contributed info for each report
-      // args.filters.contributors = without(args.filters.contributors, null);
-      // if (
-      //   args.filters.contributors &&
-      //   args.filters.contributors.length &&
-      //   context.user &&
-      //   context.user[process.env.AUTH0_PERMISSIONS_KEY].includes(
-      //     REQUIRED_PERMISSION
-      //   )
-      // ) {
-      //   query.$and = [
-      //     {
-      //       contributors: { $all: args.filters.contributors },
-      //     },
-      //   ];
-      // }
-
-      // TODO: Get pagination to work with Prisma
-
-      // const res = await DBLoo.paginate(query, {
-      //   page: args.pagination.page,
-      //   limit: args.pagination.limit,
-      //   sort: args.sort,
-      // });
-
-      return {
-        loos: loos.map((loo) => convertPostgresLooToGraphQL(loo)),
-        total: loos.length,
-        pages: 1,
-        limit: 1,
-        page: 1,
-      };
-    },
     looNamesByIds: async (_parent, args, { prisma }) => {
       return (
         await prisma.toilets.findMany({
@@ -210,36 +146,35 @@ const resolvers: Resolvers<Context> = {
         }) ?? []
       );
     },
-    loosByGeohash: async (_parent, args, { prisma }) => {
-      const loos = await prisma.toilets.findMany({
-        where: {
-          geohash: {
-            startsWith: args.geohash,
-          },
-          AND: [
-            {
-              active: {
-                equals: args.active,
+    loosByGeohash: async (_parent, args, { prisma }) =>
+      stringifyAndCompressLoos(
+        (
+          await prisma.toilets.findMany({
+            where: {
+              geohash: {
+                startsWith: args.geohash,
               },
+              AND: [
+                {
+                  active: {
+                    equals: args.active,
+                  },
+                },
+              ],
             },
-          ],
-        },
-      });
+          })
+        )
+          .map(convertPostgresLooToGraphQL)
+          .flat()
+      ),
 
-      return stringifyAndCompressLoos(
-        loos.map((loo) => convertPostgresLooToGraphQL(loo)).flat()
-      );
-    },
-    areas: async (_parent, args, { prisma }) => {
-      const areas = await prisma.areas.findMany({
+    areas: async (_parent, args, { prisma }) =>
+      await prisma.areas.findMany({
         select: {
           name: true,
           type: true,
         },
-      });
-
-      return areas;
-    },
+      }),
   },
 
   MutationResponse: {
