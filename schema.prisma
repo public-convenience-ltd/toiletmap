@@ -52,35 +52,35 @@ model spatial_ref_sys {
 }
 
 model toilets {
-  id             Int                       @id(map: "toilet_id") @default(autoincrement())
-  legacy_id      String                    @unique(map: "legacy_toilet_id") @db.Char(24)
-  created_at     DateTime?                 @db.Date
-  contributors   String[]
-  accessible     Boolean?
-  active         Boolean?
-  attended       Boolean?
-  automatic      Boolean?
-  babyChange     Boolean?
-  men            Boolean?
-  name           String?
-  noPayment      Boolean?
-  notes          String?
-  paymentDetails String?
-  radar          Boolean?
-  removalReason  String?
-  women          Boolean?
-  updated_at     DateTime?                 @db.Date
-  geography      Unsupported("geography")?
-  urinalOnly     Boolean?
-  allGender      Boolean?
-  children       Boolean?
-  geohash        String?                   @default(dbgenerated("st_geohash(geography)"))
-  verifiedAt     DateTime?                 @db.Date
-  reports        Json?
-  area_id        Int?
-  openingTimes   Json?
-  coordinates    Float[]                   @default(dbgenerated("ARRAY[st_y(st_centroid(st_transform((geography)::geometry, 4326))), st_x(st_centroid(st_transform((geography)::geometry, 4326)))]"))
-  areas          areas?                    @relation(fields: [area_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "toilets___area_id_fk")
+  id              Int                       @id(map: "toilet_id") @default(autoincrement())
+  legacy_id       String                    @unique(map: "legacy_toilet_id") @db.Char(24)
+  created_at      DateTime?                 @db.Date
+  contributors    String[]
+  accessible      Boolean?
+  active          Boolean?
+  attended        Boolean?
+  automatic       Boolean?
+  baby_change     Boolean?
+  men             Boolean?
+  name            String?
+  no_payment      Boolean?
+  notes           String?
+  payment_details String?
+  radar           Boolean?
+  removal_reason  String?
+  women           Boolean?
+  updated_at      DateTime?                 @db.Date
+  geography       Unsupported("geography")?
+  urinal_only     Boolean?
+  all_gender      Boolean?
+  children        Boolean?
+  geohash         String?                   @default(dbgenerated("st_geohash(geography)"))
+  verified_at     DateTime?                 @db.Date
+  reports         Json?
+  area_id         Int?
+  opening_times   Json?
+  location        Float[]                   @default(dbgenerated("ARRAY[st_y(st_centroid(st_transform((geography)::geometry, 4326))), st_x(st_centroid(st_transform((geography)::geometry, 4326)))]"))
+  areas           areas?                    @relation(fields: [area_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "toilets___area_id_fk")
 
   @@schema("public")
 }

@@ -46,24 +46,24 @@ const convertPostgresLoo = (loo: toilets, area?: Partial<areas>) => ({
   women: loo.women,
   men: loo.men,
   name: loo.name,
-  noPayment: loo.noPayment,
+  noPayment: loo.no_payment,
   notes: loo.notes,
-  openingTimes: loo.openingTimes,
-  paymentDetails: loo.paymentDetails,
+  openingTimes: loo.opening_times,
+  paymentDetails: loo.payment_details,
   accessible: loo.accessible,
   active: loo.active,
-  allGender: loo.allGender,
+  allGender: loo.all_gender,
   area: [area],
   attended: loo.attended,
   automatic: loo.automatic,
-  babyChange: loo.babyChange,
+  babyChange: loo.baby_change,
   children: loo.children,
   createdAt: loo.created_at,
-  location: { lat: loo.coordinates[0], lng: loo.coordinates[1] },
-  removalReason: loo.removalReason,
+  location: { lat: loo.location[0], lng: loo.location[1] },
+  removalReason: loo.removal_reason,
   radar: loo.radar,
-  urinalOnly: loo.urinalOnly,
-  verifiedAt: loo.verifiedAt,
+  urinalOnly: loo.urinal_only,
+  verifiedAt: loo.verified_at,
   reports: [],
   updatedAt: loo.updated_at,
 });
@@ -83,7 +83,7 @@ const resolvers: Resolvers<Context> = {
         include: { areas: { select: { name: true, type: true } } },
         where: {
           active: args.filters.active ?? false,
-          noPayment: args.filters.noPayment ? true : undefined,
+          no_payment: args.filters.noPayment ? true : undefined,
           areas: {
             name: {
               equals: args.filters.areaName,
@@ -158,16 +158,38 @@ const resolvers: Resolvers<Context> = {
     },
     loosByProximity: async (_parent, args, { prisma }) => {
       const nearbyLoos = await prisma.$queryRaw`
-        SELECT name from toilets t
+        SELECT
+          id,
+          legacy_id,
+          name,
+          active,
+          men,
+          women,
+          no_payment,
+          notes,
+          opening_times,
+          payment_details,
+          accessible,
+          active,
+          all_gender,
+          attended,
+          automatic,
+          location,
+          baby_change,
+          children,
+          created_at,
+          removal_reason,
+          radar,
+          urinal_only,
+          verified_at,
+          updated_at from toilets t
         where st_distancesphere(
           t.geography::geometry,
           ST_MakePoint(${args.from.lng}, ${args.from.lat})
         ) <= ${args.from.maxDistance}
       `;
 
-      console.log('hah', nearbyLoos);
-
-      return undefined;
+      return nearbyLoos?.map((loo) => convertPostgresLoo(loo)) ?? [];
     },
     loosByGeohash: async (_parent, args) => {
       await dbConnect();

@@ -52,7 +52,6 @@ type NewloosProperties {
   attended       Boolean?
   automatic      Boolean?
   babyChange     Boolean?
-  campaignUOL    Boolean?
   children       Boolean?
   geometry       NewloosPropertiesGeometry
   men            Boolean?
@@ -85,6 +84,7 @@ type NewreportsDiff {
   attended       Boolean?
   automatic      Boolean?
   babyChange     Boolean?
+  campaignUOL    Boolean?
   children       Boolean?
   geometry       NewreportsDiffGeometry?
   men            Boolean?
@@ -95,7 +95,6 @@ type NewreportsDiff {
   paymentDetails String?
   radar          Boolean?
   removalReason  String?
-  type           String?
   urinalOnly     Boolean?
   verifiedAt     DateTime?               @mongodb.Date
   women          Boolean?
