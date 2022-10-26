@@ -241,6 +241,7 @@ export type QueryLoosArgs = {
 
 
 export type QueryLoosByGeohashArgs = {
+  active?: InputMaybe<Scalars['Boolean']>;
   geohash: Scalars['String'];
 };
 
@@ -639,7 +640,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   loo?: Resolver<Maybe<ResolversTypes['Loo']>, ParentType, ContextType, Partial<QueryLooArgs>>;
   looNamesByIds?: Resolver<Array<ResolversTypes['Loo']>, ParentType, ContextType, Partial<QueryLooNamesByIdsArgs>>;
   loos?: Resolver<ResolversTypes['LooSearchResponse'], ParentType, ContextType, RequireFields<QueryLoosArgs, 'filters' | 'pagination' | 'sort'>>;
-  loosByGeohash?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType, RequireFields<QueryLoosByGeohashArgs, 'geohash'>>;
+  loosByGeohash?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType, RequireFields<QueryLoosByGeohashArgs, 'active' | 'geohash'>>;
   loosByProximity?: Resolver<Array<ResolversTypes['Loo']>, ParentType, ContextType, RequireFields<QueryLoosByProximityArgs, 'from'>>;
   mapAreas?: Resolver<Maybe<ResolversTypes['TopoGeo']>, ParentType, ContextType, Partial<QueryMapAreasArgs>>;
   proportions?: Resolver<ResolversTypes['Proportions'], ParentType, ContextType>;

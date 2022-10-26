@@ -215,7 +215,7 @@ const resolvers: Resolvers<Context> = {
           AND: [
             {
               active: {
-                equals: true,
+                equals: args.active,
               },
             },
           ],
