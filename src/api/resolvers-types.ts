@@ -26,19 +26,6 @@ export type AdminGeo = {
   type?: Maybe<Scalars['String']>;
 };
 
-/** Statistics for a certain area. */
-export type AreaStats = {
-  __typename?: 'AreaStats';
-  /** The number of loos marked as active in this area */
-  activeLoos: Scalars['Int'];
-  /** The area's identifier. Note that only the 'name' will be passed with this field. */
-  area: AdminGeo;
-  /** The number of loos with baby changing facilities in this area */
-  babyChangeLoos: Scalars['Int'];
-  /** The total number of loos in this area */
-  totalLoos: Scalars['Int'];
-};
-
 /** The name of a contributor. This requires a certain level of permissions to access. */
 export type AuthedContributor = {
   __typename?: 'AuthedContributor';
@@ -49,30 +36,6 @@ export enum CacheControlScope {
   Private = 'PRIVATE',
   Public = 'PUBLIC'
 }
-
-/** A piece of proportional data, with a name and a value */
-export type Chunk = {
-  __typename?: 'Chunk';
-  name: Scalars['String'];
-  value: Scalars['Int'];
-};
-
-/** A container type for various statistical counters */
-export type Counters = {
-  __typename?: 'Counters';
-  /** The number of loos that are still open */
-  activeLoos?: Maybe<Scalars['Int']>;
-  /** The number of loos which have been closed/removed */
-  inactiveLoos?: Maybe<Scalars['Int']>;
-  /** The number of loos which have more than one report registered for them */
-  multipleReports?: Maybe<Scalars['Int']>;
-  /** The total number of reports that report a loo as closed/removed */
-  removalReports?: Maybe<Scalars['Int']>;
-  /** The total number of loos */
-  totalLoos?: Maybe<Scalars['Int']>;
-  /** The total number of reports */
-  totalReports?: Maybe<Scalars['Int']>;
-};
 
 /**
  * A Toilet
@@ -117,15 +80,6 @@ export type LooFilter = {
   toDate?: InputMaybe<Scalars['DateTime']>;
 };
 
-export type LooSearchResponse = {
-  __typename?: 'LooSearchResponse';
-  limit?: Maybe<Scalars['Int']>;
-  loos: Array<Loo>;
-  page?: Maybe<Scalars['Int']>;
-  pages?: Maybe<Scalars['Int']>;
-  total?: Maybe<Scalars['Int']>;
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   submitRemovalReport?: Maybe<ReportMutationResponse>;
@@ -154,11 +108,6 @@ export type MutationResponse = {
   success: Scalars['Boolean'];
 };
 
-export type PaginationInput = {
-  limit?: InputMaybe<Scalars['Int']>;
-  page?: InputMaybe<Scalars['Int']>;
-};
-
 /**
  * A Geographical Point
  * Expressed in WGS84 coordinates (SRID 4326).
@@ -174,17 +123,6 @@ export type Point = {
 export type PointInput = {
   lat: Scalars['Float'];
   lng: Scalars['Float'];
-};
-
-/** Proportions of different values for different attributes */
-export type Proportions = {
-  __typename?: 'Proportions';
-  /** The proportions of loos that are accessible vs not accessible */
-  accessibleLoos: Array<Chunk>;
-  /** The proportions of loos that are active vs removed */
-  activeLoos: Array<Chunk>;
-  /** The proportions of loos that have baby changing facilities vs those that don't */
-  babyChanging: Array<Chunk>;
 };
 
 export type ProximityInput = {
@@ -203,8 +141,7 @@ export type Query = {
   /** Retrieve a Loo by ID */
   loo?: Maybe<Loo>;
   looNamesByIds: Array<Loo>;
-  /** Search for loos matching a filter */
-  loos: LooSearchResponse;
+  /** Retrieve loos that sit within a given geohash */
   loosByGeohash: Array<Scalars['String']>;
   /** Retrieve Loos by proximity to a Point */
   loosByProximity: Array<Loo>;
@@ -218,13 +155,6 @@ export type QueryLooArgs = {
 
 export type QueryLooNamesByIdsArgs = {
   idList?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-};
-
-
-export type QueryLoosArgs = {
-  filters: LooFilter;
-  pagination?: InputMaybe<PaginationInput>;
-  sort?: InputMaybe<SortOrder>;
 };
 
 
@@ -246,7 +176,7 @@ export type RemovalReportInput = {
 /**
  * Reported information about a real-world toilet
  * Reports are submitted by contributors or created as part of data imports
- * A report can refer to another report (via the **previous** field) to indicate that it is intended to augment or adjust an exisitn Loo
+ * A report can refer to another report (via the **previous** field) to indicate that it is intended to augment or adjust an existing Loo
  */
 export type Report = {
   __typename?: 'Report';
@@ -312,47 +242,6 @@ export type ReportMutationResponse = MutationResponse & {
   message: Scalars['String'];
   report?: Maybe<Report>;
   success: Scalars['Boolean'];
-};
-
-export enum SortOrder {
-  NewestFirst = 'NEWEST_FIRST',
-  OldestFirst = 'OLDEST_FIRST'
-}
-
-/** Main TopoJSON type. Contains various objects and arcs. */
-export type TopoGeo = {
-  __typename?: 'TopoGeo';
-  arcs: Array<Array<Array<Scalars['Float']>>>;
-  objects: Array<TopoObjectContainer>;
-  transform?: Maybe<TopoTransform>;
-  type: Scalars['String'];
-};
-
-export type TopoGeometry = {
-  __typename?: 'TopoGeometry';
-  arcs: Array<Array<Array<Scalars['Float']>>>;
-  /** JSON-encoded properties string */
-  properties: Scalars['String'];
-  type: Scalars['String'];
-};
-
-export type TopoObject = {
-  __typename?: 'TopoObject';
-  geometries: Array<TopoGeometry>;
-  type: Scalars['String'];
-};
-
-export type TopoObjectContainer = {
-  __typename?: 'TopoObjectContainer';
-  name: Scalars['String'];
-  value: TopoObject;
-};
-
-/** A whole load of TopoJSON stuff follows */
-export type TopoTransform = {
-  __typename?: 'TopoTransform';
-  scale: Array<Scalars['Float']>;
-  translate: Array<Scalars['Float']>;
 };
 
 
@@ -425,63 +314,45 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   AdminGeo: ResolverTypeWrapper<AdminGeo>;
-  AreaStats: ResolverTypeWrapper<AreaStats>;
   AuthedContributor: ResolverTypeWrapper<AuthedContributor>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   CacheControlScope: CacheControlScope;
-  Chunk: ResolverTypeWrapper<Chunk>;
-  Counters: ResolverTypeWrapper<Counters>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Loo: ResolverTypeWrapper<Loo>;
   LooFilter: LooFilter;
-  LooSearchResponse: ResolverTypeWrapper<LooSearchResponse>;
   Mutation: ResolverTypeWrapper<{}>;
   MutationResponse: ResolversTypes['ReportMutationResponse'];
   OpeningTimes: ResolverTypeWrapper<Scalars['OpeningTimes']>;
-  PaginationInput: PaginationInput;
   Point: ResolverTypeWrapper<Point>;
   PointInput: PointInput;
-  Proportions: ResolverTypeWrapper<Proportions>;
   ProximityInput: ProximityInput;
   Query: ResolverTypeWrapper<{}>;
   RemovalReportInput: RemovalReportInput;
   Report: ResolverTypeWrapper<Report>;
   ReportInput: ReportInput;
   ReportMutationResponse: ResolverTypeWrapper<ReportMutationResponse>;
-  SortOrder: SortOrder;
   String: ResolverTypeWrapper<Scalars['String']>;
-  TopoGeo: ResolverTypeWrapper<TopoGeo>;
-  TopoGeometry: ResolverTypeWrapper<TopoGeometry>;
-  TopoObject: ResolverTypeWrapper<TopoObject>;
-  TopoObjectContainer: ResolverTypeWrapper<TopoObjectContainer>;
-  TopoTransform: ResolverTypeWrapper<TopoTransform>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   AdminGeo: AdminGeo;
-  AreaStats: AreaStats;
   AuthedContributor: AuthedContributor;
   Boolean: Scalars['Boolean'];
-  Chunk: Chunk;
-  Counters: Counters;
   DateTime: Scalars['DateTime'];
   Float: Scalars['Float'];
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Loo: Loo;
   LooFilter: LooFilter;
-  LooSearchResponse: LooSearchResponse;
   Mutation: {};
   MutationResponse: ResolversParentTypes['ReportMutationResponse'];
   OpeningTimes: Scalars['OpeningTimes'];
-  PaginationInput: PaginationInput;
   Point: Point;
   PointInput: PointInput;
-  Proportions: Proportions;
   ProximityInput: ProximityInput;
   Query: {};
   RemovalReportInput: RemovalReportInput;
@@ -489,11 +360,6 @@ export type ResolversParentTypes = {
   ReportInput: ReportInput;
   ReportMutationResponse: ReportMutationResponse;
   String: Scalars['String'];
-  TopoGeo: TopoGeo;
-  TopoGeometry: TopoGeometry;
-  TopoObject: TopoObject;
-  TopoObjectContainer: TopoObjectContainer;
-  TopoTransform: TopoTransform;
 };
 
 export type CacheControlDirectiveArgs = {
@@ -510,32 +376,8 @@ export type AdminGeoResolvers<ContextType = any, ParentType extends ResolversPar
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AreaStatsResolvers<ContextType = any, ParentType extends ResolversParentTypes['AreaStats'] = ResolversParentTypes['AreaStats']> = {
-  activeLoos?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  area?: Resolver<ResolversTypes['AdminGeo'], ParentType, ContextType>;
-  babyChangeLoos?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  totalLoos?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type AuthedContributorResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthedContributor'] = ResolversParentTypes['AuthedContributor']> = {
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type ChunkResolvers<ContextType = any, ParentType extends ResolversParentTypes['Chunk'] = ResolversParentTypes['Chunk']> = {
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  value?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type CountersResolvers<ContextType = any, ParentType extends ResolversParentTypes['Counters'] = ResolversParentTypes['Counters']> = {
-  activeLoos?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  inactiveLoos?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  multipleReports?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  removalReports?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  totalLoos?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  totalReports?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -571,15 +413,6 @@ export type LooResolvers<ContextType = any, ParentType extends ResolversParentTy
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LooSearchResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['LooSearchResponse'] = ResolversParentTypes['LooSearchResponse']> = {
-  limit?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  loos?: Resolver<Array<ResolversTypes['Loo']>, ParentType, ContextType>;
-  page?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  pages?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  total?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   submitRemovalReport?: Resolver<Maybe<ResolversTypes['ReportMutationResponse']>, ParentType, ContextType, Partial<MutationSubmitRemovalReportArgs>>;
   submitReport?: Resolver<Maybe<ResolversTypes['ReportMutationResponse']>, ParentType, ContextType, Partial<MutationSubmitReportArgs>>;
@@ -603,18 +436,10 @@ export type PointResolvers<ContextType = any, ParentType extends ResolversParent
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ProportionsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Proportions'] = ResolversParentTypes['Proportions']> = {
-  accessibleLoos?: Resolver<Array<ResolversTypes['Chunk']>, ParentType, ContextType>;
-  activeLoos?: Resolver<Array<ResolversTypes['Chunk']>, ParentType, ContextType>;
-  babyChanging?: Resolver<Array<ResolversTypes['Chunk']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   areas?: Resolver<Array<ResolversTypes['AdminGeo']>, ParentType, ContextType>;
   loo?: Resolver<Maybe<ResolversTypes['Loo']>, ParentType, ContextType, Partial<QueryLooArgs>>;
   looNamesByIds?: Resolver<Array<ResolversTypes['Loo']>, ParentType, ContextType, Partial<QueryLooNamesByIdsArgs>>;
-  loos?: Resolver<ResolversTypes['LooSearchResponse'], ParentType, ContextType, RequireFields<QueryLoosArgs, 'filters' | 'pagination' | 'sort'>>;
   loosByGeohash?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType, RequireFields<QueryLoosByGeohashArgs, 'active' | 'geohash'>>;
   loosByProximity?: Resolver<Array<ResolversTypes['Loo']>, ParentType, ContextType, RequireFields<QueryLoosByProximityArgs, 'from'>>;
 };
@@ -657,61 +482,18 @@ export type ReportMutationResponseResolvers<ContextType = any, ParentType extend
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type TopoGeoResolvers<ContextType = any, ParentType extends ResolversParentTypes['TopoGeo'] = ResolversParentTypes['TopoGeo']> = {
-  arcs?: Resolver<Array<Array<Array<ResolversTypes['Float']>>>, ParentType, ContextType>;
-  objects?: Resolver<Array<ResolversTypes['TopoObjectContainer']>, ParentType, ContextType>;
-  transform?: Resolver<Maybe<ResolversTypes['TopoTransform']>, ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type TopoGeometryResolvers<ContextType = any, ParentType extends ResolversParentTypes['TopoGeometry'] = ResolversParentTypes['TopoGeometry']> = {
-  arcs?: Resolver<Array<Array<Array<ResolversTypes['Float']>>>, ParentType, ContextType>;
-  properties?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type TopoObjectResolvers<ContextType = any, ParentType extends ResolversParentTypes['TopoObject'] = ResolversParentTypes['TopoObject']> = {
-  geometries?: Resolver<Array<ResolversTypes['TopoGeometry']>, ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type TopoObjectContainerResolvers<ContextType = any, ParentType extends ResolversParentTypes['TopoObjectContainer'] = ResolversParentTypes['TopoObjectContainer']> = {
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  value?: Resolver<ResolversTypes['TopoObject'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type TopoTransformResolvers<ContextType = any, ParentType extends ResolversParentTypes['TopoTransform'] = ResolversParentTypes['TopoTransform']> = {
-  scale?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
-  translate?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type Resolvers<ContextType = any> = {
   AdminGeo?: AdminGeoResolvers<ContextType>;
-  AreaStats?: AreaStatsResolvers<ContextType>;
   AuthedContributor?: AuthedContributorResolvers<ContextType>;
-  Chunk?: ChunkResolvers<ContextType>;
-  Counters?: CountersResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   Loo?: LooResolvers<ContextType>;
-  LooSearchResponse?: LooSearchResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   MutationResponse?: MutationResponseResolvers<ContextType>;
   OpeningTimes?: GraphQLScalarType;
   Point?: PointResolvers<ContextType>;
-  Proportions?: ProportionsResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Report?: ReportResolvers<ContextType>;
   ReportMutationResponse?: ReportMutationResponseResolvers<ContextType>;
-  TopoGeo?: TopoGeoResolvers<ContextType>;
-  TopoGeometry?: TopoGeometryResolvers<ContextType>;
-  TopoObject?: TopoObjectResolvers<ContextType>;
-  TopoObjectContainer?: TopoObjectContainerResolvers<ContextType>;
-  TopoTransform?: TopoTransformResolvers<ContextType>;
 };
 
 export type DirectiveResolvers<ContextType = any> = {
