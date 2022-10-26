@@ -1,13 +1,7 @@
 /* eslint-disable functional/immutable-data */
 import { stringifyAndCompressLoos } from '../lib/loo';
 import { Resolvers } from './resolvers-types';
-import {
-  Loo as DBLoo,
-  Report as DBReport,
-  Area,
-  MapGeo,
-  dbConnect,
-} from './db';
+import { Loo as DBLoo, Report as DBReport, MapGeo, dbConnect } from './db';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
 import { Context } from './prisma/prismaContext';
@@ -232,15 +226,12 @@ const resolvers: Resolvers<Context> = {
         loos.map((loo) => convertPostgresLooToGraphQL(loo)).flat()
       );
     },
-    areas: async () => {
-      await dbConnect();
-      const data = await Area.find({}, { name: 1, type: 1 }).exec();
-
-      const areas = data.map((area) => {
-        return {
-          type: area.type,
-          name: area.name,
-        };
+    areas: async (_parent, args, { prisma }) => {
+      const areas = await prisma.areas.findMany({
+        select: {
+          name: true,
+          type: true,
+        },
       });
 
       return areas;
