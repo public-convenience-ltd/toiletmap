@@ -3,7 +3,7 @@ import { Loo } from '../../api-client/graphql';
 import ToiletMarkerIcon from './ToiletMarkerIcon';
 
 const CurrentLooMarker = ({ loo }: { loo: Loo }) => {
-  const icon = new ToiletMarkerIcon({
+  const icon = ToiletMarkerIcon({
     isHighlighted: true,
     toiletId: loo?.id,
   });
