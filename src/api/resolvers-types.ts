@@ -198,14 +198,8 @@ export type ProximityInput = {
 
 export type Query = {
   __typename?: 'Query';
-  /** Retrieve statistics, broken down by area, for all areas */
-  areaStats: Array<AreaStats>;
   /** Retrieve a list of areas in existence, name and type only */
   areas: Array<AdminGeo>;
-  /** Retrieve a list of contributors. Requires correct authentication */
-  contributors: Array<AuthedContributor>;
-  /** Retrieve 'counter' statistics */
-  counters: Counters;
   /** Retrieve a Loo by ID */
   loo?: Maybe<Loo>;
   looNamesByIds: Array<Loo>;
@@ -214,12 +208,6 @@ export type Query = {
   loosByGeohash: Array<Scalars['String']>;
   /** Retrieve Loos by proximity to a Point */
   loosByProximity: Array<Loo>;
-  /** Retrieve the explorer map TopoJSON data */
-  mapAreas?: Maybe<TopoGeo>;
-  /** Retrieve proportional statistics */
-  proportions: Proportions;
-  /** Retrieve a report by ID */
-  report?: Maybe<Report>;
 };
 
 
@@ -248,16 +236,6 @@ export type QueryLoosByGeohashArgs = {
 
 export type QueryLoosByProximityArgs = {
   from: ProximityInput;
-};
-
-
-export type QueryMapAreasArgs = {
-  areaType?: InputMaybe<Scalars['String']>;
-};
-
-
-export type QueryReportArgs = {
-  id: Scalars['ID'];
 };
 
 export type RemovalReportInput = {
@@ -633,18 +611,12 @@ export type ProportionsResolvers<ContextType = any, ParentType extends Resolvers
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  areaStats?: Resolver<Array<ResolversTypes['AreaStats']>, ParentType, ContextType>;
   areas?: Resolver<Array<ResolversTypes['AdminGeo']>, ParentType, ContextType>;
-  contributors?: Resolver<Array<ResolversTypes['AuthedContributor']>, ParentType, ContextType>;
-  counters?: Resolver<ResolversTypes['Counters'], ParentType, ContextType>;
   loo?: Resolver<Maybe<ResolversTypes['Loo']>, ParentType, ContextType, Partial<QueryLooArgs>>;
   looNamesByIds?: Resolver<Array<ResolversTypes['Loo']>, ParentType, ContextType, Partial<QueryLooNamesByIdsArgs>>;
   loos?: Resolver<ResolversTypes['LooSearchResponse'], ParentType, ContextType, RequireFields<QueryLoosArgs, 'filters' | 'pagination' | 'sort'>>;
   loosByGeohash?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType, RequireFields<QueryLoosByGeohashArgs, 'active' | 'geohash'>>;
   loosByProximity?: Resolver<Array<ResolversTypes['Loo']>, ParentType, ContextType, RequireFields<QueryLoosByProximityArgs, 'from'>>;
-  mapAreas?: Resolver<Maybe<ResolversTypes['TopoGeo']>, ParentType, ContextType, Partial<QueryMapAreasArgs>>;
-  proportions?: Resolver<ResolversTypes['Proportions'], ParentType, ContextType>;
-  report?: Resolver<Maybe<ResolversTypes['Report']>, ParentType, ContextType, RequireFields<QueryReportArgs, 'id'>>;
 };
 
 export type ReportResolvers<ContextType = any, ParentType extends ResolversParentTypes['Report'] = ResolversParentTypes['Report']> = {

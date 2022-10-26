@@ -1,7 +1,7 @@
 /* eslint-disable functional/immutable-data */
 import { stringifyAndCompressLoos } from '../lib/loo';
 import { Resolvers } from './resolvers-types';
-import { Loo as DBLoo, Report as DBReport, MapGeo, dbConnect } from './db';
+import { Loo as DBLoo, Report as DBReport, dbConnect } from './db';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
 import { Context } from './prisma/prismaContext';
@@ -36,8 +36,7 @@ const looInfoResolver = (property) => {
 };
 
 const convertPostgresLooToGraphQL = (
-  loo: toilets,
-  area?: Partial<areas>
+  loo: toilets & { areas?: Partial<areas> }
 ): Loo => ({
   id: loo.legacy_id,
   women: loo.women,
@@ -50,7 +49,7 @@ const convertPostgresLooToGraphQL = (
   accessible: loo.accessible,
   active: loo.active,
   allGender: loo.all_gender,
-  area: [area],
+  area: [loo?.areas],
   attended: loo.attended,
   automatic: loo.automatic,
   babyChange: loo.baby_change,
@@ -67,13 +66,13 @@ const convertPostgresLooToGraphQL = (
 
 const resolvers: Resolvers<Context> = {
   Query: {
-    loo: async (_parent, args, { prisma }) => {
-      const loo = await prisma.toilets.findUnique({
-        include: { areas: { select: { name: true, type: true } } },
-        where: { legacy_id: args.id },
-      });
-      return convertPostgresLooToGraphQL(loo, loo.areas);
-    },
+    loo: async (_parent, args, { prisma }) =>
+      convertPostgresLooToGraphQL(
+        await prisma.toilets.findUnique({
+          include: { areas: { select: { name: true, type: true } } },
+          where: { legacy_id: args.id },
+        })
+      ),
     loos: async (_parent, args, { prisma }) => {
       const loos = await prisma.toilets.findMany({
         include: { areas: { select: { name: true, type: true } } },
@@ -194,15 +193,20 @@ const resolvers: Resolvers<Context> = {
         area_type?: string;
       })[];
 
-      // TODO: Zod to verify this?
+      // TODO: Zod to verify this response?
 
       return (
         nearbyLoos?.map((loo) => {
           const hasArea = loo?.area_name && loo?.area_type;
-          const area = hasArea
-            ? { name: loo?.area_name, type: loo?.area_type }
-            : undefined;
-          return { ...convertPostgresLooToGraphQL(loo, area) };
+
+          return {
+            ...convertPostgresLooToGraphQL({
+              ...loo,
+              areas: hasArea
+                ? { name: loo?.area_name, type: loo?.area_type }
+                : undefined,
+            }),
+          };
         }) ?? []
       );
     },
@@ -235,112 +239,6 @@ const resolvers: Resolvers<Context> = {
       });
 
       return areas;
-    },
-    mapAreas: async () => {
-      await dbConnect();
-      let query = {};
-      if (args.areaType) {
-        query = { areaType: args.areaType };
-      }
-      const geo = await MapGeo.findOne(query).exec();
-
-      if (!geo) {
-        return null;
-      }
-
-      const geometry = geo.geometry;
-
-      geometry.objects.forEach((obj) => {
-        obj.value.geometries.forEach((geom) => {
-          geom.properties = JSON.stringify(geom.properties);
-          if (typeof geom.arcs[0][0] === 'number') {
-            geom.arcs = [geom.arcs];
-          }
-          geom.type = 'MultiPolygon';
-        });
-      });
-
-      return geometry;
-    },
-    report: async (_parent, args) => {
-      await dbConnect();
-      const id = args.id;
-      return await DBReport.findById(id);
-    },
-    counters: async () => {
-      await dbConnect();
-      const looCounters = await DBLoo.getCounters();
-      const reportCounters = await DBReport.getCounters();
-
-      return {
-        ...looCounters,
-        ...reportCounters,
-      };
-    },
-    proportions: async () => {
-      await dbConnect();
-      const {
-        babyChange,
-        babyChangeUnknown,
-        inaccessibleLoos,
-        accessibleLoosUnknown,
-        activeLoos,
-        totalLoos,
-      } = await DBLoo.getProportionCounters();
-
-      return {
-        activeLoos: [
-          { name: 'active', value: activeLoos },
-          { name: 'inactive', value: totalLoos - activeLoos },
-          { name: 'unknown', value: 0 },
-        ],
-        babyChanging: [
-          { name: 'yes', value: babyChange },
-          { name: 'no', value: totalLoos - (babyChange + babyChangeUnknown) },
-          { name: 'unknown', value: babyChangeUnknown },
-        ],
-        accessibleLoos: [
-          {
-            name: 'accessible',
-            value: totalLoos - (inaccessibleLoos + accessibleLoosUnknown),
-          },
-          { name: 'inaccessible', value: inaccessibleLoos },
-          { name: 'unknown', value: accessibleLoosUnknown },
-        ],
-      };
-    },
-    areaStats: async () => {
-      await dbConnect();
-      const areas = await DBLoo.getAreasCounters();
-
-      return areas.map((area) => {
-        return {
-          area: {
-            name: area._id,
-          },
-          totalLoos: area.looCount,
-          activeLoos: area.activeLooCount,
-          babyChangeLoos: area.babyChangeCount,
-        };
-      });
-    },
-    contributors: async () => {
-      await dbConnect();
-      const contributors = await DBReport.aggregate([
-        {
-          $match: { contributor: { $exists: true } },
-        },
-        {
-          $group: {
-            _id: '$contributor',
-            reports: {
-              $sum: 1,
-            },
-          },
-        },
-      ]).exec();
-
-      return contributors.map((val) => ({ name: val._id }));
     },
   },
 

@@ -208,18 +208,6 @@ type Query {
   areas: [AdminGeo!]!
   loosByGeohash(geohash: String!, active: Boolean = true): [String!]!
     @cacheControl(maxAge: 21600, scope: PUBLIC)
-  "Retrieve the explorer map TopoJSON data"
-  mapAreas(areaType: String): TopoGeo
-  "Retrieve a report by ID"
-  report(id: ID!): Report
-  "Retrieve 'counter' statistics"
-  counters: Counters!
-  "Retrieve proportional statistics"
-  proportions: Proportions!
-  "Retrieve statistics, broken down by area, for all areas"
-  areaStats: [AreaStats!]!
-  "Retrieve a list of contributors. Requires correct authentication"
-  contributors: [AuthedContributor!]!
 }
 "Include or Exclude Loos from search results based on whether they satisfy a filter condition"
 input LooFilter {
