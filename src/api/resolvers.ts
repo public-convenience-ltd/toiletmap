@@ -42,7 +42,7 @@ const looInfoResolver = (property) => {
 const convertPostgresLooToGraphQL = (
   loo: toilets & { areas?: Partial<areas> }
 ): Loo => ({
-  id: loo.legacy_id,
+  id: loo.id.toString(),
   women: loo.women,
   men: loo.men,
   name: loo.name,
