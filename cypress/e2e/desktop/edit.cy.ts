@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import _ from 'lodash';
-describe('Edit page tests', () => {
+describe.skip('Edit page tests', () => {
   context('Desktop', () => {
     beforeEach(() => {
       cy.viewport('macbook-16');

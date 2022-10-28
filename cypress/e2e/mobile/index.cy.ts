@@ -19,13 +19,13 @@ describe('Home page tests', () => {
       cy.visit('/');
       cy.findByPlaceholderText('Search location…').type('Hammersmith');
       cy.get('#search-results-item-0').click();
-      cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
+      cy.get('[data-toiletid=1540]').should('exist');
     });
 
     it('should bundle and un-bundle markers based on the zoom level', () => {
       cy.visit('/').wait(500);
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
-      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
+      cy.get('[data-toiletid=2671]').should('exist');
+      cy.get('[data-toilets*=2671]').should('not.exist');
       cy.get('#gbptm-map').trigger('wheel', {
         deltaY: 66.666666,
         wheelDelta: 120,
@@ -33,8 +33,8 @@ describe('Home page tests', () => {
         wheelDeltaY: -500,
         bubbles: true,
       });
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
-      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=2671]').should('not.exist');
+      cy.get('[data-toilets*=2671]').should('exist');
       cy.wait(500);
       cy.get('#gbptm-map').trigger('wheel', {
         deltaY: 66.666666,
@@ -43,13 +43,13 @@ describe('Home page tests', () => {
         wheelDeltaY: 500,
         bubbles: true,
       });
-      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toilets*=2671]').should('not.exist');
+      cy.get('[data-toiletid=2671]').should('exist');
     });
 
     it('should unbundle markers when the bundle is clicked', () => {
       cy.visit('/').wait(500);
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=2671]').should('exist');
       cy.get('#gbptm-map').trigger('wheel', {
         deltaY: 66.666666,
         wheelDelta: 120,
@@ -57,20 +57,18 @@ describe('Home page tests', () => {
         wheelDeltaY: -500,
         bubbles: true,
       });
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
-      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]')
-        .click({ force: true })
-        .wait(500);
-      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').click({ force: true });
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=2671]').should('not.exist');
+      cy.get('[data-toilets*=2671]').click({ force: true }).wait(500);
+      cy.get('[data-toilets*=2671]').click({ force: true });
+      cy.get('[data-toiletid=2671]').should('exist');
     });
 
     it('should load different toilets when the map is dragged', () => {
       // Drag the map and check that we have fewer markers than when we started
       cy.visit('/').wait(500);
 
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
-      cy.get('[data-toiletid=cc4e5e9b83de8dd9ba87b3eb]').should('not.exist');
+      cy.get('[data-toiletid=2671]').should('exist');
+      cy.get('[data-toiletid=2012]').should('not.exist');
 
       // touchstart, touchmove etc are not supported in Firefox
       if (Cypress.isBrowser('firefox')) {
@@ -95,8 +93,8 @@ describe('Home page tests', () => {
           .wait(500);
       }
 
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
-      cy.get('[data-toiletid=cc4e5e9b83de8dd9ba87b3eb]').should('exist');
+      cy.get('[data-toiletid=2671]').should('not.exist');
+      cy.get('[data-toiletid=2012]').should('exist');
     });
 
     isPermissionAllowed('geolocation') &&
@@ -117,13 +115,13 @@ describe('Home page tests', () => {
         cy.findByText('Find a toilet near me').click().wait(500);
 
         // Check that we land in Ealing
-        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]')
+        cy.get('[data-toilets*=3428]')
           .click({
             force: true,
           })
           .wait(500);
 
-        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]')
+        cy.get('[data-toiletid=3428]')
           .click({
             force: true,
           })
@@ -151,17 +149,17 @@ describe('Home page tests', () => {
 
         cy.findByText('Find a toilet near me').click().wait(500);
 
-        cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]')
+        cy.get('[data-toilets*=3428]')
           .click({
             force: true,
           })
           .wait(500);
 
-        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');
+        cy.get('[data-toiletid=3428]').should('exist');
 
         cy.findByPlaceholderText('Search location…').type('Hammersmith');
         cy.get('#search-results-item-0').click();
-        cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
+        cy.get('[data-toiletid=1540]').should('exist');
       });
 
     it('should update the accessibility overlay list when the user pans or zooms', () => {
@@ -171,7 +169,7 @@ describe('Home page tests', () => {
       }
 
       cy.visit('/').wait(500);
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=2671]').should('exist');
       cy.get('#gbptm-map').focus().wait(200);
       cy.get('.accessibility-box').should('exist');
       cy.contains("Use number keys to show a toilet's details");
@@ -199,7 +197,7 @@ describe('Home page tests', () => {
       }
 
       cy.visit('/').wait(500);
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=2671]').should('exist');
       // Focus the map, turning on the accessibility overlay
       cy.get('#gbptm-map').focus();
       cy.contains("Use number keys to show a toilet's details");
@@ -221,13 +219,9 @@ describe('Home page tests', () => {
             .focus()
             .wait(200)
             .type(keySelector, { delay: 200 });
-          cy.url().should('include', '/loos/ddad1ed1b91d99ed2bf3bcdf');
+          cy.url().should('include', '/loos/2671');
           // Check that the loo we picked is now highlighted.
-          cy.get('#highlighted-loo').invoke(
-            'attr',
-            'data-toiletid',
-            'ddad1ed1b91d99ed2bf3bcdf'
-          );
+          cy.get('#highlighted-loo').invoke('attr', 'data-toiletid', '2671');
           // Check that the accessibility view is hidden
           cy.contains("Use number keys to show a toilet's details").should(
             'not.exist'
@@ -250,16 +244,12 @@ describe('Home page tests', () => {
 
     it('should open the toilet details panel when a marker is clicked', () => {
       cy.visit('/').wait(500);
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').click({ force: true });
+      cy.get('[data-toiletid=2671]').click({ force: true });
 
-      cy.url().should('include', '/loos/ddad1ed1b91d99ed2bf3bcdf');
+      cy.url().should('include', '/loos/2671');
 
       // Check that the loo we picked is now highlighted.
-      cy.get('#highlighted-loo').invoke(
-        'attr',
-        'data-toiletid',
-        'ddad1ed1b91d99ed2bf3bcdf'
-      );
+      cy.get('#highlighted-loo').invoke('attr', 'data-toiletid', '2671');
 
       // Check standard loo panel stuff is there.
       cy.contains('negative eve');
@@ -316,24 +306,24 @@ describe('Home page tests', () => {
         wheelDeltaY: -150,
         bubbles: true,
       });
-      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=2794]').should('exist');
+      cy.get('[data-toiletid=2671]').should('exist');
       cy.get('[data-cy="mobile-filter"]').click();
       cy.findByText('Baby Changing')
         .siblings()
         .get('[aria-labelledby=filter-babyChange]')
         .click();
       cy.findByText('Done').click();
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
-      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('not.exist');
+      cy.get('[data-toiletid=2671]').should('exist');
+      cy.get('[data-toiletid=2794]').should('not.exist');
       cy.get('[data-cy="mobile-filter"]').click();
       cy.findByText('Baby Changing')
         .siblings()
         .get('[aria-labelledby=filter-babyChange]')
         .click();
       cy.findByText('Done').click();
-      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
-      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
+      cy.get('[data-toiletid=2671]').should('exist');
+      cy.get('[data-toiletid=2794]').should('exist');
     });
 
     it('should collapse the toilet panel when the close button is clicked and reopen when details is clicked', () => {
@@ -345,10 +335,10 @@ describe('Home page tests', () => {
         wheelDeltaY: -150,
         bubbles: true,
       });
-      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
+      cy.get('[data-toiletid=2794]').click({ force: true });
       cy.get('[aria-label="Close toilet details"]').click();
 
-      cy.url().should('include', '/loos/ab2ebfbdadb963aed4cb3b65');
+      cy.url().should('include', '/loos/2794');
 
       cy.contains('guilty illiteracy');
       cy.contains('Features').should('not.exist');
@@ -374,11 +364,11 @@ describe('Home page tests', () => {
         wheelDeltaY: -150,
         bubbles: true,
       });
-      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
-      cy.url().should('include', '/loos/ab2ebfbdadb963aed4cb3b65');
+      cy.get('[data-toiletid=2794]').click({ force: true });
+      cy.url().should('include', '/loos/2794');
       cy.get('[aria-label="Close toilet details"]').scrollIntoView().click();
       cy.contains('Close').scrollIntoView().click();
-      cy.url().should('not.include', '/loos/ab2ebfbdadb963aed4cb3b65');
+      cy.url().should('not.include', '/loos/2794');
     });
 
     it('should close the toilet panel when the esc key is pressed', () => {
@@ -390,8 +380,8 @@ describe('Home page tests', () => {
         wheelDeltaY: -150,
         bubbles: true,
       });
-      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
-      cy.url().should('include', '/loos/ab2ebfbdadb963aed4cb3b65');
+      cy.get('[data-toiletid=2794]').click({ force: true });
+      cy.url().should('include', '/loos/2794');
       cy.contains('guilty illiteracy');
       cy.contains('Features');
       cy.contains('Opening Hours');
@@ -400,7 +390,7 @@ describe('Home page tests', () => {
       cy.contains('Features').should('not.exist');
       cy.contains('Opening Hours').should('not.exist');
       cy.get('body').trigger('keydown', { key: 'Escape' });
-      cy.url().should('not.include', '/loos/ab2ebfbdadb963aed4cb3b65');
+      cy.url().should('not.include', '/loos/2794');
     });
 
     it('should go to the edit page if the toilet edit button is clicked', () => {
@@ -412,9 +402,9 @@ describe('Home page tests', () => {
         wheelDeltaY: -150,
         bubbles: true,
       });
-      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
+      cy.get('[data-toiletid=2794]').click({ force: true });
       cy.findByText('Edit').scrollIntoView().click();
-      cy.url().should('include', 'loos/ab2ebfbdadb963aed4cb3b65/edit');
+      cy.url().should('include', 'loos/2794/edit');
       cy.contains('Want to Contribute Toilet Data?');
     });
 
@@ -427,7 +417,7 @@ describe('Home page tests', () => {
         wheelDeltaY: -150,
         bubbles: true,
       });
-      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
+      cy.get('[data-toiletid=2794]').click({ force: true });
 
       cy.findByText('Directions')
         .scrollIntoView()
@@ -444,7 +434,7 @@ describe('Home page tests', () => {
         wheelDeltaY: -150,
         bubbles: true,
       });
-      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
+      cy.get('[data-toiletid=2794]').click({ force: true });
       cy.intercept('POST', '/api', (req) => {
         expect(req.body.operationName).to.equal(
           'submitVerificationReportMutation'

@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import _ from 'lodash';
 
-describe('Adding new toilets to the platform', () => {
+describe.skip('Adding new toilets to the platform', () => {
   context('Mobile', () => {
     beforeEach(() => {
       cy.viewport('iphone-8');

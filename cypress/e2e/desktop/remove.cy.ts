@@ -1,4 +1,4 @@
-describe('Remove page tests', () => {
+describe.skip('Remove page tests', () => {
   context('Desktop', () => {
     beforeEach(() => {
       cy.viewport('macbook-16');
