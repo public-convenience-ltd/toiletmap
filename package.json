@@ -109,8 +109,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",
-    "@commitlint/cli": "17.1.2",
-    "@commitlint/config-conventional": "^17.1.0",
     "@emotion/babel-preset-css-prop": "^11.10.0",
     "@faker-js/faker": "^7.6.0",
     "@graphql-codegen/cli": "^2.13.8",
