@@ -43,7 +43,11 @@ jobs:
           path: ./src/api/db/manage/areaToDatabase/.areaInfo.geojson
           key: ${{ runner.os }}-areaInfo
       - run: yarn
-      - run: yarn startMemoryMongo & yarn wait-on:memoryMongo
+      - name: Database init
+        uses: supabase/setup-cli@v1
+        with:
+          version: 1.0.0
+        run: SUPABASE_SCANNER_BUFFER_SIZE=5mb supabase start
       - name: NextCache
         uses: actions/cache@v2
         with:

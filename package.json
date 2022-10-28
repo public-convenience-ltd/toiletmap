@@ -24,6 +24,7 @@
     "migrate": "migrate-mongo up",
     "migrate:postgres": " TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' dotenv -e .env -- yarn ts-node --transpileOnly ./scripts/migrateToPostgres.ts",
     "generate": "node -r dotenv/config ./src/api/db/manage/generate/index.js --confirm",
+    "generate:seed": "./scripts/generateSeed.sh > ./supabase/seed.sql",
     "areas": "node -r dotenv/config ./src/api/db/manage/areaToDatabase/index.js",
     "startMemoryMongo": "MONGODB_URI=mongodb://localhost:27017/toiletmap TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' yarn ts-node --transpileOnly ./scripts/setupAndStartMemoryMongo.ts",
     "generateMocks": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' yarn ts-node --transpileOnly ./scripts/generateMocks.ts",
@@ -35,7 +36,9 @@
     "prisma:mongo:generate": "prisma generate --schema ./schemaMongo.prisma",
     "prisma:db:pull": "npm-run-all -p prisma:postgres:db:pull prisma:mongo:db:pull",
     "prisma:postgres:db:pull": "prisma db pull",
-    "prisma:mongo:db:pull": "prisma db pull --schema ./schemaMongo.prisma --force"
+    "prisma:mongo:db:pull": "prisma db pull --schema ./schemaMongo.prisma --force",
+    "supabase:start": "SUPABASE_SCANNER_BUFFER_SIZE=5mb  supabase start",
+    "supabase:reset": "SUPABASE_SCANNER_BUFFER_SIZE=5mb  supabase db reset"
   },
   "repository": {
     "type": "git",
