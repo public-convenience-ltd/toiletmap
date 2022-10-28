@@ -85,7 +85,6 @@ type NewreportsDiff {
   attended       Boolean?
   automatic      Boolean?
   babyChange     Boolean?
-  campaignUOL    Boolean?
   children       Boolean?
   geometry       NewreportsDiffGeometry?
   men            Boolean?

@@ -60,7 +60,10 @@ const convertPostgresLooToGraphQL = (
   babyChange: loo.baby_change,
   children: loo.children,
   createdAt: loo.created_at,
-  location: { lat: loo.location[0], lng: loo.location[1] },
+  location: {
+    lat: loo.location.coordinates[1],
+    lng: loo.location.coordinates[0],
+  },
   removalReason: loo.removal_reason,
   radar: loo.radar,
   urinalOnly: loo.urinal_only,
