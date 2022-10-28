@@ -1,6 +1,7 @@
 name: E2E Cypress Tests (Firefox)
 on:
-  push: []
+  pull_request:
+  workflow_dispatch:
 jobs:
   cypress-e2e-firefox:
     name: Cypress E2E Firefox
@@ -38,9 +39,7 @@ jobs:
       - run: yarn
       - name: Database init
         uses: supabase/setup-cli@v1
-        with:
-          version: 1.0.0
-        run: SUPABASE_SCANNER_BUFFER_SIZE=5mb supabase start
+      - run: SUPABASE_SCANNER_BUFFER_SIZE=5mb supabase start
       - name: NextCache
         uses: actions/cache@v2
         with:
