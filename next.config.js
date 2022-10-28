@@ -88,7 +88,10 @@ const withNextAnalyser = require('@next/bundle-analyzer')({
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins
 // eslint-disable-next-line functional/immutable-data
-module.exports = withSentryConfig(
-  withTM(withNextAnalyser(moduleExports)),
-  sentryWebpackPluginOptions
-);
+module.exports =
+  process.env.IS_E2E == 'true'
+    ? withTM(withNextAnalyser(moduleExports))
+    : withSentryConfig(
+        withTM(withNextAnalyser(moduleExports)),
+        sentryWebpackPluginOptions
+      );

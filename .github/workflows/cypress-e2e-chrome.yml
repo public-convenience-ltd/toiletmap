@@ -56,6 +56,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v4
         env:
+          IS_E2E: true
           MONGODB_URI: mongodb://localhost:27017/toiletmap
           DATABASE_NAME: toiletmap
           VERCEL_URL: http://localhost:3000

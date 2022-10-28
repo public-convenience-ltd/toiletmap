@@ -27,6 +27,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default process.env.VERCEL_ENV === 'production'
+export default process.env.IS_E2E != 'true' &&
+process.env.VERCEL_ENV === 'production'
   ? withSentry(handler)
   : handler;

@@ -13,7 +13,8 @@ Sentry.init({
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 0.25,
   environment: process.env.VERCEL_ENV || 'development',
-  enabled: process.env.VERCEL_ENV === 'production',
+  enabled:
+    process.env.IS_E2E != 'true' && process.env.VERCEL_ENV === 'production',
   // ...
   // Note: if you want to override the automatic release value, do not set a
   // `release` value here - use the environment variable `SENTRY_RELEASE`, so
