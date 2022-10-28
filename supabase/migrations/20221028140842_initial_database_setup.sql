@@ -9,7 +9,7 @@
 
 CREATE EXTENSION IF NOT EXISTS postgis
     SCHEMA public
-    VERSION "3.1.4";
+    VERSION '3.1.4';
 
 CREATE OR REPLACE FUNCTION audit.to_record_id(
 	entity_oid oid,
@@ -45,7 +45,7 @@ CREATE OR REPLACE FUNCTION audit.enable_tracking(
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE SECURITY DEFINER PARALLEL UNSAFE
-    SET search_path=""
+    SET search_path=''
 AS $BODY$
 declare
     statement_row text = format('
@@ -91,7 +91,7 @@ CREATE OR REPLACE FUNCTION audit.disable_tracking(
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE SECURITY DEFINER PARALLEL UNSAFE
-    SET search_path=""
+    SET search_path=''
 AS $BODY$
 declare
     statement_row text = format(
@@ -118,7 +118,7 @@ CREATE OR REPLACE FUNCTION audit.primary_key_columns(
     LANGUAGE 'sql'
     COST 100
     STABLE SECURITY DEFINER PARALLEL UNSAFE
-    SET search_path=""
+    SET search_path=''
 AS $BODY$
     -- Looks up the names of a table's primary key columns
     select
@@ -188,7 +188,7 @@ CREATE OR REPLACE FUNCTION audit.truncate_trigger()
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE NOT LEAKPROOF SECURITY DEFINER
-    SET search_path=""
+    SET search_path=''
 AS $BODY$
 begin
     insert into audit.record_version(
@@ -218,12 +218,12 @@ CREATE TABLE IF NOT EXISTS audit.record_version
     op audit.operation NOT NULL,
     ts timestamp with time zone NOT NULL DEFAULT now(),
     table_oid oid NOT NULL,
-    table_schema name COLLATE pg_catalog."C" NOT NULL,
-    table_name name COLLATE pg_catalog."C" NOT NULL,
+    table_schema name COLLATE pg_catalog.'C' NOT NULL,
+    table_name name COLLATE pg_catalog.'C' NOT NULL,
     record jsonb,
     old_record jsonb,
     auth_uid uuid DEFAULT auth.uid(),
-    auth_role text COLLATE pg_catalog."default" DEFAULT auth.role(),
+    auth_role text COLLATE pg_catalog.'default' DEFAULT auth.role(),
     CONSTRAINT record_version_pkey PRIMARY KEY (id),
     CONSTRAINT record_version_check CHECK (COALESCE(record_id, old_record_id) IS NOT NULL OR op = 'TRUNCATE'::audit.operation),
     CONSTRAINT record_version_check1 CHECK ((op = ANY (ARRAY['INSERT'::audit.operation, 'UPDATE'::audit.operation])) = (record_id IS NOT NULL)),
@@ -267,11 +267,11 @@ ALTER TYPE audit.operation
 
 CREATE TABLE IF NOT EXISTS public.areas
 (
-    legacy_id character(24) COLLATE pg_catalog."default",
+    legacy_id character(24) COLLATE pg_catalog.'default',
     geometry geography,
-    name text COLLATE pg_catalog."default",
+    name text COLLATE pg_catalog.'default',
     priority integer,
-    type text COLLATE pg_catalog."default",
+    type text COLLATE pg_catalog.'default',
     dataset_id integer,
     version integer,
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
@@ -294,7 +294,7 @@ GRANT ALL ON TABLE public.areas TO service_role;
 GRANT ALL ON TABLE public.areas TO postgres;
 
 CREATE TRIGGER audit_i_u_d
-    AFTER INSERT OR DELETE OR UPDATE 
+    AFTER INSERT OR DELETE OR UPDATE
     ON public.areas
     FOR EACH ROW
     EXECUTE FUNCTION audit.insert_update_delete_trigger();
@@ -308,28 +308,28 @@ CREATE TRIGGER audit_t
 CREATE TABLE IF NOT EXISTS public.toilets
 (
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
-    legacy_id character(24) COLLATE pg_catalog."default" NOT NULL,
+    legacy_id character(24) COLLATE pg_catalog.'default' NOT NULL,
     created_at date,
-    contributors text[] COLLATE pg_catalog."default",
+    contributors text[] COLLATE pg_catalog.'default',
     accessible boolean,
     active boolean,
     attended boolean,
     automatic boolean,
     baby_change boolean,
     men boolean,
-    name text COLLATE pg_catalog."default",
+    name text COLLATE pg_catalog.'default',
     no_payment boolean,
-    notes text COLLATE pg_catalog."default",
-    payment_details text COLLATE pg_catalog."default",
+    notes text COLLATE pg_catalog.'default',
+    payment_details text COLLATE pg_catalog.'default',
     radar boolean,
-    removal_reason text COLLATE pg_catalog."default",
+    removal_reason text COLLATE pg_catalog.'default',
     women boolean,
     updated_at date,
     geography geography,
     urinal_only boolean,
     all_gender boolean,
     children boolean,
-    geohash text COLLATE pg_catalog."default" GENERATED ALWAYS AS (st_geohash(geography)) STORED,
+    geohash text COLLATE pg_catalog.'default' GENERATED ALWAYS AS (st_geohash(geography)) STORED,
     verified_at date,
     reports jsonb,
     area_id integer,
@@ -360,7 +360,7 @@ COMMENT ON COLUMN public.toilets.legacy_id
     IS 'MongoDB id';
 
 CREATE TRIGGER audit_i_u_d
-    AFTER INSERT OR DELETE OR UPDATE 
+    AFTER INSERT OR DELETE OR UPDATE
     ON public.toilets
     FOR EACH ROW
     EXECUTE FUNCTION audit.insert_update_delete_trigger();
