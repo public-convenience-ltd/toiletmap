@@ -3,7 +3,7 @@ name: Deploy Supabase Migrations
 on:
   push:
     branches:
-      - main
+      - ob/postgres-prisma-migration
   workflow_dispatch:
 
 jobs:

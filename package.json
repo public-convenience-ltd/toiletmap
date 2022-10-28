@@ -71,6 +71,7 @@
     "@sentry/nextjs": "^7.17.1",
     "@sentry/tracing": "^7.17.1",
     "@styled-system/prop-types": "^5.1.5",
+    "@supabase/supabase-js": "^2.0.4",
     "apollo-server-core": "^3.10.3",
     "cors": "^2.8.5",
     "crypto-hash": "^2.0.1",
