@@ -1,5 +1,4 @@
 import { getSession } from '@auth0/nextjs-auth0';
-import { withSentry } from '@sentry/nextjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { alertMessages } from '../../../../config';
 
@@ -27,6 +26,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default process.env.VERCEL_ENV === 'production'
-  ? withSentry(handler)
-  : handler;
+export default handler;

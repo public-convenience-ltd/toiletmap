@@ -71,8 +71,6 @@
     "@hookform/error-message": "^2.0.0",
     "@prisma/client": "4.5.0",
     "@rehooks/component-size": "^1.0.3",
-    "@sentry/nextjs": "^7.17.1",
-    "@sentry/tracing": "^7.17.1",
     "@styled-system/prop-types": "^5.1.5",
     "@supabase/supabase-js": "^2.0.4",
     "apollo-server-core": "^3.10.3",
