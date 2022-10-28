@@ -98,6 +98,7 @@ const resolvers: Resolvers<Context> = {
       return result.map(convertPostgresLooToGraphQL);
     },
     loosByGeohash: async (_parent, args, { prisma }) =>
+      // TODO: check if running this q against  postgis direct is faster
       stringifyAndCompressLoos(
         (
           await prisma.toilets.findMany({
