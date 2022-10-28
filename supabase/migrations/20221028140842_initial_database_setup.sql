@@ -3,6 +3,293 @@
 -- and may require manual changes to the script to ensure changes are applied in the correct order.
 -- Please report an issue for any failure with the reproduction steps.
 
+-- Extension: supa_audit
+
+-- SPDX-License-Identifier: Apache-2.0
+/*
+    Generic Audit Trigger
+    Linear Time Record Version History
+
+    Date:
+        2022-02-03
+
+    Purpose:
+        Generic audit history for tables including an indentifier
+        to enable indexed linear time lookup of a primary key's version history
+*/
+
+
+-- Namespace to "audit"
+create schema if not exists audit;
+
+
+-- Create enum type for SQL operations to reduce disk/memory usage vs text
+create type audit.operation as enum (
+    'INSERT',
+    'UPDATE',
+    'DELETE',
+    'TRUNCATE'
+);
+
+
+create table audit.record_version(
+    -- unique auto-incrementing id
+    id             bigserial primary key,
+    -- uniquely identifies a record by primary key [primary key + table_oid]
+    record_id      uuid,
+    -- uniquely identifies a record before update/delete
+    old_record_id  uuid,
+    -- INSERT/UPDATE/DELETE/TRUNCATE/SNAPSHOT
+    op             audit.operation not null,
+    ts             timestamptz not null default (now()),
+    table_oid      oid not null,
+    table_schema   name not null,
+    table_name     name not null,
+
+    -- contents of the record
+    record         jsonb,
+    -- previous record contents for UPDATE/DELETE
+    old_record     jsonb,
+
+    -- at least one of record_id or old_record_id is populated, except for truncates
+    check (coalesce(record_id, old_record_id) is not null or op = 'TRUNCATE'),
+
+    -- record_id must be populated for insert and update
+    check (op in ('INSERT', 'UPDATE') = (record_id is not null)),
+    check (op in ('INSERT', 'UPDATE') = (record is not null)),
+
+    -- old_record must be populated for update and delete
+    check (op in ('UPDATE', 'DELETE') = (old_record_id is not null)),
+    check (op in ('UPDATE', 'DELETE') = (old_record is not null))
+);
+
+do $$
+    begin
+        -- Detect if we're in a supabase project
+        -- Ensure `auth.uid() -> uuid` and `auth.role() -> text` exist
+        if (
+            select
+                count(distinct f.proname) = 2
+            from
+                pg_proc f
+                join pg_namespace nsp
+                    on f.pronamespace = nsp.oid
+                join pg_type pt
+                    on f.prorettype = pt.oid
+            where
+                (nsp.nspname, f.proname, pt.typname) in (
+                    ('auth', 'uid',  'uuid'),
+                    ('auth', 'role', 'text')
+                )
+                and f.pronargs = 0
+            )
+            then
+
+            alter table audit.record_version add column auth_uid  uuid default (auth.uid());
+            alter table audit.record_version add column auth_role text default (auth.role());
+        end if;
+    end
+$$;
+
+
+create index record_version_record_id
+    on audit.record_version(record_id)
+    where record_id is not null;
+
+
+create index record_version_old_record_id
+    on audit.record_version(old_record_id)
+    where old_record_id is not null;
+
+
+create index record_version_ts
+    on audit.record_version
+    using brin(ts);
+
+
+create index record_version_table_oid
+    on audit.record_version(table_oid);
+
+
+create or replace function audit.primary_key_columns(entity_oid oid)
+    returns text[]
+    stable
+    security definer
+    set search_path = ''
+    language sql
+as $$
+    -- Looks up the names of a table's primary key columns
+    select
+        coalesce(
+            array_agg(pa.attname::text order by pa.attnum),
+            array[]::text[]
+        ) column_names
+    from
+        pg_index pi
+        join pg_attribute pa
+            on pi.indrelid = pa.attrelid
+            and pa.attnum = any(pi.indkey)
+
+    where
+        indrelid = $1
+        and indisprimary
+$$;
+
+
+create or replace function audit.to_record_id(entity_oid oid, pkey_cols text[], rec jsonb)
+    returns uuid
+    stable
+    language sql
+as $$
+    select
+        case
+            when rec is null then null
+            when pkey_cols = array[]::text[] then uuid_generate_v4()
+            else (
+                select
+                    uuid_generate_v5(
+                        'fd62bc3d-8d6e-43c2-919c-802ba3762271',
+                        ( jsonb_build_array(to_jsonb($1)) || jsonb_agg($3 ->> key_) )::text
+                    )
+                from
+                    unnest($2) x(key_)
+            )
+        end
+$$;
+
+
+create or replace function audit.insert_update_delete_trigger()
+    returns trigger
+    security definer
+    -- can not use search_path = '' here because audit.to_record_id requires
+    -- uuid_generate_v4, which may be installed in a user-defined schema
+    language plpgsql
+as $$
+declare
+    pkey_cols text[] = audit.primary_key_columns(TG_RELID);
+
+    record_jsonb jsonb = to_jsonb(new);
+    record_id uuid = audit.to_record_id(TG_RELID, pkey_cols, record_jsonb);
+
+    old_record_jsonb jsonb = to_jsonb(old);
+    old_record_id uuid = audit.to_record_id(TG_RELID, pkey_cols, old_record_jsonb);
+begin
+
+    insert into audit.record_version(
+        record_id,
+        old_record_id,
+        op,
+        table_oid,
+        table_schema,
+        table_name,
+        record,
+        old_record
+    )
+    select
+        record_id,
+        old_record_id,
+        TG_OP::audit.operation,
+        TG_RELID,
+        TG_TABLE_SCHEMA,
+        TG_TABLE_NAME,
+        record_jsonb,
+        old_record_jsonb;
+
+    return coalesce(new, old);
+end;
+$$;
+
+
+create or replace function audit.truncate_trigger()
+    returns trigger
+    security definer
+    set search_path = ''
+    language plpgsql
+as $$
+begin
+    insert into audit.record_version(
+        op,
+        table_oid,
+        table_schema,
+        table_name
+    )
+    select
+        TG_OP::audit.operation,
+        TG_RELID,
+        TG_TABLE_SCHEMA,
+        TG_TABLE_NAME;
+
+    return coalesce(old, new);
+end;
+$$;
+
+
+create or replace function audit.enable_tracking(regclass)
+    returns void
+    volatile
+    security definer
+    set search_path = ''
+    language plpgsql
+as $$
+declare
+    statement_row text = format('
+        create trigger audit_i_u_d
+            after insert or update or delete
+            on %s
+            for each row
+            execute procedure audit.insert_update_delete_trigger();',
+        $1
+    );
+
+    statement_stmt text = format('
+        create trigger audit_t
+            after truncate
+            on %s
+            for each statement
+            execute procedure audit.truncate_trigger();',
+        $1
+    );
+
+    pkey_cols text[] = audit.primary_key_columns($1);
+begin
+    if pkey_cols = array[]::text[] then
+        raise exception 'Table % can not be audited because it has no primary key', $1;
+    end if;
+
+    if not exists(select 1 from pg_trigger where tgrelid = $1 and tgname = 'audit_i_u_d') then
+        execute statement_row;
+    end if;
+
+    if not exists(select 1 from pg_trigger where tgrelid = $1 and tgname = 'audit_t') then
+        execute statement_stmt;
+    end if;
+end;
+$$;
+
+
+create or replace function audit.disable_tracking(regclass)
+    returns void
+    volatile
+    security definer
+    set search_path = ''
+    language plpgsql
+as $$
+declare
+    statement_row text = format(
+        'drop trigger if exists audit_i_u_d on %s;',
+        $1
+    );
+
+    statement_stmt text = format(
+        'drop trigger if exists audit_t on %s;',
+        $1
+    );
+begin
+    execute statement_row;
+    execute statement_stmt;
+end;
+$$;
+
 -- Extension: postgis
 
 -- DROP EXTENSION postgis;
@@ -218,12 +505,12 @@ CREATE TABLE IF NOT EXISTS audit.record_version
     op audit.operation NOT NULL,
     ts timestamp with time zone NOT NULL DEFAULT now(),
     table_oid oid NOT NULL,
-    table_schema name COLLATE pg_catalog.'C' NOT NULL,
-    table_name name COLLATE pg_catalog.'C' NOT NULL,
+    table_schema name COLLATE pg_catalog."C" NOT NULL,
+    table_name name COLLATE pg_catalog."C" NOT NULL,
     record jsonb,
     old_record jsonb,
     auth_uid uuid DEFAULT auth.uid(),
-    auth_role text COLLATE pg_catalog.'default' DEFAULT auth.role(),
+    auth_role text COLLATE pg_catalog."default" DEFAULT auth.role(),
     CONSTRAINT record_version_pkey PRIMARY KEY (id),
     CONSTRAINT record_version_check CHECK (COALESCE(record_id, old_record_id) IS NOT NULL OR op = 'TRUNCATE'::audit.operation),
     CONSTRAINT record_version_check1 CHECK ((op = ANY (ARRAY['INSERT'::audit.operation, 'UPDATE'::audit.operation])) = (record_id IS NOT NULL)),
@@ -259,19 +546,16 @@ CREATE INDEX IF NOT EXISTS record_version_ts
 
 -- DROP TYPE IF EXISTS audit.operation;
 
-CREATE TYPE audit.operation AS ENUM
-    ('INSERT', 'UPDATE', 'DELETE', 'TRUNCATE');
-
 ALTER TYPE audit.operation
     OWNER TO postgres;
 
 CREATE TABLE IF NOT EXISTS public.areas
 (
-    legacy_id character(24) COLLATE pg_catalog.'default',
+    legacy_id character(24) COLLATE pg_catalog."default",
     geometry geography,
-    name text COLLATE pg_catalog.'default',
+    name text COLLATE pg_catalog."default",
     priority integer,
-    type text COLLATE pg_catalog.'default',
+    type text COLLATE pg_catalog."default",
     dataset_id integer,
     version integer,
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
@@ -308,28 +592,28 @@ CREATE TRIGGER audit_t
 CREATE TABLE IF NOT EXISTS public.toilets
 (
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
-    legacy_id character(24) COLLATE pg_catalog.'default' NOT NULL,
+    legacy_id character(24) COLLATE pg_catalog."default" NOT NULL,
     created_at date,
-    contributors text[] COLLATE pg_catalog.'default',
+    contributors text[] COLLATE pg_catalog."default",
     accessible boolean,
     active boolean,
     attended boolean,
     automatic boolean,
     baby_change boolean,
     men boolean,
-    name text COLLATE pg_catalog.'default',
+    name text COLLATE pg_catalog."default",
     no_payment boolean,
-    notes text COLLATE pg_catalog.'default',
-    payment_details text COLLATE pg_catalog.'default',
+    notes text COLLATE pg_catalog."default",
+    payment_details text COLLATE pg_catalog."default",
     radar boolean,
-    removal_reason text COLLATE pg_catalog.'default',
+    removal_reason text COLLATE pg_catalog."default",
     women boolean,
     updated_at date,
     geography geography,
     urinal_only boolean,
     all_gender boolean,
     children boolean,
-    geohash text COLLATE pg_catalog.'default' GENERATED ALWAYS AS (st_geohash(geography)) STORED,
+    geohash text COLLATE pg_catalog."default" GENERATED ALWAYS AS (st_geohash(geography)) STORED,
     verified_at date,
     reports jsonb,
     area_id integer,
