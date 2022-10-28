@@ -144,7 +144,7 @@ as $$
     select
         case
             when rec is null then null
-            when pkey_cols = array[]::text[] then uuid_generate_v4()
+            when pkey_cols = array[]::text[] then extensions.uuid_generate_v4()
             else (
                 select
                     uuid_generate_v5(
@@ -310,10 +310,10 @@ AS $BODY$
     select
         case
             when rec is null then null
-            when pkey_cols = array[]::text[] then uuid_generate_v4()
+            when pkey_cols = array[]::text[] then extensions.uuid_generate_v4()
             else (
                 select
-                    uuid_generate_v5(
+                    extensions.uuid_generate_v5(
                         'fd62bc3d-8d6e-43c2-919c-802ba3762271',
                         ( jsonb_build_array(to_jsonb($1)) || jsonb_agg($3 ->> key_) )::text
                     )
@@ -618,7 +618,7 @@ CREATE TABLE IF NOT EXISTS public.toilets
     reports jsonb,
     area_id integer,
     opening_times jsonb,
-    location double precision[] GENERATED ALWAYS AS (ARRAY[st_y(st_centroid(st_transform((geography)::geometry, 4326))), st_x(st_centroid(st_transform((geography)::geometry, 4326)))]) STORED,
+    location jsonb GENERATED ALWAYS AS (st_asgeojson((toilets.geography)::geometry)::jsonb) STORED,
     CONSTRAINT toilet_id PRIMARY KEY (id),
     CONSTRAINT legacy_toilet_id UNIQUE (legacy_id),
     CONSTRAINT toilets___area_id_fk FOREIGN KEY (area_id)
