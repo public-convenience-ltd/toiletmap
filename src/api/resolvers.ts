@@ -137,8 +137,9 @@ const resolvers: Resolvers<Context> = {
       try {
         // Try and find an existing loo to update, legacy id or new id.
         const whereQuery = isNaN(id as unknown as number)
-          ? { legacyId: id }
-          : { id: parseInt(id) };
+          ? { legacyId: id ?? undefined, id: -1 }
+          : { id: parseInt(id) ?? -1 };
+        console.log('ah', whereQuery);
         const upsertLoo = await prisma.toilets.upsert({
           where: whereQuery,
           create: {
