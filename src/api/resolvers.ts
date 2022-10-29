@@ -13,6 +13,7 @@ import {
   postgresLooToGraphQL,
   setLooLocation,
 } from './prisma/queries';
+
 import { Context } from './context';
 
 const resolvers: Resolvers<Context> = {
