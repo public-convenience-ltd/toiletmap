@@ -13,7 +13,7 @@ import {
 } from '@envelop/response-cache';
 import Redis from 'ioredis';
 import { createRedisCache } from '@envelop/response-cache-redis';
-import { context } from '../../api/prisma/prismaContext';
+import { context } from '../../api/context';
 
 const setupCache = () => {
   if (process.env.ENABLE_REDIS_CACHE !== 'true') {

@@ -47,7 +47,7 @@ export const getLooById = async (
     });
   }
 
-  return await prisma.toilets.findUnique({
+  return prisma.toilets.findUnique({
     include: { areas: { select: { name: true, type: true } } },
     where: { id },
   });
@@ -57,7 +57,7 @@ export const getLooNamesByIds = async (
   prisma: PrismaClient,
   idList: string[]
 ) => {
-  const loos = await prisma.toilets.findMany({
+  return prisma.toilets.findMany({
     where: {
       id: {
         in: idList.map((id) => parseInt(id)),
@@ -68,7 +68,38 @@ export const getLooNamesByIds = async (
       name: true,
     },
   });
-  return loos;
+};
+
+export const decideAndSetLooArea = async (prisma: PrismaClient, id: number) => {
+  // Find the area that the loo belongs to.
+  const areaID = await prisma.$queryRaw`
+    SELECT a.id from
+    toilets inner join areas a on ST_WITHIN(toilets.geography::geometry, a.geometry::geometry)
+    WHERE toilets.id = ${id}
+  `;
+
+  return prisma.toilets.update({
+    where: { id: id },
+    data: {
+      area_id: areaID[0]?.id,
+    },
+  });
+};
+
+export const setLooLocation = async (
+  prisma: PrismaClient,
+  id: number,
+  lat: number,
+  lng: number
+) => {
+  return prisma.$executeRaw`
+      UPDATE toilets SET
+      geography = ST_GeomFromGeoJSON(${JSON.stringify({
+        type: 'Point',
+        coordinates: [lng, lat],
+      })})
+      WHERE id = ${id}
+  `;
 };
 
 export const getLoosByProximity = async (

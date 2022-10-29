@@ -3,43 +3,18 @@ import { Resolvers } from './resolvers-types';
 import { Loo as DBLoo, Report as DBReport, dbConnect } from './db';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
-import { Context } from './prisma/prismaContext';
 import { toilets } from '@prisma/client';
 import { async as hasha } from 'hasha';
 
 import {
+  decideAndSetLooArea,
   getLooById,
   getLooNamesByIds,
   getLoosByProximity,
   postgresLooToGraphQL,
+  setLooLocation,
 } from './prisma/queries';
-
-const subPropertyResolver = (property) => (parent, _args, _context, info) =>
-  parent[property][info.fieldName];
-const looInfoResolver = (property) => {
-  const resolve = subPropertyResolver(property);
-  return {
-    active: resolve,
-    area: resolve,
-    name: resolve,
-    openingTimes: resolve,
-    accessible: resolve,
-    allGender: resolve,
-    men: resolve,
-    women: resolve,
-    children: resolve,
-    urinalOnly: resolve,
-    babyChange: resolve,
-    radar: resolve,
-    attended: resolve,
-    automatic: resolve,
-    noPayment: resolve,
-    paymentDetails: resolve,
-    notes: resolve,
-    removalReason: resolve,
-    verifiedAt: resolve,
-  };
-};
+import { Context } from './context';
 
 const resolvers: Resolvers<Context> = {
   Query: {
@@ -162,29 +137,10 @@ const resolvers: Resolvers<Context> = {
           },
         });
 
-        // Update the toilet location.
-        await prisma.$executeRaw`
-            UPDATE toilets SET
-            geography = ST_GeomFromGeoJSON(${JSON.stringify({
-              type: 'Point',
-              coordinates: [location.lng, location.lat], // flip coords, stored differently in db
-            })})
-            WHERE id = ${upsertLoo.id}
-        `;
+        await setLooLocation(prisma, upsertLoo.id, location.lat, location.lng);
 
         // Update the toilet area relation.
-        const areaID = await prisma.$queryRaw`
-          SELECT a.id from
-          toilets inner join areas a on ST_WITHIN(toilets.geography::geometry, a.geometry::geometry)
-          WHERE toilets.id = ${upsertLoo.id}
-        `;
-
-        const result = await prisma.toilets.update({
-          where: { id: upsertLoo.id },
-          data: {
-            area_id: areaID[0]?.id,
-          },
-        });
+        const result = await decideAndSetLooArea(prisma, upsertLoo.id);
 
         return {
           code: '200',
@@ -261,18 +217,6 @@ const resolvers: Resolvers<Context> = {
     },
   },
 
-  Report: {
-    id: (r) => r._id.toString(),
-    previous: (r) => DBReport.findById(r.previous),
-    location: (r) =>
-      r.diff.geometry && {
-        lng: r.diff.geometry.coordinates[0],
-        lat: r.diff.geometry.coordinates[1],
-      },
-    ...looInfoResolver('diff'),
-    loo: (r) => r.getLoo(),
-  },
-
   Loo: {},
 
   DateTime: GraphQLDateTime,
@@ -285,4 +229,3 @@ export const Mutation = resolvers.Mutation;
 export const MutationResponse = resolvers.MutationResponse;
 export const OpeningTimes = resolvers.OpeningTimes;
 export const Query = resolvers.Query;
-export const Report = resolvers.Report;
