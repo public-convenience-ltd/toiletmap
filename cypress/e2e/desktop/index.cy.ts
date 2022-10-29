@@ -566,7 +566,7 @@ describe('Home page tests', () => {
         .should('include', 'https://maps.apple.com/?dirflg=w&daddr=');
     });
 
-    it.skip('should allow users to confirm that the toilet information is correct', () => {
+    it('should allow users to confirm that the toilet information is correct', () => {
       cy.visit('/').wait(500);
       cy.get('[data-toiletid=2794]').click({ force: true });
       cy.intercept('POST', '/api', (req) => {

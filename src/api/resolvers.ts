@@ -1,6 +1,5 @@
 import { stringifyAndCompressLoos } from '../lib/loo';
 import { Resolvers } from './resolvers-types';
-import { Loo as DBLoo, Report as DBReport, dbConnect } from './db';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
 import { toilets } from '@prisma/client';
@@ -70,12 +69,6 @@ const resolvers: Resolvers<Context> = {
           type: true,
         },
       }),
-  },
-
-  MutationResponse: {
-    __resolveType() {
-      return null;
-    },
   },
 
   Mutation: {
@@ -158,31 +151,32 @@ const resolvers: Resolvers<Context> = {
         };
       }
     },
-    submitRemovalReport: async (_parent, args, context) => {
-      await dbConnect();
-      const user = context.user;
-      const { edit, reason } = args.report;
-      // We sadly need the current geometry here
-      const loo = await DBLoo.findById(edit);
-      const coordinates = loo.properties.geometry.coordinates;
-      // Format report data to match old api
-      const report = {
-        active: false,
-        removalReason: reason,
-        geometry: {
-          type: 'Point',
-          coordinates,
+    submitRemovalReport: async (_parent, args, { prisma, user }) => {
+      const { edit: id, reason } = args.report;
+
+      const isLegacyId = isNaN(id as unknown as number);
+      const result = await prisma.toilets.update({
+        where: {
+          id: isLegacyId ? -1 : parseInt(id),
+          legacy_id: isLegacyId ? id : undefined,
         },
-      };
+        data: {
+          active: false,
+          removal_reason: reason,
+          updated_at: new Date(),
+          contributors: {
+            push: user.nickname,
+          },
+        },
+      });
 
       try {
-        const result = await DBReport.submit(report, user, edit);
         return {
           code: '200',
           success: true,
           message: 'Report processed',
-          report: result[0],
-          loo: result[1],
+          report: postgresLooToGraphQL(result),
+          loo: postgresLooToGraphQL(result),
         };
       } catch (e) {
         return {
@@ -192,20 +186,25 @@ const resolvers: Resolvers<Context> = {
         };
       }
     },
-    submitVerificationReport: async (_parent, args) => {
-      await dbConnect();
-      const report = {
-        verifiedAt: new Date(),
-      };
+    submitVerificationReport: async (_parent, { id }, { prisma }) => {
+      const isLegacyId = isNaN(id as unknown as number);
+      const result = await prisma.toilets.update({
+        where: {
+          id: isLegacyId ? -1 : parseInt(id),
+          legacy_id: isLegacyId ? id : undefined,
+        },
+        data: {
+          verified_at: new Date(),
+        },
+      });
 
       try {
-        const result = await DBReport.submit(report, null, args.id);
         return {
           code: '200',
           success: true,
           message: 'Toilet data verified',
-          report: result[0],
-          loo: result[1],
+          report: postgresLooToGraphQL(result),
+          loo: postgresLooToGraphQL(result),
         };
       } catch (e) {
         return {
@@ -216,16 +215,11 @@ const resolvers: Resolvers<Context> = {
       }
     },
   },
-
-  Loo: {},
-
   DateTime: GraphQLDateTime,
-
   OpeningTimes: OpeningTimesScalar,
 };
 
 export const DateTime = resolvers.DateTime;
 export const Mutation = resolvers.Mutation;
-export const MutationResponse = resolvers.MutationResponse;
 export const OpeningTimes = resolvers.OpeningTimes;
 export const Query = resolvers.Query;
