@@ -138,7 +138,7 @@ const resolvers: Resolvers<Context> = {
       const suggestLooId = async () => {
         const input = JSON.stringify({
           coords: location,
-          created: mappedData.created_at,
+          created: mappedData.updated_at,
           by: user[process.env.AUTH0_PROFILE_KEY].nickname,
         });
         return hasha(input, { algorithm: 'md5', encoding: 'hex' });
