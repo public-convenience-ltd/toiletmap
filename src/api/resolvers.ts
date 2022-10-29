@@ -5,6 +5,7 @@ import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
 import { Context } from './prisma/prismaContext';
 import { toilets } from '@prisma/client';
+import { async as hasha } from 'hasha';
 
 import {
   getLooById,
@@ -103,7 +104,7 @@ const resolvers: Resolvers<Context> = {
   },
 
   Mutation: {
-    submitReport: async (_parent, args, { prisma }) => {
+    submitReport: async (_parent, args, { prisma, user }) => {
       const { edit: id, location, ...report } = args.report;
 
       const mappedData = {
@@ -134,18 +135,27 @@ const resolvers: Resolvers<Context> = {
         }
       });
 
+      const suggestLooId = async () => {
+        const input = JSON.stringify({
+          coords: location,
+          created: mappedData.created_at,
+          by: user[process.env.AUTH0_PROFILE_KEY].nickname,
+        });
+        return hasha(input, { algorithm: 'md5', encoding: 'hex' });
+      };
+
       try {
-        // Try and find an existing loo to update, legacy id or new id.
-        const whereQuery = isNaN(id as unknown as number)
-          ? { legacyId: id ?? undefined, id: -1 }
-          : { id: parseInt(id) ?? -1 };
-        console.log('ah', whereQuery);
+        // We have a legacy id if it's not a number.
+        const isLegacyId = isNaN(id as unknown as number);
         const upsertLoo = await prisma.toilets.upsert({
-          where: whereQuery,
+          where: {
+            id: isLegacyId ? -1 : parseInt(id),
+            legacy_id: isLegacyId ? id : undefined,
+          },
           create: {
             ...mappedData,
-            legacy_id: '',
             created_at: new Date(),
+            legacy_id: (await suggestLooId()).slice(0, 24),
           },
           update: {
             ...mappedData,
@@ -184,6 +194,7 @@ const resolvers: Resolvers<Context> = {
           loo: postgresLooToGraphQL(result),
         };
       } catch (e) {
+        console.log('d', e);
         return {
           code: '400',
           success: false,

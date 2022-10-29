@@ -1,5 +1,0 @@
-query getFormAreas {
-  items: areas {
-    label: name
-  }
-}
