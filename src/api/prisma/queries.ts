@@ -1,4 +1,38 @@
-import { PrismaClient, toilets } from '@prisma/client';
+import { areas, PrismaClient, toilets } from '@prisma/client';
+import { Loo } from '../../api-client/graphql';
+
+export const postgresLooToGraphQL = (
+  loo: toilets & { areas?: Partial<areas> }
+): Loo => ({
+  id: loo.id.toString(),
+  legacy_id: loo.legacy_id,
+  women: loo.women,
+  men: loo.men,
+  name: loo.name,
+  noPayment: loo.no_payment,
+  notes: loo.notes,
+  openingTimes: loo.opening_times,
+  paymentDetails: loo.payment_details,
+  accessible: loo.accessible,
+  active: loo.active,
+  allGender: loo.all_gender,
+  area: [loo?.areas],
+  attended: loo.attended,
+  automatic: loo.automatic,
+  babyChange: loo.baby_change,
+  children: loo.children,
+  createdAt: loo.created_at,
+  location: {
+    lat: loo.location.coordinates[1],
+    lng: loo.location.coordinates[0],
+  },
+  removalReason: loo.removal_reason,
+  radar: loo.radar,
+  urinalOnly: loo.urinal_only,
+  verifiedAt: loo.verified_at,
+  reports: [],
+  updatedAt: loo.updated_at,
+});
 
 export const getLooById = async (
   prisma: PrismaClient,

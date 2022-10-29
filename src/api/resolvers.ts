@@ -4,12 +4,13 @@ import { Loo as DBLoo, Report as DBReport, dbConnect } from './db';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
 import { Context } from './prisma/prismaContext';
-import { toilets, areas } from '@prisma/client';
-import { Loo } from '../api-client/graphql';
+import { toilets } from '@prisma/client';
+
 import {
   getLooById,
   getLooNamesByIds,
   getLoosByProximity,
+  postgresLooToGraphQL,
 } from './prisma/queries';
 
 const subPropertyResolver = (property) => (parent, _args, _context, info) =>
@@ -39,50 +40,15 @@ const looInfoResolver = (property) => {
   };
 };
 
-const convertPostgresLooToGraphQL = (
-  loo: toilets & { areas?: Partial<areas> }
-): Loo => ({
-  id: loo.id.toString(),
-  legacy_id: loo.legacy_id,
-  women: loo.women,
-  men: loo.men,
-  name: loo.name,
-  noPayment: loo.no_payment,
-  notes: loo.notes,
-  openingTimes: loo.opening_times,
-  paymentDetails: loo.payment_details,
-  accessible: loo.accessible,
-  active: loo.active,
-  allGender: loo.all_gender,
-  area: [loo?.areas],
-  attended: loo.attended,
-  automatic: loo.automatic,
-  babyChange: loo.baby_change,
-  children: loo.children,
-  createdAt: loo.created_at,
-  location: {
-    lat: loo.location.coordinates[1],
-    lng: loo.location.coordinates[0],
-  },
-  removalReason: loo.removal_reason,
-  radar: loo.radar,
-  urinalOnly: loo.urinal_only,
-  verifiedAt: loo.verified_at,
-  reports: [],
-  updatedAt: loo.updated_at,
-});
-
 const resolvers: Resolvers<Context> = {
   Query: {
     loo: async (_parent, args, { prisma }) => {
       const isLegacyId = isNaN(args.id as unknown as number);
       if (isLegacyId) {
-        return convertPostgresLooToGraphQL(await getLooById(prisma, args.id));
+        return postgresLooToGraphQL(await getLooById(prisma, args.id));
       }
 
-      return convertPostgresLooToGraphQL(
-        await getLooById(prisma, parseInt(args.id))
-      );
+      return postgresLooToGraphQL(await getLooById(prisma, parseInt(args.id)));
     },
     looNamesByIds: async (_parent, args, { prisma }) => {
       const looNames = await getLooNamesByIds(prisma, args.idList);
@@ -95,7 +61,8 @@ const resolvers: Resolvers<Context> = {
         args.from.lng,
         args.from.maxDistance
       );
-      return result.map(convertPostgresLooToGraphQL);
+
+      return result.map(postgresLooToGraphQL);
     },
     loosByGeohash: async (_parent, args, { prisma }) =>
       // TODO: check if running this q against  postgis direct is faster
@@ -116,7 +83,7 @@ const resolvers: Resolvers<Context> = {
             },
           })
         )
-          .map(convertPostgresLooToGraphQL)
+          .map(postgresLooToGraphQL)
           .flat()
       ),
 
@@ -136,28 +103,84 @@ const resolvers: Resolvers<Context> = {
   },
 
   Mutation: {
-    submitReport: async (_parent, args, context) => {
-      await dbConnect();
-      const user = context.user;
-      const { edit, location, ...data } = args.report;
-      // Format report data to match old api
-      const report = {
-        ...data,
+    submitReport: async (_parent, args, { prisma }) => {
+      const { edit: id, location, ...report } = args.report;
+
+      const mappedData = {
+        accessible: report.accessible,
         active: true,
-        geometry: {
-          type: 'Point',
-          coordinates: [location.lng, location.lat], // flip coords, stored differently in db
-        },
-      };
+        attended: report.attended,
+        automatic: report.automatic,
+        baby_change: report.babyChange,
+        men: report.men,
+        no_payment: report.noPayment,
+        notes: report.notes,
+        payment_details: report.paymentDetails,
+        radar: report.radar,
+        women: report.women,
+        updated_at: new Date(),
+        urinal_only: report.urinalOnly,
+        all_gender: report.allGender,
+        children: report.children,
+        opening_times: report.openingTimes ?? undefined,
+        verified_at: new Date(),
+        name: report.name,
+      } as toilets;
+
+      // Remove undefined values.
+      Object.keys(mappedData).forEach((key) => {
+        if (mappedData[key] === undefined) {
+          delete mappedData[key];
+        }
+      });
 
       try {
-        const result = await DBReport.submit(report, user, edit);
+        // Try and find an existing loo to update, legacy id or new id.
+        const whereQuery = isNaN(id as unknown as number)
+          ? { legacyId: id }
+          : { id: parseInt(id) };
+        const upsertLoo = await prisma.toilets.upsert({
+          where: whereQuery,
+          create: {
+            ...mappedData,
+            legacy_id: '',
+            created_at: new Date(),
+          },
+          update: {
+            ...mappedData,
+          },
+        });
+
+        // Update the toilet location.
+        await prisma.$executeRaw`
+            UPDATE toilets SET
+            geography = ST_GeomFromGeoJSON(${JSON.stringify({
+              type: 'Point',
+              coordinates: [location.lng, location.lat], // flip coords, stored differently in db
+            })})
+            WHERE id = ${upsertLoo.id}
+        `;
+
+        // Update the toilet area relation.
+        const areaID = await prisma.$queryRaw`
+          SELECT a.id from
+          toilets inner join areas a on ST_WITHIN(toilets.geography::geometry, a.geometry::geometry)
+          WHERE toilets.id = ${upsertLoo.id}
+        `;
+
+        const result = await prisma.toilets.update({
+          where: { id: upsertLoo.id },
+          data: {
+            area_id: areaID[0]?.id,
+          },
+        });
+
         return {
           code: '200',
           success: true,
           message: 'Report processed',
-          report: result[0],
-          loo: result[1],
+          report: postgresLooToGraphQL(result),
+          loo: postgresLooToGraphQL(result),
         };
       } catch (e) {
         return {
