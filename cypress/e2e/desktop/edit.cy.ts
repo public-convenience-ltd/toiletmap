@@ -18,7 +18,7 @@ describe('Edit page tests', () => {
     });
 
     it('should load the edit page with expected data given a valid toilet id', () => {
-      cy.visit('loos/b1afddaebc6afd1b6d4d0721/edit');
+      cy.visit('loos/3420/edit');
       cy.reload();
 
       cy.contains('Align the crosshair');
@@ -88,7 +88,7 @@ describe('Edit page tests', () => {
     });
 
     it('should allow all fields on the toilet to be edited', () => {
-      cy.visit('loos/e0ba1aeea36ecf58d5ae6dd2/edit');
+      cy.visit('loos/1146/edit');
       cy.contains('Align the crosshair');
 
       const toiletName = faker.word.adjective() + ' ' + faker.word.noun();
@@ -151,7 +151,7 @@ describe('Edit page tests', () => {
     });
 
     it('should update the location of the toilet to where the map is dragged', () => {
-      cy.visit('loos/e0ba1aeea36ecf58d5ae6dd2/edit').wait(500);
+      cy.visit('loos/1146/edit').wait(500);
       cy.get('#gbptm-map')
         .trigger('mousedown', { which: 1, force: true })
         .trigger('mousemove', { which: 1, x: 1000, y: 0 })
@@ -180,11 +180,11 @@ describe('Edit page tests', () => {
       cy.findByPlaceholderText('Search location…').type('ashford common');
       cy.get('#search-results-item-0').click();
 
-      cy.get('[data-toiletid=e0ba1aeea36ecf58d5ae6dd2]').should('exist');
+      cy.get('[data-toiletid=1146]').should('exist');
     });
 
     it('should update the location of the toilet through a location search', () => {
-      cy.visit('loos/e0ba1aeea36ecf58d5ae6dd2/edit').wait(500);
+      cy.visit('loos/1146/edit').wait(500);
       cy.findByPlaceholderText('Search location…').type('birmingham');
       cy.get('#search-results-item-0').click();
       cy.wait(500);
@@ -196,7 +196,7 @@ describe('Edit page tests', () => {
       cy.findByPlaceholderText('Search location…').type('birmingham');
       cy.get('#search-results-item-0').click();
 
-      cy.get('[data-toiletid=e0ba1aeea36ecf58d5ae6dd2]').should('exist');
+      cy.get('[data-toiletid=1146]').should('exist');
     });
   });
 });

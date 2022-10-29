@@ -18,7 +18,7 @@ describe('Edit page tests', () => {
     });
 
     it('should load the edit page with expected data given a valid toilet id', () => {
-      cy.visit('loos/b1afddaebc6afd1b6d4d0721/edit');
+      cy.visit('loos/3420/edit');
       cy.reload();
 
       cy.contains('Align the crosshair');
@@ -88,7 +88,7 @@ describe('Edit page tests', () => {
     });
 
     it('should allow all fields on the toilet to be edited', () => {
-      cy.visit('loos/b5cdcf44d4f09eaf34fa4b6f/edit');
+      cy.visit('loos/2620/edit');
       cy.contains('Align the crosshair');
 
       const toiletName = faker.word.adjective() + ' ' + faker.word.noun();
@@ -151,7 +151,7 @@ describe('Edit page tests', () => {
     });
 
     it('should update the location of the toilet to where the map is dragged', () => {
-      cy.visit('loos/ca6249ebcd1490e2aaccc5be/edit').wait(500);
+      cy.visit('loos/3154/edit').wait(500);
 
       // touchstart, touchmove etc are not supported in Firefox
       if (Cypress.isBrowser('firefox')) {
@@ -184,11 +184,11 @@ describe('Edit page tests', () => {
       cy.findByPlaceholderText('Search location…').type('ditton park manor');
       cy.get('#search-results-item-0').click();
 
-      cy.get('[data-toiletid=ca6249ebcd1490e2aaccc5be]').should('exist');
+      cy.get('[data-toiletid=3154]').should('exist');
     });
 
     it('should update the location of the toilet through a location search', () => {
-      cy.visit('loos/ca6249ebcd1490e2aaccc5be/edit').wait(500);
+      cy.visit('loos/3154/edit').wait(500);
       cy.findByPlaceholderText('Search location…').type('Norwich');
       cy.get('#search-results-item-0').click();
       cy.wait(500);
@@ -200,7 +200,7 @@ describe('Edit page tests', () => {
       cy.findByPlaceholderText('Search location…').type('Norwich');
       cy.get('#search-results-item-0').click();
 
-      cy.get('[data-toiletid=ca6249ebcd1490e2aaccc5be]').should('exist');
+      cy.get('[data-toiletid=3154]').should('exist');
     });
   });
 });
