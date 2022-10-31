@@ -88,12 +88,12 @@ export interface Database {
           urinal_only: boolean | null;
           all_gender: boolean | null;
           children: boolean | null;
+          geohash: string | null;
           verified_at: string | null;
           reports: Json | null;
           area_id: number | null;
           opening_times: Json | null;
-          geohash: string | null;
-          location: number[] | null;
+          location: Json | null;
         };
         Insert: {
           id?: never;
@@ -118,12 +118,12 @@ export interface Database {
           urinal_only?: boolean | null;
           all_gender?: boolean | null;
           children?: boolean | null;
+          geohash?: string | null;
           verified_at?: string | null;
           reports?: Json | null;
           area_id?: number | null;
           opening_times?: Json | null;
-          geohash?: string | null;
-          location?: number[] | null;
+          location?: Json | null;
         };
         Update: {
           id?: never;
@@ -148,12 +148,12 @@ export interface Database {
           urinal_only?: boolean | null;
           all_gender?: boolean | null;
           children?: boolean | null;
+          geohash?: string | null;
           verified_at?: string | null;
           reports?: Json | null;
           area_id?: number | null;
           opening_times?: Json | null;
-          geohash?: string | null;
-          location?: number[] | null;
+          location?: Json | null;
         };
       };
     };
