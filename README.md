@@ -51,7 +51,11 @@ Next you'll need to set up a local instance of mongodb based on our mocked loo d
 
 ```
 yarn startMemoryMongo
->Populating the database from mock-reports.json
+```
+
+```
+** Expected output: **
+> Populating the database from mock-reports.json
 > progress [✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨]
 > Done.
 > ====
