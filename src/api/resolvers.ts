@@ -140,7 +140,6 @@ const resolvers: Resolvers<Context> = {
           code: '200',
           success: true,
           message: 'Report processed',
-          report: postgresLooToGraphQL(result),
           loo: postgresLooToGraphQL(result),
         };
       } catch (e) {
@@ -176,7 +175,6 @@ const resolvers: Resolvers<Context> = {
           code: '200',
           success: true,
           message: 'Report processed',
-          report: postgresLooToGraphQL(result),
           loo: postgresLooToGraphQL(result),
         };
       } catch (e) {
@@ -204,7 +202,6 @@ const resolvers: Resolvers<Context> = {
           code: '200',
           success: true,
           message: 'Toilet data verified',
-          report: postgresLooToGraphQL(result),
           loo: postgresLooToGraphQL(result),
         };
       } catch (e) {
