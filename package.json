@@ -26,7 +26,6 @@
     "generate": "node -r dotenv/config ./src/api/db/manage/generate/index.js --confirm",
     "generate:seed": "./scripts/generateSeed.sh > ./supabase/seed.sql",
     "areas": "node -r dotenv/config ./src/api/db/manage/areaToDatabase/index.js",
-    "startMemoryMongo": "MONGODB_URI=mongodb://localhost:27017/toiletmap TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' yarn ts-node --transpileOnly ./scripts/setupAndStartMemoryMongo.ts",
     "generateMocks": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' yarn ts-node --transpileOnly ./scripts/generateMocks.ts",
     "prepare": "husky install && yarn codegen",
     "codegen": "npm-run-all -p graphql:codegen prisma:codegen",

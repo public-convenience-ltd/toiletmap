@@ -4,4 +4,4 @@ src/api-client
 !src/api-client/withApollo.tsx
 src/api/db
 src/api/directives
-src/api/resolvers-types.ts
+src/@types/resolvers-types.ts

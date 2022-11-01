@@ -1,5 +1,5 @@
 import { stringifyAndCompressLoos } from '../lib/loo';
-import { Resolvers } from './resolvers-types';
+import { Resolvers } from '../@types/resolvers-types';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
 import { toilets } from '@prisma/client';
