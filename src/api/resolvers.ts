@@ -12,7 +12,7 @@ import {
   getLoosByProximity,
   postgresLooToGraphQL,
   setLooLocation,
-} from './prisma/queries';
+} from './queries';
 
 import { Context } from './context';
 
