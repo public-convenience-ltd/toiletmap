@@ -151,7 +151,10 @@ const LooPage: CustomLooByIdComp = (props) => {
   );
 };
 
-export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  req,
+}) => {
   try {
     const res = await ssrFindLooById.getServerPage(
       {
@@ -175,13 +178,6 @@ export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
       },
     };
   }
-};
-
-export const getStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: 'blocking',
-  };
 };
 
 export default withApollo(LooPage);
