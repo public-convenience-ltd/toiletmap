@@ -2,19 +2,23 @@ import { stringifyAndCompressLoos } from '../lib/loo';
 import { Resolvers } from '../@types/resolvers-types';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
-import { toilets } from '@prisma/client';
-import { async as hasha } from 'hasha';
 
 import {
   decideAndSetLooArea,
+  getAreas,
   getLooById,
   getLooNamesByIds,
   getLoosByProximity,
-  postgresLooToGraphQL,
+  getLoosWithinGeohash,
   setLooLocation,
 } from './queries';
 
 import { Context } from './context';
+import {
+  postgresLooToGraphQL,
+  reportToPostgresLoo,
+  suggestLegacyLooId,
+} from './helpers';
 
 const resolvers: Resolvers<Context> = {
   Query: {
@@ -41,80 +45,28 @@ const resolvers: Resolvers<Context> = {
       return result.map(postgresLooToGraphQL);
     },
     loosByGeohash: async (_parent, args, { prisma }) =>
-      // TODO: check if running this q against  postgis direct is faster
       stringifyAndCompressLoos(
-        (
-          await prisma.toilets.findMany({
-            where: {
-              geohash: {
-                startsWith: args.geohash,
-              },
-              AND: [
-                {
-                  active: {
-                    equals: args.active,
-                  },
-                },
-              ],
-            },
-          })
-        )
+        (await getLoosWithinGeohash(prisma, args.geohash, args.active))
           .map(postgresLooToGraphQL)
           .flat()
       ),
 
-    areas: async (_parent, args, { prisma }) =>
-      await prisma.areas.findMany({
-        select: {
-          name: true,
-          type: true,
-        },
-      }),
+    areas: async (_parent, args, { prisma }) => getAreas(prisma),
   },
-
   Mutation: {
     submitReport: async (_parent, args, { prisma, user }) => {
-      const { edit: id, location, ...report } = args.report;
+      const { edit: id, location } = args.report;
 
-      const mappedData = {
-        accessible: report.accessible,
-        active: true,
-        attended: report.attended,
-        automatic: report.automatic,
-        baby_change: report.babyChange,
-        men: report.men,
-        no_payment: report.noPayment,
-        notes: report.notes,
-        payment_details: report.paymentDetails,
-        radar: report.radar,
-        women: report.women,
-        updated_at: new Date(),
-        urinal_only: report.urinalOnly,
-        all_gender: report.allGender,
-        children: report.children,
-        opening_times: report.openingTimes ?? undefined,
-        verified_at: new Date(),
-        name: report.name,
-      } as toilets;
+      // Convert the submitted report to a format that can be saved to the database.
+      const postgresLoo = reportToPostgresLoo(args.report);
 
-      // Remove undefined values.
-      Object.keys(mappedData).forEach((key) => {
-        if (mappedData[key] === undefined) {
-          delete mappedData[key];
-        }
-      });
-
-      const suggestLooId = async () => {
-        const input = JSON.stringify({
-          coords: location,
-          created: mappedData.updated_at,
-          by: user[process.env.AUTH0_PROFILE_KEY].nickname,
-        });
-        return hasha(input, { algorithm: 'md5', encoding: 'hex' });
-      };
+      const nickname = user[process.env.AUTH0_PROFILE_KEY].nickname; // Todo: type this.
+      const legacyId = await suggestLegacyLooId(
+        nickname,
+        postgresLoo.updated_at
+      );
 
       try {
-        // We have a legacy id if it's not a number.
         const isLegacyId = isNaN(id as unknown as number);
         const upsertLoo = await prisma.toilets.upsert({
           where: {
@@ -122,12 +74,12 @@ const resolvers: Resolvers<Context> = {
             legacy_id: isLegacyId ? id : undefined,
           },
           create: {
-            ...mappedData,
+            ...postgresLoo,
             created_at: new Date(),
-            legacy_id: (await suggestLooId()).slice(0, 24),
+            legacy_id: legacyId,
           },
           update: {
-            ...mappedData,
+            ...postgresLoo,
           },
         });
 

@@ -1,38 +1,4 @@
-import { areas, PrismaClient, toilets } from '@prisma/client';
-import { Loo } from '../../api-client/graphql';
-
-export const postgresLooToGraphQL = (
-  loo: toilets & { areas?: Partial<areas> }
-): Loo => ({
-  id: loo.id.toString(),
-  legacy_id: loo.legacy_id,
-  women: loo.women,
-  men: loo.men,
-  name: loo.name,
-  noPayment: loo.no_payment,
-  notes: loo.notes,
-  openingTimes: loo.opening_times,
-  paymentDetails: loo.payment_details,
-  accessible: loo.accessible,
-  active: loo.active,
-  allGender: loo.all_gender,
-  area: [loo?.areas],
-  attended: loo.attended,
-  automatic: loo.automatic,
-  babyChange: loo.baby_change,
-  children: loo.children,
-  createdAt: loo.created_at,
-  location: {
-    lat: loo.location.coordinates[1],
-    lng: loo.location.coordinates[0],
-  },
-  removalReason: loo.removal_reason,
-  radar: loo.radar,
-  urinalOnly: loo.urinal_only,
-  verifiedAt: loo.verified_at,
-  reports: [],
-  updatedAt: loo.updated_at,
-});
+import { PrismaClient, toilets } from '@prisma/client';
 
 export const getLooById = async (
   prisma: PrismaClient,
@@ -41,7 +7,7 @@ export const getLooById = async (
   const isLegacyId = typeof id === 'string';
 
   if (isLegacyId) {
-    return await prisma.toilets.findUnique({
+    return prisma.toilets.findUnique({
       include: { areas: { select: { name: true, type: true } } },
       where: { legacy_id: id },
     });
@@ -102,11 +68,39 @@ export const setLooLocation = async (
   `;
 };
 
+export const getLoosWithinGeohash = async (
+  prisma: PrismaClient,
+  geohash: string,
+  active = true
+) =>
+  prisma.toilets.findMany({
+    where: {
+      geohash: {
+        startsWith: geohash,
+      },
+      AND: [
+        {
+          active: {
+            equals: active,
+          },
+        },
+      ],
+    },
+  });
+
+export const getAreas = async (prisma: PrismaClient) =>
+  prisma.areas.findMany({
+    select: {
+      name: true,
+      type: true,
+    },
+  });
+
 export const getLoosByProximity = async (
   prisma: PrismaClient,
   lat: number,
   lng: number,
-  radius: number
+  radius = 1000
 ) => {
   const nearbyLoos = (await prisma.$queryRaw`
         SELECT
@@ -122,7 +116,7 @@ export const getLoosByProximity = async (
           where st_distancesphere(
             loo.geography::geometry,
             ST_MakePoint(${lng}, ${lat})
-          ) <= ${radius ?? 1000}
+          ) <= ${radius}
       `) as (toilets & {
     distance: number;
     area_name?: string;
