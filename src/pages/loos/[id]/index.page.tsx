@@ -42,6 +42,7 @@ const LooPage: CustomLooByIdComp = (props) => {
   useEffect(
     function setInitialMapCentre() {
       if (
+        (!router.isReady || typeof message !== 'undefined') &&
         looCentre &&
         firstLoad &&
         mapState?.locationServices?.isActive !== true
@@ -150,10 +151,7 @@ const LooPage: CustomLooByIdComp = (props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({
-  params,
-  req,
-}) => {
+export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
   try {
     const res = await ssrFindLooById.getServerPage(
       {
@@ -177,6 +175,13 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   }
+};
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
 };
 
 export default withApollo(LooPage);
