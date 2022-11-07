@@ -63,6 +63,7 @@ const resolvers: Resolvers<Context> = {
       const nickname = user[process.env.AUTH0_PROFILE_KEY].nickname; // Todo: type this.
       const legacyId = await suggestLegacyLooId(
         nickname,
+        location,
         postgresLoo.updated_at
       );
 
@@ -76,7 +77,7 @@ const resolvers: Resolvers<Context> = {
           create: {
             ...postgresLoo,
             created_at: new Date(),
-            legacy_id: legacyId,
+            legacy_id: legacyId.slice(0, 24),
           },
           update: {
             ...postgresLoo,

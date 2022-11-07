@@ -1,15 +1,19 @@
 import { areas, toilets } from '@prisma/client';
-import { Loo, ReportInput } from '../api-client/graphql';
+import { Loo, PointInput, ReportInput } from '../api-client/graphql';
 import { async as hasha } from 'hasha';
 
 // Generate a legacy ID for the loo based on the logic used when writing to mongodb.
-export const suggestLegacyLooId = async (nickname: string, updatedAt: Date) => {
+export const suggestLegacyLooId = async (
+  nickname: string,
+  location: PointInput,
+  updatedAt: Date
+) => {
   const input = JSON.stringify({
     coords: location,
     created: updatedAt,
     by: nickname,
   });
-  return hasha(input, { algorithm: 'md5', encoding: 'hex' }).slice(0, 24);
+  return hasha(input, { algorithm: 'md5', encoding: 'hex' });
 };
 
 export const postgresLooToGraphQL = (

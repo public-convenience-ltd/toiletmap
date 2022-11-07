@@ -10,6 +10,13 @@ const moduleExports = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  experimental: {
+    transpilePackages: [
+      '@react-leaflet/core',
+      'react-leaflet',
+      'leaflet.markercluster',
+    ],
+  },
   compiler: {
     ...(process.env.VERCEL_ENV === 'production'
       ? {
@@ -57,16 +64,9 @@ const moduleExports = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const withTM = require('next-transpile-modules')([
-  '@react-leaflet/core',
-  'react-leaflet',
-  'leaflet.markercluster',
-]);
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const withNextAnalyser = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
 // eslint-disable-next-line functional/immutable-data
-module.exports = withTM(withNextAnalyser(moduleExports));
+module.exports = withNextAnalyser(moduleExports);
