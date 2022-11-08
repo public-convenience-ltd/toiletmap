@@ -2,7 +2,6 @@ import jwt, { VerifyOptions } from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { getSession } from '@auth0/nextjs-auth0';
 import Cors from 'cors';
-import redactedDirective from '../../api/directives/redactedDirective';
 import authDirective from '../../api/directives/authDirective';
 import schema from '../../api-client/schema';
 import { createServer } from '@graphql-yoga/node';
@@ -55,7 +54,7 @@ const options: VerifyOptions = {
 };
 
 // Add GraphQL API
-const finalSchema = schema(authDirective, redactedDirective);
+const finalSchema = schema(authDirective);
 
 export const server = createServer({
   endpoint: '/api',

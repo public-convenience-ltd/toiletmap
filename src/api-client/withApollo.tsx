@@ -8,7 +8,6 @@ import {
   createHttpLink,
 } from '@apollo/client';
 
-import redactedDirective from '../api/directives/redactedDirective';
 import authDirective from '../api/directives/authDirective';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
@@ -23,7 +22,7 @@ function createApolloClient() {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { context } = require('../api/context');
     terminatingLink = new SchemaLink({
-      schema: schema(authDirective, redactedDirective),
+      schema: schema(authDirective),
       context,
     });
   } else {
