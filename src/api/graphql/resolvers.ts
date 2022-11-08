@@ -1,5 +1,5 @@
-import { stringifyAndCompressLoos } from '../lib/loo';
-import { Resolvers } from '../@types/resolvers-types';
+import { stringifyAndCompressLoos } from '../../lib/loo';
+import { Resolvers } from '../../@types/resolvers-types';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
 
@@ -11,7 +11,7 @@ import {
   getLoosByProximity,
   getLoosWithinGeohash,
   setLooLocation,
-} from './queries';
+} from '../prisma/queries';
 
 import { Context } from './context';
 import {

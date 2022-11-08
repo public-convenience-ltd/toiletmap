@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { UserProfile } from '@auth0/nextjs-auth0';
-import prisma from './prisma';
+import prisma from '../prisma/prisma';
 
 export interface Context {
   prisma: PrismaClient;

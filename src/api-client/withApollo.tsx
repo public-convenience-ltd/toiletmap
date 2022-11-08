@@ -20,7 +20,7 @@ function createApolloClient() {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { default: schema } = require('./schema');
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { context } = require('../api/context');
+    const { context } = require('../api/graphql/context');
     terminatingLink = new SchemaLink({
       schema: schema(authDirective),
       context,

@@ -1,5 +1,5 @@
 import { areas, toilets } from '@prisma/client';
-import { Loo, PointInput } from '../api-client/graphql';
+import { Loo, PointInput } from '../../api-client/graphql';
 import { async as hasha } from 'hasha';
 
 // Generate a legacy ID for the loo based on the logic used when writing to mongodb.
