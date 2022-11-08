@@ -1,5 +1,5 @@
 import { areas, toilets } from '@prisma/client';
-import { Loo, PointInput, ReportInput } from '../api-client/graphql';
+import { Loo, PointInput } from '../api-client/graphql';
 import { async as hasha } from 'hasha';
 
 // Generate a legacy ID for the loo based on the logic used when writing to mongodb.
@@ -49,7 +49,7 @@ export const postgresLooToGraphQL = (
   updatedAt: loo.updated_at,
 });
 
-export const reportToPostgresLoo = (report: ReportInput): Partial<toilets> => {
+export const reportToPostgresLoo = (report: Loo): Partial<toilets> => {
   const mappedData = {
     accessible: report.accessible,
     active: true,
