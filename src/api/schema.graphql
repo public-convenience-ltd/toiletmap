@@ -72,7 +72,7 @@ type Report {
   id: ID!
   "An identifier for the user or process which contributed the report"
   contributor: String!
-    @redact(requires: VIEW_CONTRIBUTOR_INFO, replace: "Anonymous")
+  # @redact(requires: VIEW_CONTRIBUTOR_INFO, replace: "Anonymous")
   "When the report was added to the system"
   createdAt: DateTime!
   verifiedAt: DateTime
@@ -108,7 +108,8 @@ type Report {
 The name of a contributor. This requires a certain level of permissions to access.
 """
 type AuthedContributor {
-  name: String! @redact(requires: VIEW_CONTRIBUTOR_INFO, replace: "Anonymous")
+  # name: String! @redact(requires: VIEW_CONTRIBUTOR_INFO, replace: "Anonymous")
+  name: String!
 }
 type Query {
   "Retrieve a Loo by ID"
