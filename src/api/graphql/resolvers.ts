@@ -60,7 +60,7 @@ const resolvers: Resolvers<Context> = {
       // Convert the submitted report to a format that can be saved to the database.
       const postgresLoo = reportToPostgresLoo(args.report);
 
-      const nickname = user[process.env.AUTH0_PROFILE_KEY].nickname; // Todo: type this.
+      const nickname = user[process.env.AUTH0_PROFILE_KEY].nickname;
       const legacyId = await suggestLegacyLooId(
         nickname,
         location,
@@ -78,9 +78,15 @@ const resolvers: Resolvers<Context> = {
             ...postgresLoo,
             created_at: new Date(),
             legacy_id: legacyId.slice(0, 24),
+            contributors: {
+              set: [nickname],
+            },
           },
           update: {
             ...postgresLoo,
+            contributors: {
+              push: nickname,
+            },
           },
         });
 
