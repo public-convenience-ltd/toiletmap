@@ -125,6 +125,8 @@ type Query {
   "Retrieve loos that sit within a given geohash"
   loosByGeohash(geohash: String!, active: Boolean = true): [String!]!
     @cacheControl(maxAge: 21600, scope: PUBLIC)
+  legacyReportsForLoo(id: ID!): [Report!]!
+  reportsForLoo(id: ID!): [Report!]!
 }
 
 "Include or Exclude Loos from search results based on whether they satisfy a filter condition"

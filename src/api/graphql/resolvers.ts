@@ -50,8 +50,47 @@ const resolvers: Resolvers<Context> = {
           .map(postgresLooToGraphQL)
           .flat()
       ),
-
     areas: async (_parent, args, { prisma }) => getAreas(prisma),
+    legacyReportsForLoo: async (_parent, args, { prisma }) => {
+      const isLegacyId = isNaN(args.id as unknown as number);
+      if (isLegacyId) {
+        const reports = (await getLooById(prisma, args.id)).reports;
+        return reports;
+      }
+
+      const reports = (await getLooById(prisma, parseInt(args.id))).reports;
+      return Object.values(reports);
+    },
+    reportsForLoo: async (_parent, args, { prisma }) => {
+      const isLegacyId = isNaN(args.id as unknown as number);
+      if (isLegacyId) {
+        const reports = await prisma.record_version.findMany({
+          where: {
+            record: {
+              path: ['legacy_id'],
+              equals: args.id,
+            },
+          },
+          select: {
+            record: true,
+          },
+        });
+        return reports.map((r) => r.record);
+      }
+
+      const reports = await prisma.record_version.findMany({
+        where: {
+          record: {
+            path: ['id'],
+            equals: parseInt(args.id),
+          },
+        },
+        select: {
+          record: true,
+        },
+      });
+      return reports.map((r) => postgresLooToGraphQL(r.record));
+    },
   },
   Mutation: {
     submitReport: async (_parent, args, { prisma, user }) => {

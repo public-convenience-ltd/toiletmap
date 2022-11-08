@@ -139,6 +139,7 @@ export type Query = {
   __typename?: 'Query';
   /** Retrieve a list of areas in existence, name and type only */
   areas: Array<AdminGeo>;
+  legacyReportsForLoo: Array<Report>;
   /** Retrieve a Loo by ID */
   loo?: Maybe<Loo>;
   looNamesByIds: Array<Loo>;
@@ -146,6 +147,12 @@ export type Query = {
   loosByGeohash: Array<Scalars['String']>;
   /** Retrieve Loos by proximity to a Point */
   loosByProximity: Array<Loo>;
+  reportsForLoo: Array<Report>;
+};
+
+
+export type QueryLegacyReportsForLooArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -167,6 +174,11 @@ export type QueryLoosByGeohashArgs = {
 
 export type QueryLoosByProximityArgs = {
   from: ProximityInput;
+};
+
+
+export type QueryReportsForLooArgs = {
+  id: Scalars['ID'];
 };
 
 export type RemovalReportInput = {
@@ -440,10 +452,12 @@ export type PointResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   areas?: Resolver<Array<ResolversTypes['AdminGeo']>, ParentType, ContextType>;
+  legacyReportsForLoo?: Resolver<Array<ResolversTypes['Report']>, ParentType, ContextType, RequireFields<QueryLegacyReportsForLooArgs, 'id'>>;
   loo?: Resolver<Maybe<ResolversTypes['Loo']>, ParentType, ContextType, Partial<QueryLooArgs>>;
   looNamesByIds?: Resolver<Array<ResolversTypes['Loo']>, ParentType, ContextType, Partial<QueryLooNamesByIdsArgs>>;
   loosByGeohash?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType, RequireFields<QueryLoosByGeohashArgs, 'active' | 'geohash'>>;
   loosByProximity?: Resolver<Array<ResolversTypes['Loo']>, ParentType, ContextType, RequireFields<QueryLoosByProximityArgs, 'from'>>;
+  reportsForLoo?: Resolver<Array<ResolversTypes['Report']>, ParentType, ContextType, RequireFields<QueryReportsForLooArgs, 'id'>>;
 };
 
 export type ReportResolvers<ContextType = any, ParentType extends ResolversParentTypes['Report'] = ResolversParentTypes['Report']> = {
