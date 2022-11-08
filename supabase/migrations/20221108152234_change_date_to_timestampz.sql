@@ -3,35 +3,6 @@
 -- and may require manual changes to the script to ensure changes are applied in the correct order.
 -- Please report an issue for any failure with the reproduction steps.
 
-ALTER TABLE IF EXISTS public.toilets
-    RENAME id TO created_at;
-
-ALTER TABLE public.toilets
-    ALTER COLUMN created_at TYPE timestamp with time zone ;
-ALTER TABLE IF EXISTS public.toilets
-    ALTER COLUMN created_at DROP NOT NULL;
-
-ALTER TABLE IF EXISTS public.toilets
-    ALTER COLUMN created_at DROP IDENTITY;
-
-ALTER TABLE IF EXISTS public.toilets
-    RENAME id TO updated_at;
-
-ALTER TABLE public.toilets
-    ALTER COLUMN updated_at TYPE timestamp with time zone ;
-ALTER TABLE IF EXISTS public.toilets
-    ALTER COLUMN updated_at DROP NOT NULL;
-
-ALTER TABLE IF EXISTS public.toilets
-    ALTER COLUMN updated_at DROP IDENTITY;
-
-ALTER TABLE IF EXISTS public.toilets
-    RENAME id TO verified_at;
-
-ALTER TABLE public.toilets
-    ALTER COLUMN verified_at TYPE timestamp with time zone ;
-ALTER TABLE IF EXISTS public.toilets
-    ALTER COLUMN verified_at DROP NOT NULL;
-
-ALTER TABLE IF EXISTS public.toilets
-    ALTER COLUMN verified_at DROP IDENTITY;
+ALTER TABLE public.toilets ALTER COLUMN updated_at TYPE timestamptz;
+ALTER TABLE public.toilets ALTER COLUMN created_at TYPE timestamptz;
+ALTER TABLE public.toilets ALTER COLUMN verified_at TYPE timestamptz;
