@@ -439,7 +439,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
             >
               {titleFragment}
               {data?.active === false && (
-                <p>Removal reason: ${data?.removalReason}</p>
+                <p>Removal reason: {data?.removalReason}</p>
                 // <Tooltip
                 //   label={`Removal reason: ${data?.removalReason}`}
                 //   aria-label={`Removal reason: ${data?.removalReason}`}
@@ -592,7 +592,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
           {titleFragment} <Spacer mb={2} />
           {data?.active === false && (
-            <p>Removal reason: ${data?.removalReason}</p>
+            <p>Removal reason: {data?.removalReason}</p>
             // <Tooltip
             //   label={`Removal reason: ${data?.removalReason}`}
             //   aria-label={`Removal reason: ${data?.removalReason}`}
