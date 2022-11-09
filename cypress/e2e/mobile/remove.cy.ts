@@ -1,4 +1,4 @@
-describe('Remove page tests', () => {
+describe.skip('Remove page tests', () => {
   context('Mobile', () => {
     beforeEach(() => {
       cy.viewport('iphone-8');
