@@ -11,6 +11,7 @@ specifiers:
   '@auth0/nextjs-auth0': ^1.9.2
   '@babel/core': ^7.20.2
   '@chakra-ui/react': ^2.3.7
+  '@chakra-ui/transition': ^2.0.11
   '@emotion/babel-preset-css-prop': ^11.10.0
   '@emotion/is-prop-valid': ^1.2.0
   '@emotion/react': ^11.10.5
@@ -138,6 +139,7 @@ dependencies:
   '@artsy/fresnel': 6.1.0_react@18.2.0
   '@auth0/nextjs-auth0': 1.9.2_next@13.0.2
   '@chakra-ui/react': 2.3.7_zvbidpli3rluswmacmzawnkbnu
+  '@chakra-ui/transition': 2.0.11_7jcwtc2tkkmhe7ivducn2kddpm
   '@emotion/is-prop-valid': 1.2.0
   '@emotion/react': 11.10.5_cuziicjcvwawlf5iuhzacuhqcy
   '@emotion/styled': 11.10.5_hmjty4frusbltjhl3xd7udcm2y
