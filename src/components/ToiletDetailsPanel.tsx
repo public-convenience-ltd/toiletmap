@@ -18,7 +18,6 @@ import {
   faQuestion,
   faChevronDown,
   faSpinner,
-  faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 import lightFormat from 'date-fns/lightFormat';
@@ -28,8 +27,6 @@ import add from 'date-fns/add';
 import Link from 'next/link';
 
 import { Loo } from '../api-client/graphql';
-
-import { Badge, Tooltip } from '@chakra-ui/react';
 
 import Box from './Box';
 import Button from './Button';
@@ -198,7 +195,8 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         data.location.lat,
         data.location.lng,
       ]}`}
-      legacyBehavior>
+      legacyBehavior
+    >
       <Button
         variant="primary"
         as="a"
@@ -441,14 +439,15 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
             >
               {titleFragment}
               {data?.active === false && (
-                <Tooltip
-                  label={`Removal reason: ${data?.removalReason}`}
-                  aria-label={`Removal reason: ${data?.removalReason}`}
-                >
-                  <Badge colorScheme="red" fontSize={'sm'}>
-                    Removed <Icon icon={faInfoCircle} />
-                  </Badge>
-                </Tooltip>
+                <p>Removal reason: ${data?.removalReason}</p>
+                // <Tooltip
+                //   label={`Removal reason: ${data?.removalReason}`}
+                //   aria-label={`Removal reason: ${data?.removalReason}`}
+                // >
+                //   <Badge colorScheme="red" fontSize={'sm'}>
+                //     Removed <Icon icon={faInfoCircle} />
+                //   </Badge>
+                // </Tooltip>
               )}
               <Spacer mb={3} />
               {getDirectionsFragment}
@@ -593,14 +592,15 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
           {titleFragment} <Spacer mb={2} />
           {data?.active === false && (
-            <Tooltip
-              label={`Removal reason: ${data?.removalReason}`}
-              aria-label={`Removal reason: ${data?.removalReason}`}
-            >
-              <Badge colorScheme="red" fontSize={'sm'}>
-                Removed <Icon icon={faInfoCircle} />
-              </Badge>
-            </Tooltip>
+            <p>Removal reason: ${data?.removalReason}</p>
+            // <Tooltip
+            //   label={`Removal reason: ${data?.removalReason}`}
+            //   aria-label={`Removal reason: ${data?.removalReason}`}
+            // >
+            //   <Badge colorScheme="red" fontSize={'sm'}>
+            //     Removed <Icon icon={faInfoCircle} />
+            //   </Badge>
+            // </Tooltip>
           )}
         </Box>
 
