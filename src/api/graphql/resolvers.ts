@@ -84,12 +84,18 @@ const resolvers: Resolvers<Context> = {
             path: ['id'],
             equals: parseInt(args.id),
           },
+          AND: {},
         },
         select: {
           record: true,
         },
       });
-      return reports.map((r) => postgresLooToGraphQL(r.record));
+
+      // Filter out records with a `type` property. These are not loo records, they are areas.
+      // TODO: find a safer way to do this.
+      return reports
+        .filter((r) => r.record?.type == undefined)
+        .map((r) => postgresLooToGraphQL(r.record));
     },
   },
   Mutation: {
