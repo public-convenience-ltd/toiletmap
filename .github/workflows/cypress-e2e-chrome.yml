@@ -18,18 +18,6 @@ jobs:
       matrix:
         # run 4 copies of the current job in parallel
         containers: [1, 2, 3, 4, 5]
-    services:
-      redis:
-        image: redis
-        # Set health checks to wait until redis has started
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          # Maps Redis port 6379 on service container to the host
-          - 6379:6379
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -82,7 +70,7 @@ jobs:
           CYPRESS_auth0ClientId: ${{ secrets.CYPRESS_AUTH0CLIENTID }}
           CYPRESS_auth0CookieSecret: ${{ secrets.CYPRESS_AUTH0COOKIESECRET }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          ENABLE_REDIS_CACHE: true
+          ENABLE_REDIS_CACHE: false
           REDIS_URI: 'localhost'
           REDIS_PASSWORD: ''
           REDIS_PORT: 6379
