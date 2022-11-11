@@ -75,7 +75,9 @@ const resolvers: Resolvers<Context> = {
             record: true,
           },
         });
-        return reports.map((r) => r.record);
+        return reports
+          .filter((r) => r.record?.type == undefined)
+          .map((r) => postgresLooToGraphQL(r.record));
       }
 
       const reports = await prisma.record_version.findMany({
