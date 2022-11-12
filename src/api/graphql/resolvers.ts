@@ -4,7 +4,6 @@ import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
 
 import {
-  decideAndSetLooArea,
   getAreas,
   getLooById,
   getLooNamesByIds,
@@ -137,10 +136,9 @@ const resolvers: Resolvers<Context> = {
           },
         });
 
+        // We update the loos' location and then quickly follow up with query to set the area.
+        // The area is set as a database trigger defined in the `20221112164242_geography-trigger.sql` migration.
         await setLooLocation(prisma, upsertLoo.id, location.lat, location.lng);
-
-        // Update the toilet area relation.
-        const result = await decideAndSetLooArea(prisma, upsertLoo.id);
 
         return {
           code: '200',

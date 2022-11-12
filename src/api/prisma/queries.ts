@@ -36,22 +36,6 @@ export const getLooNamesByIds = async (
   });
 };
 
-export const decideAndSetLooArea = async (prisma: PrismaClient, id: number) => {
-  // Find the area that the loo belongs to.
-  const areaID = await prisma.$queryRaw`
-    SELECT a.id from
-    toilets inner join areas a on ST_WITHIN(toilets.geography::geometry, a.geometry::geometry)
-    WHERE toilets.id = ${id}
-  `;
-
-  return prisma.toilets.update({
-    where: { id: id },
-    data: {
-      area_id: areaID[0]?.id,
-    },
-  });
-};
-
 export const setLooLocation = async (
   prisma: PrismaClient,
   id: number,

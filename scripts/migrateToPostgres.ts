@@ -134,19 +134,6 @@ import { SingleBar } from 'cli-progress';
           WHERE legacy_id = ${loo.id}
       `;
 
-      const areaID = await psqlPrisma.$queryRaw`
-        SELECT a.id from
-        toilets inner join areas a on ST_WITHIN(toilets.geography::geometry, a.geometry::geometry)
-        WHERE toilets.legacy_id = ${loo.id}
-      `;
-
-      await psqlPrisma.toilets.update({
-        where: { legacy_id: loo.id },
-        data: {
-          area_id: areaID[0]?.id,
-        },
-      });
-
       bar.update(index++);
     }
 
@@ -158,6 +145,5 @@ import { SingleBar } from 'cli-progress';
   };
 
   await upsertAreas();
-
   await upsertLoos();
 })();
