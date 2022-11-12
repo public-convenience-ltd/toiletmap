@@ -1,4 +1,4 @@
-import { PrismaClient, toilets } from '@prisma/client';
+import { Prisma, PrismaClient, toilets } from '@prisma/client';
 
 export const getLooById = async (
   prisma: PrismaClient,
@@ -79,6 +79,50 @@ export const getAreas = async (prisma: PrismaClient) =>
       type: true,
     },
   });
+
+export const upsertArea = async (
+  prisma: PrismaClient,
+  area: {
+    legacyId: string;
+    geometry: {
+      coordinates: Prisma.JsonValue;
+      type: string;
+    };
+    name: string;
+    datasetId: number;
+    priority: number;
+    type: string;
+    version: number;
+  }
+) => {
+  const areaResult = await prisma.areas.upsert({
+    where: { legacy_id: area.legacyId },
+    create: {
+      legacy_id: area.legacyId,
+      name: area.name,
+      dataset_id: area.datasetId,
+      priority: area.priority,
+      type: area.type,
+      version: area.version,
+    },
+    update: {
+      legacy_id: area.legacyId,
+      name: area.name,
+      dataset_id: area.datasetId,
+      priority: area.priority,
+      type: area.type,
+      version: area.version,
+    },
+  });
+
+  await prisma.$executeRaw`
+    UPDATE areas SET
+      geometry = ST_GeomFromGeoJSON(${JSON.stringify(area.geometry)})
+    WHERE legacy_id = ${area.legacyId}
+  `;
+
+  return areaResult;
+};
 
 export const getLoosByProximity = async (
   prisma: PrismaClient,

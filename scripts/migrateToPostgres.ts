@@ -1,6 +1,7 @@
 import { PrismaClient, toilets } from '@prisma/client';
 import { PrismaClient as PrismaClientMongo } from '../generated/schemaMongo';
 import { SingleBar } from 'cli-progress';
+import { upsertArea } from '../src/api/prisma/queries';
 
 (async () => {
   console.log('Connecting to MongoDB...');
@@ -26,32 +27,7 @@ import { SingleBar } from 'cli-progress';
     let index = 0;
 
     for (const area of allMongoAreas) {
-      await psqlPrisma.areas.upsert({
-        where: { legacy_id: area.id },
-        create: {
-          legacy_id: area.id,
-          name: area.name,
-          dataset_id: area.datasetId,
-          priority: area.priority,
-          type: area.type,
-          version: area.version,
-        },
-        update: {
-          legacy_id: area.id,
-          name: area.name,
-          dataset_id: area.datasetId,
-          priority: area.priority,
-          type: area.type,
-          version: area.version,
-        },
-      });
-
-      await psqlPrisma.$executeRaw`
-        UPDATE areas SET
-          geometry = ST_GeomFromGeoJSON(${JSON.stringify(area.geometry)})
-        WHERE legacy_id = ${area.id}
-    `;
-
+      await upsertArea(psqlPrisma, { ...area, legacyId: area.id });
       bar.update(index++);
     }
 

@@ -34,7 +34,6 @@ specifiers:
   '@graphql-tools/utils': ^9.1.0
   '@graphql-yoga/node': ^2.13.13
   '@hookform/error-message': ^2.0.1
-  '@mapbox/geojson-area': ^0.2.2
   '@mapbox/geojson-rewind': ^0.5.2
   '@next/bundle-analyzer': ^13.0.3
   '@popperjs/core': ^2.11.6
@@ -57,6 +56,8 @@ specifiers:
   '@types/leaflet': ^1.9.0
   '@types/leaflet.markercluster': ^1.5.1
   '@types/lodash': ^4.14.188
+  '@types/mapbox': ^1.6.42
+  '@types/mapbox__geojson-area': ^0.2.1
   '@types/ngeohash': ^0.6.4
   '@types/node': ^18.11.9
   '@types/react': ^18.0.25
@@ -208,7 +209,6 @@ devDependencies:
   '@graphql-codegen/typescript-operations': 2.5.6_graphql@16.6.0
   '@graphql-codegen/typescript-react-apollo': 3.3.6_graphql@16.6.0
   '@graphql-eslint/eslint-plugin': 3.13.1_kga5uvzcguewallfw6awyvcvpe
-  '@mapbox/geojson-area': 0.2.2
   '@mapbox/geojson-rewind': 0.5.2
   '@next/bundle-analyzer': 13.0.3
   '@storybook/addon-actions': 6.5.13_biqbaboplfbrettd7655fr4n2y
@@ -225,6 +225,8 @@ devDependencies:
   '@types/leaflet': 1.9.0
   '@types/leaflet.markercluster': 1.5.1
   '@types/lodash': 4.14.188
+  '@types/mapbox': 1.6.42
+  '@types/mapbox__geojson-area': 0.2.1
   '@types/ngeohash': 0.6.4
   '@types/node': 18.11.9
   '@types/react': 18.0.25
@@ -4167,12 +4169,6 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
-  /@mapbox/geojson-area/0.2.2:
-    resolution: {integrity: sha512-bBqqFn1kIbLBfn7Yq1PzzwVkPYQr9lVUeT8Dhd0NL5n76PBuXzOcuLV7GOSbEB1ia8qWxH4COCvFpziEu/yReA==}
-    dependencies:
-      wgs84: 0.0.0
-    dev: true
-
   /@mapbox/geojson-rewind/0.5.2:
     resolution: {integrity: sha512-tJaT+RbYGJYStt7wI3cq4Nl4SXxG8W7JDG5DMJu97V25RnbNg3QtQtf+KD+VLjNpWKYsRvXDNmNrBgEETr1ifA==}
     hasBin: true
@@ -6605,6 +6601,12 @@ packages:
       '@types/leaflet': 1.9.0
     dev: true
 
+  /@types/leaflet/0.7.35:
+    resolution: {integrity: sha512-BK+pa9a9dYC1qJyYQulqkRI9N+ZnV4ycAmNSOUmom7C6xaAdmrhOoiCiDMhSQklyjPpasy3KWRTkTRTJuDbBSw==}
+    dependencies:
+      '@types/geojson': 7946.0.10
+    dev: true
+
   /@types/leaflet/1.9.0:
     resolution: {integrity: sha512-7LeOSj7EloC5UcyOMo+1kc3S1UT3MjJxwqsMT1d2PTyvQz53w0Y0oSSk9nwZnOZubCmBvpSNGceucxiq+ZPEUw==}
     dependencies:
@@ -6618,6 +6620,18 @@ packages:
   /@types/long/4.0.2:
     resolution: {integrity: sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==}
     dev: false
+
+  /@types/mapbox/1.6.42:
+    resolution: {integrity: sha512-mQlrYBOwqz/kGG8P5KOTXLRMlZFLNFDdxzNaEukig3Uh9I2ukk6LXg5yaCUS8bk3/3ie6o3h/ZKAaXuwTljpdw==}
+    dependencies:
+      '@types/leaflet': 0.7.35
+    dev: true
+
+  /@types/mapbox__geojson-area/0.2.1:
+    resolution: {integrity: sha512-KIVIE69HLIY+g6+N6FsTkQ8nTVJfzozaCJeualc106aZOe8DqswxFeQI4gKewHYIFhTN1NHWX2Iv3mXaKjm41Q==}
+    dependencies:
+      '@types/geojson': 7946.0.10
+    dev: true
 
   /@types/mdast/3.0.10:
     resolution: {integrity: sha512-W864tg/Osz1+9f4lrGTZpCSO5/z4608eUp19tbozkq2HJK6i3z1kT0H9tlADXuYIb1YYOBByU4Jsqkk75q48qA==}
@@ -18946,10 +18960,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: false
-
-  /wgs84/0.0.0:
-    resolution: {integrity: sha512-ANHlY4Rb5kHw40D0NJ6moaVfOCMrp9Gpd1R/AIQYg2ko4/jzcJ+TVXYYF6kXJqQwITvEZP4yEthjM7U6rYlljQ==}
-    dev: true
 
   /whatwg-fetch/3.6.2:
     resolution: {integrity: sha512-bJlen0FcuU/0EMLrdbJ7zOnW6ITZLrZMIarMUVmdKtsGvZna8vxKYaexICWPfZ8qwf9fzNq+UEIZrnSaApt6RA==}
