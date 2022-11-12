@@ -62,10 +62,7 @@ const withTM = require('next-transpile-modules')([
   'react-leaflet',
   'leaflet',
   'leaflet.markercluster',
-  '@popperjs/core',
-  '@design-systems/utils',
   'downshift',
-  'polished',
 ]);
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

@@ -31,7 +31,6 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'graphql-tag/loader',
     });
-
     return {
       ...config,
       resolve: {
@@ -45,5 +44,8 @@ module.exports = {
         },
       },
     };
+  },
+  docsPage: {
+    docs: 'automatic',
   },
 };

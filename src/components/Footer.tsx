@@ -49,7 +49,12 @@ const Footer = ({ children = null }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image width="130" src={poweredByVercel} alt="Powered by Vercel" />
+            <Image
+              width="130"
+              src={poweredByVercel}
+              alt="Powered by Vercel"
+              unoptimized={!!process.env.STORYBOOK}
+            />
           </Box>
         </Link>
       </Box>
