@@ -128,17 +128,17 @@ async function updateDataset(dataset, dryrun) {
     );
   } else {
     log('Searching for non-stale area data in database...');
-    const nonStale = await new Promise((resolve) => {
-      Area.findOne(
-        {
-          version: dataset.version,
-          datasetId: dataset.id,
-        },
-        (err, res) => {
-          return resolve(res);
-        }
-      );
-    });
+    // const nonStale = await new Promise((resolve) => {
+    //   Area.findOne(
+    //     {
+    //       version: dataset.version,
+    //       datasetId: dataset.id,
+    //     },
+    //     (err, res) => {
+    //       return resolve(res);
+    //     }
+    //   );
+    // });
 
     if (nonStale != null) {
       log(

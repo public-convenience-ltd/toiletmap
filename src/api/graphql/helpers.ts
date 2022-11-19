@@ -1,19 +1,49 @@
-import { areas, toilets } from '@prisma/client';
+import { areas, toilets, Prisma } from '@prisma/client';
 import { Loo, PointInput } from '../../api-client/graphql';
 import { async as hasha } from 'hasha';
+
+export const isLegacyId = (id: string): boolean =>
+  isNaN(id as unknown as number);
+
+export const selectLegacyOrModernLoo = (
+  id: string | number
+): Prisma.toiletsWhereUniqueInput => {
+  if (typeof id === 'string') {
+    const isModernId = !isLegacyId(id);
+
+    // The id is a valid number in string form, we can assume it's modern.
+    if (isModernId) {
+      return {
+        id: parseInt(id, 10),
+      };
+    }
+
+    // The id can't be casted to a number, we assume it's legacy.
+    return {
+      id: -1,
+      legacy_id: id,
+    };
+  }
+
+  // The id is a number, it's modern.
+  return {
+    id,
+  };
+};
 
 // Generate a legacy ID for the loo based on the logic used when writing to mongodb.
 export const suggestLegacyLooId = async (
   nickname: string,
   location: PointInput,
   updatedAt: Date
-) => {
+): Promise<string> => {
   const input = JSON.stringify({
     coords: location,
     created: updatedAt,
     by: nickname,
   });
-  return hasha(input, { algorithm: 'md5', encoding: 'hex' });
+  const hashResult = await hasha(input, { algorithm: 'md5', encoding: 'hex' });
+  return hashResult.slice(0, 24);
 };
 
 export const postgresLooToGraphQL = (

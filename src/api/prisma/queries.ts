@@ -1,21 +1,18 @@
 import { Prisma, PrismaClient, toilets } from '@prisma/client';
+import { RemovalReportInput, ReportInput } from '../../api-client/graphql';
+import {
+  reportToPostgresLoo,
+  selectLegacyOrModernLoo,
+  suggestLegacyLooId,
+} from '../graphql/helpers';
 
 export const getLooById = async (
   prisma: PrismaClient,
   id: string | number
 ): Promise<toilets> => {
-  const isLegacyId = typeof id === 'string';
-
-  if (isLegacyId) {
-    return prisma.toilets.findUnique({
-      include: { areas: { select: { name: true, type: true } } },
-      where: { legacy_id: id },
-    });
-  }
-
   return prisma.toilets.findUnique({
+    where: selectLegacyOrModernLoo(id),
     include: { areas: { select: { name: true, type: true } } },
-    where: { id },
   });
 };
 
@@ -27,6 +24,11 @@ export const getLooNamesByIds = async (
     where: {
       id: {
         in: idList.map((id) => parseInt(id)),
+      },
+      OR: {
+        legacy_id: {
+          in: idList,
+        },
       },
     },
     select: {
@@ -79,6 +81,78 @@ export const getAreas = async (prisma: PrismaClient) =>
       type: true,
     },
   });
+
+export const upsertLoo = async (
+  prisma: PrismaClient,
+  report: ReportInput,
+  nickname: string
+) => {
+  const { edit: id, location } = report;
+
+  // Convert the submitted report to a format that can be saved to the database.
+  const postgresLoo = reportToPostgresLoo(report);
+
+  const legacyId = await suggestLegacyLooId(
+    nickname,
+    location,
+    postgresLoo.updated_at
+  );
+
+  try {
+    const upsertLoo = await prisma.toilets.upsert({
+      where: selectLegacyOrModernLoo(id),
+      create: {
+        ...postgresLoo,
+        created_at: new Date(),
+        legacy_id: legacyId,
+        contributors: {
+          set: [nickname],
+        },
+      },
+      update: {
+        ...postgresLoo,
+        contributors: {
+          push: nickname,
+        },
+      },
+    });
+
+    // We update the loos' location. This is a separate query because Prisma lacks PostGIS support.
+    // Work is underway: https://github.com/prisma/prisma/issues/1798#issuecomment-1319784123
+    // The area is set as a database trigger defined in the `20221112164242_geography-trigger.sql` migration.
+    await setLooLocation(prisma, upsertLoo.id, location.lat, location.lng);
+
+    return await getLooById(prisma, upsertLoo.id);
+  } catch (e) {}
+};
+
+export const removeLoo = async (
+  prisma: PrismaClient,
+  report: RemovalReportInput,
+  nickname: string
+) => {
+  const { edit: id, reason } = report;
+  return prisma.toilets.update({
+    where: selectLegacyOrModernLoo(id),
+    data: {
+      active: false,
+      removal_reason: reason,
+      updated_at: new Date(),
+      contributors: {
+        push: nickname,
+      },
+    },
+  });
+};
+
+export const verifyLoo = async (prisma: PrismaClient, id: string | number) => {
+  return prisma.toilets.update({
+    where: selectLegacyOrModernLoo(id),
+    data: {
+      verified_at: new Date(),
+    },
+  });
+};
 
 export const upsertArea = async (
   prisma: PrismaClient,
