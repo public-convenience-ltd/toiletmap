@@ -27,7 +27,7 @@ specifiers:
   '@graphql-codegen/typescript': ^2.8.2
   '@graphql-codegen/typescript-operations': ^2.5.7
   '@graphql-codegen/typescript-react-apollo': ^3.3.6
-  '@graphql-codegen/typescript-resolvers': ^2.7.6
+  '@graphql-codegen/typescript-resolvers': ^2.7.7
   '@graphql-eslint/eslint-plugin': ^3.13.1
   '@graphql-tools/schema': ^9.0.10
   '@graphql-tools/utils': ^9.1.1
@@ -5639,6 +5639,11 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
     dependencies:
       '@storybook/client-logger': 6.5.13
       '@storybook/csf': 0.0.2--canary.4566f4d.1
