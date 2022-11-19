@@ -15,8 +15,6 @@ CREATE OR REPLACE FUNCTION public.determine_area_loo_is_within_on_upsert()
     END;
     $$
     LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE SECURITY DEFINER PARALLEL UNSAFE
 ;
 
 CREATE TRIGGER loo_area_trigger_update

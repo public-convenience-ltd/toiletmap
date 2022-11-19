@@ -85,7 +85,9 @@ export const getAreas = async (prisma: PrismaClient) =>
 export const upsertLoo = async (
   prisma: PrismaClient,
   report: ReportInput,
-  nickname: string
+  nickname?: string,
+  reports?: { [key: string]: string },
+  contributors?: string[]
 ) => {
   const { edit: id, location } = report;
 
@@ -101,6 +103,14 @@ export const upsertLoo = async (
   const whereQuery =
     typeof id === 'undefined' ? { id: -1 } : selectLegacyOrModernLoo(id);
 
+  const contributorList = [];
+  if (contributors) {
+    contributorList.push(...contributors);
+  }
+  if (nickname) {
+    contributorList.push(nickname);
+  }
+
   try {
     const upsertLoo = await prisma.toilets.upsert({
       where: whereQuery,
@@ -109,13 +119,14 @@ export const upsertLoo = async (
         created_at: new Date(),
         legacy_id: legacyId,
         contributors: {
-          set: [nickname],
+          set: contributorList,
         },
+        reports,
       },
       update: {
         ...postgresLoo,
         contributors: {
-          push: nickname,
+          set: contributorList,
         },
       },
     });

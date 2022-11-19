@@ -82,7 +82,7 @@ export const postgresLooToGraphQL = (
 export const reportToPostgresLoo = (report: Loo): Partial<toilets> => {
   const mappedData = {
     accessible: report.accessible,
-    active: true,
+    active: report.active ?? true,
     attended: report.attended,
     automatic: report.automatic,
     baby_change: report.babyChange,
@@ -99,7 +99,9 @@ export const reportToPostgresLoo = (report: Loo): Partial<toilets> => {
     opening_times: report.openingTimes ?? undefined,
     verified_at: new Date(),
     name: report.name,
-  };
+    reports: report.reports,
+    removal_reason: report.removalReason,
+  } as Partial<toilets>;
 
   // Remove undefined values.
   Object.keys(mappedData).forEach((key) => {
