@@ -73,7 +73,6 @@
     "@react-leaflet/core": "^2.1.0",
     "@sentry/nextjs": "^7.20.0",
     "@styled-system/prop-types": "^5.1.5",
-    "apollo-server-core": "^3.11.1",
     "cors": "^2.8.5",
     "date-fns": "^2.29.3",
     "downshift": "6.1.12",

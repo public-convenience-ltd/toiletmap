@@ -103,6 +103,7 @@ const resolvers: Resolvers<Context> = {
           loo: postgresLooToGraphQL(result),
         };
       } catch (e) {
+        console.log('update err', e);
         return {
           code: '400',
           success: false,

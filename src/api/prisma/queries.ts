@@ -98,9 +98,12 @@ export const upsertLoo = async (
     postgresLoo.updated_at
   );
 
+  const whereQuery =
+    typeof id === 'undefined' ? { id: -1 } : selectLegacyOrModernLoo(id);
+
   try {
     const upsertLoo = await prisma.toilets.upsert({
-      where: selectLegacyOrModernLoo(id),
+      where: whereQuery,
       create: {
         ...postgresLoo,
         created_at: new Date(),
@@ -123,7 +126,9 @@ export const upsertLoo = async (
     await setLooLocation(prisma, upsertLoo.id, location.lat, location.lng);
 
     return await getLooById(prisma, upsertLoo.id);
-  } catch (e) {}
+  } catch (e) {
+    console.log('upsert error, uhoh ', e);
+  }
 };
 
 export const removeLoo = async (

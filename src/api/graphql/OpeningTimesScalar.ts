@@ -1,13 +1,15 @@
-import { ApolloError } from 'apollo-server-core';
-import { GraphQLScalarType } from 'graphql';
+import { ApolloError } from '@apollo/client';
+import { GraphQLError, GraphQLScalarType } from 'graphql';
 import { Kind } from 'graphql/language';
+
+const gqlOpeningTimesError = new GraphQLError('OPENING_TIMES');
 
 const astToOpeningTimes = (ast) => {
   if (ast.kind !== Kind.LIST) {
-    throw new ApolloError(
-      'Type OpeningTimes must be an array',
-      'OPENING_TIMES'
-    );
+    throw new ApolloError({
+      errorMessage: 'Type OpeningTimes must be an array',
+      graphQLErrors: [gqlOpeningTimesError],
+    });
   }
 
   const traverseValues = (values) =>
@@ -24,10 +26,10 @@ const astToOpeningTimes = (ast) => {
 
 const validateOpeningTimes = (value) => {
   if (value.length !== 7) {
-    throw new ApolloError(
-      'Type OpeningTimes must be an array of length 7',
-      'OPENING_TIMES'
-    );
+    throw new ApolloError({
+      errorMessage: 'Type OpeningTimes must be an array of length 7',
+      graphQLErrors: [gqlOpeningTimesError],
+    });
   }
 
   const elementsAreValid = value.every((item) => {
@@ -51,10 +53,11 @@ const validateOpeningTimes = (value) => {
   });
 
   if (!elementsAreValid) {
-    throw new ApolloError(
-      'Type OpeningTimes must be an array of [] or ["XX:XX", "XX:XX"] elements',
-      'OPENING_TIMES'
-    );
+    throw new ApolloError({
+      errorMessage:
+        'Type OpeningTimes must be an array of [] or ["XX:XX", "XX:XX"] elements',
+      graphQLErrors: [gqlOpeningTimesError],
+    });
   }
 
   return value;
