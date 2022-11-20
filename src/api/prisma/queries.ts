@@ -23,18 +23,23 @@ export const getLooNamesByIds = async (
 ) => {
   return prisma.toilets.findMany({
     where: {
-      id: {
-        in: idList.map((id) => parseInt(id)),
-      },
-      OR: {
-        legacy_id: {
-          in: idList,
+      OR: [
+        {
+          legacy_id: {
+            in: idList,
+          },
         },
-      },
+        {
+          id: {
+            in: idList.map((id) => parseInt(id)),
+          },
+        },
+      ],
     },
     select: {
       id: true,
       name: true,
+      legacy_id: true,
     },
   });
 };
