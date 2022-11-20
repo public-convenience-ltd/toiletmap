@@ -28,7 +28,6 @@ const resolvers: Resolvers<Context> = {
 
     looNamesByIds: async (_parent, args, { prisma }) => {
       const looNames = await getLooNamesByIds(prisma, args.idList);
-      console.log(looNames);
       return looNames.map((loo) => ({ id: loo.id.toString(), name: loo.name }));
     },
     loosByProximity: async (_parent, args, { prisma }) => {

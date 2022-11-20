@@ -289,7 +289,7 @@ describe('Home page tests', () => {
       cy.contains('vigilant toilet!! indeed photoreceptor crown!');
 
       // Check last verified
-      cy.contains('28/10/2022');
+      cy.contains('19/11/2022');
       // cy.contains(
       //   new Date(Date.now())
       //     .toLocaleString(new Intl.Locale('en-gb'))
