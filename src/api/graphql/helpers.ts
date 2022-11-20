@@ -106,7 +106,6 @@ export const postgresUpsertLooQuery = (
   data: ToiletsExcludingComputed,
   location: { lat: number; lng: number }
 ): ToiletUpsertReport => {
-  const operationTime = new Date();
   return {
     where: selectLegacyOrModernLoo(id),
     prismaCreate: {
@@ -114,7 +113,6 @@ export const postgresUpsertLooQuery = (
     },
     prismaUpdate: {
       ...data,
-      updated_at: operationTime,
     },
     extras: { location },
   };
@@ -145,7 +143,7 @@ export const postgresUpsertLooQueryFromReport = async (
     name: report.name,
     no_payment: report.noPayment,
     notes: report.notes,
-    opening_times: report.openingTimes ?? [[], [], [], [], [], [], []],
+    opening_times: report.openingTimes ?? undefined,
     payment_details: report.paymentDetails,
     urinal_only: report.urinalOnly,
     radar: report.radar,

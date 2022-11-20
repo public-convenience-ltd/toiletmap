@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient, toilets } from '@prisma/client';
+import { Prisma, PrismaClient, toilets, areas } from '@prisma/client';
 import { RemovalReportInput } from '../../api-client/graphql';
 
 import {
@@ -9,7 +9,7 @@ import {
 export const getLooById = async (
   prisma: PrismaClient,
   id: string | number
-): Promise<toilets> => {
+): Promise<toilets & { areas: Pick<areas, 'name' | 'type'> }> => {
   const res = await prisma.toilets.findUnique({
     where: selectLegacyOrModernLoo(id),
     include: { areas: { select: { name: true, type: true } } },
