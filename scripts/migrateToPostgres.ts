@@ -7,7 +7,7 @@ import {
 } from '../generated/schemaMongo';
 import { SingleBar } from 'cli-progress';
 import { upsertArea, upsertLoo } from '../src/api/prisma/queries';
-import { reportToPostgresLoo } from '../src/api/graphql/helpers';
+import { postgresUpsertLooQuery } from '../src/api/graphql/helpers';
 
 (async () => {
   console.log('Connecting to MongoDB...');
@@ -75,25 +75,46 @@ const upsertLoos = async (
   let index = 0;
 
   for (const loo of mongoLoos) {
-    const { properties, ...rest } = loo;
+    const { properties } = loo;
     const resolvedReports = {};
     for (const report of loo.reports) {
       resolvedReports[report] = mappedMongoReports[report];
     }
 
-    const postgresLoo = reportToPostgresLoo(
+    const query = postgresUpsertLooQuery(
+      loo.id,
       {
-        ...properties,
-        location: {
-          lat: properties.geometry.coordinates[1],
-          lng: properties.geometry.coordinates[0],
-        },
-        ...rest,
+        accessible: properties.accessible,
+        baby_change: properties.babyChange,
+        active: properties.active,
+        all_gender: properties.allGender,
+        attended: properties.attended,
+        automatic: properties.automatic,
+        children: properties.children,
+        created_at: loo.createdAt,
+        verified_at: properties.verifiedAt,
+        updated_at: loo.updatedAt,
+        name: properties.name,
+        removal_reason: properties.removalReason,
+        legacy_id: loo.id,
+        reports: resolvedReports,
+        contributors: loo.contributors,
+        women: properties.women,
+        men: properties.men,
+        no_payment: properties.noPayment,
+        notes: properties.notes,
+        opening_times: properties.openingTimes ?? [],
+        payment_details: properties.paymentDetails,
+        radar: properties.radar,
+        urinal_only: properties.urinalOnly,
       },
-      rest.contributors
+      {
+        lat: properties.geometry.coordinates[1],
+        lng: properties.geometry.coordinates[0],
+      }
     );
 
-    await upsertLoo(prisma, postgresLoo, undefined, resolvedReports);
+    await upsertLoo(prisma, query);
 
     bar.update(index++);
   }

@@ -28,7 +28,6 @@ export const selectLegacyOrModernLoo = (
 
     // The id can't be casted to a number, we assume it's legacy.
     return {
-      id: -1,
       legacy_id: id,
     };
   }
@@ -99,17 +98,41 @@ export type ToiletUpsertReport = {
   };
 };
 
+type ToiletsExcludingComputed = Omit<
+  toilets,
+  'id' | 'geohash' | 'area_id' | 'location'
+>;
+
+export const postgresUpsertLooQuery = (
+  id: string | number,
+  data: ToiletsExcludingComputed,
+  location: { lat: number; lng: number }
+): ToiletUpsertReport => {
+  const operationTime = new Date();
+  return {
+    where: selectLegacyOrModernLoo(id),
+    prismaCreate: {
+      ...data,
+    },
+    prismaUpdate: {
+      ...data,
+      updated_at: operationTime,
+    },
+    extras: { location },
+  };
+};
+
 export const postgresUpsertLooQueryFromReport = async (
   id: string | number,
   report: ReportInput,
   nickname: string
 ): Promise<ToiletUpsertReport> => {
-  const createdAt = new Date();
+  const operationTime = new Date();
 
   const legacyId = await suggestLegacyLooId(
     nickname,
     report.location,
-    createdAt
+    operationTime
   );
 
   const looProperties = {
@@ -124,7 +147,7 @@ export const postgresUpsertLooQueryFromReport = async (
     name: report.name,
     no_payment: report.noPayment,
     notes: report.notes,
-    opening_times: report.openingTimes,
+    opening_times: report.openingTimes ?? [],
     payment_details: report.paymentDetails,
     urinal_only: report.urinalOnly,
     radar: report.radar,
@@ -136,15 +159,16 @@ export const postgresUpsertLooQueryFromReport = async (
     prismaCreate: {
       ...looProperties,
       legacy_id: legacyId,
-      created_at: createdAt,
-      updated_at: createdAt,
-      verified_at: createdAt,
+      created_at: operationTime,
+      updated_at: operationTime,
+      verified_at: operationTime,
       contributors: {
         set: [nickname],
       },
     },
     prismaUpdate: {
       ...looProperties,
+      updated_at: operationTime,
       contributors: {
         push: nickname,
       },
