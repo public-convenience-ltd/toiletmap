@@ -27,7 +27,7 @@
     "generate:seed": "./scripts/generateSeed.sh > ./supabase/seed.sql",
     "areas": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' pnpm ts-node --transpileOnly ./scripts/areaToDatabase/index.ts",
     "generateMocks": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' pnpm ts-node --transpileOnly ./scripts/generateMocks.ts",
-    "prepare": "husky install && pnpm codegen",
+    "postinstall": "husky install && pnpm codegen",
     "codegen": "npm-run-all -p graphql:codegen prisma:codegen",
     "graphql:codegen": "graphql-codegen --config codegen.yml",
     "prisma:codegen": "npm-run-all -p prisma:postgres:generate prisma:mongo:generate",
