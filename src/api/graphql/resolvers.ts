@@ -18,7 +18,7 @@ import { Context } from './context';
 import {
   isLegacyId,
   postgresLooToGraphQL,
-  reportToPostgresLoo,
+  postgresUpsertLooQueryFromReport,
 } from './helpers';
 
 const resolvers: Resolvers<Context> = {
@@ -97,14 +97,16 @@ const resolvers: Resolvers<Context> = {
   Mutation: {
     submitReport: async (_parent, args, { prisma, user }) => {
       try {
+        // args.report.accessible = args.report.accessible || false;
         // Convert the submitted report to a format that can be saved to the database.
-        const postgresLoo = reportToPostgresLoo({
-          ...args.report,
-          id: args.report.edit,
-        });
 
         const nickname = user[process.env.AUTH0_PROFILE_KEY]?.nickname;
-        const result = await upsertLoo(prisma, postgresLoo, nickname);
+        const postgresLoo = await postgresUpsertLooQueryFromReport(
+          args.report.edit,
+          args.report,
+          nickname
+        );
+        const result = await upsertLoo(prisma, postgresLoo);
 
         return {
           code: '200',

@@ -1,13 +1,21 @@
 import { areas, toilets, Prisma } from '@prisma/client';
-import { Loo, PointInput, Report } from '../../api-client/graphql';
+import { Loo, PointInput } from '../../api-client/graphql';
 import { async as hasha } from 'hasha';
+import { ReportInput } from '../../@types/resolvers-types';
 
 export const isLegacyId = (id: string): boolean =>
   isNaN(id as unknown as number);
 
 export const selectLegacyOrModernLoo = (
-  id: string | number
+  id?: string | number
 ): Prisma.toiletsWhereUniqueInput => {
+  if (typeof id === 'undefined') {
+    return {
+      id: -1,
+      legacy_id: undefined,
+    };
+  }
+
   if (typeof id === 'string') {
     const isModernId = !isLegacyId(id);
 
@@ -79,48 +87,70 @@ export const postgresLooToGraphQL = (
   updatedAt: loo.updated_at,
 });
 
-export const reportToPostgresLoo = (
-  report: Omit<Report, 'contributor'> & { updatedAt: Date },
-  contributors?: string[]
-): Omit<toilets, 'geohash' | 'reports' | 'area_id'> => {
-  const idInfo = isLegacyId(report.id)
-    ? { legacy_id: report.id, id: -1 }
-    : { id: parseInt(report.id, 10), legacy_id: null };
-  const mappedData = {
-    ...idInfo,
-    created_at: report.createdAt,
+export type ToiletUpsertReport = {
+  where: Prisma.toiletsWhereUniqueInput;
+  prismaCreate: Prisma.toiletsCreateInput;
+  prismaUpdate: Prisma.toiletsUpdateInput;
+  extras: {
+    location: {
+      lat: number;
+      lng: number;
+    };
+  };
+};
+
+export const postgresUpsertLooQueryFromReport = async (
+  id: string | number,
+  report: ReportInput,
+  nickname: string
+): Promise<ToiletUpsertReport> => {
+  const createdAt = new Date();
+
+  const legacyId = await suggestLegacyLooId(
+    nickname,
+    report.location,
+    createdAt
+  );
+
+  const looProperties = {
     accessible: report.accessible,
-    active: report.active ?? true,
+    active: report.active,
+    all_gender: report.allGender,
     attended: report.attended,
     automatic: report.automatic,
     baby_change: report.babyChange,
+    children: report.children,
     men: report.men,
+    name: report.name,
     no_payment: report.noPayment,
     notes: report.notes,
+    opening_times: report.openingTimes,
     payment_details: report.paymentDetails,
+    urinal_only: report.urinalOnly,
     radar: report.radar,
     women: report.women,
-    updated_at: report.updatedAt,
-    urinal_only: report.urinalOnly,
-    all_gender: report.allGender,
-    children: report.children,
-    opening_times: report.openingTimes ?? undefined,
-    verified_at: report.verifiedAt,
-    name: report.name,
-    removal_reason: report.removalReason,
-    contributors,
-    location: report.location ?? {
-      lat: report.location.lat,
-      lng: report.location.lng,
-    },
   };
 
-  // Remove undefined values.
-  Object.keys(mappedData).forEach((key) => {
-    if (mappedData[key] === undefined) {
-      delete mappedData[key];
-    }
-  });
-
-  return mappedData;
+  return {
+    where: selectLegacyOrModernLoo(id),
+    prismaCreate: {
+      ...looProperties,
+      legacy_id: legacyId,
+      created_at: createdAt,
+      updated_at: createdAt,
+      verified_at: createdAt,
+      contributors: {
+        set: [nickname],
+      },
+    },
+    prismaUpdate: {
+      ...looProperties,
+      contributors: {
+        push: nickname,
+      },
+    },
+    extras: {
+      location: report.location,
+    },
+  };
 };

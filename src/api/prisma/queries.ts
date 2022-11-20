@@ -1,10 +1,9 @@
 import { Prisma, PrismaClient, toilets } from '@prisma/client';
-import { PointInput, RemovalReportInput } from '../../api-client/graphql';
+import { RemovalReportInput } from '../../api-client/graphql';
 
 import {
-  reportToPostgresLoo,
   selectLegacyOrModernLoo,
-  suggestLegacyLooId,
+  ToiletUpsertReport,
 } from '../graphql/helpers';
 
 export const getLooById = async (
@@ -85,49 +84,13 @@ export const getAreas = async (prisma: PrismaClient) =>
 
 export const upsertLoo = async (
   prisma: PrismaClient,
-  postgresLoo: Partial<toilets>,
-  nickname?: string,
-  reports?: { [key: string]: RemovalReportInput }
+  report: ToiletUpsertReport
 ) => {
-  const { id, location, ...upsertLooInfo } = postgresLoo;
-
-  const legacyId = await suggestLegacyLooId(
-    nickname,
-    location as PointInput,
-    postgresLoo.updated_at
-  );
-
-  const whereQuery =
-    typeof id === 'undefined' ? { id: -1 } : selectLegacyOrModernLoo(id);
-
-  const contributorList = postgresLoo.contributors
-    ? [...postgresLoo.contributors]
-    : [];
-
-  if (nickname) {
-    contributorList.push(nickname);
-  }
-
   try {
-    const upsertLoo = await prisma.toilets.upsert({
-      where: whereQuery,
-      create: {
-        ...upsertLooInfo,
-        created_at: postgresLoo.created_at ?? new Date(),
-        verified_at: postgresLoo.verified_at ?? new Date(),
-        updated_at: postgresLoo.updated_at ?? new Date(),
-        legacy_id: postgresLoo.legacy_id ?? legacyId,
-        contributors: {
-          set: contributorList,
-        },
-        reports,
-      },
-      update: {
-        ...upsertLooInfo,
-        // contributors: {
-        //   push: nickname,
-        // },
-      },
+    const result = await prisma.toilets.upsert({
+      where: report.where,
+      create: report.prismaCreate,
+      update: report.prismaUpdate,
     });
 
     // We update the loos' location. This is a separate query because Prisma lacks PostGIS support.
@@ -135,12 +98,12 @@ export const upsertLoo = async (
     // The area is set as a database trigger defined in the `20221112164242_geography-trigger.sql` migration.
     await setLooLocation(
       prisma,
-      upsertLoo.id,
-      location['lat'],
-      location['lng']
+      result.id,
+      report.extras.location.lat,
+      report.extras.location.lng
     );
 
-    return await getLooById(prisma, upsertLoo.id);
+    return getLooById(prisma, result.id);
   } catch (e) {
     throw e;
   }
