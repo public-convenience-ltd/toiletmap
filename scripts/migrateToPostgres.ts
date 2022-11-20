@@ -153,7 +153,8 @@ const checkDataIntegrity = async (
       resolvedReports[report] = mappedMongoReports[report];
     }
 
-    const mongoNameMap = {
+    type MongoMapKeys = keyof (Omit<newloos, 'properties'> & NewloosProperties);
+    const mongoNameMap: { [P in MongoMapKeys]: string } = {
       accessible: 'accessible',
       babyChange: 'baby_change',
       active: 'active',
@@ -167,6 +168,7 @@ const checkDataIntegrity = async (
       name: 'name',
       removalReason: 'removal_reason',
       id: 'legacy_id',
+      v: undefined,
       contributors: 'contributors',
       men: 'men',
       women: 'women',
@@ -180,7 +182,7 @@ const checkDataIntegrity = async (
       radar: 'radar',
       reports: 'reports',
       urinalOnly: 'urinal_only',
-    } as { [P in keyof NewloosProperties]: string };
+    };
 
     const flatMongoLoo = {
       ...properties,
@@ -193,6 +195,11 @@ const checkDataIntegrity = async (
 
     for (const mongoKey in mongoNameMap) {
       try {
+        // We don't care about the v property.
+        if (mongoKey === 'v') {
+          continue;
+        }
+
         // Skip campaignUOL as it has been removed from the schema going forward.
         if (mongoKey === 'campaignUOL') {
           continue;

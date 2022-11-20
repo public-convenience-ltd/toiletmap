@@ -453,7 +453,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
               {getDirectionsFragment}
               <Media greaterThanOrEqual="md">
                 <Spacer mb={4} />
-                {lastVerifiedFragment}
+                {/* {lastVerifiedFragment} */}
               </Media>
             </Box>
 
