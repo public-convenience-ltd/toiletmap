@@ -1,5 +1,5 @@
 import { areas, toilets, Prisma } from '@prisma/client';
-import { Loo, PointInput } from '../../api-client/graphql';
+import { Loo, PointInput, Report } from '../../api-client/graphql';
 import { async as hasha } from 'hasha';
 
 export const isLegacyId = (id: string): boolean =>
@@ -79,8 +79,16 @@ export const postgresLooToGraphQL = (
   updatedAt: loo.updated_at,
 });
 
-export const reportToPostgresLoo = (report: Loo): Partial<toilets> => {
+export const reportToPostgresLoo = (
+  report: Omit<Report, 'contributor'> & { updatedAt: Date },
+  contributors?: string[]
+): Omit<toilets, 'geohash' | 'reports' | 'area_id'> => {
+  const idInfo = isLegacyId(report.id)
+    ? { legacy_id: report.id, id: -1 }
+    : { id: parseInt(report.id, 10), legacy_id: null };
   const mappedData = {
+    ...idInfo,
+    created_at: report.createdAt,
     accessible: report.accessible,
     active: report.active ?? true,
     attended: report.attended,
@@ -92,16 +100,20 @@ export const reportToPostgresLoo = (report: Loo): Partial<toilets> => {
     payment_details: report.paymentDetails,
     radar: report.radar,
     women: report.women,
-    updated_at: new Date(),
+    updated_at: report.updatedAt,
     urinal_only: report.urinalOnly,
     all_gender: report.allGender,
     children: report.children,
     opening_times: report.openingTimes ?? undefined,
-    verified_at: new Date(),
+    verified_at: report.verifiedAt,
     name: report.name,
-    reports: report.reports,
     removal_reason: report.removalReason,
-  } as Partial<toilets>;
+    contributors,
+    location: report.location ?? {
+      lat: report.location.lat,
+      lng: report.location.lng,
+    },
+  };
 
   // Remove undefined values.
   Object.keys(mappedData).forEach((key) => {

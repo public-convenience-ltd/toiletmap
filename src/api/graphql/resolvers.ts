@@ -15,7 +15,11 @@ import {
 } from '../prisma/queries';
 
 import { Context } from './context';
-import { isLegacyId, postgresLooToGraphQL } from './helpers';
+import {
+  isLegacyId,
+  postgresLooToGraphQL,
+  reportToPostgresLoo,
+} from './helpers';
 
 const resolvers: Resolvers<Context> = {
   Query: {
@@ -93,8 +97,14 @@ const resolvers: Resolvers<Context> = {
   Mutation: {
     submitReport: async (_parent, args, { prisma, user }) => {
       try {
-        const nickname = user[process.env.AUTH0_PROFILE_KEY].nickname;
-        const result = await upsertLoo(prisma, args.report, nickname);
+        // Convert the submitted report to a format that can be saved to the database.
+        const postgresLoo = reportToPostgresLoo({
+          ...args.report,
+          id: args.report.edit,
+        });
+
+        const nickname = user[process.env.AUTH0_PROFILE_KEY]?.nickname;
+        const result = await upsertLoo(prisma, postgresLoo, nickname);
 
         return {
           code: '200',

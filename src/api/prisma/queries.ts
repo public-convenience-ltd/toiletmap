@@ -1,5 +1,6 @@
 import { Prisma, PrismaClient, toilets } from '@prisma/client';
-import { RemovalReportInput, ReportInput } from '../../api-client/graphql';
+import { PointInput, RemovalReportInput } from '../../api-client/graphql';
+
 import {
   reportToPostgresLoo,
   selectLegacyOrModernLoo,
@@ -84,29 +85,25 @@ export const getAreas = async (prisma: PrismaClient) =>
 
 export const upsertLoo = async (
   prisma: PrismaClient,
-  report: ReportInput,
+  postgresLoo: Partial<toilets>,
   nickname?: string,
-  reports?: { [key: string]: string },
-  contributors?: string[]
+  reports?: { [key: string]: RemovalReportInput }
 ) => {
-  const { edit: id, location } = report;
-
-  // Convert the submitted report to a format that can be saved to the database.
-  const postgresLoo = reportToPostgresLoo(report);
+  const { id, location, ...upsertLooInfo } = postgresLoo;
 
   const legacyId = await suggestLegacyLooId(
     nickname,
-    location,
+    location as PointInput,
     postgresLoo.updated_at
   );
 
   const whereQuery =
     typeof id === 'undefined' ? { id: -1 } : selectLegacyOrModernLoo(id);
 
-  const contributorList = [];
-  if (contributors) {
-    contributorList.push(...contributors);
-  }
+  const contributorList = postgresLoo.contributors
+    ? [...postgresLoo.contributors]
+    : [];
+
   if (nickname) {
     contributorList.push(nickname);
   }
@@ -115,30 +112,37 @@ export const upsertLoo = async (
     const upsertLoo = await prisma.toilets.upsert({
       where: whereQuery,
       create: {
-        ...postgresLoo,
-        created_at: new Date(),
-        legacy_id: legacyId,
+        ...upsertLooInfo,
+        created_at: postgresLoo.created_at ?? new Date(),
+        verified_at: postgresLoo.verified_at ?? new Date(),
+        updated_at: postgresLoo.updated_at ?? new Date(),
+        legacy_id: postgresLoo.legacy_id ?? legacyId,
         contributors: {
           set: contributorList,
         },
         reports,
       },
       update: {
-        ...postgresLoo,
-        contributors: {
-          set: contributorList,
-        },
+        ...upsertLooInfo,
+        // contributors: {
+        //   push: nickname,
+        // },
       },
     });
 
     // We update the loos' location. This is a separate query because Prisma lacks PostGIS support.
     // Work is underway: https://github.com/prisma/prisma/issues/1798#issuecomment-1319784123
     // The area is set as a database trigger defined in the `20221112164242_geography-trigger.sql` migration.
-    await setLooLocation(prisma, upsertLoo.id, location.lat, location.lng);
+    await setLooLocation(
+      prisma,
+      upsertLoo.id,
+      location['lat'],
+      location['lng']
+    );
 
     return await getLooById(prisma, upsertLoo.id);
   } catch (e) {
-    console.log('upsert error, uhoh ', e);
+    throw e;
   }
 };
 

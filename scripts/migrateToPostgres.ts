@@ -7,6 +7,7 @@ import {
 } from '../generated/schemaMongo';
 import { SingleBar } from 'cli-progress';
 import { upsertArea, upsertLoo } from '../src/api/prisma/queries';
+import { reportToPostgresLoo } from '../src/api/graphql/helpers';
 
 (async () => {
   console.log('Connecting to MongoDB...');
@@ -74,15 +75,13 @@ const upsertLoos = async (
   let index = 0;
 
   for (const loo of mongoLoos) {
+    const { properties, ...rest } = loo;
     const resolvedReports = {};
     for (const report of loo.reports) {
       resolvedReports[report] = mappedMongoReports[report];
     }
-    9;
-    const { properties, ...rest } = loo;
 
-    await upsertLoo(
-      prisma,
+    const postgresLoo = reportToPostgresLoo(
       {
         ...properties,
         location: {
@@ -91,10 +90,10 @@ const upsertLoos = async (
         },
         ...rest,
       },
-      undefined,
-      resolvedReports,
-      loo.contributors
+      rest.contributors
     );
+
+    await upsertLoo(prisma, postgresLoo, undefined, resolvedReports);
 
     bar.update(index++);
   }
