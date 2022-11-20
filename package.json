@@ -141,6 +141,7 @@
     "babel-loader": "^9.1.0",
     "chromatic": "^6.11.4",
     "cli-progress": "^3.11.2",
+    "css-loader": "^6.7.2",
     "cypress": "^11.1.0",
     "cypress-browser-permissions": "^1.1.0",
     "cypress-nextjs-auth0": "^2.1.0",

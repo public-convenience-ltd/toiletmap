@@ -68,6 +68,7 @@ specifiers:
   chromatic: ^6.11.4
   cli-progress: ^3.11.2
   cors: ^2.8.5
+  css-loader: ^6.7.2
   cypress: ^11.1.0
   cypress-browser-permissions: ^1.1.0
   cypress-nextjs-auth0: ^2.1.0
@@ -221,6 +222,7 @@ devDependencies:
   babel-loader: 9.1.0_npabyccmuonwo2rku4k53xo3hi
   chromatic: 6.11.4
   cli-progress: 3.11.2
+  css-loader: 6.7.2_webpack@5.75.0
   cypress: 11.1.0
   cypress-browser-permissions: 1.1.0_cypress@11.1.0
   cypress-nextjs-auth0: 2.1.0
@@ -5639,11 +5641,6 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@storybook/client-logger': 6.5.13
       '@storybook/csf': 0.0.2--canary.4566f4d.1
@@ -10072,6 +10069,23 @@ packages:
       webpack: 5.75.0
     dev: true
 
+  /css-loader/6.7.2_webpack@5.75.0:
+    resolution: {integrity: sha512-oqGbbVcBJkm8QwmnNzrFrWTnudnRZC+1eXikLJl0n4ljcfotgRifpg2a1lKy8jTrc4/d9A/ap1GFq1jDKG7J+Q==}
+    engines: {node: '>= 12.13.0'}
+    peerDependencies:
+      webpack: ^5.0.0
+    dependencies:
+      icss-utils: 5.1.0_postcss@8.4.19
+      postcss: 8.4.19
+      postcss-modules-extract-imports: 3.0.0_postcss@8.4.19
+      postcss-modules-local-by-default: 4.0.0_postcss@8.4.19
+      postcss-modules-scope: 3.0.0_postcss@8.4.19
+      postcss-modules-values: 4.0.0_postcss@8.4.19
+      postcss-value-parser: 4.2.0
+      semver: 7.3.8
+      webpack: 5.75.0
+    dev: true
+
   /css-select/4.3.0:
     resolution: {integrity: sha512-wPpOYtnsVontu2mODhA19JrqWxNsfdatRKd64kmpRbQgh1KtItko5sTnEpPdpSaJszTOhEMlF/RPz28qj4HqhQ==}
     dependencies:
@@ -12171,7 +12185,7 @@ packages:
       eslint: 8.28.0
       fs-extra: 9.1.0
       glob: 7.2.3
-      memfs: 3.4.11
+      memfs: 3.4.12
       minimatch: 3.1.2
       schema-utils: 2.7.0
       semver: 7.3.8
@@ -12203,7 +12217,7 @@ packages:
       eslint: 8.28.0
       fs-extra: 9.1.0
       glob: 7.2.3
-      memfs: 3.4.11
+      memfs: 3.4.12
       minimatch: 3.1.2
       schema-utils: 2.7.0
       semver: 7.3.8
@@ -15479,8 +15493,8 @@ packages:
       mimic-fn: 3.1.0
     dev: true
 
-  /memfs/3.4.11:
-    resolution: {integrity: sha512-GvsCITGAyDCxxsJ+X6prJexFQEhOCJaIlUbsAvjzSI5o5O7j2dle3jWvz5Z5aOdpOxW6ol3vI1+0ut+641F1+w==}
+  /memfs/3.4.12:
+    resolution: {integrity: sha512-BcjuQn6vfqP+k100e0E9m61Hyqa//Brp+I3f0OBmN0ATHlFA8vx3Lt8z57R3u2bPqe3WGDBC+nF72fTH7isyEw==}
     engines: {node: '>= 4.0.0'}
     dependencies:
       fs-monkey: 1.0.3
@@ -20712,7 +20726,7 @@ packages:
     dependencies:
       colorette: 1.4.0
       mem: 8.1.1
-      memfs: 3.4.11
+      memfs: 3.4.12
       mime-types: 2.1.35
       range-parser: 1.2.1
       schema-utils: 3.1.1

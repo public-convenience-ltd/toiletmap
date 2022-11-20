@@ -41,6 +41,8 @@ module.exports = {
           zlib: false,
           fs: false,
           os: false,
+          stream: false,
+          http: false,
         },
       },
     };
