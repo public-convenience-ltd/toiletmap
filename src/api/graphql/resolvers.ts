@@ -25,7 +25,6 @@ const resolvers: Resolvers<Context> = {
   Query: {
     loo: async (_parent, args, { prisma }) =>
       postgresLooToGraphQL(await getLooById(prisma, args.id)),
-
     looNamesByIds: async (_parent, args, { prisma }) => {
       const looNames = await getLooNamesByIds(prisma, args.idList);
       return looNames.map((loo) => ({ id: loo.id.toString(), name: loo.name }));
@@ -37,7 +36,6 @@ const resolvers: Resolvers<Context> = {
         args.from.lng,
         args.from.maxDistance
       );
-
       return result.map(postgresLooToGraphQL);
     },
     loosByGeohash: async (_parent, args, { prisma }) =>
@@ -51,7 +49,21 @@ const resolvers: Resolvers<Context> = {
       const reports = (await getLooById(prisma, args.id)).reports;
       return Object.values(reports);
     },
+    statistics: async (_parent, _args, { prisma }) => {
+      const activeCount = await prisma.toilets.count({
+        where: { active: true },
+      });
+      const removedCount = await prisma.toilets.count({
+        where: { active: false },
+      });
+      const totalCount = await prisma.areas.count();
 
+      return {
+        active: activeCount,
+        removed: removedCount,
+        total: totalCount,
+      };
+    },
     // This collates records from the audit table and compiles them into reports.
     //
     // In the future this will need to be zipped with the legacy reports stored

@@ -148,6 +148,8 @@ export type Query = {
   /** Retrieve Loos by proximity to a Point */
   loosByProximity: Array<Loo>;
   reportsForLoo: Array<Report>;
+  /** Get statistics about our data */
+  statistics?: Maybe<Statistics>;
 };
 
 
@@ -257,6 +259,13 @@ export type ReportMutationResponse = MutationResponse & {
   success: Scalars['Boolean'];
 };
 
+export type Statistics = {
+  __typename?: 'Statistics';
+  active?: Maybe<Scalars['Int']>;
+  removed?: Maybe<Scalars['Int']>;
+  total?: Maybe<Scalars['Int']>;
+};
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -347,6 +356,7 @@ export type ResolversTypes = {
   Report: ResolverTypeWrapper<Report>;
   ReportInput: ReportInput;
   ReportMutationResponse: ResolverTypeWrapper<ReportMutationResponse>;
+  Statistics: ResolverTypeWrapper<Statistics>;
   String: ResolverTypeWrapper<Scalars['String']>;
 };
 
@@ -372,6 +382,7 @@ export type ResolversParentTypes = {
   Report: Report;
   ReportInput: ReportInput;
   ReportMutationResponse: ReportMutationResponse;
+  Statistics: Statistics;
   String: Scalars['String'];
 };
 
@@ -458,6 +469,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   loosByGeohash?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType, RequireFields<QueryLoosByGeohashArgs, 'active' | 'geohash'>>;
   loosByProximity?: Resolver<Array<ResolversTypes['Loo']>, ParentType, ContextType, RequireFields<QueryLoosByProximityArgs, 'from'>>;
   reportsForLoo?: Resolver<Array<ResolversTypes['Report']>, ParentType, ContextType, RequireFields<QueryReportsForLooArgs, 'id'>>;
+  statistics?: Resolver<Maybe<ResolversTypes['Statistics']>, ParentType, ContextType>;
 };
 
 export type ReportResolvers<ContextType = any, ParentType extends ResolversParentTypes['Report'] = ResolversParentTypes['Report']> = {
@@ -498,6 +510,13 @@ export type ReportMutationResponseResolvers<ContextType = any, ParentType extend
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type StatisticsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Statistics'] = ResolversParentTypes['Statistics']> = {
+  active?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  removed?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  total?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   AdminGeo?: AdminGeoResolvers<ContextType>;
   AuthedContributor?: AuthedContributorResolvers<ContextType>;
@@ -510,6 +529,7 @@ export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>;
   Report?: ReportResolvers<ContextType>;
   ReportMutationResponse?: ReportMutationResponseResolvers<ContextType>;
+  Statistics?: StatisticsResolvers<ContextType>;
 };
 
 export type DirectiveResolvers<ContextType = any> = {

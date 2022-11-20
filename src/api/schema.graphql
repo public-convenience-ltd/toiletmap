@@ -111,9 +111,18 @@ type AuthedContributor {
   # name: String! @redact(requires: VIEW_CONTRIBUTOR_INFO, replace: "Anonymous")
   name: String!
 }
+
+type Statistics {
+  total: Int
+  active: Int
+  removed: Int
+}
+
 type Query {
   "Retrieve a Loo by ID"
   loo(id: ID): Loo
+  "Get statistics about our data"
+  statistics: Statistics
   "Retrieve Loos by proximity to a Point"
   loosByProximity(
     "A Point from which to begin the search"
