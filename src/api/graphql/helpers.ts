@@ -3,8 +3,7 @@ import { Loo, PointInput } from '../../api-client/graphql';
 import { async as hasha } from 'hasha';
 import { ReportInput } from '../../@types/resolvers-types';
 
-export const isLegacyId = (id: string): boolean =>
-  isNaN(id as unknown as number);
+export const isLegacyId = (id: string): boolean => /^\d+$/.test(id) === false;
 
 export const selectLegacyOrModernLoo = (
   id?: string | number
@@ -12,7 +11,6 @@ export const selectLegacyOrModernLoo = (
   if (typeof id === 'undefined') {
     return {
       id: -1,
-      legacy_id: undefined,
     };
   }
 
@@ -147,7 +145,7 @@ export const postgresUpsertLooQueryFromReport = async (
     name: report.name,
     no_payment: report.noPayment,
     notes: report.notes,
-    opening_times: report.openingTimes ?? [],
+    opening_times: report.openingTimes ?? [[], [], [], [], [], [], []],
     payment_details: report.paymentDetails,
     urinal_only: report.urinalOnly,
     radar: report.radar,

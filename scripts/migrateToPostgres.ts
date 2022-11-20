@@ -103,7 +103,7 @@ const upsertLoos = async (
         men: properties.men,
         no_payment: properties.noPayment,
         notes: properties.notes,
-        opening_times: properties.openingTimes ?? [],
+        opening_times: properties.openingTimes ?? [[], [], [], [], [], [], []],
         payment_details: properties.paymentDetails,
         radar: properties.radar,
         urinal_only: properties.urinalOnly,

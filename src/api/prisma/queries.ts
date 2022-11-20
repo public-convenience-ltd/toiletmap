@@ -10,10 +10,11 @@ export const getLooById = async (
   prisma: PrismaClient,
   id: string | number
 ): Promise<toilets> => {
-  return prisma.toilets.findUnique({
+  const res = await prisma.toilets.findUnique({
     where: selectLegacyOrModernLoo(id),
     include: { areas: { select: { name: true, type: true } } },
   });
+  return res;
 };
 
 export const getLooNamesByIds = async (
