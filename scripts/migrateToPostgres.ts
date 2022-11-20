@@ -26,7 +26,7 @@ type MongoReportMap = { [reportId: string]: newreports };
   console.log('upserting areas to postgres...');
 
   console.log('Fetching loo data from Mongo...');
-  const allMongoLoos = await mongoPrisma.newloos.findMany({ take: 1000 });
+  const allMongoLoos = await mongoPrisma.newloos.findMany();
 
   console.log('Fetching report data from Mongo...');
   const allMongoReports = await mongoPrisma.newreports.findMany();
@@ -119,7 +119,7 @@ const upsertLoos = async (
       }
     );
 
-    await upsertLoo(prisma, query);
+    await upsertLoo(prisma, query, false);
 
     bar.update(index++);
   }

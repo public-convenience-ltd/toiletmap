@@ -90,7 +90,8 @@ export const getAreas = async (prisma: PrismaClient) =>
 
 export const upsertLoo = async (
   prisma: PrismaClient,
-  report: ToiletUpsertReport
+  report: ToiletUpsertReport,
+  returnFinal = true
 ) => {
   try {
     const result = await prisma.toilets.upsert({
@@ -108,8 +109,11 @@ export const upsertLoo = async (
       report.extras.location.lat,
       report.extras.location.lng
     );
+    if (returnFinal) {
+      return getLooById(prisma, result.id);
+    }
 
-    return getLooById(prisma, result.id);
+    return result;
   } catch (e) {
     throw e;
   }
