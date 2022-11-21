@@ -26,6 +26,13 @@ export type AdminGeo = {
   type?: Maybe<Scalars['String']>;
 };
 
+export type AreaToiletCount = {
+  __typename?: 'AreaToiletCount';
+  active?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  removed?: Maybe<Scalars['Int']>;
+};
+
 /** The name of a contributor. This requires a certain level of permissions to access. */
 export type AuthedContributor = {
   __typename?: 'AuthedContributor';
@@ -262,6 +269,7 @@ export type ReportMutationResponse = MutationResponse & {
 export type Statistics = {
   __typename?: 'Statistics';
   active?: Maybe<Scalars['Int']>;
+  areaToiletCount?: Maybe<Array<Maybe<AreaToiletCount>>>;
   removed?: Maybe<Scalars['Int']>;
   total?: Maybe<Scalars['Int']>;
 };
@@ -336,6 +344,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   AdminGeo: ResolverTypeWrapper<AdminGeo>;
+  AreaToiletCount: ResolverTypeWrapper<AreaToiletCount>;
   AuthedContributor: ResolverTypeWrapper<AuthedContributor>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   CacheControlScope: CacheControlScope;
@@ -363,6 +372,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   AdminGeo: AdminGeo;
+  AreaToiletCount: AreaToiletCount;
   AuthedContributor: AuthedContributor;
   Boolean: Scalars['Boolean'];
   DateTime: Scalars['DateTime'];
@@ -397,6 +407,13 @@ export type CacheControlDirectiveResolver<Result, Parent, ContextType = any, Arg
 export type AdminGeoResolvers<ContextType = any, ParentType extends ResolversParentTypes['AdminGeo'] = ResolversParentTypes['AdminGeo']> = {
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AreaToiletCountResolvers<ContextType = any, ParentType extends ResolversParentTypes['AreaToiletCount'] = ResolversParentTypes['AreaToiletCount']> = {
+  active?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  removed?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -512,6 +529,7 @@ export type ReportMutationResponseResolvers<ContextType = any, ParentType extend
 
 export type StatisticsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Statistics'] = ResolversParentTypes['Statistics']> = {
   active?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  areaToiletCount?: Resolver<Maybe<Array<Maybe<ResolversTypes['AreaToiletCount']>>>, ParentType, ContextType>;
   removed?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   total?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -519,6 +537,7 @@ export type StatisticsResolvers<ContextType = any, ParentType extends ResolversP
 
 export type Resolvers<ContextType = any> = {
   AdminGeo?: AdminGeoResolvers<ContextType>;
+  AreaToiletCount?: AreaToiletCountResolvers<ContextType>;
   AuthedContributor?: AuthedContributorResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   Loo?: LooResolvers<ContextType>;

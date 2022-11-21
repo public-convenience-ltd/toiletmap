@@ -1,5 +1,5 @@
 import { stringifyAndCompressLoos } from '../../lib/loo';
-import { Resolvers } from '../../@types/resolvers-types';
+import { Resolvers, AreaToiletCount } from '../../@types/resolvers-types';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
 
@@ -50,19 +50,87 @@ const resolvers: Resolvers<Context> = {
       return Object.values(reports);
     },
     statistics: async (_parent, _args, { prisma }) => {
-      const activeCount = await prisma.toilets.count({
+      const activeCountQuery = prisma.toilets.count({
         where: { active: true },
       });
-      const removedCount = await prisma.toilets.count({
+      const removedCountQuery = prisma.toilets.count({
         where: { active: false },
       });
-      const totalCount = await prisma.areas.count();
+      const totalCountQuery = prisma.toilets.count();
 
-      return {
-        active: activeCount,
-        removed: removedCount,
-        total: totalCount,
-      };
+      const activeToiletsInAreasQuery = prisma.areas.findMany({
+        include: {
+          _count: {
+            select: {
+              toilets: {
+                where: { active: true },
+              },
+            },
+          },
+        },
+      });
+
+      const removedToiletsInAreasQuery = prisma.areas.findMany({
+        include: {
+          _count: {
+            select: {
+              toilets: {
+                where: { active: false },
+              },
+            },
+          },
+        },
+      });
+
+      try {
+        console.time();
+        const [
+          activeToiletsCount,
+          removedToiletsCount,
+          totalToiletsCount,
+          activeToiletsInAreas,
+          removedToiletsInAreas,
+        ] = await prisma.$transaction([
+          activeCountQuery,
+          removedCountQuery,
+          totalCountQuery,
+          activeToiletsInAreasQuery,
+          removedToiletsInAreasQuery,
+        ]);
+        console.timeEnd();
+
+        const activeAreas = Object.fromEntries(
+          activeToiletsInAreas.map((area) => [area.name, area._count.toilets])
+        );
+
+        const removedAreas = Object.fromEntries(
+          removedToiletsInAreas.map((area) => [area.name, area._count.toilets])
+        );
+
+        const areaToiletCount: AreaToiletCount[] = [];
+
+        for (const name in activeAreas) {
+          const activeCount = activeAreas[name] ?? 0;
+          const removedCount = removedAreas[name] ?? 0;
+
+          areaToiletCount.push({
+            name,
+            active: activeCount,
+            removed: removedCount,
+          });
+        }
+
+        return {
+          total: totalToiletsCount,
+          active: activeToiletsCount,
+          removed: removedToiletsCount,
+          areaToiletCount,
+        };
+      } catch (e) {
+        console.log(e);
+
+        return {};
+      }
     },
     // This collates records from the audit table and compiles them into reports.
     //

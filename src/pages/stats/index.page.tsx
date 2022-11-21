@@ -21,41 +21,72 @@ const Stats = ({ data: { statistics } }: { data: StatisticsQuery }) => (
         <h1>Toilet Map Explorer</h1>
       </Text>
       <Spacer mb={5} />
+      <Text fontSize={5} fontWeight="bold">
+        <h2>Overview</h2>
+      </Text>
       <Spacer mb={2} />
-      <Text fontSize={4} fontWeight="bold">
-        <h2>
+      <Text fontSize={3}>
+        <h3>
           Total Toilets:
           <Text as="span" color={theme.colors.tertiary}>
             {statistics.total}
           </Text>
-        </h2>
+        </h3>
       </Text>
       <Spacer mb={1} />
-      <Text fontSize={4} fontWeight="bold">
-        <h2>
+      <Text fontSize={3}>
+        <h3>
           Active:
           <Text as="span" color={theme.colors.tertiary}>
             {statistics.active}
           </Text>
-        </h2>
+        </h3>
       </Text>
       <Spacer mb={1} />
-      <Text fontSize={4} fontWeight="bold">
-        <h2>
+      <Text fontSize={3}>
+        <h3>
           Removed:
           <Text as="span" color={theme.colors.tertiary}>
             {statistics.removed}
           </Text>
-        </h2>
+        </h3>
       </Text>
+
+      <Spacer mb={4} />
+      <Text fontSize={5} fontWeight="bold">
+        <h2>Area Breakdown</h2>
+      </Text>
+      <table>
+        <tbody>
+          <tr
+            css={{
+              textDecoration: 'underline',
+              textDecorationThickness: '2px',
+            }}
+          >
+            <th>Area</th>
+            <th>Active Toilets</th>
+            <th>Removed Toilets</th>
+            <th>Total Toilets</th>
+          </tr>
+          {statistics.areaToiletCount.map((area) => (
+            <tr key={area.name}>
+              <td>{area.name}</td>
+              <td>{area.active}</td>
+              <td>{area.removed}</td>
+              <td>{area.active + area.removed}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </Container>
   </Box>
 );
 
-export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
+export const getStaticProps: GetServerSideProps = async ({ req }) => {
   try {
     const res = await ssrStatistics.getServerPage({}, req);
-    console.log(res);
+
     return res;
   } catch (e: unknown) {
     console.log(e);

@@ -112,10 +112,17 @@ type AuthedContributor {
   name: String!
 }
 
+type AreaToiletCount {
+  name: String
+  active: Int
+  removed: Int
+}
+
 type Statistics {
   total: Int
   active: Int
   removed: Int
+  areaToiletCount: [AreaToiletCount]
 }
 
 type Query {

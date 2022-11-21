@@ -3,5 +3,10 @@ query statistics {
     total
     active
     removed
+    areaToiletCount {
+      name
+      active
+      removed
+    }
   }
 }
