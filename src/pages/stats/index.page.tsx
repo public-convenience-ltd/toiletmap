@@ -9,6 +9,7 @@ import { withApollo } from '../../api-client/withApollo';
 import { ssrStatistics } from '../../api-client/page';
 import { StatisticsQuery } from '../../api-client/graphql';
 import theme from '../../theme';
+import { css } from '@emotion/react';
 
 const Stats = ({ data: { statistics } }: { data: StatisticsQuery }) => (
   <Box my={5}>
@@ -56,27 +57,50 @@ const Stats = ({ data: { statistics } }: { data: StatisticsQuery }) => (
       <Text fontSize={5} fontWeight="bold">
         <h2>Area Breakdown</h2>
       </Text>
-      <table>
+      <table
+        css={css`
+          border-collapse: collapse;
+          td,
+          th {
+            padding: 0.5rem;
+          }
+          tr:nth-child(odd) td {
+            background-color: ${theme.colors.lightGrey};
+          }
+          tr:nth-child(even) td {
+            background-color: ${theme.colors.primary};
+            color: white;
+          }
+        `}
+      >
         <tbody>
-          <tr
-            css={{
-              textDecoration: 'underline',
-              textDecorationThickness: '2px',
-            }}
-          >
-            <th>Area</th>
-            <th>Active Toilets</th>
-            <th>Removed Toilets</th>
-            <th>Total Toilets</th>
+          <tr css={{ borderBottom: '1pt solid black' }}>
+            <th>
+              <Text fontWeight={'bold'}>Area</Text>
+            </th>
+            <th>
+              <Text fontWeight={'bold'}>Active Toilets</Text>
+            </th>
+            <th>
+              <Text fontWeight={'bold'}>Removed Toilets</Text>
+            </th>
+            <th>
+              <Text fontWeight={'bold'}>Total Toilets</Text>
+            </th>
           </tr>
-          {statistics.areaToiletCount.map((area) => (
-            <tr key={area.name}>
-              <td>{area.name}</td>
-              <td>{area.active}</td>
-              <td>{area.removed}</td>
-              <td>{area.active + area.removed}</td>
-            </tr>
-          ))}
+          {statistics.areaToiletCount
+            // Order alphabetically
+            .sort((a, b) => {
+              return a.name.localeCompare(b.name);
+            })
+            .map((area) => (
+              <tr key={area.name} css={{ borderBottom: '1px solid black' }}>
+                <td>{area.name}</td>
+                <td>{area.active}</td>
+                <td>{area.removed}</td>
+                <td>{area.active + area.removed}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </Container>
