@@ -23,8 +23,10 @@ import {
 
 const resolvers: Resolvers<Context> = {
   Query: {
-    loo: async (_parent, args, { prisma }) =>
-      postgresLooToGraphQL(await getLooById(prisma, args.id)),
+    loo: async (_parent, args, { prisma }) => {
+      const loo = await getLooById(prisma, args.id);
+      return postgresLooToGraphQL(loo);
+    },
     looNamesByIds: async (_parent, args, { prisma }) => {
       const looNames = await getLooNamesByIds(prisma, args.idList);
       return looNames.map((loo) => ({ id: loo.id.toString(), name: loo.name }));

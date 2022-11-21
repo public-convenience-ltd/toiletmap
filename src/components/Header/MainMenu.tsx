@@ -15,7 +15,7 @@ import { useMapState } from '../MapState';
 const StyledNavLink = styled(Link)<
   LinkProps & {
     onMouseEnter?: React.MouseEventHandler<Element> | undefined;
-    onClick: React.MouseEventHandler;
+    onClick?: React.MouseEventHandler;
     href?: string | undefined;
     ref?: unknown;
   }

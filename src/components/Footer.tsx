@@ -31,6 +31,9 @@ const Footer = ({ children = null }) => {
             <Box as="li" ml={[0, 4]}>
               <Link href="/privacy">Privacy Policy</Link>
             </Box>
+            <Box as="li" ml={[2, 4]}>
+              <Link href="/stats">Explorer</Link>
+            </Box>
           </Box>
         </Text>
       </Box>
