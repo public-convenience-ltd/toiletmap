@@ -14,7 +14,6 @@ import NotFound from '../../../404.page';
 import { css } from '@emotion/react';
 import { FindLooByIdQuery } from '../../../../api-client/graphql';
 import { ApolloError } from '@apollo/client';
-import dynamic from 'next/dynamic';
 import Container from '../../../../components/Container';
 import Text from '../../../../components/Text';
 import Spacer from '../../../../components/Spacer';
@@ -130,7 +129,7 @@ const LooPage: CustomLooByIdComp = (props) => {
           <h1>Toilet Map Explorer</h1>
         </Text>
         <Spacer mb={4} />
-        <Box minWidth="300px" display={'flex'} flexWrap="wrap">
+        <Box display={'flex'} flexWrap="wrap">
           <Box display="flex" flex={1} flexDirection={'column'}>
             <Box height="20rem">
               {looCentre && (
