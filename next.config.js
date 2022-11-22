@@ -29,15 +29,6 @@ const moduleExports = {
       },
     ];
   },
-  async redirects() {
-    return [
-      {
-        source: '/explorer',
-        destination: 'https://explorer.toiletmap.org.uk/',
-        permanent: false,
-      },
-    ];
-  },
   webpack: (config, {}) => {
     return {
       ...config,

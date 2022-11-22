@@ -1,5 +1,6 @@
 fragment LooFragment on Loo {
   id
+  legacy_id
   createdAt
   updatedAt
   verifiedAt

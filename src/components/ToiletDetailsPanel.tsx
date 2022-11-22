@@ -107,12 +107,14 @@ const DistanceTo = ({ from, to }) => {
 interface ToiletDetailsPanelProps {
   data: Loo;
   startExpanded?: boolean;
+  showCloseButton?: boolean;
   children?: React.ReactNode;
 }
 
 const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
   data,
   startExpanded = false,
+  showCloseButton = true,
   children,
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(startExpanded);
@@ -379,47 +381,50 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         data-testid="toilet-details"
         ref={containerRef}
       >
-        <Media greaterThanOrEqual="md">
-          <Box position="absolute" top={30} right={30}>
-            <button
-              type="button"
-              aria-label="Close toilet details"
-              onClick={() => setIsExpanded(false)}
-              aria-expanded="true"
-              ref={closeButtonRef}
-            >
-              <Box
-                height={26}
-                width={26}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                borderRadius={13}
-                borderColor="primary"
-                borderWidth={1}
-                borderStyle="solid"
+        {showCloseButton && (
+          <Media greaterThanOrEqual="md">
+            <Box position="absolute" top={30} right={30}>
+              <button
+                type="button"
+                aria-label="Close toilet details"
+                onClick={() => setIsExpanded(false)}
+                aria-expanded="true"
+                ref={closeButtonRef}
               >
-                <Icon icon={faTimes} />
-              </Box>
-            </button>
-          </Box>
-        </Media>
-
-        <Media lessThan="md">
-          <Box display="flex" justifyContent="center" paddingTop={2}>
-            <Box
-              as="button"
-              type="button"
-              aria-label="Close toilet details"
-              onClick={() => setIsExpanded(false)}
-              aria-expanded="true"
-              padding={2}
-              ref={closeButtonRef}
-            >
-              <Icon icon={faChevronDown} />
+                <Box
+                  height={26}
+                  width={26}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  borderRadius={13}
+                  borderColor="primary"
+                  borderWidth={1}
+                  borderStyle="solid"
+                >
+                  <Icon icon={faTimes} />
+                </Box>
+              </button>
             </Box>
-          </Box>
-        </Media>
+          </Media>
+        )}
+        {showCloseButton && (
+          <Media lessThan="md">
+            <Box display="flex" justifyContent="center" paddingTop={2}>
+              <Box
+                as="button"
+                type="button"
+                aria-label="Close toilet details"
+                onClick={() => setIsExpanded(false)}
+                aria-expanded="true"
+                padding={2}
+                ref={closeButtonRef}
+              >
+                <Icon icon={faChevronDown} />
+              </Box>
+            </Box>
+          </Media>
+        )}
 
         <Box
           maxHeight={[325, 400]}
