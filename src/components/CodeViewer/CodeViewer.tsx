@@ -1,4 +1,4 @@
-import Editor from '@monaco-editor/react';
+import Editor, { EditorProps } from '@monaco-editor/react';
 import {
   Dispatch,
   MutableRefObject,
@@ -56,7 +56,12 @@ const CodeViewer = (props: CodeViewerProps): JSX.Element => {
         monacoEditorRef.current = monaco.editor;
         editorRef.current = editor;
       }}
-      options={{ ...editorOptions, fontSize: 15 }}
+      options={{
+        ...editorOptions,
+        fontSize: 15,
+        minimap: { enabled: false },
+        lineNumbers: false,
+      }}
       theme="vs-dark"
       value={code}
     />

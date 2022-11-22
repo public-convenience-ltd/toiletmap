@@ -124,48 +124,55 @@ const LooPage: CustomLooByIdComp = (props) => {
         <h1>{pageTitle}</h1>
       </VisuallyHidden>
 
-      <Container>
+      <Container maxWidth={1500}>
         <Text fontSize={6} fontWeight="bold" textAlign="center">
           <h1>Toilet Map Explorer</h1>
         </Text>
+
         <Spacer mb={4} />
-        <Box display={'flex'} flexWrap="wrap">
-          <Box
-            display="flex"
-            flex={1}
-            flexDirection={'column'}
-            css={css`
-              min-width: 30rem;
-            `}
-          >
+        <Text fontSize={5} fontWeight="bold">
+          <h1>{looCentre?.name ?? 'Unnamed toilet'}</h1>
+        </Text>
+        <Spacer mb={3} />
+        <Box>
+          <Box>
             <Box height="20rem">
               {looCentre && (
                 <LooMapLoader
                   focus={looCentre}
-                  zoom={5}
-                  controlsOffset={20}
+                  staticMap={true}
+                  zoom={10}
                   showControls={false}
                   alwaysShowGeolocateButton={false}
                   controlPositionOverride="bottom"
                 />
               )}
             </Box>
-            <Box position={'relative'}>
+          </Box>
+
+          <Box display={'flex'}>
+            <Box border="1px solid black">
               <ToiletDetailsPanel
                 showCloseButton={false}
                 data={looCentre}
                 startExpanded={true}
               />
+            </Box>{' '}
+            <Box
+              width={['100%', '100%', '20rem']}
+              css={css`
+                min-width: 20rem;
+                min-height: 20rem;
+              `}
+            >
+              <CodeViewer
+                onInitializePane={onInitializePane}
+                code={JSON.stringify(looCentre, null, 2)}
+                editorOptions={{
+                  stopRenderingLineAfter: 1000,
+                }}
+              ></CodeViewer>
             </Box>
-          </Box>
-          <Box width={'30rem'}>
-            <CodeViewer
-              onInitializePane={onInitializePane}
-              code={JSON.stringify(looCentre, null, 2)}
-              editorOptions={{
-                stopRenderingLineAfter: 1000,
-              }}
-            ></CodeViewer>
           </Box>
         </Box>
       </Container>

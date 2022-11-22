@@ -71,7 +71,7 @@
     "@monaco-editor/react": "^4.4.6",
     "@prisma/client": "^4.6.1",
     "@react-leaflet/core": "^2.1.0",
-    "@sentry/nextjs": "^7.20.1",
+    "@sentry/nextjs": "^7.21.0",
     "@styled-system/prop-types": "^5.1.5",
     "cors": "^2.8.5",
     "date-fns": "^2.29.3",
