@@ -56,7 +56,7 @@ const CodeViewer = (props: CodeViewerProps): JSX.Element => {
         monacoEditorRef.current = monaco.editor;
         editorRef.current = editor;
       }}
-      options={{ ...editorOptions, fontSize: 16 }}
+      options={{ ...editorOptions, fontSize: 15 }}
       theme="vs-dark"
       value={code}
     />

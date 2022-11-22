@@ -130,7 +130,14 @@ const LooPage: CustomLooByIdComp = (props) => {
         </Text>
         <Spacer mb={4} />
         <Box display={'flex'} flexWrap="wrap">
-          <Box display="flex" flex={1} flexDirection={'column'}>
+          <Box
+            display="flex"
+            flex={1}
+            flexDirection={'column'}
+            css={css`
+              min-width: 30rem;
+            `}
+          >
             <Box height="20rem">
               {looCentre && (
                 <LooMapLoader
