@@ -135,8 +135,9 @@ const LooPage: CustomLooByIdComp = (props) => {
           flexDirection={'row'}
           justifyContent={'space-between'}
           flexWrap="wrap"
+          css={{ gap: '2rem' }}
         >
-          <Box mr="2rem">
+          <Box>
             <Text fontSize={4} fontWeight="bold">
               <h2>Name:</h2>
             </Text>
@@ -147,7 +148,7 @@ const LooPage: CustomLooByIdComp = (props) => {
               )}
             </Text>
           </Box>
-          <Box mr="2rem">
+          <Box>
             <Text fontSize={4} fontWeight="bold">
               <h2>Area:</h2>
             </Text>
@@ -165,7 +166,7 @@ const LooPage: CustomLooByIdComp = (props) => {
             <Text fontSize={4}>Lng: {looCentre?.location.lng}</Text>
           </Box>
         </Box>
-        <Spacer mb={5} />
+        <Spacer mb={4} />
         <Box display={'flex'} flexWrap="wrap">
           <Box
             display="flex"
@@ -200,6 +201,7 @@ const LooPage: CustomLooByIdComp = (props) => {
             flexDirection={'column'}
             flex={1}
             css={{ minWidth: '20rem' }}
+            height="25rem"
           >
             <Text fontSize={4} fontWeight="bold">
               Toilet Details (JSON)
