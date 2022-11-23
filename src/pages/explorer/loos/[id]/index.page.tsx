@@ -123,7 +123,7 @@ const LooPage: CustomLooByIdComp = (props) => {
         <h1>{pageTitle}</h1>
       </VisuallyHidden>
 
-      <Container maxWidth={850}>
+      <Container maxWidth={845}>
         <Text fontSize={6} fontWeight="bold">
           <h1>
             Toilet Map <Link href="/explorer">Explorer</Link>
