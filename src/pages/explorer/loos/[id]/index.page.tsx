@@ -125,18 +125,47 @@ const LooPage: CustomLooByIdComp = (props) => {
 
       <Container maxWidth={850}>
         <Text fontSize={6} fontWeight="bold">
-          <h1>Toilet Map Explorer</h1>
+          <h1>
+            Toilet Map <Link href="/explorer">Explorer</Link>
+          </h1>
         </Text>
-
         <Spacer mb={4} />
-        <Text fontSize={5} fontWeight="bold">
-          <h1>{looCentre?.name ?? 'Unnamed toilet'}</h1>
-        </Text>
-        <Link passHref href={`/loos/${looCentre?.id}`}>
-          See it on the map
-        </Link>
-
-        <Spacer mb={3} />
+        <Box
+          display={'flex'}
+          flexDirection={'row'}
+          justifyContent={'space-between'}
+          flexWrap="wrap"
+        >
+          <Box mr="2rem">
+            <Text fontSize={4} fontWeight="bold">
+              <h2>Name:</h2>
+            </Text>
+            <Text fontSize={4}>{looCentre?.name ?? 'Unnamed toilet'}</Text>
+            <Text as="span">
+              {!looCentre?.name && (
+                <Link href={`/loos/${looCentre?.id}/edit`}>(Add a name)</Link>
+              )}
+            </Text>
+          </Box>
+          <Box mr="2rem">
+            <Text fontSize={4} fontWeight="bold">
+              <h2>Area:</h2>
+            </Text>
+            <Text fontSize={4}>{looCentre?.area[0].name}</Text>
+            <Text fontSize={4}>{looCentre?.area[0].type}</Text>
+          </Box>
+          <Box>
+            <Text fontSize={4} fontWeight="bold">
+              <h2>Location data:</h2>
+            </Text>
+            <Text fontSize={4}>
+              Geohash: {looCentre?.geohash.substring(0, 6)}
+            </Text>
+            <Text fontSize={4}>Lat: {looCentre?.location.lat}</Text>
+            <Text fontSize={4}>Lng: {looCentre?.location.lng}</Text>
+          </Box>
+        </Box>
+        <Spacer mb={5} />
         <Box display={'flex'} flexWrap="wrap">
           <Box
             display="flex"
@@ -145,7 +174,14 @@ const LooPage: CustomLooByIdComp = (props) => {
             css={{ minWidth: '20rem' }}
             height="25rem"
           >
-            <Text fontSize={4}>Toilet Location</Text>
+            <Text fontSize={4} fontWeight="bold">
+              Toilet Location{' '}
+              <Text as="span" fontSize={2}>
+                <Link passHref href={`/loos/${looCentre?.id}`}>
+                  (See it on the map)
+                </Link>
+              </Text>
+            </Text>
             <Box css={{ minWidth: '20rem' }} flex={1}>
               {looCentre && (
                 <LooMapLoader
@@ -165,7 +201,9 @@ const LooPage: CustomLooByIdComp = (props) => {
             flex={1}
             css={{ minWidth: '20rem' }}
           >
-            <Text fontSize={4}>Toilet Details (JSON)</Text>
+            <Text fontSize={4} fontWeight="bold">
+              Toilet Details (JSON)
+            </Text>
             <Box flex={1}>
               <CodeViewer
                 onInitializePane={onInitializePane}
