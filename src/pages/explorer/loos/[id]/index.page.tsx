@@ -132,7 +132,7 @@ const LooPage: CustomLooByIdComp = (props) => {
         <Text fontSize={5} fontWeight="bold">
           <h1>{looCentre?.name ?? 'Unnamed toilet'}</h1>
         </Text>
-        <Link passHref href={`/loos/${looCentre.id}`}>
+        <Link passHref href={`/loos/${looCentre?.id}`}>
           See it on the map
         </Link>
 
@@ -151,7 +151,7 @@ const LooPage: CustomLooByIdComp = (props) => {
                 <LooMapLoader
                   focus={looCentre}
                   staticMap={true}
-                  zoom={10}
+                  zoom={14}
                   showControls={false}
                   alwaysShowGeolocateButton={false}
                   controlPositionOverride="bottom"
