@@ -8,7 +8,6 @@ import { withApollo } from '../../../../api-client/withApollo';
 import { GetServerSideProps } from 'next';
 import { ssrFindLooById } from '../../../../api-client/page';
 import { useRouter } from 'next/router';
-import ToiletDetailsPanel from '../../../../components/ToiletDetailsPanel';
 import Notification from '../../../../components/Notification';
 import NotFound from '../../../404.page';
 import { css } from '@emotion/react';
@@ -21,6 +20,7 @@ import LooMapLoader from '../../../../components/LooMap/LooMapLoader';
 import CodeViewer, {
   MonacoOnInitializePane,
 } from '../../../../components/CodeViewer/CodeViewer';
+import Link from 'next/link';
 
 type CustomLooByIdComp = React.FC<{
   data?: FindLooByIdQuery;
@@ -133,6 +133,9 @@ const LooPage: CustomLooByIdComp = (props) => {
         <Text fontSize={5} fontWeight="bold">
           <h1>{looCentre?.name ?? 'Unnamed toilet'}</h1>
         </Text>
+        <Link passHref href={`/loos/${looCentre.id}`}>
+          See it on the map
+        </Link>
 
         <Spacer mb={3} />
         <Box display={'flex'} flexWrap="wrap">
