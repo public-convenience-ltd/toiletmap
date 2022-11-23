@@ -44,7 +44,6 @@ const LooPage: CustomLooByIdComp = (props) => {
   useEffect(
     function setInitialMapCentre() {
       if (
-        (!router.isReady || typeof message !== 'undefined') &&
         looCentre &&
         firstLoad &&
         mapState?.locationServices?.isActive !== true
