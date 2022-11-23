@@ -6,6 +6,7 @@ import {
   useEffect,
   useRef,
 } from 'react';
+import Box from '../Box';
 
 export type MonacoEditorOptions = {
   stopRenderingLineAfter: number;
@@ -25,7 +26,7 @@ export type CodeViewerProps = {
   code: string;
   setCode?: Dispatch<SetStateAction<string>>;
 
-  editorOptions: MonacoEditorOptions;
+  editorOptions?: MonacoEditorOptions;
 
   onInitializePane: MonacoOnInitializePane;
 };
@@ -57,13 +58,14 @@ const CodeViewer = (props: CodeViewerProps): JSX.Element => {
         editorRef.current = editor;
       }}
       options={{
-        ...editorOptions,
+        ...(editorOptions ?? {}),
         fontSize: 15,
         minimap: { enabled: false },
-        lineNumbers: false,
+        lineNumbers: 'off',
       }}
       theme="vs-dark"
       value={code}
+      css={{}}
     />
   );
 };

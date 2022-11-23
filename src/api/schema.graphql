@@ -61,6 +61,7 @@ type Loo {
   paymentDetails: String
   notes: String
   removalReason: String
+  geohash: String
 }
 
 """

@@ -26,7 +26,7 @@ const Stats = ({ data: { statistics } }: { data: StatisticsQuery }) => {
       </VisuallyHidden>
 
       <Container maxWidth={845}>
-        <Text fontSize={6} fontWeight="bold" textAlign="center">
+        <Text fontSize={6} fontWeight="bold">
           <h1>Toilet Map Explorer</h1>
         </Text>
         <Spacer mb={5} />
