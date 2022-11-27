@@ -100,15 +100,18 @@ export const upsertLoo = async (
       update: report.prismaUpdate,
     });
 
-    // We update the loos' location. This is a separate query because Prisma lacks PostGIS support.
-    // Work is underway: https://github.com/prisma/prisma/issues/1798#issuecomment-1319784123
-    // The area is set as a database trigger defined in the `20221112164242_geography-trigger.sql` migration.
-    await setLooLocation(
-      prisma,
-      result.id,
-      report.extras.location.lat,
-      report.extras.location.lng
-    );
+    if (report.extras.location) {
+      // We update the loos' location. This is a separate query because Prisma lacks PostGIS support.
+      // Work is underway: https://github.com/prisma/prisma/issues/1798#issuecomment-1319784123
+      // The area is set as a database trigger defined in the `20221112164242_geography-trigger.sql` migration.
+      await setLooLocation(
+        prisma,
+        result.id,
+        report.extras.location.lat,
+        report.extras.location.lng
+      );
+    }
+
     if (returnFinal) {
       return getLooById(prisma, result.id);
     }

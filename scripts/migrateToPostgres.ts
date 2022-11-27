@@ -5,6 +5,7 @@ import {
   newreports,
   PrismaClient as PrismaClientMongo,
   NewloosProperties,
+  NewreportsDiff,
 } from '../generated/schemaMongo';
 import { SingleBar } from 'cli-progress';
 import { getLooById, upsertArea, upsertLoo } from '../src/api/prisma/queries';
@@ -12,6 +13,37 @@ import { postgresUpsertLooQuery } from '../src/api/graphql/helpers';
 import { expect } from 'chai';
 
 type MongoReportMap = { [reportId: string]: newreports };
+
+type MongoMapKeys = keyof (Omit<newloos, 'properties'> & NewloosProperties);
+const mongoNameMap: { [P in MongoMapKeys]: string } = {
+  accessible: 'accessible',
+  babyChange: 'baby_change',
+  active: 'active',
+  allGender: 'all_gender',
+  attended: 'attended',
+  automatic: 'automatic',
+  children: 'children',
+  createdAt: 'created_at',
+  verifiedAt: 'verified_at',
+  updatedAt: 'updated_at',
+  name: 'name',
+  removalReason: 'removal_reason',
+  id: 'legacy_id',
+  v: undefined,
+  contributors: 'contributors',
+  men: 'men',
+  women: 'women',
+  noPayment: 'no_payment',
+  area: 'areas',
+  campaignUOL: 'campaign_uol',
+  geometry: 'location',
+  notes: 'notes',
+  paymentDetails: 'payment_details',
+  openingTimes: 'opening_times',
+  radar: 'radar',
+  reports: 'reports',
+  urinalOnly: 'urinal_only',
+};
 
 (async () => {
   console.log('Connecting to MongoDB...');
@@ -31,7 +63,7 @@ type MongoReportMap = { [reportId: string]: newreports };
   console.log('Fetching report data from Mongo...');
   const allMongoReports = await mongoPrisma.newreports.findMany();
 
-  const mappedMongoReports: MongoReportMap = {};
+  const mappedMongoReports: Record<string, newreports> = {};
   for (const report of allMongoReports) {
     mappedMongoReports[report.id] = report;
   }
@@ -64,7 +96,7 @@ const upsertAreas = async (prisma: PrismaClient, mongoAreas: areas[]) => {
 
 const upsertLoos = async (
   prisma: PrismaClient,
-  mappedMongoReports: MongoReportMap,
+  allMongoReports: Record<string, newreports>,
   mongoLoos: newloos[]
 ) => {
   console.log('Beginning upsert of loos...');
@@ -80,53 +112,69 @@ const upsertLoos = async (
   let index = 0;
 
   for (const loo of mongoLoos) {
-    const { properties } = loo;
-    const resolvedReports = {};
-    for (const report of loo.reports) {
-      resolvedReports[report] = mappedMongoReports[report];
-    }
-
-    const query = postgresUpsertLooQuery(
-      loo.id,
-      {
-        accessible: properties.accessible,
-        baby_change: properties.babyChange,
-        active: properties.active,
-        all_gender: properties.allGender,
-        attended: properties.attended,
-        automatic: properties.automatic,
-        children: properties.children,
-        created_at: loo.createdAt,
-        verified_at: properties.verifiedAt,
-        updated_at: loo.updatedAt,
-        name: properties.name,
-        removal_reason: properties.removalReason,
-        legacy_id: loo.id,
-        reports: resolvedReports,
-        contributors: loo.contributors,
-        women: properties.women,
-        men: properties.men,
-        no_payment: properties.noPayment,
-        notes: properties.notes,
-        opening_times: properties.openingTimes ?? undefined,
-        payment_details: properties.paymentDetails,
-        radar: properties.radar,
-        urinal_only: properties.urinalOnly,
-      },
-      {
-        lat: properties.geometry.coordinates[1],
-        lng: properties.geometry.coordinates[0],
-      }
+    const currentLooReports = loo.reports.map(
+      (reportId) => mappedMongoReports[reportId]
     );
 
-    await upsertLoo(prisma, query, false);
+    // generate the loo from the sequence of diffs
+    const properties: Partial<NewreportsDiff> = {};
+    // Get just the IDs of the report list to populate Loo metadata
+    const reportIds = currentLooReports.map((val) => val.id);
+
+    // Calculate the Loo's creation and update time - we sort the report creation times to do this since
+    // early reports were ranked on trust as well...
+    const timeline = currentLooReports
+      .map((r) => r.createdAt)
+      .sort((d1, d2) => {
+        if (d1 > d2) return 1;
+        if (d1 < d2) return -1;
+        return 0;
+      });
+
+    const createdAt = timeline[0];
+    const updatedAt = timeline[timeline.length - 1];
+
+    for (const rep of currentLooReports) {
+      for (const [key, value] of Object.entries(rep.diff)) {
+        const mappedKey = mongoNameMap[key];
+        if (value === null) {
+          // null indicates that the value was unset in this report
+          delete properties[mappedKey];
+        } else if (value !== undefined) {
+          if (key === 'geometry') continue;
+          // otherwise, if we have a valid property, update it within the loo
+          properties[mappedKey] = value;
+        }
+      }
+
+      await upsertLoo(
+        prisma,
+        postgresUpsertLooQuery(
+          loo.id,
+          {
+            ...properties,
+            created_at: createdAt,
+            updated_at: updatedAt,
+            legacy_id: loo.id,
+            reports: reportIds,
+            contributors: loo.contributors,
+          },
+          rep.diff?.geometry
+            ? {
+                lat: rep.diff?.geometry.coordinates[1],
+                lng: rep.diff?.geometry.coordinates[0],
+              }
+            : undefined
+        ),
+        false
+      );
+    }
 
     bar.update(index++);
   }
 
   bar.stop();
-
-  console.log('Done.');
+  console.log('Done upserting loo reports.');
 };
 
 const checkDataIntegrity = async (
@@ -152,37 +200,6 @@ const checkDataIntegrity = async (
     for (const report of mongoLoo.reports) {
       resolvedReports[report] = mappedMongoReports[report];
     }
-
-    type MongoMapKeys = keyof (Omit<newloos, 'properties'> & NewloosProperties);
-    const mongoNameMap: { [P in MongoMapKeys]: string } = {
-      accessible: 'accessible',
-      babyChange: 'baby_change',
-      active: 'active',
-      allGender: 'all_gender',
-      attended: 'attended',
-      automatic: 'automatic',
-      children: 'children',
-      createdAt: 'created_at',
-      verifiedAt: 'verified_at',
-      updatedAt: 'updated_at',
-      name: 'name',
-      removalReason: 'removal_reason',
-      id: 'legacy_id',
-      v: undefined,
-      contributors: 'contributors',
-      men: 'men',
-      women: 'women',
-      noPayment: 'no_payment',
-      area: 'areas',
-      campaignUOL: 'campaign_uol',
-      geometry: 'location',
-      notes: 'notes',
-      paymentDetails: 'payment_details',
-      openingTimes: 'opening_times',
-      radar: 'radar',
-      reports: 'reports',
-      urinalOnly: 'urinal_only',
-    };
 
     const flatMongoLoo = {
       ...properties,

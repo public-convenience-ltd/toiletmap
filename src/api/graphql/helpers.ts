@@ -1,5 +1,5 @@
 import { areas, toilets, Prisma } from '@prisma/client';
-import { Loo, PointInput } from '../../api-client/graphql';
+import { Loo } from '../../api-client/graphql';
 import { async as hasha } from 'hasha';
 import { ReportInput } from '../../@types/resolvers-types';
 
@@ -39,11 +39,11 @@ export const selectLegacyOrModernLoo = (
 // Generate a legacy ID for the loo based on the logic used when writing to mongodb.
 export const suggestLegacyLooId = async (
   nickname: string,
-  location: PointInput,
+  coordinates: number[],
   updatedAt: Date
 ): Promise<string> => {
   const input = JSON.stringify({
-    coords: location,
+    coords: coordinates,
     created: updatedAt,
     by: nickname,
   });
@@ -90,7 +90,7 @@ export type ToiletUpsertReport = {
   prismaCreate: Prisma.toiletsCreateInput;
   prismaUpdate: Prisma.toiletsUpdateInput;
   extras: {
-    location: {
+    location?: {
       lat: number;
       lng: number;
     };
@@ -104,8 +104,8 @@ type ToiletsExcludingComputed = Omit<
 
 export const postgresUpsertLooQuery = (
   id: string | number,
-  data: ToiletsExcludingComputed,
-  location: { lat: number; lng: number }
+  data: Partial<ToiletsExcludingComputed> & { legacy_id: string },
+  location?: { lat: number; lng: number }
 ): ToiletUpsertReport => {
   return {
     where: selectLegacyOrModernLoo(id),
@@ -128,7 +128,7 @@ export const postgresUpsertLooQueryFromReport = async (
 
   const legacyId = await suggestLegacyLooId(
     nickname,
-    report.location,
+    [report.location.lng, report.location.lat],
     operationTime
   );
 
