@@ -60,7 +60,7 @@ export const server = createServer({
   endpoint: '/api',
   schema: finalSchema,
   context: async ({ req, res }) => {
-    const revalidate = req.headers.referer.indexOf('message=') > -1;
+    const revalidate = req.headers.referer?.indexOf('message=') > -1;
     let user = null;
     try {
       // Support auth by header (legacy SPA and third-party apps)
