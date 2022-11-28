@@ -74,8 +74,8 @@ export const postgresLooToGraphQL = (
   children: loo.children,
   createdAt: loo.created_at,
   location: {
-    lat: loo.location.coordinates[1],
-    lng: loo.location.coordinates[0],
+    lat: loo.location?.coordinates[1] ?? 0,
+    lng: loo.location?.coordinates[0] ?? 0,
   },
   removalReason: loo.removal_reason,
   radar: loo.radar,
