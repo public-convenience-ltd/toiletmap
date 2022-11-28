@@ -4,7 +4,7 @@ import { getSession } from '@auth0/nextjs-auth0';
 import Cors from 'cors';
 import authDirective from '../../api/directives/authDirective';
 import schema from '../../api-client/schema';
-import { createServer } from '@graphql-yoga/node';
+import { createYoga } from 'graphql-yoga';
 import {
   createInMemoryCache,
   defaultBuildResponseCacheKey,
@@ -56,10 +56,10 @@ const options: VerifyOptions = {
 // Add GraphQL API
 const finalSchema = schema(authDirective);
 
-export const server = createServer({
-  endpoint: '/api',
+export const server = createYoga({
+  graphqlEndpoint: '/api',
   schema: finalSchema,
-  context: async ({ req, res }) => {
+  context: async ({ request: req, res }) => {
     const revalidate = req.headers.referer?.indexOf('message=') > -1;
     let user = null;
     try {

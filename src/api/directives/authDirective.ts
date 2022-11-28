@@ -1,6 +1,5 @@
-import { GraphQLYogaError } from '@graphql-yoga/node';
 import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils';
-import { GraphQLSchema, defaultFieldResolver } from 'graphql';
+import { GraphQLSchema, defaultFieldResolver, GraphQLError } from 'graphql';
 import checkRole from './checkRole';
 
 export default function authDirective(directiveName: string) {
@@ -35,14 +34,14 @@ export default function authDirective(directiveName: string) {
               fieldConfig.resolve = function (source, args, context, info) {
                 if (context && context.user) {
                   if (!checkRole(context.user, requires)) {
-                    throw new GraphQLYogaError(
+                    throw new GraphQLError(
                       'You are not authorized to perform this operation.'
                     );
                   } else {
                     return resolve(source, args, context, info);
                   }
                 } else {
-                  throw new GraphQLYogaError(
+                  throw new GraphQLError(
                     'You must be signed in to perform this operation.'
                   );
                 }
