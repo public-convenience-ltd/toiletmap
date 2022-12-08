@@ -250,11 +250,8 @@ const checkDataIntegrity = async (
           continue;
         }
 
-        // Normalise the parsed JSON reports before comparison.
+        // Reports are now represented by the audit table.
         if (mongoKey === 'reports') {
-          // expect(JSON.parse(JSON.stringify(resolvedReports))).to.eql(
-          //   JSON.parse(JSON.stringify(postgresUpsertResult.reports))
-          // );
           continue;
         }
 

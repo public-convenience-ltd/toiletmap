@@ -615,7 +615,6 @@ CREATE TABLE IF NOT EXISTS public.toilets
     children boolean,
     geohash text COLLATE pg_catalog."default" GENERATED ALWAYS AS (st_geohash(geography)) STORED,
     verified_at timestamptz,
-    reports jsonb,
     area_id integer,
     opening_times jsonb,
     location jsonb GENERATED ALWAYS AS (st_asgeojson((toilets.geography)::geometry)::jsonb) STORED,

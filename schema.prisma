@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["multiSchema", "postgresqlExtensions", "filteredRelationCount"]
+  previewFeatures = ["multiSchema", "filteredRelationCount", "postgresqlExtensions"]
 }
 
 datasource db {
@@ -78,7 +78,6 @@ model toilets {
   children        Boolean?
   geohash         String?                   @default(dbgenerated("st_geohash(geography)"))
   verified_at     DateTime?                 @db.Timestamptz(6)
-  reports         Json?
   area_id         Int?
   opening_times   Json?
   location        Json?                     @default(dbgenerated("(st_asgeojson((geography)::geometry))::jsonb"))
