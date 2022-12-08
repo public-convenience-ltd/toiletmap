@@ -41,7 +41,6 @@ const mongoNameMap: { [P in MongoMapKeys & { _id: string }]: string } = {
   paymentDetails: 'payment_details',
   openingTimes: 'opening_times',
   radar: 'radar',
-  reports: 'reports',
   urinalOnly: 'urinal_only',
 };
 
@@ -142,8 +141,6 @@ const upsertLoos = async (
 
     // generate the loo from the sequence of diffs
     const properties: Partial<NewreportsDiff> = {};
-    // Get just the IDs of the report list to populate Loo metadata
-    const reportIds = currentLooReports.map((val) => val.id);
 
     // Calculate the Loo's creation and update time - we sort the report creation times to do this since
     // early reports were ranked on trust as well...
@@ -185,7 +182,6 @@ const upsertLoos = async (
             updated_at: updatedAt,
             legacy_id: loo.id,
             contributors: loo.contributors,
-            reports: reportIds,
           },
           rep.diff?.geometry
             ? {

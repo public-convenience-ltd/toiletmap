@@ -47,10 +47,6 @@ const resolvers: Resolvers<Context> = {
           .flat()
       ),
     areas: async (_parent, args, { prisma }) => getAreas(prisma),
-    legacyReportsForLoo: async (_parent, args, { prisma }) => {
-      const reports = (await getLooById(prisma, args.id)).reports;
-      return Object.values(reports);
-    },
     statistics: async (_parent, _args, { prisma }) => {
       const activeCountQuery = prisma.toilets.count({
         where: { active: true },
