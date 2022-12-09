@@ -54,8 +54,7 @@ model spatial_ref_sys {
 }
 
 model toilets {
-  id              Int                       @id(map: "toilet_id") @default(autoincrement())
-  legacy_id       String                    @unique(map: "legacy_toilet_id") @db.Char(24)
+  id              String                    @id(map: "toilet_id") @default(dbgenerated("md5((random())::text)")) @db.Char(24)
   created_at      DateTime?                 @db.Timestamptz(6)
   contributors    String[]
   accessible      Boolean?

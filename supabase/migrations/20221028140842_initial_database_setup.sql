@@ -591,8 +591,7 @@ CREATE TRIGGER audit_t
 
 CREATE TABLE IF NOT EXISTS public.toilets
 (
-    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
-    legacy_id character(24) COLLATE pg_catalog."default" NOT NULL,
+    id character(24) DEFAULT md5(random()::text),
     created_at timestamptz,
     contributors text[] COLLATE pg_catalog."default",
     accessible boolean,
@@ -619,7 +618,6 @@ CREATE TABLE IF NOT EXISTS public.toilets
     opening_times jsonb,
     location jsonb GENERATED ALWAYS AS (st_asgeojson((toilets.geography)::geometry)::jsonb) STORED,
     CONSTRAINT toilet_id PRIMARY KEY (id),
-    CONSTRAINT legacy_toilet_id UNIQUE (legacy_id),
     CONSTRAINT toilets___area_id_fk FOREIGN KEY (area_id)
         REFERENCES public.areas (id) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -639,8 +637,7 @@ GRANT ALL ON TABLE public.toilets TO service_role;
 
 GRANT ALL ON TABLE public.toilets TO postgres;
 
-COMMENT ON COLUMN public.toilets.legacy_id
-    IS 'MongoDB id';
+
 
 CREATE TRIGGER audit_i_u_d
     AFTER INSERT OR DELETE OR UPDATE

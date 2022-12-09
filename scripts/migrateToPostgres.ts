@@ -28,7 +28,7 @@ const mongoNameMap: { [P in MongoMapKeys & { _id: string }]: string } = {
   updatedAt: 'updated_at',
   name: 'name',
   removalReason: 'removal_reason',
-  id: 'legacy_id',
+  id: 'id',
   v: undefined,
   contributors: 'contributors',
   men: 'men',
@@ -42,6 +42,37 @@ const mongoNameMap: { [P in MongoMapKeys & { _id: string }]: string } = {
   openingTimes: 'opening_times',
   radar: 'radar',
   urinalOnly: 'urinal_only',
+};
+
+const prepareMongoReport = (report) => {
+  const finalReport = {
+    ...report,
+  };
+  const id = finalReport._id['$oid'];
+  const next = finalReport.next ? finalReport.next['$oid'] : null;
+  const previous = finalReport.previous ? finalReport.previous['$oid'] : null;
+  const createdAt = finalReport.createdAt
+    ? new Date(finalReport.createdAt['$date'])
+    : null;
+  const updatedAt = finalReport.updatedAt
+    ? new Date(finalReport.updatedAt['$date'])
+    : null;
+  const verifiedAt = finalReport.diff?.verifiedAt
+    ? new Date(finalReport.diff.verifiedAt['$date'])
+    : null;
+  finalReport['id'] = id;
+  finalReport['next'] = next;
+  finalReport['previous'] = previous;
+  finalReport['createdAt'] = createdAt;
+  finalReport['updatedAt'] = updatedAt;
+  if (verifiedAt) {
+    finalReport['diff'] = {
+      ...finalReport['diff'],
+      verifiedAt,
+    };
+  }
+  delete finalReport.diff?.campaignUOL;
+  return finalReport;
 };
 
 (async () => {
@@ -65,30 +96,7 @@ const mongoNameMap: { [P in MongoMapKeys & { _id: string }]: string } = {
   const mappedMongoReports: Record<string, newreports> = {};
   for (const report of allMongoReports) {
     const id = report._id['$oid'];
-    const next = report.next ? report.next['$oid'] : null;
-    const previous = report.previous ? report.previous['$oid'] : null;
-    const createdAt = report.createdAt
-      ? new Date(report.createdAt['$date'])
-      : null;
-    const updatedAt = report.updatedAt
-      ? new Date(report.updatedAt['$date'])
-      : null;
-    const verifiedAt = report.diff?.verifiedAt
-      ? new Date(report.diff.verifiedAt['$date'])
-      : null;
-    report['id'] = id;
-    report['next'] = next;
-    report['previous'] = previous;
-    report['createdAt'] = createdAt;
-    report['updatedAt'] = updatedAt;
-    if (verifiedAt) {
-      report['diff'] = {
-        ...report['diff'],
-        verifiedAt,
-      };
-    }
-    delete report.diff?.campaignUOL;
-    mappedMongoReports[id] = report;
+    mappedMongoReports[id] = prepareMongoReport(report);
   }
 
   await upsertAreas(prisma, allMongoAreas);
@@ -180,7 +188,6 @@ const upsertLoos = async (
             ...properties,
             created_at: createdAt,
             updated_at: updatedAt,
-            legacy_id: loo.id,
             contributors: loo.contributors,
           },
           rep.diff?.geometry

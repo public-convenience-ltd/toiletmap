@@ -5,32 +5,19 @@ import { ReportInput } from '../../@types/resolvers-types';
 
 export const isLegacyId = (id: string): boolean => /^\d+$/.test(id) === false;
 
+/**
+ * @todo remove this function.
+ * @deprecated legacy loo ids don't exist anymore.
+ */
 export const selectLegacyOrModernLoo = (
   id?: string | number
 ): Prisma.toiletsWhereUniqueInput => {
-  if (typeof id === 'undefined') {
+  if (typeof id === 'undefined' || typeof id === 'number') {
     return {
-      id: -1,
+      id: '',
     };
   }
 
-  if (typeof id === 'string') {
-    const isModernId = !isLegacyId(id);
-
-    // The id is a valid number in string form, we can assume it's modern.
-    if (isModernId) {
-      return {
-        id: parseInt(id, 10),
-      };
-    }
-
-    // The id can't be casted to a number, we assume it's legacy.
-    return {
-      legacy_id: id,
-    };
-  }
-
-  // The id is a number, it's modern.
   return {
     id,
   };
@@ -103,14 +90,15 @@ type ToiletsExcludingComputed = Omit<
 >;
 
 export const postgresUpsertLooQuery = (
-  id: string | number,
-  data: Partial<ToiletsExcludingComputed> & { legacy_id: string },
+  id: string | undefined,
+  data: Partial<ToiletsExcludingComputed>,
   location?: { lat: number; lng: number }
 ): ToiletUpsertReport => {
   return {
     where: selectLegacyOrModernLoo(id),
     prismaCreate: {
       ...data,
+      id: id,
     },
     prismaUpdate: {
       ...data,
@@ -120,17 +108,11 @@ export const postgresUpsertLooQuery = (
 };
 
 export const postgresUpsertLooQueryFromReport = async (
-  id: string | number,
+  id: string | undefined,
   report: ReportInput,
   nickname: string
 ): Promise<ToiletUpsertReport> => {
   const operationTime = new Date();
-
-  const legacyId = await suggestLegacyLooId(
-    nickname,
-    [report.location.lng, report.location.lat],
-    operationTime
-  );
 
   const looProperties = {
     accessible: report.accessible,
@@ -155,7 +137,6 @@ export const postgresUpsertLooQueryFromReport = async (
     where: selectLegacyOrModernLoo(id),
     prismaCreate: {
       ...looProperties,
-      legacy_id: legacyId,
       created_at: operationTime,
       updated_at: operationTime,
       verified_at: operationTime,

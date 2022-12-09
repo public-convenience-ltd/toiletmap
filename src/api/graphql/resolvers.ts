@@ -81,7 +81,6 @@ const resolvers: Resolvers<Context> = {
       });
 
       try {
-        console.time();
         const [
           activeToiletsCount,
           removedToiletsCount,
@@ -95,7 +94,6 @@ const resolvers: Resolvers<Context> = {
           activeToiletsInAreasQuery,
           removedToiletsInAreasQuery,
         ]);
-        console.timeEnd();
 
         const activeAreas = Object.fromEntries(
           activeToiletsInAreas.map((area) => [area.name, area._count.toilets])
@@ -184,6 +182,7 @@ const resolvers: Resolvers<Context> = {
           args.report,
           nickname
         );
+
         const result = await upsertLoo(prisma, postgresLoo);
 
         return {
