@@ -163,7 +163,9 @@ const upsertLoos = async (
     const createdAt = timeline[0];
     const updatedAt = timeline[timeline.length - 1];
 
+    // Successively apply the diffs to build up the final loo.
     for (const rep of currentLooReports) {
+      // Unroll the current diff and apply it to the WIP loo object.
       for (const [key, value] of Object.entries(rep.diff)) {
         const mappedKey = mongoNameMap[key];
         if (value === null) {
@@ -180,6 +182,7 @@ const upsertLoos = async (
         }
       }
 
+      // After we've unrolled the chain of reports, we're ready to upsert that data that we've collated.
       await upsertLoo(
         prisma,
         postgresUpsertLooQuery(
@@ -253,7 +256,7 @@ const checkDataIntegrity = async (
           continue;
         }
 
-        // Reports are now represented by the audit table.
+        // Reports are now represented by the audit table and not included on the Postgres loo.
         if (mongoKey === 'reports') {
           continue;
         }
@@ -275,6 +278,7 @@ const checkDataIntegrity = async (
         }
 
         // We store unknown areas as null in postgres.
+        // Area membership is computed by a database trigger on upsert.
         if (
           mongoKey === 'area' &&
           flatMongoLoo['area'].name === 'Unknown area'
@@ -283,11 +287,13 @@ const checkDataIntegrity = async (
           continue;
         }
 
+        // Check for parity between the mongo loo and the loo generated from unrolled historical reports.
         const postgresKey = mongoNameMap[mongoKey];
         expect(postgresUpsertResult[postgresKey], postgresKey).to.eql(
           flatMongoLoo[mongoKey]
         );
       } catch (e: unknown) {
+        // Shout about any generated loos that don't match up.
         console.error('Integrity check failed for: ', mongoLoo.id);
         console.error(e);
         console.log(flatMongoLoo[mongoKey]);
