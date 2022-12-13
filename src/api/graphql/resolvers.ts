@@ -16,7 +16,6 @@ import {
 
 import { Context } from './context';
 import {
-  isLegacyId,
   postgresLooToGraphQL,
   postgresUpsertLooQueryFromReport,
 } from './helpers';
@@ -133,23 +132,6 @@ const resolvers: Resolvers<Context> = {
     // In the future this will need to be zipped with the legacy reports stored
     // under the `reports` column on the loo table and imported during the migration.
     reportsForLoo: async (_parent, args, { prisma }) => {
-      if (isLegacyId(args.id)) {
-        const reports = await prisma.record_version.findMany({
-          where: {
-            record: {
-              path: ['legacy_id'],
-              equals: args.id,
-            },
-          },
-          select: {
-            record: true,
-          },
-        });
-        return reports
-          .filter((r) => r.record?.type == undefined)
-          .map((r) => postgresLooToGraphQL(r.record));
-      }
-
       const reports = await prisma.record_version.findMany({
         where: {
           record: {

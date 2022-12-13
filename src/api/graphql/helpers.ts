@@ -42,7 +42,6 @@ export const postgresLooToGraphQL = (
   loo: toilets & { areas?: Partial<areas> }
 ): Loo => ({
   id: loo.id.toString(),
-  legacy_id: loo.legacy_id,
   geohash: loo.geohash,
   women: loo.women,
   men: loo.men,

@@ -23,30 +23,20 @@ export const getLooNamesByIds = async (
 ) => {
   return prisma.toilets.findMany({
     where: {
-      OR: [
-        {
-          legacy_id: {
-            in: idList,
-          },
-        },
-        {
-          id: {
-            in: idList.map((id) => parseInt(id)),
-          },
-        },
-      ],
+      id: {
+        in: idList,
+      },
     },
     select: {
       id: true,
       name: true,
-      legacy_id: true,
     },
   });
 };
 
 export const setLooLocation = async (
   prisma: PrismaClient,
-  id: number,
+  id: string,
   lat: number,
   lng: number
 ) => {
@@ -202,7 +192,7 @@ export const getLoosByProximity = async (
 ) => {
   const nearbyLoos = (await prisma.$queryRaw`
         SELECT
-          loo.id, loo.legacy_id, loo.name, active, men, women, no_payment, notes, opening_times, payment_details,
+          loo.id, loo.name, active, men, women, no_payment, notes, opening_times, payment_details,
           accessible, active, all_gender, attended, automatic, location, baby_change, children, created_at,
           removal_reason, radar, urinal_only, verified_at,updated_at,
           st_distancesphere(
