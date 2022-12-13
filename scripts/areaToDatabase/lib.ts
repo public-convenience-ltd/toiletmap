@@ -1,5 +1,20 @@
 #!/usr/bin/env node
 
+
+/**
+ * IMPORTANT NOTICE, PLEASE READ (seriously, please read):
+ *
+ * This script hasn't been updated to support Postgres yet.
+ * For the postgres migration, we copied the area data directly across from mongo as it rarely changes.
+ *
+ * In the future we will need to update this script to support Postgres.
+ * This is not critical, but important in case we ever want to update our area data.
+ *
+ * A hack to get this script working with Postgres would be to:
+ * 1. Create a new mongo database and populate it with the area data.
+ * 2. Run the `upsertAreas` script from [migrateToPostgres](../migrateToPostgres.ts) to populate the postgres database with the area data from the mongo db.
+ */
+
 /* eslint no-loop-func: "off" */
 
 import path from 'path';
@@ -284,38 +299,40 @@ async function updateDataset(dataset, dryrun) {
 
 /**
  * Update loos to be within new areas
+ *
+ * NOTE: This is now handled by a postgres database trigger.
  */
-async function updateLoos(dryrun) {
-  if (dryrun) {
-    console.log('Would update loos with new areas');
-    return true;
-  }
+// async function updateLoos(dryrun) {
+//   if (dryrun) {
+//     console.log('Would update loos with new areas');
+//     return true;
+//   }
 
-  console.log('Updating loos with new areas...');
-  const loos = await Loo.find({}).exec();
+//   console.log('Updating loos with new areas...');
+//   const loos = await Loo.find({}).exec();
 
-  const total = loos.length;
-  let saved = 0;
-  bar.start(total, 0);
-  for (const loo of loos) {
-    let areas = await Area.containing(loo.properties.geometry.coordinates);
-    if (areas.length === 0) {
-      areas = [
-        {
-          name: 'Unknown area',
-          type: 'Unknown',
-        },
-      ];
-    }
+//   const total = loos.length;
+//   let saved = 0;
+//   bar.start(total, 0);
+//   for (const loo of loos) {
+//     let areas = await Area.containing(loo.properties.geometry.coordinates);
+//     if (areas.length === 0) {
+//       areas = [
+//         {
+//           name: 'Unknown area',
+//           type: 'Unknown',
+//         },
+//       ];
+//     }
 
-    loo.properties.area = areas;
-    await loo.save((err) => {
-      if (err) {
-        console.error(`Error updating loo: ${err.message}`);
-      }
-    });
-    bar.update(++saved);
-  }
+//     loo.properties.area = areas;
+//     await loo.save((err) => {
+//       if (err) {
+//         console.error(`Error updating loo: ${err.message}`);
+//       }
+//     });
+//     bar.update(++saved);
+//   }
 
   bar.stop();
   console.log(`${saved} loos updated`);
