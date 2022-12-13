@@ -19,15 +19,15 @@ describe('Home page tests', () => {
       cy.visit('/');
       cy.findByPlaceholderText('Search location…').type('Hammersmith');
       cy.get('#search-results-item-0').click();
-      cy.get('[data-toiletid=1540]').should('exist');
-      cy.get('[data-toiletid=1540]').click();
+      cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
+      cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').click();
       cy.contains('limping comfort');
     });
 
     it('should bundle and un-bundle markers based on the zoom level', () => {
       cy.visit('/').wait(500);
-      cy.get('[data-toiletid=2671]').should('exist');
-      cy.get('[data-toilets*=2671]').should('not.exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
       cy.get('#gbptm-map').trigger('wheel', {
         deltaY: 66.666666,
         wheelDelta: 120,
@@ -35,8 +35,8 @@ describe('Home page tests', () => {
         wheelDeltaY: -500,
         bubbles: true,
       });
-      cy.get('[data-toiletid=2671]').should('not.exist');
-      cy.get('[data-toilets*=2671]').should('exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
+      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.wait(500);
       cy.get('#gbptm-map').trigger('wheel', {
         deltaY: 66.666666,
@@ -45,13 +45,13 @@ describe('Home page tests', () => {
         wheelDeltaY: 500,
         bubbles: true,
       });
-      cy.get('[data-toiletid=2671]').should('exist');
-      cy.get('[data-toilets*=2671]').should('not.exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
     });
 
     it('should unbundle markers when the bundle is clicked', () => {
       cy.visit('/').wait(500);
-      cy.get('[data-toiletid=2671]').should('exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.get('#gbptm-map').trigger('wheel', {
         deltaY: 66.666666,
         wheelDelta: 120,
@@ -59,9 +59,11 @@ describe('Home page tests', () => {
         wheelDeltaY: -500,
         bubbles: true,
       });
-      cy.get('[data-toiletid=2671]').should('not.exist').wait(500);
-      cy.get('[data-toilets*=2671]').click();
-      cy.get('[data-toiletid=2671]').should('exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]')
+        .should('not.exist')
+        .wait(500);
+      cy.get('[data-toilets*=ddad1ed1b91d99ed2bf3bcdf]').click();
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
     });
 
     it('should load different toilets when the map is dragged', () => {
@@ -76,8 +78,8 @@ describe('Home page tests', () => {
           bubbles: true,
         })
         .wait(500);
-      cy.get('[data-toiletid=2671]').should('exist');
-      cy.get('[data-toiletid=2012]').should('not.exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=cc4e5e9b83de8dd9ba87b3eb]').should('not.exist');
       cy.get('#gbptm-map')
         .trigger('mousedown', { which: 1 })
         .trigger('mousemove', { which: 1, x: 1000, y: 0 })
@@ -99,8 +101,8 @@ describe('Home page tests', () => {
         .trigger('mousemove', { which: 1, x: 600, y: 0 })
         .trigger('mouseup');
 
-      cy.get('[data-toiletid=2671]').should('not.exist');
-      cy.get('[data-toiletid=2012]').should('exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('not.exist');
+      cy.get('[data-toiletid=cc4e5e9b83de8dd9ba87b3eb]').should('exist');
     });
 
     isPermissionAllowed('geolocation') &&
@@ -124,7 +126,7 @@ describe('Home page tests', () => {
 
         // Check that we land in Ealing
 
-        cy.get('[data-toiletid=3428]')
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]')
           .click({
             force: true,
           })
@@ -154,7 +156,7 @@ describe('Home page tests', () => {
 
         // Check that we land in Ealing
 
-        cy.get('[data-toiletid=3428]')
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]')
           .click({
             force: true,
           })
@@ -183,11 +185,11 @@ describe('Home page tests', () => {
         cy.get('b').contains('Find').click().wait(500);
 
         // Check that we land in Ealing
-        cy.get('[data-toiletid=3428]').should('exist');
+        cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');
 
         cy.findByPlaceholderText('Search location…').type('Hammersmith');
         cy.get('#search-results-item-0').click();
-        cy.get('[data-toiletid=1540]').should('exist');
+        cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
       });
 
     it('should update the accessibility overlay list when the user pans or zooms', () => {
@@ -197,7 +199,7 @@ describe('Home page tests', () => {
       }
 
       cy.visit('/').wait(500);
-      cy.get('[data-toiletid=2671]').should('exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.get('#gbptm-map').focus().wait(500);
       cy.get('.accessibility-box').should('exist');
       cy.contains("Use number keys to show a toilet's details");
@@ -233,7 +235,7 @@ describe('Home page tests', () => {
         return;
       }
       cy.visit('/').wait(500);
-      cy.get('[data-toiletid=2671]').should('exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       // Focus the map, turning on the accessibility overlay
       cy.get('#gbptm-map').focus();
       cy.contains("Use number keys to show a toilet's details");
@@ -276,7 +278,7 @@ describe('Home page tests', () => {
 
     it('should open the toilet details panel when a marker is clicked', () => {
       cy.visit('/').wait(500);
-      cy.get('[data-toiletid=2671]').click({ force: true });
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').click({ force: true });
 
       cy.url().should('include', '/loos/2671');
 
@@ -332,20 +334,20 @@ describe('Home page tests', () => {
     it('should filter toilets based on applied filter toggles', () => {
       cy.visit('/').wait(500);
       cy.findByText('Filter').click();
-      cy.get('[data-toiletid=2794]').should('exist');
-      cy.get('[data-toiletid=2671]').should('exist');
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.findByText('Baby Changing')
         .siblings()
         .get('[aria-labelledby=filter-babyChange]')
         .click();
-      cy.get('[data-toiletid=2671]').should('exist');
-      cy.get('[data-toiletid=2794]').should('not.exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('not.exist');
       cy.findByText('Baby Changing')
         .siblings()
         .get('[aria-labelledby=filter-babyChange]')
         .click();
-      cy.get('[data-toiletid=2671]').should('exist');
-      cy.get('[data-toiletid=2794]').should('exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
     });
 
     it('should apply multiple filters', () => {
@@ -369,9 +371,11 @@ describe('Home page tests', () => {
         })
         .wait(500);
 
-      cy.get('[data-toilets*=3421]').click({ force: true }).wait(500);
+      cy.get('[data-toilets*=05a8ddcad8fdca635f5dbdb0]')
+        .click({ force: true })
+        .wait(500);
 
-      cy.get('[data-toiletid=3421]').click({ force: true });
+      cy.get('[data-toiletid=05a8ddcad8fdca635f5dbdb0]').click({ force: true });
       cy.findByText('Free').siblings().get(`[aria-label=Available]`);
       cy.get('body').trigger('keydown', { key: 'Escape' });
       cy.findByText('Filter').click();
@@ -392,7 +396,7 @@ describe('Home page tests', () => {
         })
         .wait(500);
 
-      cy.get('[data-toiletid=1708]').click({ force: true });
+      cy.get('[data-toiletid=be23c4bb6fdbbdc6ee6e2aad]').click({ force: true });
       cy.findByText('Free').siblings().get(`[aria-label=Available]`);
       cy.findByText('Baby Changing').siblings().get(`[aria-label=Available]`);
       cy.get('body').trigger('keydown', { key: 'Escape' });
@@ -414,7 +418,7 @@ describe('Home page tests', () => {
         })
         .wait(500);
 
-      cy.get('[data-toiletid=1891]').click({ force: true });
+      cy.get('[data-toiletid=3f8b1fff5d1107ff2cac636b]').click({ force: true });
       cy.findByText('Free').siblings().get(`[aria-label=Available]`);
       cy.findByText('Baby Changing').siblings().get(`[aria-label=Available]`);
       cy.findByText('Accessible').siblings().get(`[aria-label=Available]`);
@@ -437,7 +441,7 @@ describe('Home page tests', () => {
         })
         .wait(500);
 
-      cy.get('[data-toiletid=2366]').click({ force: true });
+      cy.get('[data-toiletid=c109d92ff0a706bab071ed8f]').click({ force: true });
       cy.findByText('Free').siblings().get(`[aria-label=Available]`);
       cy.findByText('Baby Changing').siblings().get(`[aria-label=Available]`);
       cy.findByText('Accessible').siblings().get(`[aria-label=Available]`);
@@ -461,7 +465,7 @@ describe('Home page tests', () => {
         })
         .wait(500);
 
-      cy.get('[data-toiletid=1942]').click({ force: true });
+      cy.get('[data-toiletid=3ae59cf0efe2c64aefd15ed7]').click({ force: true });
       cy.findByText('Free').siblings().get(`[aria-label=Available]`);
       cy.findByText('Baby Changing').siblings().get(`[aria-label=Available]`);
       cy.findByText('Accessible').siblings().get(`[aria-label=Available]`);
@@ -477,14 +481,14 @@ describe('Home page tests', () => {
     it('should retain filters when the page is reloaded and reset them when reset button clicked', () => {
       cy.visit('/').wait(500);
       cy.findByText('Filter').click();
-      cy.get('[data-toiletid=2794]').should('exist');
-      cy.get('[data-toiletid=2671]').should('exist');
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.findByText('Baby Changing')
         .siblings()
         .get('[aria-labelledby=filter-babyChange]')
         .click();
-      cy.get('[data-toiletid=2671]').should('exist');
-      cy.get('[data-toiletid=2794]').should('not.exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('not.exist');
 
       cy.reload().wait(500);
 
@@ -494,17 +498,17 @@ describe('Home page tests', () => {
         .siblings()
         .get('[aria-labelledby=filter-babyChange]');
 
-      cy.get('[data-toiletid=2671]').should('exist');
-      cy.get('[data-toiletid=2794]').should('not.exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('not.exist');
 
       cy.findByText('Reset Filter').click();
-      cy.get('[data-toiletid=2794]').should('exist');
-      cy.get('[data-toiletid=2671]').should('exist');
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
+      cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
     });
 
     it('should collapse the toilet panel when the close button is clicked and reopen when details is clicked', () => {
       cy.visit('/').wait(500);
-      cy.get('[data-toiletid=2794]').click({ force: true });
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
       cy.get('[aria-label="Close toilet details"]').click();
 
       cy.url().should('include', '/loos/2794');
@@ -526,7 +530,7 @@ describe('Home page tests', () => {
 
     it('should close the toilet panel fully when the close button is clicked twice', () => {
       cy.visit('/');
-      cy.get('[data-toiletid=2794]').click({ force: true });
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
       cy.url().should('include', '/loos/2794');
       cy.get('[aria-label="Close toilet details"]').scrollIntoView().click();
       cy.contains('Close').scrollIntoView().click();
@@ -535,7 +539,7 @@ describe('Home page tests', () => {
 
     it('should close the toilet panel when the esc key is pressed', () => {
       cy.visit('/').wait(500);
-      cy.get('[data-toiletid=2794]').click({ force: true });
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
       cy.url().should('include', '/loos/2794');
       cy.contains('guilty illiteracy');
       cy.contains('Features');
@@ -550,7 +554,7 @@ describe('Home page tests', () => {
 
     it('should go to the edit page if the toilet edit button is clicked', () => {
       cy.visit('/').wait(500);
-      cy.get('[data-toiletid=2794]').click({ force: true });
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
       cy.findByText('Edit').scrollIntoView().click();
       cy.url().should('include', 'loos/2794/edit');
       cy.contains('Want to Contribute Toilet Data?');
@@ -558,7 +562,7 @@ describe('Home page tests', () => {
 
     it('should open directions if the directions button is clicked', () => {
       cy.visit('/').wait(500);
-      cy.get('[data-toiletid=2794]').click({ force: true });
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
 
       cy.findByText('Directions')
         .scrollIntoView()
@@ -568,7 +572,7 @@ describe('Home page tests', () => {
 
     it('should allow users to confirm that the toilet information is correct', () => {
       cy.visit('/').wait(500);
-      cy.get('[data-toiletid=2794]').click({ force: true });
+      cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
       cy.intercept('POST', '/api', (req) => {
         expect(req.body.operationName).to.equal(
           'submitVerificationReportMutation'

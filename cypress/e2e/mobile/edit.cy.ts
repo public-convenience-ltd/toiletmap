@@ -184,7 +184,7 @@ describe('Edit page tests', () => {
       cy.findByPlaceholderText('Search location…').type('ditton park manor');
       cy.get('#search-results-item-0').click();
 
-      cy.get('[data-toiletid=3154]').should('exist');
+      cy.get('[data-toiletid=ca6249ebcd1490e2aaccc5be]').should('exist');
     });
 
     it('should update the location of the toilet through a location search', () => {
@@ -200,7 +200,7 @@ describe('Edit page tests', () => {
       cy.findByPlaceholderText('Search location…').type('Norwich');
       cy.get('#search-results-item-0').click();
 
-      cy.get('[data-toiletid=3154]').should('exist');
+      cy.get('[data-toiletid=ca6249ebcd1490e2aaccc5be]').should('exist');
     });
   });
 });

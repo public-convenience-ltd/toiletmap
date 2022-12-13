@@ -36,7 +36,7 @@ describe('Adding new toilets to the platform', () => {
     it('should load the add toilet page at the specified latitude and longitude', () => {
       cy.visit('/loos/add?lat=51.61008861374827&lng=0.10883331298828125');
       cy.contains('Align the crosshair');
-      cy.get('[data-toiletid=1479]').should('exist');
+      cy.get('[data-toiletid=8e4a982a402cbbebb1147340]').should('exist');
     });
 
     const generateToiletSettings = () => {

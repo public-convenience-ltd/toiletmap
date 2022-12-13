@@ -180,7 +180,7 @@ describe('Edit page tests', () => {
       cy.findByPlaceholderText('Search location…').type('ashford common');
       cy.get('#search-results-item-0').click();
 
-      cy.get('[data-toiletid=1146]').should('exist');
+      cy.get('[data-toiletid=e0ba1aeea36ecf58d5ae6dd2]').should('exist');
     });
 
     it('should update the location of the toilet through a location search', () => {
@@ -196,7 +196,7 @@ describe('Edit page tests', () => {
       cy.findByPlaceholderText('Search location…').type('birmingham');
       cy.get('#search-results-item-0').click();
 
-      cy.get('[data-toiletid=1146]').should('exist');
+      cy.get('[data-toiletid=e0ba1aeea36ecf58d5ae6dd2]').should('exist');
     });
   });
 });
