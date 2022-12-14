@@ -16,7 +16,7 @@ describe.skip('Remove page tests', () => {
     });
 
     it('should remove a toilet successfully when going through the removal flow', () => {
-      cy.visit('/loos/3161/remove');
+      cy.visit('/loos/1dd2dd8c7cb5c3fd8e956fce/remove');
 
       // Check the page content.
       cy.contains('Toilet Remover');

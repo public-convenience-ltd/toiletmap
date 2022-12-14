@@ -221,7 +221,7 @@ describe('Home page tests', () => {
             .focus()
             .wait(200)
             .type(keySelector, { delay: 200 });
-          cy.url().should('include', '/loos/2671');
+          cy.url().should('include', '/loos/ddad1ed1b91d99ed2bf3bcdf');
           // Check that the loo we picked is now highlighted.
           cy.get('#highlighted-loo').invoke('attr', 'data-toiletid', '2671');
           // Check that the accessibility view is hidden
@@ -248,7 +248,7 @@ describe('Home page tests', () => {
       cy.visit('/').wait(500);
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').click({ force: true });
 
-      cy.url().should('include', '/loos/2671');
+      cy.url().should('include', '/loos/ddad1ed1b91d99ed2bf3bcdf');
 
       // Check that the loo we picked is now highlighted.
       cy.get('#highlighted-loo').invoke('attr', 'data-toiletid', '2671');
@@ -341,7 +341,7 @@ describe('Home page tests', () => {
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
       cy.get('[aria-label="Close toilet details"]').click();
 
-      cy.url().should('include', '/loos/2794');
+      cy.url().should('include', '/loos/ab2ebfbdadb963aed4cb3b65');
 
       cy.contains('guilty illiteracy');
       cy.contains('Features').should('not.exist');
@@ -368,10 +368,10 @@ describe('Home page tests', () => {
         bubbles: true,
       });
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
-      cy.url().should('include', '/loos/2794');
+      cy.url().should('include', '/loos/ab2ebfbdadb963aed4cb3b65');
       cy.get('[aria-label="Close toilet details"]').scrollIntoView().click();
       cy.contains('Close').scrollIntoView().click();
-      cy.url().should('not.include', '/loos/2794');
+      cy.url().should('not.include', '/loos/ab2ebfbdadb963aed4cb3b65');
     });
 
     it('should close the toilet panel when the esc key is pressed', () => {
@@ -384,7 +384,7 @@ describe('Home page tests', () => {
         bubbles: true,
       });
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
-      cy.url().should('include', '/loos/2794');
+      cy.url().should('include', '/loos/ab2ebfbdadb963aed4cb3b65');
       cy.contains('guilty illiteracy');
       cy.contains('Features');
       cy.contains('Opening Hours');
@@ -393,7 +393,7 @@ describe('Home page tests', () => {
       cy.contains('Features').should('not.exist');
       cy.contains('Opening Hours').should('not.exist');
       cy.get('body').trigger('keydown', { key: 'Escape' });
-      cy.url().should('not.include', '/loos/2794');
+      cy.url().should('not.include', '/loos/ab2ebfbdadb963aed4cb3b65');
     });
 
     it('should go to the edit page if the toilet edit button is clicked', () => {
@@ -407,7 +407,7 @@ describe('Home page tests', () => {
       });
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
       cy.findByText('Edit').scrollIntoView().click();
-      cy.url().should('include', 'loos/2794/edit');
+      cy.url().should('include', 'loos/ab2ebfbdadb963aed4cb3b65/edit');
       cy.contains('Want to Contribute Toilet Data?');
     });
 
