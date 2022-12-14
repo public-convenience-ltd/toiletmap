@@ -20,16 +20,16 @@ while getopts 'lhd:' OPTION; do
     echo "Running cypress tests in headless mode"
     pnpm build
     if [[ -z "${CYPRESS_RECORD_KEY}" ]]; then
-      pnpm start-server-and-test start http://localhost:3000 cypress:headless
+      pnpm start-server-and-test start http://0.0.0.0:3000 cypress:headless
     else
 
-      pnpm start-server-and-test start http://localhost:3000 cypress:headless:record
+      pnpm start-server-and-test start http://0.0.0.0:3000 cypress:headless:record
     fi
     exit 1
     ;;
   d)
     echo "Running cypress tests in development mode"
-    pnpm start-server-and-test dev http://localhost:3000 cypress:open
+    pnpm start-server-and-test dev http://0.0.0.0:3000 cypress:open
     exit 1
     ;;
   ?)
@@ -41,4 +41,4 @@ done
 
 echo "Running cypress tests"
 pnpm build
-pnpm start-server-and-test start http://localhost:3000 cypress:open
+pnpm start-server-and-test start http://0.0.0.0:3000 cypress:open
