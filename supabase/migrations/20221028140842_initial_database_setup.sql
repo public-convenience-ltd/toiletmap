@@ -591,7 +591,7 @@ CREATE TRIGGER audit_t
 
 CREATE TABLE IF NOT EXISTS public.toilets
 (
-    id character(24) DEFAULT md5(random()::text),
+    id TEXT DEFAULT md5(random()::text),
     created_at timestamptz,
     contributors text[] COLLATE pg_catalog."default",
     accessible boolean,
