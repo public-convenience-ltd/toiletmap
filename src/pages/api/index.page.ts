@@ -1,6 +1,7 @@
 import jwt, { VerifyOptions } from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { getSession } from '@auth0/nextjs-auth0';
+
 import Cors from 'cors';
 import authDirective from '../../api/directives/authDirective';
 import schema from '../../api-client/schema';
@@ -59,7 +60,7 @@ const finalSchema = schema(authDirective);
 export const server = createYoga({
   graphqlEndpoint: '/api',
   schema: finalSchema,
-  context: async ({ request: req, res }) => {
+  context: async ({ req, res }) => {
     const revalidate = req.headers.referer?.indexOf('message=') > -1;
     let user = null;
     try {
