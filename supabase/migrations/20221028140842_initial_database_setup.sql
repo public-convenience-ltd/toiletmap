@@ -295,8 +295,8 @@ $$;
 -- DROP EXTENSION postgis;
 
 CREATE EXTENSION IF NOT EXISTS postgis
-    SCHEMA public
-    VERSION '3.1.4';
+    SCHEMA public;
+    -- VERSION '3.1.4';
 
 CREATE OR REPLACE FUNCTION audit.to_record_id(
 	entity_oid oid,
