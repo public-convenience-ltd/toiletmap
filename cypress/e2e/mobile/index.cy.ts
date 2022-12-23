@@ -235,7 +235,7 @@ describe('Home page tests', () => {
           cy.contains('Features');
           cy.contains('Opening Hours');
           // Check that today is highlighted
-          const dayOfWeekName = new Date().toLocaleString('default', {
+          const dayOfWeekName = new Date().toLocaleString('en-GB', {
             weekday: 'long',
           });
           cy.findByText(dayOfWeekName)
@@ -259,7 +259,7 @@ describe('Home page tests', () => {
       cy.contains('Opening Hours');
 
       // Check that today is highlighted
-      const dayOfWeekName = new Date().toLocaleString('default', {
+      const dayOfWeekName = new Date().toLocaleString('en-GB', {
         weekday: 'long',
       });
 
@@ -291,7 +291,7 @@ describe('Home page tests', () => {
       cy.contains('vigilant toilet!! indeed photoreceptor crown!');
 
       // Check last verified
-      cy.contains('19/11/2022');
+      cy.contains('13/12/2022');
       // cy.contains(
       //   new Date(Date.now())
       //     .toLocaleString(new Intl.Locale('en-gb'))
