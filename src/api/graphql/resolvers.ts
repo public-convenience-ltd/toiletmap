@@ -128,9 +128,6 @@ const resolvers: Resolvers<Context> = {
       }
     },
     // This collates records from the audit table and compiles them into reports.
-    //
-    // In the future this will need to be zipped with the legacy reports stored
-    // under the `reports` column on the loo table and imported during the migration.
     reportsForLoo: async (_parent, args, { prisma }) => {
       const reports = await prisma.record_version.findMany({
         where: {
@@ -138,7 +135,6 @@ const resolvers: Resolvers<Context> = {
             path: ['id'],
             equals: args.id,
           },
-          AND: {},
         },
         select: {
           record: true,
@@ -146,7 +142,6 @@ const resolvers: Resolvers<Context> = {
       });
 
       // Filter out records with a `type` property. These are not loo records, they are areas.
-      // TODO: find a safer way to do this.
       return reports
         .filter((r) => r.record?.type == undefined)
         .map((r) => postgresLooToGraphQL(r.record));
