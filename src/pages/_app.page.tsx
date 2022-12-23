@@ -15,7 +15,6 @@ const App = (props) => {
   const sharedStatePaths = ['/', '/loos/[id]'];
   const key =
     sharedStatePaths.indexOf(router.pathname) > -1 ? 'shared' : router.asPath;
-
   const renderedMap = useMemo(
     () =>
       key === 'shared' ? (

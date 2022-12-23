@@ -23,7 +23,7 @@ import config from '../../config';
 import { usePlausible } from 'next-plausible';
 import dynamic from 'next/dynamic';
 
-const Drawer = dynamic(() => import('../Drawer'), { ssr: false });
+const Drawer = dynamic(() => import('../Drawer/Drawer'));
 
 interface Props {
   isExpanded?: boolean;

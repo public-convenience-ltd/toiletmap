@@ -94,7 +94,11 @@ const AboutPage = () => {
           to download below.
         </p>
         <Spacer mb={2} />
-        <Link passHref href="Toilet.Map.Volunteer.Help.Guide.pdf" legacyBehavior>
+        <Link
+          passHref
+          href="Toilet.Map.Volunteer.Help.Guide.pdf"
+          legacyBehavior
+        >
           <Button
             as="a"
             variant="primary"
@@ -168,7 +172,7 @@ const AboutPage = () => {
         </p>
         <SubHeading>The Explorer</SubHeading>
         <p>
-          <Link passHref href="/explorer" legacyBehavior>
+          <Link passHref href="/explorer" prefetch={false} legacyBehavior>
             <Button variant="link" as="a">
               Visit the Explorer
             </Button>

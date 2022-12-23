@@ -352,7 +352,11 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         </Box>
         <Spacer mb={[0, 2]} />
         Last {verifiedOrUpdated}:{' '}
-        <Link href={`/explorer/loos/${data.id}`} legacyBehavior>
+        <Link
+          href={`/explorer/loos/${data.id}`}
+          prefetch={false}
+          legacyBehavior
+        >
           {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
         </Link>
       </Box>
