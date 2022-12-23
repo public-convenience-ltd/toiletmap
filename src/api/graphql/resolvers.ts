@@ -136,7 +136,7 @@ const resolvers: Resolvers<Context> = {
         where: {
           record: {
             path: ['id'],
-            equals: parseInt(args.id),
+            equals: args.id,
           },
           AND: {},
         },
