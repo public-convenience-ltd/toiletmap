@@ -146,26 +146,68 @@ const resolvers: Resolvers<Context> = {
         },
       });
 
-      const reportsWithoutAreas = auditRecords.map((r) => r.record);
+      const locationRecordsCoalesced = auditRecords.reduce(
+        (previousValue, current) => {
+          if (previousValue.length) {
+            const prev = previousValue[previousValue.length - 1].record;
+
+            const prevContributor =
+              prev?.contributors[prev.contributors.length - 1];
+            const currentContributor =
+              current.record?.contributors[
+                current.record.contributors.length - 1
+              ];
+
+            console.log(prevContributor, currentContributor);
+            if (prevContributor === currentContributor) {
+              const prevLocation = prev?.location;
+              const currentLocation = current.record?.location;
+
+              if (prevLocation?.lat !== currentLocation?.lat) {
+                return [...previousValue, current];
+              } else if (prevLocation?.lng !== currentLocation?.lng) {
+                return [...previousValue, current];
+              } else {
+                previousValue[previousValue.length - 1].record = {
+                  ...prev,
+                  location: currentLocation,
+                  area_id: current.record?.area_id,
+                  geohash: current.record?.geohash,
+                  geography: current.record?.geography,
+                };
+                return previousValue;
+              }
+            }
+          }
+          return [...previousValue, current];
+
+          // If two in  a row and same contributor
+          // AND the latter changes the location
+          // THEN merge them
+        },
+        []
+      );
+
+      const reportsWithoutAreas = locationRecordsCoalesced.map((r) => r.record);
 
       const postgresAuditRecordToGraphQLReport = (record: any): Report => {
-        console.log(record);
         return {
           createdAt: record.record?.createdAt,
           contributor: record.contributors[record.contributors.length - 1],
           id: record.record?.id,
-          location: record.location ?? {
-            lat: 1.0,
-            lng: 1.0,
-            __typename: 'Location',
+          location: {
+            lat: record.location?.coordinates[1] ?? 0,
+            lng: record.location?.coordinates[0] ?? 0,
           },
         };
       };
 
       // Filter out records with a `type` property. These are not loo records, they are areas.
-      return reportsWithoutAreas.map((r) =>
+      const f = reportsWithoutAreas.map((r) =>
         postgresAuditRecordToGraphQLReport(r)
       );
+      console.log(f.map((r) => r.location));
+      return f;
     },
   },
   Mutation: {

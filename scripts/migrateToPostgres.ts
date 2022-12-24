@@ -274,18 +274,6 @@ const checkDataIntegrity = async (
           continue;
         }
 
-        if (mongoKey === 'contributors') {
-          const postgresKey = mongoNameMap['contributors'];
-          const postgresContributors = postgresUpsertResult[postgresKey].filter(
-            (contributor) => contributor !== 'system_reserved'
-          );
-
-          expect(postgresContributors, postgresKey).to.eql(
-            flatMongoLoo[mongoKey]
-          );
-          continue;
-        }
-
         // Check the lat/lng floats are within 0.000000001 of the expected value.
         // Source of truth in postgres is the PostGIS geometry type, so we need to
         // check the lat/lng values are within a reasonable tolerance against
