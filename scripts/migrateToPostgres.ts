@@ -89,6 +89,13 @@ const prepareMongoReport = (report) => {
 
   console.log('Fetching loo data from Mongo...');
   const allMongoLoos = await mongoPrisma.newloos.findMany();
+  // const allMongoLoos = [
+  //   await mongoPrisma.newloos.findUnique({
+  //     where: {
+  //       id: '5cd2332715ccbc4a17aac269',
+  //     },
+  //   }),
+  // ];
 
   console.log('Fetching report data from Mongo...');
   const allMongoReports = await mongoPrisma.newreports.findRaw();
@@ -162,6 +169,7 @@ const upsertLoos = async (
 
     const createdAt = timeline[0];
     const updatedAt = timeline[timeline.length - 1];
+    const contributorBuild = [];
 
     // Successively apply the diffs to build up the final loo.
     for (const rep of currentLooReports) {
@@ -182,6 +190,9 @@ const upsertLoos = async (
         }
       }
 
+      // Build up the contributor list as we go.
+      contributorBuild.push(rep.contributor);
+
       // After we've unrolled the chain of reports, we're ready to upsert that data that we've collated.
       await upsertLoo(
         prisma,
@@ -191,7 +202,7 @@ const upsertLoos = async (
             ...properties,
             created_at: createdAt,
             updated_at: updatedAt,
-            contributors: loo.contributors,
+            contributors: contributorBuild,
           },
           rep.diff?.geometry
             ? {
@@ -227,6 +238,8 @@ const checkDataIntegrity = async (
 
   let index = 0;
 
+  // TODO: check that the audit table is correct as well as the final loo object.
+
   for (const { properties, ...mongoLoo } of mongoloos) {
     const postgresUpsertResult = await getLooById(prisma, mongoLoo.id);
 
@@ -258,6 +271,18 @@ const checkDataIntegrity = async (
 
         // Reports are now represented by the audit table and not included on the Postgres loo.
         if (mongoKey === 'reports') {
+          continue;
+        }
+
+        if (mongoKey === 'contributors') {
+          const postgresKey = mongoNameMap['contributors'];
+          const postgresContributors = postgresUpsertResult[postgresKey].filter(
+            (contributor) => contributor !== 'system_reserved'
+          );
+
+          expect(postgresContributors, postgresKey).to.eql(
+            flatMongoLoo[mongoKey]
+          );
           continue;
         }
 

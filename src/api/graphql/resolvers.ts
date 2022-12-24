@@ -1,5 +1,9 @@
 import { stringifyAndCompressLoos } from '../../lib/loo';
-import { Resolvers, AreaToiletCount } from '../../@types/resolvers-types';
+import {
+  Resolvers,
+  AreaToiletCount,
+  Report,
+} from '../../@types/resolvers-types';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
 
@@ -129,8 +133,9 @@ const resolvers: Resolvers<Context> = {
     },
     // This collates records from the audit table and compiles them into reports.
     reportsForLoo: async (_parent, args, { prisma }) => {
-      const reports = await prisma.record_version.findMany({
+      const auditRecords = await prisma.record_version.findMany({
         where: {
+          op: { equals: 'UPDATE' },
           record: {
             path: ['id'],
             equals: args.id,
@@ -141,10 +146,26 @@ const resolvers: Resolvers<Context> = {
         },
       });
 
+      const reportsWithoutAreas = auditRecords.map((r) => r.record);
+
+      const postgresAuditRecordToGraphQLReport = (record: any): Report => {
+        console.log(record);
+        return {
+          createdAt: record.record?.createdAt,
+          contributor: record.contributors[record.contributors.length - 1],
+          id: record.record?.id,
+          location: record.location ?? {
+            lat: 1.0,
+            lng: 1.0,
+            __typename: 'Location',
+          },
+        };
+      };
+
       // Filter out records with a `type` property. These are not loo records, they are areas.
-      return reports
-        .filter((r) => r.record?.type == undefined)
-        .map((r) => postgresLooToGraphQL(r.record));
+      return reportsWithoutAreas.map((r) =>
+        postgresAuditRecordToGraphQLReport(r)
+      );
     },
   },
   Mutation: {

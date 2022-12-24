@@ -1,6 +1,5 @@
 -- Ensures that a relation is created between loos and the area that they belong to.
 
-
 CREATE OR REPLACE FUNCTION public.determine_area_loo_is_within_on_upsert()
   RETURNS trigger AS
     $$
