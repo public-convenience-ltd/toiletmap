@@ -1,4 +1,4 @@
-describe.skip('Remove page tests', () => {
+describe('Remove page tests', () => {
   context('Mobile', () => {
     beforeEach(() => {
       cy.viewport('iphone-8');
@@ -44,7 +44,7 @@ describe.skip('Remove page tests', () => {
       cy.get('body').trigger('keydown', { key: 'Escape' });
 
       // Check that the removed chip is displayed along with the associated tooltip.
-      cy.contains('Removed').invoke('show').click({ force: true });
+      cy.contains('Removal reason');
       cy.contains(
         'I am removing this toilet because it has been closed for a looooooooong time'
       );

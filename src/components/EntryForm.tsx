@@ -20,6 +20,7 @@ import VisuallyHidden from '../components/VisuallyHidden';
 import Switch from '../components/Switch';
 import { WEEKDAYS, isClosed } from '../lib/openingTimes';
 import crosshair from '../../public/crosshair-small.svg';
+
 import { useMapState } from './MapState';
 import Icon from './Icon';
 import { faAsterisk } from '@fortawesome/free-solid-svg-icons';
