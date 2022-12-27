@@ -36,7 +36,7 @@ describe('Remove page tests', () => {
       cy.contains('Thank you, toilet removed!');
 
       // Check that the removed chip is displayed along with the associated tooltip.
-      cy.contains('Removed').invoke('show').click({ force: true });
+      cy.contains('Removal reason');
       cy.contains(
         'I am removing this toilet because it has been closed for a looooooooong time'
       );
