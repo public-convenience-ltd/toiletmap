@@ -1,11 +1,10 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma, toilets } from '@prisma/client';
 import {
   newloos,
   areas,
   newreports,
   PrismaClient as PrismaClientMongo,
   NewloosProperties,
-  NewreportsDiff,
 } from '../generated/schemaMongo';
 import { SingleBar } from 'cli-progress';
 import { getLooById, upsertArea, upsertLoo } from '../src/api/prisma/queries';
@@ -42,7 +41,7 @@ const mongoNameMap: { [P in MongoMapKeys & { _id: string }]: string } = {
   openingTimes: 'opening_times',
   radar: 'radar',
   urinalOnly: 'urinal_only',
-};
+} as const;
 
 const prepareMongoReport = (report) => {
   const finalReport = {
@@ -89,6 +88,13 @@ const prepareMongoReport = (report) => {
 
   console.log('Fetching loo data from Mongo...');
   const allMongoLoos = await mongoPrisma.newloos.findMany();
+  // const allMongoLoos = [
+  //   await mongoPrisma.newloos.findUnique({
+  //     where: {
+  //       id: '9c87f46cef7571c34d4a9f6a',
+  //     },
+  //   }),
+  // ];
 
   console.log('Fetching report data from Mongo...');
   const allMongoReports = await mongoPrisma.newreports.findRaw();
@@ -148,7 +154,7 @@ const upsertLoos = async (
     );
 
     // generate the loo from the sequence of diffs
-    const properties: Partial<NewreportsDiff> = {};
+    const properties: Partial<toilets> = {};
 
     // Calculate the Loo's creation and update time - we sort the report creation times to do this since
     // early reports were ranked on trust as well...
@@ -161,7 +167,7 @@ const upsertLoos = async (
       });
 
     const createdAt = timeline[0];
-    const updatedAt = timeline[timeline.length - 1];
+
     const contributorBuild = [];
 
     // Successively apply the diffs to build up the final loo.
@@ -194,7 +200,8 @@ const upsertLoos = async (
           {
             ...properties,
             created_at: createdAt,
-            updated_at: updatedAt,
+            updated_at: rep.createdAt,
+            verified_at: properties.verified_at,
             contributors: contributorBuild,
           },
           rep.diff?.geometry

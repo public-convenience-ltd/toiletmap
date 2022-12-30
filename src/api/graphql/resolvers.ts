@@ -7,6 +7,7 @@ import {
 import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
 import uniq from 'lodash/uniq';
+
 import {
   getAreas,
   getLooById,
@@ -24,6 +25,7 @@ import {
   postgresUpsertLooQueryFromReport,
 } from './helpers';
 import { toilets } from '@prisma/client';
+import _ from 'lodash';
 
 const resolvers: Resolvers<Context> = {
   Query: {
@@ -176,12 +178,37 @@ const resolvers: Resolvers<Context> = {
           const coalescedRecord = {
             ...current,
             location: next?.location ?? current.location,
+            geohash: next?.geohash ?? current.geohash,
+            geography: next?.geography ?? current.geography,
             area_id: next?.area_id ?? current.area_id,
           };
           reportsWithSystemUpdatesSquashed.push(coalescedRecord);
         } else {
           reportsWithSystemUpdatesSquashed.push(current);
         }
+      }
+
+      const diffs = [];
+      for (const reportId in reportsWithSystemUpdatesSquashed) {
+        const reportIndex = parseInt(reportId, 10);
+        const current = reportsWithSystemUpdatesSquashed[reportIndex];
+
+        if (reportIndex === 0) {
+          diffs.push(current);
+          continue;
+        }
+
+        const prev = reportsWithSystemUpdatesSquashed[reportIndex - 1];
+
+        // Get difference between current and next objects
+        const diff = Object.keys(prev).reduce((acc, key) => {
+          if (!_.isEqual(prev[key], current[key])) {
+            acc[key] = current[key];
+          }
+          return acc;
+        }, {});
+
+        diffs.push(diff);
       }
 
       const uniqueAreaIds = uniq(
@@ -208,46 +235,56 @@ const resolvers: Resolvers<Context> = {
         areaInfoLookup[area.id] = { name: area.name, type: area.type };
       }
 
-      const postgresAuditRecordToGraphQLReport = (
-        index: number,
-        record: toilets
-      ): Report => {
+      const postgresAuditRecordToGraphQLReport = (diff: toilets): Report => {
         return {
-          createdAt: index === 0 ? record.created_at : record.updated_at,
-          accessible: record.accessible,
-          babyChange: record.baby_change,
-          active: record.active,
-          children: record.children,
-          men: record.men,
-          paymentDetails: record.payment_details,
-          verifiedAt: record.verified_at,
-          women: record.women,
-          allGender: record.all_gender,
-          radar: record.radar,
-          openingTimes: record.opening_times,
-          noPayment: record.no_payment,
-          urinalOnly: record.urinal_only,
-          name: record.name,
-          removalReason: record.removal_reason,
-          area: [areaInfoLookup?.[record?.area_id]],
-          attended: record.attended,
-          notes: record.notes,
-          automatic: record.automatic,
-          contributor: record.contributors[record.contributors.length - 1],
-          id: record.id,
-          location: {
-            lat: record.location?.coordinates[1] ?? undefined,
-            lng: record.location?.coordinates[0] ?? undefined,
-          },
+          createdAt:
+            diff.created_at === undefined
+              ? diff.updated_at === undefined
+                ? diff.verified_at
+                : diff.updated_at
+              : diff.created_at,
+          accessible: diff.accessible,
+          babyChange: diff.baby_change,
+          active: diff.active,
+          children: diff.children,
+          men: diff.men,
+          paymentDetails: diff.payment_details,
+          verifiedAt: diff.verified_at,
+          women: diff.women,
+          allGender: diff.all_gender,
+          radar: diff.radar,
+          openingTimes: diff.opening_times,
+          noPayment: diff.no_payment,
+          urinalOnly: diff.urinal_only,
+          name: diff.name,
+          removalReason: diff.removal_reason,
+          area: areaInfoLookup ? [areaInfoLookup?.[diff?.area_id]] : undefined,
+          attended: diff.attended,
+          notes: diff.notes,
+          automatic: diff.automatic,
+          contributor: diff.contributors[diff.contributors.length - 1],
+          id: diff.id,
+          location: diff.location?.coordinates
+            ? {
+                lat: diff.location?.coordinates[1],
+                lng: diff.location?.coordinates[0],
+              }
+            : undefined,
         };
       };
 
-      // Filter out records with a `type` property. These are not loo records, they are areas.
-      const f = reportsWithSystemUpdatesSquashed.map((r, i) =>
-        postgresAuditRecordToGraphQLReport(i, r)
-      );
+      console.log(diffs.length);
 
-      return f;
+      const filtered = diffs.map(postgresAuditRecordToGraphQLReport);
+
+      // Order by report creation time.
+      filtered.sort((b, a) => {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      });
+
+      return filtered;
     },
   },
   Mutation: {

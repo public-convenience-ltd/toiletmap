@@ -113,6 +113,15 @@ export const postgresUpsertLooQueryFromReport = async (
 ): Promise<ToiletUpsertReport> => {
   const operationTime = new Date();
 
+  let submitId = id;
+  if (typeof id === 'undefined') {
+    submitId = await suggestLegacyLooId(
+      nickname,
+      [report.location.lng, report.location.lat],
+      operationTime
+    );
+  }
+
   const looProperties = {
     accessible: report.accessible,
     active: report.active,
@@ -133,9 +142,12 @@ export const postgresUpsertLooQueryFromReport = async (
   };
 
   return {
-    where: selectLegacyOrModernLoo(id),
+    where: {
+      id: id,
+    },
     prismaCreate: {
       ...looProperties,
+      ...(typeof id === undefined ? { id: submitId } : {}),
       created_at: operationTime,
       updated_at: operationTime,
       verified_at: operationTime,
