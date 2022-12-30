@@ -45,7 +45,8 @@ export const setLooLocation = async (
       geography = ST_GeomFromGeoJSON(${JSON.stringify({
         type: 'Point',
         coordinates: [lng, lat],
-      })})
+      })}),
+      contributors = array_append(contributors, concat(contributors[array_upper(contributors, 1)], '-location'))
       WHERE id = ${id}
   `;
 };

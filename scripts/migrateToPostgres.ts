@@ -89,13 +89,6 @@ const prepareMongoReport = (report) => {
 
   console.log('Fetching loo data from Mongo...');
   const allMongoLoos = await mongoPrisma.newloos.findMany();
-  // const allMongoLoos = [
-  //   await mongoPrisma.newloos.findUnique({
-  //     where: {
-  //       id: '5cd2332715ccbc4a17aac269',
-  //     },
-  //   }),
-  // ];
 
   console.log('Fetching report data from Mongo...');
   const allMongoReports = await mongoPrisma.newreports.findRaw();
@@ -274,6 +267,18 @@ const checkDataIntegrity = async (
           continue;
         }
 
+        // Contributors will include system location updates, we need to account for these.
+        // This is because upserting a user is a two step process for now as Prisma doesn't support PostGIS.
+        // 1. Upsert the user data.
+        // 2. Set the user geometry as a separate query.
+        if (mongoKey === 'contributors') {
+          for (const contributor of flatMongoLoo['contributors']) {
+            expect(postgresUpsertResult['contributors']).to.contain(
+              contributor
+            );
+          }
+          continue;
+        }
         // Check the lat/lng floats are within 0.000000001 of the expected value.
         // Source of truth in postgres is the PostGIS geometry type, so we need to
         // check the lat/lng values are within a reasonable tolerance against

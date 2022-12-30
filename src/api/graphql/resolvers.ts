@@ -6,7 +6,7 @@ import {
 } from '../../@types/resolvers-types';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
-
+import uniq from 'lodash/uniq';
 import {
   getAreas,
   getLooById,
@@ -23,6 +23,7 @@ import {
   postgresLooToGraphQL,
   postgresUpsertLooQueryFromReport,
 } from './helpers';
+import { toilets } from '@prisma/client';
 
 const resolvers: Resolvers<Context> = {
   Query: {
@@ -135,7 +136,6 @@ const resolvers: Resolvers<Context> = {
     reportsForLoo: async (_parent, args, { prisma }) => {
       const auditRecords = await prisma.record_version.findMany({
         where: {
-          op: { equals: 'UPDATE' },
           record: {
             path: ['id'],
             equals: args.id,
@@ -146,76 +146,114 @@ const resolvers: Resolvers<Context> = {
         },
       });
 
-      const locationRecordsCoalesced = auditRecords.reduce(
-        (previousValue, current) => {
-          if (previousValue.length) {
-            const prev = previousValue[previousValue.length - 1].record;
+      // TODO: Diff the records to get the changes.
+      // Right now this is just returning the latest version of the record, not the changes.
+      const reportsWithSystemUpdatesSquashed = [];
+      for (const recordIndex in auditRecords) {
+        const current = auditRecords?.[recordIndex]?.record;
 
-            const prevContributor =
-              prev?.contributors[prev.contributors.length - 1];
-            const currentContributor =
-              current.record?.contributors[
-                current.record.contributors.length - 1
-              ];
+        const nextRecordIndex = parseInt(recordIndex, 10) + 1;
+        const next = auditRecords?.[nextRecordIndex]?.record;
 
-            console.log(prevContributor, currentContributor);
-            if (prevContributor === currentContributor) {
-              const prevLocation = prev?.location;
-              const currentLocation = current.record?.location;
+        const currentIsSystemUpdate =
+          current?.contributors[current.contributors.length - 1].indexOf(
+            '-location'
+          ) !== -1;
 
-              if (prevLocation?.lat !== currentLocation?.lat) {
-                return [...previousValue, current];
-              } else if (prevLocation?.lng !== currentLocation?.lng) {
-                return [...previousValue, current];
-              } else {
-                previousValue[previousValue.length - 1].record = {
-                  ...prev,
-                  location: currentLocation,
-                  area_id: current.record?.area_id,
-                  geohash: current.record?.geohash,
-                  geography: current.record?.geography,
-                };
-                return previousValue;
-              }
-            }
-          }
-          return [...previousValue, current];
+        // We don't want to add system updates to the list of reports.
+        // Instead we want to merge them into the report that they are associated with.
+        if (currentIsSystemUpdate) {
+          continue;
+        }
 
-          // If two in  a row and same contributor
-          // AND the latter changes the location
-          // THEN merge them
-        },
-        []
+        const nextIsSystemUpdate =
+          next?.contributors[next.contributors.length - 1].indexOf(
+            '-location'
+          ) !== -1;
+
+        // Merge the system update into the report, otherwise just add the report.
+        if (nextIsSystemUpdate) {
+          const coalescedRecord = {
+            ...current,
+            location: next?.location ?? current.location,
+            area_id: next?.area_id ?? current.area_id,
+          };
+          reportsWithSystemUpdatesSquashed.push(coalescedRecord);
+        } else {
+          reportsWithSystemUpdatesSquashed.push(current);
+        }
+      }
+
+      const uniqueAreaIds = uniq(
+        reportsWithSystemUpdatesSquashed
+          .map((report) => report?.area_id)
+          .filter((areaId) => areaId !== null || areaId !== undefined)
       );
 
-      const reportsWithoutAreas = locationRecordsCoalesced.map((r) => r.record);
+      const areaInfo = await prisma.areas.findMany({
+        where: {
+          id: {
+            in: uniqueAreaIds,
+          },
+        },
+        select: {
+          name: true,
+          id: true,
+          type: true,
+        },
+      });
 
-      const postgresAuditRecordToGraphQLReport = (record: any): Report => {
+      const areaInfoLookup = {};
+      for (const area of areaInfo) {
+        areaInfoLookup[area.id] = { name: area.name, type: area.type };
+      }
+
+      const postgresAuditRecordToGraphQLReport = (
+        index: number,
+        record: toilets
+      ): Report => {
         return {
-          createdAt: record.record?.createdAt,
+          createdAt: index === 0 ? record.created_at : record.updated_at,
+          accessible: record.accessible,
+          babyChange: record.baby_change,
+          active: record.active,
+          children: record.children,
+          men: record.men,
+          paymentDetails: record.payment_details,
+          verifiedAt: record.verified_at,
+          women: record.women,
+          allGender: record.all_gender,
+          radar: record.radar,
+          openingTimes: record.opening_times,
+          noPayment: record.no_payment,
+          urinalOnly: record.urinal_only,
+          name: record.name,
+          removalReason: record.removal_reason,
+          area: [areaInfoLookup?.[record?.area_id]],
+          attended: record.attended,
+          notes: record.notes,
+          automatic: record.automatic,
           contributor: record.contributors[record.contributors.length - 1],
-          id: record.record?.id,
+          id: record.id,
           location: {
-            lat: record.location?.coordinates[1] ?? 0,
-            lng: record.location?.coordinates[0] ?? 0,
+            lat: record.location?.coordinates[1] ?? undefined,
+            lng: record.location?.coordinates[0] ?? undefined,
           },
         };
       };
 
       // Filter out records with a `type` property. These are not loo records, they are areas.
-      const f = reportsWithoutAreas.map((r) =>
-        postgresAuditRecordToGraphQLReport(r)
+      const f = reportsWithSystemUpdatesSquashed.map((r, i) =>
+        postgresAuditRecordToGraphQLReport(i, r)
       );
-      console.log(f.map((r) => r.location));
+
       return f;
     },
   },
   Mutation: {
     submitReport: async (_parent, args, { prisma, user }) => {
       try {
-        // args.report.accessible = args.report.accessible || false;
         // Convert the submitted report to a format that can be saved to the database.
-
         const nickname = user[process.env.AUTH0_PROFILE_KEY]?.nickname;
         const postgresLoo = await postgresUpsertLooQueryFromReport(
           args.report.edit,
