@@ -84,7 +84,6 @@ export const upsertLoo = async (
   report: ToiletUpsertReport,
   returnFinal = true
 ) => {
-  console.log(report);
   try {
     const result = await prisma.toilets.upsert({
       where: report.where,

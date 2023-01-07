@@ -214,8 +214,10 @@ const resolvers: Resolvers<Context> = {
       const uniqueAreaIds = uniq(
         reportsWithSystemUpdatesSquashed
           .map((report) => report?.area_id)
-          .filter((areaId) => areaId !== null || areaId !== undefined)
+          .filter((areaId) => areaId !== null && areaId !== undefined)
       );
+
+      console.log(uniqueAreaIds);
 
       const areaInfo = await prisma.areas.findMany({
         where: {

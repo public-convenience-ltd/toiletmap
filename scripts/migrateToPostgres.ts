@@ -158,20 +158,18 @@ const upsertLoos = async (
 
     // Calculate the Loo's creation and update time - we sort the report creation times to do this since
     // early reports were ranked on trust as well...
-    const timeline = currentLooReports
-      .map((r) => r.createdAt)
-      .sort((d1, d2) => {
-        if (d1 > d2) return 1;
-        if (d1 < d2) return -1;
-        return 0;
-      });
+    const timeline = currentLooReports.sort((d2, d1) => {
+      if (d1 > d2) return 1;
+      if (d1 < d2) return -1;
+      return 0;
+    });
 
-    const createdAt = timeline[0];
+    const createdAt = timeline.map((r) => r.createdAt)[timeline.length - 1];
 
     const contributorBuild = [];
 
     // Successively apply the diffs to build up the final loo.
-    for (const rep of currentLooReports) {
+    for (const rep of timeline) {
       // Unroll the current diff and apply it to the WIP loo object.
       for (const [key, value] of Object.entries(rep.diff)) {
         const mappedKey = mongoNameMap[key];
@@ -200,7 +198,7 @@ const upsertLoos = async (
           {
             ...properties,
             created_at: createdAt,
-            updated_at: rep.createdAt,
+            updated_at: rep.updatedAt,
             verified_at: properties.verified_at,
             contributors: contributorBuild,
           },
