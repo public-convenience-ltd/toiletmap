@@ -14,6 +14,8 @@ import { expect } from 'chai';
 type MongoReportMap = { [reportId: string]: newreports };
 
 type MongoMapKeys = keyof (Omit<newloos, 'properties'> & NewloosProperties);
+
+// Ensure that we have a mapping between all the mongo keys and the postgres keys.
 const mongoNameMap: { [P in MongoMapKeys & { _id: string }]: string } = {
   accessible: 'accessible',
   babyChange: 'baby_change',
@@ -43,6 +45,7 @@ const mongoNameMap: { [P in MongoMapKeys & { _id: string }]: string } = {
   urinalOnly: 'urinal_only',
 } as const;
 
+// Coerce the raw mongo data into the format we expect.
 const prepareMongoReport = (report) => {
   const finalReport = {
     ...report,
@@ -105,8 +108,8 @@ const prepareMongoReport = (report) => {
     mappedMongoReports[id] = prepareMongoReport(report);
   }
 
-  await upsertAreas(prisma, allMongoAreas);
-  await upsertLoos(prisma, mappedMongoReports, allMongoLoos);
+  // await upsertAreas(prisma, allMongoAreas);
+  // await upsertLoos(prisma, mappedMongoReports, allMongoLoos);
   await checkDataIntegrity(prisma, mappedMongoReports, allMongoLoos);
 })();
 
@@ -191,6 +194,8 @@ const upsertLoos = async (
       contributorBuild.push(rep.contributor);
 
       // After we've unrolled the chain of reports, we're ready to upsert that data that we've collated.
+
+      // TODO the migrated created_at and updated_at fields are not being set correctly.
       await upsertLoo(
         prisma,
         postgresUpsertLooQuery(
