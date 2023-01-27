@@ -1,17 +1,14 @@
 import { Prisma, PrismaClient, toilets, areas } from '@prisma/client';
 import { RemovalReportInput } from '../../api-client/graphql';
 
-import {
-  selectLegacyOrModernLoo,
-  ToiletUpsertReport,
-} from '../graphql/helpers';
+import { ToiletUpsertReport } from '../graphql/helpers';
 
 export const getLooById = async (
   prisma: PrismaClient,
-  id: string | number
+  id: string
 ): Promise<toilets & { areas: Pick<areas, 'name' | 'type'> }> => {
   const res = await prisma.toilets.findUnique({
-    where: selectLegacyOrModernLoo(id),
+    where: { id },
     include: { areas: { select: { name: true, type: true } } },
   });
   return res;
@@ -120,7 +117,7 @@ export const removeLoo = async (
 ) => {
   const { edit: id, reason } = report;
   return prisma.toilets.update({
-    where: selectLegacyOrModernLoo(id),
+    where: { id },
     data: {
       active: false,
       removal_reason: reason,
@@ -134,7 +131,7 @@ export const removeLoo = async (
 
 export const verifyLoo = async (prisma: PrismaClient, id: string | number) => {
   return prisma.toilets.update({
-    where: selectLegacyOrModernLoo(id),
+    where: { id },
     data: {
       verified_at: new Date(),
       contributors: {

@@ -3,28 +3,8 @@ import { Loo } from '../../api-client/graphql';
 import { async as hasha } from 'hasha';
 import { ReportInput } from '../../@types/resolvers-types';
 
-export const isLegacyId = (id: string): boolean => /^\d+$/.test(id) === false;
-
-/**
- * @todo remove this function.
- * @deprecated legacy loo ids don't exist anymore.
- */
-export const selectLegacyOrModernLoo = (
-  id?: string | number
-): Prisma.toiletsWhereUniqueInput => {
-  if (typeof id === 'undefined' || typeof id === 'number') {
-    return {
-      id: '',
-    };
-  }
-
-  return {
-    id,
-  };
-};
-
-// Generate a legacy ID for the loo based on the logic used when writing to mongodb.
-export const suggestLegacyLooId = async (
+// Generate an ID for the loo based on the logic used when writing to mongodb.
+export const suggestLooId = async (
   nickname: string,
   coordinates: number[],
   updatedAt: Date
@@ -94,7 +74,7 @@ export const postgresUpsertLooQuery = (
   location?: { lat: number; lng: number }
 ): ToiletUpsertReport => {
   return {
-    where: selectLegacyOrModernLoo(id),
+    where: { id },
     prismaCreate: {
       ...data,
       id: id,
@@ -115,7 +95,7 @@ export const postgresUpsertLooQueryFromReport = async (
 
   let submitId = id;
   if (typeof id === 'undefined') {
-    submitId = await suggestLegacyLooId(
+    submitId = await suggestLooId(
       nickname,
       [report.location.lng, report.location.lat],
       operationTime
