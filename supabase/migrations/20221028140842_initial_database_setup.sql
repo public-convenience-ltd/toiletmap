@@ -551,17 +551,15 @@ ALTER TYPE audit.operation
 
 CREATE TABLE IF NOT EXISTS public.areas
 (
-    legacy_id character(24) COLLATE pg_catalog."default",
+    id character(24) NOT NULL,
     geometry geography,
     name text COLLATE pg_catalog."default",
     priority integer,
     type text COLLATE pg_catalog."default",
     dataset_id integer,
     version integer,
-    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
     CONSTRAINT area_id PRIMARY KEY (id),
-    CONSTRAINT area_name UNIQUE (name),
-    CONSTRAINT legacy_area_id UNIQUE (legacy_id)
+    CONSTRAINT area_name UNIQUE (name)
 )
 
 TABLESPACE pg_default;
@@ -591,7 +589,7 @@ CREATE TRIGGER audit_t
 
 CREATE TABLE IF NOT EXISTS public.toilets
 (
-    id TEXT DEFAULT md5(random()::text),
+    id character(24) NOT NULL,
     created_at timestamptz,
     contributors text[] COLLATE pg_catalog."default",
     accessible boolean,
@@ -614,7 +612,7 @@ CREATE TABLE IF NOT EXISTS public.toilets
     children boolean,
     geohash text COLLATE pg_catalog."default" GENERATED ALWAYS AS (st_geohash(geography)) STORED,
     verified_at timestamptz,
-    area_id integer,
+    area_id character(24),
     opening_times jsonb,
     location jsonb GENERATED ALWAYS AS (st_asgeojson((toilets.geography)::geometry)::jsonb) STORED,
     CONSTRAINT toilet_id PRIMARY KEY (id),

@@ -85,19 +85,12 @@ const prepareMongoReport = (report) => {
   const prisma = new PrismaClient();
   await prisma.$connect();
 
-  console.log('fetching areas from mongo...');
+  console.log('Fetching areas from mongo...');
   const allMongoAreas = await mongoPrisma.areas.findMany();
   console.log('upserting areas to postgres...');
 
   console.log('Fetching loo data from Mongo...');
   const allMongoLoos = await mongoPrisma.newloos.findMany();
-  // const allMongoLoos = [
-  //   await mongoPrisma.newloos.findUnique({
-  //     where: {
-  //       id: '9c87f46cef7571c34d4a9f6a',
-  //     },
-  //   }),
-  // ];
 
   console.log('Fetching report data from Mongo...');
   const allMongoReports = await mongoPrisma.newreports.findRaw();
