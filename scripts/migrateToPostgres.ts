@@ -118,7 +118,7 @@ const upsertAreas = async (prisma: PrismaClient, mongoAreas: areas[]) => {
   let index = 0;
 
   for (const area of mongoAreas) {
-    await upsertArea(prisma, { ...area, legacyId: area.id });
+    await upsertArea(prisma, { ...area, id: area.id });
     bar.update(index++);
   }
 

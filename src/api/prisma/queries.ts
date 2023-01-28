@@ -144,7 +144,7 @@ export const verifyLoo = async (prisma: PrismaClient, id: string | number) => {
 export const upsertArea = async (
   prisma: PrismaClient,
   area: {
-    legacyId: string;
+    id: string;
     geometry: {
       coordinates: Prisma.JsonValue;
       type: string;
@@ -157,9 +157,9 @@ export const upsertArea = async (
   }
 ) => {
   const areaResult = await prisma.areas.upsert({
-    where: { legacy_id: area.legacyId },
+    where: { id: area.id },
     create: {
-      legacy_id: area.legacyId,
+      id: area.id,
       name: area.name,
       dataset_id: area.datasetId,
       priority: area.priority,
@@ -167,7 +167,7 @@ export const upsertArea = async (
       version: area.version,
     },
     update: {
-      legacy_id: area.legacyId,
+      id: area.id,
       name: area.name,
       dataset_id: area.datasetId,
       priority: area.priority,
@@ -179,7 +179,7 @@ export const upsertArea = async (
   await prisma.$executeRaw`
     UPDATE areas SET
       geometry = ST_GeomFromGeoJSON(${JSON.stringify(area.geometry)})
-    WHERE legacy_id = ${area.legacyId}
+    WHERE id = ${area.id}
   `;
 
   return areaResult;
