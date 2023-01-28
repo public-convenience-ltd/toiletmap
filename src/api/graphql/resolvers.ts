@@ -239,12 +239,7 @@ const resolvers: Resolvers<Context> = {
 
       const postgresAuditRecordToGraphQLReport = (diff: toilets): Report => {
         return {
-          createdAt:
-            diff.created_at === undefined
-              ? diff.updated_at === undefined
-                ? diff.verified_at
-                : diff.updated_at
-              : diff.created_at,
+          createdAt: diff.updated_at,
           accessible: diff.accessible,
           babyChange: diff.baby_change,
           active: diff.active,

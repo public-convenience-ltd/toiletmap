@@ -108,8 +108,8 @@ const prepareMongoReport = (report) => {
     mappedMongoReports[id] = prepareMongoReport(report);
   }
 
-  // await upsertAreas(prisma, allMongoAreas);
-  // await upsertLoos(prisma, mappedMongoReports, allMongoLoos);
+  await upsertAreas(prisma, allMongoAreas);
+  await upsertLoos(prisma, mappedMongoReports, allMongoLoos);
   await checkDataIntegrity(prisma, mappedMongoReports, allMongoLoos);
 })();
 
@@ -137,7 +137,8 @@ const upsertAreas = async (prisma: PrismaClient, mongoAreas: areas[]) => {
 const upsertLoos = async (
   prisma: PrismaClient,
   mappedMongoReports: Record<string, newreports>,
-  mongoLoos: newloos[]
+  mongoLoos: newloos[],
+  limit = -1
 ) => {
   console.log('Beginning upsert of loos...');
 
@@ -152,6 +153,7 @@ const upsertLoos = async (
   let index = 0;
 
   for (const loo of mongoLoos) {
+    if (index === limit) break;
     const currentLooReports = loo.reports.map(
       (reportId) => mappedMongoReports[reportId]
     );
@@ -161,18 +163,20 @@ const upsertLoos = async (
 
     // Calculate the Loo's creation and update time - we sort the report creation times to do this since
     // early reports were ranked on trust as well...
-    const timeline = currentLooReports.sort((d2, d1) => {
-      if (d1 > d2) return 1;
-      if (d1 < d2) return -1;
+    const timeline = [...currentLooReports].sort((d2, d1) => {
+      if (d1.createdAt < d2.createdAt) return 1;
+      if (d1.createdAt > d2.createdAt) return -1;
       return 0;
     });
 
-    const createdAt = timeline.map((r) => r.createdAt)[timeline.length - 1];
+    const createdAtBasedOnChronologicalReports = timeline[0].createdAt;
 
     const contributorBuild = [];
 
+    let reportIndex = 0;
+
     // Successively apply the diffs to build up the final loo.
-    for (const rep of timeline) {
+    for (const rep of currentLooReports) {
       // Unroll the current diff and apply it to the WIP loo object.
       for (const [key, value] of Object.entries(rep.diff)) {
         const mappedKey = mongoNameMap[key];
@@ -193,6 +197,9 @@ const upsertLoos = async (
       // Build up the contributor list as we go.
       contributorBuild.push(rep.contributor);
 
+      const updatedAtBasedOnChronologicalReports =
+        timeline[reportIndex].createdAt;
+
       // After we've unrolled the chain of reports, we're ready to upsert that data that we've collated.
 
       // TODO the migrated created_at and updated_at fields are not being set correctly.
@@ -202,9 +209,9 @@ const upsertLoos = async (
           loo.id,
           {
             ...properties,
-            created_at: createdAt,
-            updated_at: rep.updatedAt,
-            verified_at: properties.verified_at,
+            created_at: createdAtBasedOnChronologicalReports,
+            updated_at: updatedAtBasedOnChronologicalReports,
+            verified_at: rep.diff.verifiedAt,
             contributors: contributorBuild,
           },
           rep.diff?.geometry
@@ -216,6 +223,8 @@ const upsertLoos = async (
         ),
         false
       );
+
+      reportIndex++;
     }
 
     bar.update(index++);
@@ -228,7 +237,8 @@ const upsertLoos = async (
 const checkDataIntegrity = async (
   prisma: PrismaClient,
   mappedMongoReports: MongoReportMap,
-  mongoloos: newloos[]
+  mongoloos: newloos[],
+  limit = -1
 ) => {
   console.log('Checking data integrity...');
   const bar = new SingleBar({
@@ -244,12 +254,10 @@ const checkDataIntegrity = async (
   // TODO: check that the audit table is correct as well as the final loo object.
 
   for (const { properties, ...mongoLoo } of mongoloos) {
-    const postgresUpsertResult = await getLooById(prisma, mongoLoo.id);
-
-    const resolvedReports = {};
-    for (const report of mongoLoo.reports) {
-      resolvedReports[report] = mappedMongoReports[report];
+    if (index === limit) {
+      break;
     }
+    const postgresUpsertResult = await getLooById(prisma, mongoLoo.id);
 
     const flatMongoLoo = {
       ...properties,
