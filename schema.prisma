@@ -30,14 +30,13 @@ model record_version {
 }
 
 model areas {
-  legacy_id  String?                   @unique(map: "legacy_area_id") @db.Char(24)
+  id         String                    @id(map: "area_id") @db.Char(24)
   geometry   Unsupported("geography")?
   name       String?                   @unique(map: "area_name")
   priority   Int?
   type       String?
   dataset_id Int?
   version    Int?
-  id         Int                       @id(map: "area_id") @default(autoincrement())
   toilets    toilets[]
 
   @@schema("public")
@@ -54,7 +53,7 @@ model spatial_ref_sys {
 }
 
 model toilets {
-  id              String                    @id(map: "toilet_id") @default(dbgenerated("md5((random())::text)")) @db.Char(24)
+  id              String                    @id(map: "toilet_id") @db.Char(24)
   created_at      DateTime?                 @db.Timestamptz(6)
   contributors    String[]
   accessible      Boolean?
@@ -77,7 +76,7 @@ model toilets {
   children        Boolean?
   geohash         String?                   @default(dbgenerated("st_geohash(geography)"))
   verified_at     DateTime?                 @db.Timestamptz(6)
-  area_id         Int?
+  area_id         String?                   @db.Char(24)
   opening_times   Json?
   location        Json?                     @default(dbgenerated("(st_asgeojson((geography)::geometry))::jsonb"))
   areas           areas?                    @relation(fields: [area_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "toilets___area_id_fk")
