@@ -129,7 +129,7 @@ export const removeLoo = async (
   });
 };
 
-export const verifyLoo = async (prisma: PrismaClient, id: string | number) => {
+export const verifyLoo = async (prisma: PrismaClient, id: string) => {
   return prisma.toilets.update({
     where: { id },
     data: {

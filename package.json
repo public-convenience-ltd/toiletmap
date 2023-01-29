@@ -103,6 +103,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
+    "@babel/preset-typescript": "^7.18.6",
     "@emotion/babel-preset-css-prop": "^11.10.0",
     "@faker-js/faker": "^7.6.0",
     "@graphql-codegen/cli": "^2.16.4",
@@ -112,6 +113,7 @@
     "@graphql-codegen/typescript-react-apollo": "^3.3.7",
     "@graphql-codegen/typescript-resolvers": "^2.7.12",
     "@graphql-eslint/eslint-plugin": "^3.15.0",
+    "@jest/globals": "^29.4.1",
     "@mapbox/geojson-area": "^0.2.2",
     "@mapbox/geojson-rewind": "^0.5.2",
     "@next/bundle-analyzer": "^13.1.6",
@@ -175,6 +177,7 @@
     "supabase": "^1.34.5",
     "topojson-server": "^3.0.1",
     "topojson-simplify": "^3.0.3",
+    "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4",
     "wait-on": "^6.0.1",

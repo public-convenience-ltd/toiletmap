@@ -131,7 +131,6 @@ export const postgresUpsertLooQueryFromReport = async (
       id: submitId,
       created_at: operationTime,
       updated_at: operationTime,
-      verified_at: operationTime,
       contributors: {
         set: [nickname],
       },
