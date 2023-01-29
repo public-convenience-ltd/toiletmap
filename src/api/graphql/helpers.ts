@@ -128,7 +128,7 @@ export const postgresUpsertLooQueryFromReport = async (
     prismaCreate: {
       ...looProperties,
       // Only try to set the id if the provided id is undefined (this happens when creating a new loo).
-      ...(typeof id === undefined ? { id: submitId } : {}),
+      id: submitId,
       created_at: operationTime,
       updated_at: operationTime,
       verified_at: operationTime,
@@ -139,9 +139,12 @@ export const postgresUpsertLooQueryFromReport = async (
     prismaUpdate: {
       ...looProperties,
       updated_at: operationTime,
-      contributors: {
-        push: nickname,
-      },
+      // TODO: this has been temporarily disabled until the bugfix is in:
+      // https://github.com/prisma/prisma/issues/16760
+
+      // contributors: {
+      //   push: nickname,
+      // },
     },
     extras: {
       location: report.location,
