@@ -36,9 +36,9 @@
     "prisma:db:pull": "npm-run-all -p prisma:postgres:db:pull prisma:mongo:db:pull",
     "prisma:postgres:db:pull": "prisma db pull",
     "prisma:mongo:db:pull": "prisma db pull --schema ./schemaMongo.prisma --force",
-    "supabase:start": "SUPABASE_SCANNER_BUFFER_SIZE=5mb  supabase start",
+    "supabase:start": "SUPABASE_SCANNER_BUFFER_SIZE=20mb  supabase start",
     "supabase:stop": "supabase stop",
-    "supabase:reset": "SUPABASE_SCANNER_BUFFER_SIZE=5mb  supabase db reset"
+    "supabase:reset": "SUPABASE_SCANNER_BUFFER_SIZE=20mb  supabase db reset"
   },
   "packageManager": "pnpm@7.15.0",
   "repository": {
