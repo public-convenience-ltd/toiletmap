@@ -217,8 +217,6 @@ const resolvers: Resolvers<Context> = {
           .filter((areaId) => areaId !== null && areaId !== undefined)
       );
 
-      console.log(uniqueAreaIds);
-
       const areaInfo = await prisma.areas.findMany({
         where: {
           id: {
@@ -259,7 +257,9 @@ const resolvers: Resolvers<Context> = {
           attended: diff.attended,
           notes: diff.notes,
           automatic: diff.automatic,
-          contributor: diff.contributors[diff.contributors.length - 1],
+          contributor: diff.contributors
+            ? diff.contributors[diff.contributors.length - 1]
+            : 'Unknown',
           id: diff.id,
           location: diff.location?.coordinates
             ? {
@@ -269,8 +269,6 @@ const resolvers: Resolvers<Context> = {
             : undefined,
         };
       };
-
-      console.log(diffs.length);
 
       const filtered = diffs.map(postgresAuditRecordToGraphQLReport);
 
