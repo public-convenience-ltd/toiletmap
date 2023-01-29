@@ -195,7 +195,7 @@ export const getLoosByProximity = async (
         SELECT
           loo.id, loo.name, active, men, women, no_payment, notes, opening_times, payment_details,
           accessible, active, all_gender, attended, automatic, location, baby_change, children, created_at,
-          removal_reason, radar, urinal_only, verified_at,updated_at,
+          removal_reason, radar, urinal_only, verified_at,updated_at,geohash,
           st_distancesphere(
             geography::geometry,
             ST_MakePoint(${lng}, ${lat})
