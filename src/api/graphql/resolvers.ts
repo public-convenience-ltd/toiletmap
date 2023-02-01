@@ -14,7 +14,6 @@ import {
   getLooNamesByIds,
   getLoosByProximity,
   getLoosWithinGeohash,
-  getTotalActiveLoos,
   removeLoo,
   upsertLoo,
   verifyLoo,
@@ -26,6 +25,7 @@ import {
   postgresUpsertLooQueryFromReport,
 } from './helpers';
 import { toilets } from '@prisma/client';
+
 import _ from 'lodash';
 
 const resolvers: Resolvers<Context> = {
@@ -37,13 +37,45 @@ const resolvers: Resolvers<Context> = {
     loos: async (_parent, args, { prisma }) => {
       const { filters, pagination, sort } = args;
 
-      const totalToiletCount = await getTotalActiveLoos(prisma);
+      if (pagination.limit < 0 || pagination.page < 0) {
+        throw new Error('Invalid pagination params');
+      }
+
+      let updatedAtFilter = undefined;
+      if (filters.fromDate || filters.toDate) {
+        updatedAtFilter = {};
+      }
+      if (filters.fromDate) {
+        updatedAtFilter.gte = filters.fromDate;
+      }
+      if (filters.toDate) {
+        updatedAtFilter.lte = filters.toDate;
+      }
+
+      const whereQuery = {
+        active: filters?.active,
+        no_payment:
+          typeof filters.noPayment !== 'undefined'
+            ? filters?.noPayment
+            : undefined,
+        updated_at: updatedAtFilter,
+        // areas: {
+        //   name: {
+        //     equals: filters?.areaName,
+        //   },
+        // },
+        // OR: [{ name: { contains: filters.text } }],
+      };
+
+      console.log(filters);
+
+      const totalToiletCount = await prisma.toilets.count({
+        where: whereQuery,
+      });
 
       // Paginated toilets findAll query against Prisma.
       const loos = await prisma.toilets.findMany({
-        where: {
-          active: true,
-        },
+        where: whereQuery,
         skip: (pagination.page - 1) * pagination.limit,
         take: pagination.limit,
       });
@@ -371,6 +403,10 @@ const resolvers: Resolvers<Context> = {
     },
   },
   DateTime: GraphQLDateTime,
+  SortOrder: {
+    NEWEST_FIRST: { updatedAt: 'desc' },
+    OLDEST_FIRST: { updatedAt: 'asc' },
+  },
   OpeningTimes: OpeningTimesScalar,
 };
 

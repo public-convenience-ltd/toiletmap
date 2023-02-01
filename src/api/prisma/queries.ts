@@ -2,6 +2,7 @@ import { Prisma, PrismaClient, toilets, areas } from '@prisma/client';
 import { RemovalReportInput } from '../../api-client/graphql';
 
 import { ToiletUpsertReport } from '../graphql/helpers';
+import { LooFilter } from '../../@types/resolvers-types';
 
 export const getLooById = async (
   prisma: PrismaClient,
@@ -12,10 +13,6 @@ export const getLooById = async (
     include: { areas: { select: { name: true, type: true } } },
   });
   return res;
-};
-
-export const getTotalActiveLoos = async (prisma: PrismaClient) => {
-  return prisma.toilets.count({ where: { active: true } });
 };
 
 export const getLooNamesByIds = async (
