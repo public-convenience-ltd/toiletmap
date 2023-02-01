@@ -149,6 +149,11 @@ type LooSearchResponse {
   pages: Int
 }
 
+enum SortOrder {
+  NEWEST_FIRST
+  OLDEST_FIRST
+}
+
 type Query {
   "Retrieve a Loo by ID"
   loo(id: ID): Loo
