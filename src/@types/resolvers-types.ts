@@ -88,6 +88,15 @@ export type LooFilter = {
   toDate?: InputMaybe<Scalars['DateTime']>;
 };
 
+export type LooSearchResponse = {
+  __typename?: 'LooSearchResponse';
+  limit?: Maybe<Scalars['Int']>;
+  loos: Array<Loo>;
+  page?: Maybe<Scalars['Int']>;
+  pages?: Maybe<Scalars['Int']>;
+  total?: Maybe<Scalars['Int']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   submitRemovalReport?: Maybe<ReportMutationResponse>;
@@ -114,6 +123,11 @@ export type MutationResponse = {
   code: Scalars['String'];
   message: Scalars['String'];
   success: Scalars['Boolean'];
+};
+
+export type PaginationInput = {
+  limit?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
 };
 
 /**
@@ -149,6 +163,8 @@ export type Query = {
   /** Retrieve a Loo by ID */
   loo?: Maybe<Loo>;
   looNamesByIds: Array<Loo>;
+  /** Search for loos matching a filter */
+  loos: LooSearchResponse;
   /** Retrieve loos that sit within a given geohash */
   loosByGeohash: Array<Scalars['String']>;
   /** Retrieve Loos by proximity to a Point */
@@ -166,6 +182,13 @@ export type QueryLooArgs = {
 
 export type QueryLooNamesByIdsArgs = {
   idList?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+};
+
+
+export type QueryLoosArgs = {
+  filters: LooFilter;
+  pagination?: InputMaybe<PaginationInput>;
+  sort?: InputMaybe<SortOrder>;
 };
 
 
@@ -260,6 +283,11 @@ export type ReportMutationResponse = MutationResponse & {
   success: Scalars['Boolean'];
 };
 
+export enum SortOrder {
+  NewestFirst = 'NEWEST_FIRST',
+  OldestFirst = 'OLDEST_FIRST'
+}
+
 export type Statistics = {
   __typename?: 'Statistics';
   active?: Maybe<Scalars['Int']>;
@@ -348,9 +376,11 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Loo: ResolverTypeWrapper<Loo>;
   LooFilter: LooFilter;
+  LooSearchResponse: ResolverTypeWrapper<LooSearchResponse>;
   Mutation: ResolverTypeWrapper<{}>;
   MutationResponse: ResolversTypes['ReportMutationResponse'];
   OpeningTimes: ResolverTypeWrapper<Scalars['OpeningTimes']>;
+  PaginationInput: PaginationInput;
   Point: ResolverTypeWrapper<Point>;
   PointInput: PointInput;
   ProximityInput: ProximityInput;
@@ -359,6 +389,7 @@ export type ResolversTypes = {
   Report: ResolverTypeWrapper<Report>;
   ReportInput: ReportInput;
   ReportMutationResponse: ResolverTypeWrapper<ReportMutationResponse>;
+  SortOrder: SortOrder;
   Statistics: ResolverTypeWrapper<Statistics>;
   String: ResolverTypeWrapper<Scalars['String']>;
 };
@@ -375,9 +406,11 @@ export type ResolversParentTypes = {
   Int: Scalars['Int'];
   Loo: Loo;
   LooFilter: LooFilter;
+  LooSearchResponse: LooSearchResponse;
   Mutation: {};
   MutationResponse: ResolversParentTypes['ReportMutationResponse'];
   OpeningTimes: Scalars['OpeningTimes'];
+  PaginationInput: PaginationInput;
   Point: Point;
   PointInput: PointInput;
   ProximityInput: ProximityInput;
@@ -449,6 +482,15 @@ export type LooResolvers<ContextType = any, ParentType extends ResolversParentTy
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type LooSearchResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['LooSearchResponse'] = ResolversParentTypes['LooSearchResponse']> = {
+  limit?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  loos?: Resolver<Array<ResolversTypes['Loo']>, ParentType, ContextType>;
+  page?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  pages?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  total?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   submitRemovalReport?: Resolver<Maybe<ResolversTypes['ReportMutationResponse']>, ParentType, ContextType, Partial<MutationSubmitRemovalReportArgs>>;
   submitReport?: Resolver<Maybe<ResolversTypes['ReportMutationResponse']>, ParentType, ContextType, Partial<MutationSubmitReportArgs>>;
@@ -476,6 +518,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   areas?: Resolver<Array<ResolversTypes['AdminGeo']>, ParentType, ContextType>;
   loo?: Resolver<Maybe<ResolversTypes['Loo']>, ParentType, ContextType, Partial<QueryLooArgs>>;
   looNamesByIds?: Resolver<Array<ResolversTypes['Loo']>, ParentType, ContextType, Partial<QueryLooNamesByIdsArgs>>;
+  loos?: Resolver<ResolversTypes['LooSearchResponse'], ParentType, ContextType, RequireFields<QueryLoosArgs, 'filters' | 'pagination' | 'sort'>>;
   loosByGeohash?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType, RequireFields<QueryLoosByGeohashArgs, 'active' | 'geohash'>>;
   loosByProximity?: Resolver<Array<ResolversTypes['Loo']>, ParentType, ContextType, RequireFields<QueryLoosByProximityArgs, 'from'>>;
   reportsForLoo?: Resolver<Array<ResolversTypes['Report']>, ParentType, ContextType, RequireFields<QueryReportsForLooArgs, 'id'>>;
@@ -534,6 +577,7 @@ export type Resolvers<ContextType = any> = {
   AuthedContributor?: AuthedContributorResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   Loo?: LooResolvers<ContextType>;
+  LooSearchResponse?: LooSearchResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   MutationResponse?: MutationResponseResolvers<ContextType>;
   OpeningTimes?: GraphQLScalarType;
