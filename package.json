@@ -68,6 +68,7 @@
     "@graphql-tools/utils": "^9.2.0",
     "@hookform/error-message": "^2.0.1",
     "@monaco-editor/react": "^4.4.6",
+    "@mui/base": "5.0.0-alpha.116",
     "@prisma/client": "^4.9.0",
     "@react-leaflet/core": "^2.1.0",
     "@sentry/nextjs": "^7.35.0",
