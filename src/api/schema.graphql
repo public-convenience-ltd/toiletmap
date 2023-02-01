@@ -179,17 +179,6 @@ type Query {
   reportsForLoo(id: ID!): [Report!]!
 }
 
-"Include or Exclude Loos from search results based on whether they satisfy a filter condition"
-input LooFilter {
-  active: Boolean = true
-  noPayment: Boolean
-  text: String
-  fromDate: DateTime
-  toDate: DateTime
-  contributors: [String]
-  areaName: String
-}
-
 input ProximityInput {
   "Latitude"
   lat: Float!

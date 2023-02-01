@@ -95,8 +95,6 @@ const resolvers: Resolvers<Context> = {
         take: pagination.limit,
       });
 
-      console.log(loos);
-
       return {
         loos: loos.map(postgresLooToGraphQL),
         limit: pagination.limit,
