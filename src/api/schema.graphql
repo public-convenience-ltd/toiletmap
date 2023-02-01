@@ -125,9 +125,39 @@ type Statistics {
   areaToiletCount: [AreaToiletCount]
 }
 
+"Include or Exclude Loos from search results based on whether they satisfy a filter condition"
+input LooFilter {
+  active: Boolean = true
+  noPayment: Boolean
+  text: String
+  fromDate: DateTime
+  toDate: DateTime
+  contributors: [String]
+  areaName: String
+}
+
+input PaginationInput {
+  limit: Int = 10
+  page: Int = 1
+}
+
+type LooSearchResponse {
+  loos: [Loo!]!
+  total: Int
+  page: Int
+  limit: Int
+  pages: Int
+}
+
 type Query {
   "Retrieve a Loo by ID"
   loo(id: ID): Loo
+  "Search for loos matching a filter"
+  loos(
+    filters: LooFilter!
+    pagination: PaginationInput = { limit: 10, page: 1 }
+    sort: SortOrder = NEWEST_FIRST
+  ): LooSearchResponse!
   "Get statistics about our data"
   statistics: Statistics
   "Retrieve Loos by proximity to a Point"
