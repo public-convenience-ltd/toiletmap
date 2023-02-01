@@ -57,10 +57,6 @@ const resolvers: Resolvers<Context> = {
         updatedAtFilter.lte = filters.toDate;
       }
 
-      const nameFilter = filters?.text
-        ? [{ name: { contains: filters.text, mode: 'insensitive' } }]
-        : undefined;
-
       const areaFilter = filters?.areaName
         ? { name: { equals: filters.areaName } }
         : undefined;
@@ -70,22 +66,30 @@ const resolvers: Resolvers<Context> = {
         no_payment: noPaymentFilter,
         updated_at: updatedAtFilter,
         areas: areaFilter,
-        OR: nameFilter,
       };
-
-      console.log(whereQuery);
 
       const totalToiletCount = await prisma.toilets.count({
         where: {
           ...whereQuery,
+          OR: filters?.text
+            ? [{ name: { contains: filters.text, mode: 'insensitive' } }]
+            : undefined,
         },
       });
 
       // Paginated toilets findAll query against Prisma.
       const loos = await prisma.toilets.findMany({
-        where: whereQuery,
+        where: {
+          ...whereQuery,
+          OR: filters?.text
+            ? [{ name: { contains: filters.text, mode: 'insensitive' } }]
+            : undefined,
+        },
         include: {
           areas: true,
+        },
+        orderBy: {
+          updated_at: sort === 'NEWEST_FIRST' ? 'desc' : 'asc',
         },
         skip: (pagination.page - 1) * pagination.limit,
         take: pagination.limit,
