@@ -14,6 +14,7 @@ import {
   getLooNamesByIds,
   getLoosByProximity,
   getLoosWithinGeohash,
+  getTotalActiveLoos,
   removeLoo,
   upsertLoo,
   verifyLoo,
@@ -33,7 +34,28 @@ const resolvers: Resolvers<Context> = {
       const loo = await getLooById(prisma, args.id);
       return postgresLooToGraphQL(loo);
     },
-    loos: async (_parent, args, { prisma }) => {},
+    loos: async (_parent, args, { prisma }) => {
+      const { filters, pagination, sort } = args;
+
+      const totalToiletCount = await getTotalActiveLoos(prisma);
+
+      // Paginated toilets findAll query against Prisma.
+      const loos = await prisma.toilets.findMany({
+        where: {
+          active: true,
+        },
+        skip: (pagination.page - 1) * pagination.limit,
+        take: pagination.limit,
+      });
+
+      return {
+        loos,
+        limit: pagination.limit,
+        pages: Math.ceil(totalToiletCount / pagination.limit),
+        page: pagination.page,
+        total: totalToiletCount,
+      };
+    },
     looNamesByIds: async (_parent, args, { prisma }) => {
       const looNames = await getLooNamesByIds(prisma, args.idList);
       return looNames.map((loo) => ({ id: loo.id.toString(), name: loo.name }));

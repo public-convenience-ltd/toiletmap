@@ -14,6 +14,10 @@ export const getLooById = async (
   return res;
 };
 
+export const getTotalActiveLoos = async (prisma: PrismaClient) => {
+  return prisma.toilets.count({ where: { active: true } });
+};
+
 export const getLooNamesByIds = async (
   prisma: PrismaClient,
   idList: string[]
