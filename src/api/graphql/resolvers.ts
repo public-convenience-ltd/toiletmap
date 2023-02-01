@@ -41,6 +41,11 @@ const resolvers: Resolvers<Context> = {
         throw new Error('Invalid pagination params');
       }
 
+      const noPaymentFilter =
+        typeof filters.noPayment !== 'undefined'
+          ? filters?.noPayment
+          : undefined;
+
       let updatedAtFilter = undefined;
       if (filters.fromDate || filters.toDate) {
         updatedAtFilter = {};
@@ -52,36 +57,44 @@ const resolvers: Resolvers<Context> = {
         updatedAtFilter.lte = filters.toDate;
       }
 
+      const nameFilter = filters?.text
+        ? [{ name: { contains: filters.text, mode: 'insensitive' } }]
+        : undefined;
+
+      const areaFilter = filters?.areaName
+        ? { name: { equals: filters.areaName } }
+        : undefined;
+
       const whereQuery = {
         active: filters?.active,
-        no_payment:
-          typeof filters.noPayment !== 'undefined'
-            ? filters?.noPayment
-            : undefined,
+        no_payment: noPaymentFilter,
         updated_at: updatedAtFilter,
-        // areas: {
-        //   name: {
-        //     equals: filters?.areaName,
-        //   },
-        // },
-        // OR: [{ name: { contains: filters.text } }],
+        areas: areaFilter,
+        OR: nameFilter,
       };
 
-      console.log(filters);
+      console.log(whereQuery);
 
       const totalToiletCount = await prisma.toilets.count({
-        where: whereQuery,
+        where: {
+          ...whereQuery,
+        },
       });
 
       // Paginated toilets findAll query against Prisma.
       const loos = await prisma.toilets.findMany({
         where: whereQuery,
+        include: {
+          areas: true,
+        },
         skip: (pagination.page - 1) * pagination.limit,
         take: pagination.limit,
       });
 
+      console.log(loos);
+
       return {
-        loos,
+        loos: loos.map(postgresLooToGraphQL),
         limit: pagination.limit,
         pages: Math.ceil(totalToiletCount / pagination.limit),
         page: pagination.page,
