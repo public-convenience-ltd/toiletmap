@@ -1,0 +1,6 @@
+query areas {
+  areas {
+    name
+    type
+  }
+}

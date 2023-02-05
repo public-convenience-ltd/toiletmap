@@ -152,8 +152,8 @@ const LooPage: CustomLooByIdComp = (props) => {
             <Text fontSize={4} fontWeight="bold">
               <h2>Area:</h2>
             </Text>
-            <Text fontSize={4}>{looCentre?.area[0].name}</Text>
-            <Text fontSize={4}>{looCentre?.area[0].type}</Text>
+            <Text fontSize={4}>{looCentre?.area[0]?.name}</Text>
+            <Text fontSize={4}>{looCentre?.area[0]?.type}</Text>
           </Box>
           <Box>
             <Text fontSize={4} fontWeight="bold">
@@ -162,8 +162,8 @@ const LooPage: CustomLooByIdComp = (props) => {
             <Text fontSize={4}>
               Geohash: {looCentre?.geohash.substring(0, 6)}
             </Text>
-            <Text fontSize={4}>Lat: {looCentre?.location.lat}</Text>
-            <Text fontSize={4}>Lng: {looCentre?.location.lng}</Text>
+            <Text fontSize={4}>Lat: {looCentre?.location?.lat}</Text>
+            <Text fontSize={4}>Lng: {looCentre?.location?.lng}</Text>
           </Box>
         </Box>
         <Spacer mb={4} />

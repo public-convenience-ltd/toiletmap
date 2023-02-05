@@ -2,7 +2,20 @@ import * as React from 'react';
 
 import { withApollo } from '../../api-client/withApollo';
 import { TablePaginationUnstyled } from '@mui/base';
-import { useSearchLoosQuery } from '../../api-client/graphql';
+import {
+  LooFilter,
+  useAreasQuery,
+  useSearchLoosQuery,
+} from '../../api-client/graphql';
+import Spacer from '../../components/Spacer';
+import Box from '../../components/Box';
+import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
+
+const OptionLabel = styled('label')({
+  display: 'flex',
+  flexDirection: 'column',
+});
 
 const UnstyledTable = () => {
   const [page, setPage] = React.useState(0);
@@ -18,6 +31,14 @@ const UnstyledTable = () => {
     }[]
   >([]);
   const [availableRows, setAvailableRows] = React.useState(0);
+
+  const router = useRouter();
+
+  const [appliedFilters, setAppliedFilters] = React.useState<LooFilter>({
+    active: true,
+  });
+
+  const { data: areaData } = useAreasQuery();
 
   const { data, refetch } = useSearchLoosQuery({
     variables: {
@@ -36,13 +57,10 @@ const UnstyledTable = () => {
   React.useEffect(() => {
     if (data) {
       const mapped = data.loos.loos.map((loo) => {
-        if (loo?.area[0] == null) {
-          console.log(loo);
-        }
         return {
           id: loo?.id,
           name: loo?.name ?? 'Unnamed',
-          area: loo?.area[0]?.name,
+          area: loo?.area[0]?.name ?? 'No Area',
           areaType: loo?.area[0]?.type,
           contributors: 'Anonymous',
           updatedAt: new Date(loo?.updatedAt).toLocaleDateString(),
@@ -74,6 +92,34 @@ const UnstyledTable = () => {
 
   return (
     <div>
+      <Box display={'flex'} flexWrap={'wrap'} css={{ gap: '1rem' }}>
+        <OptionLabel>
+          Search Text<input></input>
+        </OptionLabel>
+        <OptionLabel>
+          Order By
+          <select>
+            <option>Newest First</option>
+            <option>Oldest First</option>
+          </select>
+        </OptionLabel>
+        <OptionLabel>
+          Area
+          <select>
+            {areaData?.areas &&
+              areaData?.areas.map((area) => (
+                <option key={area.name}>{area.name}</option>
+              ))}
+          </select>
+        </OptionLabel>
+        <OptionLabel>
+          Updated After<input type="date"></input>
+        </OptionLabel>
+        <OptionLabel>
+          Updated Before<input type="date"></input>
+        </OptionLabel>
+      </Box>
+      <Spacer mt={4} />
       <table aria-label="custom pagination table">
         <thead>
           <tr>
