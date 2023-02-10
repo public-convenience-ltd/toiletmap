@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo } from 'react';
+import { Suspense, useMemo } from 'react';
 import Providers from '../components/Providers';
 import { UserProvider } from '@auth0/nextjs-auth0';
 import Main from '../components/Main';
