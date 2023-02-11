@@ -54,7 +54,7 @@ specifiers:
   '@storybook/manager-webpack5': ^6.5.16
   '@storybook/react': ^6.5.16
   '@styled-system/prop-types': ^5.1.5
-  '@testing-library/cypress': ^9.0.0
+  '@testing-library/cypress': ^8.0.7
   '@types/cli-progress': ^3.11.0
   '@types/jest': ^29.4.0
   '@types/leaflet': ^1.9.0
@@ -76,7 +76,7 @@ specifiers:
   cli-progress: ^3.11.2
   cors: ^2.8.5
   css-loader: ^6.7.3
-  cypress: ^12.5.1
+  cypress: ^11.2.0
   cypress-browser-permissions: ^1.1.0
   cypress-nextjs-auth0: ^2.1.0
   date-fns: ^2.29.3
@@ -217,7 +217,7 @@ devDependencies:
   '@storybook/builder-webpack5': 6.5.16_7euak6xcflffxphocbmjdcnvcu
   '@storybook/manager-webpack5': 6.5.16_7euak6xcflffxphocbmjdcnvcu
   '@storybook/react': 6.5.16_rrxs6jdahrkfbb5gb7qyjquery
-  '@testing-library/cypress': 9.0.0_cypress@12.5.1
+  '@testing-library/cypress': 8.0.7_cypress@11.2.0
   '@types/cli-progress': 3.11.0
   '@types/jest': 29.4.0
   '@types/leaflet': 1.9.0
@@ -237,8 +237,8 @@ devDependencies:
   chromatic: 6.17.0
   cli-progress: 3.11.2
   css-loader: 6.7.3_webpack@5.75.0
-  cypress: 12.5.1
-  cypress-browser-permissions: 1.1.0_cypress@12.5.1
+  cypress: 11.2.0
+  cypress-browser-permissions: 1.1.0_cypress@11.2.0
   cypress-nextjs-auth0: 2.1.0
   dotenv: 16.0.3
   dotenv-cli: 7.0.0
@@ -6642,15 +6642,15 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
-  /@testing-library/cypress/9.0.0_cypress@12.5.1:
-    resolution: {integrity: sha512-c1XiCGeHGGTWn0LAU12sFUfoX3qfId5gcSE2yHode+vsyHDWraxDPALjVnHd4/Fa3j4KBcc5k++Ccy6A9qnkMA==}
+  /@testing-library/cypress/8.0.7_cypress@11.2.0:
+    resolution: {integrity: sha512-3HTV725rOS+YHve/gD9coZp/UcPK5xhr4H0GMnq/ni6USdtzVtSOG9WBFtd8rYnrXk8rrGD+0toRFYouJNIG0Q==}
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
-      cypress: ^12.0.0
+      cypress: ^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
     dependencies:
       '@babel/runtime': 7.20.13
       '@testing-library/dom': 8.20.0
-      cypress: 12.5.1
+      cypress: 11.2.0
     dev: true
 
   /@testing-library/dom/8.20.0:
@@ -10120,12 +10120,12 @@ packages:
     resolution: {integrity: sha512-NJGVKPS81XejHcLhaLJS7plab0fK3slPh11mESeeDq2W4ZI5kUKK/LRRdVDvjJseojbPB7ZwjnyOybg3Igea/A==}
     dev: true
 
-  /cypress-browser-permissions/1.1.0_cypress@12.5.1:
+  /cypress-browser-permissions/1.1.0_cypress@11.2.0:
     resolution: {integrity: sha512-/pLwCWIXqcmWga3LQmLUDplGCT+e490H8CeqztIXwy8bsMCK4EHTuoRgTcNwYGipdb00omgTfby7jIDPp2a01Q==}
     peerDependencies:
       cypress: '>= 4'
     dependencies:
-      cypress: 12.5.1
+      cypress: 11.2.0
       lodash: 4.17.21
     dev: true
 
@@ -10140,9 +10140,9 @@ packages:
       - supports-color
     dev: true
 
-  /cypress/12.5.1:
-    resolution: {integrity: sha512-ZmCmJ3lsyeOpBfh410m5+AO2CO1AxAzFBt7k6/uVbNcrNZje1vdiwYTpj2ksPKg9mjr9lR6V8tmlDNMvr4H/YQ==}
-    engines: {node: ^14.0.0 || ^16.0.0 || >=18.0.0}
+  /cypress/11.2.0:
+    resolution: {integrity: sha512-u61UGwtu7lpsNWLUma/FKNOsrjcI6wleNmda/TyKHe0dOBcVjbCPlp1N6uwFZ0doXev7f/91YDpU9bqDCFeBLA==}
+    engines: {node: '>=12.0.0'}
     hasBin: true
     requiresBuild: true
     dependencies:
