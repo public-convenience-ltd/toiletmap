@@ -11,6 +11,7 @@ import { StatisticsQuery } from '../../api-client/graphql';
 import theme from '../../theme';
 import { css } from '@emotion/react';
 import VisuallyHidden from '../../components/VisuallyHidden';
+import Link from 'next/link';
 
 const Stats = ({ data: { statistics } }: { data: StatisticsQuery }) => {
   const pageTitle = config.getTitle('Loo Statistics');
@@ -32,6 +33,12 @@ const Stats = ({ data: { statistics } }: { data: StatisticsQuery }) => {
         <Spacer mb={5} />
         <Text fontSize={5} fontWeight="bold">
           <h2>Overview</h2>
+        </Text>
+        <Spacer mb={2} />
+        <Text fontSize={3} fontWeight="bold">
+          <h2>
+            <Link href="/explorer/search">Search Tool 🔎</Link>
+          </h2>
         </Text>
         <Spacer mb={2} />
         <Text fontSize={3}>

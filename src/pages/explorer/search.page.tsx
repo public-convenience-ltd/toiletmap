@@ -13,10 +13,17 @@ import Box from '../../components/Box';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import Button from '../../components/Button';
+import { css } from '@emotion/react';
+import theme from '../../theme';
+import Link from 'next/link';
 
 const OptionLabel = styled('label')({
   display: 'flex',
   flexDirection: 'column',
+});
+
+const TableHeader = styled('th')({
+  fontWeight: 800,
 });
 
 const UnstyledTable = () => {
@@ -236,19 +243,38 @@ const UnstyledTable = () => {
       </Box>
 
       <Spacer mt={4} />
-      <table aria-label="custom pagination table">
+      <table
+        aria-label="custom pagination table"
+        css={css`
+          border-collapse: collapse;
+          width: 100%;
+          td,
+          th {
+            padding: 0.5rem;
+          }
+          tr:nth-child(odd) td {
+            background-color: ${theme.colors.lightGrey};
+          }
+          tr:nth-child(even) td {
+            background-color: ${theme.colors.primary};
+            color: white;
+          }
+        `}
+      >
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Area</th>
-            <th>Contributors</th>
-            <th>Date Updated</th>
+            <TableHeader>Name</TableHeader>
+            <TableHeader>Area</TableHeader>
+            <TableHeader>Contributors</TableHeader>
+            <TableHeader>Date Updated</TableHeader>
           </tr>
         </thead>
         <tbody>
           {rows.map((row) => (
             <tr key={row?.id}>
-              <td>{row?.name}</td>
+              <td>
+                <Link href={`/explorer/loos/${row?.id}`}>{row?.name}</Link>
+              </td>
               <td>{row?.area}</td>
               <td>{row?.contributors}</td>
               <td>{row?.updatedAt}</td>
