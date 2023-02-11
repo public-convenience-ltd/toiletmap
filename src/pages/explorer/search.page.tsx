@@ -4,6 +4,7 @@ import { withApollo } from '../../api-client/withApollo';
 import { TablePaginationUnstyled } from '@mui/base';
 import {
   LooFilter,
+  SortOrder,
   useAreasQuery,
   useSearchLoosQuery,
 } from '../../api-client/graphql';
@@ -11,6 +12,7 @@ import Spacer from '../../components/Spacer';
 import Box from '../../components/Box';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
+import Button from '../../components/Button';
 
 const OptionLabel = styled('label')({
   display: 'flex',
@@ -18,8 +20,6 @@ const OptionLabel = styled('label')({
 });
 
 const UnstyledTable = () => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = React.useState<
     {
       id: string;
@@ -34,25 +34,83 @@ const UnstyledTable = () => {
 
   const router = useRouter();
 
-  const [appliedFilters, setAppliedFilters] = React.useState<LooFilter>({
-    active: true,
-  });
+  type AvailableFilters = Partial<
+    LooFilter & { sort: SortOrder; page: number; rowsPerPage: number }
+  >;
+
+  function removeEmpty(obj: object) {
+    return Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== ''));
+  }
+
+  const appliedFilters = React.useMemo<AvailableFilters>(
+    () => ({
+      ...removeEmpty(router.query),
+      // Defaults
+      page: router.query?.page ? parseInt(router.query?.page, 10) : 0,
+      rowsPerPage: router.query?.rowsPerPage
+        ? parseInt(router.query?.rowsPerPage, 10)
+        : 5,
+    }),
+    [router.query]
+  );
+
+  const setAppliedFilters = React.useCallback(
+    (newFilters: AvailableFilters) => {
+      router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            ...removeEmpty(router.query),
+            ...removeEmpty(newFilters),
+            fromDate: newFilters.fromDate
+              ? new Date(newFilters.fromDate).toISOString()
+              : undefined,
+            toDate: newFilters.toDate
+              ? new Date(newFilters.toDate).toISOString()
+              : undefined,
+          },
+        },
+        undefined,
+        { shallow: true }
+      );
+    },
+    [router]
+  );
 
   const { data: areaData } = useAreasQuery();
-
   const { data, refetch } = useSearchLoosQuery({
     variables: {
-      filters: { active: true },
-      pagination: { page: page + 1, limit: rowsPerPage },
+      filters: {
+        active: true,
+        fromDate: appliedFilters.fromDate ?? undefined,
+        toDate: appliedFilters.toDate ?? undefined,
+        text: appliedFilters.text ?? undefined,
+        areaName: appliedFilters.areaName ?? undefined,
+      },
+      pagination: {
+        page: appliedFilters.page + 1,
+        limit: appliedFilters.rowsPerPage,
+      },
+      sort: appliedFilters.sort,
     },
   });
 
   React.useEffect(() => {
     refetch({
-      filters: { active: true },
-      pagination: { page: page + 1, limit: rowsPerPage },
+      filters: {
+        active: true,
+        fromDate: appliedFilters.fromDate ?? undefined,
+        toDate: appliedFilters.toDate ?? undefined,
+        text: appliedFilters.text ?? undefined,
+        areaName: appliedFilters.areaName ?? undefined,
+      },
+      pagination: {
+        page: appliedFilters.page + 1,
+        limit: appliedFilters.rowsPerPage,
+      },
+      sort: appliedFilters.sort,
     });
-  }, [page, refetch, rowsPerPage]);
+  }, [refetch, appliedFilters]);
 
   React.useEffect(() => {
     if (data) {
@@ -74,51 +132,109 @@ const UnstyledTable = () => {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    appliedFilters.page > 0
+      ? Math.max(
+          0,
+          (1 + appliedFilters.page) * appliedFilters.rowsPerPage - rows.length
+        )
+      : 0;
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
-    setPage(newPage);
+    setAppliedFilters({ ...appliedFilters, page: newPage });
   };
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setAppliedFilters({
+      ...appliedFilters,
+      page: 0,
+      rowsPerPage: parseInt(event.target.value, 10),
+    });
   };
 
   return (
     <div>
       <Box display={'flex'} flexWrap={'wrap'} css={{ gap: '1rem' }}>
         <OptionLabel>
-          Search Text<input></input>
+          Search Text
+          <input
+            value={appliedFilters.text}
+            onChange={(e) =>
+              setAppliedFilters({ ...appliedFilters, text: e.target.value })
+            }
+          ></input>
         </OptionLabel>
         <OptionLabel>
           Order By
-          <select>
-            <option>Newest First</option>
-            <option>Oldest First</option>
+          <select
+            value={appliedFilters.sort}
+            onChange={(e) =>
+              setAppliedFilters({
+                ...appliedFilters,
+                sort: e.target.value as SortOrder,
+              })
+            }
+          >
+            <option value={SortOrder.NewestFirst}>Newest First</option>
+            <option value={SortOrder.OldestFirst}>Oldest First</option>
           </select>
         </OptionLabel>
         <OptionLabel>
           Area
-          <select>
+          <select
+            value={appliedFilters.areaName}
+            onChange={(e) =>
+              setAppliedFilters({
+                ...appliedFilters,
+                areaName:
+                  e.target.value === 'All areas' ? undefined : e.target.value,
+              })
+            }
+          >
             {areaData?.areas &&
-              areaData?.areas.map((area) => (
-                <option key={area.name}>{area.name}</option>
+              [
+                { name: 'All areas', type: 'Local Authority' },
+                ...areaData?.areas,
+              ].map((area) => (
+                <option key={area.name} value={area.name}>
+                  {area.name}
+                </option>
               ))}
           </select>
         </OptionLabel>
         <OptionLabel>
-          Updated After<input type="date"></input>
+          Updated After
+          <input
+            value={appliedFilters.fromDate?.split('T')[0] ?? ''}
+            onChange={(e) =>
+              setAppliedFilters({
+                ...appliedFilters,
+                fromDate: e.target.value,
+              })
+            }
+            type="date"
+          ></input>
         </OptionLabel>
         <OptionLabel>
-          Updated Before<input type="date"></input>
+          Updated Before
+          <input
+            type="date"
+            value={appliedFilters.toDate?.split('T')[0] ?? ''}
+            onChange={(e) =>
+              setAppliedFilters({
+                ...appliedFilters,
+                toDate: e.target.value,
+              })
+            }
+          ></input>
         </OptionLabel>
+        <Button variant="primary">Search</Button>
       </Box>
+
       <Spacer mt={4} />
       <table aria-label="custom pagination table">
         <thead>
@@ -139,20 +255,23 @@ const UnstyledTable = () => {
             </tr>
           ))}
 
-          {/* {emptyRows > 0 && (
+          {emptyRows > 0 && (
             <tr style={{ height: 34 * emptyRows }}>
               <td colSpan={4} />
             </tr>
-          )} */}
+          )}
         </tbody>
         <tfoot>
           <tr>
             <TablePaginationUnstyled
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+              rowsPerPageOptions={[
+                5, 10, 25,
+                // { label: 'All', value: availableRows }, Disabled all for now
+              ]}
               colSpan={4}
               count={availableRows}
-              rowsPerPage={rowsPerPage}
-              page={page}
+              rowsPerPage={appliedFilters.rowsPerPage}
+              page={appliedFilters.page}
               slotProps={{
                 select: {
                   'aria-label': 'rows per page',
@@ -160,7 +279,7 @@ const UnstyledTable = () => {
                 actions: {
                   showFirstButton: true,
                   showLastButton: true,
-                } as any,
+                } as object,
               }}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
