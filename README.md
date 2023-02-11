@@ -110,5 +110,5 @@ Cypress Dashboard speeds up and enhances our testing workflow, helping us to del
 
 ---
 
-Could your company help?
+Looking to help?
 [Let us know](https://www.toiletmap.org.uk/contact)
