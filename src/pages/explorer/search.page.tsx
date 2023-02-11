@@ -160,7 +160,16 @@ const UnstyledTable = () => {
 
   return (
     <div>
-      <Box display={'flex'} flexWrap={'wrap'} css={{ gap: '1rem' }}>
+      <Box
+        as="form"
+        display={'flex'}
+        flexWrap={'wrap'}
+        css={{ gap: '1rem' }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          applySearch(appliedFilters);
+        }}
+      >
         <OptionLabel>
           Search Text
           <input
@@ -237,7 +246,7 @@ const UnstyledTable = () => {
             }
           ></input>
         </OptionLabel>
-        <Button variant="primary" onClick={() => applySearch(appliedFilters)}>
+        <Button type="submit" variant="primary">
           Search
         </Button>
       </Box>
