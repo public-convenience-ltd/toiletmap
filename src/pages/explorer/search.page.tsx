@@ -42,32 +42,54 @@ const UnstyledTable = () => {
     return Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== ''));
   }
 
-  const appliedFilters = React.useMemo<AvailableFilters>(
-    () => ({
+  const initialFilters = React.useMemo<AvailableFilters>(() => {
+    return {
       ...removeEmpty(router.query),
       // Defaults
       page: router.query?.page ? parseInt(router.query?.page, 10) : 0,
       rowsPerPage: router.query?.rowsPerPage
         ? parseInt(router.query?.rowsPerPage, 10)
         : 5,
-    }),
-    [router.query]
-  );
+      text: router.query?.text ?? '',
+    };
+  }, [router]);
 
-  const setAppliedFilters = React.useCallback(
-    (newFilters: AvailableFilters) => {
+  const [appliedFilters, setAppliedFilters] =
+    React.useState<AvailableFilters>(initialFilters);
+
+  const [isInitialLoad, setIsInitialLoad] = React.useState(true);
+
+  React.useEffect(() => {
+    setAppliedFilters(initialFilters);
+    setIsInitialLoad(false);
+  }, [initialFilters]);
+
+  React.useEffect(() => {
+    if (!isInitialLoad) {
+      applySearch(appliedFilters, false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- we only want to apply for these filters.
+  }, [appliedFilters.sort, appliedFilters.page, appliedFilters.rowsPerPage]);
+
+  const applySearch = React.useCallback(
+    (newFilters: AvailableFilters, resetPage = true) => {
+      const spreadValues = {
+        ...removeEmpty(router.query),
+        ...removeEmpty(newFilters),
+      };
       router.push(
         {
           pathname: router.pathname,
           query: {
-            ...removeEmpty(router.query),
-            ...removeEmpty(newFilters),
+            ...spreadValues,
+            page: resetPage ? 0 : spreadValues.page, // Reset back to page 0 on a new search to avoid confusion
             fromDate: newFilters.fromDate
               ? new Date(newFilters.fromDate).toISOString()
               : undefined,
             toDate: newFilters.toDate
               ? new Date(newFilters.toDate).toISOString()
               : undefined,
+            text: newFilters.text ?? '',
           },
         },
         undefined,
@@ -78,39 +100,22 @@ const UnstyledTable = () => {
   );
 
   const { data: areaData } = useAreasQuery();
-  const { data, refetch } = useSearchLoosQuery({
+  const { data } = useSearchLoosQuery({
     variables: {
       filters: {
         active: true,
-        fromDate: appliedFilters.fromDate ?? undefined,
-        toDate: appliedFilters.toDate ?? undefined,
-        text: appliedFilters.text ?? undefined,
-        areaName: appliedFilters.areaName ?? undefined,
+        fromDate: initialFilters.fromDate ?? undefined,
+        toDate: initialFilters.toDate ?? undefined,
+        text: initialFilters.text ?? undefined,
+        areaName: initialFilters.areaName ?? undefined,
       },
       pagination: {
-        page: appliedFilters.page + 1,
-        limit: appliedFilters.rowsPerPage,
+        page: initialFilters.page + 1,
+        limit: initialFilters.rowsPerPage,
       },
-      sort: appliedFilters.sort,
+      sort: initialFilters.sort,
     },
   });
-
-  React.useEffect(() => {
-    refetch({
-      filters: {
-        active: true,
-        fromDate: appliedFilters.fromDate ?? undefined,
-        toDate: appliedFilters.toDate ?? undefined,
-        text: appliedFilters.text ?? undefined,
-        areaName: appliedFilters.areaName ?? undefined,
-      },
-      pagination: {
-        page: appliedFilters.page + 1,
-        limit: appliedFilters.rowsPerPage,
-      },
-      sort: appliedFilters.sort,
-    });
-  }, [refetch, appliedFilters]);
 
   React.useEffect(() => {
     if (data) {
@@ -130,15 +135,6 @@ const UnstyledTable = () => {
     }
   }, [data]);
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    appliedFilters.page > 0
-      ? Math.max(
-          0,
-          (1 + appliedFilters.page) * appliedFilters.rowsPerPage - rows.length
-        )
-      : 0;
-
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
@@ -151,7 +147,6 @@ const UnstyledTable = () => {
   ) => {
     setAppliedFilters({
       ...appliedFilters,
-      page: 0,
       rowsPerPage: parseInt(event.target.value, 10),
     });
   };
@@ -164,7 +159,10 @@ const UnstyledTable = () => {
           <input
             value={appliedFilters.text}
             onChange={(e) =>
-              setAppliedFilters({ ...appliedFilters, text: e.target.value })
+              setAppliedFilters({
+                ...appliedFilters,
+                text: e.target.value,
+              })
             }
           ></input>
         </OptionLabel>
@@ -232,7 +230,9 @@ const UnstyledTable = () => {
             }
           ></input>
         </OptionLabel>
-        <Button variant="primary">Search</Button>
+        <Button variant="primary" onClick={() => applySearch(appliedFilters)}>
+          Search
+        </Button>
       </Box>
 
       <Spacer mt={4} />
@@ -254,12 +254,6 @@ const UnstyledTable = () => {
               <td>{row?.updatedAt}</td>
             </tr>
           ))}
-
-          {emptyRows > 0 && (
-            <tr style={{ height: 34 * emptyRows }}>
-              <td colSpan={4} />
-            </tr>
-          )}
         </tbody>
         <tfoot>
           <tr>
