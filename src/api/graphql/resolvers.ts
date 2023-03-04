@@ -41,6 +41,10 @@ const resolvers: Resolvers<Context> = {
         throw new Error('Invalid pagination params');
       }
 
+      if (pagination.limit > 100) {
+        throw new Error('Pagination size limit exceeded.');
+      }
+
       const noPaymentFilter =
         typeof filters.noPayment !== 'undefined'
           ? filters?.noPayment
