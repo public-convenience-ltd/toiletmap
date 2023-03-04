@@ -138,12 +138,9 @@ export const postgresUpsertLooQueryFromReport = async (
     prismaUpdate: {
       ...looProperties,
       updated_at: operationTime,
-      // TODO: this has been temporarily disabled until the bugfix is in:
-      // https://github.com/prisma/prisma/issues/16760
-
-      // contributors: {
-      //   push: nickname,
-      // },
+      contributors: {
+        push: nickname,
+      },
     },
     extras: {
       location: report.location,
