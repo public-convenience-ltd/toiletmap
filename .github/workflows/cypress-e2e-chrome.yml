@@ -8,6 +8,8 @@ jobs:
   cypress-e2e-chrome:
     name: Cypress E2E Chrome
     runs-on: ubuntu-20.04
+    # Don't run the e2e tests for dependabot prs
+    if: ${{ github.actor != 'dependabot[bot]' }}
     # Only run the e2e tests if a maintainer has labeled the PR as 'safe to test'.
     # if: contains(github.event.pull_request.labels.*.name, 'safe to test')
     timeout-minutes: 15
