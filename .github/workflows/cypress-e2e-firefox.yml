@@ -1,7 +1,9 @@
 name: E2E Cypress Tests (Firefox)
 on:
+  push:
+    branches:
+      - main
   pull_request:
-  workflow_dispatch:
 jobs:
   cypress-e2e-firefox:
     name: Cypress E2E Firefox
