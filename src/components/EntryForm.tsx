@@ -6,7 +6,7 @@ import {
   UseFormRegister,
   FieldValues,
 } from 'react-hook-form';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import isFunction from 'lodash/isFunction';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
@@ -20,6 +20,7 @@ import VisuallyHidden from '../components/VisuallyHidden';
 import Switch from '../components/Switch';
 import { WEEKDAYS, isClosed } from '../lib/openingTimes';
 import crosshair from '../../public/crosshair-small.svg';
+
 import { useMapState } from './MapState';
 import Icon from './Icon';
 import { faAsterisk } from '@fortawesome/free-solid-svg-icons';

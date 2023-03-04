@@ -44,6 +44,7 @@ export interface LooMapProps {
   showAccessibilityOverlay?: boolean;
   alwaysShowGeolocateButton?: boolean;
   controlPositionOverride?: 'top' | 'bottom';
+  showControls?: boolean;
   onViewportChanged?: () => void;
 }
 
@@ -59,6 +60,7 @@ const LooMap: React.FC<LooMapProps> = ({
   zoom,
   minZoom,
   maxZoom = 18,
+  showControls = true,
   staticMap = false,
   withAccessibilityOverlays = true,
   showAccessibilityOverlay = false,
@@ -312,10 +314,10 @@ const LooMap: React.FC<LooMapProps> = ({
               : controlPositionClassNames['bottom']
           }
         >
-          {alwaysShowGeolocateButton && <LocateMapControl />}
+          {alwaysShowGeolocateButton && showControls && <LocateMapControl />}
           <Media greaterThanOrEqual="md">
-            {!alwaysShowGeolocateButton && <LocateMapControl />}
-            <ZoomControl />
+            {!alwaysShowGeolocateButton && showControls && <LocateMapControl />}
+            {showControls && <ZoomControl />}
           </Media>
         </div>
 

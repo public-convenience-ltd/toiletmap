@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/schemaMongo"
+}
+
+datasource mongodb {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+type AreasGeometry {
+  coordinates Json
+  type        String
+}
+
+type MapgeosGeometry {
+  id      String                   @map("_id") @mongodb.ObjectId
+  arcs    Json
+  objects MapgeosGeometryObjects[]
+  type    String
+}
+
+type MapgeosGeometryObjects {
+  id    String                      @map("_id") @mongodb.ObjectId
+  name  String
+  value MapgeosGeometryObjectsValue
+}
+
+type MapgeosGeometryObjectsValue {
+  geometries MapgeosGeometryObjectsValueGeometries[]
+  type       String
+}
+
+type MapgeosGeometryObjectsValueGeometries {
+  id         String                                          @map("_id") @mongodb.ObjectId
+  arcs       Json
+  properties MapgeosGeometryObjectsValueGeometriesProperties
+  type       String
+}
+
+type MapgeosGeometryObjectsValueGeometriesProperties {
+  areaSize Float
+  name     String
+  objectid Int
+}
+
+type NewloosProperties {
+  accessible     Boolean?
+  active         Boolean
+  allGender      Boolean?
+  area           NewloosPropertiesArea[]
+  attended       Boolean?
+  automatic      Boolean?
+  babyChange     Boolean?
+  campaignUOL    Boolean?
+  children       Boolean?
+  geometry       NewloosPropertiesGeometry
+  men            Boolean?
+  name           String?
+  noPayment      Boolean?
+  notes          String?
+  openingTimes   Json?
+  paymentDetails String?
+  radar          Boolean?
+  removalReason  String?
+  urinalOnly     Boolean?
+  verifiedAt     DateTime?                 @mongodb.Date
+  women          Boolean?
+}
+
+type NewloosPropertiesArea {
+  name String
+  type String
+}
+
+type NewloosPropertiesGeometry {
+  coordinates Float[]
+  type        String
+}
+
+type NewreportsDiff {
+  accessible     Boolean?
+  active         Boolean?
+  allGender      Boolean?
+  attended       Boolean?
+  automatic      Boolean?
+  babyChange     Boolean?
+  campaignUOL    Boolean?
+  children       Boolean?
+  geometry       NewreportsDiffGeometry?
+  men            Boolean?
+  name           String?
+  noPayment      Boolean?
+  notes          String?
+  openingTimes   Json?
+  paymentDetails String?
+  radar          Boolean?
+  removalReason  String?
+  urinalOnly     Boolean?
+  verifiedAt     DateTime?               @mongodb.Date
+  women          Boolean?
+}
+
+type NewreportsDiffGeometry {
+  coordinates Float[]
+  type        String
+}
+
+model areas {
+  id        String        @id @default(auto()) @map("_id") @mongodb.ObjectId
+  v         Int           @map("__v")
+  datasetId Int
+  geometry  AreasGeometry
+  name      String
+  priority  Int
+  type      String
+  version   Int
+
+  @@index([geometry], map: "geometry_2dsphere")
+}
+
+model changelog {
+  id        String   @id @default(auto()) @map("_id") @mongodb.ObjectId
+  appliedAt DateTime @mongodb.Date
+  fileName  String
+}
+
+model mapgeos {
+  id        String          @id @default(auto()) @map("_id") @mongodb.ObjectId
+  v         Int             @map("__v")
+  areaType  String
+  datasetId Int
+  geometry  MapgeosGeometry
+  version   Int
+}
+
+model newloos {
+  id           String            @id @default(auto()) @map("_id") @mongodb.ObjectId
+  v            Int               @map("__v")
+  contributors String[]
+  createdAt    DateTime          @mongodb.Date
+  properties   NewloosProperties
+  reports      String[]          @mongodb.ObjectId
+  updatedAt    DateTime          @mongodb.Date
+
+  @@index([properties.geometry], map: "properties.geometry_2dsphere")
+}
+
+model newreports {
+  id            String         @id @default(auto()) @map("_id") @mongodb.ObjectId
+  v             Int            @map("__v")
+  contributor   String
+  contributorId String?
+  createdAt     DateTime       @mongodb.Date
+  diff          NewreportsDiff
+  next          String?        @mongodb.ObjectId
+  previous      String?        @mongodb.ObjectId
+  updatedAt     DateTime       @mongodb.Date
+}

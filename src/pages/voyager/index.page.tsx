@@ -1,8 +1,8 @@
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Box from '../../components/Box';
 import Container from '../../components/Container';
 import config from '../../config';
+import dynamic from 'next/dynamic';
 import 'graphql-voyager/dist/voyager.css';
 
 const VoyagerComponent = dynamic(

@@ -1,19 +1,19 @@
 import jwt, { VerifyOptions } from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { getSession } from '@auth0/nextjs-auth0';
+
 import Cors from 'cors';
-import redactedDirective from '../../api/directives/redactedDirective';
 import authDirective from '../../api/directives/authDirective';
 import schema from '../../api-client/schema';
-import { createServer } from '@graphql-yoga/node';
+import { createYoga } from 'graphql-yoga';
 import {
   createInMemoryCache,
   defaultBuildResponseCacheKey,
   useResponseCache,
 } from '@envelop/response-cache';
-import { useSentry } from '@envelop/sentry';
 import Redis from 'ioredis';
 import { createRedisCache } from '@envelop/response-cache-redis';
+import { context } from '../../api/graphql/context';
 
 const setupCache = () => {
   if (process.env.ENABLE_REDIS_CACHE !== 'true') {
@@ -29,6 +29,7 @@ const setupCache = () => {
     username: 'default',
     port,
     password: process.env.REDIS_PASSWORD,
+    tls: process.env.REDIS_SSL_ENABLED === 'true' ? {} : undefined,
   });
 
   return createRedisCache({ redis });
@@ -54,13 +55,13 @@ const options: VerifyOptions = {
 };
 
 // Add GraphQL API
-const finalSchema = schema(authDirective, redactedDirective);
+const finalSchema = schema(authDirective);
 
-export const server = createServer({
-  endpoint: '/api',
+export const server = createYoga({
+  graphqlEndpoint: '/api',
   schema: finalSchema,
   context: async ({ req, res }) => {
-    const revalidate = req.headers.referer.indexOf('message=') > -1;
+    const revalidate = req.headers.referer?.indexOf('message=') > -1;
     let user = null;
     try {
       // Support auth by header (legacy SPA and third-party apps)
@@ -89,6 +90,7 @@ export const server = createServer({
     return {
       user,
       revalidate,
+      prisma: context.prisma,
     };
   },
   plugins: [
@@ -115,8 +117,6 @@ export const server = createServer({
         return await defaultBuildResponseCacheKey(params);
       },
     }),
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useSentry(),
   ],
 });
 

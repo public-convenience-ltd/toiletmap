@@ -1,0 +1,94 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema", "filteredRelationCount", "postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("POSTGRES_URI")
+  extensions = [postgis(schema: "public"), uuid_ossp(map: "uuid-ossp", schema: "extensions")]
+  schemas    = ["audit", "public"]
+}
+
+model record_version {
+  id            BigInt              @id @default(autoincrement())
+  record_id     String?             @db.Uuid
+  old_record_id String?             @db.Uuid
+  op            operation
+  ts            DateTime            @default(now()) @db.Timestamptz(6)
+  table_oid     Int                 @db.Oid
+  table_schema  Unsupported("name")
+  table_name    Unsupported("name")
+  record        Json?
+  old_record    Json?
+  auth_uid      String?             @default(dbgenerated("auth.uid()")) @db.Uuid
+  auth_role     String?             @default(dbgenerated("auth.role()"))
+
+  @@index([table_oid], map: "record_version_table_oid")
+  @@index([ts], map: "record_version_ts", type: Brin)
+  @@schema("audit")
+}
+
+model areas {
+  id         String                    @id(map: "area_id") @db.Char(24)
+  geometry   Unsupported("geography")?
+  name       String?                   @unique(map: "area_name")
+  priority   Int?
+  type       String?
+  dataset_id Int?
+  version    Int?
+  toilets    toilets[]
+
+  @@schema("public")
+}
+
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @db.VarChar(256)
+  auth_srid Int?
+  srtext    String? @db.VarChar(2048)
+  proj4text String? @db.VarChar(2048)
+
+  @@schema("public")
+}
+
+model toilets {
+  id              String                    @id(map: "toilet_id") @db.Char(24)
+  created_at      DateTime?                 @db.Timestamptz(6)
+  contributors    String[]
+  accessible      Boolean?
+  active          Boolean?
+  attended        Boolean?
+  automatic       Boolean?
+  baby_change     Boolean?
+  men             Boolean?
+  name            String?
+  no_payment      Boolean?
+  notes           String?
+  payment_details String?
+  radar           Boolean?
+  removal_reason  String?
+  women           Boolean?
+  updated_at      DateTime?                 @db.Timestamptz(6)
+  geography       Unsupported("geography")?
+  urinal_only     Boolean?
+  all_gender      Boolean?
+  children        Boolean?
+  geohash         String?                   @default(dbgenerated("st_geohash(geography)"))
+  verified_at     DateTime?                 @db.Timestamptz(6)
+  area_id         String?                   @db.Char(24)
+  opening_times   Json?
+  location        Json?                     @default(dbgenerated("(st_asgeojson((geography)::geometry))::jsonb"))
+  areas           areas?                    @relation(fields: [area_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "toilets___area_id_fk")
+
+  @@schema("public")
+}
+
+enum operation {
+  INSERT
+  UPDATE
+  DELETE
+  TRUNCATE
+
+  @@schema("audit")
+}

@@ -79,7 +79,7 @@ const globalStyles = (
       }
 
       a {
-        text-decoration: none;
+        text-decoration: underline;
       }
 
       button {

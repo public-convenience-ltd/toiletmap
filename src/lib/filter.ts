@@ -1,5 +1,5 @@
+import { Loo } from '../api-client/graphql';
 import { Filter } from '../config';
-import { LooProperties } from './loo';
 
 export enum FILTER_TYPE {
   NO_PAYMENT = 0b00000001,
@@ -10,7 +10,7 @@ export enum FILTER_TYPE {
   RADAR = 0b00100000,
 }
 
-export const genLooFilterBitmask = (loo: { properties: LooProperties }) => {
+export const genLooFilterBitmask = (loo: Loo) => {
   const {
     noPayment = 0,
     allGender = 0,
@@ -18,7 +18,7 @@ export const genLooFilterBitmask = (loo: { properties: LooProperties }) => {
     accessible = 0,
     babyChange = 0,
     radar = 0,
-  } = loo.properties;
+  } = loo;
 
   const noPaymentValue = noPayment ? FILTER_TYPE.NO_PAYMENT : 0;
   const allGenderValue = allGender ? FILTER_TYPE.ALL_GENDER : 0;

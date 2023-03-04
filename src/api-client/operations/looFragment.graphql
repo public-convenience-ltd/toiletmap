@@ -24,4 +24,9 @@ fragment LooFragment on Loo {
   notes
   removalReason
   attended
+  geohash
+  area {
+    name
+    type
+  }
 }

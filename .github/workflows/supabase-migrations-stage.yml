@@ -1,0 +1,27 @@
+name: Deploy Staging Supabase Migrations
+
+on:
+  push:
+    branches:
+      - ob/postgres-prisma-migration
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_STAGE_DB_PASSWORD }}
+      STAGE_PROJECT_ID: qyrgvtalhopncikdzhhp
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 1.27.7
+
+      - run: |
+          supabase link --project-ref $STAGE_PROJECT_ID
+          supabase db push

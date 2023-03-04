@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo } from 'react';
+import { Suspense, useMemo } from 'react';
 import Providers from '../components/Providers';
 import { UserProvider } from '@auth0/nextjs-auth0';
 import Main from '../components/Main';
@@ -15,7 +15,6 @@ const App = (props) => {
   const sharedStatePaths = ['/', '/loos/[id]'];
   const key =
     sharedStatePaths.indexOf(router.pathname) > -1 ? 'shared' : router.asPath;
-
   const renderedMap = useMemo(
     () =>
       key === 'shared' ? (

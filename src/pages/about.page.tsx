@@ -56,7 +56,7 @@ const AboutPage = () => {
           joint venture between researchers Dr Jo-Anne Bichard and Gail Ramster
           (who created the map at the RCA Helen Hamlyn Centre for Design) and
           software development company{' '}
-          <Link passHref href="https://www.neontribe.co.uk/">
+          <Link passHref href="https://www.neontribe.co.uk/" legacyBehavior>
             <Button
               variant="link"
               as="a"
@@ -71,11 +71,11 @@ const AboutPage = () => {
         <p>
           The information comes from the public - anyone can go on the website
           and{' '}
-          <Link href="/" passHref>
+          <Link href="/" passHref legacyBehavior>
             <Button variant="link">add, edit or remove toilets</Button>
           </Link>
           . We also use open data and request information from councils,{' '}
-          <Link passHref href="https://www.openstreetmap.org/">
+          <Link passHref href="https://www.openstreetmap.org/" legacyBehavior>
             <Button
               variant="link"
               as="a"
@@ -94,7 +94,11 @@ const AboutPage = () => {
           to download below.
         </p>
         <Spacer mb={2} />
-        <Link passHref href="Toilet.Map.Volunteer.Help.Guide.pdf">
+        <Link
+          passHref
+          href="Toilet.Map.Volunteer.Help.Guide.pdf"
+          legacyBehavior
+        >
           <Button
             as="a"
             variant="primary"
@@ -111,7 +115,7 @@ const AboutPage = () => {
           also available for download.
         </p>
         <Spacer mb={2} />
-        <Link passHref href={'/GBPTM.Toilet.Checklist.pdf'}>
+        <Link passHref href={'/GBPTM.Toilet.Checklist.pdf'} legacyBehavior>
           <Button
             as="a"
             variant="primary"
@@ -159,7 +163,7 @@ const AboutPage = () => {
         <p>
           If you have any problems updating the toilets, or wish to send us
           toilet details or comments, please contact{' '}
-          <Link passHref href="mailto:gbtoiletmap@gmail.com">
+          <Link passHref href="mailto:gbtoiletmap@gmail.com" legacyBehavior>
             <Button variant="link" as="a">
               gbtoiletmap@gmail.com
             </Button>
@@ -168,7 +172,7 @@ const AboutPage = () => {
         </p>
         <SubHeading>The Explorer</SubHeading>
         <p>
-          <Link passHref href="/explorer">
+          <Link passHref href="/explorer" prefetch={false} legacyBehavior>
             <Button variant="link" as="a">
               Visit the Explorer
             </Button>

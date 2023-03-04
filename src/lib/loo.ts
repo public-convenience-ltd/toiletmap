@@ -3,12 +3,6 @@ import ngeohash from 'ngeohash';
 import { Loo } from '../api-client/graphql';
 import { FILTER_TYPE, genLooFilterBitmask } from './filter';
 
-export type LooProperties = Omit<Loo, '__typename'> & {
-  geometry: {
-    coordinates: [number, number];
-  };
-};
-
 type CompressedLooString = `${string}|${string}|${number}`;
 
 export type CompressedLooObject = {
@@ -20,13 +14,11 @@ export type CompressedLooObject = {
   filterBitmask: number;
 };
 
-export const stringifyAndCompressLoos = (
-  loos: { id?: string; properties: LooProperties }[]
-): CompressedLooString[] =>
+export const stringifyAndCompressLoos = (loos: Loo[]): CompressedLooString[] =>
   loos.map((loo) => {
     const id = loo.id;
-    const [longitude, latitude] = loo.properties.geometry.coordinates;
-    const geohash = ngeohash.encode(latitude, longitude, 9);
+    const { lat, lng } = loo.location;
+    const geohash = ngeohash.encode(lat, lng, 9);
     const filterMask = genLooFilterBitmask(loo);
     return `${id}|${geohash}|${filterMask}` as CompressedLooString;
   });

@@ -109,7 +109,7 @@ const MarkerGroup: React.FC<{
   const { appliedFilters: filters } = mapState;
 
   const { data } = useLoosByGeohashQuery({
-    variables: { geohash },
+    variables: { geohash, active: true },
     fetchPolicy: 'cache-first',
   });
 

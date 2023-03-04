@@ -1,10 +1,11 @@
 name: E2E Cypress Tests (Chrome)
 on:
-  push: []
+  pull_request:
+  workflow_dispatch:
 jobs:
   cypress-e2e-chrome:
     name: Cypress E2E Chrome
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     # Only run the e2e tests if a maintainer has labeled the PR as 'safe to test'.
     # if: contains(github.event.pull_request.labels.*.name, 'safe to test')
     timeout-minutes: 15
@@ -17,42 +18,37 @@ jobs:
       matrix:
         # run 4 copies of the current job in parallel
         containers: [1, 2, 3, 4, 5]
-    services:
-      redis:
-        image: redis
-        # Set health checks to wait until redis has started
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          # Maps Redis port 6379 on service container to the host
-          - 6379:6379
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+        uses: actions/checkout@v3
+      # enables use to use the cache in actions/setup-node
+      - uses: pnpm/action-setup@v2.2.2
+      - uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-          cache: 'yarn'
+          cache: 'pnpm'
       - name: CacheAreas
         id: cache-areas
         uses: actions/cache@v3
         with:
           path: ./src/api/db/manage/areaToDatabase/.areaInfo.geojson
           key: ${{ runner.os }}-areaInfo
-      - run: yarn
-      - run: yarn startMemoryMongo & yarn wait-on:memoryMongo
+      - name: Install dependencies
+        run: pnpm install
+      - name: Database init
+        uses: supabase/setup-cli@v1
+        with:
+          version: 1.27.7
+      - run: SUPABASE_SCANNER_BUFFER_SIZE=5mb supabase start
       - name: NextCache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ github.workspace }}/.next/cache
           # Generate a new cache whenever packages or source files change.
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           # If source files changed but packages didn't, rebuild from a prior cache.
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
       - name: Cypress run
         uses: cypress-io/github-action@v4
         env:
@@ -76,13 +72,13 @@ jobs:
           CYPRESS_auth0ClientId: ${{ secrets.CYPRESS_AUTH0CLIENTID }}
           CYPRESS_auth0CookieSecret: ${{ secrets.CYPRESS_AUTH0COOKIESECRET }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          ENABLE_REDIS_CACHE: true
+          ENABLE_REDIS_CACHE: false
           REDIS_URI: 'localhost'
           REDIS_PASSWORD: ''
           REDIS_PORT: 6379
         with:
-          build: yarn build
-          start: yarn start
+          build: pnpm build
+          start: pnpm start
           wait-on: 'http://localhost:3000/'
           wait-on-timeout: 60
           browser: chrome

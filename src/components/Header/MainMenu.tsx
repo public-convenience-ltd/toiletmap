@@ -6,22 +6,16 @@ import Text from '../Text';
 import { Media } from '../Media';
 import { useUser } from '@auth0/nextjs-auth0';
 import { useMapState } from '../MapState';
-import {
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
-} from '@chakra-ui/react';
-import Icon from '../Icon';
-import { faComments } from '@fortawesome/free-solid-svg-icons';
-import dynamic from 'next/dynamic';
+// import Icon from '../Icon';
+// import { faComments } from '@fortawesome/free-solid-svg-icons';
+// import dynamic from 'next/dynamic';
 
-const Feedback = dynamic(() => import('../Feedback/Feedback'));
+// const Feedback = dynamic(() => import('../Feedback/Feedback'));
 
 const StyledNavLink = styled(Link)<
   LinkProps & {
     onMouseEnter?: React.MouseEventHandler<Element> | undefined;
-    onClick: React.MouseEventHandler;
+    onClick?: React.MouseEventHandler;
     href?: string | undefined;
     ref?: unknown;
   }
@@ -79,7 +73,7 @@ const MainMenu = ({ children }: IMainMenu) => {
 
           <Box as="li" mt={['auto', 0]} ml={[0, 'auto']}>
             <Media greaterThan="md">
-              <Popover>
+              {/* <Popover>
                 <PopoverTrigger>
                   <button>
                     Feedback <Icon icon={faComments} size="1x" />
@@ -90,11 +84,11 @@ const MainMenu = ({ children }: IMainMenu) => {
                     <Feedback />
                   </PopoverBody>
                 </PopoverContent>
-              </Popover>
+              </Popover> */}
             </Media>
 
             <Media at="md">
-              <Popover>
+              {/* <Popover>
                 <PopoverTrigger>
                   <button>
                     <Icon icon={faComments} size="1x" />
@@ -105,7 +99,7 @@ const MainMenu = ({ children }: IMainMenu) => {
                     <Feedback />
                   </PopoverBody>
                 </PopoverContent>
-              </Popover>
+              </Popover> */}
             </Media>
           </Box>
 

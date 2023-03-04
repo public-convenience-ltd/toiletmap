@@ -18,7 +18,6 @@ import {
   faQuestion,
   faChevronDown,
   faSpinner,
-  faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 import lightFormat from 'date-fns/lightFormat';
@@ -28,8 +27,6 @@ import add from 'date-fns/add';
 import Link from 'next/link';
 
 import { Loo } from '../api-client/graphql';
-
-import { Badge, Tooltip } from '@chakra-ui/react';
 
 import Box from './Box';
 import Button from './Button';
@@ -110,12 +107,14 @@ const DistanceTo = ({ from, to }) => {
 interface ToiletDetailsPanelProps {
   data: Loo;
   startExpanded?: boolean;
+  showCloseButton?: boolean;
   children?: React.ReactNode;
 }
 
 const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
   data,
   startExpanded = false,
+  showCloseButton = true,
   children,
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(startExpanded);
@@ -198,6 +197,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         data.location.lat,
         data.location.lng,
       ]}`}
+      legacyBehavior
     >
       <Button
         variant="primary"
@@ -340,7 +340,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
           <Box display="flex" alignItems="center">
             No?
             <Spacer mr={2} />
-            <Link passHref href={editUrl}>
+            <Link passHref href={editUrl} legacyBehavior>
               <Button as="a" variant="secondary" data-testid="edit-button">
                 <Box mr={2}>
                   <Icon icon={faEdit} />
@@ -352,7 +352,11 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         </Box>
         <Spacer mb={[0, 2]} />
         Last {verifiedOrUpdated}:{' '}
-        <Link href={`/explorer/loos/${data.id}`}>
+        <Link
+          href={`/explorer/loos/${data.id}`}
+          prefetch={false}
+          legacyBehavior
+        >
           {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
         </Link>
       </Box>
@@ -381,47 +385,50 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         data-testid="toilet-details"
         ref={containerRef}
       >
-        <Media greaterThanOrEqual="md">
-          <Box position="absolute" top={30} right={30}>
-            <button
-              type="button"
-              aria-label="Close toilet details"
-              onClick={() => setIsExpanded(false)}
-              aria-expanded="true"
-              ref={closeButtonRef}
-            >
-              <Box
-                height={26}
-                width={26}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                borderRadius={13}
-                borderColor="primary"
-                borderWidth={1}
-                borderStyle="solid"
+        {showCloseButton && (
+          <Media greaterThanOrEqual="md">
+            <Box position="absolute" top={30} right={30}>
+              <button
+                type="button"
+                aria-label="Close toilet details"
+                onClick={() => setIsExpanded(false)}
+                aria-expanded="true"
+                ref={closeButtonRef}
               >
-                <Icon icon={faTimes} />
-              </Box>
-            </button>
-          </Box>
-        </Media>
-
-        <Media lessThan="md">
-          <Box display="flex" justifyContent="center" paddingTop={2}>
-            <Box
-              as="button"
-              type="button"
-              aria-label="Close toilet details"
-              onClick={() => setIsExpanded(false)}
-              aria-expanded="true"
-              padding={2}
-              ref={closeButtonRef}
-            >
-              <Icon icon={faChevronDown} />
+                <Box
+                  height={26}
+                  width={26}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  borderRadius={13}
+                  borderColor="primary"
+                  borderWidth={1}
+                  borderStyle="solid"
+                >
+                  <Icon icon={faTimes} />
+                </Box>
+              </button>
             </Box>
-          </Box>
-        </Media>
+          </Media>
+        )}
+        {showCloseButton && (
+          <Media lessThan="md">
+            <Box display="flex" justifyContent="center" paddingTop={2}>
+              <Box
+                as="button"
+                type="button"
+                aria-label="Close toilet details"
+                onClick={() => setIsExpanded(false)}
+                aria-expanded="true"
+                padding={2}
+                ref={closeButtonRef}
+              >
+                <Icon icon={faChevronDown} />
+              </Box>
+            </Box>
+          </Media>
+        )}
 
         <Box
           maxHeight={[325, 400]}
@@ -441,14 +448,15 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
             >
               {titleFragment}
               {data?.active === false && (
-                <Tooltip
-                  label={`Removal reason: ${data?.removalReason}`}
-                  aria-label={`Removal reason: ${data?.removalReason}`}
-                >
-                  <Badge colorScheme="red" fontSize={'sm'}>
-                    Removed <Icon icon={faInfoCircle} />
-                  </Badge>
-                </Tooltip>
+                <p>Removal reason: {data?.removalReason}</p>
+                // <Tooltip
+                //   label={`Removal reason: ${data?.removalReason}`}
+                //   aria-label={`Removal reason: ${data?.removalReason}`}
+                // >
+                //   <Badge colorScheme="red" fontSize={'sm'}>
+                //     Removed <Icon icon={faInfoCircle} />
+                //   </Badge>
+                // </Tooltip>
               )}
               <Spacer mb={3} />
               {getDirectionsFragment}
@@ -540,7 +548,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
               <Text fontSize={1} color="grey">
                 Hours may vary with national holidays or seasonal changes. If
                 you know these hours to be out of date please{' '}
-                <Link passHref href={editUrl}>
+                <Link passHref href={editUrl} legacyBehavior>
                   <Button as="a" variant="link" data-testid="edit-link">
                     edit this toilet
                   </Button>
@@ -593,14 +601,15 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
           {titleFragment} <Spacer mb={2} />
           {data?.active === false && (
-            <Tooltip
-              label={`Removal reason: ${data?.removalReason}`}
-              aria-label={`Removal reason: ${data?.removalReason}`}
-            >
-              <Badge colorScheme="red" fontSize={'sm'}>
-                Removed <Icon icon={faInfoCircle} />
-              </Badge>
-            </Tooltip>
+            <p>Removal reason: {data?.removalReason}</p>
+            // <Tooltip
+            //   label={`Removal reason: ${data?.removalReason}`}
+            //   aria-label={`Removal reason: ${data?.removalReason}`}
+            // >
+            //   <Badge colorScheme="red" fontSize={'sm'}>
+            //     Removed <Icon icon={faInfoCircle} />
+            //   </Badge>
+            // </Tooltip>
           )}
         </Box>
 

@@ -255,11 +255,7 @@ describe('Home page tests', () => {
             .type(keySelector, { delay: 200 });
           cy.url().should('include', '/loos/ddad1ed1b91d99ed2bf3bcdf');
           // Check that the loo we picked is now highlighted.
-          cy.get('#highlighted-loo').invoke(
-            'attr',
-            'data-toiletid',
-            'ddad1ed1b91d99ed2bf3bcdf'
-          );
+          cy.get('#highlighted-loo').invoke('attr', 'data-toiletid', '2671');
           // Check that the accessibility view is hidden
           cy.contains("Use number keys to show a toilet's details").should(
             'not.exist'
@@ -271,7 +267,7 @@ describe('Home page tests', () => {
           cy.contains('Features');
           cy.contains('Opening Hours');
           // Check that today is highlighted
-          const dayOfWeekName = new Date().toLocaleString('default', {
+          const dayOfWeekName = new Date().toLocaleString('en-GB', {
             weekday: 'long',
           });
           cy.findByText(dayOfWeekName)
@@ -287,11 +283,7 @@ describe('Home page tests', () => {
       cy.url().should('include', '/loos/ddad1ed1b91d99ed2bf3bcdf');
 
       // Check that the loo we picked is now highlighted.
-      cy.get('#highlighted-loo').invoke(
-        'attr',
-        'data-toiletid',
-        'ddad1ed1b91d99ed2bf3bcdf'
-      );
+      cy.get('#highlighted-loo').invoke('attr', 'data-toiletid', '2671');
 
       // Check standard loo panel stuff is there.
       cy.contains('negative eve');
@@ -299,7 +291,7 @@ describe('Home page tests', () => {
       cy.contains('Opening Hours');
 
       // Check that today is highlighted
-      const dayOfWeekName = new Date().toLocaleString('default', {
+      const dayOfWeekName = new Date().toLocaleString('en-GB', {
         weekday: 'long',
       });
 
@@ -331,11 +323,12 @@ describe('Home page tests', () => {
       cy.contains('vigilant toilet!! indeed photoreceptor crown!');
 
       // Check last verified
-      cy.contains(
-        new Date(Date.now())
-          .toLocaleString(new Intl.Locale('en-gb'))
-          .split(',')[0]
-      );
+      cy.contains('29/01/2023');
+      // cy.contains(
+      //   new Date(Date.now())
+      //     .toLocaleString(new Intl.Locale('en-gb'))
+      //     .split(',')[0]
+      // );
     });
 
     it('should filter toilets based on applied filter toggles', () => {

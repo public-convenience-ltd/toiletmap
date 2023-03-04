@@ -31,7 +31,6 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'graphql-tag/loader',
     });
-
     return {
       ...config,
       resolve: {
@@ -42,8 +41,13 @@ module.exports = {
           zlib: false,
           fs: false,
           os: false,
+          stream: false,
+          http: false,
         },
       },
     };
+  },
+  docsPage: {
+    docs: 'automatic',
   },
 };

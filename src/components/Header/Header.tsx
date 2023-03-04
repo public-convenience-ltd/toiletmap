@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { faBars, faComments } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
@@ -11,16 +11,10 @@ import MainMenu from './MainMenu';
 import { useMapState } from '../MapState';
 import { useRouter } from 'next/router';
 import Button from '../Button';
-import {
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
-  Text as ChakraText,
-} from '@chakra-ui/react';
+
 import dynamic from 'next/dynamic';
 
-const Feedback = dynamic(() => import('../Feedback/Feedback'));
+// const Feedback = dynamic(() => import('../Feedback/Feedback'));
 const Drawer = dynamic(() => import('../Drawer'));
 
 const Header = ({ children }) => {
@@ -59,7 +53,7 @@ const Header = ({ children }) => {
           </h2>
 
           <Media at="sm" css={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Popover>
+            {/* <Popover>
               <PopoverTrigger>
                 <Box>
                   <button>
@@ -74,7 +68,7 @@ const Header = ({ children }) => {
                   <Feedback />
                 </PopoverBody>
               </PopoverContent>
-            </Popover>
+            </Popover> */}
 
             <Box ml={4}>
               <button

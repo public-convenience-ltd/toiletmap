@@ -8,7 +8,6 @@ import {
   createHttpLink,
 } from '@apollo/client';
 
-import redactedDirective from '../api/directives/redactedDirective';
 import authDirective from '../api/directives/authDirective';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
@@ -20,8 +19,11 @@ function createApolloClient() {
     const { SchemaLink } = require('@apollo/client/link/schema');
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { default: schema } = require('./schema');
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { context } = require('../api/graphql/context');
     terminatingLink = new SchemaLink({
-      schema: schema(authDirective, redactedDirective),
+      schema: schema(authDirective),
+      context,
     });
   } else {
     terminatingLink = createHttpLink({
@@ -66,7 +68,7 @@ export function getApolloClient() {
 }
 
 export const withApollo = (Comp: NextPage) =>
-  function ApolloWrapper(props: unknown) {
+  function ApolloWrapper(props: object) {
     return (
       <ApolloProvider client={getApolloClient()}>
         <Comp {...props} />

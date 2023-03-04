@@ -21,7 +21,7 @@ The following is a "quick start" guide aimed at getting you started with a devel
 ### Prerequisites
 
 - [fnm](https://github.com/Schniz/fnm) (or a node version matching the one specified in [.nvmrc](./nvmrc))
-- [yarn](https://yarnpkg.com/getting-started/install)
+- [pnpm](https://pnpm.io/installation)
 - Vercel CLI (optional)
 - mongodb (optional)
 
@@ -33,10 +33,10 @@ _Clone or download and unpack the project and change into its directory and then
 fnm use
 ```
 
-_Now we install the dependencies using the `yarn` package manager:_
+_Now we install the dependencies using the `pnpm` package manager:_
 
 ```
-yarn install
+pnpm install
 ```
 
 ### Run, Toiletmap, Run
@@ -50,8 +50,12 @@ cp .env.local.example .env.local
 Next you'll need to set up a local instance of mongodb based on our mocked loo data. This is so that you can load something on your local instance of the Toilet Map. It's also possible to connect directly to our staging database, although you'll need to ask for those credentials should you need them.
 
 ```
-yarn startMemoryMongo
->Populating the database from mock-reports.json
+pnpm startMemoryMongo
+```
+
+```
+** Expected output: **
+> Populating the database from mock-reports.json
 > progress [✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨]
 > Done.
 > ====
@@ -65,7 +69,7 @@ Because the faker generation is set with a static seed, the values remain the sa
 Once you have a local mongodb instance running you'll then be able to spin up a local development server using the following command:
 
 ```
-yarn dev
+pnpm dev
 ```
 
 Once this is running, navigate to [http://localhost:3000](http://localhost:3000) and you should be presented with your very own instance of the Toilet Map that is connected to the in-memory mongodb server that we stood up in the following step.
@@ -86,6 +90,12 @@ Our brilliant sponsors help us to bring a stable and high quality service to our
 
 Vercel sponsor the hosting and deployment of the Next.js based Toilet Map, allowing us to scale confidently and iterate quickly using their versatile platform.
 
+### Upstash
+
+[<img src="https://user-images.githubusercontent.com/1771189/197402054-9603c89c-e6bc-40dc-8808-a2c65278c759.png" width="212" alt="Upstash help us cache toilet map tiles for faster load times">](https://upstash.com/)
+
+Upstash kindly provide us with a sponsored Redis instance. We use this to cache Toilet Map tile information; providing our users with quick load times when zooming and panning the map.
+
 ### Sentry
 
 [<img src="https://user-images.githubusercontent.com/1771189/178340599-94f9d130-dd82-4389-a4ac-69b9fb014d8a.svg" width="212" alt="Logging is kindly sponsored by Sentry">](https://sentry.io)
@@ -96,10 +106,9 @@ Our client and server side logging in production is kindly sponsored by Sentry.
 
 [<img src="https://user-images.githubusercontent.com/1771189/189427407-8d7fb6b2-1756-4e10-8dd7-9a4ae01986d8.png" width="212" alt="Cypress dashboard enhances our development workflow when working with our Cypress test suite">](https://www.cypress.io/dashboard)
 
-
 Cypress Dashboard speeds up and enhances our testing workflow, helping us to deliver changes faster and with fewer bugs.
 
 ---
 
-Could your company help?
+Looking to help?
 [Let us know](https://www.toiletmap.org.uk/contact)
