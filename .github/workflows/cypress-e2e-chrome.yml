@@ -1,7 +1,9 @@
 name: E2E Cypress Tests (Chrome)
 on:
+  push:
+    branches:
+      - main
   pull_request:
-  workflow_dispatch:
 jobs:
   cypress-e2e-chrome:
     name: Cypress E2E Chrome
