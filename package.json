@@ -81,7 +81,6 @@
     "framer-motion": "^10.0.1",
     "graphql": "^16.6.0",
     "graphql-iso-date": "^3.6.1",
-    "graphql-voyager": "1.0.0-rc.31",
     "graphql-yoga": "^3.7.0",
     "hasha": "^5.2.2",
     "ioredis": "^5.3.1",
