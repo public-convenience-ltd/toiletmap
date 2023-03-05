@@ -6,36 +6,8 @@ import Cors from 'cors';
 import authDirective from '../../api/directives/authDirective';
 import schema from '../../api-client/schema';
 import { createYoga } from 'graphql-yoga';
-import {
-  createInMemoryCache,
-  defaultBuildResponseCacheKey,
-  useResponseCache,
-} from '@envelop/response-cache';
-import Redis from 'ioredis';
-import { createRedisCache } from '@envelop/response-cache-redis';
+
 import { context } from '../../api/graphql/context';
-
-const setupCache = () => {
-  if (process.env.ENABLE_REDIS_CACHE !== 'true') {
-    return createInMemoryCache();
-  }
-
-  const port = process.env.REDIS_PORT
-    ? parseInt(process.env.REDIS_PORT, 10)
-    : 11345;
-
-  const redis = new Redis({
-    host: process.env.REDIS_URI,
-    username: 'default',
-    port,
-    password: process.env.REDIS_PASSWORD,
-    tls: process.env.REDIS_SSL_ENABLED === 'true' ? {} : undefined,
-  });
-
-  return createRedisCache({ redis });
-};
-
-const cache = setupCache();
 
 const client = jwksClient({
   jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}.well-known/jwks.json`,
@@ -93,31 +65,6 @@ export const server = createYoga({
       prisma: context.prisma,
     };
   },
-  plugins: [
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useResponseCache({
-      enabled: (context) => !context?.user || !context?.revalidate,
-      session: () => null,
-      cache,
-      ttl: 60 * 1000 * 60 * 6, // cache tiles for 6 hours
-      buildResponseCacheKey: async (params) => {
-        const geohash = params.variableValues?.geohash;
-        // prefer the VERCEL_URL env variable so cache is unique for each staging deploy
-        // otherwise we share the cache between production instances so it is retained
-        // between deploys.
-        const env =
-          process.env.VERCEL_ENV !== 'production'
-            ? process.env.VERCEL_URL ?? process.env.NODE_ENV
-            : 'production';
-
-        if (geohash) {
-          return `${env}-maptile-${geohash}`;
-        }
-
-        return await defaultBuildResponseCacheKey(params);
-      },
-    }),
-  ],
 });
 
 export const config = {

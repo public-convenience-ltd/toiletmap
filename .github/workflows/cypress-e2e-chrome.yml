@@ -76,10 +76,6 @@ jobs:
           CYPRESS_auth0ClientId: ${{ secrets.CYPRESS_AUTH0CLIENTID }}
           CYPRESS_auth0CookieSecret: ${{ secrets.CYPRESS_AUTH0COOKIESECRET }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          ENABLE_REDIS_CACHE: false
-          REDIS_URI: 'localhost'
-          REDIS_PASSWORD: ''
-          REDIS_PORT: 6379
         with:
           build: pnpm build
           start: pnpm start
