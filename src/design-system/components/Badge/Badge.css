@@ -1,0 +1,7 @@
+.badge {
+  padding: 4px;
+  border-radius: 3px;
+  font-weight: bold;
+  outline: var(--pink-color) solid 2px;
+  display: inline-block;
+}
