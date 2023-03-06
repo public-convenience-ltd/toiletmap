@@ -8,6 +8,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
 import { useRouter } from 'next/router';
 import LooMap from '../components/LooMap/LooMapLoader';
+import '../design-system/components/Badge/Badge.css';
 
 const App = (props) => {
   const router = useRouter();
