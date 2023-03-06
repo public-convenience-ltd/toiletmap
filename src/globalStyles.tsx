@@ -1,12 +1,22 @@
 import { Global, css } from '@emotion/react';
 
-import theme from './theme';
+//To do: when we have moved away from Emotion, think about what we do with the file
 
 // loosely based on https://hankchizljaw.com/wrote/a-modern-css-reset + a height declaration on the next container...
 const globalStyles = (
   <Global
     styles={css`
       @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
+      :root {
+        --blue-color: #0a165e;
+        --turquoise-color: #92f9db;
+        --pink-color: #ed3d62;
+        --ice-color: #d2fff2;
+        --white-color: #fff;
+        --light-grey-color: #f4f4f4;
+        --grey-color: #807f7f;
+      }
 
       *,
       *::before,
@@ -62,7 +72,7 @@ const globalStyles = (
         text-rendering: optimizeSpeed;
         line-height: 1.5;
         font-family: 'Open Sans', sans-serif;
-        color: ${theme.colors.primary};
+        color: var(--blue-color);
       }
 
       /* remove list styles on ul, ol elements */
@@ -137,7 +147,7 @@ const globalStyles = (
       a:focus,
       button:hover,
       button:focus {
-        color: ${theme.colors.tertiary};
+        color: var(--pink-color);
         transition: all 0.2s ease;
       }
 
@@ -150,15 +160,15 @@ const globalStyles = (
       }
 
       ::-webkit-input-placeholder {
-        color: ${theme.colors.primary};
+        color: var(--blue-color);
       }
 
       :-ms-input-placeholder {
-        color: ${theme.colors.primary};
+        color: var(--blue-color);
       }
 
       ::placeholder {
-        color: ${theme.colors.primary};
+        color: var(--blue-color);
       }
 
       /* remove all animations and transitions for people that prefer not to see them */
