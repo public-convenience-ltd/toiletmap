@@ -23,7 +23,7 @@ The following is a "quick start" guide aimed at getting you started with a devel
 - [fnm](https://github.com/Schniz/fnm) (or a node version matching the one specified in [.nvmrc](./nvmrc))
 - [pnpm](https://pnpm.io/installation)
 - Vercel CLI (optional)
-- mongodb (optional)
+- Docker, to run the Supabase Postgres development container
 
 ### Installation
 
