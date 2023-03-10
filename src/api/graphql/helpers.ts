@@ -3,7 +3,7 @@ import { Loo } from '../../api-client/graphql';
 import { async as hasha } from 'hasha';
 import { ReportInput } from '../../@types/resolvers-types';
 
-// Generate an ID for the loo based on the logic used when writing to mongodb.
+// Generate an ID for the loo based on the logic used when we wrote toilets to mongodb in the pre-2023 era.
 export const suggestLooId = async (
   nickname: string,
   coordinates: number[],

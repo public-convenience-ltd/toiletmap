@@ -10,7 +10,7 @@ However there may be scenarios whilst developing a new feature you might need to
 
 ## Getting a local instance running, with mocked loo data.
 
-This is likely all you need to get up and running as a contributor to the toilet map. This guide will get you set up with a local mongodb server based on 5000 mocked toilet records.
+This is likely all you need to get up and running as a contributor to the toilet map. This guide will get you set up with a local Postgres server based on 5000 mocked toilet records.
 
 What it won't let you do is allow you to authenticate against Auth0 or run cypress tests that involve authentication.
 
