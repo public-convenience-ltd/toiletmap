@@ -6,12 +6,18 @@ import { useMapState } from '../../../../components/MapState';
 import config from '../../../../config';
 import { withApollo } from '../../../../api-client/withApollo';
 import { GetServerSideProps } from 'next';
-import { ssrFindLooById } from '../../../../api-client/page';
+import {
+  ssrFindLooById,
+  ssrLooReportHistory,
+} from '../../../../api-client/page';
 import { useRouter } from 'next/router';
 import Notification from '../../../../components/Notification';
 import NotFound from '../../../404.page';
 import { css } from '@emotion/react';
-import { FindLooByIdQuery } from '../../../../api-client/graphql';
+import {
+  FindLooByIdQuery,
+  LooReportHistoryQuery,
+} from '../../../../api-client/graphql';
 import { ApolloError } from '@apollo/client';
 import Container from '../../../../components/Container';
 import Text from '../../../../components/Text';
@@ -21,9 +27,21 @@ import CodeViewer, {
   MonacoOnInitializePane,
 } from '../../../../components/CodeViewer/CodeViewer';
 import Link from 'next/link';
+import {
+  Timeline,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDot,
+  TimelineItem,
+  TimelineOppositeContent,
+  TimelineSeparator,
+  timelineOppositeContentClasses,
+} from '@mui/lab';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 type CustomLooByIdComp = React.FC<{
-  data?: FindLooByIdQuery;
+  looData?: FindLooByIdQuery;
+  reportData?: LooReportHistoryQuery;
   error?: ApolloError;
   notFound?: boolean;
 }>;
@@ -40,7 +58,7 @@ const LooPage: CustomLooByIdComp = (props) => {
     setFirstLoad(false);
   }, []);
 
-  const looCentre = props?.data?.loo;
+  const looCentre = props?.looData?.loo;
   useEffect(
     function setInitialMapCentre() {
       if (
@@ -60,6 +78,8 @@ const LooPage: CustomLooByIdComp = (props) => {
       setMapState,
     ]
   );
+
+  console.log(props?.reportData);
 
   const pageTitle = config.getTitle('Home');
 
@@ -214,6 +234,41 @@ const LooPage: CustomLooByIdComp = (props) => {
             </Box>
           </Box>
         </Box>
+        <Spacer mb={4} />
+        <Box
+          display="flex"
+          flexDirection={'column'}
+          flex={1}
+          css={{ minWidth: '20rem' }}
+        >
+          <Text fontSize={4} fontWeight="bold">
+            <h2>Timeline</h2>
+          </Text>
+          <ThemeProvider theme={createTheme()}>
+            <Timeline
+              sx={{
+                [`& .${timelineOppositeContentClasses.root}`]: {
+                  flex: 0.2,
+                },
+              }}
+            >
+              {props?.reportData.reportsForLoo.map((report) => (
+                <TimelineItem key={report.id + report.createdAt}>
+                  <TimelineOppositeContent>
+                    {new Date(report.createdAt).toLocaleDateString()}
+                  </TimelineOppositeContent>
+                  <TimelineSeparator>
+                    <TimelineDot />
+                    <TimelineConnector />
+                  </TimelineSeparator>
+                  <TimelineContent>
+                    {JSON.stringify(report, null, 2)}
+                  </TimelineContent>
+                </TimelineItem>
+              ))}
+            </Timeline>
+          </ThemeProvider>
+        </Box>
       </Container>
     </Box>
   );
@@ -221,7 +276,7 @@ const LooPage: CustomLooByIdComp = (props) => {
 
 export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
   try {
-    const res = await ssrFindLooById.getServerPage(
+    const looDetailsResponse = await ssrFindLooById.getServerPage(
       {
         variables: { id: params.id as string },
         fetchPolicy: 'no-cache',
@@ -229,7 +284,20 @@ export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
       { req }
     );
 
-    if (res.props.error && !res.props.data) {
+    const reportHistoryResponse = await ssrLooReportHistory.getServerPage(
+      {
+        variables: { id: params.id as string },
+        fetchPolicy: 'no-cache',
+      },
+      { req }
+    );
+
+    const problemFetchingLooData =
+      looDetailsResponse.props.error && !looDetailsResponse.props.data;
+    const problemFetchingReportHistory =
+      reportHistoryResponse.props.error && !reportHistoryResponse.props.data;
+
+    if (problemFetchingLooData || problemFetchingReportHistory) {
       return {
         props: {
           notFound: true,
@@ -238,7 +306,8 @@ export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
     }
     return {
       props: {
-        data: res.props.data,
+        looData: looDetailsResponse.props.data,
+        reportData: reportHistoryResponse.props.data,
       },
     };
   } catch {
