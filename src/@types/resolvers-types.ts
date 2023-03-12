@@ -233,6 +233,11 @@ export type Report = {
   createdAt: Scalars['DateTime'];
   geohash?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  /**
+   * We insert location updates separately using a DB trigger because Prisma doesn't support PostGIS yet.
+   * This field is used to indicate to the client that the system created the report so that it can be coalesced with the user's report.
+   */
+  isSystemReport?: Maybe<Scalars['Boolean']>;
   location?: Maybe<Point>;
   /** The Loo which uses the data submitted in this report */
   loo?: Maybe<Loo>;
@@ -540,6 +545,7 @@ export type ReportResolvers<ContextType = any, ParentType extends ResolversParen
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   geohash?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  isSystemReport?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   location?: Resolver<Maybe<ResolversTypes['Point']>, ParentType, ContextType>;
   loo?: Resolver<Maybe<ResolversTypes['Loo']>, ParentType, ContextType>;
   men?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;

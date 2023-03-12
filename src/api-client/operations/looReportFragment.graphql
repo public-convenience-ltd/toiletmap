@@ -24,8 +24,10 @@ fragment LooReportFragment on Report {
   removalReason
   attended
   geohash
+  isSystemReport
+  contributor
+
   # loo
-  # contributor
   # area {
   #   name
   #   type

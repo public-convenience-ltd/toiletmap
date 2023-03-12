@@ -38,6 +38,7 @@ import {
   timelineOppositeContentClasses,
 } from '@mui/lab';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import isEqual from 'lodash/isEqual';
 
 type CustomLooByIdComp = React.FC<{
   looData?: FindLooByIdQuery;
@@ -79,7 +80,54 @@ const LooPage: CustomLooByIdComp = (props) => {
     ]
   );
 
-  console.log(props?.reportData);
+  // Find the diff between the current and previous report
+  const reportHistory = props?.reportData?.reportsForLoo;
+  const [reportDiffHistory, setReportDiffHistory] = useState([]);
+
+  useEffect(() => {
+    if (reportHistory) {
+      const coalescedReports = [];
+      let previousReport = {};
+      for (const reportIndex in reportHistory) {
+        const report = reportHistory[reportIndex];
+        const isSystemReport = report?.isSystemReport;
+        if (isSystemReport) {
+          coalescedReports.push({
+            ...previousReport,
+            ...report,
+          });
+        } else {
+          previousReport = report;
+        }
+      }
+
+      coalescedReports.sort((b, a) => {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      });
+
+      // Merge each system report with the previous report
+      const diffHistory = coalescedReports.map((report, i) => {
+        if (i === 0) {
+          return report;
+        }
+        const prevReport = coalescedReports[i - 1];
+        // Find out what's changed, only keep those items.
+        for (const key in report) {
+          if (key === 'id' || key === 'createdAt') {
+            continue;
+          }
+
+          if (isEqual(report[key], prevReport[key])) {
+            delete report[key];
+          }
+        }
+        return report;
+      });
+      setReportDiffHistory(diffHistory);
+    }
+  }, [reportHistory]);
 
   const pageTitle = config.getTitle('Home');
 
@@ -252,8 +300,10 @@ const LooPage: CustomLooByIdComp = (props) => {
                 },
               }}
             >
-              {props?.reportData.reportsForLoo.map((report) => (
-                <TimelineItem key={report.id + report.createdAt}>
+              {reportDiffHistory.map((report) => (
+                <TimelineItem
+                  key={report.id + report.createdAt + report.updatedAt}
+                >
                   <TimelineOppositeContent>
                     {new Date(report.createdAt).toLocaleDateString()}
                   </TimelineOppositeContent>

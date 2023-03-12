@@ -220,6 +220,7 @@ const resolvers: Resolvers<Context> = {
       });
 
       const postgresAuditRecordToGraphQLReport = (diff: toilets): Report => {
+        const contributor = diff.contributors.pop();
         // TODO: This return is incomplete, we need to support loo, area and contributors (when authenticated only.)
         return {
           createdAt: diff.updated_at,
@@ -241,8 +242,9 @@ const resolvers: Resolvers<Context> = {
           attended: diff.attended,
           notes: diff.notes,
           automatic: diff.automatic,
-          contributor: 'Anonymous',
+          contributor: contributor,
           id: diff.id,
+          isSystemReport: contributor.endsWith('-location'),
           location: diff.location?.coordinates
             ? {
                 lat: diff.location?.coordinates[1],
@@ -258,11 +260,11 @@ const resolvers: Resolvers<Context> = {
       );
 
       // Order by report creation time.
-      filtered.sort((b, a) => {
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-      });
+      // filtered.sort((b, a) => {
+      //   return (
+      //     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      //   );
+      // });
 
       return filtered;
     },
