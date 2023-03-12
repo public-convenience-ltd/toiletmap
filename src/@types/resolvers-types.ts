@@ -231,6 +231,7 @@ export type Report = {
   contributor: Scalars['String'];
   /** When the report was added to the system */
   createdAt: Scalars['DateTime'];
+  geohash?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   location?: Maybe<Point>;
   /** The Loo which uses the data submitted in this report */
@@ -537,6 +538,7 @@ export type ReportResolvers<ContextType = any, ParentType extends ResolversParen
   children?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   contributor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  geohash?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   location?: Resolver<Maybe<ResolversTypes['Point']>, ParentType, ContextType>;
   loo?: Resolver<Maybe<ResolversTypes['Loo']>, ParentType, ContextType>;

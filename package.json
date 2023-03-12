@@ -63,6 +63,8 @@
     "@hookform/error-message": "^2.0.1",
     "@monaco-editor/react": "^4.4.6",
     "@mui/base": "5.0.0-alpha.120",
+    "@mui/lab": "5.0.0-alpha.122",
+    "@mui/material": "^5.11.12",
     "@prisma/client": "^4.11.0",
     "@react-leaflet/core": "^2.1.0",
     "@sentry/nextjs": "^7.42.0",

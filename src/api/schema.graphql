@@ -97,6 +97,7 @@ type Report {
   attended: Boolean
   automatic: Boolean
   noPayment: Boolean
+  geohash: String
   paymentDetails: String
   notes: String
   removalReason: String
