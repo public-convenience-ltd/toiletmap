@@ -77,6 +77,11 @@ type Report {
   createdAt: DateTime!
   verifiedAt: DateTime
   """
+  We insert location updates separately using a DB trigger because Prisma doesn't support PostGIS yet.
+  This field is used to indicate to the client that the system created the report so that it can be coalesced with the user's report.
+  """
+  isSystemReport: Boolean
+  """
   A link to the previous report in the chain
   This is nullable since this might be the first report about a particular toilet
   """
