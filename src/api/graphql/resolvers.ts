@@ -6,7 +6,6 @@ import {
 } from '../../@types/resolvers-types';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import OpeningTimesScalar from './OpeningTimesScalar';
-import uniq from 'lodash/uniq';
 
 import {
   getAreas,
@@ -25,8 +24,6 @@ import {
   postgresUpsertLooQueryFromReport,
 } from './helpers';
 import { toilets } from '@prisma/client';
-
-import _ from 'lodash';
 
 const resolvers: Resolvers<Context> = {
   Query: {
@@ -208,7 +205,7 @@ const resolvers: Resolvers<Context> = {
         return {};
       }
     },
-    // This collates records from the audit table and compiles them into reports.
+    // This collates records from the audit table.
     reportsForLoo: async (_parent, args, { prisma }) => {
       const auditRecords = await prisma.record_version.findMany({
         where: {
@@ -222,94 +219,8 @@ const resolvers: Resolvers<Context> = {
         },
       });
 
-      // TODO: Diff the records to get the changes.
-      // Right now this is just returning the latest version of the record, not the changes.
-      const reportsWithSystemUpdatesSquashed = [];
-      for (const recordIndex in auditRecords) {
-        const current = auditRecords?.[recordIndex]?.record;
-
-        const nextRecordIndex = parseInt(recordIndex, 10) + 1;
-        const next = auditRecords?.[nextRecordIndex]?.record;
-
-        const currentIsSystemUpdate =
-          current?.contributors[current.contributors.length - 1].indexOf(
-            '-location'
-          ) !== -1;
-
-        // We don't want to add system updates to the list of reports.
-        // Instead we want to merge them into the report that they are associated with.
-        if (currentIsSystemUpdate) {
-          continue;
-        }
-
-        const nextIsSystemUpdate =
-          next?.contributors[next.contributors.length - 1].indexOf(
-            '-location'
-          ) !== -1;
-
-        // Merge the system update into the report, otherwise just add the report.
-        if (nextIsSystemUpdate) {
-          const coalescedRecord = {
-            ...current,
-            location: next?.location ?? current.location,
-            geohash: next?.geohash ?? current.geohash,
-            geography: next?.geography ?? current.geography,
-            area_id: next?.area_id ?? current.area_id,
-          };
-          reportsWithSystemUpdatesSquashed.push(coalescedRecord);
-        } else {
-          reportsWithSystemUpdatesSquashed.push(current);
-        }
-      }
-
-      const diffs = [];
-      for (const reportId in reportsWithSystemUpdatesSquashed) {
-        const reportIndex = parseInt(reportId, 10);
-        const current = reportsWithSystemUpdatesSquashed[reportIndex];
-
-        if (reportIndex === 0) {
-          diffs.push(current);
-          continue;
-        }
-
-        const prev = reportsWithSystemUpdatesSquashed[reportIndex - 1];
-
-        // Get difference between current and next objects
-        const diff = Object.keys(prev).reduce((acc, key) => {
-          if (!_.isEqual(prev[key], current[key])) {
-            acc[key] = current[key];
-          }
-          return acc;
-        }, {});
-
-        diffs.push(diff);
-      }
-
-      const uniqueAreaIds = uniq(
-        reportsWithSystemUpdatesSquashed
-          .map((report) => report?.area_id)
-          .filter((areaId) => areaId !== null && areaId !== undefined)
-      );
-
-      const areaInfo = await prisma.areas.findMany({
-        where: {
-          id: {
-            in: uniqueAreaIds,
-          },
-        },
-        select: {
-          name: true,
-          id: true,
-          type: true,
-        },
-      });
-
-      const areaInfoLookup = {};
-      for (const area of areaInfo) {
-        areaInfoLookup[area.id] = { name: area.name, type: area.type };
-      }
-
       const postgresAuditRecordToGraphQLReport = (diff: toilets): Report => {
+        // TODO: This return is incomplete, we need to support loo, area and contributors (when authenticated only.)
         return {
           createdAt: diff.updated_at,
           accessible: diff.accessible,
@@ -327,14 +238,10 @@ const resolvers: Resolvers<Context> = {
           urinalOnly: diff.urinal_only,
           name: diff.name,
           removalReason: diff.removal_reason,
-          area: areaInfoLookup ? [areaInfoLookup?.[diff?.area_id]] : undefined,
           attended: diff.attended,
           notes: diff.notes,
           automatic: diff.automatic,
           contributor: 'Anonymous',
-          // contributor: diff.contributors
-          //   ? diff.contributors[diff.contributors.length - 1]
-          //   : 'Unknown',
           id: diff.id,
           location: diff.location?.coordinates
             ? {
@@ -345,7 +252,10 @@ const resolvers: Resolvers<Context> = {
         };
       };
 
-      const filtered = diffs.map(postgresAuditRecordToGraphQLReport);
+      const filtered = auditRecords.map((v) =>
+        // TODO: use zod to validate the shape of the record.
+        postgresAuditRecordToGraphQLReport(v.record)
+      );
 
       // Order by report creation time.
       filtered.sort((b, a) => {
