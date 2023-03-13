@@ -4,5 +4,5 @@
   font-weight: bold;
   outline: var(--pink-color) solid 2px;
   display: inline-block;
-  font-size: var(--text-0);
+  font-size: var(--text--1);
 }
