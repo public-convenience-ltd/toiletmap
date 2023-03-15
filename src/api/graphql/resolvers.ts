@@ -41,6 +41,10 @@ const resolvers: Resolvers<Context> = {
         throw new Error('Invalid pagination params');
       }
 
+      if (pagination.limit > 100) {
+        throw new Error('Pagination size limit exceeded.');
+      }
+
       const noPaymentFilter =
         typeof filters.noPayment !== 'undefined'
           ? filters?.noPayment
@@ -327,9 +331,10 @@ const resolvers: Resolvers<Context> = {
           attended: diff.attended,
           notes: diff.notes,
           automatic: diff.automatic,
-          contributor: diff.contributors
-            ? diff.contributors[diff.contributors.length - 1]
-            : 'Unknown',
+          contributor: 'Anonymous',
+          // contributor: diff.contributors
+          //   ? diff.contributors[diff.contributors.length - 1]
+          //   : 'Unknown',
           id: diff.id,
           location: diff.location?.coordinates
             ? {

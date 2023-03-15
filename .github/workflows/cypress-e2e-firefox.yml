@@ -1,11 +1,15 @@
 name: E2E Cypress Tests (Firefox)
 on:
+  push:
+    branches:
+      - main
   pull_request:
-  workflow_dispatch:
 jobs:
   cypress-e2e-firefox:
     name: Cypress E2E Firefox
     runs-on: ubuntu-20.04
+    # Don't run the e2e tests for dependabot prs
+    if: ${{ github.actor != 'dependabot[bot]' }}
     # Only run the e2e tests if a maintainer has labeled the PR as 'safe to test'.
     # if: contains(github.event.pull_request.labels.*.name, 'safe to test')
     timeout-minutes: 15
@@ -46,7 +50,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v4
         env:
-          MONGODB_URI: mongodb://localhost:27017/toiletmap
           DATABASE_NAME: toiletmap
           VERCEL_URL: http://localhost:3000
           AUTH0_SECRET: ${{ secrets.AUTH0_SECRET }}
@@ -66,10 +69,6 @@ jobs:
           CYPRESS_auth0ClientId: ${{ secrets.CYPRESS_AUTH0CLIENTID }}
           CYPRESS_auth0CookieSecret: ${{ secrets.CYPRESS_AUTH0COOKIESECRET }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          ENABLE_REDIS_CACHE: false
-          REDIS_URI: localhost
-          REDIS_PASSWORD: ''
-          REDIS_PORT: 6379
         with:
           build: pnpm build
           start: pnpm start

@@ -123,7 +123,7 @@ const Stats = ({ data: { statistics } }: { data: StatisticsQuery }) => {
   );
 };
 
-export const getStaticProps: GetServerSideProps = async ({ req }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   try {
     const res = await ssrStatistics.getServerPage({}, req);
 
@@ -133,12 +133,5 @@ export const getStaticProps: GetServerSideProps = async ({ req }) => {
     return { props: { notFound: true } };
   }
 };
-
-// export const getStaticPaths = async () => {
-//   return {
-//     paths: [],
-//     fallback: 'blocking',
-//   };
-// };
 
 export default withApollo(Stats);

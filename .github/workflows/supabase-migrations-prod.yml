@@ -3,7 +3,7 @@ name: Deploy Production Supabase Migrations
 on:
   push:
     branches:
-      - postgres-release-candidate
+      - main
   workflow_dispatch:
 
 jobs:

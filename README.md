@@ -22,8 +22,8 @@ The following is a "quick start" guide aimed at getting you started with a devel
 
 - [fnm](https://github.com/Schniz/fnm) (or a node version matching the one specified in [.nvmrc](./nvmrc))
 - [pnpm](https://pnpm.io/installation)
+- [Docker](https://docs.docker.com/get-docker/) to spin up a local postgres database to develop against.
 - Vercel CLI (optional)
-- mongodb (optional)
 
 ### Installation
 
@@ -47,38 +47,32 @@ First we need a set of local environment variables:
 cp .env.local.example .env.local
 ```
 
-Next you'll need to set up a local instance of mongodb based on our mocked loo data. This is so that you can load something on your local instance of the Toilet Map. It's also possible to connect directly to our staging database, although you'll need to ask for those credentials should you need them.
+Next you'll need to set up a local instance of Postgres based on our mocked loo data. This is so that you can load something on your local instance of the Toilet Map. We use the Supabase development container to spin up a local version of the same platform that we currently use in stage and production.
+
+> **Note**
+> It's also possible to connect directly to our staging database, although you'll need to ask for those credentials should you need them.
 
 ```
-pnpm startMemoryMongo
+pnpm supabase:start
 ```
 
-```
-** Expected output: **
-> Populating the database from mock-reports.json
-> progress [✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨]
-> Done.
-> ====
-> Server started
-```
-
-When you run this command, 5000 mocked loos will be loaded into an in-memory mongodb instance from [mock-reports.json](./scripts/mock-reports.json). These loos are pre-generated using faker.js in [generateMocks.ts](./scripts/generateMocks.ts).
+When you run this command, 5000 mock toilets and UK area boundaries will be loaded from [seed.sql](./supabase/seed.sql). The loos in use here are pre-generated using faker.js in [generateMocks.ts](./scripts/generateMocks.ts).
 
 Because the faker generation is set with a static seed, the values remain the same between generations. This is important, because we depend upon the values remaining the same in our [cypress tests](./cypress/e2e//desktop/index.cy.ts) so we have a deterministic set of data to rely upon across our test runs.
 
-Once you have a local mongodb instance running you'll then be able to spin up a local development server using the following command:
+Once you have a local Postgres instance running you'll then be able to spin up a local development server using the following command:
 
 ```
 pnpm dev
 ```
 
-Once this is running, navigate to [http://localhost:3000](http://localhost:3000) and you should be presented with your very own instance of the Toilet Map that is connected to the in-memory mongodb server that we stood up in the following step.
+If all is well, upon navigation to [http://localhost:3000](http://localhost:3000) you will be presented with your very own instance of the Toilet Map that is connected to the local Postgres database that you have just set up.
 
 If you'd like to make contributions to the project this is a good time to read our [contributing guidelines](https://github.com/neontribe/gbptm/blob/master/.github/CONTRIBUTING.md) and our [code of conduct](https://github.com/neontribe/gbptm/blob/master/.github/CODE_OF_CONDUCT.md).
 
 ### Architecture
 
-The Toilet Map UI is built with [Next.js](https://nextjs.org/). The API is written in GraphQL with [GraphQL Yoga Server](https://github.com/dotansimha/graphql-yoga) and data is stored in a MongoDB instance via [mongoose](https://mongoosejs.com/). We use Redis as a short term cache to improve the performance of loading toilet information. Authentication is handled by [Auth0](https://auth0.com/) and the site is deployed to [vercel](https://vercel.com)
+The Toilet Map UI is built with [Next.js](https://nextjs.org/). The API is written in GraphQL with [GraphQL Yoga Server](https://github.com/dotansimha/graphql-yoga) and data is stored in a Postgres database hosted by [Supabase](https://supabase.com/). We connect to the database through the [Prisma](https://www.prisma.io/) ORM. Authentication is handled by [Auth0](https://auth0.com/) and the site is deployed to [vercel](https://vercel.com)
 
 ## Sponsors
 
@@ -89,12 +83,6 @@ Our brilliant sponsors help us to bring a stable and high quality service to our
 [<img src="./public/powered-by-vercel.svg" width="212" alt="Powered by Vercel">](https://vercel.com/?utm_source=public-convenience-ltd&utm_campaign=oss)
 
 Vercel sponsor the hosting and deployment of the Next.js based Toilet Map, allowing us to scale confidently and iterate quickly using their versatile platform.
-
-### Upstash
-
-[<img src="https://user-images.githubusercontent.com/1771189/197402054-9603c89c-e6bc-40dc-8808-a2c65278c759.png" width="212" alt="Upstash help us cache toilet map tiles for faster load times">](https://upstash.com/)
-
-Upstash kindly provide us with a sponsored Redis instance. We use this to cache Toilet Map tile information; providing our users with quick load times when zooming and panning the map.
 
 ### Sentry
 

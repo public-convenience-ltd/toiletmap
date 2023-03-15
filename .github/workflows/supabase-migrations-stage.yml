@@ -3,7 +3,7 @@ name: Deploy Staging Supabase Migrations
 on:
   push:
     branches:
-      - ob/postgres-prisma-migration
+      - postgres-stage
   workflow_dispatch:
 
 jobs:
