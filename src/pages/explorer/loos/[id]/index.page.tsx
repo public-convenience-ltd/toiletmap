@@ -86,36 +86,21 @@ const LooPage: CustomLooByIdComp = (props) => {
 
   useEffect(() => {
     if (reportHistory) {
-      const coalescedReports = [];
-      let previousReport = {};
-      for (const reportIndex in reportHistory) {
-        const report = reportHistory[reportIndex];
-        const isSystemReport = report?.isSystemReport;
-        if (isSystemReport) {
-          coalescedReports.push({
-            ...previousReport,
-            ...report,
-          });
-        } else {
-          previousReport = report;
-        }
-      }
-
-      coalescedReports.sort((b, a) => {
+      const sortedReports = [...reportHistory].sort((b, a) => {
         return (
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
       });
 
       // Merge each system report with the previous report
-      const diffHistory = coalescedReports.map((report, i) => {
+      const diffHistory = sortedReports.map((report, i) => {
         if (i === 0) {
           return report;
         }
-        const prevReport = coalescedReports[i - 1];
+        const prevReport = sortedReports[i - 1];
         // Find out what's changed, only keep those items.
         for (const key in report) {
-          if (key === 'id' || key === 'createdAt') {
+          if (key === 'id' || key === 'createdAt' || key === 'isSystemReport') {
             continue;
           }
 
@@ -125,7 +110,10 @@ const LooPage: CustomLooByIdComp = (props) => {
         }
         return report;
       });
-      setReportDiffHistory(diffHistory);
+
+      setReportDiffHistory(
+        diffHistory.filter((v) => v.isSystemReport === false)
+      );
     }
   }, [reportHistory]);
 
@@ -301,9 +289,8 @@ const LooPage: CustomLooByIdComp = (props) => {
               }}
             >
               {reportDiffHistory.map((report) => (
-                <TimelineItem
-                  key={report.id + report.createdAt + report.updatedAt}
-                >
+                // Only show non system location update reports for now.
+                <TimelineItem key={report.id}>
                   <TimelineOppositeContent>
                     {new Date(report.createdAt).toLocaleDateString()}
                   </TimelineOppositeContent>

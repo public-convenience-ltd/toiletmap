@@ -216,10 +216,14 @@ const resolvers: Resolvers<Context> = {
         },
         select: {
           record: true,
+          id: true,
         },
       });
 
-      const postgresAuditRecordToGraphQLReport = (diff: toilets): Report => {
+      const postgresAuditRecordToGraphQLReport = (
+        reportId: bigint,
+        diff: toilets
+      ): Report => {
         const contributor = diff.contributors.pop();
         // TODO: This return is incomplete, we need to support loo, area and contributors (when authenticated only.)
         return {
@@ -243,7 +247,7 @@ const resolvers: Resolvers<Context> = {
           notes: diff.notes,
           automatic: diff.automatic,
           contributor: contributor,
-          id: diff.id,
+          id: reportId.toString(),
           isSystemReport: contributor.endsWith('-location'),
           location: diff.location?.coordinates
             ? {
@@ -256,7 +260,7 @@ const resolvers: Resolvers<Context> = {
 
       const filtered = auditRecords.map((v) =>
         // TODO: use zod to validate the shape of the record.
-        postgresAuditRecordToGraphQLReport(v.record)
+        postgresAuditRecordToGraphQLReport(v.id, v.record)
       );
 
       // Order by report creation time.
