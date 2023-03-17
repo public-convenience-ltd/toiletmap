@@ -41,6 +41,7 @@ import type L from 'leaflet';
 import { useRouter } from 'next/router';
 import { useSubmitVerificationReportMutationMutation } from '../api-client/graphql';
 import { usePlausible } from 'next-plausible';
+import Badge from '../design-system/components/Badge';
 
 const Grid = styled(Box)`
   display: flex;
@@ -447,16 +448,9 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
               id="#toilet-details-heading"
             >
               {titleFragment}
+              <Spacer mb={3} />
               {data?.active === false && (
-                <p>Removal reason: {data?.removalReason}</p>
-                // <Tooltip
-                //   label={`Removal reason: ${data?.removalReason}`}
-                //   aria-label={`Removal reason: ${data?.removalReason}`}
-                // >
-                //   <Badge colorScheme="red" fontSize={'sm'}>
-                //     Removed <Icon icon={faInfoCircle} />
-                //   </Badge>
-                // </Tooltip>
+                <Badge>Removal reason: {data?.removalReason}</Badge>
               )}
               <Spacer mb={3} />
               {getDirectionsFragment}
@@ -599,17 +593,10 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
     >
       <Grid>
         <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
-          {titleFragment} <Spacer mb={2} />
+          {titleFragment}
+          <Spacer mb={2} />
           {data?.active === false && (
-            <p>Removal reason: {data?.removalReason}</p>
-            // <Tooltip
-            //   label={`Removal reason: ${data?.removalReason}`}
-            //   aria-label={`Removal reason: ${data?.removalReason}`}
-            // >
-            //   <Badge colorScheme="red" fontSize={'sm'}>
-            //     Removed <Icon icon={faInfoCircle} />
-            //   </Badge>
-            // </Tooltip>
+            <Badge>Removal reason: {data?.removalReason}</Badge>
           )}
         </Box>
 
