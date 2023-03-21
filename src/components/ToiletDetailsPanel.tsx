@@ -6,20 +6,10 @@ import {
   faDirections,
   faList,
   faTimes,
-  faCheck,
-  faPoundSign,
-  faBaby,
-  faToilet,
-  faMale,
-  faFemale,
-  faChild,
-  faKey,
-  faCog,
-  faQuestion,
   faChevronDown,
   faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
-import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
+
 import lightFormat from 'date-fns/lightFormat';
 import getISODay from 'date-fns/getISODay';
 import parseISO from 'date-fns/parseISO';
@@ -42,6 +32,7 @@ import { useRouter } from 'next/router';
 import { useSubmitVerificationReportMutationMutation } from '../api-client/graphql';
 import { usePlausible } from 'next-plausible';
 import Badge from '../design-system/components/Badge';
+import { getFeatures } from '../lib/features';
 
 const Grid = styled(Box)`
   display: flex;
@@ -214,83 +205,6 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
     </Link>
   );
 
-  const getFeatureValueIcon = (value) => {
-    if (value === null) {
-      return (
-        <Box title="Unknown">
-          <Icon icon={faQuestion} color="tertiary" aria-label="Unknown" />
-        </Box>
-      );
-    }
-
-    return value ? (
-      <Box title="Available">
-        <Icon icon={faCheck} aria-label="Available" />
-      </Box>
-    ) : (
-      <Box title="Unavailable">
-        <Icon icon={faTimes} color="tertiary" aria-label="Unavailable" />
-      </Box>
-    );
-  };
-
-  const features = [
-    {
-      icon: <Icon icon={faFemale} />,
-      label: 'Women',
-      valueIcon: getFeatureValueIcon(data.women),
-    },
-    {
-      icon: <Icon icon={faMale} />,
-      label: 'Men',
-      valueIcon: getFeatureValueIcon(data.men),
-    },
-    {
-      icon: <Icon icon={faAccessibleIcon} />,
-      label: 'Accessible',
-      valueIcon: getFeatureValueIcon(data.accessible),
-    },
-    ...(data.accessible
-      ? [
-          {
-            icon: <Icon icon={faKey} />,
-            label: 'RADAR Key',
-            valueIcon: getFeatureValueIcon(data.radar),
-          },
-        ]
-      : []),
-    {
-      icon: <Icon icon={faToilet} />,
-      label: 'Gender Neutral',
-      valueIcon: getFeatureValueIcon(data.allGender),
-    },
-    {
-      icon: <Icon icon={faChild} />,
-      label: 'Children',
-      valueIcon: getFeatureValueIcon(data.children),
-    },
-    {
-      icon: <Icon icon={faBaby} />,
-      label: 'Baby Changing',
-      valueIcon: getFeatureValueIcon(data.babyChange),
-    },
-    {
-      icon: <Icon icon={faToilet} />,
-      label: 'Urinal Only',
-      valueIcon: getFeatureValueIcon(data.urinalOnly),
-    },
-    {
-      icon: <Icon icon={faCog} />,
-      label: 'Automatic',
-      valueIcon: getFeatureValueIcon(data.automatic),
-    },
-    {
-      icon: <Icon icon={faPoundSign} />,
-      label: 'Free',
-      valueIcon: getFeatureValueIcon(data.noPayment),
-    },
-  ];
-
   const openingTimes = data.openingTimes || WEEKDAYS.map(() => null);
 
   const todayWeekdayIndex = getISODay(new Date());
@@ -310,6 +224,8 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
   }
 
   const plausible = usePlausible();
+
+  const features = useMemo(() => getFeatures(data), [data]);
 
   const lastVerifiedFragment = useMemo(
     () => (

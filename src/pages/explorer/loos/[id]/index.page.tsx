@@ -14,8 +14,9 @@ import { useRouter } from 'next/router';
 import Notification from '../../../../components/Notification';
 import NotFound from '../../../404.page';
 import { css } from '@emotion/react';
-import {
+import type {
   FindLooByIdQuery,
+  LooReportFragmentFragment,
   LooReportHistoryQuery,
 } from '../../../../api-client/graphql';
 import { ApolloError } from '@apollo/client';
@@ -82,7 +83,9 @@ const LooPage: CustomLooByIdComp = (props) => {
 
   // Find the diff between the current and previous report
   const reportHistory = props?.reportData?.reportsForLoo;
-  const [reportDiffHistory, setReportDiffHistory] = useState([]);
+  const [reportDiffHistory, setReportDiffHistory] = useState<
+    LooReportFragmentFragment[]
+  >([]);
 
   useEffect(() => {
     if (reportHistory) {
@@ -102,6 +105,7 @@ const LooPage: CustomLooByIdComp = (props) => {
               {
                 ...currentReport,
                 location: nextReport.location,
+                geohash: nextReport.geohash,
               },
             ];
           }
@@ -121,16 +125,6 @@ const LooPage: CustomLooByIdComp = (props) => {
         const prevReport = squashedSystemReports[i - 1];
         // Find out what's changed, only keep those items.
         for (const key in report) {
-          if (
-            key === 'id' ||
-            key === 'createdAt' ||
-            key === 'isSystemReport' ||
-            key === 'contributor' ||
-            key === '__typename'
-          ) {
-            continue;
-          }
-
           if (isEqual(report[key], prevReport[key])) {
             delete report[key];
           }
@@ -324,7 +318,11 @@ const LooPage: CustomLooByIdComp = (props) => {
                     <TimelineConnector />
                   </TimelineSeparator>
                   <TimelineContent>
-                    {JSON.stringify(report, null, 2)}
+                    <ul>
+                      {Object.entries(report).map(([k]) => (
+                        <li key={k}></li>
+                      ))}
+                    </ul>
                   </TimelineContent>
                 </TimelineItem>
               ))}
