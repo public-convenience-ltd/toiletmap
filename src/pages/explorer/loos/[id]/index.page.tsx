@@ -86,21 +86,48 @@ const LooPage: CustomLooByIdComp = (props) => {
 
   useEffect(() => {
     if (reportHistory) {
-      const sortedReports = [...reportHistory].sort((b, a) => {
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-      });
+      const squashedSystemReports = reportHistory.reduce(
+        (accumulatedReports, currentReport, i) => {
+          const nextReport = reportHistory[i + 1];
+
+          // If we're on a system report, skip it.
+          if (currentReport?.isSystemReport) {
+            return accumulatedReports;
+          }
+
+          // If the next report is a system report, merge it with the current report
+          if (nextReport?.isSystemReport) {
+            return [
+              ...accumulatedReports,
+              {
+                ...currentReport,
+                location: nextReport.location,
+              },
+            ];
+          }
+
+          // Otherwise, just return the current report.
+          return [...accumulatedReports, currentReport];
+        },
+        []
+      );
 
       // Merge each system report with the previous report
-      const diffHistory = sortedReports.map((report, i) => {
+      const diffHistory = squashedSystemReports.map((report, i) => {
         if (i === 0) {
           return report;
         }
-        const prevReport = sortedReports[i - 1];
+
+        const prevReport = squashedSystemReports[i - 1];
         // Find out what's changed, only keep those items.
         for (const key in report) {
-          if (key === 'id' || key === 'createdAt' || key === 'isSystemReport') {
+          if (
+            key === 'id' ||
+            key === 'createdAt' ||
+            key === 'isSystemReport' ||
+            key === 'contributor' ||
+            key === '__typename'
+          ) {
             continue;
           }
 
@@ -111,9 +138,7 @@ const LooPage: CustomLooByIdComp = (props) => {
         return report;
       });
 
-      setReportDiffHistory(
-        diffHistory.filter((v) => v.isSystemReport === false)
-      );
+      setReportDiffHistory(diffHistory);
     }
   }, [reportHistory]);
 
