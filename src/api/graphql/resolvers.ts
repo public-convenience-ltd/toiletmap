@@ -263,6 +263,25 @@ const resolvers: Resolvers<Context> = {
         postgresAuditRecordToGraphQLReport(v.id, v.record)
       );
 
+      // Order by report creation time.
+      // We make sure that user reports sit before system reports as they are made at the same time.
+      filtered.sort((b, a) => {
+        const aTime = new Date(a.createdAt).getTime();
+        const bTime = new Date(b.createdAt).getTime();
+
+        if (aTime === bTime) {
+          if (a.isSystemReport) {
+            return -1;
+          }
+          if (b.isSystemReport) {
+            return 1;
+          }
+          return 0;
+        }
+
+        return bTime - aTime;
+      });
+
       return filtered;
     },
   },
