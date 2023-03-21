@@ -246,6 +246,7 @@ const resolvers: Resolvers<Context> = {
           attended: diff.attended,
           notes: diff.notes,
           automatic: diff.automatic,
+          geohash: diff.geohash,
           contributor: contributor,
           id: reportId.toString(),
           isSystemReport: contributor.endsWith('-location'),
