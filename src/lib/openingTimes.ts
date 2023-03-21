@@ -17,6 +17,22 @@ const WEEKDAYS = [
   'Sunday',
 ];
 
+export function getTimeRangeLabel(range: unknown[]) {
+  if (isClosed(range)) {
+    return 'Closed';
+  }
+
+  if (range && range.length === 2) {
+    if (range[0] === range[1]) {
+      return '24 Hours';
+    }
+
+    return range.join(' - ');
+  }
+
+  return 'Unknown';
+}
+
 function getDateFromTime(timeRangeString: string, weekdayToCheck: number) {
   const [hours, minutes] = timeRangeString.split(':');
 

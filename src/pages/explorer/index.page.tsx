@@ -75,16 +75,16 @@ const Stats = ({ data: { statistics } }: { data: StatisticsQuery }) => {
         <table
           css={css`
             border-collapse: collapse;
+            width: 100%;
             td,
             th {
               padding: 0.5rem;
             }
             tr:nth-child(odd) td {
-              background-color: ${theme.colors.lightGrey};
+              background-color: ${theme.colors.white};
             }
             tr:nth-child(even) td {
-              background-color: ${theme.colors.primary};
-              color: white;
+              background-color: ${theme.colors.lightGrey};
             }
           `}
         >
