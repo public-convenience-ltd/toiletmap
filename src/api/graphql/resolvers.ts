@@ -263,13 +263,6 @@ const resolvers: Resolvers<Context> = {
         postgresAuditRecordToGraphQLReport(v.id, v.record)
       );
 
-      // Order by report creation time.
-      // filtered.sort((b, a) => {
-      //   return (
-      //     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      //   );
-      // });
-
       return filtered;
     },
   },
