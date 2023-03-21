@@ -1,5 +1,6 @@
 import Box from '../components/Box';
 import Icon from '../components/Icon';
+import type { Loo } from '../api-client/graphql';
 
 import {
   faTimes,
@@ -16,7 +17,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 
-const getFeatureValueIcon = (value) => {
+export const getFeatureValueIcon = (value?: boolean) => {
   if (value === null) {
     return (
       <Box title="Unknown">
@@ -36,7 +37,7 @@ const getFeatureValueIcon = (value) => {
   );
 };
 
-export const getFeatures = (data) => [
+export const getFeatures = (data: Loo) => [
   {
     icon: <Icon icon={faFemale} />,
     label: 'Women',

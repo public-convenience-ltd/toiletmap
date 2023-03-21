@@ -262,11 +262,10 @@ const UnstyledTable = () => {
             padding: 0.5rem;
           }
           tr:nth-child(odd) td {
-            background-color: ${theme.colors.lightGrey};
+            background-color: ${theme.colors.white};
           }
           tr:nth-child(even) td {
-            background-color: ${theme.colors.primary};
-            color: white;
+            background-color: ${theme.colors.lightGrey};
           }
         `}
       >

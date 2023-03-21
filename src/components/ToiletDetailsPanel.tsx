@@ -25,7 +25,7 @@ import Spacer from './Spacer';
 import Icon from './Icon';
 import { Media } from './Media';
 // Suppress Opening Hours Heading during COVID-19
-import { WEEKDAYS, isClosed } from '../lib/openingTimes';
+import { WEEKDAYS, getTimeRangeLabel } from '../lib/openingTimes';
 import { useMapState } from './MapState';
 import type L from 'leaflet';
 import { useRouter } from 'next/router';
@@ -45,22 +45,6 @@ const Grid = styled(Box)`
 const UnstyledList = styled.ul`
   list-style: none;
 `;
-
-function getTimeRangeLabel(range: unknown[]) {
-  if (isClosed(range)) {
-    return 'Closed';
-  }
-
-  if (range && range.length === 2) {
-    if (range[0] === range[1]) {
-      return '24 Hours';
-    }
-
-    return range.join(' - ');
-  }
-
-  return 'Unknown';
-}
 
 // Suppress Opening Hours heading during COVID-19
 // function getIsOpenLabel(openingTimes = [], dateTime = new Date()) {

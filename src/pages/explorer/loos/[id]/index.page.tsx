@@ -40,6 +40,9 @@ import {
 } from '@mui/lab';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import isEqual from 'lodash/isEqual';
+import { WEEKDAYS, getTimeRangeLabel } from '../../../../lib/openingTimes';
+import { getISODay } from 'date-fns';
+import theme from '../../../../theme';
 
 type CustomLooByIdComp = React.FC<{
   looData?: FindLooByIdQuery;
@@ -319,9 +322,7 @@ const LooPage: CustomLooByIdComp = (props) => {
                   </TimelineSeparator>
                   <TimelineContent>
                     <ul>
-                      {Object.entries(report).map(([k]) => (
-                        <li key={k}></li>
-                      ))}
+                      <TimelineEntry key={report.id} report={report} />
                     </ul>
                   </TimelineContent>
                 </TimelineItem>
@@ -331,6 +332,84 @@ const LooPage: CustomLooByIdComp = (props) => {
         </Box>
       </Container>
     </Box>
+  );
+};
+
+const diffValueMapping = (key: string, value: unknown) => {
+  if (key === 'location') {
+    return (
+      <Box>
+        <p>
+          {value?.lat}, {value?.lng}
+        </p>
+      </Box>
+    );
+  }
+
+  if (key === 'openingTimes') {
+    const todayWeekdayIndex = getISODay(new Date());
+    return (
+      <ul>
+        {value?.map((timeRange: unknown[], i) => (
+          <Box
+            as="li"
+            display="flex"
+            justifyContent="space-between"
+            key={i}
+            padding={1}
+            bg={i === todayWeekdayIndex - 1 ? theme.colors.primary : 'white'}
+            color={i === todayWeekdayIndex - 1 ? 'white' : theme.colors.primary}
+            width={'15rem'}
+          >
+            <span>{WEEKDAYS[i]}</span>
+            <span>{getTimeRangeLabel(timeRange)}</span>
+          </Box>
+        ))}
+      </ul>
+    );
+  }
+
+  switch (key) {
+    default:
+      return <p>{JSON.stringify(value)}</p>;
+  }
+};
+
+const TimelineEntry = ({ report }: { report: LooReportFragmentFragment }) => {
+  return (
+    <table
+      css={css`
+        border-collapse: collapse;
+        width: 100%;
+        td,
+        th {
+          padding: 0.5rem;
+        }
+        tr:nth-child(odd) td {
+          background-color: ${theme.colors.white};
+        }
+        tr:nth-child(even) td {
+          background-color: ${theme.colors.lightGrey};
+        }
+      `}
+    >
+      <tbody>
+        <tr css={{ borderBottom: '1pt solid black' }}>
+          <th>
+            <Text fontWeight={'bold'}>Key</Text>
+          </th>
+          <th>
+            <Text fontWeight={'bold'}>Value</Text>
+          </th>
+        </tr>
+        {Object.entries(report).map(([key, value]) => (
+          <tr key={key + report.id} css={{ borderBottom: '1px solid black' }}>
+            <td>{key}</td>
+            <td>{diffValueMapping(key, value)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 

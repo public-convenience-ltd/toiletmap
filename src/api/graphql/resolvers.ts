@@ -247,7 +247,8 @@ const resolvers: Resolvers<Context> = {
           notes: diff.notes,
           automatic: diff.automatic,
           geohash: diff.geohash,
-          contributor: contributor,
+          // TODO: We don't want to return contributor info until we can redact it for non-authenticated users.
+          contributor: 'Anonymous',
           id: reportId.toString(),
           isSystemReport: contributor.endsWith('-location'),
           location: diff.location?.coordinates
