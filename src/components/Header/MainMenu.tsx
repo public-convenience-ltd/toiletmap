@@ -6,11 +6,8 @@ import Text from '../Text';
 import { Media } from '../Media';
 import { useUser } from '@auth0/nextjs-auth0';
 import { useMapState } from '../MapState';
-// import Icon from '../Icon';
-// import { faComments } from '@fortawesome/free-solid-svg-icons';
-// import dynamic from 'next/dynamic';
-
-// const Feedback = dynamic(() => import('../Feedback/Feedback'));
+import Button from '../Button';
+import { useFeedbackPopover } from './hooks';
 
 const StyledNavLink = styled(Link)<
   LinkProps & {
@@ -35,6 +32,9 @@ interface IMainMenu {
 const MainMenu = ({ children }: IMainMenu) => {
   const { user } = useUser();
   const [mapState] = useMapState();
+
+  const { feedbackPopoverId, handleClick, FeedbackPopover } =
+    useFeedbackPopover();
 
   return (
     <Text
@@ -73,33 +73,23 @@ const MainMenu = ({ children }: IMainMenu) => {
 
           <Box as="li" mt={['auto', 0]} ml={[0, 'auto']}>
             <Media greaterThan="md">
-              {/* <Popover>
-                <PopoverTrigger>
-                  <button>
-                    Feedback <Icon icon={faComments} size="1x" />
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent>
-                  <PopoverBody>
-                    <Feedback />
-                  </PopoverBody>
-                </PopoverContent>
-              </Popover> */}
+              <Button
+                aria-describedby={feedbackPopoverId}
+                onClick={handleClick}
+                variant={'link'}
+              >
+                Feedback
+              </Button>
             </Media>
 
             <Media at="md">
-              {/* <Popover>
-                <PopoverTrigger>
-                  <button>
-                    <Icon icon={faComments} size="1x" />
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent>
-                  <PopoverBody>
-                    <Feedback />
-                  </PopoverBody>
-                </PopoverContent>
-              </Popover> */}
+              <Button
+                aria-describedby={feedbackPopoverId}
+                onClick={handleClick}
+                variant={'link'}
+              >
+                Feedback
+              </Button>
             </Media>
           </Box>
 
@@ -123,6 +113,8 @@ const MainMenu = ({ children }: IMainMenu) => {
             <Text fontWeight="normal">{children}</Text>
           </Media>
         )}
+
+        <FeedbackPopover />
       </Box>
     </Text>
   );
