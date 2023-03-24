@@ -1,5 +1,6 @@
 import { Suspense, useMemo } from 'react';
 import Providers from '../components/Providers';
+import { Analytics } from '@vercel/analytics/react';
 import { UserProvider } from '@auth0/nextjs-auth0';
 import Main from '../components/Main';
 import { config } from '@fortawesome/fontawesome-svg-core';
@@ -27,11 +28,14 @@ const App = (props) => {
   );
 
   return (
-    <Providers key={key}>
-      <UserProvider>
-        <Main {...props} map={renderedMap} />
-      </UserProvider>
-    </Providers>
+    <>
+      <Providers key={key}>
+        <UserProvider>
+          <Main {...props} map={renderedMap} />
+        </UserProvider>
+      </Providers>
+      <Analytics />
+    </>
   );
 };
 
