@@ -69,6 +69,7 @@ specifiers:
   '@types/styled-system': ^5.1.16
   '@typescript-eslint/eslint-plugin': ^5.54.1
   '@typescript-eslint/parser': ^5.54.1
+  '@vercel/analytics': ^0.1.11
   auth0: ^3.2.0
   babel-loader: ^9.1.2
   chai: ^4.3.7
@@ -160,6 +161,7 @@ dependencies:
   '@react-leaflet/core': 2.1.0_yydtlhsdonbqao6vgvkwhv2zki
   '@sentry/nextjs': 7.42.0_mvi2gotqcdgebuj3ci6acp6y7y
   '@styled-system/prop-types': 5.1.5_styled-system@5.1.5
+  '@vercel/analytics': 0.1.11_react@18.2.0
   auth0: 3.2.0
   cors: 2.8.5
   date-fns: 2.29.3
@@ -6641,6 +6643,14 @@ packages:
       '@typescript-eslint/types': 5.54.1
       eslint-visitor-keys: 3.3.0
     dev: true
+
+  /@vercel/analytics/0.1.11_react@18.2.0:
+    resolution: {integrity: sha512-mj5CPR02y0BRs1tN3oZcBNAX9a8NxsIUl9vElDPcqxnMfP0RbRc9fI9Ud7+QDg/1Izvt5uMumsr+6YsmVHcyuw==}
+    peerDependencies:
+      react: ^16.8||^17||^18
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /@webassemblyjs/ast/1.11.1:
     resolution: {integrity: sha512-ukBh14qFLjxTQNTXocdyksN5QdM28S1CxHt2rdskFyL+xFV7VremuBLVbmCePj+URalXBENx/9Lm7lnhihtCSw==}
