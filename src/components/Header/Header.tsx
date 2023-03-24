@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faComments } from '@fortawesome/free-solid-svg-icons';
 
 import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
@@ -13,6 +13,8 @@ import { useRouter } from 'next/router';
 import Button from '../Button';
 
 import dynamic from 'next/dynamic';
+import { useFeedbackPopover } from './hooks';
+import Text from '../Text';
 
 // const Feedback = dynamic(() => import('../Feedback/Feedback'));
 const Drawer = dynamic(() => import('../Drawer'));
@@ -26,6 +28,10 @@ const Header = ({ children }) => {
     setMapState({ searchLocation: undefined, focus: undefined });
     router.push('/');
   }, [router, setMapState]);
+
+  const { feedbackPopoverId, handleClick, FeedbackPopover } =
+    useFeedbackPopover();
+
   return (
     <Box as="header">
       <Box
@@ -53,22 +59,16 @@ const Header = ({ children }) => {
           </h2>
 
           <Media at="sm" css={{ display: 'flex', justifyContent: 'flex-end' }}>
-            {/* <Popover>
-              <PopoverTrigger>
-                <Box>
-                  <button>
-                    <Icon icon={faComments} size="2x" />
-
-                    <ChakraText fontSize={'xs'}>Feedback</ChakraText>
-                  </button>
-                </Box>
-              </PopoverTrigger>
-              <PopoverContent>
-                <PopoverBody>
-                  <Feedback />
-                </PopoverBody>
-              </PopoverContent>
-            </Popover> */}
+            <Button
+              aria-describedby={feedbackPopoverId}
+              onClick={handleClick}
+              variant={'link'}
+            >
+              <Icon icon={faComments} size="2x" />
+              <VisuallyHidden>
+                <Text>Feedback</Text>
+              </VisuallyHidden>
+            </Button>
 
             <Box ml={4}>
               <button
@@ -80,6 +80,8 @@ const Header = ({ children }) => {
                 <Icon icon={faBars} size="2x" />
               </button>
             </Box>
+
+            <FeedbackPopover />
 
             <Drawer visible={isMenuVisible} zIndex={200}>
               <MainMenu onMenuItemClick={() => setIsMenuVisible(false)}>
