@@ -225,6 +225,7 @@ const resolvers: Resolvers<Context> = {
         diff: toilets
       ): Report => {
         const contributor = diff.contributors.pop();
+
         // TODO: This return is incomplete, we need to support loo, area and contributors (when authenticated only.)
         return {
           createdAt: diff.updated_at,

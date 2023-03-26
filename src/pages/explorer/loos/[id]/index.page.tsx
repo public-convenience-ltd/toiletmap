@@ -86,6 +86,7 @@ const LooPage: CustomLooByIdComp = (props) => {
 
   // Find the diff between the current and previous report
   const reportHistory = props?.reportData?.reportsForLoo;
+
   const [reportDiffHistory, setReportDiffHistory] = useState<
     LooReportFragmentFragment[]
   >([]);
@@ -119,20 +120,25 @@ const LooPage: CustomLooByIdComp = (props) => {
         []
       );
 
-      // Merge each system report with the previous report
       const diffHistory = squashedSystemReports.map((report, i) => {
         if (i === 0) {
           return report;
         }
-
+        const constructedReport = { ...report };
         const prevReport = squashedSystemReports[i - 1];
+
         // Find out what's changed, only keep those items.
+        // Skip `createdAt` and `updatedAt`, we don't want to remove these.
+        const skipList = ['createdAt', 'updatedAt'];
         for (const key in report) {
-          if (isEqual(report[key], prevReport[key])) {
-            delete report[key];
+          if (
+            isEqual(report[key], prevReport[key]) &&
+            !skipList.includes(key)
+          ) {
+            delete constructedReport[key];
           }
         }
-        return report;
+        return constructedReport;
       });
 
       setReportDiffHistory(diffHistory);
@@ -314,7 +320,7 @@ const LooPage: CustomLooByIdComp = (props) => {
                 // Only show non system location update reports for now.
                 <TimelineItem key={report.id}>
                   <TimelineOppositeContent>
-                    {new Date(report.createdAt).toLocaleDateString()}
+                    {new Date(report?.createdAt).toLocaleDateString()}
                   </TimelineOppositeContent>
                   <TimelineSeparator>
                     <TimelineDot />
@@ -402,12 +408,14 @@ const TimelineEntry = ({ report }: { report: LooReportFragmentFragment }) => {
             <Text fontWeight={'bold'}>Value</Text>
           </th>
         </tr>
-        {Object.entries(report).map(([key, value]) => (
-          <tr key={key + report.id} css={{ borderBottom: '1px solid black' }}>
-            <td>{key}</td>
-            <td>{diffValueMapping(key, value)}</td>
-          </tr>
-        ))}
+        {Object.entries(report)
+          .filter(([key]) => key !== 'id' && key !== 'createdAt')
+          .map(([key, value]) => (
+            <tr key={key + report.id} css={{ borderBottom: '1px solid black' }}>
+              <td>{key}</td>
+              <td>{diffValueMapping(key, value)}</td>
+            </tr>
+          ))}
       </tbody>
     </table>
   );
