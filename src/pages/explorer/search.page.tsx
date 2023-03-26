@@ -56,7 +56,7 @@ const UnstyledTable = () => {
       page: router.query?.page ? parseInt(router.query?.page, 10) : 0,
       rowsPerPage: router.query?.rowsPerPage
         ? parseInt(router.query?.rowsPerPage, 10)
-        : 5,
+        : 25,
       text: router.query?.text ?? '',
     };
   }, [router]);
@@ -293,7 +293,7 @@ const UnstyledTable = () => {
           <tr>
             <TablePaginationUnstyled
               rowsPerPageOptions={[
-                5, 10, 25,
+                5, 10, 25, 50,
                 // { label: 'All', value: availableRows }, Disabled all for now
               ]}
               colSpan={4}
