@@ -345,9 +345,9 @@ const diffValueMapping = (key: string, value: unknown) => {
   if (key === 'location') {
     return (
       <Box>
-        <p>
+        <code>
           {value?.lat}, {value?.lng}
-        </p>
+        </code>
       </Box>
     );
   }
@@ -377,7 +377,7 @@ const diffValueMapping = (key: string, value: unknown) => {
 
   switch (key) {
     default:
-      return <p>{JSON.stringify(value)}</p>;
+      return <code>{JSON.stringify(value)}</code>;
   }
 };
 
@@ -412,7 +412,7 @@ const TimelineEntry = ({ report }: { report: LooReportFragmentFragment }) => {
           .filter(([key]) => key !== 'id' && key !== 'createdAt')
           .map(([key, value]) => (
             <tr key={key + report.id} css={{ borderBottom: '1px solid black' }}>
-              <td>{key}</td>
+              <td css={{ width: '10rem' }}>{key}</td>
               <td>{diffValueMapping(key, value)}</td>
             </tr>
           ))}
