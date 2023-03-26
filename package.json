@@ -121,7 +121,7 @@
     "@storybook/builder-webpack5": "^6.5.16",
     "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/react": "^6.5.16",
-    "@testing-library/cypress": "^8.0.3",
+    "@testing-library/cypress": "^9.0.0",
     "@types/cli-progress": "^3.11.0",
     "@types/jest": "^29.5.0",
     "@types/leaflet": "^1.9.3",
