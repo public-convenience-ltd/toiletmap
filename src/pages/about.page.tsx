@@ -56,34 +56,28 @@ const AboutPage = () => {
           joint venture between researchers Dr Jo-Anne Bichard and Gail Ramster
           (who created the map at the RCA Helen Hamlyn Centre for Design) and
           software development company{' '}
-          <Link passHref href="https://www.neontribe.co.uk/" legacyBehavior>
-            <Button
-              variant="link"
-              as="a"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+          <Link
+            href="https://www.neontribe.co.uk/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
               Neontribe
-            </Button>
           </Link>{' '}
           (who designed and built it).
         </p>
         <p>
           The information comes from the public - anyone can go on the website
           and{' '}
-          <Link href="/" passHref legacyBehavior>
-            <Button variant="link">add, edit or remove toilets</Button>
+          <Link href="/">
+            add, edit or remove toilets
           </Link>
           . We also use open data and request information from councils,{' '}
-          <Link passHref href="https://www.openstreetmap.org/" legacyBehavior>
-            <Button
-              variant="link"
-              as="a"
-              target="_blank"
-              rel="noopener noreferrer"
+          <Link
+            href="https://www.openstreetmap.org/"
+            target="_blank"
+            rel="noopener noreferrer"
             >
               OpenStreetMap
-            </Button>
           </Link>
           , private companies and organisations.
         </p>
@@ -94,20 +88,15 @@ const AboutPage = () => {
           to download below.
         </p>
         <Spacer mb={2} />
-        <Link
-          passHref
+        <Button
+          variant="primary"
+          as={Link}
           href="Toilet.Map.Volunteer.Help.Guide.pdf"
-          legacyBehavior
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <Button
-            as="a"
-            variant="primary"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Download volunteer help guide
-          </Button>
-        </Link>
+          Download volunteer help guide
+        </Button>
         <Spacer mb={3} />
         <p>
           A handy printable checklist designed to make it easier for you to
@@ -115,16 +104,15 @@ const AboutPage = () => {
           also available for download.
         </p>
         <Spacer mb={2} />
-        <Link passHref href={'/GBPTM.Toilet.Checklist.pdf'} legacyBehavior>
-          <Button
-            as="a"
-            variant="primary"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Download toilet checklist
-          </Button>
-        </Link>
+        <Button
+          variant="primary"
+          as={Link}
+          href={'/GBPTM.Toilet.Checklist.pdf'}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Download toilet checklist
+        </Button>
         <SubHeading>Publicly Accessible Toilets</SubHeading>
         <p>
           The project aims to map all publicly-accessible toilets - that means
@@ -163,19 +151,16 @@ const AboutPage = () => {
         <p>
           If you have any problems updating the toilets, or wish to send us
           toilet details or comments, please contact{' '}
-          <Link passHref href="mailto:gbtoiletmap@gmail.com" legacyBehavior>
-            <Button variant="link" as="a">
+          <Link href="mailto:gbtoiletmap@gmail.com" target="_blank" rel="noopener noreferrer">
               gbtoiletmap@gmail.com
-            </Button>
           </Link>
           .
         </p>
         <SubHeading>The Explorer</SubHeading>
         <p>
-          <Link passHref href="/explorer" prefetch={false} legacyBehavior>
-            <Button variant="link" as="a">
+          <Link passHref href="/explorer" prefetch={false}>
               Visit the Explorer
-            </Button>
+
           </Link>
           &nbsp;to get an overview of the statistics and details related to the
           Toilet Map. These statistics are calculated on-demand, so will be up

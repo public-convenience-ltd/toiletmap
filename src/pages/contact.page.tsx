@@ -22,7 +22,13 @@ const ContactPage = () => {
         <p>
           If you have any problems updating the toilets, or wish to send us
           toilet details or comments, please contact{' '}
-          <Button variant="link" as="a" href="mailto:gbtoiletmap@gmail.com">
+          <Button
+            variant="link"
+            as="a"
+            href="mailto:gbtoiletmap@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             gbtoiletmap@gmail.com
           </Button>
           .

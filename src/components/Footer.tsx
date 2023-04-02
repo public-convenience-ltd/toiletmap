@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import Box from './Box';
 import Text from './Text';
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 
 import poweredByVercel from '../../public/powered-by-vercel.svg';
 
@@ -42,23 +42,15 @@ const Footer = ({ children = null }) => {
           href={
             'https://vercel.com/?utm_source=public-convenience-ltd&utm_campaign=oss'
           }
-          passHref
-          legacyBehavior
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <Box
-            as="a"
-            display={'flex'}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
             <Image
               width="130"
               src={poweredByVercel}
               alt="Powered by Vercel"
               unoptimized={!!process.env.STORYBOOK}
             />
-          </Box>
         </Link>
       </Box>
     </Box>

@@ -6,7 +6,7 @@ import {
   UseFormRegister,
   FieldValues,
 } from 'react-hook-form';
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 import isFunction from 'lodash/isFunction';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';

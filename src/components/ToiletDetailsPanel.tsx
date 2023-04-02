@@ -167,26 +167,21 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
   );
 
   const getDirectionsFragment = (
-    <Link
-      passHref
+    <Button
+      variant="primary"
+      as={Link}
       href={`https://maps.apple.com/?dirflg=w&daddr=${[
         data.location.lat,
         data.location.lng,
       ]}`}
-      legacyBehavior
+      target="_blank"
+      rel="noopener noreferrer"
     >
-      <Button
-        variant="primary"
-        as="a"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Box mr="2">
-          <Icon icon={faDirections} />
-        </Box>
-        Directions
-      </Button>
-    </Link>
+      <Box mr="2">
+        <Icon icon={faDirections} />
+      </Box>
+      Directions
+    </Button>
   );
 
   const openingTimes = data.openingTimes || WEEKDAYS.map(() => null);
@@ -241,14 +236,17 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
           <Box display="flex" alignItems="center">
             No?
             <Spacer mr={2} />
-            <Link passHref href={editUrl} legacyBehavior>
-              <Button as="a" variant="secondary" data-testid="edit-button">
-                <Box mr={2}>
-                  <Icon icon={faEdit} />
-                </Box>
-                Edit
-              </Button>
-            </Link>
+            <Button
+              as={Link}
+              href={editUrl}
+              variant="secondary"
+              data-testid="edit-button"
+            >
+              <Box mr={2}>
+                <Icon icon={faEdit} />
+              </Box>
+              Edit
+            </Button>
           </Box>
         </Box>
         <Spacer mb={[0, 2]} />
@@ -256,7 +254,6 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         <Link
           href={`/explorer/loos/${data.id}`}
           prefetch={false}
-          legacyBehavior
         >
           {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
         </Link>
@@ -442,10 +439,8 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
               <Text fontSize={1} color="grey">
                 Hours may vary with national holidays or seasonal changes. If
                 you know these hours to be out of date please{' '}
-                <Link passHref href={editUrl} legacyBehavior>
-                  <Button as="a" variant="link" data-testid="edit-link">
+                <Link href={editUrl} data-testid="edit-link">
                     edit this toilet
-                  </Button>
                 </Link>
                 .
               </Text>

@@ -68,7 +68,7 @@ const config = {
   initialZoom: 16,
   minZoom: 11,
   maxZoom: 18,
-  editMinZoom: 16,
+  editMinZoom: 5,
   fallbackLocation: {
     // Trafalgar Square. Because.
     lat: 51.507351,
