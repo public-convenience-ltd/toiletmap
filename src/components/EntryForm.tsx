@@ -1,15 +1,11 @@
 import React, { InputHTMLAttributes, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import {
-  useForm,
-  Controller,
-  UseFormRegister,
-  FieldValues,
-} from 'react-hook-form';
+import { useForm, Controller, UseFormRegister } from 'react-hook-form';
 import Image from 'next/legacy/image';
 import isFunction from 'lodash/isFunction';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
+import zipObject from 'lodash/zipObject';
 import { ErrorMessage } from '@hookform/error-message';
 import Container from '../components/Container';
 import Notification from '../components/Notification';
@@ -18,7 +14,7 @@ import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 import VisuallyHidden from '../components/VisuallyHidden';
 import Switch from '../components/Switch';
-import { WEEKDAYS, isClosed } from '../lib/openingTimes';
+import { WEEKDAYS, isClosed, Weekdays } from '../lib/openingTimes';
 import crosshair from '../../public/crosshair-small.svg';
 
 import { useMapState } from './MapState';
@@ -26,11 +22,17 @@ import Icon from './Icon';
 import { faAsterisk } from '@fortawesome/free-solid-svg-icons';
 import { css } from '@emotion/react';
 
-const openingTimesFields = WEEKDAYS.flatMap((day: string) => {
+type OpeningDayStates =
+  | `${Lowercase<Weekdays>}-is-open`
+  | `${Lowercase<Weekdays>}-opens`
+  | `${Lowercase<Weekdays>}-closes`;
+
+const openingTimesFields = WEEKDAYS.flatMap((day): OpeningDayStates[] => {
+  const lowercaseDay = day.toLowerCase() as Lowercase<Weekdays>;
   return [
-    `${day.toLowerCase()}-is-open`,
-    `${day.toLowerCase()}-opens`,
-    `${day.toLowerCase()}-closes`,
+    `${lowercaseDay}-is-open`,
+    `${lowercaseDay}-opens`,
+    `${lowercaseDay}-closes`,
   ];
 });
 
@@ -91,6 +93,47 @@ const RadioInput = styled.input`
   }
 `;
 
+const defaultFormState = {
+  accessible: null,
+  name: '',
+  allGender: null,
+  women: null,
+  men: null,
+  radar: null,
+  automatic: null,
+  babyChange: null,
+  children: null,
+  paymentDetails: null,
+  isFree: null,
+  urinalOnly: null,
+  'has-opening-times': false,
+  'monday-is-open': false,
+  'monday-opens': '',
+  'monday-closes': '',
+  'tuesday-is-open': false,
+  'tuesday-opens': '',
+  'tuesday-closes': '',
+  'wednesday-is-open': false,
+  'wednesday-opens': '',
+  'wednesday-closes': '',
+  'thursday-is-open': false,
+  'thursday-opens': '',
+  'thursday-closes': '',
+  'friday-is-open': false,
+  'friday-opens': '',
+  'friday-closes': '',
+  'saturday-is-open': false,
+  'saturday-opens': '',
+  'saturday-closes': '',
+  'sunday-is-open': false,
+  'sunday-opens': '',
+  'sunday-closes': '',
+  geometry: {
+    coordinates: [0, 0],
+  },
+  notes: '',
+};
+type DefaultFormState = typeof defaultFormState;
 const Radio = React.forwardRef<
   HTMLInputElement,
   InputHTMLAttributes<HTMLInputElement>
@@ -104,121 +147,143 @@ const Radio = React.forwardRef<
 });
 
 interface Question {
-  field: string;
-  label: string | React.ReactElement;
+  field: keyof DefaultFormState;
+  subQuestion: string | React.ReactElement;
   value: boolean | null | '';
   onChange?: React.FormEventHandler<HTMLDivElement>;
 }
 
-const Section: React.FC<{
-  register: UseFormRegister<FieldValues>;
+interface Section {
+  register: UseFormRegister<DefaultFormState>;
   id: string;
   title: string;
   questions: Question[];
-}> = ({ register, id, title, questions, children }) => (
-  <div role="group" aria-labelledby={`heading-${id}`}>
-    <table
-      role="presentation"
-      css={{
-        width: '100%',
-        borderCollapse: 'separate',
-        borderSpacing: '0 1em',
-        margin: '-1em 0',
-      }}
-    >
-      <thead>
-        <tr>
-          <th>
-            <h2 id={`heading-${id}`}>{title}</h2>
-          </th>
+  children?: React.ReactNode;
+}
 
-          <Text as="th" id={`${id}-yes`} textAlign="center" fontSize={[14, 16]}>
-            <span aria-hidden="true">Yes</span>
-          </Text>
+const Section: React.FC<Section> = ({
+  register,
+  id,
+  title,
+  questions,
+  children,
+}) => {
+  return (
+    <div role="group" aria-labelledby={`heading-${id}`}>
+      <table
+        role="presentation"
+        css={{
+          width: '100%',
+          borderCollapse: 'separate',
+          borderSpacing: '0 1em',
+          margin: '-1em 0',
+        }}
+      >
+        <thead>
+          <tr>
+            <th>
+              <h2 id={`heading-${id}`}>{title}</h2>
+            </th>
 
-          <Text as="th" id={`${id}-no`} textAlign="center" fontSize={[14, 16]}>
-            <span aria-hidden="true">No</span>
-          </Text>
+            <Text
+              as="th"
+              id={`${id}-yes`}
+              textAlign="center"
+              fontSize={[14, 16]}
+            >
+              <span aria-hidden="true">Yes</span>
+            </Text>
 
-          <Text
-            as="th"
-            id={`${id}-unknown`}
-            textAlign="center"
-            fontSize={[14, 16]}
-          >
-            <span aria-hidden="true">Don&apos;t know</span>
-          </Text>
-        </tr>
-      </thead>
+            <Text
+              as="th"
+              id={`${id}-no`}
+              textAlign="center"
+              fontSize={[14, 16]}
+            >
+              <span aria-hidden="true">No</span>
+            </Text>
 
-      <Box as="tbody" pl={[2, 4]}>
-        {questions.map(({ field, label, value, onChange }) => {
-          return (
-            <Box as="tr" key={field} mt={3} onChange={onChange}>
-              <Box as="td" width="52%" pl={[2, 4]}>
-                {label}
+            <Text
+              as="th"
+              id={`${id}-unknown`}
+              textAlign="center"
+              fontSize={[14, 16]}
+            >
+              <span aria-hidden="true">Don&apos;t know</span>
+            </Text>
+          </tr>
+        </thead>
+
+        <Box as="tbody" pl={[2, 4]}>
+          {questions.map(({ field, subQuestion, value, onChange }) => {
+            return (
+              <Box as="tr" key={field} mt={3} onChange={onChange}>
+                <Box as="td" width="52%" pl={[2, 4]}>
+                  {subQuestion}
+                </Box>
+                <Text as="td" textAlign="center" css={{ width: '16%' }}>
+                  <label htmlFor={`${field}:yes`}>
+                    <VisuallyHidden>Yes</VisuallyHidden>
+
+                    <Radio
+                      name={field}
+                      id={`${field}:yes`}
+                      value={'true'}
+                      defaultChecked={value === true}
+                      aria-labelledby={`${id}-yes`}
+                      data-testid={`${field}:yes`}
+                      {...register(field)}
+                    />
+                  </label>
+                </Text>
+
+                <Text as="td" textAlign="center" css={{ width: '16%' }}>
+                  <label htmlFor={`${field}:no`}>
+                    <VisuallyHidden>No</VisuallyHidden>
+
+                    <Radio
+                      name={field}
+                      id={`${field}:no`}
+                      value={'false'}
+                      defaultChecked={value === false}
+                      aria-labelledby={`${id}-no`}
+                      data-testid={`${field}:no`}
+                      {...register(field)}
+                    />
+                  </label>
+                </Text>
+
+                <Text as="td" textAlign="center" css={{ width: '16%' }}>
+                  <label htmlFor={`${field}:na`}>
+                    <VisuallyHidden>Don&apos;t know</VisuallyHidden>
+
+                    <Radio
+                      id={`${field}:na`}
+                      name={field}
+                      value=""
+                      aria-labelledby={`${id}-na`}
+                      defaultChecked={value == undefined || value === ''}
+                      data-testid={`${field}:na`}
+                      {...register(field)}
+                    />
+                  </label>
+                </Text>
               </Box>
-              <Text as="td" textAlign="center" css={{ width: '16%' }}>
-                <label htmlFor={`${field}:yes`}>
-                  <VisuallyHidden>Yes</VisuallyHidden>
+            );
+          })}
+        </Box>
+      </table>
 
-                  <Radio
-                    name={field}
-                    id={`${field}:yes`}
-                    value={'true'}
-                    defaultChecked={value === true}
-                    aria-labelledby={`${id}-yes`}
-                    data-testid={`${field}:yes`}
-                    {...register(field)}
-                  />
-                </label>
-              </Text>
-
-              <Text as="td" textAlign="center" css={{ width: '16%' }}>
-                <label htmlFor={`${field}:no`}>
-                  <VisuallyHidden>No</VisuallyHidden>
-
-                  <Radio
-                    name={field}
-                    id={`${field}:no`}
-                    value={'false'}
-                    defaultChecked={value === false}
-                    aria-labelledby={`${id}-no`}
-                    data-testid={`${field}:no`}
-                    {...register(field)}
-                  />
-                </label>
-              </Text>
-
-              <Text as="td" textAlign="center" css={{ width: '16%' }}>
-                <label htmlFor={`${field}:na`}>
-                  <VisuallyHidden>Don&apos;t know</VisuallyHidden>
-
-                  <Radio
-                    id={`${field}:na`}
-                    name={field}
-                    value=""
-                    aria-labelledby={`${id}-na`}
-                    defaultChecked={value == undefined || value === ''}
-                    data-testid={`${field}:na`}
-                    {...register(field)}
-                  />
-                </label>
-              </Text>
-            </Box>
-          );
-        })}
-      </Box>
-    </table>
-
-    {children}
-  </div>
-);
+      {children}
+    </div>
+  );
+};
 
 const EntryForm = ({ title, loo, children, ...props }) => {
   const [noPayment, setNoPayment] = useState(loo.noPayment);
   const [mapState] = useMapState();
   const [mapMoved, setMapMoved] = useState(false);
+  const [editAllHours, setEditAllHours] = useState(false);
 
   useEffect(
     function registerMapMovedHandler() {
@@ -246,17 +311,40 @@ const EntryForm = ({ title, loo, children, ...props }) => {
     ? loo.openingTimes.map((x: string | unknown[]) => !isClosed(x))
     : WEEKDAYS.map(() => false);
 
+  const changeAllHourValues = (event) => {
+    if (editAllHours) {
+      const formValues = getValues(openingTimesFields);
+      const openingHours = zipObject(openingTimesFields, formValues);
+      // Determine the target days
+      const targetDays = Object.keys(openingHours)
+        .filter((key) => openingHours[key] === true)
+        .map((day: OpeningDayStates) => day.replace('-is-open', ''));
+      // Determine the target fields based on the current target
+      const target = event.target.name.endsWith('-opens')
+        ? '-opens'
+        : '-closes';
+      const targetFields = targetDays.flatMap((day) =>
+        openingTimesFields.filter(
+          (field) => field.includes(day) && field.includes(target)
+        )
+      );
+      //This probably can be done in a more performant way
+      targetFields.forEach((targetField) => {
+        setValue(targetField, event.target.value);
+      });
+    }
+  };
+
   const { register, control, handleSubmit, formState, setValue, getValues } =
-    useForm({ criteriaMode: 'all' });
+    useForm({ criteriaMode: 'all', defaultValues: defaultFormState });
 
   // read the formState before render to subscribe the form state through Proxy
   const { isDirty, dirtyFields } = formState;
-
-  const onSubmit = (data: {
-    [x: string]: unknown;
-    isFree: string;
-    geometry: { coordinates: string[] };
-  }) => {
+  const onSubmit = (
+    data: {
+      [x: string]: unknown;
+    } & DefaultFormState
+  ) => {
     const dirtyFieldNames = Object.keys(dirtyFields);
 
     // only include fields which have been modified
@@ -286,8 +374,8 @@ const EntryForm = ({ title, loo, children, ...props }) => {
     // map geometry data to expected structure
     // eslint-disable-next-line functional/immutable-data
     transformed.location = {
-      lat: parseFloat(data.geometry.coordinates[0]),
-      lng: parseFloat(data.geometry.coordinates[1]),
+      lat: data.geometry.coordinates[0],
+      lng: data.geometry.coordinates[1],
     };
 
     // remove payment details if the isFree field value has changed and is now
@@ -305,13 +393,14 @@ const EntryForm = ({ title, loo, children, ...props }) => {
     ) {
       if (data['has-opening-times']) {
         const openingTimes = WEEKDAYS.map((day) => {
-          if (!data[`${day.toLowerCase()}-is-open`]) {
+          const lowercaseDay = day.toLowerCase();
+          if (!data[`${lowercaseDay}-is-open`]) {
             return [];
           }
 
           return [
-            data[`${day.toLowerCase()}-opens`],
-            data[`${day.toLowerCase()}-closes`],
+            data[`${lowercaseDay}-opens`],
+            data[`${lowercaseDay}-closes`],
           ];
         });
 
@@ -450,22 +539,22 @@ const EntryForm = ({ title, loo, children, ...props }) => {
             questions={[
               {
                 field: 'women',
-                label: 'Women?',
+                subQuestion: 'Women?',
                 value: loo['women'],
               },
               {
                 field: 'men',
-                label: 'Men?',
+                subQuestion: 'Men?',
                 value: loo['men'],
               },
               {
                 field: 'accessible',
-                label: 'Is there a disabled toilet?',
+                subQuestion: 'Is there a disabled toilet?',
                 value: loo['accessible'],
               },
               {
                 field: 'radar',
-                label: 'Does this toilet have a RADAR lock?',
+                subQuestion: 'Does this toilet have a RADAR lock?',
                 value: loo['radar'],
               },
             ]}
@@ -480,27 +569,27 @@ const EntryForm = ({ title, loo, children, ...props }) => {
             questions={[
               {
                 field: 'allGender',
-                label: 'A gender neutral toilet?',
+                subQuestion: 'A gender neutral toilet?',
                 value: loo['allGender'],
               },
               {
                 field: 'children',
-                label: 'A children’s toilet?',
+                subQuestion: 'A children’s toilet?',
                 value: loo['children'],
               },
               {
                 field: 'babyChange',
-                label: 'Baby Changing?',
+                subQuestion: 'Baby Changing?',
                 value: loo['babyChange'],
               },
               {
                 field: 'urinalOnly',
-                label: 'Only a urinal?',
+                subQuestion: 'Only a urinal?',
                 value: loo['urinalOnly'],
               },
               {
                 field: 'automatic',
-                label: 'An automatic / self-cleaning toilet?',
+                subQuestion: 'An automatic / self-cleaning toilet?',
                 value: loo['automatic'],
               },
             ]}
@@ -515,7 +604,9 @@ const EntryForm = ({ title, loo, children, ...props }) => {
             questions={[
               {
                 field: 'isFree',
-                label: <VisuallyHidden>Is this toilet free?</VisuallyHidden>,
+                subQuestion: (
+                  <VisuallyHidden>Is this toilet free?</VisuallyHidden>
+                ),
                 value: noPayment === null ? '' : noPayment,
                 onChange: (event) => {
                   const input = event.target as HTMLInputElement;
@@ -574,7 +665,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                   checked={field.value}
                   onChange={field.onChange}
                   onClick={field.onChange}
-                  value={field.value}
+                  value={`${field.value}`}
                 />
               )}
             />
@@ -591,8 +682,27 @@ const EntryForm = ({ title, loo, children, ...props }) => {
           {getValues('has-opening-times') && (
             <div data-testid="opening-hours-selection">
               <ol>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="flex-end"
+                  pl={[2, 4]}
+                  pr={[2, 4]}
+                >
+                  <input
+                    type="checkbox"
+                    name="edit-all-day-hours"
+                    checked={editAllHours}
+                    onChange={() => setEditAllHours(!editAllHours)}
+                  />
+                  <Spacer ml={1} />
+                  <label htmlFor="edit-all-day-hours" css={{ fontSize: 'var(--text-0)'}}>
+                    Edit all open hours
+                  </label>
+                </Box>
                 {WEEKDAYS.map((day, index) => {
-                  const id = `heading-${day.toLowerCase()}`;
+                  const lowercaseDay = day.toLowerCase() as Lowercase<Weekdays>;
+                  const id = `heading-${lowercaseDay}`;
 
                   return (
                     <Box
@@ -602,6 +712,8 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                       alignItems="center"
                       justifyContent="space-between"
                       mt={index === 0 ? undefined : 2}
+                      pl={[2, 4]}
+                      pr={[2, 4]}
                     >
                       <h3 id={id}>{day}</h3>
 
@@ -611,11 +723,12 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                         display="flex"
                         justifyContent="space-between"
                         width={['auto', '50%']}
+                        mt={2}
                       >
                         <Box display="flex" alignItems="center">
                           <Controller
                             aria-labelledby={id}
-                            name={`${day.toLowerCase()}-is-open`}
+                            name={`${lowercaseDay}-is-open`}
                             control={control}
                             defaultValue={isOpen[index]}
                             render={({ field }) => (
@@ -624,7 +737,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                                 checked={field.value}
                                 onChange={field.onChange}
                                 onClick={field.onChange}
-                                value={field.value}
+                                value={`${field.value}`}
                               />
                             )}
                           />
@@ -632,7 +745,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
 
                         <Spacer ml={2} />
 
-                        {getValues(`${day.toLowerCase()}-is-open`) ? (
+                        {getValues(`${lowercaseDay}-is-open`) ? (
                           <Box display="flex" alignItems="center">
                             <input
                               css={css`
@@ -646,15 +759,16 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                                   ? loo.openingTimes[index][0]
                                   : undefined
                               }
-                              name={`${day.toLowerCase()}-opens`}
-                              {...register(`${day.toLowerCase()}-opens`, {
+                              name={`${lowercaseDay}-opens`}
+                              {...register(`${lowercaseDay}-opens`, {
+                                onChange: changeAllHourValues,
                                 required: `Please specify an opening time on ${day}`,
                               })}
                             />
                             <Spacer ml={1} />
                             <ErrorMessage
                               errors={formState.errors}
-                              name={`${day.toLowerCase()}-opens`}
+                              name={`${lowercaseDay}-opens`}
                               render={({ message }) => (
                                 <>
                                   <Icon
@@ -688,15 +802,16 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                                   ? loo.openingTimes[index][1]
                                   : undefined
                               }
-                              name={`${day.toLowerCase()}-closes`}
-                              {...register(`${day.toLowerCase()}-closes`, {
+                              name={`${lowercaseDay}-closes`}
+                              {...register(`${lowercaseDay}-closes`, {
+                                onChange: changeAllHourValues,
                                 required: `Please specify a closing time on ${day}`,
                               })}
                             />
                             <Spacer ml={1} />
                             <ErrorMessage
                               errors={formState.errors}
-                              name={`${day.toLowerCase()}-closes`}
+                              name={`${lowercaseDay}-closes`}
                               render={({ message }) => (
                                 <>
                                   <Icon
