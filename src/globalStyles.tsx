@@ -9,13 +9,13 @@ const globalStyles = (
       @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
 
       :root {
-        --blue-color: #0a165e;
-        --turquoise-color: #92f9db;
-        --pink-color: #ed3d62;
-        --ice-color: #d2fff2;
-        --white-color: #fff;
-        --light-grey-color: #f4f4f4;
-        --grey-color: #807f7f;
+        --color-blue: #0a165e;
+        --color-turquoise: #92f9db;
+        --color-pink: #ed3d62;
+        --color-ice: #d2fff2;
+        --color-white: #fff;
+        --color-light-grey: #f4f4f4;
+        --color-grey: #807f7f;
 
         /* space and text scales based on @link https://utopia.fyi/space/calculator?c=320,16,1.2,1240,18,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
 
@@ -93,7 +93,7 @@ const globalStyles = (
         text-rendering: optimizeSpeed;
         line-height: 1.5;
         font-family: 'Open Sans', sans-serif;
-        color: var(--blue-color);
+        color: var(--color-blue);
       }
 
       /* remove list styles on ul, ol elements */
@@ -168,7 +168,7 @@ const globalStyles = (
       a:focus,
       button:hover,
       button:focus {
-        color: var(--pink-color);
+        color: var(--color-pink);
         transition: all 0.2s ease;
       }
 
@@ -181,15 +181,15 @@ const globalStyles = (
       }
 
       ::-webkit-input-placeholder {
-        color: var(--blue-color);
+        color: var(--color-blue);
       }
 
       :-ms-input-placeholder {
-        color: var(--blue-color);
+        color: var(--color-blue);
       }
 
       ::placeholder {
-        color: var(--blue-color);
+        color: var(--color-blue);
       }
 
       /* remove all animations and transitions for people that prefer not to see them */
