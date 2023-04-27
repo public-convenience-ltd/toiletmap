@@ -1,14 +1,15 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
+import Link from 'next/link';
+
 import Container from '../components/Container';
-import Button from '../components/Button';
+import Button from '../design-system/components/Button';
 import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 import Box, { BoxProps } from '../components/Box';
 
 import config from '../config';
-import Link from 'next/link';
 
 const List = styled.ul`
   list-style: initial;
@@ -40,14 +41,14 @@ const LoginPage = () => {
           Up:
         </p>
         <Spacer mb={3} />
-        <Link
-          passHref
+
+        <Button
+          htmlElement="a"
+          variant="primary"
           href={`/api/auth/login?returnTo=${router.asPath}`}
-          legacyBehavior>
-          <Button as={'a'} variant="primary">
-            Log In/Sign Up
-          </Button>
-        </Link>
+        >
+          Log In/Sign Up
+        </Button>
         <Spacer mb={4} />
         <Text fontSize={3} fontWeight="bold">
           <h2>Examples of Public toilets</h2>
@@ -91,9 +92,7 @@ const LoginPage = () => {
         <p>
           If you have any problems updating the toilets, or wish to send us
           toilet details or comments, please contact{' '}
-          <Button variant="link" as="a" href="mailto:gbtoiletmap@gmail.com">
-            gbtoiletmap@gmail.com
-          </Button>
+          <Link href="mailto:gbtoiletmap@gmail.com">gbtoiletmap@gmail.com</Link>
           .
         </p>
       </Container>

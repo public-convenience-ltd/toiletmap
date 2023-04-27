@@ -1,8 +1,9 @@
 import React from 'react';
+import Link from 'next/link';
+
 import Box from '../components/Box';
 import Spacer from '../components/Spacer';
 import Text from '../components/Text';
-import Button from '../components/Button';
 
 const NotFound = ({ children }) => (
   <>
@@ -31,9 +32,7 @@ const NotFound = ({ children }) => (
 
           <Spacer mt={4} />
 
-          <Button as={'a'} variant="link" href="/">
-            Take me back home!
-          </Button>
+          <Link href="/">Take me back home!</Link>
         </div>
       </Box>
     </Box>

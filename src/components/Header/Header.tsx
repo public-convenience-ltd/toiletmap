@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { faBars, faComments } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
 
 import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
@@ -10,7 +11,6 @@ import Logo from '../Logo';
 import MainMenu from './MainMenu';
 import { useMapState } from '../MapState';
 import { useRouter } from 'next/router';
-import Button from '../Button';
 
 import dynamic from 'next/dynamic';
 import { useFeedbackPopover } from './hooks';
@@ -43,14 +43,14 @@ const Header = ({ children }) => {
         minHeight={'60px'}
       >
         <Box flexShrink={0}>
-          <Button
+          <Link
             role="link"
             onClick={navigateAway}
-            variant="link"
+            href="/"
             aria-label="Navigate to the home page"
           >
             <Logo />
-          </Button>
+          </Link>
         </Box>
 
         <Box as="nav" width="100%" aria-labelledby="menu-main">
@@ -59,16 +59,12 @@ const Header = ({ children }) => {
           </h2>
 
           <Media at="sm" css={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button
-              aria-describedby={feedbackPopoverId}
-              onClick={handleClick}
-              variant={'link'}
-            >
+            <button aria-describedby={feedbackPopoverId} onClick={handleClick}>
               <Icon icon={faComments} size="2x" />
               <VisuallyHidden>
                 <Text>Feedback</Text>
               </VisuallyHidden>
-            </Button>
+            </button>
 
             <Box ml={4}>
               <button

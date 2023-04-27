@@ -8,7 +8,7 @@ import Container from '../../../components/Container';
 import Box from '../../../components/Box';
 import Spacer from '../../../components/Spacer';
 import Text from '../../../components/Text';
-import Button from '../../../components/Button';
+import Button from '../../../design-system/components/Button';
 import Notification from '../../../components/Notification';
 import Login from '../../login.page';
 import PageLoading from '../../../components/PageLoading';
@@ -153,7 +153,9 @@ const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
 
             <Spacer mb={3} />
 
-            <Button type="submit">Remove</Button>
+            <Button htmlElement="button" variant="primary" type="submit">
+              Remove
+            </Button>
           </form>
 
           {loadingRemove && (

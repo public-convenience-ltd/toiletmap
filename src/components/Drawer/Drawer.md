@@ -1,11 +1,18 @@
 ```jsx
-import Button from '../Button';
+import Button from '../../design-system/components/Button';
 import Spacer from '../Spacer';
 
 const [isVisible, setIsVisible] = React.useState(false);
 
 <>
-  <Button onClick={() => setIsVisible(true)}>Open drawer</Button>
+  <Button
+    htmlElement="button"
+    type="button"
+    variant="primary"
+    onClick={() => setIsVisible(true)}
+  >
+    Open drawer
+  </Button>
   <Drawer visible={isVisible} animateFrom="right">
     <p>Drawer content here!</p>
 

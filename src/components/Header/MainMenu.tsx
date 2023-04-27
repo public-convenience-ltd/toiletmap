@@ -6,7 +6,7 @@ import Text from '../Text';
 import { Media } from '../Media';
 import { useUser } from '@auth0/nextjs-auth0';
 import { useMapState } from '../MapState';
-import Button from '../Button';
+import Button from '../../design-system/components/Button';
 import { useFeedbackPopover } from './hooks';
 
 const StyledNavLink = styled(Link)<
@@ -55,6 +55,7 @@ const MainMenu = ({ children }: IMainMenu) => {
           flexDirection={['column', 'row']}
           height={['100%', 'auto']}
           width="100%"
+          alignItems="center"
         >
           <Box as="li" ml={[0, 4]}>
             <StyledNavLink href="/">Find a Toilet</StyledNavLink>
@@ -76,7 +77,9 @@ const MainMenu = ({ children }: IMainMenu) => {
               <Button
                 aria-describedby={feedbackPopoverId}
                 onClick={handleClick}
-                variant={'link'}
+                htmlElement="button"
+                variant="secondary"
+                type="button"
               >
                 Feedback
               </Button>
@@ -86,7 +89,9 @@ const MainMenu = ({ children }: IMainMenu) => {
               <Button
                 aria-describedby={feedbackPopoverId}
                 onClick={handleClick}
-                variant={'link'}
+                htmlElement="button"
+                variant="secondary"
+                type="button"
               >
                 Feedback
               </Button>

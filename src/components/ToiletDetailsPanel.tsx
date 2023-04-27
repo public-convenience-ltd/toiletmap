@@ -19,10 +19,11 @@ import Link from 'next/link';
 import { Loo } from '../api-client/graphql';
 
 import Box from './Box';
-import Button from './Button';
 import Text from './Text';
 import Spacer from './Spacer';
 import Icon from './Icon';
+import Badge from '../design-system/components/Badge';
+import Button from '../design-system/components/Button';
 import { Media } from './Media';
 // Suppress Opening Hours Heading during COVID-19
 import { WEEKDAYS, getTimeRangeLabel } from '../lib/openingTimes';
@@ -31,7 +32,6 @@ import type L from 'leaflet';
 import { useRouter } from 'next/router';
 import { useSubmitVerificationReportMutationMutation } from '../api-client/graphql';
 import { usePlausible } from 'next-plausible';
-import Badge from '../design-system/components/Badge';
 import { getFeatures } from '../lib/features';
 
 const Grid = styled(Box)`
@@ -167,26 +167,18 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
   );
 
   const getDirectionsFragment = (
-    <Link
-      passHref
+    <Button
+      variant="primary"
+      htmlElement="a"
+      rel="noopener noreferrer"
       href={`https://maps.apple.com/?dirflg=w&daddr=${[
         data.location.lat,
         data.location.lng,
       ]}`}
-      legacyBehavior
     >
-      <Button
-        variant="primary"
-        as="a"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Box mr="2">
-          <Icon icon={faDirections} />
-        </Box>
-        Directions
-      </Button>
-    </Link>
+      <Icon icon={faDirections} />
+      <span>Directions</span>
+    </Button>
   );
 
   const openingTimes = data.openingTimes || WEEKDAYS.map(() => null);
@@ -221,6 +213,8 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         <Box display="flex" alignItems="center">
           <Button
             variant="primary"
+            htmlElement="button"
+            type="button"
             onClick={() => {
               plausible('Verification Report');
               submitVerificationReportMutation({
@@ -230,25 +224,24 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
             }}
             disabled={verificationReportState.loading === true}
           >
-            Yes
+            <span>Yes</span>
             {verificationReportState.loading === true && (
-              <Box ml="2">
-                <Icon spin={true} icon={faSpinner} />
-              </Box>
+              <Icon spin={true} icon={faSpinner} />
             )}
           </Button>
           <Spacer mr={4} />
           <Box display="flex" alignItems="center">
             No?
             <Spacer mr={2} />
-            <Link passHref href={editUrl} legacyBehavior>
-              <Button as="a" variant="secondary" data-testid="edit-button">
-                <Box mr={2}>
-                  <Icon icon={faEdit} />
-                </Box>
-                Edit
-              </Button>
-            </Link>
+            <Button
+              htmlElement="a"
+              href={editUrl}
+              variant="secondary"
+              data-testid="edit-button"
+            >
+              <Icon icon={faEdit} />
+              <span>Edit</span>
+            </Button>
           </Box>
         </Box>
         <Spacer mb={[0, 2]} />
@@ -442,10 +435,8 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
               <Text fontSize={1} color="grey">
                 Hours may vary with national holidays or seasonal changes. If
                 you know these hours to be out of date please{' '}
-                <Link passHref href={editUrl} legacyBehavior>
-                  <Button as="a" variant="link" data-testid="edit-link">
-                    edit this toilet
-                  </Button>
+                <Link href={editUrl} data-testid="edit-link">
+                  edit this toilet
                 </Link>
                 .
               </Text>
@@ -464,9 +455,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
                 padding={2}
                 marginBottom={2}
               >
-                <Button as="a" variant="link" href="#toilet-details-heading">
-                  Back to top
-                </Button>
+                <Link href="#toilet-details-heading">Back to top</Link>
               </Box>
             </Media>
           </Grid>
@@ -523,23 +512,27 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
           {getDirectionsFragment}
           <Spacer mr={2} />
           <Button
+            htmlElement="button"
+            type="button"
             variant="secondary"
-            icon={<Icon icon={faList} />}
             onClick={() => setIsExpanded(true)}
             aria-expanded="false"
             data-testid="details-button"
           >
-            Details
+            <Icon icon={faList} />
+            <span>Details</span>
           </Button>
           <Spacer mr={2} />
           <Button
             variant="secondary"
-            icon={<Icon icon={faList} />}
+            htmlElement="button"
+            type="button"
             onClick={navigateAway}
             aria-expanded="false"
             data-testid="close-button"
           >
-            Close
+            <Icon icon={faTimes} />
+            <span>Close</span>
           </Button>
         </Box>
       </Grid>

@@ -5,7 +5,7 @@ import { useUser } from '@auth0/nextjs-auth0';
 import EntryForm from '../../components/EntryForm';
 import Box from '../../components/Box';
 import Spacer from '../../components/Spacer';
-import Button from '../../components/Button';
+import Button from '../../design-system/components/Button';
 import LocationSearch from '../../components/LocationSearch';
 import Login from '../login.page';
 
@@ -119,7 +119,12 @@ const AddPage = () => {
         onSubmit={saveLoo}
       >
         <Box display="flex" flexDirection="column" alignItems="center">
-          <Button type="submit" data-testid="add-the-toilet">
+          <Button
+            htmlElement="button"
+            variant="primary"
+            type="submit"
+            data-testid="add-the-toilet"
+          >
             Save toilet
           </Button>
         </Box>

@@ -1,10 +1,10 @@
 import React from 'react';
-
 import Head from 'next/head';
-import Link from 'next/link';
-
 import { useUser } from '@auth0/nextjs-auth0';
-import Button from '../../../components/Button';
+import { useEffect } from 'react';
+import { css } from '@emotion/react';
+
+import Button from '../../../design-system/components/Button';
 import Spacer from '../../../components/Spacer';
 import EntryForm from '../../../components/EntryForm';
 import Box from '../../../components/Box';
@@ -22,9 +22,7 @@ import {
   UpdateLooMutationVariables,
   useUpdateLooMutation,
 } from '../../../api-client/graphql';
-import { useEffect } from 'react';
 import LocationSearch from '../../../components/LocationSearch';
-import { css } from '@emotion/react';
 import NotFound from '../../404.page';
 
 const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
@@ -158,10 +156,9 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
         >
           <Box display="flex" flexDirection="column" alignItems="center">
             <Button
+              htmlElement="button"
               type="submit"
-              css={{
-                width: '100%',
-              }}
+              variant="primary"
               data-testid="update-toilet-button"
             >
               Update the toilet
@@ -170,11 +167,9 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
             <Spacer mt={2} />
 
             <Button
-              as={Link}
+              htmlElement="a"
+              variant="secondary"
               href={`/loos/${loo.id}/remove`}
-              css={{
-                width: '100%',
-              }}
               data-testid="remove-toilet-button"
             >
               Remove the toilet
