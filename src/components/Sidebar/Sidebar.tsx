@@ -17,7 +17,7 @@ import Text from '../Text';
 import Icon from '../Icon';
 import LocationSearch from '../LocationSearch';
 import Filters from '../Filters';
-import Button from '../Button';
+import Button from '../../design-system/components/Button';
 import { useMapState } from '../MapState';
 import config from '../../config';
 import { usePlausible } from 'next-plausible';
@@ -117,9 +117,9 @@ const Sidebar = () => {
         <Box display="flex" flexWrap="wrap" justifyContent="center">
           <Box display="flex" mt={3} mr={1}>
             <Button
-              ref={filterToggleRef}
+              htmlElement="button"
               variant="secondary"
-              icon={<FontAwesomeIcon icon={faFilter} />}
+              ref={filterToggleRef}
               aria-expanded={isFiltersExpanded}
               onClick={() => {
                 const stateText = isFiltersExpanded ? 'Close' : 'Open';
@@ -129,11 +129,13 @@ const Sidebar = () => {
               aria-label="Filters Panel"
               data-cy="mobile-filter"
             >
-              Filter
+              <FontAwesomeIcon icon={faFilter} />
+              <span>Filter</span>
             </Button>
           </Box>
           <Box display="flex" mt={3}>
             <Button
+              htmlElement="button"
               type="button"
               variant="primary"
               onClick={() => mapState?.locationServices?.startLocate()}
@@ -175,6 +177,9 @@ const Sidebar = () => {
 
           <Box display="flex" justifyContent="center" mt={4}>
             <Button
+              htmlElement="button"
+              variant="secondary"
+              type="button"
               onClick={() => {
                 setIsFiltersExpanded(false);
 

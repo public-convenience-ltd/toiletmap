@@ -566,6 +566,7 @@ describe('Home page tests', () => {
 
       cy.findByText('Directions')
         .scrollIntoView()
+        .parent()
         .invoke('attr', 'href')
         .should('include', 'https://maps.apple.com/?dirflg=w&daddr=');
     });

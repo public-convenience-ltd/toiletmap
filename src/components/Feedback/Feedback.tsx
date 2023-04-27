@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 import React, { useRef, useState } from 'react';
-import Button from '../Button';
+import Button from '../../design-system/components/Button';
 import Box from '../Box';
 import Badge from '../../design-system/components/Badge';
 
@@ -60,7 +60,14 @@ const Feedback = () => {
 
 We'd be so grateful if you could take a moment to give us feedback on how we could make your experience even better.`}
       />
-      <Button onClick={submitFeedback}>Submit</Button>
+      <Button
+        htmlElement="button"
+        variant="primary"
+        type="submit"
+        onClick={submitFeedback}
+      >
+        Submit
+      </Button>
     </Stack>
   );
 };

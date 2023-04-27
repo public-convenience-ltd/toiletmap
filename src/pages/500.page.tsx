@@ -1,8 +1,9 @@
 import React from 'react';
+import Link from 'next/link';
+
 import Box from '../components/Box';
 import Spacer from '../components/Spacer';
 import Text from '../components/Text';
-import Button from '../components/Button';
 
 const ThereWasAProblem = ({ children }) => (
   <>
@@ -27,17 +28,15 @@ const ThereWasAProblem = ({ children }) => (
           <p>
             Please try again later or, if the problem persists, please contact
             us at{' '}
-            <Button variant="link" as="a" href="mailto:gbtoiletmap@gmail.com">
+            <Link href="mailto:gbtoiletmap@gmail.com">
               gbtoiletmap@gmail.com
-            </Button>
+            </Link>
             .
           </p>
 
           <Spacer mt={4} />
 
-          <Button as={'a'} variant="link" href="/">
-            Take me back home!
-          </Button>
+          <Link href="/">Take me back home!</Link>
         </div>
       </Box>
     </Box>

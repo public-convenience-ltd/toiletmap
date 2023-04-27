@@ -1,9 +1,9 @@
 import Head from 'next/head';
+import Link from 'next/link';
 
 import Container from '../components/Container';
 import Text from '../components/Text';
 import Spacer from '../components/Spacer';
-import Button from '../components/Button';
 import Box from '../components/Box';
 
 import config from '../config';
@@ -72,15 +72,13 @@ const PrivacyPage = () => {
           If you&apos;d like to know what we&apos;ve stored about you, or ask us
           to forget you, or to let us know about something you&apos;d like
           changed please drop us a line at{' '}
-          <Button
-            as="a"
-            variant="link"
+          <Link
             href="mailto:gbtoiletmap@gmail.com"
             target="_blank"
             rel="noopener noreferrer"
           >
             gbtoiletmap@gmail.com
-          </Button>
+          </Link>
           . If you&apos;d like to exercise any of your rights under the GDPR
           that&apos;s the address to use.
         </p>

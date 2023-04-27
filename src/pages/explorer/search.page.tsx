@@ -12,7 +12,7 @@ import Spacer from '../../components/Spacer';
 import Box from '../../components/Box';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import Button from '../../components/Button';
+import Button from '../../design-system/components/Button';
 import { css } from '@emotion/react';
 import theme from '../../theme';
 import Link from 'next/link';
@@ -246,7 +246,7 @@ const UnstyledTable = () => {
             }
           ></input>
         </OptionLabel>
-        <Button type="submit" variant="primary">
+        <Button htmlElement="button" type="submit" variant="primary">
           Search
         </Button>
       </Box>
