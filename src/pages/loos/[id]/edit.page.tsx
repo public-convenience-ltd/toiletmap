@@ -3,7 +3,7 @@ import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
-import { useUser } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0/client';
 import Button from '../../../components/Button';
 import Spacer from '../../../components/Spacer';
 import EntryForm from '../../../components/EntryForm';

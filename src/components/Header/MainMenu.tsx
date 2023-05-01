@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import Box from '../Box';
 import Text from '../Text';
 import { Media } from '../Media';
-import { useUser } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0/client';
 import { useMapState } from '../MapState';
 import Button from '../Button';
 import { useFeedbackPopover } from './hooks';

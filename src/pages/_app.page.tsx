@@ -1,7 +1,7 @@
 import { Suspense, useMemo } from 'react';
 import Providers from '../components/Providers';
 import { Analytics } from '@vercel/analytics/react';
-import { UserProvider } from '@auth0/nextjs-auth0';
+import { UserProvider } from '@auth0/nextjs-auth0/client';
 import Main from '../components/Main';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { withApollo } from '../../api-client/withApollo';
-import { TablePaginationUnstyled } from '@mui/base';
+import { TablePagination } from '@mui/base';
 import {
   LooFilter,
   SortOrder,
@@ -291,7 +291,7 @@ const UnstyledTable = () => {
         </tbody>
         <tfoot>
           <tr>
-            <TablePaginationUnstyled
+            <TablePagination
               rowsPerPageOptions={[
                 5, 10, 25, 50,
                 // { label: 'All', value: availableRows }, Disabled all for now
