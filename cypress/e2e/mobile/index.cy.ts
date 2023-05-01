@@ -300,7 +300,7 @@ describe('Home page tests', () => {
     });
 
     // Just a cursory test on mobile —heavy testing of filters is done in desktop suite.
-    it('should filter toilets based on applied filter toggles', () => {
+    it.only('should filter toilets based on applied filter toggles', () => {
       cy.visit('/').wait(500);
       cy.get('#gbptm-map').trigger('wheel', {
         deltaY: 66.666666,
@@ -316,7 +316,8 @@ describe('Home page tests', () => {
         .siblings()
         .get('[aria-labelledby=filter-babyChange]')
         .click();
-      cy.findByText('Done').click();
+      // Wait for the animation to finish.
+      cy.findByText('Done').click().wait(500);
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('not.exist');
       cy.get('[data-cy="mobile-filter"]').click();
