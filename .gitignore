@@ -33,7 +33,9 @@ out
 storybook-static
 public/storybook
 
+# Cypress
 cypress/screenshots
+cypress/downloads
 
 .areaInfo.geojson
 
