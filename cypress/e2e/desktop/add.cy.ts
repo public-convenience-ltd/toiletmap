@@ -147,6 +147,43 @@ describe('Adding new toilets to the platform', () => {
       cy.contains('08:00 - 19:00').should('not.exist');
     });
 
+    it('should edit all hours when edit all check box is clicked and the toilet is open', () => {
+      cy.visit('/loos/add');
+
+      const toiletName = faker.word.adjective() + ' ' + faker.word.noun();
+      cy.findByPlaceholderText('e.g. Sainsburys or street name').type(
+        toiletName
+      );
+      //If user clicks edit all hours, enables editing of all hours
+      cy.get('[name=has-opening-times]').click();
+      cy.get('[name=edit-all-day-hours]').click();
+      cy.get('[name=monday-is-open]').click();
+      cy.get('[name=tuesday-is-open]').click();
+
+      cy.get('[name=monday-opens]').type('08:00');
+      cy.get('[name=monday-closes]').type('16:00');
+
+      cy.get('[name=monday-opens]').contains('08:00');
+      cy.get('[name=monday-closes]').contains('16:00');
+
+      cy.get('[name=tuesday-opens]').contains('08:00');
+      cy.get('[name=tuesday-closes]').contains('16:00');
+
+      cy.get('[name=wednesday-opens]').contains('');
+      cy.get('[name=wednesday-closes]').contains('');
+
+      //If user disables edit all hours, disables editing
+      cy.get('[name=edit-all-day-hours]').click();
+      cy.get('[name=monday-opens]').type('09:00');
+      cy.get('[name=monday-closes]').type('17:00');
+
+      cy.get('[name=monday-opens]').contains('09:00');
+      cy.get('[name=monday-closes]').contains('17:00');
+
+      cy.get('[name=tuesday-opens]').contains('08:00');
+      cy.get('[name=tuesday-closes]').contains('16:00');
+    });
+
     it('should add a toilet after submitting the form and retain all submitted data', () => {
       cy.visit('/loos/add?lat=51.92008861374827&lng=0.10883331298828125');
       const toiletName = faker.word.adjective() + ' ' + faker.word.noun();
