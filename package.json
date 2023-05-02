@@ -178,7 +178,7 @@
     "topojson-simplify": "^3.0.3",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.5",
+    "typescript": "^5.0.4",
     "wait-on": "^7.0.1",
     "webpack": "^5.81.0"
   },
