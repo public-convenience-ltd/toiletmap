@@ -7,16 +7,7 @@ function isClosed(range: string | unknown[]) {
   return Array.isArray(range) && range.length === 0;
 }
 
-type Weekdays =
-  | 'Monday'
-  | 'Tuesday'
-  | 'Wednesday'
-  | 'Thursday'
-  | 'Friday'
-  | 'Saturday'
-  | 'Sunday';
-
-const WEEKDAYS: Weekdays[] = [
+const WEEKDAYS = [
   'Monday',
   'Tuesday',
   'Wednesday',
@@ -95,5 +86,3 @@ export { isClosed };
 export { WEEKDAYS };
 
 export { getIsOpen };
-
-export type { Weekdays };
