@@ -63,7 +63,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@graphql-tools/schema": "^9.0.19",
-    "@graphql-tools/utils": "^9.2.1",
+    "@graphql-tools/utils": "^10.0.0",
     "@hookform/error-message": "^2.0.1",
     "@monaco-editor/react": "^4.5.0",
     "@mui/base": "5.0.0-alpha.122",
