@@ -1,6 +1,16 @@
-import React, { InputHTMLAttributes, useEffect, useState } from 'react';
+import React, {
+  InputHTMLAttributes,
+  useEffect,
+  useState,
+  useMemo,
+} from 'react';
 import styled from '@emotion/styled';
-import { useForm, Controller, UseFormRegister } from 'react-hook-form';
+import {
+  useForm,
+  Controller,
+  UseFormRegister,
+  FieldValues,
+} from 'react-hook-form';
 import Image from 'next/legacy/image';
 import isFunction from 'lodash/isFunction';
 import omit from 'lodash/omit';
@@ -92,48 +102,6 @@ const RadioInput = styled.input`
     outline-offset: 0.5rem;
   }
 `;
-
-const defaultFormState = {
-  accessible: null,
-  name: '',
-  allGender: null,
-  women: null,
-  men: null,
-  radar: null,
-  automatic: null,
-  babyChange: null,
-  children: null,
-  paymentDetails: null,
-  isFree: null,
-  urinalOnly: null,
-  'has-opening-times': false,
-  'monday-is-open': false,
-  'monday-opens': '',
-  'monday-closes': '',
-  'tuesday-is-open': false,
-  'tuesday-opens': '',
-  'tuesday-closes': '',
-  'wednesday-is-open': false,
-  'wednesday-opens': '',
-  'wednesday-closes': '',
-  'thursday-is-open': false,
-  'thursday-opens': '',
-  'thursday-closes': '',
-  'friday-is-open': false,
-  'friday-opens': '',
-  'friday-closes': '',
-  'saturday-is-open': false,
-  'saturday-opens': '',
-  'saturday-closes': '',
-  'sunday-is-open': false,
-  'sunday-opens': '',
-  'sunday-closes': '',
-  geometry: {
-    coordinates: [0, 0],
-  },
-  notes: '',
-};
-type DefaultFormState = typeof defaultFormState;
 const Radio = React.forwardRef<
   HTMLInputElement,
   InputHTMLAttributes<HTMLInputElement>
@@ -147,14 +115,14 @@ const Radio = React.forwardRef<
 });
 
 interface Question {
-  field: keyof DefaultFormState;
+  field: string;
   subQuestion: string | React.ReactElement;
   value: boolean | null | '';
   onChange?: React.FormEventHandler<HTMLDivElement>;
 }
 
 interface Section {
-  register: UseFormRegister<DefaultFormState>;
+  register: UseFormRegister<FieldValues>;
   id: string;
   title: string;
   questions: Question[];
@@ -336,15 +304,57 @@ const EntryForm = ({ title, loo, children, ...props }) => {
   };
 
   const { register, control, handleSubmit, formState, setValue, getValues } =
-    useForm({ criteriaMode: 'all', defaultValues: defaultFormState });
+    useForm({
+      criteriaMode: 'all',
+      defaultValues: useMemo(() => {
+        return {
+          accessible: loo.accessible ? loo.accessible : null,
+          name: loo.name ? loo.name : '',
+          allGender: loo.allGender ? loo.allGender : null,
+          women: loo.women ? loo.women : null,
+          men: loo.men ? loo.men : null,
+          radar: loo.radar ? loo.radar : null,
+          automatic: loo.automatic ? loo.automatic : null,
+          babyChange: loo.babyChange ? loo.babyChange : null,
+          children: loo.children ? loo.children : null,
+          paymentDetails: loo.paymentDetails ? loo.paymentDetails : null,
+          isFree: loo.isFree ? loo.isFree : null,
+          urinalOnly: loo.urinalOnly ? loo.urinalOnly : null,
+          'has-opening-times': loo.openingTimes
+            ? Boolean(loo.openingTimes)
+            : false,
+          'monday-is-open': isOpen[0],
+          'monday-opens': loo.openingTimes ? loo.openingTimes[0][0] : '',
+          'monday-closes': loo.openingTimes ? loo.openingTimes[0][1] : '',
+          'tuesday-is-open': isOpen[1],
+          'tuesday-opens': loo.openingTimes ? loo.openingTimes[1][0] : '',
+          'tuesday-closes': loo.openingTimes ? loo.openingTimes[1][1] : '',
+          'wednesday-is-open': isOpen[2],
+          'wednesday-opens': loo.openingTimes ? loo.openingTimes[2][0] : '',
+          'wednesday-closes': loo.openingTimes ? loo.openingTimes[2][1] : '',
+          'thursday-is-open': isOpen[3],
+          'thursday-opens': loo.openingTimes ? loo.openingTimes[3][0] : '',
+          'thursday-closes': loo.openingTimes ? loo.openingTimes[3][1] : '',
+          'friday-is-open': isOpen[4],
+          'friday-opens': loo.openingTimes ? loo.openingTimes[4][0] : '',
+          'friday-closes': loo.openingTimes ? loo.openingTimes[4][1] : '',
+          'saturday-is-open': isOpen[5],
+          'saturday-opens': loo.openingTimes ? loo.openingTimes[5][0] : '',
+          'saturday-closes': loo.openingTimes ? loo.openingTimes[5][1] : '',
+          'sunday-is-open': isOpen[6],
+          'sunday-opens': loo.openingTimes ? loo.openingTimes[6][0] : '',
+          'sunday-closes': loo.openingTimes ? loo.openingTimes[6][1] : '',
+          geometry: {
+            coordinates: [0, 0],
+          },
+          notes: loo['notes'] ? loo['notes'] : '',
+        };
+      }, [loo, isOpen]),
+    });
 
   // read the formState before render to subscribe the form state through Proxy
   const { isDirty, dirtyFields } = formState;
-  const onSubmit = (
-    data: {
-      [x: string]: unknown;
-    } & DefaultFormState
-  ) => {
+  const onSubmit = (data: { [x: string]: unknown }) => {
     const dirtyFieldNames = Object.keys(dirtyFields);
 
     // only include fields which have been modified
@@ -445,7 +455,6 @@ const EntryForm = ({ title, loo, children, ...props }) => {
     mapState.center.lng,
     setValue,
   ]);
-
   return (
     <Container maxWidth={846}>
       <Text fontSize={[16, 18]}>
@@ -665,7 +674,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                   checked={field.value}
                   onChange={field.onChange}
                   onClick={field.onChange}
-                  value={`${field.value}`}
+                  value={field.value}
                 />
               )}
             />
@@ -696,7 +705,10 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                     onChange={() => setEditAllHours(!editAllHours)}
                   />
                   <Spacer ml={1} />
-                  <label htmlFor="edit-all-day-hours" css={{ fontSize: 'var(--text-0)'}}>
+                  <label
+                    htmlFor="edit-all-day-hours"
+                    css={{ fontSize: 'var(--text-0)' }}
+                  >
                     Edit all open hours
                   </label>
                 </Box>
@@ -737,7 +749,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                                 checked={field.value}
                                 onChange={field.onChange}
                                 onClick={field.onChange}
-                                value={`${field.value}`}
+                                value={field.value}
                               />
                             )}
                           />
