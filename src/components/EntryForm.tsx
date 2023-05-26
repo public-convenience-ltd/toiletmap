@@ -674,7 +674,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                   checked={field.value}
                   onChange={field.onChange}
                   onClick={field.onChange}
-                  value={field.value}
+                  value={`${field.value}`}
                 />
               )}
             />
