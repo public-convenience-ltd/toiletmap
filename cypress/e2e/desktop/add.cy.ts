@@ -154,7 +154,7 @@ describe('Adding new toilets to the platform', () => {
       cy.findByPlaceholderText('e.g. Sainsburys or street name').type(
         toiletName
       );
-      //If user clicks edit all hours, enables editing of all hours
+      //If user clicks edit all hours, enables editing of all toilet hours that are opens
       cy.get('[name=has-opening-times]').click();
       cy.get('[name=edit-all-day-hours]').click();
       cy.get('[name=monday-is-open]').click();
@@ -169,6 +169,8 @@ describe('Adding new toilets to the platform', () => {
       cy.get('[name=tuesday-opens]').should('have.value', '08:00');
       cy.get('[name=tuesday-closes]').should('have.value', '16:00');
 
+      //If user now opens a previously closed days hours, they will have no value
+      cy.get('[name=wednesday-is-open]').click();
       cy.get('[name=wednesday-opens]').should('have.value', '');
       cy.get('[name=wednesday-closes]').contains('have.value', '');
 
