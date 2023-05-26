@@ -169,8 +169,8 @@ describe('Adding new toilets to the platform', () => {
       cy.get('[name=tuesday-opens]').should('have.value', '08:00');
       cy.get('[name=tuesday-closes]').should('have.value', '16:00');
 
-      cy.get('[name=wednesday-opens]').contains('');
-      cy.get('[name=wednesday-closes]').contains('');
+      cy.get('[name=wednesday-opens]').should('have.value', '');
+      cy.get('[name=wednesday-closes]').contains('have.value', '');
 
       //If user disables edit all hours, disables editing
       cy.get('[name=edit-all-day-hours]').click();
