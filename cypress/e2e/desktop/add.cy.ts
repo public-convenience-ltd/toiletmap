@@ -164,7 +164,7 @@ describe('Adding new toilets to the platform', () => {
       cy.get('[name=monday-closes]').type('16:00');
 
       cy.get('[name=monday-opens]').should('have.value', '08:00');
-      cy.get('[name=monday-closes]').should('have value', '16:00');
+      cy.get('[name=monday-closes]').should('have.value', '16:00');
 
       cy.get('[name=tuesday-opens]').should('have.value', '08:00');
       cy.get('[name=tuesday-closes]').should('have.value', '16:00');
