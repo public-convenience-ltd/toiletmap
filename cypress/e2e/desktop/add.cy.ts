@@ -163,11 +163,11 @@ describe('Adding new toilets to the platform', () => {
       cy.get('[name=monday-opens]').type('08:00');
       cy.get('[name=monday-closes]').type('16:00');
 
-      cy.get('[name=monday-opens]').contains('08:00 AM');
-      cy.get('[name=monday-closes]').contains('16:00 PM');
+      cy.get('[name=monday-opens]').should('have.value', '08:00');
+      cy.get('[name=monday-closes]').should('have value', '16:00');
 
-      cy.get('[name=tuesday-opens]').contains('08:00 AM');
-      cy.get('[name=tuesday-closes]').contains('16:00 PM');
+      cy.get('[name=tuesday-opens]').should('have.value', '08:00');
+      cy.get('[name=tuesday-closes]').should('have.value', '16:00');
 
       cy.get('[name=wednesday-opens]').contains('');
       cy.get('[name=wednesday-closes]').contains('');
@@ -177,11 +177,11 @@ describe('Adding new toilets to the platform', () => {
       cy.get('[name=monday-opens]').type('09:00');
       cy.get('[name=monday-closes]').type('17:00');
 
-      cy.get('[name=monday-opens]').contains('09:00 AM');
-      cy.get('[name=monday-closes]').contains('17:00 PM');
+      cy.get('[name=monday-opens]').should('have.value', '09:00');
+      cy.get('[name=monday-closes]').should('have.value', '17:00');
 
-      cy.get('[name=tuesday-opens]').contains('08:00 AM');
-      cy.get('[name=tuesday-closes]').contains('16:00 PM');
+      cy.get('[name=tuesday-opens]').should('have.value', '08:00');
+      cy.get('[name=tuesday-closes]').should('have.value', '16:00');
     });
 
     it('should add a toilet after submitting the form and retain all submitted data', () => {
