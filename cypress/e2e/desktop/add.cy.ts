@@ -172,7 +172,7 @@ describe('Adding new toilets to the platform', () => {
       //If user now opens a previously closed days hours, they will have no value
       cy.get('[name=wednesday-is-open]').click();
       cy.get('[name=wednesday-opens]').should('have.value', '');
-      cy.get('[name=wednesday-closes]').contains('have.value', '');
+      cy.get('[name=wednesday-closes]').should('have.value', '');
 
       //If user disables edit all hours, disables editing
       cy.get('[name=edit-all-day-hours]').click();
