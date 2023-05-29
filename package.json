@@ -169,7 +169,7 @@
     "prisma": "^4.13.0",
     "require-from-string": "^2.0.2",
     "start-server-and-test": "^2.0.0",
-    "storybook": "6.5.16",
+    "storybook": "7.0.18",
     "storybook-addon-apollo-client": "^4.0.13",
     "storybook-addon-next": "^1.7.3",
     "style-loader": "^3.3.2",
