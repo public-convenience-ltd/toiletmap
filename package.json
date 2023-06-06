@@ -106,7 +106,7 @@
     "@babel/preset-typescript": "^7.21.5",
     "@emotion/babel-preset-css-prop": "^11.10.0",
     "@faker-js/faker": "^7.6.0",
-    "@graphql-codegen/cli": "^3.3.1",
+    "@graphql-codegen/cli": "^4.0.1",
     "@graphql-codegen/import-types-preset": "^2.2.6",
     "@graphql-codegen/typescript": "^3.0.4",
     "@graphql-codegen/typescript-operations": "^3.0.4",
