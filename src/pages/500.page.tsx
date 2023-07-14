@@ -27,7 +27,13 @@ const ThereWasAProblem = ({ children }) => (
           <p>
             Please try again later or, if the problem persists, please contact
             us at{' '}
-            <Button variant="link" as="a" href="mailto:gbtoiletmap@gmail.com">
+            <Button
+              variant="link"
+              as="a"
+              href="mailto:gbtoiletmap@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               gbtoiletmap@gmail.com
             </Button>
             .
