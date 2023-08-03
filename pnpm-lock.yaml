@@ -259,7 +259,7 @@ devDependencies:
   start-server-and-test: 2.0.0
   storybook: 6.5.16_6qnyfybbytm5lxsc5wvgwigufi
   storybook-addon-apollo-client: 4.0.13_gdcq4dv6opitr3wbfwyjmanyra
-  storybook-addon-next: 1.7.3_35jw3nrzhlf4v4gtx7c6jirhfq
+  storybook-addon-next: 1.7.3_oc6jraatdvnj4rgs4b3kpz3awy
   style-loader: 3.3.2_webpack@5.81.0
   supabase: 1.52.2
   topojson-server: 3.0.1
@@ -430,7 +430,7 @@ packages:
       json5: 2.2.3
       lodash: 4.17.21
       resolve: 1.22.2
-      semver: 5.7.1
+      semver: 5.7.2
       source-map: 0.5.7
     transitivePeerDependencies:
       - supports-color
@@ -6734,7 +6734,7 @@ packages:
       debug: 4.3.4
       globby: 11.1.0
       is-glob: 4.0.3
-      semver: 7.3.8
+      semver: 7.5.0
       tsutils: 3.21.0_typescript@4.9.5
       typescript: 4.9.5
     transitivePeerDependencies:
@@ -6776,7 +6776,7 @@ packages:
       eslint: 8.39.0
       eslint-scope: 5.1.1
       eslint-utils: 3.0.0_eslint@8.39.0
-      semver: 7.3.8
+      semver: 7.5.0
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -7321,10 +7321,8 @@ packages:
       ajv: 6.12.6
     dev: true
 
-  /ajv-formats/2.1.1_ajv@8.12.0:
+  /ajv-formats/2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
-    peerDependencies:
-      ajv: ^8.0.0
     peerDependenciesMeta:
       ajv:
         optional: true
@@ -8151,6 +8149,7 @@ packages:
 
   /bindings/1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
+    requiresBuild: true
     dependencies:
       file-uri-to-path: 1.0.0
     dev: true
@@ -9371,7 +9370,7 @@ packages:
     dependencies:
       nice-try: 1.0.5
       path-key: 2.0.1
-      semver: 5.7.1
+      semver: 5.7.2
       shebang-command: 1.2.0
       which: 1.3.1
     dev: true
@@ -9486,7 +9485,7 @@ packages:
       postcss-modules-scope: 3.0.0_postcss@8.4.23
       postcss-modules-values: 4.0.0_postcss@8.4.23
       postcss-value-parser: 4.2.0
-      semver: 7.3.8
+      semver: 7.5.0
       webpack: 5.81.0
     dev: true
 
@@ -9592,7 +9591,7 @@ packages:
       pretty-bytes: 5.6.0
       proxy-from-env: 1.0.0
       request-progress: 3.0.0
-      semver: 7.3.8
+      semver: 7.5.0
       supports-color: 8.1.1
       tmp: 0.2.1
       untildify: 4.0.0
@@ -10394,7 +10393,7 @@ packages:
       eslint: 8.39.0
       eslint-import-resolver-node: 0.3.7
       eslint-import-resolver-typescript: 3.5.5_eq4xj325o7cn4sw6sllow7kvea
-      eslint-plugin-import: 2.27.5_ioueirodvy7bgrv7vv2ygh4y4a
+      eslint-plugin-import: 2.27.5_ayqt4qstu5keqxlc7um2afgqqm
       eslint-plugin-jsx-a11y: 6.7.1_eslint@8.39.0
       eslint-plugin-react: 7.32.2_eslint@8.39.0
       eslint-plugin-react-hooks: 4.6.0_eslint@8.39.0
@@ -10425,7 +10424,7 @@ packages:
       enhanced-resolve: 5.13.0
       eslint: 8.39.0
       eslint-module-utils: 2.8.0_o3ag7ylhng2gs6m5unheou3mcq
-      eslint-plugin-import: 2.27.5_ioueirodvy7bgrv7vv2ygh4y4a
+      eslint-plugin-import: 2.27.5_ayqt4qstu5keqxlc7um2afgqqm
       get-tsconfig: 4.5.0
       globby: 13.1.4
       is-core-module: 2.12.0
@@ -10468,35 +10467,6 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-module-utils/2.8.0_s3r6gow3gt5fsyta24vsa62zwa:
-    resolution: {integrity: sha512-aWajIYfsqCKRDgUfjEXNN/JlrzauMuSEy5sbd7WXbtW3EH6A6MpwEh42c7qD+MqQo9QMJ6fWLAeIJynx0g6OAw==}
-    engines: {node: '>=4'}
-    peerDependencies:
-      '@typescript-eslint/parser': '*'
-      eslint: '*'
-      eslint-import-resolver-node: '*'
-      eslint-import-resolver-typescript: '*'
-      eslint-import-resolver-webpack: '*'
-    peerDependenciesMeta:
-      '@typescript-eslint/parser':
-        optional: true
-      eslint:
-        optional: true
-      eslint-import-resolver-node:
-        optional: true
-      eslint-import-resolver-typescript:
-        optional: true
-      eslint-import-resolver-webpack:
-        optional: true
-    dependencies:
-      '@typescript-eslint/parser': 5.59.1_tbtvr3a5zwdiktqy4vlmx63mqq
-      debug: 3.2.7
-      eslint: 8.39.0
-      eslint-import-resolver-node: 0.3.7
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /eslint-plugin-functional/5.0.8_tbtvr3a5zwdiktqy4vlmx63mqq:
     resolution: {integrity: sha512-rXC5THzqqSXUrbTBG+dLLYn10Af0C9Df+N4TT3onPrOz+kgInshLJdRAvEcV+8HHNsZyDrNLcgWh5jzVaAnleQ==}
     engines: {node: '>=16.10.0'}
@@ -10519,7 +10489,7 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-plugin-import/2.27.5_ioueirodvy7bgrv7vv2ygh4y4a:
+  /eslint-plugin-import/2.27.5_ayqt4qstu5keqxlc7um2afgqqm:
     resolution: {integrity: sha512-LmEt3GVofgiGuiE+ORpnvP+kAm3h6MLZJ4Q5HCyHADofsb4VzXFsRiWj3c0OFiV+3DWFh0qg3v9gcPlfc3zRow==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -10537,7 +10507,7 @@ packages:
       doctrine: 2.1.0
       eslint: 8.39.0
       eslint-import-resolver-node: 0.3.7
-      eslint-module-utils: 2.8.0_s3r6gow3gt5fsyta24vsa62zwa
+      eslint-module-utils: 2.8.0_o3ag7ylhng2gs6m5unheou3mcq
       has: 1.0.3
       is-core-module: 2.12.0
       is-glob: 4.0.3
@@ -11177,6 +11147,7 @@ packages:
 
   /file-uri-to-path/1.0.0:
     resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -11363,7 +11334,7 @@ packages:
       eslint: 8.39.0
       micromatch: 3.1.10
       minimatch: 3.1.2
-      semver: 5.7.1
+      semver: 5.7.2
       tapable: 1.1.3
       typescript: 4.9.5
       webpack: 4.46.0
@@ -13939,7 +13910,7 @@ packages:
       jws: 3.2.2
       lodash: 4.17.21
       ms: 2.1.3
-      semver: 7.3.8
+      semver: 7.5.0
     dev: false
 
   /jsprim/2.0.2:
@@ -14507,7 +14478,7 @@ packages:
     engines: {node: '>=6'}
     dependencies:
       pify: 4.0.1
-      semver: 5.7.1
+      semver: 5.7.2
     dev: true
 
   /make-dir/3.1.0:
@@ -14944,6 +14915,7 @@ packages:
 
   /nan/2.17.0:
     resolution: {integrity: sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -15163,7 +15135,7 @@ packages:
     dependencies:
       hosted-git-info: 2.8.9
       resolve: 1.22.1
-      semver: 5.7.1
+      semver: 5.7.2
       validate-npm-package-license: 3.0.4
     dev: true
 
@@ -17331,7 +17303,7 @@ packages:
     dependencies:
       '@types/json-schema': 7.0.11
       ajv: 8.12.0
-      ajv-formats: 2.1.1_ajv@8.12.0
+      ajv-formats: 2.1.1
       ajv-keywords: 5.1.0_ajv@8.12.0
     dev: true
 
@@ -17346,21 +17318,14 @@ packages:
       semver: 6.3.0
     dev: true
 
-  /semver/5.7.1:
-    resolution: {integrity: sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==}
+  /semver/5.7.2:
+    resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==}
     hasBin: true
     dev: true
 
   /semver/6.3.0:
     resolution: {integrity: sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==}
     hasBin: true
-
-  /semver/7.3.8:
-    resolution: {integrity: sha512-NB1ctGL5rlHrPJtFDVIVzTyQylMLu9N9VICA6HSFJo8MCGVTMW6gfpicwKmmK/dAjTOrqu5l63JJOpDSrAis3A==}
-    engines: {node: '>=10'}
-    hasBin: true
-    dependencies:
-      lru-cache: 6.0.0
 
   /semver/7.5.0:
     resolution: {integrity: sha512-+XC0AD/R7Q2mPSRuy2Id0+CGTZ98+8f+KvwirxOKIEyid+XSx6HbC63p+O4IndTHuX5Z+JxQ0TghCkO5Cg/2HA==}
@@ -17898,11 +17863,10 @@ packages:
       - react-dom
     dev: true
 
-  /storybook-addon-next/1.7.3_35jw3nrzhlf4v4gtx7c6jirhfq:
+  /storybook-addon-next/1.7.3_oc6jraatdvnj4rgs4b3kpz3awy:
     resolution: {integrity: sha512-CgtcuOI/uf9djH14wvGgaldfOeSopcEF249DssSHnF1ikrkpstSCXqHPx6CDKm2LWVUsY10nWgxSFIaH6zg7Zg==}
     peerDependencies:
       '@storybook/addon-actions': ^6.0.0
-      '@storybook/addons': ^6.0.0
       next: ^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -17917,7 +17881,7 @@ packages:
       react-dom: 18.2.0_react@18.2.0
       resolve-url-loader: 5.0.0
       sass-loader: 13.2.0_webpack@5.81.0
-      semver: 7.3.8
+      semver: 7.5.0
       tsconfig-paths: 4.1.2
       tsconfig-paths-webpack-plugin: 4.0.0
     transitivePeerDependencies:
