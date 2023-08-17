@@ -46,7 +46,7 @@ const Feedback = () => {
   };
 
   return (
-    <Stack spacing="1rem" padding="0.5rem">
+    <Stack spacing="1rem" padding="0.5rem" width="fit-content">
       {submitState === FeedbackState.SUCCESS && <Badge>Thank you!</Badge>}
 
       <Box
