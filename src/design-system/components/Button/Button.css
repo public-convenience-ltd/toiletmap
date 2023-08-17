@@ -5,7 +5,6 @@
   box-sizing: border-box;
   user-select: none;
   min-height: 34px;
-  max-width: 300px;
   border-radius: 17px;
   padding: 0 var(--space-s);
   border-style: solid;
