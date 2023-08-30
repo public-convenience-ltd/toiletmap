@@ -7,6 +7,7 @@ import { MockedProvider } from '@apollo/client/testing';
 // Import design system component styles for our Stories.
 import '../src/design-system/components/Badge/Badge.css';
 import '../src/design-system/components/Button/Button.css';
+import '../src/design-system/components/Icon/Icon.css';
 import '../src/design-system/components/InputField/InputField.css';
 import '../src/design-system/components/RadioInput/RadioInput.css';
 
