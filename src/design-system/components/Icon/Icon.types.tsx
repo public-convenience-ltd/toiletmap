@@ -1,0 +1,35 @@
+export interface IconProps extends React.SVGAttributes<SVGElement> {
+  icon:
+    | 'asterisk'
+    | 'comments'
+    | 'bars'
+    | 'filter'
+    | 'angle-right'
+    | 'circle-plus'
+    | 'map-location-dot'
+    | 'spinner'
+    | 'diamond-turn-right'
+    | 'xmark'
+    | 'note-sticky'
+    | 'plus'
+    | 'minus'
+    | 'pen-to-square'
+    | 'chevron-down'
+    | 'circle-xmark'
+    | 'clock'
+    | 'list'
+    | 'question'
+    | 'check'
+    | 'person-dress'
+    | 'person'
+    | 'wheelchair-move'
+    | 'key'
+    | 'toilet'
+    | 'sterling-sign'
+    | 'child'
+    | 'baby'
+    | 'gear'
+    | 'magnifying-glass';
+  size?: 'small' | 'medium' | 'large' | 'x-large';
+  spin?: boolean;
+}
