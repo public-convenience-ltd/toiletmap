@@ -1,20 +1,13 @@
 import { useState, useRef, useMemo, useEffect } from 'react';
 import styled from '@emotion/styled';
 import isPropValid from '@emotion/is-prop-valid';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faFilter,
-  faAngleRight,
-  faPlusCircle,
-  faMapMarkerAlt,
-} from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 
 import { Media } from '../Media';
 import VisuallyHidden from '../VisuallyHidden';
 import Box from '../Box';
 import Text from '../Text';
-import Icon from '../Icon';
+import Icon from '../../design-system/components/Icon';
 import LocationSearch from '../LocationSearch';
 import Filters from '../Filters';
 import Button from '../../design-system/components/Button';
@@ -30,7 +23,11 @@ interface Props {
 }
 
 const Arrow = styled(
-  (props: Props) => <Icon icon={faAngleRight} {...props} />,
+  (props: Props) => (
+    <span {...props}>
+      <Icon icon="angle-right" size="small" />
+    </span>
+  ),
   {
     shouldForwardProp: (prop) => {
       return isPropValid(prop) && prop !== 'isExpanded';
@@ -129,7 +126,7 @@ const Sidebar = () => {
               aria-label="Filters Panel"
               data-cy="mobile-filter"
             >
-              <FontAwesomeIcon icon={faFilter} />
+              <Icon icon="filter" size="medium" />
               <span>Filter</span>
             </Button>
           </Box>
@@ -148,7 +145,7 @@ const Sidebar = () => {
         <Drawer visible={isFiltersExpanded} animateFrom="left">
           <Box display="flex" justifyContent="space-between" mb={4}>
             <Box display="flex" alignItems="flex-end">
-              <FontAwesomeIcon icon={faFilter} fixedWidth size="lg" />
+              <Icon icon="filter" size="medium" />
               <Box as="h2" mx={2}>
                 <Text lineHeight={1}>
                   <b>Filter </b>
@@ -230,7 +227,7 @@ const Sidebar = () => {
                   setIsFilterExpanded(!isFilterExpanded);
                 }}
               >
-                <Icon icon={faFilter} fixedWidth size="lg" />
+                <Icon icon="filter" size="medium" />
                 <Box mx={2}>
                   <Text lineHeight={1}>
                     <b>Filter </b>
@@ -271,7 +268,7 @@ const Sidebar = () => {
               href={`/loos/add?lat=${mapState.center.lat}&lng=${mapState.center.lng}`}
             >
               <Box display="flex" alignItems="center" as="button" type="button">
-                <Icon icon={faPlusCircle} fixedWidth size="lg" />
+                <Icon icon="circle-plus" size="medium" />
                 <Box mx={2}>
                   <Text lineHeight={1}>
                     <b>Add a Toilet</b>
@@ -291,7 +288,7 @@ const Sidebar = () => {
                 alignItems="center"
                 onClick={() => mapState?.locationServices?.startLocate()}
               >
-                <Icon icon={faMapMarkerAlt} fixedWidth size="lg" />
+                <Icon icon="map-location-dot" size="medium" />
                 <Box mx={2}>
                   <Text lineHeight={1}>
                     <b>Find a toilet near me</b>

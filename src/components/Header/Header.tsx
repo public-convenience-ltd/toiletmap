@@ -1,11 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { faBars, faComments } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 
 import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
 import { Media } from '../Media';
-import Icon from '../Icon';
+import Icon from '../../design-system/components/Icon';
 import Logo from '../Logo';
 
 import MainMenu from './MainMenu';
@@ -60,7 +59,7 @@ const Header = ({ children }) => {
 
           <Media at="sm" css={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button aria-describedby={feedbackPopoverId} onClick={handleClick}>
-              <Icon icon={faComments} size="2x" />
+              <Icon icon="comments" size="x-large" />
               <VisuallyHidden>
                 <Text>Feedback</Text>
               </VisuallyHidden>
@@ -73,7 +72,7 @@ const Header = ({ children }) => {
                 onClick={() => setIsMenuVisible(!isMenuVisible)}
               >
                 <VisuallyHidden>Toggle main menu</VisuallyHidden>
-                <Icon icon={faBars} size="2x" />
+                <Icon icon="bars" size="large" />
               </button>
             </Box>
 

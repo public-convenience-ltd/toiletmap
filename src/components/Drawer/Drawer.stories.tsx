@@ -1,11 +1,10 @@
-import { faStickyNote } from '@fortawesome/free-solid-svg-icons';
 import { Meta } from '@storybook/react';
 import times from 'lodash/times';
 import React, { useState } from 'react';
 
 import { default as DrawerComponent } from '.';
 import Box from '../Box';
-import Icon from '../Icon';
+import Icon from '../../design-system/components/Icon';
 import Switch from '../Switch';
 
 export default {
@@ -40,7 +39,7 @@ export const Default = (props) => {
                 mt={'3'}
               >
                 <Box display="flex" alignItems="center">
-                  <Icon icon={faStickyNote} fixedWidth size="lg" />
+                  <Icon icon="note-sticky" size="medium" />
                   <Box ml={3} id={`option-${i}`}>
                     Option {i}
                   </Box>

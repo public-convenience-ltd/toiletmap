@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { useCombobox } from 'downshift';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 
+import Icon from '../../design-system/components/Icon';
 import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
 
@@ -99,18 +98,15 @@ const LocationSearch = ({ onSelectedItemChange }) => {
       <Box position="relative" {...getComboboxProps()}>
         <Box
           position="absolute"
-          top="50%"
+          top="55%"
           left={3}
           zIndex={1}
           css={{
             transform: 'translateY(-50%)',
           }}
+          color={theme.colors.tertiary}
         >
-          <FontAwesomeIcon
-            icon={faSearch}
-            fixedWidth
-            color={theme.colors.tertiary}
-          />
+          <Icon icon="magnifying-glass" size="medium" />
         </Box>
 
         <Input
@@ -140,9 +136,10 @@ const LocationSearch = ({ onSelectedItemChange }) => {
             <button
               type="button"
               aria-label="close menu"
+              css={{ display: 'flex' }}
               {...getToggleButtonProps()}
             >
-              <FontAwesomeIcon icon={faTimes} fixedWidth />
+              <Icon icon="xmark" size="medium" />
             </button>
           </Box>
         )}

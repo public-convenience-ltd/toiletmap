@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import Button from './Button';
+import Icon from '../Icon/Icon';
 
 export default {
   title: 'Design-System/Button',
@@ -26,6 +27,14 @@ export const Secondary = Template.bind({});
 
 Secondary.args = {
   children: 'Secondary button',
+  variant: 'secondary',
+  htmlElement: 'button',
+};
+
+export const WithIcon = Template.bind({});
+
+WithIcon.args = {
+  children: <Icon icon="xmark" size="small" />,
   variant: 'secondary',
   htmlElement: 'button',
 };

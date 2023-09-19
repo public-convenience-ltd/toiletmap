@@ -1,6 +1,6 @@
-import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useMap } from 'react-leaflet';
-import Icon from '../Icon';
+
+import Icon from '../../design-system/components/Icon';
 import { ControlButton } from './LocateMapControl';
 
 const ZoomControl = () => {
@@ -23,7 +23,7 @@ const ZoomControl = () => {
         aria-label="Zoom in"
         onClick={zoomIn}
       >
-        <Icon aria-hidden="true" icon={faPlus} size="sm" />
+        <Icon aria-hidden="true" icon="plus" size="medium" />
       </ControlButton>
       <ControlButton
         className="leaflet-control-zoom-out"
@@ -31,7 +31,7 @@ const ZoomControl = () => {
         aria-label="Zoom out"
         onClick={zoomOut}
       >
-        <Icon aria-hidden="true" icon={faMinus} size="sm" />
+        <Icon aria-hidden="true" icon="minus" size="medium" />
       </ControlButton>
     </div>
   );

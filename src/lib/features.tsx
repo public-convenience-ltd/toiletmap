@@ -1,94 +1,79 @@
 import Box from '../components/Box';
-import Icon from '../components/Icon';
+import Icon from '../design-system/components/Icon';
 import type { Loo } from '../api-client/graphql';
-
-import {
-  faTimes,
-  faCheck,
-  faPoundSign,
-  faBaby,
-  faToilet,
-  faMale,
-  faFemale,
-  faChild,
-  faKey,
-  faCog,
-  faQuestion,
-} from '@fortawesome/free-solid-svg-icons';
-import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
 
 export const getFeatureValueIcon = (value?: boolean) => {
   if (value === null) {
     return (
-      <Box title="Unknown">
-        <Icon icon={faQuestion} color="tertiary" aria-label="Unknown" />
+      <Box title="Unknown" color="tertiary">
+        <Icon icon="question" size="medium" aria-label="Unknown" />
       </Box>
     );
   }
 
   return value ? (
     <Box title="Available">
-      <Icon icon={faCheck} aria-label="Available" />
+      <Icon icon="check" size="medium" aria-label="Available" />
     </Box>
   ) : (
-    <Box title="Unavailable">
-      <Icon icon={faTimes} color="tertiary" aria-label="Unavailable" />
+    <Box title="Unavailable" color="tertiary">
+      <Icon icon="xmark" size="medium" aria-label="Unavailable" />
     </Box>
   );
 };
 
 export const getFeatures = (data: Loo) => [
   {
-    icon: <Icon icon={faFemale} />,
+    icon: <Icon icon="person-dress" size="medium" />,
     label: 'Women',
     valueIcon: getFeatureValueIcon(data.women),
   },
   {
-    icon: <Icon icon={faMale} />,
+    icon: <Icon icon="person" size="medium" />,
     label: 'Men',
     valueIcon: getFeatureValueIcon(data.men),
   },
   {
-    icon: <Icon icon={faAccessibleIcon} />,
+    icon: <Icon icon="wheelchair-move" size="medium" />,
     label: 'Accessible',
     valueIcon: getFeatureValueIcon(data.accessible),
   },
   ...(data.accessible
     ? [
         {
-          icon: <Icon icon={faKey} />,
+          icon: <Icon icon="key" size="medium" />,
           label: 'RADAR Key',
           valueIcon: getFeatureValueIcon(data.radar),
         },
       ]
     : []),
   {
-    icon: <Icon icon={faToilet} />,
+    icon: <Icon icon="toilet" size="medium" />,
     label: 'Gender Neutral',
     valueIcon: getFeatureValueIcon(data.allGender),
   },
   {
-    icon: <Icon icon={faChild} />,
+    icon: <Icon icon="child" size="medium" />,
     label: 'Children',
     valueIcon: getFeatureValueIcon(data.children),
   },
   {
-    icon: <Icon icon={faBaby} />,
+    icon: <Icon icon="baby" size="medium" />,
     label: 'Baby Changing',
     valueIcon: getFeatureValueIcon(data.babyChange),
   },
   {
-    icon: <Icon icon={faToilet} />,
+    icon: <Icon icon="toilet" size="medium" />,
     label: 'Urinal Only',
     valueIcon: getFeatureValueIcon(data.urinalOnly),
   },
   {
-    icon: <Icon icon={faCog} />,
+    icon: <Icon icon="gear" size="medium" />,
     label: 'Automatic',
     valueIcon: getFeatureValueIcon(data.automatic),
   },
   {
-    icon: <Icon icon={faPoundSign} />,
+    icon: <Icon icon="sterling-sign" size="medium" />,
     label: 'Free',
     valueIcon: getFeatureValueIcon(data.noPayment),
   },
