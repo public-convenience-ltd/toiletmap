@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import Box from '../Box';
 import Text from '../Text';
-import Icon from '../Icon';
+import Icon from '../../design-system/components/Icon';
 import Spacer from '../Spacer';
 
 const Notification = ({ allowClose, children }) => {
@@ -36,9 +35,10 @@ const Notification = ({ allowClose, children }) => {
           <button
             type="button"
             aria-label="Close notification"
+            css={{ display: 'flex', alignItems: 'center' }}
             onClick={() => setIsVisible(false)}
           >
-            <Icon icon={faTimes} />
+            <Icon icon="xmark" size="medium" />
           </button>
         </>
       )}

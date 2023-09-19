@@ -1,14 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { faClock, faEdit } from '@fortawesome/free-regular-svg-icons';
-import {
-  faDirections,
-  faList,
-  faTimes,
-  faChevronDown,
-  faSpinner,
-} from '@fortawesome/free-solid-svg-icons';
 
 import lightFormat from 'date-fns/lightFormat';
 import getISODay from 'date-fns/getISODay';
@@ -21,7 +13,7 @@ import { Loo } from '../api-client/graphql';
 import Box from './Box';
 import Text from './Text';
 import Spacer from './Spacer';
-import Icon from './Icon';
+import Icon from '../design-system/components/Icon';
 import Badge from '../design-system/components/Badge';
 import Button from '../design-system/components/Button';
 import { Media } from './Media';
@@ -176,7 +168,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         data.location.lng,
       ]}`}
     >
-      <Icon icon={faDirections} />
+      <Icon icon="diamond-turn-right" size="medium" />
       <span>Directions</span>
     </Button>
   );
@@ -226,7 +218,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
           >
             <span>Yes</span>
             {verificationReportState.loading === true && (
-              <Icon spin={true} icon={faSpinner} />
+              <Icon spin={true} icon="spinner" />
             )}
           </Button>
           <Spacer mr={4} />
@@ -239,7 +231,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
               variant="secondary"
               data-testid="edit-button"
             >
-              <Icon icon={faEdit} />
+              <Icon icon="pen-to-square" size="small" />
               <span>Edit</span>
             </Button>
           </Box>
@@ -289,19 +281,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
                 aria-expanded="true"
                 ref={closeButtonRef}
               >
-                <Box
-                  height={26}
-                  width={26}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  borderRadius={13}
-                  borderColor="primary"
-                  borderWidth={1}
-                  borderStyle="solid"
-                >
-                  <Icon icon={faTimes} />
-                </Box>
+                <Icon icon="circle-xmark" size="large" />
               </button>
             </Box>
           </Media>
@@ -318,7 +298,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
                 padding={2}
                 ref={closeButtonRef}
               >
-                <Icon icon={faChevronDown} />
+                <Icon icon="chevron-down" size="medium" />
               </Box>
             </Box>
           </Media>
@@ -409,7 +389,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
 
             <Box width={['100%', '50%', '25%']} padding={3}>
               <Box display="flex" alignItems="center">
-                <Icon icon={faClock} />
+                <Icon icon="clock" />
                 <Spacer mr={2} />
                 <Text fontWeight="bold">
                   <h2>Opening Hours</h2>
@@ -519,7 +499,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
             aria-expanded="false"
             data-testid="details-button"
           >
-            <Icon icon={faList} />
+            <Icon icon="list" size="small" />
             <span>Details</span>
           </Button>
           <Spacer mr={2} />
@@ -531,7 +511,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
             aria-expanded="false"
             data-testid="close-button"
           >
-            <Icon icon={faTimes} />
+            <Icon icon="xmark" size="small" />
             <span>Close</span>
           </Button>
         </Box>

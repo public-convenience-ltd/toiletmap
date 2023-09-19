@@ -25,8 +25,7 @@ import { WEEKDAYS, isClosed, Weekdays } from '../lib/openingTimes';
 import crosshair from '../../public/crosshair-small.svg';
 
 import { useMapState } from './MapState';
-import Icon from './Icon';
-import { faAsterisk } from '@fortawesome/free-solid-svg-icons';
+import Icon from '../design-system/components/Icon';
 import { css } from '@emotion/react';
 
 type OpeningDayStates =
@@ -451,10 +450,9 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                 <>
                   <Icon
                     aria-hidden={true}
-                    color="red"
-                    size="xs"
-                    css={{ marginLeft: '.5rem' }}
-                    icon={faAsterisk}
+                    size="small"
+                    icon="asterisk"
+                    data-test="asterisk"
                   ></Icon>
                   <VisuallyHidden as={'span'} role="alert">
                     {message}
@@ -718,9 +716,9 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                                 <>
                                   <Icon
                                     aria-hidden={true}
-                                    color="red"
-                                    size="xs"
-                                    icon={faAsterisk}
+                                    size="small"
+                                    icon="asterisk"
+                                    data-test="asterisk"
                                   ></Icon>
                                   <VisuallyHidden as={'span'} role="alert">
                                     {message}
@@ -761,9 +759,9 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                                 <>
                                   <Icon
                                     aria-hidden={true}
-                                    color="red"
-                                    size="xs"
-                                    icon={faAsterisk}
+                                    size="small"
+                                    icon="asterisk"
+                                    data-test="asterisk"
                                   ></Icon>
                                   <VisuallyHidden as={'span'} role="alert">
                                     {message}

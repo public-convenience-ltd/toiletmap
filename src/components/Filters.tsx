@@ -1,27 +1,20 @@
 import React from 'react';
-import {
-  faPoundSign,
-  faBaby,
-  faKey,
-  faCog,
-  faToilet,
-} from '@fortawesome/free-solid-svg-icons';
-import { faAccessibleIcon } from '@fortawesome/free-brands-svg-icons';
+import { usePlausible } from 'next-plausible';
 
 import Box from './Box';
 import Switch from './Switch';
-import Icon from './Icon';
+import Icon from '../design-system/components/Icon';
+import { IconProps } from '../design-system/components/Icon/Icon.types';
 import config from '../config';
 import type { Filters as FilterTypes } from '../config';
-import { usePlausible } from 'next-plausible';
 
-const iconMap = {
-  noPayment: faPoundSign,
-  babyChange: faBaby,
-  accessible: faAccessibleIcon,
-  allGender: faToilet,
-  radar: faKey,
-  automatic: faCog,
+const iconMap: Record<FilterTypes, IconProps> = {
+  noPayment: { icon: 'sterling-sign' },
+  babyChange: { icon: 'baby' },
+  accessible: { icon: 'wheelchair-move' },
+  allGender: { icon: 'toilet' },
+  radar: { icon: 'key' },
+  automatic: { icon: 'gear' },
 };
 
 const Filters: React.FC<{
@@ -42,7 +35,7 @@ const Filters: React.FC<{
           mt={index ? 3 : undefined}
         >
           <Box display="flex" alignItems="center">
-            <Icon icon={iconMap[id]} fixedWidth size="lg" />
+            <Icon {...iconMap[id]} size="medium" />
             <Box ml={3} id={`filter-${id}`}>
               {label}
             </Box>
