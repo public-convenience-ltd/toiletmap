@@ -76,7 +76,7 @@ describe('Adding new toilets to the platform', () => {
       cy.visit('/loos/add');
       cy.findByText('Save toilet').click();
 
-      cy.get('[data-icon="asterisk"]').should('exist');
+      cy.get('[data-test="asterisk"]').should('exist');
       cy.findByText('Please specify a toilet name').should('exist');
 
       const toiletName = faker.word.adjective() + ' ' + faker.word.noun();
@@ -101,12 +101,12 @@ describe('Adding new toilets to the platform', () => {
       cy.get('[name=monday-is-open').click();
 
       cy.findByText('Save toilet').click();
-      cy.get('[data-icon="asterisk"]').should('have.length', 2);
+      cy.get('[data-test="asterisk"]').should('have.length', 2);
 
       cy.get('[name=monday-opens]').type('08:00');
 
       cy.findByText('Save toilet').click();
-      cy.get('[data-icon="asterisk"]').should('have.length', 1);
+      cy.get('[data-test="asterisk"]').should('have.length', 1);
 
       cy.get('[name=monday-closes]').type('19:00');
       cy.findByText('Save toilet').click();
@@ -128,12 +128,12 @@ describe('Adding new toilets to the platform', () => {
       cy.get('[name=monday-is-open').click();
 
       cy.findByText('Save toilet').click();
-      cy.get('[data-icon="asterisk"]').should('have.length', 2);
+      cy.get('[data-test="asterisk"]').should('have.length', 2);
 
       cy.get('[name=monday-opens]').type('08:00');
 
       cy.findByText('Save toilet').click();
-      cy.get('[data-icon="asterisk"]').should('have.length', 1);
+      cy.get('[data-test="asterisk"]').should('have.length', 1);
 
       cy.get('[name=monday-closes]').type('19:00');
 
