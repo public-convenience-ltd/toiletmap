@@ -5,32 +5,36 @@ const useNominatimAutocomplete = (input: string | unknown[]) => {
   const [places, setPlaces] = React.useState([]);
 
   const fetchHandler = async (input) => {
-    const fetchUrl = `https://nominatim.openstreetmap.org/search?q=${input}&countrycodes=gb&limit=5&format=json`;
+    try {
+      const fetchUrl = `https://nominatim.openstreetmap.org/search?q=${input}&countrycodes=gb&limit=5&format=json`;
 
-    const response = await fetch(fetchUrl);
-    const results = await response.json();
+      const response = await fetch(fetchUrl);
+      const results = await response.json();
 
-    if (!results) {
-      return;
+      if (!results) {
+        return;
+      }
+
+      const locationResults = results.map(
+        (item: {
+          place_id: unknown;
+          display_name: unknown;
+          lat: unknown;
+          lon: unknown;
+        }) => ({
+          id: item.place_id,
+          label: item.display_name,
+          location: {
+            lat: item.lat,
+            lng: item.lon,
+          },
+        })
+      );
+
+      setPlaces(locationResults);
+    } catch (e: unknown) {
+      console.error('Problem fetching location info: ', e);
     }
-
-    const locationResults = results.map(
-      (item: {
-        place_id: unknown;
-        display_name: unknown;
-        lat: unknown;
-        lon: unknown;
-      }) => ({
-        id: item.place_id,
-        label: item.display_name,
-        location: {
-          lat: item.lat,
-          lng: item.lon,
-        },
-      })
-    );
-
-    setPlaces(locationResults);
   };
 
   const debouncedFetchHandler = React.useMemo(
