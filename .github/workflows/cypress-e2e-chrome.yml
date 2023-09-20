@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-20.04
     # Don't run the e2e tests for dependabot prs or if the PR is not labeled as 'safe to test'.
     if: |
-      ${{ github.actor != 'dependabot[bot]' &&
+      ${{ github.event.pull_request.user.login == 'dependabot[bot]' &&
       needs.label_check.outputs.authorized == 'true' }}
 
     # Only run the e2e tests if a maintainer has labeled the PR as 'safe to test'.
@@ -48,7 +48,7 @@ jobs:
         containers: [1, 2, 3, 4, 5]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       # enables use to use the cache in actions/setup-node
       - uses: pnpm/action-setup@v2.4.0
       - uses: actions/setup-node@v3
