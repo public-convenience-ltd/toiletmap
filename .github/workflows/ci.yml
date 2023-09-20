@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # enables use to use the cache in actions/setup-node
       - uses: pnpm/action-setup@v2.4.0
       - uses: actions/setup-node@v3
