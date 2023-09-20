@@ -116,7 +116,7 @@
     "@jest/globals": "^29.5.0",
     "@mapbox/geojson-area": "^0.2.2",
     "@mapbox/geojson-rewind": "^0.5.2",
-    "@next/bundle-analyzer": "^13.3.4",
+    "@next/bundle-analyzer": "^13.5.2",
     "@storybook/addon-actions": "^6.5.16",
     "@storybook/addon-essentials": "^6.5.16",
     "@storybook/addon-interactions": "^6.5.16",
