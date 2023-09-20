@@ -182,7 +182,7 @@
     "wait-on": "^7.0.1",
     "webpack": "^5.81.0"
   },
-  "packageManager": "pnpm@7.15.0",
+  "packageManager": "pnpm@8.6.3",
   "nextBundleAnalysis": {
     "budget": 204800,
     "budgetPercentIncreaseRed": 10,
