@@ -4,38 +4,12 @@ on:
     branches:
       - main
   pull_request:
-  pull_request_target:
-    types:
-      - labeled
 jobs:
-  label_check:
-    runs-on: ubuntu-latest
-    outputs:
-      authorized: ${{ steps.label_check.outputs.authorized }}
-    steps:
-      - name: Check if authorized label is present
-        id: label_check
-        run: |
-          LABEL_NAME="CI Approved"
-          PR_LABELS=$(jq '.pull_request.labels[].name' $GITHUB_EVENT_PATH | tr '\n' ' ')
-          if [[ ${PR_LABELS} =~ ${LABEL_NAME} ]]; then
-            echo "Authorized label found."
-            echo "::set-output name=authorized::true"
-          else
-            echo "Authorized label not found."
-            echo "::set-output name=authorized::false"
-          fi
-
   cypress-e2e-chrome:
     name: Cypress E2E Chrome
-    runs-on: ubuntu-20.04
-    # Don't run the e2e tests for dependabot prs or if the PR is not labeled as 'safe to test'.
-    if: |
-      ${{ github.event.pull_request.user.login == 'dependabot[bot]' &&
-      needs.label_check.outputs.authorized == 'true' }}
-
-    # Only run the e2e tests if a maintainer has labeled the PR as 'safe to test'.
-    needs: [label_check]
+    runs-on: ubuntu-latest
+    # Don't run the e2e tests for dependabot prs.
+    if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
     timeout-minutes: 15
     strategy:
       # when one test fails, DO NOT cancel the other
