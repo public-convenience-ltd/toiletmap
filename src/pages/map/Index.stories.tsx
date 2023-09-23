@@ -8,12 +8,14 @@ export default {
   name: 'Pages',
   component: MapPageNext,
   parameters: {
-    nextRouter: {
-      path: '/map/[lng]/[lat]',
-      asPath: '/map/0.1276/51.5072',
-      query: {
-        lng: '0.1276',
-        lat: '51.5072',
+    nextjs: {
+      router: {
+        path: '/map/[lng]/[lat]',
+        asPath: '/map/0.1276/51.5072',
+        query: {
+          lng: '0.1276',
+          lat: '51.5072',
+        },
       },
     },
   },
