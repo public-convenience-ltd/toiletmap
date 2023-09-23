@@ -9,17 +9,11 @@ module.exports = {
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     '@storybook/addon-postcss',
-    {
-      name: 'storybook-addon-next',
-      options: {
-        nextConfigPath: path.resolve(__dirname, '../next.config.js'),
-      },
-    },
+    '@storybook/addon-mdx-gfm',
     'storybook-addon-apollo-client',
   ],
-  framework: '@storybook/react',
-  core: {
-    builder: '@storybook/builder-webpack5',
+  framework: {
+    name: '@storybook/nextjs',
   },
   babel: async (options) => {
     options.presets.push('@emotion/babel-preset-css-prop');
