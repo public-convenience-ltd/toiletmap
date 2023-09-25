@@ -53,7 +53,7 @@
   "dependencies": {
     "@apollo/client": "^3.8.4",
     "@artsy/fresnel": "^6.2.1",
-    "@auth0/nextjs-auth0": "^1.9.2",
+    "@auth0/nextjs-auth0": "^3.1.0",
     "@emotion/is-prop-valid": "^1.2.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
