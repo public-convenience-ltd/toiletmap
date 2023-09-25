@@ -18,6 +18,7 @@ import pick from 'lodash/pick';
 import zipObject from 'lodash/zipObject';
 import { ErrorMessage } from '@hookform/error-message';
 import Container from '../components/Container';
+import InputField from '../design-system/components/InputField';
 import Notification from '../components/Notification';
 import Box from '../components/Box';
 import Text from '../components/Text';
@@ -45,15 +46,6 @@ const openingTimesFields = WEEKDAYS.flatMap((day): OpeningDayStates[] => {
     `${lowercaseDay}-closes`,
   ];
 });
-
-const Input = styled.input`
-  display: block;
-  width: 100%;
-  margin-top: ${(props) => props.theme.space[1]}px;
-  padding: ${(props) => props.theme.space[2]}px;
-  color: ${(props) => props.theme.colors.primary};
-  border: 1px solid ${(props) => props.theme.colors.primary};
-`;
 
 const Textarea = styled.textarea`
   display: block;
@@ -484,7 +476,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
             <span>with where you believe the toilet to be</span>
             <VisuallyHidden>
               <label htmlFor="geometry.coordinates.0">Latitude </label>
-              <Input
+              <InputField
                 type="text"
                 name="geometry.coordinates.0"
                 readOnly
@@ -492,7 +484,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
               />
 
               <label htmlFor="geometry.coordinates.1">Longitude</label>
-              <Input
+              <InputField
                 type="text"
                 name="geometry.coordinates.1"
                 readOnly
@@ -525,15 +517,12 @@ const EntryForm = ({ title, loo, children, ...props }) => {
             />
           </span>
 
-          <Input
+          <InputField
             name="name"
             type="text"
             defaultValue={loo.name || ''}
             placeholder="e.g. Sainsburys or street name"
             data-testid="toilet-name"
-            css={{
-              maxWidth: '400px',
-            }}
             {...register('name', {
               required: 'Please specify a toilet name',
             })}
@@ -630,15 +619,12 @@ const EntryForm = ({ title, loo, children, ...props }) => {
             {noPayment === false && (
               <>
                 <label htmlFor="paymentDetails">Payment Details</label>
-                <Input
+                <InputField
                   name="paymentDetails"
                   type="text"
                   defaultValue={loo.paymentDetails || ''}
                   placeholder="The amount e.g. 20p"
                   data-testid="paymentDetails"
-                  css={{
-                    maxWidth: '200px',
-                  }}
                   {...register('paymentDetails', {
                     required: 'Please specify the toilet payment details.',
                   })}
