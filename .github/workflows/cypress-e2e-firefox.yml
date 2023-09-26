@@ -8,7 +8,9 @@ jobs:
   cypress-e2e-firefox:
     name: Cypress E2E Firefox
     runs-on: ubuntu-latest
-    # Don't run the e2e tests for dependabot prs or if the PR is not labeled as 'safe to test'.
+    container:
+      image: cypress/browsers:node18.12.0-chrome106-ff106
+    # Don't run the e2e tests for dependabot prs.
     if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
     timeout-minutes: 15
     strategy:
