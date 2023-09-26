@@ -4,16 +4,18 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-  DateTime: any;
-  OpeningTimes: any;
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  DateTime: { input: any; output: any; }
+  OpeningTimes: { input: any; output: any; }
 };
 
 /**
@@ -22,21 +24,21 @@ export type Scalars = {
  */
 export type AdminGeo = {
   __typename?: 'AdminGeo';
-  name?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
 };
 
 export type AreaToiletCount = {
   __typename?: 'AreaToiletCount';
-  active?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  removed?: Maybe<Scalars['Int']>;
+  active?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  removed?: Maybe<Scalars['Int']['output']>;
 };
 
 /** The name of a contributor. This requires a certain level of permissions to access. */
 export type AuthedContributor = {
   __typename?: 'AuthedContributor';
-  name: Scalars['String'];
+  name: Scalars['String']['output'];
 };
 
 export enum CacheControlScope {
@@ -50,51 +52,51 @@ export enum CacheControlScope {
  */
 export type Loo = {
   __typename?: 'Loo';
-  accessible?: Maybe<Scalars['Boolean']>;
-  active?: Maybe<Scalars['Boolean']>;
-  allGender?: Maybe<Scalars['Boolean']>;
+  accessible?: Maybe<Scalars['Boolean']['output']>;
+  active?: Maybe<Scalars['Boolean']['output']>;
+  allGender?: Maybe<Scalars['Boolean']['output']>;
   area?: Maybe<Array<Maybe<AdminGeo>>>;
-  attended?: Maybe<Scalars['Boolean']>;
-  automatic?: Maybe<Scalars['Boolean']>;
-  babyChange?: Maybe<Scalars['Boolean']>;
-  children?: Maybe<Scalars['Boolean']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  geohash?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['ID']>;
+  attended?: Maybe<Scalars['Boolean']['output']>;
+  automatic?: Maybe<Scalars['Boolean']['output']>;
+  babyChange?: Maybe<Scalars['Boolean']['output']>;
+  children?: Maybe<Scalars['Boolean']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  geohash?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['ID']['output']>;
   location?: Maybe<Point>;
-  men?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
-  noPayment?: Maybe<Scalars['Boolean']>;
-  notes?: Maybe<Scalars['String']>;
-  openingTimes?: Maybe<Scalars['OpeningTimes']>;
-  paymentDetails?: Maybe<Scalars['String']>;
-  radar?: Maybe<Scalars['Boolean']>;
-  removalReason?: Maybe<Scalars['String']>;
+  men?: Maybe<Scalars['Boolean']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  noPayment?: Maybe<Scalars['Boolean']['output']>;
+  notes?: Maybe<Scalars['String']['output']>;
+  openingTimes?: Maybe<Scalars['OpeningTimes']['output']>;
+  paymentDetails?: Maybe<Scalars['String']['output']>;
+  radar?: Maybe<Scalars['Boolean']['output']>;
+  removalReason?: Maybe<Scalars['String']['output']>;
   reports?: Maybe<Array<Maybe<Report>>>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-  urinalOnly?: Maybe<Scalars['Boolean']>;
-  verifiedAt?: Maybe<Scalars['DateTime']>;
-  women?: Maybe<Scalars['Boolean']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  urinalOnly?: Maybe<Scalars['Boolean']['output']>;
+  verifiedAt?: Maybe<Scalars['DateTime']['output']>;
+  women?: Maybe<Scalars['Boolean']['output']>;
 };
 
 /** Include or Exclude Loos from search results based on whether they satisfy a filter condition */
 export type LooFilter = {
-  active?: InputMaybe<Scalars['Boolean']>;
-  areaName?: InputMaybe<Scalars['String']>;
-  contributors?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  fromDate?: InputMaybe<Scalars['DateTime']>;
-  noPayment?: InputMaybe<Scalars['Boolean']>;
-  text?: InputMaybe<Scalars['String']>;
-  toDate?: InputMaybe<Scalars['DateTime']>;
+  active?: InputMaybe<Scalars['Boolean']['input']>;
+  areaName?: InputMaybe<Scalars['String']['input']>;
+  contributors?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  fromDate?: InputMaybe<Scalars['DateTime']['input']>;
+  noPayment?: InputMaybe<Scalars['Boolean']['input']>;
+  text?: InputMaybe<Scalars['String']['input']>;
+  toDate?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type LooSearchResponse = {
   __typename?: 'LooSearchResponse';
-  limit?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']['output']>;
   loos: Array<Loo>;
-  page?: Maybe<Scalars['Int']>;
-  pages?: Maybe<Scalars['Int']>;
-  total?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']['output']>;
+  pages?: Maybe<Scalars['Int']['output']>;
+  total?: Maybe<Scalars['Int']['output']>;
 };
 
 export type Mutation = {
@@ -116,18 +118,18 @@ export type MutationSubmitReportArgs = {
 
 
 export type MutationSubmitVerificationReportArgs = {
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type MutationResponse = {
-  code: Scalars['String'];
-  message: Scalars['String'];
-  success: Scalars['Boolean'];
+  code: Scalars['String']['output'];
+  message: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
 };
 
 export type PaginationInput = {
-  limit?: InputMaybe<Scalars['Int']>;
-  page?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /**
@@ -137,23 +139,23 @@ export type PaginationInput = {
 export type Point = {
   __typename?: 'Point';
   /** Latitude */
-  lat: Scalars['Float'];
+  lat: Scalars['Float']['output'];
   /** Longitude */
-  lng: Scalars['Float'];
+  lng: Scalars['Float']['output'];
 };
 
 export type PointInput = {
-  lat: Scalars['Float'];
-  lng: Scalars['Float'];
+  lat: Scalars['Float']['input'];
+  lng: Scalars['Float']['input'];
 };
 
 export type ProximityInput = {
   /** Latitude */
-  lat: Scalars['Float'];
+  lat: Scalars['Float']['input'];
   /** Longitude */
-  lng: Scalars['Float'];
+  lng: Scalars['Float']['input'];
   /** Maximum Distance in meters */
-  maxDistance?: InputMaybe<Scalars['Int']>;
+  maxDistance?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type Query = {
@@ -166,7 +168,7 @@ export type Query = {
   /** Search for loos matching a filter */
   loos: LooSearchResponse;
   /** Retrieve loos that sit within a given geohash */
-  loosByGeohash: Array<Scalars['String']>;
+  loosByGeohash: Array<Scalars['String']['output']>;
   /** Retrieve Loos by proximity to a Point */
   loosByProximity: Array<Loo>;
   reportsForLoo: Array<Report>;
@@ -176,12 +178,12 @@ export type Query = {
 
 
 export type QueryLooArgs = {
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
 export type QueryLooNamesByIdsArgs = {
-  idList?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  idList?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
 };
 
 
@@ -193,8 +195,8 @@ export type QueryLoosArgs = {
 
 
 export type QueryLoosByGeohashArgs = {
-  active?: InputMaybe<Scalars['Boolean']>;
-  geohash: Scalars['String'];
+  active?: InputMaybe<Scalars['Boolean']['input']>;
+  geohash: Scalars['String']['input'];
 };
 
 
@@ -204,12 +206,12 @@ export type QueryLoosByProximityArgs = {
 
 
 export type QueryReportsForLooArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 };
 
 export type RemovalReportInput = {
-  edit: Scalars['ID'];
-  reason: Scalars['String'];
+  edit: Scalars['ID']['input'];
+  reason: Scalars['String']['input'];
 };
 
 /**
@@ -219,74 +221,74 @@ export type RemovalReportInput = {
  */
 export type Report = {
   __typename?: 'Report';
-  accessible?: Maybe<Scalars['Boolean']>;
-  active?: Maybe<Scalars['Boolean']>;
-  allGender?: Maybe<Scalars['Boolean']>;
+  accessible?: Maybe<Scalars['Boolean']['output']>;
+  active?: Maybe<Scalars['Boolean']['output']>;
+  allGender?: Maybe<Scalars['Boolean']['output']>;
   area?: Maybe<Array<Maybe<AdminGeo>>>;
-  attended?: Maybe<Scalars['Boolean']>;
-  automatic?: Maybe<Scalars['Boolean']>;
-  babyChange?: Maybe<Scalars['Boolean']>;
-  children?: Maybe<Scalars['Boolean']>;
+  attended?: Maybe<Scalars['Boolean']['output']>;
+  automatic?: Maybe<Scalars['Boolean']['output']>;
+  babyChange?: Maybe<Scalars['Boolean']['output']>;
+  children?: Maybe<Scalars['Boolean']['output']>;
   /** An identifier for the user or process which contributed the report */
-  contributor: Scalars['String'];
+  contributor: Scalars['String']['output'];
   /** When the report was added to the system */
-  createdAt: Scalars['DateTime'];
-  geohash?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
+  createdAt: Scalars['DateTime']['output'];
+  geohash?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
   /**
    * We insert location updates separately using a DB trigger because Prisma doesn't support PostGIS yet.
    * This field is used to indicate to the client that the system created the report so that it can be coalesced with the user's report.
    */
-  isSystemReport?: Maybe<Scalars['Boolean']>;
+  isSystemReport?: Maybe<Scalars['Boolean']['output']>;
   location?: Maybe<Point>;
   /** The Loo which uses the data submitted in this report */
   loo?: Maybe<Loo>;
-  men?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
-  noPayment?: Maybe<Scalars['Boolean']>;
-  notes?: Maybe<Scalars['String']>;
-  openingTimes?: Maybe<Scalars['OpeningTimes']>;
-  paymentDetails?: Maybe<Scalars['String']>;
+  men?: Maybe<Scalars['Boolean']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  noPayment?: Maybe<Scalars['Boolean']['output']>;
+  notes?: Maybe<Scalars['String']['output']>;
+  openingTimes?: Maybe<Scalars['OpeningTimes']['output']>;
+  paymentDetails?: Maybe<Scalars['String']['output']>;
   /**
    * A link to the previous report in the chain
    * This is nullable since this might be the first report about a particular toilet
    */
   previous?: Maybe<Report>;
-  radar?: Maybe<Scalars['Boolean']>;
-  removalReason?: Maybe<Scalars['String']>;
-  urinalOnly?: Maybe<Scalars['Boolean']>;
-  verifiedAt?: Maybe<Scalars['DateTime']>;
-  women?: Maybe<Scalars['Boolean']>;
+  radar?: Maybe<Scalars['Boolean']['output']>;
+  removalReason?: Maybe<Scalars['String']['output']>;
+  urinalOnly?: Maybe<Scalars['Boolean']['output']>;
+  verifiedAt?: Maybe<Scalars['DateTime']['output']>;
+  women?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type ReportInput = {
-  accessible?: InputMaybe<Scalars['Boolean']>;
-  active?: InputMaybe<Scalars['Boolean']>;
-  allGender?: InputMaybe<Scalars['Boolean']>;
-  attended?: InputMaybe<Scalars['Boolean']>;
-  automatic?: InputMaybe<Scalars['Boolean']>;
-  babyChange?: InputMaybe<Scalars['Boolean']>;
-  children?: InputMaybe<Scalars['Boolean']>;
-  edit?: InputMaybe<Scalars['ID']>;
+  accessible?: InputMaybe<Scalars['Boolean']['input']>;
+  active?: InputMaybe<Scalars['Boolean']['input']>;
+  allGender?: InputMaybe<Scalars['Boolean']['input']>;
+  attended?: InputMaybe<Scalars['Boolean']['input']>;
+  automatic?: InputMaybe<Scalars['Boolean']['input']>;
+  babyChange?: InputMaybe<Scalars['Boolean']['input']>;
+  children?: InputMaybe<Scalars['Boolean']['input']>;
+  edit?: InputMaybe<Scalars['ID']['input']>;
   location: PointInput;
-  men?: InputMaybe<Scalars['Boolean']>;
-  name?: InputMaybe<Scalars['String']>;
-  noPayment?: InputMaybe<Scalars['Boolean']>;
-  notes?: InputMaybe<Scalars['String']>;
-  openingTimes?: InputMaybe<Scalars['OpeningTimes']>;
-  paymentDetails?: InputMaybe<Scalars['String']>;
-  radar?: InputMaybe<Scalars['Boolean']>;
-  urinalOnly?: InputMaybe<Scalars['Boolean']>;
-  women?: InputMaybe<Scalars['Boolean']>;
+  men?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  noPayment?: InputMaybe<Scalars['Boolean']['input']>;
+  notes?: InputMaybe<Scalars['String']['input']>;
+  openingTimes?: InputMaybe<Scalars['OpeningTimes']['input']>;
+  paymentDetails?: InputMaybe<Scalars['String']['input']>;
+  radar?: InputMaybe<Scalars['Boolean']['input']>;
+  urinalOnly?: InputMaybe<Scalars['Boolean']['input']>;
+  women?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type ReportMutationResponse = MutationResponse & {
   __typename?: 'ReportMutationResponse';
-  code: Scalars['String'];
+  code: Scalars['String']['output'];
   loo?: Maybe<Loo>;
-  message: Scalars['String'];
+  message: Scalars['String']['output'];
   report?: Maybe<Report>;
-  success: Scalars['Boolean'];
+  success: Scalars['Boolean']['output'];
 };
 
 export enum SortOrder {
@@ -296,10 +298,10 @@ export enum SortOrder {
 
 export type Statistics = {
   __typename?: 'Statistics';
-  active?: Maybe<Scalars['Int']>;
+  active?: Maybe<Scalars['Int']['output']>;
   areaToiletCount?: Maybe<Array<Maybe<AreaToiletCount>>>;
-  removed?: Maybe<Scalars['Int']>;
-  total?: Maybe<Scalars['Int']>;
+  removed?: Maybe<Scalars['Int']['output']>;
+  total?: Maybe<Scalars['Int']['output']>;
 };
 
 
@@ -370,24 +372,28 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 ) => TResult | Promise<TResult>;
 
 
+/** Mapping of interface types */
+export type ResolversInterfaceTypes<RefType extends Record<string, unknown>> = {
+  MutationResponse: ( ReportMutationResponse );
+};
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   AdminGeo: ResolverTypeWrapper<AdminGeo>;
   AreaToiletCount: ResolverTypeWrapper<AreaToiletCount>;
   AuthedContributor: ResolverTypeWrapper<AuthedContributor>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   CacheControlScope: CacheControlScope;
-  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
-  Float: ResolverTypeWrapper<Scalars['Float']>;
-  ID: ResolverTypeWrapper<Scalars['ID']>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
+  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Loo: ResolverTypeWrapper<Loo>;
   LooFilter: LooFilter;
   LooSearchResponse: ResolverTypeWrapper<LooSearchResponse>;
   Mutation: ResolverTypeWrapper<{}>;
-  MutationResponse: ResolversTypes['ReportMutationResponse'];
-  OpeningTimes: ResolverTypeWrapper<Scalars['OpeningTimes']>;
+  MutationResponse: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['MutationResponse']>;
+  OpeningTimes: ResolverTypeWrapper<Scalars['OpeningTimes']['output']>;
   PaginationInput: PaginationInput;
   Point: ResolverTypeWrapper<Point>;
   PointInput: PointInput;
@@ -399,7 +405,7 @@ export type ResolversTypes = {
   ReportMutationResponse: ResolverTypeWrapper<ReportMutationResponse>;
   SortOrder: SortOrder;
   Statistics: ResolverTypeWrapper<Statistics>;
-  String: ResolverTypeWrapper<Scalars['String']>;
+  String: ResolverTypeWrapper<Scalars['String']['output']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -407,17 +413,17 @@ export type ResolversParentTypes = {
   AdminGeo: AdminGeo;
   AreaToiletCount: AreaToiletCount;
   AuthedContributor: AuthedContributor;
-  Boolean: Scalars['Boolean'];
-  DateTime: Scalars['DateTime'];
-  Float: Scalars['Float'];
-  ID: Scalars['ID'];
-  Int: Scalars['Int'];
+  Boolean: Scalars['Boolean']['output'];
+  DateTime: Scalars['DateTime']['output'];
+  Float: Scalars['Float']['output'];
+  ID: Scalars['ID']['output'];
+  Int: Scalars['Int']['output'];
   Loo: Loo;
   LooFilter: LooFilter;
   LooSearchResponse: LooSearchResponse;
   Mutation: {};
-  MutationResponse: ResolversParentTypes['ReportMutationResponse'];
-  OpeningTimes: Scalars['OpeningTimes'];
+  MutationResponse: ResolversInterfaceTypes<ResolversParentTypes>['MutationResponse'];
+  OpeningTimes: Scalars['OpeningTimes']['output'];
   PaginationInput: PaginationInput;
   Point: Point;
   PointInput: PointInput;
@@ -428,12 +434,12 @@ export type ResolversParentTypes = {
   ReportInput: ReportInput;
   ReportMutationResponse: ReportMutationResponse;
   Statistics: Statistics;
-  String: Scalars['String'];
+  String: Scalars['String']['output'];
 };
 
 export type CacheControlDirectiveArgs = {
-  inheritMaxAge?: Maybe<Scalars['Boolean']>;
-  maxAge?: Maybe<Scalars['Int']>;
+  inheritMaxAge?: Maybe<Scalars['Boolean']['input']>;
+  maxAge?: Maybe<Scalars['Int']['input']>;
   scope?: Maybe<CacheControlScope>;
 };
 
