@@ -18,10 +18,7 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }, [disableDynamicMediaQueries]);
 
   return (
-    <PlausibleProvider
-      domain="toiletmap.org.uk"
-      customDomain="https://stats.toiletmap.org.uk/"
-    >
+    <PlausibleProvider domain="toiletmap.org.uk">
       <MapStateProvider>
         {globalStyles}
         <ThemeProvider theme={theme}>
