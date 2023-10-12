@@ -8,6 +8,7 @@ import { MockedProvider } from '@apollo/client/testing';
 import '../src/design-system/components/Badge/Badge.css';
 import '../src/design-system/components/Button/Button.css';
 import '../src/design-system/components/InputField/InputField.css';
+import '../src/design-system/components/RadioButton/RadioButton.css';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
