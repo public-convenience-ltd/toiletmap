@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/react';
 
-import Radio from './RadioButton';
+import Radio from './RadioInput';
 
 export default {
   title: 'Design-System/Form Elements/Radio Input',
