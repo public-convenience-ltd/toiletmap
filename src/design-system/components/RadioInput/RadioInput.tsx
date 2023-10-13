@@ -9,7 +9,7 @@ A radio button is a graphical control element used to allow users to make a sing
 const Radio = React.forwardRef<
   HTMLInputElement,
   InputHTMLAttributes<HTMLInputElement>
->(function MyRadio(props, ref) {
+>(function Radio(props, ref) {
   return (
     <>
       <label>

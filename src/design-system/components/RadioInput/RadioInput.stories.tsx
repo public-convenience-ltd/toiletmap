@@ -19,7 +19,4 @@ export default {
   },
 } as Meta;
 
-export const Default = (args) => {
-  console.log({ ...args });
-  return <Radio {...args} />;
-};
+export const Default = (args) => <Radio {...args} />;
