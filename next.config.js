@@ -59,5 +59,9 @@ const withNextAnalyser = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
+// https://plausible.io/docs/proxy/guides/nextjs
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { withPlausibleProxy } = require('next-plausible');
+
 // eslint-disable-next-line functional/immutable-data
-module.exports = withNextAnalyser(moduleExports);
+module.exports = withNextAnalyser(withPlausibleProxy()(moduleExports));
