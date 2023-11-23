@@ -1,9 +1,4 @@
-import React, {
-  InputHTMLAttributes,
-  useEffect,
-  useState,
-  useMemo,
-} from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styled from '@emotion/styled';
 import {
   useForm,
@@ -12,6 +7,7 @@ import {
   FieldValues,
 } from 'react-hook-form';
 import Image from 'next/legacy/image';
+import Radio from '../design-system/components/RadioInput';
 import isFunction from 'lodash/isFunction';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
@@ -56,55 +52,6 @@ const Textarea = styled.textarea`
   color: ${(props) => props.theme.colors.primary};
   border: 1px solid ${(props) => props.theme.colors.primary};
 `;
-
-const RadioInput = styled.input`
-  /* visually hidden */
-  position: absolute;
-  clip: rect(1px, 1px, 1px, 1px);
-  padding: 0;
-  border: 0;
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
-
-  + span {
-    position: relative;
-    display: block;
-    height: 1.5rem;
-    width: 1.5rem;
-    margin: 0 auto;
-    border: 1px solid ${(props) => props.theme.colors.primary};
-    border-radius: 50%;
-  }
-
-  :checked + span:after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: calc(100% - 8px);
-    width: calc(100% - 8px);
-    background-color: ${(props) => props.theme.colors.primary};
-    border-radius: 50%;
-  }
-
-  &[data-focus-visible-added] + span {
-    outline: 1px dotted currentColor;
-    outline-offset: 0.5rem;
-  }
-`;
-const Radio = React.forwardRef<
-  HTMLInputElement,
-  InputHTMLAttributes<HTMLInputElement>
->(function MyRadio(props, ref) {
-  return (
-    <>
-      <RadioInput type="radio" ref={ref} {...props} />
-      <span />
-    </>
-  );
-});
 
 interface Question {
   field: string;
@@ -253,7 +200,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
         });
       }
     },
-    [mapState?.map]
+    [mapState?.map],
   );
 
   useEffect(
@@ -262,7 +209,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
         setMapMoved(true);
       }
     },
-    [mapState.searchLocation]
+    [mapState.searchLocation],
   );
 
   const hasOpeningTimes = Boolean(loo.openingTimes);
@@ -285,8 +232,8 @@ const EntryForm = ({ title, loo, children, ...props }) => {
         : '-closes';
       const targetFields = targetDays.flatMap((day) =>
         openingTimesFields.filter(
-          (field) => field.includes(day) && field.includes(target)
-        )
+          (field) => field.includes(day) && field.includes(target),
+        ),
       );
       //This probably can be done in a more performant way
       targetFields.forEach((targetField) => {
@@ -390,7 +337,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
     // construct expected opening times structure if relevant fields have changed
     if (
       [...openingTimesFields, 'has-opening-times'].some(
-        (field: string) => dirtyFieldNames.indexOf(field) >= 0
+        (field: string) => dirtyFieldNames.indexOf(field) >= 0,
       )
     ) {
       if (data['has-opening-times']) {
@@ -610,7 +557,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                   const input = event.target as HTMLInputElement;
                   // payment is required if the toilet is not free
                   setNoPayment(
-                    input.value === '' ? null : input.value === 'true'
+                    input.value === '' ? null : input.value === 'true',
                   );
                 },
               },
