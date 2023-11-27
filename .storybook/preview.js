@@ -10,6 +10,7 @@ import '../src/design-system/components/Button/Button.css';
 import '../src/design-system/components/Icon/Icon.css';
 import '../src/design-system/components/InputField/InputField.css';
 import '../src/design-system/components/RadioInput/RadioInput.css';
+import '../src/design-system/components/TextArea/TextArea.css';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
