@@ -20,7 +20,11 @@
     "functional/no-method-signature": 0,
     "no-var": "error",
     "no-param-reassign": "error",
-    "prefer-const": "error"
+    "prefer-const": "error",
+    "jsx-a11y/label-has-associated-control": [
+      2,
+      { "controlComponents": ["TextArea"] }
+    ]
   },
   "settings": {
     "react": {

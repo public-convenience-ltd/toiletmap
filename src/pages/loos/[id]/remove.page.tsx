@@ -20,6 +20,7 @@ import { GetServerSideProps } from 'next';
 import NotFound from '../../404.page';
 import { css } from '@emotion/react';
 import { useMapState } from '../../../components/MapState';
+import TextArea from '../../../design-system/components/TextArea';
 
 const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
   function (props) {
@@ -58,7 +59,7 @@ const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
         setMapState({ searchLocation: undefined });
         // redirect to updated toilet entry page
         router.push(
-          `/api/loos/${removeData.submitRemovalReport.loo.id}/revalidate?message=removed`
+          `/api/loos/${removeData.submitRemovalReport.loo.id}/revalidate?message=removed`,
         );
       }
     }, [removeData, router, setMapState]);
@@ -138,16 +139,12 @@ const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
           <form onSubmit={onSubmit}>
             <label>
               <b>Reason for removal</b>
-              <textarea
-                type="text"
+              <TextArea
+                rows={4}
                 name="reason"
                 value={reason}
                 onChange={updateReason}
                 required
-                css={{
-                  height: '100px',
-                  width: '100%',
-                }}
               />
             </label>
 
@@ -179,7 +176,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       {
         variables: { id: ctx.params.id as string },
       },
-      ctx
+      ctx,
     );
 
     if (res.props.error || !res.props.data) {
