@@ -29,6 +29,10 @@ module.exports = {
       ...config,
       resolve: {
         ...config.resolve,
+        alias: {
+          ...config.resolve.alias,
+          src: path.resolve(__dirname, '../src'),
+        },
         fallback: {
           ...(config.resolve || {}).fallback,
           https: false,
