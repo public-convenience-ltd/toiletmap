@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { default as DrawerComponent } from '.';
 import Box from '../Box';
 import Icon from '../../design-system/components/Icon';
-import Switch from '../Switch';
+import Switch from '../../design-system/components/Switch';
 
 export default {
   name: 'Drawer',

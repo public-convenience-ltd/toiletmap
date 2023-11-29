@@ -20,7 +20,7 @@ import Box from '../components/Box';
 import Text from '../components/Text';
 import Spacer from '../components/Spacer';
 import VisuallyHidden from '../components/VisuallyHidden';
-import Switch from '../components/Switch';
+import Switch from '../design-system/components/Switch';
 import { WEEKDAYS, isClosed, Weekdays } from '../lib/openingTimes';
 import crosshair from '../../public/crosshair-small.svg';
 
