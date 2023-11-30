@@ -2,7 +2,7 @@ import React from 'react';
 import { usePlausible } from 'next-plausible';
 
 import Box from './Box';
-import Switch from './Switch';
+import Switch from '../design-system/components/Switch';
 import Icon from '../design-system/components/Icon';
 import { IconProps } from '../design-system/components/Icon/Icon.types';
 import config from '../config';
