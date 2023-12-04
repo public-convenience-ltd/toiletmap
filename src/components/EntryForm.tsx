@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import styled from '@emotion/styled';
 import {
   useForm,
   Controller,
@@ -27,6 +26,7 @@ import crosshair from '../../public/crosshair-small.svg';
 import { useMapState } from './MapState';
 import Icon from '../design-system/components/Icon';
 import { css } from '@emotion/react';
+import TextArea from '../design-system/components/TextArea';
 
 type OpeningDayStates =
   | `${Lowercase<Weekdays>}-is-open`
@@ -41,16 +41,6 @@ const openingTimesFields = WEEKDAYS.flatMap((day): OpeningDayStates[] => {
     `${lowercaseDay}-closes`,
   ];
 });
-
-const Textarea = styled.textarea`
-  display: block;
-  height: 10rem;
-  width: 100%;
-  margin-top: ${(props) => props.theme.space[1]}px;
-  padding: ${(props) => props.theme.space[2]}px;
-  color: ${(props) => props.theme.colors.primary};
-  border: 1px solid ${(props) => props.theme.colors.primary};
-`;
 
 interface Question {
   field: string;
@@ -783,10 +773,11 @@ const EntryForm = ({ title, loo, children, ...props }) => {
 
           <Spacer mt={4} />
 
-          <label htmlFor="notes">
+          <label>
             7. Notes
-            <Textarea
+            <TextArea
               name="notes"
+              rows={6}
               defaultValue={loo.notes || ''}
               data-testid="notes"
               placeholder="Add any other useful information about the toilet here"
