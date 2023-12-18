@@ -118,7 +118,7 @@
     "@storybook/addon-interactions": "^7.4.5",
     "@storybook/addon-links": "^7.4.5",
     "@storybook/addon-mdx-gfm": "^7.4.5",
-    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/addon-onboarding": "^1.0.10",
     "@storybook/addon-postcss": "^2.0.0",
     "@storybook/blocks": "^7.4.5",
     "@storybook/nextjs": "^7.4.5",
