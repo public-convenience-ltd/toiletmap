@@ -1,4 +1,4 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import Button from './Button';
 import Icon from '../Icon/Icon';
@@ -6,35 +6,50 @@ import Icon from '../Icon/Icon';
 export default {
   title: 'Design-System/Button',
   component: Button,
-  argTypes: {
-    children: { table: { disable: true } },
-    variant: { table: { disable: true } },
+  tags: ['autodocs'],
+  args: {
+    variant: 'primary',
+    htmlElement: 'button',
+    href: 'www.google.com',
   },
-  args: { href: 'www.google.com' },
-} as ComponentMeta<typeof Button>;
+  argTypes: {
+    variant: {
+      options: ['primary', 'secondary'],
+      control: { type: 'radio' },
+    },
+    htmlElement: {
+      options: ['button', 'a'],
+      control: { type: 'radio' },
+    },
+    href: {
+      control: 'text',
+      description: 'Only required when using the button as a link',
+    },
+  },
+} as Meta;
 
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
-
-export const Primary = Template.bind({});
-
-Primary.args = {
-  children: <span>Primary button</span>,
-  variant: 'primary',
-  htmlElement: 'button',
+export const Primary: StoryObj<typeof Button> = {
+  render: (args) => {
+    return <Button {...args}>Primary</Button>;
+  },
 };
 
-export const Secondary = Template.bind({});
-
-Secondary.args = {
-  children: 'Secondary button',
-  variant: 'secondary',
-  htmlElement: 'button',
+export const Secondary: StoryObj<typeof Button> = {
+  render: () => {
+    return (
+      <Button variant="secondary" htmlElement="button">
+        Secondary
+      </Button>
+    );
+  },
 };
 
-export const WithIcon = Template.bind({});
-
-WithIcon.args = {
-  children: <Icon icon="xmark" size="small" />,
-  variant: 'secondary',
-  htmlElement: 'button',
+export const WithIcon: StoryObj<typeof Button> = {
+  render: () => {
+    return (
+      <Button variant="secondary" htmlElement="button">
+        <Icon icon="xmark" size="small" />
+      </Button>
+    );
+  },
 };

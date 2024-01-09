@@ -1,16 +1,15 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import Badge from './Badge';
 
 export default {
   title: 'Design-System/Badge',
   component: Badge,
-} as ComponentMeta<typeof Badge>;
+  tags: ['autodocs'],
+} as Meta;
 
-const Template: ComponentStory<typeof Badge> = (args) => <Badge {...args} />;
-
-export const Primary = Template.bind({});
-
-Primary.args = {
-  children: 'Primary badge',
+export const Default: StoryObj<typeof Badge> = {
+  render: () => {
+    return <Badge>Badge</Badge>;
+  },
 };

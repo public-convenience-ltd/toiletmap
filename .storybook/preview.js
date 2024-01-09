@@ -2,6 +2,14 @@
 import 'resize-observer-polyfill';
 
 import providersDecorator from './providersDecorator';
+import {
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+} from '@storybook/blocks';
 import { MockedProvider } from '@apollo/client/testing';
 
 // Import design system component styles for our Stories.
@@ -14,6 +22,18 @@ export const parameters = {
       color: /(background|color)$/i,
       date: /Date$/,
     },
+  },
+  docs: {
+    page: () => (
+      <>
+        <Title />
+        <Subtitle />
+        <Description />
+        <Primary />
+        <Controls />
+        <Stories />
+      </>
+    ),
   },
   apolloClient: {
     MockedProvider,
