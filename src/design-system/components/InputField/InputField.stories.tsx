@@ -9,6 +9,7 @@ export default {
   args: {
     placeholder: 'Enter a location e.g. London',
   },
+  tags: ['autodocs'],
   parameters: {
     iframeHeight: 200,
     docs: {

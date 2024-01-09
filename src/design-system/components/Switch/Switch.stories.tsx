@@ -6,6 +6,7 @@ import { useState } from 'react';
 const meta: Meta<typeof Switch> = {
   title: 'Design-System/Form Elements/Switch',
   component: Switch,
+  tags: ['autodocs'],
 };
 
 export default meta;

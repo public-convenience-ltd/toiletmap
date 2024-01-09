@@ -4,7 +4,6 @@ import Radio from './RadioInput';
 
 export default {
   title: 'Design-System/Form Elements/Radio Input',
-
   tags: ['autodocs'],
   args: {
     defaultChecked: false,

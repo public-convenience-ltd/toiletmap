@@ -46,7 +46,8 @@ module.exports = {
     };
   },
   docsPage: {
-    docs: 'automatic',
+    autodocs: 'tag',
+    defaultName: 'Documentation',
   },
   staticDirs: ['../public'],
 };

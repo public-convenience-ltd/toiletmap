@@ -4,6 +4,7 @@ import Icon from './Icon';
 
 export default {
   title: 'Design-System/Icon',
+  tags: ['autodocs'],
   component: Icon,
   args: {
     icon: 'list',
