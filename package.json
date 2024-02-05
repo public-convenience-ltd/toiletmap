@@ -144,7 +144,7 @@
     "chromatic": "^6.17.3",
     "cli-progress": "^3.12.0",
     "css-loader": "^6.8.1",
-    "cypress": "^11.2.0",
+    "cypress": "^13.6.4",
     "cypress-browser-permissions": "^1.1.0",
     "cypress-nextjs-auth0": "^2.1.0",
     "dotenv": "^16.3.1",
