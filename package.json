@@ -63,7 +63,7 @@
     "@monaco-editor/react": "^4.6.0",
     "@mui/base": "5.0.0-alpha.122",
     "@mui/lab": "5.0.0-alpha.124",
-    "@mui/material": "^5.15.11",
+    "@mui/material": "^5.15.13",
     "@prisma/client": "^4.13.0",
     "@react-leaflet/core": "^2.1.0",
     "@sentry/nextjs": "^7.104.0",
