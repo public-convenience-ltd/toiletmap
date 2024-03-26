@@ -16,7 +16,7 @@ import config from '../../config';
 import { usePlausible } from 'next-plausible';
 import dynamic from 'next/dynamic';
 
-const Drawer = dynamic(() => import('../Drawer/Drawer'));
+const Drawer = dynamic(() => import('../../design-system/components/Drawer'));
 
 interface Props {
   isExpanded?: boolean;
@@ -32,7 +32,7 @@ const Arrow = styled(
     shouldForwardProp: (prop) => {
       return isPropValid(prop) && prop !== 'isExpanded';
     },
-  }
+  },
 )`
   transition: transform 0.2s ease;
 
@@ -78,7 +78,7 @@ const Sidebar = () => {
           }}
         />
       ),
-    [isFilterExpanded, isFiltersExpanded, mapState, setMapState]
+    [isFilterExpanded, isFiltersExpanded, mapState, setMapState],
   );
 
   const [appliedFilterCount, setAppliedFilterCount] = useState(0);
@@ -88,10 +88,10 @@ const Sidebar = () => {
       setAppliedFilterCount(
         config.filters
           .map(({ id }) => mapState.appliedFilters?.[id] === true)
-          .reduce((v, c) => +c + v, 0)
+          .reduce((v, c) => +c + v, 0),
       );
     },
-    [mapState.appliedFilters]
+    [mapState.appliedFilters],
   );
 
   const appliedFilterCountRendered = useMemo(() => {
