@@ -5,7 +5,7 @@ import {
   UseFormRegister,
   FieldValues,
 } from 'react-hook-form';
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 import Radio from '../design-system/components/RadioInput';
 import isFunction from 'lodash/isFunction';
 import omit from 'lodash/omit';
