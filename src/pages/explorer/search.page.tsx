@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { withApollo } from '../../api-client/withApollo';
-import { TablePaginationUnstyled } from '@mui/base';
 import {
   LooFilter,
   SortOrder,
@@ -16,6 +15,7 @@ import Button from '../../design-system/components/Button';
 import { css } from '@emotion/react';
 import theme from '../../theme';
 import Link from 'next/link';
+import { TablePagination } from '@mui/base';
 
 const OptionLabel = styled('label')({
   display: 'flex',
@@ -100,10 +100,10 @@ const UnstyledTable = () => {
           },
         },
         undefined,
-        { shallow: true }
+        { shallow: true },
       );
     },
-    [router]
+    [router],
   );
 
   const { data: areaData } = useAreasQuery();
@@ -144,13 +144,13 @@ const UnstyledTable = () => {
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
+    newPage: number,
   ) => {
     setAppliedFilters({ ...appliedFilters, page: newPage });
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setAppliedFilters({
       ...appliedFilters,
@@ -291,7 +291,7 @@ const UnstyledTable = () => {
         </tbody>
         <tfoot>
           <tr>
-            <TablePaginationUnstyled
+            <TablePagination
               rowsPerPageOptions={[
                 5, 10, 25, 50,
                 // { label: 'All', value: availableRows }, Disabled all for now
