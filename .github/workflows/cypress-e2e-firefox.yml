@@ -21,6 +21,11 @@ jobs:
         # run 4 copies of the current job in parallel
         containers: [1, 2, 3, 4, 5]
     steps:
+      - name: Setup firefox
+        id: setup-firefox
+        uses: browser-actions/setup-firefox@v1
+        with:
+          firefox-version: '123.0'
       - name: Checkout
         uses: actions/checkout@v4
       # enables use to use the cache in actions/setup-node
