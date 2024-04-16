@@ -1,8 +1,11 @@
 backend:
   name: github
   repo: public-convenience-ltd/toiletmap
-media_folder: public/img
-public_folder: img
+site_url: https://toiletmap.org.uk/
+display_url: https://toiletmap.org.uk/
+publish_mode: editorial_workflow
+media_folder: public/images/uploads
+public_folder: /images/uploads
 collections:
   - name: "pages"
     label: "Pages"
