@@ -48,6 +48,11 @@ const moduleExports = {
             exclude: /node_modules/,
             loader: 'graphql-tag/loader',
           },
+          {
+            test: /\.md$/,
+            loader: 'frontmatter-markdown-loader',
+            options: { mode: ['react-component'] },
+          },
         ],
       },
     };
