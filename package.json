@@ -153,6 +153,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-storybook": "^0.8.0",
+    "frontmatter-markdown-loader": "^3.7.0",
     "geojson-precision": "^1.0.0",
     "graphql-codegen-apollo-next-ssr": "^1.7.4",
     "graphql-tag": "^2.12.6",

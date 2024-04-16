@@ -18,6 +18,7 @@ build
 
 # OSX
 .DS_Store
+
 # IDE
 .idea
 
@@ -27,6 +28,7 @@ build
 .next
 .loos
 out
+certificates
 
 # Storybook build
 storybook-static
@@ -41,7 +43,7 @@ cypress/downloads
 tsconfig.tsbuildinfo
 
 # Prisma
-
 generated
 
-certificates
+# DecapCMS
+out/
