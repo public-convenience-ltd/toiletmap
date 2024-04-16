@@ -151,7 +151,7 @@
     "dotenv-cli": "^7.4.1",
     "eslint": "^8.57.0",
     "eslint-config-next": "^13.5.4",
-    "eslint-plugin-functional": "^6.4.0",
+    "eslint-plugin-functional": "^6.5.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.8.0",
