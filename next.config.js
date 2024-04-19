@@ -48,16 +48,14 @@ const moduleExports = {
             exclude: /node_modules/,
             loader: 'graphql-tag/loader',
           },
-          {
-            test: /\.md$/,
-            loader: 'frontmatter-markdown-loader',
-            options: { mode: ['react-component'] },
-          },
         ],
       },
     };
   },
 };
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { withContentlayer } = require('next-contentlayer');
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const withNextAnalyser = require('@next/bundle-analyzer')({
@@ -69,4 +67,6 @@ const withNextAnalyser = require('@next/bundle-analyzer')({
 const { withPlausibleProxy } = require('next-plausible');
 
 // eslint-disable-next-line functional/immutable-data
-module.exports = withNextAnalyser(withPlausibleProxy()(moduleExports));
+module.exports = withContentlayer(
+  withNextAnalyser(withPlausibleProxy()(moduleExports)),
+);
