@@ -135,7 +135,7 @@
     "@types/ngeohash": "^0.6.4",
     "@types/node": "^18.16.3",
     "@types/react": "^18.2.74",
-    "@types/react-dom": "^18.2.24",
+    "@types/react-dom": "^18.2.25",
     "@types/styled-system": "^5.1.22",
     "@typescript-eslint/eslint-plugin": "^5.59.1",
     "@typescript-eslint/parser": "^5.59.1",
