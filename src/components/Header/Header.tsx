@@ -16,7 +16,7 @@ import { useFeedbackPopover } from './hooks';
 import Text from '../Text';
 
 // const Feedback = dynamic(() => import('../Feedback/Feedback'));
-const Drawer = dynamic(() => import('../Drawer'));
+const Drawer = dynamic(() => import('../../design-system/components/Drawer'));
 
 const Header = ({ children }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -78,7 +78,7 @@ const Header = ({ children }) => {
 
             <FeedbackPopover />
 
-            <Drawer visible={isMenuVisible} zIndex={200}>
+            <Drawer visible={isMenuVisible} animateFrom="right">
               <MainMenu onMenuItemClick={() => setIsMenuVisible(false)}>
                 {children}
               </MainMenu>
