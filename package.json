@@ -170,7 +170,7 @@
     "start-server-and-test": "^2.0.3",
     "storybook": "7.6.17",
     "storybook-addon-apollo-client": "^5.0.0",
-    "style-loader": "^3.3.4",
+    "style-loader": "^4.0.0",
     "supabase": "^1.153.4",
     "topojson-server": "^3.0.1",
     "topojson-simplify": "^3.0.3",
