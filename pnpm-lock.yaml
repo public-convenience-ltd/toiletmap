@@ -76,9 +76,6 @@ importers:
       auth0:
         specifier: ^3.3.0
         version: 3.3.0
-      contentlayer:
-        specifier: ^0.3.4
-        version: 0.3.4(esbuild@0.18.20)
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -9634,9 +9631,6 @@ packages:
   tslib@2.5.3:
     resolution: {integrity: sha512-mSxlJJwl3BMEQCUNnxXBU9jP4JBktcEGhURcPR6VQVlnP0FdDEsIaz0C35dXNGLyRfrATNofF0F5p2KPxQgB+w==}
 
-  tslib@2.6.2:
-    resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
-
   tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
@@ -13565,7 +13559,7 @@ snapshots:
       object-hash: 3.0.0
       packageurl-js: 1.0.2
       semver: 7.5.4
-      tslib: 2.6.2
+      tslib: 2.7.0
 
   '@snyk/graphlib@2.1.9-patch.3':
     dependencies:
@@ -17359,7 +17353,7 @@ snapshots:
 
   event-loop-spinner@2.2.0:
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.7.0
 
   event-stream@3.3.4:
     dependencies:
@@ -22407,8 +22401,6 @@ snapshots:
   tslib@2.4.1: {}
 
   tslib@2.5.3: {}
-
-  tslib@2.6.2: {}
 
   tslib@2.6.3: {}
 
