@@ -1,5 +1,5 @@
 import { useMapState } from '../MapState';
-import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
+import { MapContainer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { css } from '@emotion/react';
 import Box from '../Box';
@@ -18,6 +18,7 @@ import React from 'react';
 import router from 'next/router';
 import ZoomControl from './ZoomControl';
 import crosshairSvg from '../../../public/crosshair.svg';
+import { leafletLayer } from 'protomaps-leaflet';
 
 const MapTracker = () => {
   const [, setMapState] = useMapState();
@@ -68,6 +69,7 @@ const LooMap: React.FC<LooMapProps> = ({
   controlPositionOverride,
 }) => {
   const [mapState, setMapState] = useMapState();
+  const [tileLayerAdded, setTileLayerAdded] = useState(false);
 
   // const [hydratedToilets, setHydratedToilets] = useState<CompressedLooObject[]>([]);
   const [announcement, setAnnouncement] = React.useState(null);
@@ -98,6 +100,21 @@ const LooMap: React.FC<LooMapProps> = ({
       setMapState({ map: mapRef.current });
     }
   }, [mapRef, mapState.map, setMapState]);
+
+  useEffect(() => {
+    if (!mapRef.current || tileLayerAdded) return;
+
+    const layer = leafletLayer({
+      // Free for non-commercial use https://protomaps.com/
+      url: 'https://api.protomaps.com/tiles/v3/{z}/{x}/{y}.mvt?key=73e8a482f059f3f5',
+      theme: 'white',
+    });
+    // @ts-expect-error -- this is what the docs recommend
+    // https://github.com/protomaps/protomaps-leaflet?tab=readme-ov-file#how-to-use
+    layer.addTo(mapRef.current);
+    // prevent this hook from ever re-running
+    setTileLayerAdded(true);
+  }, [mapRef, tileLayerAdded]);
 
   // Begin accessibility overlay
 
@@ -131,7 +148,7 @@ const LooMap: React.FC<LooMapProps> = ({
       setMapState({ searchLocation: undefined, focus: toilet });
       router.push(`/loos/${toilet.id}`);
     },
-    [intersectingToilets, setMapState]
+    [intersectingToilets, setMapState],
   );
 
   React.useEffect(() => {
@@ -169,7 +186,7 @@ const LooMap: React.FC<LooMapProps> = ({
         },
       });
     },
-    [setMapState]
+    [setMapState],
   );
 
   const onStopLocation = useCallback(() => {
@@ -294,13 +311,6 @@ const LooMap: React.FC<LooMapProps> = ({
           }
         `}
       >
-        <TileLayer
-          attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          minZoom={minZoom}
-          maxZoom={maxZoom}
-        />
-
         {mapState.focus && <CurrentLooMarker loo={mapState.focus} />}
 
         <Markers />
@@ -310,8 +320,8 @@ const LooMap: React.FC<LooMapProps> = ({
             controlPosition !== undefined
               ? controlPosition
               : mapState.focus
-              ? controlPositionClassNames['top']
-              : controlPositionClassNames['bottom']
+                ? controlPositionClassNames['top']
+                : controlPositionClassNames['bottom']
           }
         >
           {alwaysShowGeolocateButton && showControls && <LocateMapControl />}
