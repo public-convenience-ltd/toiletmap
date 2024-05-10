@@ -69,7 +69,6 @@ const LooMap: React.FC<LooMapProps> = ({
   controlPositionOverride,
 }) => {
   const [mapState, setMapState] = useMapState();
-  const [tileLayerAdded, setTileLayerAdded] = useState(false);
 
   // const [hydratedToilets, setHydratedToilets] = useState<CompressedLooObject[]>([]);
   const [announcement, setAnnouncement] = React.useState(null);
@@ -102,8 +101,7 @@ const LooMap: React.FC<LooMapProps> = ({
   }, [mapRef, mapState.map, setMapState]);
 
   useEffect(() => {
-    if (!mapRef.current || tileLayerAdded) return;
-
+    if (!mapState.map) return;
     const layer = leafletLayer({
       // Free for non-commercial use https://protomaps.com/
       url: 'https://api.protomaps.com/tiles/v3/{z}/{x}/{y}.mvt?key=73e8a482f059f3f5',
@@ -111,10 +109,8 @@ const LooMap: React.FC<LooMapProps> = ({
     });
     // @ts-expect-error -- this is what the docs recommend
     // https://github.com/protomaps/protomaps-leaflet?tab=readme-ov-file#how-to-use
-    layer.addTo(mapRef.current);
-    // prevent this hook from ever re-running
-    setTileLayerAdded(true);
-  }, [mapRef, tileLayerAdded]);
+    layer.addTo(mapState.map);
+  }, [mapState.map]);
 
   // Begin accessibility overlay
 
