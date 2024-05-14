@@ -105,7 +105,7 @@ const LooMap: React.FC<LooMapProps> = ({
     const layer = leafletLayer({
       // Free for non-commercial use https://protomaps.com/
       url: 'https://api.protomaps.com/tiles/v3/{z}/{x}/{y}.mvt?key=73e8a482f059f3f5',
-      theme: 'white',
+      theme: 'light',
     });
     // @ts-expect-error -- this is what the docs recommend
     // https://github.com/protomaps/protomaps-leaflet?tab=readme-ov-file#how-to-use
