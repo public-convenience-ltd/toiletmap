@@ -52,4 +52,4 @@ const moduleExports = {
 const { withPlausibleProxy } = require('next-plausible');
 
 // eslint-disable-next-line functional/immutable-data
-module.exports = withPlausibleProxy()(moduleExports);
+module.exports = withContentlayer(withPlausibleProxy(moduleExports));
