@@ -15,7 +15,19 @@ export const Post = defineDocumentType(() => ({
     },
   },
 }));
+
+export const Page = defineDocumentType(() => ({
+  name: 'Page',
+  filePathPattern: `pages/**/*.mdx`,
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+    date: { type: 'date', required: true },
+    author: { type: 'string', required: true },
+  },
+}));
+
 export default makeSource({
   contentDirPath: 'content',
-  documentTypes: [Post],
+  documentTypes: [Post, Page],
 });
