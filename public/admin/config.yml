@@ -1,6 +1,7 @@
 backend:
   name: github
   repo: public-convenience-ltd/toiletmap
+  branch: ob/decap
   site_domain: toiletmap.org.uk
   base_url: https://toiletmap.org.uk
   auth_endpoint: api/decap-oauth
@@ -15,7 +16,8 @@ collections:
     files:
     - label: "Home"
       name: "home"
-      file: "content/home.md"
+      file: "content/pages/home.mdx"
       fields:
         - { label: "Title", name: "title", widget: "string"}
         - { label: "Publish Date", name: "date", widget: "datetime" }
+        - { label: "Author", name: "author", widget: "string" }
