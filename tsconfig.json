@@ -16,8 +16,18 @@
     "incremental": true,
     "downlevelIteration": true,
     "types": ["cypress"],
-    "isolatedModules": true
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "contentlayer/generated": ["./.contentlayer/generated"]
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "next.config.js",
+    ".contentlayer/generated"
+  ],
   "exclude": ["node_modules", "src/@types/resolvers-types.ts"]
 }
