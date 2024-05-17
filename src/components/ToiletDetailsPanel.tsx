@@ -96,7 +96,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
     if (verificationReportState.error) {
       console.error(
         'There was a problem submitting the verification report.',
-        verificationReportState.error
+        verificationReportState.error,
       );
     }
   }, [verificationReportState.error]);
@@ -126,7 +126,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         }
       }
     },
-    [isExpanded, navigateAway]
+    [isExpanded, navigateAway],
   );
 
   React.useEffect(() => {
@@ -238,11 +238,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         </Box>
         <Spacer mb={[0, 2]} />
         Last {verifiedOrUpdated}:{' '}
-        <Link
-          href={`/explorer/loos/${data.id}`}
-          prefetch={false}
-          legacyBehavior
-        >
+        <Link href={`/explorer/loos/${data.id}`} prefetch={false}>
           {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
         </Link>
       </Box>
@@ -255,7 +251,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
       verificationReportState.loading,
       verifiedOrUpdated,
       verifiedOrUpdatedDate,
-    ]
+    ],
   );
 
   if (isExpanded) {
