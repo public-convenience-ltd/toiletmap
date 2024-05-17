@@ -4,15 +4,36 @@ import Box from '../components/Box';
 import Sidebar from '../components/Sidebar/Sidebar';
 import VisuallyHidden from '../components/VisuallyHidden';
 import { useMapState } from '../components/MapState';
-import config from '../config';
 import { withApollo } from '../api-client/withApollo';
 import { useEffect } from 'react';
+import type { Page } from 'contentlayer/generated';
+import { allPages } from 'contentlayer/generated';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
+
+export const getStaticProps = (async () => {
+  try {
+    const pageData = allPages.find(
+      (post) => post._raw.flattenedPath.split('pages/')[1] === 'home',
+    );
+
+    return {
+      props: {
+        pageData,
+      },
+    };
+  } catch {
+    //
+  }
+}) satisfies GetStaticProps<{
+  pageData?: Page;
+}>;
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
-const HomePage = () => {
+const HomePage = ({
+  pageData,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [, setMapState] = useMapState();
-  const pageTitle = config.getTitle('Home');
 
   useEffect(() => {
     setMapState({ focus: undefined, searchLocation: undefined });
@@ -21,11 +42,11 @@ const HomePage = () => {
   return (
     <>
       <Head>
-        <title>{pageTitle}</title>
+        <title>{pageData.title}</title>
       </Head>
 
       <VisuallyHidden>
-        <h1>{pageTitle}</h1>
+        <h1>{pageData.title}</h1>
       </VisuallyHidden>
 
       <Box
