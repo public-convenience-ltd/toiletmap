@@ -5,7 +5,7 @@ import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
 import { Media } from '../Media';
 import Icon from '../../design-system/components/Icon';
-import Logo from '../Logo';
+import Logo from '../../design-system/components/Logo';
 
 import MainMenu from './MainMenu';
 import { useMapState } from '../MapState';
