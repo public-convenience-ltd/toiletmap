@@ -18,8 +18,8 @@ export const Post = defineDocumentType(() => ({
 
 export const Page = defineDocumentType(() => ({
   name: 'Page',
-  filePathPattern: `pages/**/*.mdx`,
-  contentType: 'mdx',
+  filePathPattern: `pages/**/*.md`,
+  contentType: 'markdown',
   fields: {
     title: { type: 'string', required: true },
     date: { type: 'date', required: true },
