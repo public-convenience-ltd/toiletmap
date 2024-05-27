@@ -2,11 +2,11 @@ backend:
   name: github
   repo: public-convenience-ltd/toiletmap
   branch: ob/decap
-  site_domain: toiletmap.org.uk
-  base_url: https://toiletmap.org.uk
+  site_domain: toiletmap-git-ob-decap-public-convenience-ltd.vercel.app/
+  base_url: https://toiletmap-git-ob-decap-public-convenience-ltd.vercel.app
   auth_endpoint: api/decap-oauth
-site_url: https://toiletmap.org.uk/
-display_url: https://toiletmap.org.uk/
+site_url: https://toiletmap-git-ob-decap-public-convenience-ltd.vercel.app/
+display_url: https://toiletmap-git-ob-decap-public-convenience-ltd.vercel.app/
 publish_mode: editorial_workflow
 media_folder: public/images/uploads
 public_folder: /images/uploads
@@ -16,7 +16,7 @@ collections:
     files:
     - label: "Home"
       name: "home"
-      file: "content/pages/home.mdx"
+      file: "content/pages/home.md"
       fields:
         - { label: "Title", name: "title", widget: "string"}
         - { label: "Publish Date", name: "date", widget: "datetime" }
