@@ -13,11 +13,11 @@ public_folder: /images/uploads
 collections:
   - name: "pages"
     label: "Pages"
-    files:
-    - label: "Home"
-      name: "home"
-      file: "content/pages/home.md"
-      fields:
-        - { label: "Title", name: "title", widget: "string"}
-        - { label: "Publish Date", name: "date", widget: "datetime" }
-        - { label: "Author", name: "author", widget: "string" }
+    label_singular: 'Documentation'
+    folder: content/pages
+    extension: "mdx"
+    format: "frontmatter"
+    fields:
+      - { label: "Title", name: "title", widget: "string"}
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Author", name: "author", widget: "string" }
