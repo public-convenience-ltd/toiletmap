@@ -44,7 +44,7 @@ export default function PostPage({
   postData,
   notFound,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  if (!notFound) return null;
+  if (notFound) return null;
   return (
     <Box my={5}>
       <Head>
