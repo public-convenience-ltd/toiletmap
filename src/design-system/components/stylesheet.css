@@ -6,6 +6,7 @@
 @import 'src/design-system/components/Switch/Switch.css';
 @import 'src/design-system/components/TextArea/TextArea.css';
 @import 'src/design-system/components/Drawer/Drawer.css';
+@import 'src/design-system/components/Logo/Logo.css';
 
 /* Leaflet Marker Cluster custom styles */
 .leaflet-marker-icon.marker-cluster {
