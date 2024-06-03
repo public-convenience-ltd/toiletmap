@@ -23,6 +23,7 @@ import {
   CircleSymbolizer,
   GroupSymbolizer,
   Justify,
+  LineSymbolizer,
   OffsetTextSymbolizer,
   TextPlacements,
   labelRules,
@@ -117,7 +118,33 @@ const LooMap: React.FC<LooMapProps> = ({
     const layer = leafletLayer({
       // Free for non-commercial use https://protomaps.com/
       url: 'https://api.protomaps.com/tiles/v3/{z}/{x}/{y}.mvt?key=73e8a482f059f3f5',
-      paintRules: paintRules(mapTheme),
+      paintRules: paintRules(mapTheme).concat(
+        {
+          dataLayer: 'roads',
+          symbolizer: new LineSymbolizer({
+            color: '#bbc',
+            width: (z) => {
+              if (z > 16) return 3;
+              if (z > 15) return 2;
+              return 1;
+            },
+          }),
+          filter: (z, f) => {
+            const kind = f.props['pmap:kind'];
+            return kind === 'other' || kind === 'path';
+          },
+        },
+        {
+          dataLayer: 'roads',
+          symbolizer: new LineSymbolizer({
+            color: '#bbc',
+          }),
+          filter: (z, f) => {
+            const kind = f.props['pmap:kind'];
+            return kind === 'park';
+          },
+        },
+      ),
       labelRules: labelRules(mapTheme).concat(
         {
           dataLayer: 'pois',
@@ -128,13 +155,12 @@ const LooMap: React.FC<LooMapProps> = ({
             }),
             new OffsetTextSymbolizer({
               labelProps: ['name'],
-              fill: '#0a165e',
+              fill: '#889',
               stroke: '#f4f4f4',
               width: 1,
               lineHeight: 0.875,
               font: '400 16px',
               offsetY: 4,
-              // offsetX: 6,
               placements: [TextPlacements.S],
               justify: Justify.Center,
             }),
