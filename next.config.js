@@ -3,6 +3,9 @@
  **/
 const moduleExports = {
   reactStrictMode: true,
+  images: {
+    remotePatterns: [{ hostname: 'avatars.githubusercontent.com' }],
+  },
   transpilePackages: [
     '@react-leaflet/core',
     'react-leaflet',
