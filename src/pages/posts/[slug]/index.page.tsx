@@ -1,17 +1,22 @@
+import React from 'react';
+
 import { allPosts, Post } from 'contentlayer/generated';
 import { format, parseISO } from 'date-fns';
 
 import Head from 'next/head';
-import React from 'react';
+import Image from 'next/image';
 import Box from '../../../components/Box';
 import Container from '../../../components/Container';
 import Spacer from '../../../components/Spacer';
 import Text from '../../../components/Text';
 
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
+import Link from 'next/link';
 
 // export const generateMetadata = ({ params }: { params: { slug: string } }) => {
-//   const post = allPosts.find((post) => post._raw.flattenedPath === params.slug);
+//   const post = allPosts.find(
+//     (post) => post._raw.flattenedPath.split('posts/')[1] === params?.slug,
+//   );
 //   if (!post) throw new Error(`Post not found for slug: ${params.slug}`);
 //   return { title: post.title };
 // };
@@ -21,11 +26,16 @@ export const getStaticPaths = (async () => {
     paths: allPosts.map((post) => ({
       params: { slug: post._raw.flattenedPath.split('posts/')[1] },
     })),
-    fallback: true, // false or "blocking"
+    fallback: true,
   };
 }) satisfies GetStaticPaths;
 
-export const getStaticProps = (async (context) => {
+type Props = {
+  postData: Post;
+  notFound?: boolean;
+};
+
+export const getStaticProps: GetStaticProps<Props> = (async (context) => {
   const postData = allPosts.find(
     (post) =>
       post._raw.flattenedPath.split('posts/')[1] === context?.params?.slug,
@@ -35,16 +45,13 @@ export const getStaticProps = (async (context) => {
   if (!postData) return { props: { postData: null, notFound: true } };
 
   return { props: { postData } };
-}) satisfies GetStaticProps<{
-  postData: Post;
-  notFound?: boolean;
-}>;
+}) satisfies GetStaticProps<Props>;
 
 export default function PostPage({
   postData,
   notFound,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  if (notFound) return null;
+  if (notFound || !postData) return null;
   return (
     <Box my={5}>
       <Head>
@@ -54,10 +61,29 @@ export default function PostPage({
         <Text fontSize={6} fontWeight="bold" textAlign="center">
           <h1>{postData.title}</h1>
         </Text>{' '}
-        <Spacer mb={4} />
-        <Text fontSize={3} fontWeight="bold" textAlign={'center'}>
-          <h2>{postData.author}</h2>
-        </Text>
+        {postData?.profilePictureUrl && (
+          <>
+            <Spacer mb={4} />
+            <section
+              id="profile-picture"
+              style={{ display: 'flex', justifyContent: 'center' }}
+            >
+              <Image
+                style={{ borderRadius: '100%' }}
+                width={100}
+                height={100}
+                src={postData?.profilePictureUrl}
+                alt={`A picture of the author: ${postData.author}`}
+              ></Image>
+            </section>
+            <Spacer mb={4} />
+          </>
+        )}
+        <Link href={postData.profileSocialUrl}>
+          <Text fontSize={3} fontWeight="bold" textAlign={'center'}>
+            <h2>{postData.author}</h2>
+          </Text>
+        </Link>
         <Text textAlign={'center'}>
           <time dateTime={postData.date}>
             {format(parseISO(postData.date), 'LLLL d, yyyy')}

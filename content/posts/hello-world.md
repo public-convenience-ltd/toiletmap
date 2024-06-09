@@ -2,6 +2,8 @@
 title: 'Mapping Public Toilets'
 author: 'Ollie'
 date: 2024-04-16T19:31:20.591Z
+profilePictureUrl: https://avatars.githubusercontent.com/u/1771189?v=4
+profileSocialUrl: https://olliethinks.co.uk/
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vitae placerat leo, non posuere justo. Nulla facilisi. Vivamus ac tempus justo, a volutpat eros. Ut felis magna, semper nec felis non, finibus euismod eros. Vestibulum congue tellus ut augue mattis ullamcorper. Sed et libero eget sapien sollicitudin auctor. Maecenas accumsan pretium neque sed euismod. Nam facilisis felis a massa blandit dictum. Maecenas finibus pretium odio id aliquam. Aenean vel odio nec tellus rutrum hendrerit a quis nisi.

@@ -30,4 +30,6 @@ collections:
       - { label: "Title", name: "title", widget: "string"}
       - { label: "Publish Date", name: "date", widget: "datetime" }
       - { label: "Author", name: "author", widget: "string" }
+      - { label: "Social URL", name: "profileSocialUrl", widget: "string" }
+      - { label: "Profile Image URL", name: "profilePictureUrl", widget: "string" }
       - { label: "Body", name: "body", widget: "markdown" }

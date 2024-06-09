@@ -3,6 +3,9 @@
  **/
 const moduleExports = {
   reactStrictMode: true,
+  images: {
+    remotePatterns: [{ hostname: 'avatars.githubusercontent.com' }],
+  },
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
