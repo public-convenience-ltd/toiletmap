@@ -107,7 +107,7 @@ const MainMenu = ({ children }: IMainMenu) => {
           </Box>
 
           <Box as="li" mt={[3, 0]} mb={['auto', 0]} ml={[0, 4]}>
-            <StyledNavLink href="/posts/hello-world">Blog</StyledNavLink>
+            <StyledNavLink href="/posts">Blog</StyledNavLink>
           </Box>
 
           {user && (
