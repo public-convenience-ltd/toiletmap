@@ -1,12 +1,12 @@
 import { useMapState } from '../MapState';
-import { MapContainer, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { css } from '@emotion/react';
 import Box from '../Box';
 import { Media } from '../Media';
 import Markers from './Markers';
 import CurrentLooMarker from './CurrentLooMarker';
-import LocateMapControl from './LocateMapControl';
+import LocateMapControl, { ControlButton } from './LocateMapControl';
 import { useCallback, useEffect, useState } from 'react';
 import { Map } from 'leaflet';
 import useLocateMapControl from './useLocateMapControl';
@@ -18,7 +18,7 @@ import React from 'react';
 import router from 'next/router';
 import ZoomControl from './ZoomControl';
 import crosshairSvg from '../../../public/crosshair.svg';
-import { leafletLayer } from 'protomaps-leaflet';
+import { ProtomapLayer } from './ProtomapLayer';
 
 const MapTracker = () => {
   const [, setMapState] = useMapState();
@@ -74,6 +74,8 @@ const LooMap: React.FC<LooMapProps> = ({
   const [announcement, setAnnouncement] = React.useState(null);
   const [intersectingToilets, setIntersectingToilets] = useState([]);
 
+  const [useProtomap, setUseProtomaps] = useState(false);
+
   const [renderAccessibilityOverlays, setRenderAccessibilityOverlays] =
     useState(showAccessibilityOverlay);
 
@@ -99,18 +101,6 @@ const LooMap: React.FC<LooMapProps> = ({
       setMapState({ map: mapRef.current });
     }
   }, [mapRef, mapState.map, setMapState]);
-
-  useEffect(() => {
-    if (!mapState.map) return;
-    const layer = leafletLayer({
-      // Free for non-commercial use https://protomaps.com/
-      url: 'https://api.protomaps.com/tiles/v3/{z}/{x}/{y}.mvt?key=73e8a482f059f3f5',
-      theme: 'white',
-    });
-    // @ts-expect-error -- this is what the docs recommend
-    // https://github.com/protomaps/protomaps-leaflet?tab=readme-ov-file#how-to-use
-    layer.addTo(mapState.map);
-  }, [mapState.map]);
 
   // Begin accessibility overlay
 
@@ -307,6 +297,17 @@ const LooMap: React.FC<LooMapProps> = ({
           }
         `}
       >
+        {useProtomap ? (
+          <ProtomapLayer />
+        ) : (
+          <TileLayer
+            attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            minZoom={minZoom}
+            maxZoom={maxZoom}
+          />
+        )}
+
         {mapState.focus && <CurrentLooMarker loo={mapState.focus} />}
 
         <Markers />
@@ -325,6 +326,21 @@ const LooMap: React.FC<LooMapProps> = ({
             {!alwaysShowGeolocateButton && showControls && <LocateMapControl />}
             {showControls && <ZoomControl />}
           </Media>
+        </div>
+
+        <div className="leaflet-bar leaflet-bottom leaflet-left">
+          <ControlButton
+            onClick={() => {
+              setUseProtomaps((toggle) => !toggle);
+            }}
+            className="leaflet-control"
+            css={css`
+              padding: 5px 12px;
+              cursor: pointer;
+            `}
+          >
+            {useProtomap ? 'Revert to old map' : 'Try the new map'}
+          </ControlButton>
         </div>
 
         <MapTracker />
