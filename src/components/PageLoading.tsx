@@ -3,7 +3,7 @@ import React from 'react';
 import Box from './Box';
 import Spacer from './Spacer';
 import Text from './Text';
-import Logo from './Logo';
+import Logo from '../design-system/components/Logo';
 
 const PageLoading = () => (
   <Box

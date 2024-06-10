@@ -45,7 +45,7 @@ const Markers = () => {
       boundingBoxWest,
       boundingBoxNorth,
       boundingBoxEast,
-      geohashPrecision
+      geohashPrecision,
     );
   }, [
     boundingBoxEast,
@@ -131,7 +131,7 @@ const MarkerGroup: React.FC<{
           }),
           alt: 'Public Toilet',
           keyboard: false,
-        }
+        },
       )
         .on('click', () => {
           // Clear the current search upon navigation
@@ -151,20 +151,20 @@ const MarkerGroup: React.FC<{
       marker.getElement()?.setAttribute('aria-label', 'Public Toilet');
       return marker;
     },
-    [router, setMapState]
+    [router, setMapState],
   );
 
   const [appliedFilterTypes, setAppliedFilterTypes] = useState<
     Array<FILTER_TYPE>
   >(
     getAppliedFiltersAsFilterTypes(
-      config.filters.filter((filter) => filters?.[filter.id])
-    )
+      config.filters.filter((filter) => filters?.[filter.id]),
+    ),
   );
 
   useEffect(() => {
     const applied: Array<Filter> = config.filters.filter(
-      (filter) => filters?.[filter.id]
+      (filter) => filters?.[filter.id],
     );
     const appliedFilterTypes = getAppliedFiltersAsFilterTypes(applied);
     window.setTimeout(() => {
@@ -180,7 +180,7 @@ const MarkerGroup: React.FC<{
     const parsedAndFilteredMarkers = data?.loosByGeohash
       .map(parseCompressedLoo)
       .filter((compressedLoo) =>
-        filterCompressedLooByAppliedFilters(compressedLoo, appliedFilterTypes)
+        filterCompressedLooByAppliedFilters(compressedLoo, appliedFilterTypes),
       );
 
     return parsedAndFilteredMarkers
@@ -222,18 +222,9 @@ const MarkerGroup: React.FC<{
           .map((child) => child.getIcon().options?.toiletId)
           .join(',');
 
-        let c = ' marker-cluster-';
-        if (childCount < 10) {
-          c += 'small';
-        } else if (childCount < 100) {
-          c += 'medium';
-        } else {
-          c += 'large';
-        }
-
         return new L.DivIcon({
           html: `<div data-toilets=${containedIds}><span>${childCount}</span></div>`,
-          className: 'marker-cluster' + c,
+          className: 'marker-cluster',
           iconSize: new L.Point(40, 40),
         });
       },
