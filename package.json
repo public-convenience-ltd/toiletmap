@@ -165,7 +165,7 @@
     "postcss": "^8.4.38",
     "postcss-loader": "^7.3.3",
     "prettier": "^3.2.5",
-    "prisma": "^4.13.0",
+    "prisma": "^5.15.0",
     "require-from-string": "^2.0.2",
     "start-server-and-test": "^2.0.3",
     "storybook": "7.6.17",
