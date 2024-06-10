@@ -144,7 +144,7 @@ export const labelRules: LabelRule[] = [
         fill: '#0a165e',
         stroke: '#f4f4f4',
         width: 1.25,
-        lineHeight: 1.125,
+        lineHeight: 1,
         font: `600 14px ${font}`,
         offsetX: 8,
         placements: [TextPlacements.E],
