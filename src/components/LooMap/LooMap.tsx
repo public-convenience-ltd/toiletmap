@@ -319,8 +319,8 @@ const LooMap: React.FC<LooMapProps> = ({
             controlPosition !== undefined
               ? controlPosition
               : mapState.focus
-              ? controlPositionClassNames['top']
-              : controlPositionClassNames['bottom']
+                ? controlPositionClassNames['top']
+                : controlPositionClassNames['bottom']
           }
         >
           {alwaysShowGeolocateButton && showControls && <LocateMapControl />}
