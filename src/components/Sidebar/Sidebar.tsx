@@ -13,7 +13,6 @@ import Filters from '../Filters';
 import Button from '../../design-system/components/Button';
 import { useMapState } from '../MapState';
 import config from '../../config';
-import { usePlausible } from 'next-plausible';
 import dynamic from 'next/dynamic';
 
 const Drawer = dynamic(() => import('../../design-system/components/Drawer'));
@@ -97,7 +96,7 @@ const Sidebar = () => {
   const appliedFilterCountRendered = useMemo(() => {
     return appliedFilterCount > 0 && <b>({appliedFilterCount})</b>;
   }, [appliedFilterCount]);
-  const plausible = usePlausible();
+
   return (
     <section aria-labelledby="heading-search">
       <Media lessThan="md">
@@ -119,8 +118,6 @@ const Sidebar = () => {
               ref={filterToggleRef}
               aria-expanded={isFiltersExpanded}
               onClick={() => {
-                const stateText = isFiltersExpanded ? 'Close' : 'Open';
-                plausible(`${stateText} Filters Panel`);
                 setIsFiltersExpanded(!isFiltersExpanded);
               }}
               aria-label="Filters Panel"
@@ -222,8 +219,6 @@ const Sidebar = () => {
                 alignItems="center"
                 aria-expanded={isFilterExpanded}
                 onClick={() => {
-                  const stateText = isFilterExpanded ? 'Close' : 'Open';
-                  plausible(`${stateText} Filters Panel`);
                   setIsFilterExpanded(!isFilterExpanded);
                 }}
               >

@@ -2,6 +2,7 @@ import { useMapState } from '../MapState';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { css } from '@emotion/react';
+import { usePlausible } from 'next-plausible';
 import Box from '../Box';
 import { Media } from '../Media';
 import Markers from './Markers';
@@ -75,6 +76,7 @@ const LooMap: React.FC<LooMapProps> = ({
   const [intersectingToilets, setIntersectingToilets] = useState([]);
 
   const [useProtomap, setUseProtomaps] = useState(false);
+  const plausible = usePlausible();
 
   const [renderAccessibilityOverlays, setRenderAccessibilityOverlays] =
     useState(showAccessibilityOverlay);
@@ -317,8 +319,8 @@ const LooMap: React.FC<LooMapProps> = ({
             controlPosition !== undefined
               ? controlPosition
               : mapState.focus
-                ? controlPositionClassNames['top']
-                : controlPositionClassNames['bottom']
+              ? controlPositionClassNames['top']
+              : controlPositionClassNames['bottom']
           }
         >
           {alwaysShowGeolocateButton && showControls && <LocateMapControl />}
@@ -331,6 +333,9 @@ const LooMap: React.FC<LooMapProps> = ({
         <div className="leaflet-bar leaflet-bottom leaflet-left">
           <ControlButton
             onClick={() => {
+              plausible(
+                useProtomap ? 'Reject New Map Styles' : 'Use New Map Styles',
+              );
               setUseProtomaps((toggle) => !toggle);
             }}
             className="leaflet-control"
