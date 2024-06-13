@@ -40,7 +40,7 @@ const reducer = (state: MapState, newState: MapState) => {
 
 export const MapStateProvider = ({ children }) => {
   const initialFilterState = config.getSettings(FILTERS_KEY) || [];
-  const initialBasemap = !!config.getSettings(BASEMAP_KEY);
+  const useProtomaps = config.getSettings(BASEMAP_KEY) === 'protomaps';
 
   // default any unsaved filters as 'false'
   config.filters.forEach((filter) => {
@@ -55,7 +55,7 @@ export const MapStateProvider = ({ children }) => {
     searchLocation: undefined,
     geohashLoadState: {},
     currentlyLoadedGeohashes: [],
-    useProtomaps: initialBasemap,
+    useProtomaps,
   } satisfies MapState);
 
   // keep local storage and state in sync
@@ -66,7 +66,7 @@ export const MapStateProvider = ({ children }) => {
     );
     window.localStorage.setItem(
       BASEMAP_KEY,
-      JSON.stringify(!!state.useProtomaps),
+      JSON.stringify(state.useProtomaps ? 'protomaps' : 'osm'),
     );
   }, [state]);
 
