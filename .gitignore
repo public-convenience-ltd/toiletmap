@@ -28,7 +28,6 @@ build
 .loos
 out
 
-
 # Storybook build
 storybook-static
 public/storybook
@@ -47,3 +46,12 @@ tsconfig.tsbuildinfo
 # Prisma
 
 generated
+
+# DecapCMS
+
+out/
+.contentlayer
+
+# Next TLS --experimental-https
+
+certificates

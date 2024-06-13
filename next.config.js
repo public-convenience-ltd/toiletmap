@@ -3,6 +3,9 @@
  **/
 const moduleExports = {
   reactStrictMode: true,
+  images: {
+    remotePatterns: [{ hostname: 'avatars.githubusercontent.com' }],
+  },
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
@@ -55,6 +58,9 @@ const moduleExports = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
+const { withContentlayer } = require('next-contentlayer');
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const withNextAnalyser = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -64,4 +70,6 @@ const withNextAnalyser = require('@next/bundle-analyzer')({
 const { withPlausibleProxy } = require('next-plausible');
 
 // eslint-disable-next-line functional/immutable-data
-module.exports = withNextAnalyser(withPlausibleProxy()(moduleExports));
+module.exports = withContentlayer(
+  withPlausibleProxy()(withNextAnalyser(moduleExports)),
+);
