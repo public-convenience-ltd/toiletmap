@@ -1,4 +1,5 @@
 export const FILTERS_KEY = 'filters';
+export const BASEMAP_KEY = 'basemap';
 
 export type Filters =
   | 'noPayment'
@@ -79,7 +80,7 @@ const config = {
       return JSON.parse(
         (typeof localStorage !== 'undefined' &&
           localStorage.getItem(namespace)) ||
-          '{}'
+          '{}',
       );
     } catch (e) {
       console.warn('Problem parsing JSON setting from local storage: ', e);
@@ -101,7 +102,7 @@ const config = {
       JSON.stringify({
         ...this.getSettings(namespace),
         ...obj,
-      })
+      }),
     );
   },
   getTitle(appendText: string) {

@@ -74,8 +74,6 @@ const LooMap: React.FC<LooMapProps> = ({
   // const [hydratedToilets, setHydratedToilets] = useState<CompressedLooObject[]>([]);
   const [announcement, setAnnouncement] = React.useState(null);
   const [intersectingToilets, setIntersectingToilets] = useState([]);
-
-  const [useProtomap, setUseProtomaps] = useState(false);
   const plausible = usePlausible();
 
   const [renderAccessibilityOverlays, setRenderAccessibilityOverlays] =
@@ -299,7 +297,7 @@ const LooMap: React.FC<LooMapProps> = ({
           }
         `}
       >
-        {useProtomap ? (
+        {mapState.useProtomaps ? (
           <ProtomapLayer />
         ) : (
           <TileLayer
@@ -334,9 +332,11 @@ const LooMap: React.FC<LooMapProps> = ({
           <ControlButton
             onClick={() => {
               plausible(
-                useProtomap ? 'Reject New Map Styles' : 'Use New Map Styles',
+                mapState.useProtomaps
+                  ? 'Reject New Map Styles'
+                  : 'Use New Map Styles',
               );
-              setUseProtomaps((toggle) => !toggle);
+              setMapState({ useProtomaps: !mapState.useProtomaps });
             }}
             className="leaflet-control"
             css={css`
@@ -344,7 +344,7 @@ const LooMap: React.FC<LooMapProps> = ({
               cursor: pointer;
             `}
           >
-            {useProtomap ? 'Revert to old map' : 'Try the new map'}
+            {mapState.useProtomaps ? 'Revert to old map' : 'Try the new map'}
           </ControlButton>
         </div>
 
