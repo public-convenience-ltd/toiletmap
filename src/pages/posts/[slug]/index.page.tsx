@@ -12,14 +12,16 @@ import Text from '../../../components/Text';
 
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import Link from 'next/link';
+import NotFound from 'src/pages/404.page';
+import config from 'src/config';
 
-// export const generateMetadata = ({ params }: { params: { slug: string } }) => {
-//   const post = allPosts.find(
-//     (post) => post._raw.flattenedPath.split('posts/')[1] === params?.slug,
-//   );
-//   if (!post) throw new Error(`Post not found for slug: ${params.slug}`);
-//   return { title: post.title };
-// };
+export const generateMetadata = ({ params }: { params: { slug: string } }) => {
+  const post = allPosts.find(
+    (post) => post._raw.flattenedPath.split('posts/')[1] === params?.slug,
+  );
+  if (!post) throw new Error(`Post not found for slug: ${params.slug}`);
+  return { title: config.getTitle(post.title) };
+};
 
 export const getStaticPaths = (async () => {
   return {
@@ -51,11 +53,11 @@ export default function PostPage({
   postData,
   notFound,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  if (notFound || !postData) return null;
+  if (notFound || !postData) return <NotFound />;
   return (
     <Box my={5}>
       <Head>
-        <title>{postData.title}</title>
+        <title>{config.getTitle(postData.title)}</title>
       </Head>
       <Container maxWidth={845}>
         <Text fontSize={6} fontWeight="bold" textAlign="center">

@@ -15,6 +15,17 @@ export default {
  * Index
  */
 export const Index = (props) => {
-  return <Main Component={IndexPageNext} pageProps={props} map={<LooMap />} />;
+  return (
+    <Main
+      Component={IndexPageNext}
+      pageProps={{
+        ...props,
+        pageData: allPages.find(
+          (post) => post._raw.flattenedPath.split('pages/')[1] === 'home',
+        ),
+      }}
+      map={<LooMap />}
+    />
+  );
 };
 Index.storyName = 'Home Page';
