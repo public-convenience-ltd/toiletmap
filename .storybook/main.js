@@ -32,6 +32,10 @@ module.exports = {
         alias: {
           ...config.resolve.alias,
           src: path.resolve(__dirname, '../src'),
+          'contentlayer/generated': path.resolve(
+            __dirname,
+            '../.contentlayer/generated',
+          ),
         },
         fallback: {
           ...(config.resolve || {}).fallback,
