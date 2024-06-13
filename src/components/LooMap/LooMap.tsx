@@ -2,11 +2,12 @@ import { useMapState } from '../MapState';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { css } from '@emotion/react';
+import { usePlausible } from 'next-plausible';
 import Box from '../Box';
 import { Media } from '../Media';
 import Markers from './Markers';
 import CurrentLooMarker from './CurrentLooMarker';
-import LocateMapControl from './LocateMapControl';
+import LocateMapControl, { ControlButton } from './LocateMapControl';
 import { useCallback, useEffect, useState } from 'react';
 import { Map } from 'leaflet';
 import useLocateMapControl from './useLocateMapControl';
@@ -18,6 +19,7 @@ import React from 'react';
 import router from 'next/router';
 import ZoomControl from './ZoomControl';
 import crosshairSvg from '../../../public/crosshair.svg';
+import { ProtomapLayer } from './ProtomapLayer';
 
 const MapTracker = () => {
   const [, setMapState] = useMapState();
@@ -72,6 +74,7 @@ const LooMap: React.FC<LooMapProps> = ({
   // const [hydratedToilets, setHydratedToilets] = useState<CompressedLooObject[]>([]);
   const [announcement, setAnnouncement] = React.useState(null);
   const [intersectingToilets, setIntersectingToilets] = useState([]);
+  const plausible = usePlausible();
 
   const [renderAccessibilityOverlays, setRenderAccessibilityOverlays] =
     useState(showAccessibilityOverlay);
@@ -131,7 +134,7 @@ const LooMap: React.FC<LooMapProps> = ({
       setMapState({ searchLocation: undefined, focus: toilet });
       router.push(`/loos/${toilet.id}`);
     },
-    [intersectingToilets, setMapState]
+    [intersectingToilets, setMapState],
   );
 
   React.useEffect(() => {
@@ -169,7 +172,7 @@ const LooMap: React.FC<LooMapProps> = ({
         },
       });
     },
-    [setMapState]
+    [setMapState],
   );
 
   const onStopLocation = useCallback(() => {
@@ -294,12 +297,16 @@ const LooMap: React.FC<LooMapProps> = ({
           }
         `}
       >
-        <TileLayer
-          attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          minZoom={minZoom}
-          maxZoom={maxZoom}
-        />
+        {mapState.useProtomaps ? (
+          <ProtomapLayer />
+        ) : (
+          <TileLayer
+            attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            minZoom={minZoom}
+            maxZoom={maxZoom}
+          />
+        )}
 
         {mapState.focus && <CurrentLooMarker loo={mapState.focus} />}
 
@@ -310,8 +317,8 @@ const LooMap: React.FC<LooMapProps> = ({
             controlPosition !== undefined
               ? controlPosition
               : mapState.focus
-              ? controlPositionClassNames['top']
-              : controlPositionClassNames['bottom']
+                ? controlPositionClassNames['top']
+                : controlPositionClassNames['bottom']
           }
         >
           {alwaysShowGeolocateButton && showControls && <LocateMapControl />}
@@ -319,6 +326,26 @@ const LooMap: React.FC<LooMapProps> = ({
             {!alwaysShowGeolocateButton && showControls && <LocateMapControl />}
             {showControls && <ZoomControl />}
           </Media>
+        </div>
+
+        <div className="leaflet-bar leaflet-bottom leaflet-left">
+          <ControlButton
+            onClick={() => {
+              plausible(
+                mapState.useProtomaps
+                  ? 'Reject New Map Styles'
+                  : 'Use New Map Styles',
+              );
+              setMapState({ useProtomaps: !mapState.useProtomaps });
+            }}
+            className="leaflet-control"
+            css={css`
+              padding: 5px 12px;
+              cursor: pointer;
+            `}
+          >
+            {mapState.useProtomaps ? 'Revert to old map' : 'Try the new map'}
+          </ControlButton>
         </div>
 
         <MapTracker />

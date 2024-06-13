@@ -1,7 +1,7 @@
 import { Map } from 'leaflet';
 import React, { Dispatch, useEffect } from 'react';
 import { Loo } from '../api-client/graphql';
-import config, { Filters, FILTERS_KEY } from '../config';
+import config, { BASEMAP_KEY, Filters, FILTERS_KEY } from '../config';
 
 import { UseLocateMapControl } from './LooMap/useLocateMapControl';
 
@@ -28,6 +28,7 @@ interface MapState {
   locationServices?: UseLocateMapControl;
   currentlyLoadedGeohashes?: string[];
   geohashLoadState?: Record<string, boolean>;
+  useProtomaps?: boolean;
 }
 
 const reducer = (state: MapState, newState: MapState) => {
@@ -39,6 +40,7 @@ const reducer = (state: MapState, newState: MapState) => {
 
 export const MapStateProvider = ({ children }) => {
   const initialFilterState = config.getSettings(FILTERS_KEY) || [];
+  const useProtomaps = config.getSettings(BASEMAP_KEY) === 'protomaps';
 
   // default any unsaved filters as 'false'
   config.filters.forEach((filter) => {
@@ -53,13 +55,18 @@ export const MapStateProvider = ({ children }) => {
     searchLocation: undefined,
     geohashLoadState: {},
     currentlyLoadedGeohashes: [],
-  } as MapState);
+    useProtomaps,
+  } satisfies MapState);
 
   // keep local storage and state in sync
   useEffect(() => {
     window.localStorage.setItem(
       FILTERS_KEY,
-      JSON.stringify(state.appliedFilters || {})
+      JSON.stringify(state.appliedFilters || {}),
+    );
+    window.localStorage.setItem(
+      BASEMAP_KEY,
+      JSON.stringify(state.useProtomaps ? 'protomaps' : 'osm'),
     );
   }, [state]);
 
