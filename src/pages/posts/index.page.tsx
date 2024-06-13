@@ -19,9 +19,6 @@ type Props = {
 };
 
 export const getStaticProps: GetStaticProps<Props> = (async () => {
-  for (let i = 0; i < 10; i++) {
-    allPosts.push(allPosts[0]);
-  }
   return { props: { posts: allPosts } };
 }) satisfies GetStaticProps<Props>;
 
@@ -35,6 +32,7 @@ const PostWrapper = styled(Box)`
 export default function PostPage({
   posts,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const postsAvailable = posts && posts.length > 0;
   return (
     <Box my={5}>
       <Head>
@@ -46,38 +44,44 @@ export default function PostPage({
         </Text>
         <Spacer mb={5} />
         <PostWrapper>
-          {posts.map((postData, i) => (
-            <Box
-              key={postData._id + i}
-              display="flex"
-              flexDirection="column"
-              flex="50%"
-            >
-              <Link
-                href={postData._raw.flattenedPath}
-                style={{ display: 'flex', gap: '.2rem' }}
+          {!postsAvailable && (
+            <Text fontSize={4} fontWeight="bold">
+              <p>Our blog is currently out of paper—check back soon!</p>
+            </Text>
+          )}
+          {postsAvailable &&
+            posts.map((postData, i) => (
+              <Box
+                key={postData._id + i}
+                display="flex"
+                flexDirection="column"
+                flex="50%"
               >
-                <Text fontSize={4} fontWeight="bold">
-                  <h2>{postData.title}</h2>
-                </Text>
-              </Link>
-              <Box style={{ display: 'inline-flex', gap: '.2rem' }}>
                 <Link
-                  href={postData.profileSocialUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={postData._raw.flattenedPath}
+                  style={{ display: 'flex', gap: '.2rem' }}
                 >
-                  <Text>{postData.author}</Text>
+                  <Text fontSize={4} fontWeight="bold">
+                    <h2>{postData.title}</h2>
+                  </Text>
                 </Link>
-                <Text>—</Text>
-                <Text>
-                  <time dateTime={postData.date}>
-                    {format(parseISO(postData.date), 'LLLL d, yyyy')}
-                  </time>
-                </Text>
+                <Box style={{ display: 'inline-flex', gap: '.2rem' }}>
+                  <Link
+                    href={postData.profileSocialUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Text>{postData.author}</Text>
+                  </Link>
+                  <Text>—</Text>
+                  <Text>
+                    <time dateTime={postData.date}>
+                      {format(parseISO(postData.date), 'LLLL d, yyyy')}
+                    </time>
+                  </Text>
+                </Box>
               </Box>
-            </Box>
-          ))}
+            ))}
         </PostWrapper>
       </Container>
     </Box>
