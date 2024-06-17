@@ -23,8 +23,8 @@ dependencies:
     specifier: ^3.9.10
     version: 3.9.10(@types/react@18.2.74)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
   '@artsy/fresnel':
-    specifier: ^6.2.1
-    version: 6.2.1(react@18.2.0)
+    specifier: ^7.1.4
+    version: 7.1.4(react@18.2.0)
   '@auth0/nextjs-auth0':
     specifier: ^1.9.2
     version: 1.9.2(next@13.5.4)
@@ -500,11 +500,11 @@ packages:
       - encoding
     dev: true
 
-  /@artsy/fresnel@6.2.1(react@18.2.0):
-    resolution: {integrity: sha512-UAyHZU64Vie3sLDdL3qD+7pODGzKNu9pSpxGKpDOCaiBvCDZnFXIfJEEfV9v9i+QiJJwzO+lqsFwvw6YiJeXFQ==}
+  /@artsy/fresnel@7.1.4(react@18.2.0):
+    resolution: {integrity: sha512-qbUdxzlcI9Q9Ez+HfYDq7hlLoeFKC8EKcCckW+EltWu9SWL3px4QZIkr7NwYEz13q/nLvAlHMnbJ3TpSEEZ1zg==}
     engines: {node: '>=12.20.2', yarn: 1.x.x}
     peerDependencies:
-      react: '>=16.3.0'
+      react: '>=18.0.0'
     dependencies:
       react: 18.2.0
     dev: false
