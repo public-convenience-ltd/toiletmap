@@ -66,7 +66,7 @@
     "@mui/material": "^5.15.15",
     "@prisma/client": "^4.13.0",
     "@react-leaflet/core": "^2.1.0",
-    "@sentry/nextjs": "^7.109.0",
+    "@sentry/nextjs": "^8.9.2",
     "@styled-system/prop-types": "^5.1.5",
     "@vercel/analytics": "^1.2.2",
     "auth0": "^3.3.0",
