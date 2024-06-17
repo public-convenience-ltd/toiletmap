@@ -148,7 +148,7 @@
     "cypress-browser-permissions": "^1.1.0",
     "cypress-nextjs-auth0": "^2.1.0",
     "dotenv": "^16.4.5",
-    "dotenv-cli": "^7.4.1",
+    "dotenv-cli": "^7.4.2",
     "eslint": "^8.57.0",
     "eslint-config-next": "^13.5.4",
     "eslint-plugin-functional": "^6.4.0",
