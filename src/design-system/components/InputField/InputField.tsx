@@ -1,6 +1,8 @@
 import { forwardRef } from 'react';
 
-const InputField = forwardRef<HTMLInputElement>((props, ref) => {
+type InputProps = React.HTMLProps<HTMLInputElement>;
+
+const InputField = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   return <input ref={ref} className="input" {...props} />;
 });
 
