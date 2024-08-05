@@ -172,7 +172,7 @@
     "storybook": "7.6.17",
     "storybook-addon-apollo-client": "^5.0.0",
     "style-loader": "^3.3.4",
-    "supabase": "^1.153.4",
+    "supabase": "^1.187.10",
     "topojson-server": "^3.0.1",
     "topojson-simplify": "^3.0.3",
     "ts-jest": "^29.1.2",
