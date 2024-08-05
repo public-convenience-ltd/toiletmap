@@ -97,7 +97,7 @@
     "styled-system": "^5.1.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.4",
+    "@babel/core": "^7.25.2",
     "@babel/preset-typescript": "^7.24.1",
     "@emotion/babel-preset-css-prop": "^11.11.0",
     "@faker-js/faker": "^7.6.0",
