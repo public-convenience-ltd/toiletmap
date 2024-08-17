@@ -47,3 +47,5 @@ tsconfig.tsbuildinfo
 # Prisma
 
 generated
+
+certificates
