@@ -167,6 +167,9 @@ CREATE TABLE IF NOT EXISTS public.areas (
     version INTEGER
 );
 
+-- Setup row-level security on public.areas
+ALTER TABLE public.areas enable row level security;
+
 -- Grant permissions on public.areas
 ALTER TABLE IF EXISTS public.areas OWNER TO postgres;
 GRANT ALL ON TABLE public.areas TO authenticated;
@@ -225,6 +228,9 @@ ALTER TABLE IF EXISTS public.toilets OWNER TO postgres;
 GRANT ALL ON TABLE public.toilets TO authenticated;
 GRANT ALL ON TABLE public.toilets TO service_role;
 GRANT ALL ON TABLE public.toilets TO postgres;
+
+-- Setup row-level security on public.toilets
+ALTER TABLE public.toilets enable row level security;
 
 -- Create audit triggers for public.toilets
 CREATE TRIGGER audit_i_u_d
