@@ -1,3 +1,7 @@
+-- Enable postgis extension
+CREATE EXTENSION IF NOT EXISTS postgis SCHEMA extensions;
+
+
 /*
     Generic Audit Trigger
     Linear Time Record Version History
@@ -151,10 +155,10 @@ BEGIN
 END;
 $$;
 
--- End supa_audit
+-- Setup row-level security on audit.record_version
+ALTER TABLE audit.record_version enable row level security;
 
--- Enable postgis extension
-CREATE EXTENSION IF NOT EXISTS postgis SCHEMA extensions;
+-- End supa_audit
 
 -- Create or update the public.areas table
 CREATE TABLE IF NOT EXISTS public.areas (
