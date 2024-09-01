@@ -191,19 +191,22 @@ export const getLoosByProximity = async (
 ) => {
   const nearbyLoos = (await prisma.$queryRaw`
         SELECT
-          loo.id, loo.name, active, men, women, no_payment, notes, opening_times, payment_details,
-          accessible, active, all_gender, attended, automatic, location, baby_change, children, created_at,
-          removal_reason, radar, urinal_only, verified_at,updated_at,geohash,
+          loo.id, loo.name, loo.active, loo.men, loo.women, loo.no_payment, loo.notes, loo.opening_times,
+          loo.payment_details, loo.accessible, loo.all_gender, loo.attended, loo.automatic, loo.location,
+          loo.baby_change, loo.children, loo.created_at, loo.removal_reason, loo.radar, loo.urinal_only,
+          loo.verified_at, loo.updated_at, loo.geohash,
           st_distancesphere(
-            geography::geometry,
+            loo.geography::geometry,
             ST_MakePoint(${lng}, ${lat})
           ) as distance,
           area.name as area_name,
-          area.type as area_type from toilets loo inner join areas area on area.id = loo.area_id
-          where st_distancesphere(
+          area.type as area_type
+        FROM toilets loo
+        INNER JOIN areas area ON area.id = loo.area_id
+        WHERE st_distancesphere(
             loo.geography::geometry,
             ST_MakePoint(${lng}, ${lat})
-          ) <= ${radius}
+        ) <= ${radius}
       `) as (toilets & {
     distance: number;
     area_name?: string;

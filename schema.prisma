@@ -85,6 +85,17 @@ model record_version {
   @@schema("audit")
 }
 
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model feedback {
+  id            Int       @id @default(autoincrement())
+  email         String?   @db.VarChar(255)
+  feedback_text String
+  route         String
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}
+
 enum operation {
   INSERT
   UPDATE
