@@ -47,9 +47,9 @@
     "prisma:postgres:generate": "prisma generate",
     "prisma:db:pull": "npm-run-all -p prisma:postgres:db:pull",
     "prisma:postgres:db:pull": "prisma db pull",
-    "supabase:start": "SUPABASE_SCANNER_BUFFER_SIZE=100mb  supabase start",
+    "supabase:start": "SUPABASE_SCANNER_BUFFER_SIZE=100mb supabase start",
     "supabase:stop": "supabase stop",
-    "supabase:reset": "SUPABASE_SCANNER_BUFFER_SIZE=100mb  supabase db reset"
+    "supabase:reset": "SUPABASE_SCANNER_BUFFER_SIZE=100mb supabase db reset"
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",

@@ -2,8 +2,9 @@ import { Stack } from '@mui/material';
 import React, { useRef, useState } from 'react';
 import Badge from '../../design-system/components/Badge';
 import Button from '../../design-system/components/Button';
-import Box from '../Box';
 import InputField from '../../design-system/components/InputField';
+import Link from 'next/link';
+import TextArea from '../../design-system/components/TextArea';
 
 enum FeedbackState {
   SUCCESS = 0,
@@ -15,7 +16,6 @@ const Feedback = () => {
   const [submitState, setSubmitState] = useState(FeedbackState.PENDING);
 
   const feedbackTextArea = useRef<HTMLTextAreaElement>();
-  const nameInput = useRef<HTMLInputElement>();
   const emailInput = useRef<HTMLInputElement>();
 
   const submitFeedback = async () => {
@@ -25,13 +25,11 @@ const Feedback = () => {
     const hasUserInputText = feedbackTextArea.current?.value.length > 0;
 
     if (hasUserInputText) {
-      const input = `
-Feedback :love_letter: : ${feedbackTextArea.current.value}
-Name: ${nameInput.current.value ?? 'Not provided'}
-Email: ${emailInput.current.value ?? 'Not provided'}
-      `;
+      const input = feedbackTextArea.current.value;
       const payload = {
         text: input,
+        email: emailInput.current.value,
+        route: window.location.pathname,
       };
 
       try {
@@ -46,8 +44,6 @@ Email: ${emailInput.current.value ?? 'Not provided'}
         // eslint-disable-next-line functional/immutable-data
         feedbackTextArea.current.value = '';
         // eslint-disable-next-line functional/immutable-data
-        nameInput.current.value = '';
-        // eslint-disable-next-line functional/immutable-data
         emailInput.current.value = '';
 
         setSubmitState(FeedbackState.SUCCESS);
@@ -59,29 +55,40 @@ Email: ${emailInput.current.value ?? 'Not provided'}
 
   return (
     <Stack spacing="1rem" padding="0.5rem" width="fit-content">
-      <label htmlFor="nameInput">Name (optional)</label>
-      <InputField id="nameInput" ref={nameInput} type="text" />
+      {submitState === FeedbackState.SUCCESS && <Badge>Thank you!</Badge>}
 
-      <label htmlFor="emailInput">Email (optional)</label>
+      <label htmlFor="emailInput" style={{ fontWeight: 'bold' }}>
+        Email (optional)
+      </label>
       <InputField id="emailInput" ref={emailInput} type="email" />
 
-      <label htmlFor="feedbackTextArea">Feedback</label>
-      <Box
-        as="textarea"
-        id="feedbackTextArea"
+      <label htmlFor="feedbackTextArea" style={{ fontWeight: 'bold' }}>
+        Feedback
+      </label>
+      <TextArea
         ref={feedbackTextArea}
-        resize={'none'}
-        height="16rem"
-        width={['15rem', '20rem']}
+        id="feedbackTextArea"
+        style={{
+          resize: 'none',
+          height: '16rem',
+          width: '15rem',
+        }}
         placeholder={`The Toilet Map is a free and open source project that we maintain in our spare time.
 
 We'd be so grateful if you could take a moment to give us feedback on how we could make your experience even better.`}
         aria-description={`The Toilet Map is a free and open source project that we maintain in our spare time.
 
   We'd be so grateful if you could take a moment to give us feedback on how we could make your experience even better.`}
-      ></Box>
+      ></TextArea>
 
-      {submitState === FeedbackState.SUCCESS && <Badge>Thank you!</Badge>}
+      <Link
+        target="_blank"
+        href="/privacy"
+        style={{ fontSize: 'var(--text--1)' }}
+      >
+        Privacy Policy
+      </Link>
+
       <Button
         htmlElement="button"
         variant="primary"
