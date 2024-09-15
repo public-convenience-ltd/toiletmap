@@ -1,6 +1,11 @@
+-- Create a limited service role for toilet map.
+-- Give the role login privileges.
+CREATE ROLE toiletmap_web WITH LOGIN;
+ALTER ROLE toiletmap_web WITH PASSWORD 'toiletmap_web';
+ALTER ROLE toiletmap_web SET search_path = "\$user", public, extensions, audit;
+
 -- Enable postgis extension
 CREATE EXTENSION IF NOT EXISTS postgis SCHEMA extensions;
-
 
 /*
     Generic Audit Trigger
@@ -157,6 +162,10 @@ $$;
 
 -- Setup row-level security on audit.record_version
 ALTER TABLE audit.record_version enable row level security;
+GRANT ALL ON TABLE audit.record_version TO authenticated;
+GRANT ALL ON TABLE audit.record_version TO service_role;
+GRANT ALL ON TABLE audit.record_version TO anon;
+GRANT ALL ON TABLE audit.record_version TO postgres;
 
 -- End supa_audit
 
@@ -178,6 +187,7 @@ ALTER TABLE public.areas enable row level security;
 ALTER TABLE IF EXISTS public.areas OWNER TO postgres;
 GRANT ALL ON TABLE public.areas TO authenticated;
 GRANT ALL ON TABLE public.areas TO service_role;
+GRANT ALL ON TABLE public.areas TO anon;
 GRANT ALL ON TABLE public.areas TO postgres;
 
 -- Create audit triggers for public.areas
@@ -231,6 +241,7 @@ CREATE TABLE IF NOT EXISTS public.toilets (
 ALTER TABLE IF EXISTS public.toilets OWNER TO postgres;
 GRANT ALL ON TABLE public.toilets TO authenticated;
 GRANT ALL ON TABLE public.toilets TO service_role;
+GRANT ALL ON TABLE public.toilets TO anon;
 GRANT ALL ON TABLE public.toilets TO postgres;
 
 -- Setup row-level security on public.toilets
@@ -272,3 +283,60 @@ CREATE TRIGGER loo_area_trigger_insert
     BEFORE INSERT ON public.toilets
     FOR EACH ROW
     EXECUTE FUNCTION public.determine_area_loo_is_within_on_upsert();
+
+
+GRANT ALL ON SCHEMA public TO toiletmap_web;
+GRANT ALL ON SCHEMA audit TO toiletmap_web;
+GRANT ALL ON SCHEMA extensions TO toiletmap_web;
+
+GRANT SELECT ON TABLE extensions.spatial_ref_sys TO toiletmap_web;
+
+-- Grant permissions on public.toilets and modify RLS policies.
+GRANT INSERT ON TABLE public.toilets TO toiletmap_web;
+GRANT SELECT ON TABLE public.toilets TO toiletmap_web;
+GRANT UPDATE ON TABLE public.toilets TO toiletmap_web;
+GRANT REFERENCES ON TABLE public.toilets TO toiletmap_web;
+GRANT TRIGGER ON TABLE public.toilets TO toiletmap_web;
+
+
+GRANT EXECUTE ON FUNCTION public.determine_area_loo_is_within_on_upsert() TO toiletmap_web;
+GRANT EXECUTE ON FUNCTION public.determine_area_loo_is_within_on_upsert() TO toiletmap_web;
+
+CREATE POLICY select_policy ON public.toilets
+    FOR SELECT
+    TO toiletmap_web
+    USING ( true );  -- Allows all selects
+
+CREATE POLICY insert_policy ON public.toilets
+    FOR INSERT
+    TO toiletmap_web
+    WITH CHECK (true);  -- Allows all inserts
+
+CREATE POLICY update_policy ON public.toilets
+    FOR UPDATE
+    TO toiletmap_web
+    USING (true);  -- Allows all updates
+
+-- Grant permissions on public.areas
+GRANT SELECT ON TABLE public.areas TO toiletmap_web;
+
+CREATE POLICY select_policy ON public.areas
+    FOR SELECT
+    TO toiletmap_web
+    USING ( true );  -- Allows all selects
+
+
+-- Grant permissions on audit.record_version
+
+GRANT SELECT ON TABLE audit.record_version TO toiletmap_web;
+GRANT INSERT ON TABLE audit.record_version TO toiletmap_web;
+
+CREATE POLICY select_policy ON audit.record_version
+    FOR SELECT
+    TO toiletmap_web
+    USING ( true );  -- Allows all selects
+
+CREATE POLICY insert_policy ON audit.record_version
+    FOR INSERT
+    TO toiletmap_web
+    WITH CHECK (true);  -- Allows all inserts
