@@ -317,7 +317,7 @@ CREATE POLICY update_policy ON public.toilets
     TO toiletmap_web
     USING (true);  -- Allows all updates
 
--- Grant permissions on public.areas
+-- Grant permissions on public.areas and set RLS policies.
 GRANT SELECT ON TABLE public.areas TO toiletmap_web;
 
 CREATE POLICY select_policy ON public.areas
@@ -326,10 +326,10 @@ CREATE POLICY select_policy ON public.areas
     USING ( true );  -- Allows all selects
 
 
--- Grant permissions on audit.record_version
-
+-- Grant permissions on audit.record_version and set RLS policies.
 GRANT SELECT ON TABLE audit.record_version TO toiletmap_web;
 GRANT INSERT ON TABLE audit.record_version TO toiletmap_web;
+GRANT UPDATE ON TABLE audit.record_version TO toiletmap_web;
 
 CREATE POLICY select_policy ON audit.record_version
     FOR SELECT
@@ -340,3 +340,8 @@ CREATE POLICY insert_policy ON audit.record_version
     FOR INSERT
     TO toiletmap_web
     WITH CHECK (true);  -- Allows all inserts
+
+CREATE POLICY update_policy ON audit.record_version
+    FOR UPDATE
+    TO toiletmap_web
+    USING (true);  -- Allows all updates
