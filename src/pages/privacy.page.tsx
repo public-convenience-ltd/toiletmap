@@ -64,7 +64,7 @@ const PrivacyPage = () => {
           Public Convenience Ltd for moderating the dataset.
         </p>
         <p>
-          The content of feedback submitted via the site "feedback" mechanism will
+          The content of feedback submitted via the site feedback mechanism will
           be reviewed by a human and may be used to improve the service. It may pass
           through third party services in legislative regions with different privacy
           protections before it reaches us.
