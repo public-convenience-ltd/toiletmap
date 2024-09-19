@@ -61,9 +61,24 @@ const PrivacyPage = () => {
         </p>
         <p>
           A full list of a contributor’s activities will only be accessible to
-          Public Convenience Ltd for moderating the dataset. A contributor’s
-          full email address will never be disclosed or shared and is only
-          visible to Public Convenience Ltd.
+          Public Convenience Ltd for moderating the dataset.
+        </p>
+        <p>
+          The content of feedback submitted via the site "feedback" mechanism will
+          be reviewed by a human and may be used to improve the service. It may pass
+          through third party services in legislative regions with different privacy
+          protections before it reaches us.
+        </p>
+        <p>
+          Should you choose to provide an email adress with your feedback it will
+          be stored against your comments and Public Convenience Ltd. may choose
+          to contact you to follow up on the feedback you gave. There is no
+          obligation to respond to or engage in a dialogue stemming from such
+          contact.
+        </p>
+        <p>
+          A contributor’s full email address will never be disclosed or shared
+          and is only visible to Public Convenience Ltd.
         </p>
 
         <Spacer mb={4} />
