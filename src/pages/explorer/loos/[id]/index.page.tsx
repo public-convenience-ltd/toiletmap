@@ -81,7 +81,7 @@ const LooPage: CustomLooByIdComp = (props) => {
       message,
       router.isReady,
       setMapState,
-    ]
+    ],
   );
 
   // Find the diff between the current and previous report
@@ -117,7 +117,7 @@ const LooPage: CustomLooByIdComp = (props) => {
           // Otherwise, just return the current report.
           return [...accumulatedReports, currentReport];
         },
-        []
+        [],
       );
 
       const diffHistory = squashedSystemReports.map((report, i) => {
@@ -186,7 +186,7 @@ const LooPage: CustomLooByIdComp = (props) => {
   const onInitializePane: MonacoOnInitializePane = (
     monacoEditorRef,
     editorRef,
-    model
+    model,
   ) => {
     editorRef.current.setScrollTop(1);
     editorRef.current.setPosition({
@@ -428,7 +428,7 @@ export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
         variables: { id: params.id as string },
         fetchPolicy: 'no-cache',
       },
-      { req }
+      { req },
     );
 
     const reportHistoryResponse = await ssrLooReportHistory.getServerPage(
@@ -436,7 +436,7 @@ export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
         variables: { id: params.id as string },
         fetchPolicy: 'no-cache',
       },
-      { req }
+      { req },
     );
 
     const problemFetchingLooData =
