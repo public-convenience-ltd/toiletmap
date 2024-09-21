@@ -284,11 +284,12 @@ CREATE TRIGGER loo_area_trigger_insert
     FOR EACH ROW
     EXECUTE FUNCTION public.determine_area_loo_is_within_on_upsert();
 
+-- Begin service Role PERMISSIONS / RLS setup ---
+GRANT USAGE ON SCHEMA public TO toiletmap_web;
+GRANT USAGE ON SCHEMA audit TO toiletmap_web;
+GRANT USAGE ON SCHEMA extensions TO toiletmap_web;
 
-GRANT ALL ON SCHEMA public TO toiletmap_web;
-GRANT ALL ON SCHEMA audit TO toiletmap_web;
-GRANT ALL ON SCHEMA extensions TO toiletmap_web;
-
+-- Grant permissions on extensions.spatial_ref_sys for correct PostGIS operation.
 GRANT SELECT ON TABLE extensions.spatial_ref_sys TO toiletmap_web;
 
 -- Grant permissions on public.toilets and modify RLS policies.
@@ -297,7 +298,6 @@ GRANT SELECT ON TABLE public.toilets TO toiletmap_web;
 GRANT UPDATE ON TABLE public.toilets TO toiletmap_web;
 GRANT REFERENCES ON TABLE public.toilets TO toiletmap_web;
 GRANT TRIGGER ON TABLE public.toilets TO toiletmap_web;
-
 
 GRANT EXECUTE ON FUNCTION public.determine_area_loo_is_within_on_upsert() TO toiletmap_web;
 GRANT EXECUTE ON FUNCTION public.determine_area_loo_is_within_on_upsert() TO toiletmap_web;
@@ -345,3 +345,5 @@ CREATE POLICY update_policy ON audit.record_version
     FOR UPDATE
     TO toiletmap_web
     USING (true);  -- Allows all updates
+
+-- End service Role PERMISSIONS / RLS setup ---
