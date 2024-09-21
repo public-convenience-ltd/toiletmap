@@ -1,6 +1,15 @@
 -- Create a limited service role for toilet map.
 -- Give the role login privileges.
-CREATE ROLE toiletmap_web WITH LOGIN;
+
+DO
+$$
+BEGIN
+    IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'toiletmap_web') THEN
+        CREATE ROLE toiletmap_web WITH LOGIN;
+    END IF;
+END
+$$;
+
 ALTER ROLE toiletmap_web WITH PASSWORD 'toiletmap_web';
 ALTER ROLE toiletmap_web SET search_path = "\$user", public, extensions, audit;
 
