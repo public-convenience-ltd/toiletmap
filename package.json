@@ -112,7 +112,6 @@
     "@jest/globals": "^29.7.0",
     "@mapbox/geojson-area": "^0.2.2",
     "@mapbox/geojson-rewind": "^0.5.2",
-    "@next/bundle-analyzer": "^13.5.4",
     "@parcel/watcher": "^2.4.1",
     "@storybook/addon-actions": "^7.6.17",
     "@storybook/addon-essentials": "^7.6.17",
@@ -134,7 +133,7 @@
     "@types/mapbox": "^1.6.45",
     "@types/mapbox__geojson-area": "^0.2.6",
     "@types/ngeohash": "^0.6.4",
-    "@types/node": "^18.16.3",
+    "@types/node": "^20.9.0",
     "@types/react": "^18.3.8",
     "@types/react-dom": "^18.3.0",
     "@types/styled-system": "^5.1.22",
@@ -183,11 +182,6 @@
     "webpack": "^5.91.0"
   },
   "packageManager": "pnpm@8.6.3",
-  "nextBundleAnalysis": {
-    "budget": 204800,
-    "budgetPercentIncreaseRed": 10,
-    "showDetails": true
-  },
   "pnpm": {
     "overrides": {
       "trim@<0.0.3": ">=0.0.3",
