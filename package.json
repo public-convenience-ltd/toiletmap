@@ -112,7 +112,7 @@
     "@mapbox/geojson-area": "^0.2.2",
     "@mapbox/geojson-rewind": "^0.5.2",
     "@parcel/watcher": "^2.4.1",
-    "@storybook/addon-actions": "^7.6.17",
+    "@storybook/addon-actions": "^8.1.11",
     "@storybook/addon-essentials": "^7.6.17",
     "@storybook/addon-interactions": "^7.6.17",
     "@storybook/addon-links": "^7.6.17",
