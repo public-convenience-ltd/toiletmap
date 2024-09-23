@@ -28,7 +28,6 @@ build
 .loos
 out
 
-
 # Storybook build
 storybook-static
 public/storybook
@@ -38,9 +37,6 @@ cypress/screenshots
 cypress/downloads
 
 .areaInfo.geojson
-
-# Sentry
-.sentryclirc
 
 tsconfig.tsbuildinfo
 
