@@ -1,21 +1,21 @@
 import * as React from 'react';
 
-import { withApollo } from '../../api-client/withApollo';
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
+import { TablePagination } from '@mui/base';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import {
   LooFilter,
   SortOrder,
   useAreasQuery,
   useSearchLoosQuery,
 } from '../../api-client/graphql';
-import Spacer from '../../components/Spacer';
+import { withApollo } from '../../api-client/withApollo';
 import Box from '../../components/Box';
-import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
+import Spacer from '../../components/Spacer';
 import Button from '../../design-system/components/Button';
-import { css } from '@emotion/react';
 import theme from '../../theme';
-import Link from 'next/link';
-import { TablePagination } from '@mui/base';
 
 const OptionLabel = styled('label')({
   display: 'flex',
@@ -53,11 +53,11 @@ const UnstyledTable = () => {
     return {
       ...removeEmpty(router.query),
       // Defaults
-      page: router.query?.page ? parseInt(router.query?.page, 10) : 0,
+      page: router.query?.page ? parseInt(router.query?.page as string, 10) : 0,
       rowsPerPage: router.query?.rowsPerPage
-        ? parseInt(router.query?.rowsPerPage, 10)
+        ? parseInt(router.query?.rowsPerPage as string, 10)
         : 25,
-      text: router.query?.text ?? '',
+      text: (router.query?.text as string) ?? '',
     };
   }, [router]);
 

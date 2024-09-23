@@ -20,7 +20,7 @@ const App = (props) => {
           <LooMap minZoom={5} />
         </Suspense>
       ) : undefined,
-    [key]
+    [key],
   );
 
   return (

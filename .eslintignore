@@ -1,7 +1,7 @@
 explorer-old
 !.storybook
-src/api-client
-!src/api-client/withApollo.tsx
+src/api-client/graphql.tsx
+src/api-client/page.tsx
 src/api/db
 src/api/directives
 src/@types/resolvers-types.ts

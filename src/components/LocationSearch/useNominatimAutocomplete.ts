@@ -1,35 +1,51 @@
 import React from 'react';
 import debounce from 'lodash/debounce';
 
-const useNominatimAutocomplete = (input: string | unknown[]) => {
-  const [places, setPlaces] = React.useState([]);
+type NominatimResult = {
+  place_id: string;
+  display_name: string;
+  lat: string;
+  lon: string;
+};
 
-  const fetchHandler = async (input) => {
+export type Place = {
+  id: string;
+  label: string;
+  location: {
+    lat: string;
+    lng: string;
+  };
+};
+
+type Coordinates = {
+  lat: number;
+  lng: number;
+};
+
+const useNominatimAutocomplete = (input: string) => {
+  const [places, setPlaces] = React.useState<Place[]>([]);
+
+  const fetchHandler = async (input: string) => {
     try {
-      const fetchUrl = `https://nominatim.openstreetmap.org/search?q=${input}&countrycodes=gb&limit=5&format=json`;
+      const fetchUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+        input,
+      )}&countrycodes=gb&limit=5&format=json`;
 
       const response = await fetch(fetchUrl);
-      const results = await response.json();
+      const results: NominatimResult[] = await response.json();
 
       if (!results) {
         return;
       }
 
-      const locationResults = results.map(
-        (item: {
-          place_id: unknown;
-          display_name: unknown;
-          lat: unknown;
-          lon: unknown;
-        }) => ({
-          id: item.place_id,
-          label: item.display_name,
-          location: {
-            lat: item.lat,
-            lng: item.lon,
-          },
-        })
-      );
+      const locationResults: Place[] = results.map((item) => ({
+        id: item.place_id,
+        label: item.display_name,
+        location: {
+          lat: item.lat,
+          lng: item.lon,
+        },
+      }));
 
       setPlaces(locationResults);
     } catch (e: unknown) {
@@ -39,7 +55,7 @@ const useNominatimAutocomplete = (input: string | unknown[]) => {
 
   const debouncedFetchHandler = React.useMemo(
     () => debounce(fetchHandler, 300),
-    []
+    [],
   );
 
   // Fetch places when input changes
@@ -59,12 +75,12 @@ const useNominatimAutocomplete = (input: string | unknown[]) => {
       return;
     }
     setPlaces([]);
-  }, [input, setPlaces]);
+  }, [input]);
 
-  const getPlaceLatLng = ({ location }) => {
+  const getPlaceLatLng = (place: Place): Coordinates => {
     return {
-      lat: parseFloat(location.lat),
-      lng: parseFloat(location.lng),
+      lat: parseFloat(place.location.lat),
+      lng: parseFloat(place.location.lng),
     };
   };
 

@@ -1,13 +1,20 @@
 import L from 'leaflet';
 
-const ICON_DIMENSIONS = [22, 34];
-const LARGE_ICON_DIMENSSIONS = ICON_DIMENSIONS.map((i) => i * 1.5);
-const getIconAnchor = (dimensions: number[]) => [
+const ICON_DIMENSIONS: [number, number] = [22, 34];
+const LARGE_ICON_DIMENSIONS: [number, number] = ICON_DIMENSIONS.map(
+  (i) => i * 1.5,
+) as [number, number];
+
+const getIconAnchor = (dimensions: [number, number]): [number, number] => [
   dimensions[0] / 2,
   dimensions[1],
 ];
 
-const getSVGHTML = ({ isHighlighted = false }) => {
+interface GetSVGHTMLParams {
+  isHighlighted?: boolean;
+}
+
+const getSVGHTML = ({ isHighlighted = false }: GetSVGHTMLParams): string => {
   return `
     <svg viewBox="-1 -1 21 33" xmlns="http://www.w3.org/2000/svg">
       <path d="M10 0C4.47632 0 0 4.47529 0 10C0 19.5501 10 32 10 32C10 32 20 19.5501 20 10C20 4.47529 15.5237 0 10 0Z" fill="#ED3D63" stroke="white"/>
@@ -20,32 +27,46 @@ const getSVGHTML = ({ isHighlighted = false }) => {
   `;
 };
 
-const ToiletMarkerIcon = ({ isHighlighted = false, toiletId = undefined }) =>
-  new (L.DivIcon.extend({
-    options: {
+interface ToiletMarkerIconParams {
+  isHighlighted?: boolean;
+  toiletId?: string;
+}
+
+interface ToiletMarkerIconOptions extends L.DivIconOptions {
+  highlight?: boolean;
+  toiletId?: string;
+}
+
+class ToiletMarkerDivIcon extends L.DivIcon {
+  options: ToiletMarkerIconOptions;
+
+  constructor({ isHighlighted = false, toiletId }: ToiletMarkerIconParams) {
+    super();
+
+    // Merge custom options with default DivIcon options
+    this.options = {
+      ...this.options,
       highlight: isHighlighted,
       toiletId,
-    },
-
-    initialize: function () {
-      // eslint-disable-next-line functional/immutable-data
-      this.options = {
-        ...this.options,
-        iconSize: isHighlighted ? LARGE_ICON_DIMENSSIONS : ICON_DIMENSIONS,
-        iconAnchor: isHighlighted
-          ? getIconAnchor(LARGE_ICON_DIMENSSIONS)
-          : getIconAnchor(ICON_DIMENSIONS),
-        html: `
-        <div data-toiletid="${toiletId}" class="toilet-marker" ${
+      iconSize: isHighlighted ? LARGE_ICON_DIMENSIONS : ICON_DIMENSIONS,
+      iconAnchor: getIconAnchor(
+        isHighlighted ? LARGE_ICON_DIMENSIONS : ICON_DIMENSIONS,
+      ),
+      html: `
+        <div data-toiletid="${toiletId ?? ''}" class="toilet-marker" ${
           isHighlighted ? 'id="highlighted-loo"' : ''
-        }}>
-          ${getSVGHTML({ toiletId, isHighlighted })}
+        }>
+          ${getSVGHTML({ isHighlighted })}
         </div>
       `,
-      };
+    };
 
-      L.Util.setOptions(this, { toiletId, isHighlighted });
-    },
-  }))();
+    L.Util.setOptions(this, { toiletId, isHighlighted });
+  }
+}
+
+const ToiletMarkerIcon = (params: ToiletMarkerIconParams): L.DivIcon => {
+  return new ToiletMarkerDivIcon(params);
+};
 
 export default ToiletMarkerIcon;

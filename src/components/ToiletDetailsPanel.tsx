@@ -1,30 +1,27 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
-import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-
-import lightFormat from 'date-fns/lightFormat';
-import getISODay from 'date-fns/getISODay';
-import parseISO from 'date-fns/parseISO';
+import styled from '@emotion/styled';
 import add from 'date-fns/add';
+import getISODay from 'date-fns/getISODay';
+import lightFormat from 'date-fns/lightFormat';
+import parseISO from 'date-fns/parseISO';
+import { usePlausible } from 'next-plausible';
 import Link from 'next/link';
-
-import { Loo } from '../api-client/graphql';
-
-import Box from './Box';
-import Text from './Text';
-import Spacer from './Spacer';
-import Icon from '../design-system/components/Icon';
+import { useRouter } from 'next/router';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import {
+  Loo,
+  useSubmitVerificationReportMutationMutation,
+} from '../api-client/graphql';
 import Badge from '../design-system/components/Badge';
 import Button from '../design-system/components/Button';
-import { Media } from './Media';
-// Suppress Opening Hours Heading during COVID-19
-import { WEEKDAYS, getTimeRangeLabel } from '../lib/openingTimes';
-import { useMapState } from './MapState';
-import type L from 'leaflet';
-import { useRouter } from 'next/router';
-import { useSubmitVerificationReportMutationMutation } from '../api-client/graphql';
-import { usePlausible } from 'next-plausible';
+import Icon from '../design-system/components/Icon';
 import { getFeatures } from '../lib/features';
+import { WEEKDAYS, getTimeRangeLabel } from '../lib/openingTimes';
+import Box from './Box';
+import { useMapState } from './MapState';
+import { Media } from './Media';
+import Spacer from './Spacer';
+import Text from './Text';
 
 const Grid = styled(Box)`
   display: flex;
@@ -38,26 +35,15 @@ const UnstyledList = styled.ul`
   list-style: none;
 `;
 
-// Suppress Opening Hours heading during COVID-19
-// function getIsOpenLabel(openingTimes = [], dateTime = new Date()) {
-//   const isOpen = getIsOpen(openingTimes, dateTime);
-
-//   if (isOpen === null) {
-//     return 'Unknown';
-//   }
-
-//   return isOpen ? 'Open now' : 'Closed';
-// }
-
 function round(value: number, precision = 0) {
   const multiplier = Math.pow(10, precision);
   return Math.round(value * multiplier) / multiplier;
 }
 
 const DistanceTo = ({ from, to }) => {
-  const fromLatLng = L.latLng(from.lat, from.lng);
+  const fromLatLng = global.L.latLng(from.lat, from.lng);
 
-  const toLatLng = L.latLng(to.lat, to.lng);
+  const toLatLng = global.L.latLng(to.lat, to.lng);
   const metersToLoo = fromLatLng.distanceTo(toLatLng);
 
   const distance =
@@ -96,7 +82,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
     if (verificationReportState.error) {
       console.error(
         'There was a problem submitting the verification report.',
-        verificationReportState.error
+        verificationReportState.error,
       );
     }
   }, [verificationReportState.error]);
@@ -126,7 +112,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
         }
       }
     },
-    [isExpanded, navigateAway]
+    [isExpanded, navigateAway],
   );
 
   React.useEffect(() => {
@@ -251,7 +237,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
       verificationReportState.loading,
       verifiedOrUpdated,
       verifiedOrUpdatedDate,
-    ]
+    ],
   );
 
   if (isExpanded) {
@@ -287,6 +273,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
             <Box display="flex" justifyContent="center" paddingTop={2}>
               <Box
                 as="button"
+                // @ts-expect-error -- Generic box component can't handle these props
                 type="button"
                 aria-label="Close toilet details"
                 onClick={() => setIsExpanded(false)}

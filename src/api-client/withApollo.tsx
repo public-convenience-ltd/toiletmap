@@ -55,7 +55,8 @@ function createApolloClient() {
   });
 }
 
-export function getApolloClient() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function getApolloClient(_context?: unknown) {
   const _apolloClient = apolloClient ?? createApolloClient();
 
   // For SSG and SSR always create a new Apollo Client
@@ -67,11 +68,12 @@ export function getApolloClient() {
   return _apolloClient;
 }
 
-export const withApollo = (Comp: NextPage) =>
-  function ApolloWrapper(props: object) {
-    return (
-      <ApolloProvider client={getApolloClient()}>
-        <Comp {...props} />
-      </ApolloProvider>
-    );
-  };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function withApollo<T extends NextPage<any>>(Component: T): T {
+  const ApolloWrapper = (props: React.ComponentProps<T>) => (
+    <ApolloProvider client={getApolloClient()}>
+      <Component {...props} />
+    </ApolloProvider>
+  );
+  return ApolloWrapper as T;
+}
