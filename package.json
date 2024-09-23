@@ -122,7 +122,7 @@
     "@storybook/blocks": "^7.6.17",
     "@storybook/nextjs": "^7.6.17",
     "@storybook/react": "^7.6.17",
-    "@storybook/testing-library": "^0.2.1",
+    "@storybook/testing-library": "^0.2.2",
     "@testing-library/cypress": "^8.0.3",
     "@types/cli-progress": "^3.11.6",
     "@types/jest": "^29.5.13",
