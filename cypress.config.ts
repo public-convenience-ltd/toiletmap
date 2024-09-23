@@ -41,16 +41,6 @@ export default defineConfig({
       config = cypressBrowserPermissionsPlugin(on, config);
 
       on('before:browser:launch', (browser, launchOptions) => {
-        if (browser.family === 'firefox') {
-          // launchOptions.preferences is a map of preference names to values
-          // eslint-disable-next-line functional/immutable-data
-          launchOptions.preferences[
-            'network.proxy.testing_localhost_is_secure_when_hijacked'
-          ] = true;
-
-          return launchOptions;
-        }
-
         if (browser.name === 'chrome' && browser.isHeadless) {
           const headlessIndex = launchOptions.args.indexOf('--headless');
           if (headlessIndex > -1) {
