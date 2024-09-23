@@ -15,7 +15,6 @@ import dynamic from 'next/dynamic';
 import { useFeedbackPopover } from './hooks';
 import Text from '../Text';
 
-// const Feedback = dynamic(() => import('../Feedback/Feedback'));
 const Drawer = dynamic(() => import('../../design-system/components/Drawer'));
 
 const Header = ({ children }) => {
