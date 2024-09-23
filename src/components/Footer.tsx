@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import Box from './Box';
 import Text from './Text';
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 
 import poweredByVercel from '../../public/powered-by-vercel.svg';
 

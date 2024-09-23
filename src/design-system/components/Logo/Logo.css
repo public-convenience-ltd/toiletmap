@@ -1,3 +1,8 @@
 .logo {
-    width: 154px;
+  width: 154px;
+}
+
+.logo > img {
+  width: auto;
+  height: auto;
 }
