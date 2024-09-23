@@ -5,12 +5,12 @@ import { useMapState } from '../MapState';
 import PageLoading from '../PageLoading';
 import { LooMapProps } from './LooMap';
 
-export const LooMapLoader = dynamic(() => import('./LooMap'), {
-  loading: PageLoading,
+export const LooMapLoader = dynamic<LooMapProps>(() => import('./LooMap'), {
+  loading: () => <PageLoading />,
   ssr: false,
 });
 
-const LooMap = (props: LooMapProps) => {
+const LooMap = (props?: Partial<LooMapProps>) => {
   const [mapState] = useMapState();
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {

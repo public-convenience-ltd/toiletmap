@@ -71,23 +71,12 @@ const LooMap: React.FC<LooMapProps> = ({
 }) => {
   const [mapState, setMapState] = useMapState();
 
-  // const [hydratedToilets, setHydratedToilets] = useState<CompressedLooObject[]>([]);
   const [announcement, setAnnouncement] = React.useState(null);
   const [intersectingToilets, setIntersectingToilets] = useState([]);
   const plausible = usePlausible();
 
   const [renderAccessibilityOverlays, setRenderAccessibilityOverlays] =
     useState(showAccessibilityOverlay);
-
-  // Load a reference to the leaflet map into application state so components that aren't below in the tree can access.
-  // const setMap = useCallback(
-  //   (map: Map) => {
-  //     if (map !== null) {
-  //       setMapState({ map });
-  //     }
-  //   },
-  //   [setMapState]
-  // );
 
   const mapRef = React.createRef<Map>();
 

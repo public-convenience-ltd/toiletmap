@@ -312,8 +312,10 @@ const EntryForm = ({ title, loo, children, ...props }) => {
     // map geometry data to expected structure
     // eslint-disable-next-line functional/immutable-data
     transformed.location = {
-      lat: data.geometry.coordinates[0],
-      lng: data.geometry.coordinates[1],
+      // @ts-expect-error -- data isn't typed and we're assuming it has a geometry property here.
+      lat: data.geometry?.coordinates[0],
+      // @ts-expect-error -- data isn't typed and we're assuming it has a geometry property here.
+      lng: data.geometry?.coordinates[1],
     };
 
     // remove payment details if the isFree field value has changed and is now
@@ -466,6 +468,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
           <Spacer mt={4} />
 
           <Section
+            // @ts-expect-error -- Complicated type mismatch
             register={register}
             id="who"
             title="3. Who can use these toilets?"
@@ -496,6 +499,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
           <Spacer mt={4} />
 
           <Section
+            // @ts-expect-error -- Complicated type mismatch
             register={register}
             id="what"
             title="4. At this toilet is there ..."
@@ -531,6 +535,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
           <Spacer mt={4} />
 
           <Section
+            // @ts-expect-error -- Complicated type mismatch
             register={register}
             id="payment"
             title="5. Is this toilet free?"

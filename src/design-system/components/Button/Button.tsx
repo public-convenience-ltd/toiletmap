@@ -5,25 +5,34 @@ import { forwardRef } from 'react';
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   if (props.htmlElement === 'a') {
+    // Remove htmlElement from props
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { htmlElement, ...rest } = props;
+
     return (
       <Link
         href={props.href}
         className={`button ${
           props.variant === 'secondary' ? `button--secondary` : ''
         }`}
-        {...props}
+        {...rest}
       >
         {props.children}
       </Link>
     );
   }
+
+  // Remove htmlElement from props
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { htmlElement, ...rest } = props;
+
   return (
     <button
       className={`button ${
         props.variant === 'secondary' ? `button--secondary` : ''
       }`}
       ref={ref}
-      {...props}
+      {...rest}
     >
       {props.children}
     </button>

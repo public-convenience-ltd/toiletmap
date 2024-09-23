@@ -1,6 +1,10 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useCombobox } from 'downshift';
+import {
+  useCombobox,
+  UseComboboxState,
+  UseComboboxStateChangeOptions,
+} from 'downshift';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -8,49 +12,58 @@ import Icon from '../../design-system/components/Icon';
 import Box from '../Box';
 import VisuallyHidden from '../VisuallyHidden';
 
-import useNominatimAutocomplete from './useNominatimAutocomplete';
+import useNominatimAutocomplete, { Place } from './useNominatimAutocomplete';
 
 const Input = styled.input(
   ({ theme }) => `
-  border: 1px solid ${theme.colors.primary};
-  border-radius: ${theme.radii[4]}px;
-  padding: ${theme.space[2]}px 3rem;
-  padding-left: 3rem;
-  width: 100%;
-`
+      border: 1px solid ${theme.colors.primary};
+      border-radius: ${theme.radii[4]}px;
+      padding: ${theme.space[2]}px 3rem;
+      padding-left: 3rem;
+      width: 100%;
+    `,
 );
 
-const LocationSearch = ({ onSelectedItemChange }) => {
+interface LocationSearchProps {
+  onSelectedItemChange: (coords: { lat: number; lng: number }) => void;
+}
+
+const LocationSearch: React.FC<LocationSearchProps> = ({
+  onSelectedItemChange,
+}) => {
   const [query, setQuery] = React.useState('');
   const theme = useTheme();
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { places, getPlaceLatLng } = useNominatimAutocomplete(query);
 
-  const handleSelectedItemChange = async ({ selectedItem }) => {
+  const handleSelectedItemChange = async ({
+    selectedItem,
+  }: UseComboboxStateChangeOptions<Place>) => {
     if (!selectedItem) {
       return;
     }
-    const { lat, lng } = await getPlaceLatLng(selectedItem);
+
+    const { lat, lng } = getPlaceLatLng(selectedItem);
     onSelectedItemChange({ lat, lng });
-    // Remove focus from the input box, ensuring that the dropdown closes on mobile.
-    inputRef.current.blur();
+    // Remove focus from the input box to close the dropdown on mobile.
+    inputRef.current?.blur();
   };
 
   const stateReducer = (
-    state: { isOpen: unknown; selectedItem: unknown; inputValue: unknown },
-    actionAndChanges: { type: unknown; changes: unknown }
+    state: UseComboboxState<Place>,
+    actionAndChanges: UseComboboxStateChangeOptions<Place>,
   ) => {
     switch (actionAndChanges.type) {
       case useCombobox.stateChangeTypes.InputBlur:
-        // Prevents reset on blur to fix results being closed when iOS keyboard is hidden
+        // Prevent reset on blur to keep results open when iOS keyboard is hidden
         return {
           ...actionAndChanges.changes,
           isOpen: state.isOpen,
         };
 
       case useCombobox.stateChangeTypes.FunctionOpenMenu:
-        // Always clear the input when opening the menu
+        // Clear the input when opening the menu
         return {
           ...actionAndChanges.changes,
           inputValue: '',
@@ -78,11 +91,11 @@ const LocationSearch = ({ onSelectedItemChange }) => {
     getComboboxProps,
     highlightedIndex,
     getItemProps,
-  } = useCombobox({
+  } = useCombobox<Place>({
     id: 'search-results',
     items: places,
-    onInputValueChange: ({ inputValue }) => setQuery(inputValue),
-    itemToString: (item: { label: string }) => (item ? item.label : ''),
+    onInputValueChange: ({ inputValue }) => setQuery(inputValue || ''),
+    itemToString: (item) => (item ? item.label : ''),
     onSelectedItemChange: handleSelectedItemChange,
     stateReducer,
   });
@@ -116,10 +129,9 @@ const LocationSearch = ({ onSelectedItemChange }) => {
           {...getInputProps({
             ref: inputRef,
             onFocus: () => {
-              if (isOpen) {
-                return;
+              if (!isOpen) {
+                openMenu();
               }
-              openMenu();
             },
           })}
         />
@@ -156,7 +168,7 @@ const LocationSearch = ({ onSelectedItemChange }) => {
         {isOpen && (
           <>
             {places.length
-              ? places.map((item, index: number) => (
+              ? places.map((item, index) => (
                   <Box
                     key={item.id}
                     color={highlightedIndex === index ? 'tertiary' : undefined}

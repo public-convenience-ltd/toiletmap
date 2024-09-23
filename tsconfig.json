@@ -15,9 +15,13 @@
     "jsxImportSource": "@emotion/react",
     "incremental": true,
     "downlevelIteration": true,
-    "types": ["cypress"],
+    "types": ["cypress", "@testing-library/cypress"],
     "isolatedModules": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"],
-  "exclude": ["node_modules", "src/@types/resolvers-types.ts"]
+  "exclude": [
+    "node_modules",
+    "src/@types/resolvers-types.ts",
+    "scripts/areaToDatabase/*"
+  ]
 }

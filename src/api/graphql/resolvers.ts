@@ -24,6 +24,7 @@ import {
   postgresUpsertLooQueryFromReport,
 } from './helpers';
 import { toilets } from '@prisma/client';
+import { UserProfile } from '@auth0/nextjs-auth0';
 
 const resolvers: Resolvers<Context> = {
   Query: {
@@ -176,8 +177,6 @@ const resolvers: Resolvers<Context> = {
           activeToiletsInAreas.map((area) => [area.name, area._count.toilets]),
         );
 
-        console.log(activeAreas);
-
         const removedAreas = Object.fromEntries(
           removedToiletsInAreas.map((area) => [area.name, area._count.toilets]),
         );
@@ -254,18 +253,22 @@ const resolvers: Resolvers<Context> = {
           contributor: 'Anonymous',
           id: reportId.toString(),
           isSystemReport: contributor.endsWith('-location'),
+          // @ts-expect-error -- We know that coordinates are there, but the JsonValue types don't.
           location: diff.location?.coordinates
             ? {
+                // @ts-expect-error -- We know that coordinates are there, but the JsonValue types don't.
                 lat: diff.location?.coordinates[1],
+                // @ts-expect-error -- We know that coordinates are there, but the JsonValue types don't.
                 lng: diff.location?.coordinates[0],
               }
             : undefined,
         };
       };
 
-      const filtered = auditRecords.map((v) =>
+      const filtered = auditRecords.map((auditEntry) =>
         // TODO: use zod to validate the shape of the record.
-        postgresAuditRecordToGraphQLReport(v.id, v.record),
+        // @ts-expect-error -- We expect this until we use zod to validate the shape of the record.
+        postgresAuditRecordToGraphQLReport(auditEntry.id, auditEntry.record),
       );
 
       // Order by report creation time.
@@ -294,7 +297,8 @@ const resolvers: Resolvers<Context> = {
     submitReport: async (_parent, args, { prisma, user }) => {
       try {
         // Convert the submitted report to a format that can be saved to the database.
-        const nickname = user[process.env.AUTH0_PROFILE_KEY]?.nickname;
+        const nickname = (user[process.env.AUTH0_PROFILE_KEY] as UserProfile)
+          ?.nickname;
         const postgresLoo = await postgresUpsertLooQueryFromReport(
           args.report.edit,
           args.report,
@@ -302,7 +306,7 @@ const resolvers: Resolvers<Context> = {
         );
 
         const result = await upsertLoo(prisma, postgresLoo);
-        console.log(result);
+
         return {
           code: '200',
           success: true,
@@ -320,7 +324,8 @@ const resolvers: Resolvers<Context> = {
     },
     submitRemovalReport: async (_parent, args, { prisma, user }) => {
       try {
-        const nickname = user[process.env.AUTH0_PROFILE_KEY].nickname;
+        const nickname = (user[process.env.AUTH0_PROFILE_KEY] as UserProfile)
+          ?.nickname;
         const result = await removeLoo(prisma, args.report, nickname);
 
         return {
@@ -356,6 +361,7 @@ const resolvers: Resolvers<Context> = {
     },
   },
   DateTime: GraphQLDateTime,
+  // @ts-expect-error -- There's a problem with enum types in the resolvers.
   SortOrder: {
     NEWEST_FIRST: { updatedAt: 'desc' },
     OLDEST_FIRST: { updatedAt: 'asc' },
