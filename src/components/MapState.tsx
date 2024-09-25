@@ -40,7 +40,7 @@ const reducer = (state: MapState, newState: MapState) => {
 
 export const MapStateProvider = ({ children }) => {
   const initialFilterState = config.getSettings(FILTERS_KEY) || [];
-  const useProtomaps = config.getSettings(BASEMAP_KEY) === 'protomaps';
+  const useProtomaps = config.getSettings(BASEMAP_KEY) !== 'osm';
 
   // default any unsaved filters as 'false'
   config.filters.forEach((filter) => {
