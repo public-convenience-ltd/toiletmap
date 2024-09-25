@@ -13,14 +13,28 @@ const App = (props) => {
   const sharedStatePaths = ['/', '/loos/[id]'];
   const key =
     sharedStatePaths.indexOf(router.pathname) > -1 ? 'shared' : router.asPath;
+
+  const center = useMemo(
+    () =>
+      router.query.lat && router.query.lng
+        ? {
+            lat: parseFloat(router.query.lat as string),
+            lng: parseFloat(router.query.lng as string),
+          }
+        : null,
+    [router.query],
+  );
+
+  console.log(center);
+
   const renderedMap = useMemo(
     () =>
       key === 'shared' ? (
         <Suspense>
-          <LooMap minZoom={5} />
+          <LooMap minZoom={5} {...(center ? { center } : {})} />
         </Suspense>
       ) : undefined,
-    [key]
+    [key, center],
   );
 
   return (
