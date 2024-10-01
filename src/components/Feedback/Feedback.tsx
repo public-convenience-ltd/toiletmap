@@ -60,7 +60,12 @@ const Feedback = () => {
       <label htmlFor="emailInput" style={{ fontWeight: 'bold' }}>
         Email (optional)
       </label>
-      <InputField id="emailInput" ref={emailInput} type="email" />
+      <InputField
+        id="emailInput"
+        ref={emailInput}
+        type="email"
+        maxLength={255}
+      />
 
       <label htmlFor="feedbackTextArea" style={{ fontWeight: 'bold' }}>
         Feedback
@@ -68,6 +73,7 @@ const Feedback = () => {
       <TextArea
         ref={feedbackTextArea}
         id="feedbackTextArea"
+        maxLength={5000}
         style={{
           resize: 'none',
           height: '16rem',
@@ -76,7 +82,7 @@ const Feedback = () => {
         placeholder={`The Toilet Map is a free and open source project that we maintain in our spare time.
 
 We'd be so grateful if you could take a moment to give us feedback on how we could make your experience even better.`}
-        aria-description={`The Toilet Map is a free and open source project that we maintain in our spare time.
+        aria-details={`The Toilet Map is a free and open source project that we maintain in our spare time.
 
   We'd be so grateful if you could take a moment to give us feedback on how we could make your experience even better.`}
       ></TextArea>
