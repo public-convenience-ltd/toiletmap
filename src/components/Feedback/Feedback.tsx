@@ -10,6 +10,7 @@ enum FeedbackState {
   SUCCESS = 0,
   FAILURE = 1,
   PENDING = 2,
+  INVALID_INPUT = 3,
 }
 
 const Feedback = () => {
@@ -19,47 +20,53 @@ const Feedback = () => {
   const emailInput = useRef<HTMLInputElement>();
 
   const submitFeedback = async () => {
-    setSubmitState(FeedbackState.PENDING);
-
-    // Only attempt submit if the user has typed something in the text area
     const hasUserInputText = feedbackTextArea.current?.value.length > 0;
 
-    if (hasUserInputText) {
-      const input = feedbackTextArea.current.value;
-      const payload = {
-        text: input,
-        email: emailInput.current.value,
-        route: window.location.pathname,
-      };
+    if (!hasUserInputText) {
+      setSubmitState(FeedbackState.INVALID_INPUT);
+      return;
+    }
 
-      try {
-        await fetch('/api/feedback', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        });
+    // Only attempt submit if the user has typed something in the text area
+    setSubmitState(FeedbackState.PENDING);
 
-        // eslint-disable-next-line functional/immutable-data
-        feedbackTextArea.current.value = '';
-        // eslint-disable-next-line functional/immutable-data
-        emailInput.current.value = '';
+    const input = feedbackTextArea.current.value;
+    const payload = {
+      text: input,
+      email: emailInput.current.value,
+      route: window.location.pathname,
+    };
 
-        setSubmitState(FeedbackState.SUCCESS);
-      } catch (e) {
-        setSubmitState(FeedbackState.FAILURE);
-      }
+    try {
+      await fetch('/api/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      // eslint-disable-next-line functional/immutable-data
+      feedbackTextArea.current.value = '';
+      // eslint-disable-next-line functional/immutable-data
+      emailInput.current.value = '';
+
+      setSubmitState(FeedbackState.SUCCESS);
+    } catch (e) {
+      setSubmitState(FeedbackState.FAILURE);
     }
   };
 
   return (
     <Stack spacing="1rem" padding="0.5rem" width="fit-content">
       {submitState === FeedbackState.SUCCESS && <Badge>Thank you!</Badge>}
-
+      {submitState === FeedbackState.INVALID_INPUT && (
+        <Badge>Please enter some feedback</Badge>
+      )}
       <label htmlFor="emailInput" style={{ fontWeight: 'bold' }}>
         Email (optional)
       </label>
+
       <InputField
         id="emailInput"
         ref={emailInput}
@@ -70,6 +77,7 @@ const Feedback = () => {
       <label htmlFor="feedbackTextArea" style={{ fontWeight: 'bold' }}>
         Feedback
       </label>
+
       <TextArea
         ref={feedbackTextArea}
         id="feedbackTextArea"
