@@ -89,8 +89,8 @@ model record_version {
 model feedback {
   id            Int       @id @default(autoincrement())
   email         String?   @db.VarChar(255)
-  feedback_text String
-  route         String
+  feedback_text String    @db.VarChar(5000)
+  route         String    @db.VarChar(255)
   created_at    DateTime? @default(now()) @db.Timestamp(6)
 
   @@schema("public")

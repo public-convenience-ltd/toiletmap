@@ -2,8 +2,8 @@
 CREATE TABLE IF NOT EXISTS public.feedback (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255),
-    feedback_text TEXT NOT NULL,
-    route TEXT NOT NULL,
+    feedback_text VARCHAR(5000) NOT NULL,
+    route VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
