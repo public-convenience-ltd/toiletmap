@@ -12,7 +12,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     // We'd like to record the full feedback entry in our database for future reference.
     await prisma.feedback.create({
       data: {
-        email: email ?? 'No email provided',
+        email,
         feedback_text: text,
         route,
       },
@@ -23,16 +23,24 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.send(200);
     }
 
-    // We only pass on the feedback content and website path to Slack, not the users' email if they provided one.
-    await fetch(process.env.SLACK_FEEDBACK_WEBHOOK, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        text: `${text}\r\n------\r\nRoute: ${route}`,
-      }),
-    });
+    try {
+      // We only pass on the feedback content and website path to Slack, not the users' email if they provided one.
+      await fetch(process.env.SLACK_FEEDBACK_WEBHOOK, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: `${text}\r\n------\r\nRoute: ${route}`,
+        }),
+      });
+    } catch (e) {
+      console.error(
+        'Problem sending feedback to Slack, but feedback was persisted successfully',
+        e,
+      );
+      return res.send(200);
+    }
 
     return res.send(200);
   } catch (error) {
