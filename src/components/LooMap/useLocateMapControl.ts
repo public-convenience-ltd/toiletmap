@@ -20,7 +20,7 @@ class LocationMarker extends L.Marker {
     this.createIcon();
   }
 
-  private _getIcon(options: LocationMarkerOptions, style: string): L.DivIcon {
+  #_getIcon(options: LocationMarkerOptions, style: string): L.DivIcon {
     const radius = options.radius ?? 0;
     const weight = options.weight ?? 0;
     const realRadius = radius + weight;
@@ -52,7 +52,7 @@ class LocationMarker extends L.Marker {
       }
     });
 
-    const icon = this._getIcon(this.options, style);
+    const icon = this.#_getIcon(this.options, style);
     this.setIcon(icon);
   }
 }
