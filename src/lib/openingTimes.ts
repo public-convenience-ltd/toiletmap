@@ -50,8 +50,8 @@ function getDateFromTime(timeRangeString: string, weekdayToCheck: number) {
 
   return setISODay(
     set(new Date(), {
-      hours: parseFloat(hours),
-      minutes: parseFloat(minutes),
+      hours: parseInt(hours, 10),
+      minutes: parseInt(minutes, 10),
       seconds: 0,
     }),
     weekday,

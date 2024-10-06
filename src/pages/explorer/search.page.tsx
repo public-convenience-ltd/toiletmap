@@ -53,7 +53,7 @@ const UnstyledTable = () => {
     return {
       ...removeEmpty(router.query),
       // Defaults
-      page: router.query?.page ? parseInt(router.query?.page as string, 10) : 0,
+      page: parseInt((router.query?.page as string) ?? '0', 10),
       rowsPerPage: router.query?.rowsPerPage
         ? parseInt(router.query?.rowsPerPage as string, 10)
         : 25,
