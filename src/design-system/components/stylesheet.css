@@ -1,22 +1,22 @@
-@import 'src/design-system/components/Badge/Badge.css';
-@import 'src/design-system/components/Button/Button.css';
-@import 'src/design-system/components/Icon/Icon.css';
-@import 'src/design-system/components/InputField/InputField.css';
-@import 'src/design-system/components/RadioInput/RadioInput.css';
-@import 'src/design-system/components/Switch/Switch.css';
-@import 'src/design-system/components/TextArea/TextArea.css';
-@import 'src/design-system/components/Drawer/Drawer.css';
-@import 'src/design-system/components/Logo/Logo.css';
+@import '~/src/design-system/components/Badge/Badge.css';
+@import '~/src/design-system/components/Button/Button.css';
+@import '~/src/design-system/components/Icon/Icon.css';
+@import '~/src/design-system/components/InputField/InputField.css';
+@import '~/src/design-system/components/RadioInput/RadioInput.css';
+@import '~/src/design-system/components/Switch/Switch.css';
+@import '~/src/design-system/components/TextArea/TextArea.css';
+@import '~/src/design-system/components/Drawer/Drawer.css';
+@import '~/src/design-system/components/Logo/Logo.css';
 
 /* Leaflet Marker Cluster custom styles */
 .leaflet-marker-icon.marker-cluster {
-    display: flex;
-    border: 0.25em solid #ED3D63;
-    background-color: white;
-    padding: 0.125em;
-    border-radius: 40px;
+  display: flex;
+  border: 0.25em solid #ed3d63;
+  background-color: white;
+  padding: 0.125em;
+  border-radius: 40px;
 }
 .leaflet-marker-icon.marker-cluster div {
-    margin: auto;
-    background-color: transparent;
+  margin: auto;
+  background-color: transparent;
 }

@@ -13,7 +13,7 @@ jobs:
     env:
       SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
       SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_STAGE_DB_PASSWORD }}
-      STAGE_PROJECT_ID: qyrgvtalhopncikdzhhp
+      STAGE_PROJECT_ID: lykcwaobnqoeincpwtws
 
     steps:
       - uses: actions/checkout@v4

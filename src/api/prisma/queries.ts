@@ -1,12 +1,10 @@
 import { Prisma, PrismaClient, toilets, areas } from '@prisma/client';
 import { RemovalReportInput } from '../../api-client/graphql';
-
 import { ToiletUpsertReport } from '../graphql/helpers';
-import { LooFilter } from '../../@types/resolvers-types';
 
 export const getLooById = async (
   prisma: PrismaClient,
-  id: string
+  id: string,
 ): Promise<toilets & { areas: Pick<areas, 'name' | 'type'> }> => {
   const res = await prisma.toilets.findUnique({
     where: { id },
@@ -17,7 +15,7 @@ export const getLooById = async (
 
 export const getLooNamesByIds = async (
   prisma: PrismaClient,
-  idList: string[]
+  idList: string[],
 ) => {
   return prisma.toilets.findMany({
     where: {
@@ -36,7 +34,7 @@ export const setLooLocation = async (
   prisma: PrismaClient,
   id: string,
   lat: number,
-  lng: number
+  lng: number,
 ) => {
   return prisma.$executeRaw`
       UPDATE toilets SET
@@ -52,7 +50,7 @@ export const setLooLocation = async (
 export const getLoosWithinGeohash = async (
   prisma: PrismaClient,
   geohash: string,
-  active = true
+  active = true,
 ) =>
   prisma.toilets.findMany({
     where: {
@@ -80,7 +78,7 @@ export const getAreas = async (prisma: PrismaClient) =>
 export const upsertLoo = async (
   prisma: PrismaClient,
   report: ToiletUpsertReport,
-  returnFinal = true
+  returnFinal = true,
 ) => {
   try {
     const result = await prisma.toilets.upsert({
@@ -92,12 +90,11 @@ export const upsertLoo = async (
     if (report.extras.location) {
       // We update the loos' location. This is a separate query because Prisma lacks PostGIS support.
       // Work is underway: https://github.com/prisma/prisma/issues/1798#issuecomment-1319784123
-      // The area is set as a database trigger defined in the `20221112164242_geography-trigger.sql` migration.
       await setLooLocation(
         prisma,
         result.id,
         report.extras.location.lat,
-        report.extras.location.lng
+        report.extras.location.lng,
       );
     }
 
@@ -114,7 +111,7 @@ export const upsertLoo = async (
 export const removeLoo = async (
   prisma: PrismaClient,
   report: RemovalReportInput,
-  nickname: string
+  nickname: string,
 ) => {
   const { edit: id, reason } = report;
   return prisma.toilets.update({
@@ -155,7 +152,7 @@ export const upsertArea = async (
     priority: number;
     type: string;
     version: number;
-  }
+  },
 ) => {
   const areaResult = await prisma.areas.upsert({
     where: { id: area.id },
@@ -190,23 +187,26 @@ export const getLoosByProximity = async (
   prisma: PrismaClient,
   lat: number,
   lng: number,
-  radius = 1000
+  radius = 1000,
 ) => {
   const nearbyLoos = (await prisma.$queryRaw`
         SELECT
-          loo.id, loo.name, active, men, women, no_payment, notes, opening_times, payment_details,
-          accessible, active, all_gender, attended, automatic, location, baby_change, children, created_at,
-          removal_reason, radar, urinal_only, verified_at,updated_at,geohash,
+          loo.id, loo.name, loo.active, loo.men, loo.women, loo.no_payment, loo.notes, loo.opening_times,
+          loo.payment_details, loo.accessible, loo.all_gender, loo.attended, loo.automatic, loo.location,
+          loo.baby_change, loo.children, loo.created_at, loo.removal_reason, loo.radar, loo.urinal_only,
+          loo.verified_at, loo.updated_at, loo.geohash,
           st_distancesphere(
-            geography::geometry,
+            loo.geography::geometry,
             ST_MakePoint(${lng}, ${lat})
           ) as distance,
           area.name as area_name,
-          area.type as area_type from toilets loo inner join areas area on area.id = loo.area_id
-          where st_distancesphere(
+          area.type as area_type
+        FROM toilets loo
+        INNER JOIN areas area ON area.id = loo.area_id
+        WHERE st_distancesphere(
             loo.geography::geometry,
             ST_MakePoint(${lng}, ${lat})
-          ) <= ${radius}
+        ) <= ${radius}
       `) as (toilets & {
     distance: number;
     area_name?: string;

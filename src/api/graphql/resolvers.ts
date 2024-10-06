@@ -113,7 +113,7 @@ const resolvers: Resolvers<Context> = {
         prisma,
         args.from.lat,
         args.from.lng,
-        args.from.maxDistance
+        args.from.maxDistance,
       );
       return result.map(postgresLooToGraphQL);
     },
@@ -121,7 +121,7 @@ const resolvers: Resolvers<Context> = {
       stringifyAndCompressLoos(
         (await getLoosWithinGeohash(prisma, args.geohash, args.active))
           .map(postgresLooToGraphQL)
-          .flat()
+          .flat(),
       ),
     areas: async (_parent, args, { prisma }) => getAreas(prisma),
     statistics: async (_parent, _args, { prisma }) => {
@@ -173,11 +173,13 @@ const resolvers: Resolvers<Context> = {
         ]);
 
         const activeAreas = Object.fromEntries(
-          activeToiletsInAreas.map((area) => [area.name, area._count.toilets])
+          activeToiletsInAreas.map((area) => [area.name, area._count.toilets]),
         );
 
+        console.log(activeAreas);
+
         const removedAreas = Object.fromEntries(
-          removedToiletsInAreas.map((area) => [area.name, area._count.toilets])
+          removedToiletsInAreas.map((area) => [area.name, area._count.toilets]),
         );
 
         const areaToiletCount: AreaToiletCount[] = [];
@@ -222,7 +224,7 @@ const resolvers: Resolvers<Context> = {
 
       const postgresAuditRecordToGraphQLReport = (
         reportId: bigint,
-        diff: toilets
+        diff: toilets,
       ): Report => {
         const contributor = diff.contributors.pop();
 
@@ -263,7 +265,7 @@ const resolvers: Resolvers<Context> = {
 
       const filtered = auditRecords.map((v) =>
         // TODO: use zod to validate the shape of the record.
-        postgresAuditRecordToGraphQLReport(v.id, v.record)
+        postgresAuditRecordToGraphQLReport(v.id, v.record),
       );
 
       // Order by report creation time.
@@ -296,11 +298,11 @@ const resolvers: Resolvers<Context> = {
         const postgresLoo = await postgresUpsertLooQueryFromReport(
           args.report.edit,
           args.report,
-          nickname
+          nickname,
         );
 
         const result = await upsertLoo(prisma, postgresLoo);
-
+        console.log(result);
         return {
           code: '200',
           success: true,

@@ -115,7 +115,7 @@ describe('Home page tests', () => {
           cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake(
             (callback) => {
               return callback({ coords: { latitude, longitude, accuracy } });
-            }
+            },
           );
         });
         cy.visit('/').wait(500);
@@ -147,7 +147,7 @@ describe('Home page tests', () => {
           cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake(
             (callback) => {
               return callback({ coords: { latitude, longitude, accuracy } });
-            }
+            },
           );
         });
         cy.visit('/').wait(500);
@@ -177,7 +177,7 @@ describe('Home page tests', () => {
           cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake(
             (callback) => {
               return callback({ coords: { latitude, longitude, accuracy } });
-            }
+            },
           );
         });
         cy.visit('/').wait(500);
@@ -193,11 +193,6 @@ describe('Home page tests', () => {
       });
 
     it('should update the accessibility overlay list when the user pans or zooms', () => {
-      // Disable in Firefox as the `type` command is not being recognised for some reason
-      if (Cypress.isBrowser('firefox')) {
-        return;
-      }
-
       cy.visit('/').wait(500);
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.get('#gbptm-map').focus().wait(500);
@@ -230,10 +225,6 @@ describe('Home page tests', () => {
     });
 
     it('should select a toilet using the number key associated with the accessibility overlay list', () => {
-      // Disable in Firefox as the `type` command is not being recognised for some reason
-      if (Cypress.isBrowser('firefox')) {
-        return;
-      }
       cy.visit('/').wait(500);
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       // Focus the map, turning on the accessibility overlay
@@ -258,7 +249,7 @@ describe('Home page tests', () => {
           cy.get('#highlighted-loo').invoke('attr', 'data-toiletid', '2671');
           // Check that the accessibility view is hidden
           cy.contains("Use number keys to show a toilet's details").should(
-            'not.exist'
+            'not.exist',
           );
           cy.contains('Arrow keys pan the map').should('not.exist');
           cy.contains('change the map zoom level').should('not.exist');
@@ -576,7 +567,7 @@ describe('Home page tests', () => {
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
       cy.intercept('POST', '/api', (req) => {
         expect(req.body.operationName).to.equal(
-          'submitVerificationReportMutation'
+          'submitVerificationReportMutation',
         );
       });
       cy.findByText('Yes').click();

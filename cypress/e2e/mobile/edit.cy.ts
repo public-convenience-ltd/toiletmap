@@ -24,7 +24,7 @@ describe('Edit page tests', () => {
       cy.contains('Align the crosshair');
       cy.findByDisplayValue('outrageous webmail');
       cy.findByText('happy-go-lucky toilet!! hence dead jingle!').should(
-        'exist'
+        'exist',
       );
       cy.findByDisplayValue('£7.99 on entry');
 
@@ -68,7 +68,7 @@ describe('Edit page tests', () => {
       ];
 
       const inputChoices = refs.map(
-        (ref, i) => `${ref[0]}:${inputStates[indexPicks[i]]}`
+        (ref, i) => `${ref[0]}:${inputStates[indexPicks[i]]}`,
       );
 
       const detailChecks = refs.map((ref, i) => [
@@ -122,7 +122,7 @@ describe('Edit page tests', () => {
       cy.get('[name=friday-closes]').clear().type('23:00');
 
       cy.findByPlaceholderText(
-        'Add any other useful information about the toilet here'
+        'Add any other useful information about the toilet here',
       )
         .clear()
         .type('I ran out of loo roll! Otherwise good.');
@@ -153,28 +153,15 @@ describe('Edit page tests', () => {
     it('should update the location of the toilet to where the map is dragged', () => {
       cy.visit('loos/ca6249ebcd1490e2aaccc5be/edit').wait(500);
 
-      // touchstart, touchmove etc are not supported in Firefox
-      if (Cypress.isBrowser('firefox')) {
-        cy.get('#gbptm-map')
-          .trigger('mousedown', { which: 1, force: true })
-          .trigger('mousemove', 1000, -1800, { which: 1, force: true })
-          .trigger('mouseup', { force: true })
-          .wait(100)
-          .trigger('mousedown', { which: 1, force: true })
-          .trigger('mousemove', -1500, 1100, { which: 1, force: true })
-          .trigger('mouseup', { force: true })
-          .wait(500);
-      } else {
-        cy.get('#gbptm-map')
-          .trigger('touchstart', { which: 1, force: true })
-          .trigger('touchmove', 1000, -1800, { which: 1, force: true })
-          .trigger('touchend', { force: true })
-          .wait(100)
-          .trigger('touchstart', { which: 1, force: true })
-          .trigger('touchmove', -1500, 1100, { which: 1, force: true })
-          .trigger('touchend', { force: true })
-          .wait(500);
-      }
+      cy.get('#gbptm-map')
+        .trigger('touchstart', { which: 1, force: true })
+        .trigger('touchmove', 1000, -1800, { which: 1, force: true })
+        .trigger('touchend', { force: true })
+        .wait(100)
+        .trigger('touchstart', { which: 1, force: true })
+        .trigger('touchmove', -1500, 1100, { which: 1, force: true })
+        .trigger('touchend', { force: true })
+        .wait(500);
 
       cy.findByText('Update the toilet').click();
 

@@ -1,69 +1,113 @@
 import { Stack } from '@mui/material';
 import React, { useRef, useState } from 'react';
-import Button from '../../design-system/components/Button';
-import Box from '../Box';
 import Badge from '../../design-system/components/Badge';
+import Button from '../../design-system/components/Button';
+import InputField from '../../design-system/components/InputField';
+import Link from 'next/link';
+import TextArea from '../../design-system/components/TextArea';
 
 enum FeedbackState {
   SUCCESS = 0,
   FAILURE = 1,
   PENDING = 2,
+  INVALID_INPUT = 3,
 }
 
 const Feedback = () => {
   const [submitState, setSubmitState] = useState(FeedbackState.PENDING);
 
-  const textArea = useRef<HTMLTextAreaElement>();
-  const submitFeedback = () => {
-    setSubmitState(FeedbackState.PENDING);
+  const feedbackTextArea = useRef<HTMLTextAreaElement>();
+  const emailInput = useRef<HTMLInputElement>();
+
+  const submitFeedback = async () => {
+    const hasUserInputText = feedbackTextArea.current?.value.length > 0;
+
+    if (!hasUserInputText) {
+      setSubmitState(FeedbackState.INVALID_INPUT);
+      return;
+    }
 
     // Only attempt submit if the user has typed something in the text area
-    const hasUserInputText = textArea.current?.value.length > 0;
+    setSubmitState(FeedbackState.PENDING);
 
-    if (hasUserInputText) {
-      const input = textArea.current.value;
-      const payload = {
-        text: input,
-      };
+    const input = feedbackTextArea.current.value;
+    const payload = {
+      text: input,
+      email: emailInput.current.value,
+      route: window.location.pathname,
+    };
 
-      try {
-        fetch('/api/feedback', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        });
+    try {
+      await fetch('/api/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
 
-        // eslint-disable-next-line functional/immutable-data
-        textArea.current.value = '';
+      // eslint-disable-next-line functional/immutable-data
+      feedbackTextArea.current.value = '';
+      // eslint-disable-next-line functional/immutable-data
+      emailInput.current.value = '';
 
-        setSubmitState(FeedbackState.SUCCESS);
-      } catch (e) {
-        setSubmitState(FeedbackState.FAILURE);
-      }
+      setSubmitState(FeedbackState.SUCCESS);
+    } catch (e) {
+      setSubmitState(FeedbackState.FAILURE);
     }
   };
 
   return (
     <Stack spacing="1rem" padding="0.5rem" width="fit-content">
       {submitState === FeedbackState.SUCCESS && <Badge>Thank you!</Badge>}
+      {submitState === FeedbackState.INVALID_INPUT && (
+        <Badge>Please enter some feedback</Badge>
+      )}
+      <label htmlFor="emailInput" style={{ fontWeight: 'bold' }}>
+        Email (optional)
+      </label>
 
-      <Box
-        as="textarea"
-        ref={textArea}
-        //_placeholder={{ fontWeight: 'thin', fontStyle: 'italic' }}
-        resize={'none'}
-        height="16rem"
-        width="20rem"
+      <InputField
+        id="emailInput"
+        ref={emailInput}
+        type="email"
+        maxLength={255}
+      />
+
+      <label htmlFor="feedbackTextArea" style={{ fontWeight: 'bold' }}>
+        Feedback
+      </label>
+
+      <TextArea
+        ref={feedbackTextArea}
+        id="feedbackTextArea"
+        maxLength={5000}
+        style={{
+          resize: 'none',
+          height: '16rem',
+          width: '15rem',
+        }}
         placeholder={`The Toilet Map is a free and open source project that we maintain in our spare time.
 
 We'd be so grateful if you could take a moment to give us feedback on how we could make your experience even better.`}
-      />
+        aria-details={`The Toilet Map is a free and open source project that we maintain in our spare time.
+
+  We'd be so grateful if you could take a moment to give us feedback on how we could make your experience even better.`}
+      ></TextArea>
+
+      <Link
+        target="_blank"
+        href="/privacy"
+        style={{ fontSize: 'var(--text--1)' }}
+      >
+        Privacy Policy
+      </Link>
+
       <Button
         htmlElement="button"
         variant="primary"
         type="submit"
+        aria-label="Submit Feedback"
         onClick={submitFeedback}
       >
         Submit
