@@ -70,13 +70,13 @@ const CodeViewer: React.FC<CodeViewerProps> = ({
   };
 
   // Merge custom options with default Monaco options
-  const mergedOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
+  const mergedOptions = {
     fontSize: 15,
     minimap: { enabled: false },
     lineNumbers: 'off',
     stopRenderingLineAfter: editorOptions?.stopRenderingLineAfter,
     ...editorOptions, // Allow overriding with additional options
-  };
+  } satisfies monaco.editor.IStandaloneEditorConstructionOptions;
 
   return (
     <Box height={'100%'}>

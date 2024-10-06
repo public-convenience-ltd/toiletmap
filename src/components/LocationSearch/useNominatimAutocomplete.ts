@@ -12,8 +12,8 @@ export type Place = {
   id: string;
   label: string;
   location: {
-    lat: string;
-    lng: string;
+    lat: number;
+    lng: number;
   };
 };
 
@@ -47,8 +47,8 @@ const useNominatimAutocomplete = (input: string) => {
         id: item.place_id,
         label: item.display_name,
         location: {
-          lat: item.lat,
-          lng: item.lon,
+          lat: parseFloat(item.lat),
+          lng: parseFloat(item.lon),
         },
       }));
 
@@ -84,8 +84,8 @@ const useNominatimAutocomplete = (input: string) => {
 
   const getPlaceLatLng = (place: Place): Coordinates => {
     return {
-      lat: parseFloat(place.location.lat),
-      lng: parseFloat(place.location.lng),
+      lat: place.location.lat,
+      lng: place.location.lng,
     };
   };
 
