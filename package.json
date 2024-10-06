@@ -74,7 +74,6 @@
     "date-fns": "^2.30.0",
     "downshift": "6.1.12",
     "focus-visible": "^5.2.1",
-    "framer-motion": "^10.16.4",
     "graphql": "^16.9.0",
     "graphql-iso-date": "^3.6.1",
     "graphql-yoga": "^3.9.1",
