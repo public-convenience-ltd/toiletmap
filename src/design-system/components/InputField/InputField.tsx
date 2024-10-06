@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes } from 'react';
+import { forwardRef } from 'react';
 
 type InputProps = React.HTMLProps<HTMLInputElement>;
 

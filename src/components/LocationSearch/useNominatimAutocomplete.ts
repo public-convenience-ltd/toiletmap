@@ -27,9 +27,14 @@ const useNominatimAutocomplete = (input: string) => {
 
   const fetchHandler = async (input: string) => {
     try {
-      const fetchUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-        input,
-      )}&countrycodes=gb&limit=5&format=json`;
+      const params = new URLSearchParams({
+        q: input,
+        countrycodes: 'gb',
+        limit: '5',
+        format: 'json',
+      });
+
+      const fetchUrl = `https://nominatim.openstreetmap.org/search?${params.toString()}`;
 
       const response = await fetch(fetchUrl);
       const results: NominatimResult[] = await response.json();
