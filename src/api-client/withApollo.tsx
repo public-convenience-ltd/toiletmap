@@ -1,19 +1,22 @@
 import { NextPage } from 'next';
 
 import {
-  ApolloClient,
-  NormalizedCacheObject,
-  InMemoryCache,
   ApolloProvider,
   createHttpLink,
+  InMemoryCache,
+  ApolloClient,
+  type ApolloLink,
+  type NormalizedCacheObject,
 } from '@apollo/client';
+
+import type { SchemaLink } from '@apollo/client/link/schema';
 
 import authDirective from '../api/directives/authDirective';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-function createApolloClient() {
-  let terminatingLink;
+function createApolloClient(): ApolloClient<NormalizedCacheObject> {
+  let terminatingLink: SchemaLink | ApolloLink;
   if (typeof window === 'undefined') {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { SchemaLink } = require('@apollo/client/link/schema');
