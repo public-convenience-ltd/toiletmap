@@ -55,8 +55,10 @@ function createApolloClient() {
   });
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function getApolloClient(_context?: unknown) {
+type GetApolloClient = (
+  ...args: unknown[]
+) => ApolloClient<NormalizedCacheObject>;
+export const getApolloClient: GetApolloClient = () => {
   const _apolloClient = apolloClient ?? createApolloClient();
 
   // For SSG and SSR always create a new Apollo Client
@@ -66,7 +68,7 @@ export function getApolloClient(_context?: unknown) {
   if (!apolloClient) apolloClient = _apolloClient;
 
   return _apolloClient;
-}
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function withApollo<T extends NextPage<any>>(Component: T): T {
