@@ -43,7 +43,7 @@ jobs:
           version: 1.27.7
       - run: SUPABASE_SCANNER_BUFFER_SIZE=5mb supabase start
       - name: Cypress run
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v6
         env:
           DATABASE_NAME: toiletmap
           VERCEL_URL: http://localhost:3000
