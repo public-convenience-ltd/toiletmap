@@ -1,13 +1,13 @@
 import L from 'leaflet';
 
-const ICON_DIMENSIONS: [number, number] = [22, 34];
+const ICON_DIMENSIONS: [number, number] = [22, 34] as const;
 const LARGE_ICON_DIMENSIONS: [number, number] = ICON_DIMENSIONS.map(
   (i) => i * 1.5,
 ) as [number, number];
 
-const getIconAnchor = (dimensions: [number, number]): [number, number] => [
-  dimensions[0] / 2,
-  dimensions[1],
+const getIconAnchor = ([width, height]: [number, number]): [number, number] => [
+  width / 2,
+  height,
 ];
 
 interface GetSVGHTMLParams {
