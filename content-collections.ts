@@ -12,6 +12,7 @@ const pages = defineCollection({
     author: z.string(),
   }),
   transform: async (document, context) => {
+    // @ts-expect-error -- TODO: fix this
     const mdx = await compileMDX(context, document);
     return {
       ...document,
@@ -32,6 +33,7 @@ const posts = defineCollection({
     profilePictureUrl: z.string().optional(),
   }),
   transform: async (document, context) => {
+    // @ts-expect-error -- TODO: fix this
     const html = await compileMarkdown(context, document);
     return {
       ...document,
