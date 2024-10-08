@@ -47,8 +47,9 @@ generated
 
 # DecapCMS
 out/
-.contentlayer
+
+# Content Collections
+.content-collections
 
 # Next TLS --experimental-https
-
 certificates

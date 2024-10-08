@@ -1,22 +1,21 @@
-import React from 'react';
-import Head from 'next/head';
-import Box, { BoxProps } from '../components/Box';
-import { allPages, Page } from 'contentlayer/generated';
-import { useMDXComponent } from 'next-contentlayer/hooks';
-import { GetStaticProps, InferGetStaticPropsType } from 'next';
-
-import Container from 'src/components/Container';
-import Text, { TextProps } from 'src/components/Text';
-import Spacer from 'src/components/Spacer';
-import Button from 'src/design-system/components/Button';
-import Link from 'next/link';
-import config from 'src/config';
+import { MDXContent } from '@content-collections/mdx/react';
 import styled from '@emotion/styled';
+import { allPages, Page } from 'content-collections';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
+import Head from 'next/head';
+import Link from 'next/link';
+import React from 'react';
+import Container from 'src/components/Container';
+import Spacer from 'src/components/Spacer';
+import Text, { TextProps } from 'src/components/Text';
+import config from 'src/config';
+import Button from 'src/design-system/components/Button';
+import Box, { BoxProps } from '../components/Box';
 
 export const getStaticProps = (async () => {
   try {
     const pageData = allPages.find(
-      (post) => post._raw.flattenedPath.split('pages/')[1] === 'about',
+      (post) => post._meta.fileName === 'about.mdx',
     );
 
     return {
@@ -52,18 +51,14 @@ const SubHeading = (props: TextProps) => (
 const AboutPage = ({
   pageData,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const MDXContent = useMDXComponent(pageData.body.code, {
-    process: { env: {} },
-    document: {
-      querySelectorAll: () => [],
-    },
-  });
   return (
     <Box my={5}>
       <Head>
         <title>{config.getTitle('About')}</title>
       </Head>
+
       <MDXContent
+        code={pageData.mdx}
         components={{
           Box: Box,
           Container: Container,
