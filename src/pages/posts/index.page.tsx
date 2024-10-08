@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { allPosts, Post } from 'contentlayer/generated';
+import { allPosts, Post } from 'content-collections';
+
 import { format, parseISO } from 'date-fns';
 
 import Head from 'next/head';
@@ -9,16 +10,16 @@ import Container from '../../components/Container';
 import Spacer from '../../components/Spacer';
 import Text from '../../components/Text';
 
+import styled from '@emotion/styled';
 import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import Link from 'next/link';
 import config from 'src/config';
-import styled from '@emotion/styled';
 
 type Props = {
   posts: Post[];
 };
 
-export const getStaticProps: GetStaticProps<Props> = (async () => {
+export const getStaticProps = (async () => {
   return { props: { posts: allPosts } };
 }) satisfies GetStaticProps<Props>;
 
@@ -50,15 +51,15 @@ export default function PostPage({
             </Text>
           )}
           {postsAvailable &&
-            posts.map((postData, i) => (
+            posts.map((postData) => (
               <Box
-                key={postData._id + i}
+                key={postData._meta.fileName}
                 display="flex"
                 flexDirection="column"
                 flex="50%"
               >
                 <Link
-                  href={postData._raw.flattenedPath}
+                  href={postData.url}
                   style={{ display: 'flex', gap: '.2rem' }}
                 >
                   <Text fontSize={4} fontWeight="bold">
@@ -66,13 +67,17 @@ export default function PostPage({
                   </Text>
                 </Link>
                 <Box style={{ display: 'inline-flex', gap: '.2rem' }}>
-                  <Link
-                    href={postData.profileSocialUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  {postData.profileSocialUrl ? (
+                    <Link
+                      href={postData.profileSocialUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Text>{postData.author}</Text>
+                    </Link>
+                  ) : (
                     <Text>{postData.author}</Text>
-                  </Link>
+                  )}
                   <Text>—</Text>
                   <Text>
                     <time dateTime={postData.date}>

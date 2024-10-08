@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { allPosts, Post } from 'contentlayer/generated';
+import { allPosts, Post } from 'content-collections';
 import { format, parseISO } from 'date-fns';
 
 import Head from 'next/head';
@@ -16,9 +16,7 @@ import NotFound from 'src/pages/404.page';
 import config from 'src/config';
 
 export const generateMetadata = ({ params }: { params: { slug: string } }) => {
-  const post = allPosts.find(
-    (post) => post._raw.flattenedPath.split('posts/')[1] === params?.slug,
-  );
+  const post = allPosts.find((post) => post.slug === params?.slug);
   if (!post) throw new Error(`Post not found for slug: ${params.slug}`);
   return { title: config.getTitle(post.title) };
 };
@@ -26,7 +24,7 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
 export const getStaticPaths = (async () => {
   return {
     paths: allPosts.map((post) => ({
-      params: { slug: post._raw.flattenedPath.split('posts/')[1] },
+      params: { slug: post.slug },
     })),
     fallback: true,
   };
@@ -38,10 +36,7 @@ type Props = {
 };
 
 export const getStaticProps: GetStaticProps<Props> = (async (context) => {
-  const postData = allPosts.find(
-    (post) =>
-      post._raw.flattenedPath.split('posts/')[1] === context?.params?.slug,
-  );
+  const postData = allPosts.find((post) => post.slug === context?.params?.slug);
 
   // Return notFound if the post does not exist.
   if (!postData) return { props: { postData: null, notFound: true } };
@@ -81,18 +76,24 @@ export default function PostPage({
             <Spacer mb={4} />
           </>
         )}
-        <Link href={postData.profileSocialUrl}>
+        {postData.profileSocialUrl ? (
+          <Link href={postData.profileSocialUrl}>
+            <Text fontSize={3} fontWeight="bold" textAlign={'center'}>
+              <h2>{postData.author}</h2>
+            </Text>
+          </Link>
+        ) : (
           <Text fontSize={3} fontWeight="bold" textAlign={'center'}>
             <h2>{postData.author}</h2>
           </Text>
-        </Link>
+        )}
         <Text textAlign={'center'}>
           <time dateTime={postData.date}>
             {format(parseISO(postData.date), 'LLLL d, yyyy')}
           </time>
         </Text>
         <Spacer mb={5} />
-        <div dangerouslySetInnerHTML={{ __html: postData.body.html }} />
+        <div dangerouslySetInnerHTML={{ __html: postData.html }} />
       </Container>
     </Box>
   );

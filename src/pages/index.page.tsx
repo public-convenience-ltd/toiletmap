@@ -6,15 +6,15 @@ import VisuallyHidden from '../components/VisuallyHidden';
 import { useMapState } from '../components/MapState';
 import { withApollo } from '../api-client/withApollo';
 import { useEffect } from 'react';
-import type { Page } from 'contentlayer/generated';
-import { allPages } from 'contentlayer/generated';
+
 import { GetStaticProps, InferGetStaticPropsType } from 'next';
+import { allPages, Page } from 'content-collections';
 
 export const getStaticProps = (async () => {
   try {
-    const pageData = allPages.find(
-      (post) => post._raw.flattenedPath.split('pages/')[1] === 'home',
-    );
+    console.log(allPages);
+    const pageData =
+      allPages.find((post) => post._meta.fileName === 'home.mdx') ?? null;
 
     return {
       props: {
