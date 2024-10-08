@@ -12,5 +12,15 @@ export default {
  * About page
  */
 export const About = (props) => {
-  return <Main Component={AboutPage} pageProps={props} />;
+  return (
+    <Main
+      Component={AboutPage}
+      pageProps={{
+        ...props,
+        // pageData: allPages.find(
+        //   (post) => post._raw.flattenedPath.split('pages/')[1] === 'about',
+        // ),
+      }}
+    />
+  );
 };

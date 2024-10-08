@@ -3,6 +3,12 @@
  **/
 const moduleExports = {
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      { hostname: 'avatars.githubusercontent.com' },
+      { hostname: 'rca-media2.rca.ac.uk' },
+    ],
+  },
   transpilePackages: [
     '@react-leaflet/core',
     'react-leaflet',
@@ -51,5 +57,8 @@ const moduleExports = {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { withPlausibleProxy } = require('next-plausible');
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { withContentCollections } = require('@content-collections/next');
+
 // eslint-disable-next-line functional/immutable-data
-module.exports = withPlausibleProxy()(moduleExports);
+module.exports = withContentCollections(withPlausibleProxy()(moduleExports));
