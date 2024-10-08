@@ -150,6 +150,23 @@ const globalStyles = (
         font: inherit;
       }
 
+      h1 {
+        font-size: var(--text-4);
+        max-width: 50ch;
+      }
+
+      h2 {
+        font-size: var(--text-3);
+      }
+
+      h3 {
+        font-size: var(--text-2);
+      }
+
+      h4 {
+        font-size: var(--text-1);
+      }
+
       fieldset {
         border: 0;
       }

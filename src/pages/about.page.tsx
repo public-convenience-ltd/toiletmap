@@ -1,15 +1,16 @@
+import React from 'react';
+
 import { MDXContent } from '@content-collections/mdx/react';
 import styled from '@emotion/styled';
 import { allPages, Page } from 'content-collections';
 import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import React from 'react';
-import Container from 'src/components/Container';
-import Spacer from 'src/components/Spacer';
-import Text, { TextProps } from 'src/components/Text';
-import config from 'src/config';
-import Button from 'src/design-system/components/Button';
+import Container from '../components/Container';
+import Spacer from '../components/Spacer';
+import Text, { TextProps } from '..//components/Text';
+import config from '../config';
+import Button from '../design-system/components/Button';
 import Box, { BoxProps } from '../components/Box';
 
 export const getStaticProps = (async () => {

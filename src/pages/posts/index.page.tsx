@@ -13,7 +13,7 @@ import Text from '../../components/Text';
 import styled from '@emotion/styled';
 import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import Link from 'next/link';
-import config from 'src/config';
+import config from '../../config';
 
 type Props = {
   posts: Post[];

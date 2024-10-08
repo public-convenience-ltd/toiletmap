@@ -5,15 +5,13 @@ import { format, parseISO } from 'date-fns';
 
 import Head from 'next/head';
 import Image from 'next/image';
-import Box from '../../../components/Box';
+
 import Container from '../../../components/Container';
-import Spacer from '../../../components/Spacer';
-import Text from '../../../components/Text';
 
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import Link from 'next/link';
-import NotFound from 'src/pages/404.page';
-import config from 'src/config';
+import config from '../../../config';
+import NotFound from '../../../pages/404.page';
 
 export const generateMetadata = ({ params }: { params: { slug: string } }) => {
   const post = allPosts.find((post) => post.slug === params?.slug);
@@ -50,51 +48,74 @@ export default function PostPage({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   if (notFound || !postData) return <NotFound />;
   return (
-    <Box my={5}>
+    <div
+      style={{ marginTop: 'var(--space-xl)', marginBottom: 'var(--space-xl)' }}
+    >
       <Head>
         <title>{config.getTitle(postData.title)}</title>
       </Head>
       <Container maxWidth={845}>
-        <Text fontSize={6} fontWeight="bold" textAlign="center">
-          <h1>{postData.title}</h1>
-        </Text>{' '}
-        {postData?.profilePictureUrl && (
-          <>
-            <Spacer mb={4} />
+        <section
+          style={{
+            marginBottom: 'var(--space-xl)',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <section>
+            <h1 style={{ fontWeight: 600 }}>{postData.title}</h1>
             <section
-              id="profile-picture"
-              style={{ display: 'flex', justifyContent: 'center' }}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}
             >
-              <Image
-                style={{ borderRadius: '100%' }}
-                width={100}
-                height={100}
-                src={postData?.profilePictureUrl}
-                alt={`A picture of the author: ${postData.author}`}
-              ></Image>
+              {postData.profileSocialUrl ? (
+                <span>
+                  Author:{' '}
+                  <Link href={postData.profileSocialUrl}>
+                    {postData.author}{' '}
+                  </Link>
+                </span>
+              ) : (
+                <span>Author: {postData.author}</span>
+              )}
+              <span>
+                Published:{' '}
+                <time dateTime={postData.date}>
+                  {format(parseISO(postData.date), 'LLLL d, yyyy')}
+                </time>
+              </span>
             </section>
-            <Spacer mb={4} />
-          </>
-        )}
-        {postData.profileSocialUrl ? (
-          <Link href={postData.profileSocialUrl}>
-            <Text fontSize={3} fontWeight="bold" textAlign={'center'}>
-              <h2>{postData.author}</h2>
-            </Text>
-          </Link>
-        ) : (
-          <Text fontSize={3} fontWeight="bold" textAlign={'center'}>
-            <h2>{postData.author}</h2>
-          </Text>
-        )}
-        <Text textAlign={'center'}>
-          <time dateTime={postData.date}>
-            {format(parseISO(postData.date), 'LLLL d, yyyy')}
-          </time>
-        </Text>
-        <Spacer mb={5} />
-        <div dangerouslySetInnerHTML={{ __html: postData.html }} />
+          </section>
+
+          <section
+            style={{
+              display: 'flex',
+            }}
+          >
+            {postData?.profilePictureUrl && (
+              <section
+                id="profile-picture"
+                style={{ display: 'flex', justifyContent: 'center' }}
+              >
+                <Image
+                  style={{
+                    borderRadius: '100%',
+                    border: '4px solid var(--color-blue)',
+                  }}
+                  width={150}
+                  height={150}
+                  src={postData?.profilePictureUrl}
+                  alt={`A picture of the author: ${postData.author}`}
+                ></Image>
+              </section>
+            )}
+          </section>
+        </section>
+        <article dangerouslySetInnerHTML={{ __html: postData.html }} />
       </Container>
-    </Box>
+    </div>
   );
 }
