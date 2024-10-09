@@ -7,7 +7,7 @@ import { ReportInput } from '../../@types/resolvers-types';
 export const suggestLooId = async (
   nickname: string,
   coordinates: number[],
-  updatedAt: Date
+  updatedAt: Date,
 ): Promise<string> => {
   const input = JSON.stringify({
     coords: coordinates,
@@ -19,7 +19,9 @@ export const suggestLooId = async (
 };
 
 export const postgresLooToGraphQL = (
-  loo: toilets & { areas?: Partial<areas> }
+  loo: toilets & {
+    areas?: Partial<areas>;
+  },
 ): Loo => ({
   id: loo.id.toString(),
   geohash: loo.geohash,
@@ -40,7 +42,9 @@ export const postgresLooToGraphQL = (
   children: loo.children,
   createdAt: loo.created_at,
   location: {
+    // @ts-expect-error -- We know that coordinates are there, but the JsonValue types don't.
     lat: loo.location?.coordinates[1] ?? 0,
+    // @ts-expect-error -- We know that coordinates are there, but the JsonValue types don't.
     lng: loo.location?.coordinates[0] ?? 0,
   },
   removalReason: loo.removal_reason,
@@ -71,7 +75,7 @@ type ToiletsExcludingComputed = Omit<
 export const postgresUpsertLooQuery = (
   id: string | undefined,
   data: Partial<ToiletsExcludingComputed>,
-  location?: { lat: number; lng: number }
+  location?: { lat: number; lng: number },
 ): ToiletUpsertReport => {
   return {
     where: { id },
@@ -89,7 +93,7 @@ export const postgresUpsertLooQuery = (
 export const postgresUpsertLooQueryFromReport = async (
   id: string | undefined,
   report: ReportInput,
-  nickname: string
+  nickname: string,
 ): Promise<ToiletUpsertReport> => {
   const operationTime = new Date();
 
@@ -98,7 +102,7 @@ export const postgresUpsertLooQueryFromReport = async (
     submitId = await suggestLooId(
       nickname,
       [report.location.lng, report.location.lat],
-      operationTime
+      operationTime,
     );
   }
 

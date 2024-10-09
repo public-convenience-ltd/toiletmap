@@ -54,19 +54,6 @@ const Sidebar = () => {
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   const filterToggleRef = useRef(null);
 
-  // Show the filters panel on first pageload if there is a filter set.
-  // TODO: Disabled for now until decided how this behaviour should work.
-  // useEffect(() => {
-  //   if (mapState.appliedFilters) {
-  //     const isThereAFilterSet = Object.values(mapState.appliedFilters).some(
-  //       (filterState) => filterState
-  //     );
-  //     console.log(mapState.appliedFilters);
-
-  //     setIsFilterExpanded(isThereAFilterSet);
-  //   }
-  // }, [mapState.appliedFilters]);
-
   const filterPanel = useMemo(
     () =>
       (isFilterExpanded || isFiltersExpanded) && (
@@ -214,6 +201,7 @@ const Sidebar = () => {
             <Box display="flex" justifyContent="space-between">
               <Box
                 as="button"
+                // @ts-expect-error -- Generic box component can't handle these props
                 type="button"
                 display="flex"
                 alignItems="center"
@@ -236,6 +224,7 @@ const Sidebar = () => {
                 <Text fontSize={12}>
                   <Box
                     as="button"
+                    // @ts-expect-error -- Generic box component can't handle these props
                     type="button"
                     onClick={() =>
                       setMapState({ ...mapState, appliedFilters: undefined })
@@ -262,6 +251,7 @@ const Sidebar = () => {
             <StyledNavLink
               href={`/loos/add?lat=${mapState.center.lat}&lng=${mapState.center.lng}`}
             >
+              {/* @ts-expect-error -- Generic box component can't handle these props */}
               <Box display="flex" alignItems="center" as="button" type="button">
                 <Icon icon="circle-plus" size="medium" />
                 <Box mx={2}>
@@ -278,6 +268,7 @@ const Sidebar = () => {
               </h2>
               <Box
                 as="button"
+                // @ts-expect-error -- Generic box component can't handle these props
                 type="button"
                 display="flex"
                 alignItems="center"

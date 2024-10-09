@@ -55,32 +55,11 @@ const Markers = () => {
     boundingBoxWest,
   ]);
 
-  // TODO:fix this
-  // const throttledPrefetch = useMemo(() => {
-  //   return _.throttle((id) => {
-  //     // router.prefetch(id);
-  //   }, 1000);
-  // }, [router]);
-
-  // const prefetchVisibleToilets = useCallback(() => {
-  //   const visibleMarkers = document.getElementsByClassName('toilet-marker');
-  //   for (const marker of visibleMarkers) {
-  //     if (marker instanceof HTMLElement) {
-  //       const toiletId = marker.dataset?.toiletid;
-  //       throttledPrefetch(`/loos/${toiletId}`);
-  //     }
-  //   }
-  // }, [throttledPrefetch]);
-
   useEffect(() => {
     setMapState({
       ...mapState,
       currentlyLoadedGeohashes: geohashesToLoad,
     });
-
-    // if (!userInteractingWithMap) {
-    //   prefetchVisibleToilets();
-    // }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [geohashesToLoad, userInteractingWithMap]);
@@ -219,6 +198,7 @@ const MarkerGroup: React.FC<{
         const childCount = cluster.getChildCount();
         const children = cluster.getAllChildMarkers();
         const containedIds = children
+          // @ts-expect-error -- trust me, toiletId is there
           .map((child) => child.getIcon().options?.toiletId)
           .join(',');
 

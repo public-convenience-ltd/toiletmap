@@ -20,7 +20,7 @@ The following is a "quick start" guide aimed at getting you started with a devel
 
 ### Prerequisites
 
-- [fnm](https://github.com/Schniz/fnm) (or a node version matching the one specified in [.nvmrc](./nvmrc))
+- [fnm](https://github.com/Schniz/fnm) (or a node version matching the one specified in [.nvmrc](./.nvmrc))
 - [pnpm](https://pnpm.io/installation)
 - [Docker](https://docs.docker.com/get-docker/) to spin up a local postgres database to develop against.
 - Vercel CLI (optional)

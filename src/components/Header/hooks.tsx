@@ -21,6 +21,7 @@ export const useFeedbackPopover = () => {
 
   const FeedbackPopover = () => (
     <ThemeProvider
+      // @ts-expect-error -- This will all refactored/removed once the design system is in place.
       theme={createTheme({
         ...theme,
       })}

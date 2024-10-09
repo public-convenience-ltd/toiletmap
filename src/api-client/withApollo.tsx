@@ -1,19 +1,22 @@
 import { NextPage } from 'next';
 
 import {
-  ApolloClient,
-  NormalizedCacheObject,
-  InMemoryCache,
   ApolloProvider,
   createHttpLink,
+  InMemoryCache,
+  ApolloClient,
+  type ApolloLink,
+  type NormalizedCacheObject,
 } from '@apollo/client';
+
+import type { SchemaLink } from '@apollo/client/link/schema';
 
 import authDirective from '../api/directives/authDirective';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-function createApolloClient() {
-  let terminatingLink;
+function createApolloClient(): ApolloClient<NormalizedCacheObject> {
+  let terminatingLink: SchemaLink | ApolloLink;
   if (typeof window === 'undefined') {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { SchemaLink } = require('@apollo/client/link/schema');
@@ -55,7 +58,10 @@ function createApolloClient() {
   });
 }
 
-export function getApolloClient() {
+type GetApolloClient = (
+  ...args: unknown[]
+) => ApolloClient<NormalizedCacheObject>;
+export const getApolloClient: GetApolloClient = () => {
   const _apolloClient = apolloClient ?? createApolloClient();
 
   // For SSG and SSR always create a new Apollo Client
@@ -65,13 +71,14 @@ export function getApolloClient() {
   if (!apolloClient) apolloClient = _apolloClient;
 
   return _apolloClient;
-}
+};
 
-export const withApollo = (Comp: NextPage) =>
-  function ApolloWrapper(props: object) {
-    return (
-      <ApolloProvider client={getApolloClient()}>
-        <Comp {...props} />
-      </ApolloProvider>
-    );
-  };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function withApollo<T extends NextPage<any>>(Component: T): T {
+  const ApolloWrapper = (props: React.ComponentProps<T>) => (
+    <ApolloProvider client={getApolloClient()}>
+      <Component {...props} />
+    </ApolloProvider>
+  );
+  return ApolloWrapper as T;
+}
