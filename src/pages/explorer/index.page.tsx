@@ -129,7 +129,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
     return res;
   } catch (e: unknown) {
-    console.log(e);
+    console.error(e);
     return { props: { notFound: true } };
   }
 };

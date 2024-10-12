@@ -5,6 +5,7 @@ import LooMap from '../components/LooMap/LooMapLoader';
 import Main from '../components/Main';
 
 import IndexPageNext from '../pages/index.page';
+import { allPages } from 'content-collections';
 
 export default {
   name: 'Pages',
@@ -20,9 +21,7 @@ export const Index = (props) => {
       Component={IndexPageNext}
       pageProps={{
         ...props,
-        pageData: allPages.find(
-          (post) => post._raw.flattenedPath.split('pages/')[1] === 'home',
-        ),
+        pageData: allPages.find((post) => post._meta.fileName === 'index.mdx'),
       }}
       map={<LooMap />}
     />

@@ -53,7 +53,7 @@ export default async function handler(
     res.setHeader('Content-Type', 'text/html');
     return res.send(script);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return res.redirect('/?error=decap_oauth_error');
   }
 }

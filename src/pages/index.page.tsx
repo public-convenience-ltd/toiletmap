@@ -12,7 +12,6 @@ import { allPages, Page } from 'content-collections';
 
 export const getStaticProps = (async () => {
   try {
-    console.log(allPages);
     const pageData =
       allPages.find((post) => post._meta.fileName === 'home.mdx') ?? null;
 

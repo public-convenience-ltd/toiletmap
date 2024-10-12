@@ -3,6 +3,7 @@ import React from 'react';
 
 import AboutPage from '../pages/about.page';
 import Main from '../components/Main';
+import { allPages } from 'content-collections';
 
 export default {
   component: AboutPage,
@@ -17,9 +18,7 @@ export const About = (props) => {
       Component={AboutPage}
       pageProps={{
         ...props,
-        // pageData: allPages.find(
-        //   (post) => post._raw.flattenedPath.split('pages/')[1] === 'about',
-        // ),
+        pageData: allPages.find((post) => post._meta.fileName === 'about.mdx'),
       }}
     />
   );
