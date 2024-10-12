@@ -2,11 +2,11 @@ backend:
   name: github
   repo: public-convenience-ltd/toiletmap
   branch: ob/decap
-  site_domain: toiletmap-git-ob-decap-public-convenience-ltd.vercel.app/
-  base_url: https://toiletmap-git-ob-decap-public-convenience-ltd.vercel.app
+  site_domain: localhost:3000
+  base_url: https://localhost:3000
   auth_endpoint: api/decap-oauth
-site_url: https://toiletmap-git-ob-decap-public-convenience-ltd.vercel.app/
-display_url: https://toiletmap-git-ob-decap-public-convenience-ltd.vercel.app/
+site_url: https://localhost:3000
+display_url: https://localhost:3000
 publish_mode: editorial_workflow
 media_folder: public/images/uploads
 public_folder: /images/uploads
@@ -23,6 +23,7 @@ collections:
       - { label: "Author", name: "author", widget: "string" }
       - { label: "Body", name: "body", widget: "markdown" }
   - name: "posts"
+    create: true
     label: "Blog Posts"
     label_singular: 'Blog Post'
     folder: content/posts
