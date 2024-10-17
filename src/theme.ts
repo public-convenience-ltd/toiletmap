@@ -11,8 +11,11 @@ const theme = {
     ice: '#d2fff2',
     white: '#fff',
     lightGrey: '#f4f4f4',
+    darkGrey: '#2C3E50',
     grey: '#807f7f',
     aqua: '#93f9db',
+    cool: '#3498DB',
+    green: '#27AE60',
   },
   mediaQueries: breakpoints.map((n) => `@media screen and (min-width: ${n})`),
 };
