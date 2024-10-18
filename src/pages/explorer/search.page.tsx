@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { TablePagination } from '@mui/base';
@@ -17,10 +16,36 @@ import Spacer from '../../components/Spacer';
 import Button from '../../design-system/components/Button';
 import theme from '../../theme';
 
-const OptionLabel = styled('label')({
-  display: 'flex',
-  flexDirection: 'column',
-});
+const OptionLabel = styled('label')(
+  ({ theme }) => ` 
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Space between label and input */
+  font-size: ${theme.fontSizes[2]}px; /* Default font size (12px) */
+
+  @media (max-width: ${theme.breakpoints[1]}) {
+    font-size: ${theme.fontSizes[1]}px; /* Smaller font size (10px) */
+  }
+
+  @media (min-width: ${theme.breakpoints[2]}) {
+    font-size: ${theme.fontSizes[3]}px; /* Larger font size at breakpoint */
+  }
+
+  input {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+  }
+
+  select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+  }
+`,
+);
 
 const TableHeader = styled('th')({
   fontWeight: 800,
@@ -162,26 +187,40 @@ const UnstyledTable = () => {
     <div>
       <Box
         as="form"
-        display={'flex'}
-        flexWrap={'wrap'}
-        css={{ gap: '1rem' }}
+        display="flex"
+        flexDirection={{ base: 'column', md: 'row' }}
+        alignItems="flex-start" // Align items to the start for better vertical alignment
+        justifyContent="center"
+        flexWrap="wrap"
+        css={{ gap: '1rem', padding: '1rem' }}
         onSubmit={(e) => {
           e.preventDefault();
           applySearch(appliedFilters);
         }}
       >
+        {/* Search Text Input */}
         <OptionLabel>
-          Search Text
+          Search
           <input
             value={appliedFilters.text}
+            placeholder="Search for loos"
             onChange={(e) =>
               setAppliedFilters({
                 ...appliedFilters,
                 text: e.target.value,
               })
             }
-          ></input>
+            style={{
+              padding: '0.5rem',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              width: '100%',
+              boxSizing: 'border-box',
+            }}
+          />
         </OptionLabel>
+
+        {/* Order By Dropdown */}
         <OptionLabel>
           Order By
           <select
@@ -192,13 +231,66 @@ const UnstyledTable = () => {
                 sort: e.target.value as SortOrder,
               })
             }
+            style={{
+              padding: '0.5rem',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              width: '100%', // Ensure full width for consistency
+              boxSizing: 'border-box',
+            }}
           >
             <option value={SortOrder.NewestFirst}>Newest First</option>
             <option value={SortOrder.OldestFirst}>Oldest First</option>
           </select>
         </OptionLabel>
+
+        {/* Updated After Date Picker */}
         <OptionLabel>
-          Area
+          Updated After
+          <input
+            type="date"
+            value={appliedFilters.fromDate?.split('T')[0] ?? ''}
+            onChange={(e) =>
+              setAppliedFilters({
+                ...appliedFilters,
+                fromDate: e.target.value,
+              })
+            }
+            style={{
+              padding: '0.5rem',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              width: '100%', // Ensure full width for consistency
+              boxSizing: 'border-box',
+            }}
+          />
+        </OptionLabel>
+
+        {/* Updated Before Date Picker */}
+        <OptionLabel>
+          Updated Before
+          <input
+            type="date"
+            value={appliedFilters.toDate?.split('T')[0] ?? ''}
+            onChange={(e) =>
+              setAppliedFilters({
+                ...appliedFilters,
+                toDate: e.target.value,
+              })
+            }
+            style={{
+              padding: '0.5rem',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              width: '100%', // Ensure full width for consistency
+              boxSizing: 'border-box',
+            }}
+          />
+        </OptionLabel>
+
+        {/* Area Dropdown */}
+        <OptionLabel>
+          By Area
           <select
             value={appliedFilters.areaName}
             onChange={(e) =>
@@ -208,6 +300,13 @@ const UnstyledTable = () => {
                   e.target.value === 'All areas' ? undefined : e.target.value,
               })
             }
+            style={{
+              padding: '0.5rem',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              width: '100%', // Ensure full width for consistency
+              boxSizing: 'border-box',
+            }}
           >
             {areaData?.areas &&
               [
@@ -220,52 +319,83 @@ const UnstyledTable = () => {
               ))}
           </select>
         </OptionLabel>
-        <OptionLabel>
-          Updated After
-          <input
-            value={appliedFilters.fromDate?.split('T')[0] ?? ''}
-            onChange={(e) =>
-              setAppliedFilters({
-                ...appliedFilters,
-                fromDate: e.target.value,
-              })
-            }
-            type="date"
-          ></input>
-        </OptionLabel>
-        <OptionLabel>
-          Updated Before
-          <input
-            type="date"
-            value={appliedFilters.toDate?.split('T')[0] ?? ''}
-            onChange={(e) =>
-              setAppliedFilters({
-                ...appliedFilters,
-                toDate: e.target.value,
-              })
-            }
-          ></input>
-        </OptionLabel>
-        <Button htmlElement="button" type="submit" variant="primary">
-          Search
-        </Button>
       </Box>
 
+      {/* Centered Search Button */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Button
+          htmlElement="button"
+          type="submit"
+          variant="secondary"
+          style={{
+            padding: '0.5rem 2rem',
+            backgroundColor: '#8ce9c1',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            width: '5%',
+            boxSizing: 'border-box',
+            fontSize: '0.875rem',
+          }}
+        >
+          Search
+        </Button>
+      </div>
+
       <Spacer mt={4} />
+
+      {/* Table */}
       <table
         aria-label="custom pagination table"
         css={css`
           border-collapse: collapse;
-          width: 100%;
+          width: 92.5%;
+          margin: 0 auto;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          /* Responsive font sizes for table cells */
           td,
           th {
+            font-size: ${theme
+              .fontSizes[1]}px; /* Base font size for small screens */
+            ${theme.mediaQueries[0]} {
+              font-size: ${theme.fontSizes[2]}px; /* For tablets and up */
+            }
+            ${theme.mediaQueries[1]} {
+              font-size: ${theme.fontSizes[3]}px; /* For desktops */
+            }
+          }
+          tr {
+            &:nth-of-type(odd) {
+              background-color: ${theme.colors.lightGrey};
+            }
+            &:nth-of-type(even) {
+              background-color: ${theme.colors.white};
+            }
+          }
+          th {
+            background-color: ${theme.colors.darkGrey};
+            color: ${theme.colors.white};
             padding: 0.5rem;
+            text-align: left;
+            &:nth-of-type(n + 2) {
+              text-align: center; /* Center-align for second column onward */
+            }
           }
-          tr:nth-child(odd) td {
-            background-color: ${theme.colors.white};
-          }
-          tr:nth-child(even) td {
-            background-color: ${theme.colors.lightGrey};
+          td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid ${theme.colors.grey};
+            &:nth-of-type(n + 2) {
+              text-align: center; /* Center-align for second column onward */
+            }
           }
         `}
       >
@@ -274,7 +404,7 @@ const UnstyledTable = () => {
             <TableHeader>Name</TableHeader>
             <TableHeader>Area</TableHeader>
             <TableHeader>Contributors</TableHeader>
-            <TableHeader>Date Updated</TableHeader>
+            <TableHeader>Updated on</TableHeader>
           </tr>
         </thead>
         <tbody>
@@ -289,12 +419,14 @@ const UnstyledTable = () => {
             </tr>
           ))}
         </tbody>
+
+        {/* Pagination footer */}
         <tfoot>
           <tr>
             <TablePagination
               rowsPerPageOptions={[
-                5, 10, 25, 50,
-                // { label: 'All', value: availableRows }, Disabled all for now
+                5, 10, 25, 50, 100,
+                //{ label: 'All', value: availableRows }, // Show all rows
               ]}
               colSpan={4}
               count={availableRows}
@@ -307,7 +439,7 @@ const UnstyledTable = () => {
                 actions: {
                   showFirstButton: true,
                   showLastButton: true,
-                } as object,
+                },
               }}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
