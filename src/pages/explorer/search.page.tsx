@@ -158,7 +158,22 @@ const UnstyledTable = () => {
     });
   };
 
+  
+  const areaName = appliedFilters.areaName ?? 'All Areas';
+  const searchText = appliedFilters.text ?? '';
+
+  const description = searchText
+    ? `Search results for toilets matching "${searchText}" in ${areaName}. Find toilets with updated details in your area.`
+    : `Search for toilets across ${areaName}. Use filters to find active or removed toilets and get detailed area breakdowns.`;
+
+
   return (
+
+     <Head>
+        <title>Toilet Map Search</title>
+        <meta name="description" content={description} />
+      </Head>
+    
     <div>
       <Box
         as="form"
