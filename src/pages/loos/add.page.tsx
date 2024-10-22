@@ -86,6 +86,15 @@ const AddPage = () => {
     <>
       <Head>
         <title>{config.getTitle('Add Toilet')}</title>
+
+         {/* Added meta description for SEO improvement as part of issue #1736 */} 
+
+        
+        <meta
+          name="description"
+          content="Add a new public toilet location to the map. 
+          Provide details about accessibility, payment options, and other amenities for public use."
+        />
       </Head>
 
       <Box position="relative" display="flex" height="40vh">
