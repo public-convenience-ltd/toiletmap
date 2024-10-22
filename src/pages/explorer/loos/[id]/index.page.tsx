@@ -300,6 +300,12 @@ const LooPage: FC<LooPageProps> = ({ looData, reportData, notFound }) => {
       <>
         <Head>
           <title>{pageTitle}</title>
+
+           {/* Added meta description for SEO improvement as part of issue #1736 */}
+
+          
+          <meta name="description" content="Error fetching detailed toilet data and reports. 
+          Find information about toilet locations and reports on the Great British Public Toilet Map." />
         </Head>
         <Box display="flex" height="40vh">
           <Box
@@ -334,6 +340,14 @@ const LooPage: FC<LooPageProps> = ({ looData, reportData, notFound }) => {
     <Box my={5}>
       <Head>
         <title>{pageTitle}</title>
+
+         {/* Added meta description for SEO improvement as part of issue #1736 */} 
+         
+        <meta
+          name="description"
+          content="View detailed reports and information about public toilets, including opening times, 
+          locations, and facilities on the Great British Public Toilet Map."
+        />
       </Head>
 
       <VisuallyHidden>
