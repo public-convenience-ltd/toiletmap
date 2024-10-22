@@ -33,6 +33,16 @@ const AboutPage = () => {
     <Box my={5}>
       <Head>
         <title>{config.getTitle('About')}</title>
+
+         {/* Added meta description for SEO improvement as part of issue #1736 */} 
+
+        
+        <meta
+          name="description"
+          content="Discover the UK's largest database of publicly-accessible toilets with the Great British Public Toilet Map.
+           Locate facilities, contribute updates, and access resources to improve community accessibility."
+        />
+        <link rel="canonical" href="https://www.toiletmap.org.uk/about" />
       </Head>
 
       <Container maxWidth={845}>
