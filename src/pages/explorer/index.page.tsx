@@ -13,13 +13,22 @@ import { css } from '@emotion/react';
 import VisuallyHidden from '../../components/VisuallyHidden';
 import Link from 'next/link';
 
+
+
 const Stats = ({ data: { statistics } }: { data: StatisticsQuery }) => {
+
+  
   const pageTitle = config.getTitle('Loo Statistics');
+  const pageDescription = 'Explore detailed statistics of toilets including active, removed, and total toilets across different areas.';
 
   return (
     <Box my={5}>
       <Head>
         <title>{pageTitle}</title>
+
+         {/* Added meta description for SEO improvement as part of issue #1736 */} 
+        
+        <meta name="description" content={pageDescription} />
       </Head>
 
       <VisuallyHidden>
@@ -126,7 +135,6 @@ const Stats = ({ data: { statistics } }: { data: StatisticsQuery }) => {
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   try {
     const res = await ssrStatistics.getServerPage({}, req);
-
     return res;
   } catch (e: unknown) {
     console.log(e);
