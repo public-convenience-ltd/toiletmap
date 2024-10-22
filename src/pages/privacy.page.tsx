@@ -13,6 +13,13 @@ const PrivacyPage = () => {
     <Box my={5}>
       <Head>
         <title>{config.getTitle('Privacy Policy')}</title>
+
+        {/* Added meta description for SEO improvement as part of issue #1736 */}
+
+        <meta
+          name="description" 
+          content="Learn about how we protect your privacy while using The Great British Public Toilet Map. Find details on our data practices, cookies, and GDPR compliance."
+        />
       </Head>
 
       <Container maxWidth={845}>
