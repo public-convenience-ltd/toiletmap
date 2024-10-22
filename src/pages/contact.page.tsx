@@ -8,11 +8,19 @@ import Spacer from '../components/Spacer';
 import Box from '../components/Box';
 import config from '../config';
 
-const ContactPage = () => {
+const ContactPage: NextPage = () => {
   return (
     <Box my={5}>
       <Head>
         <title>{config.getTitle('Contact Us')}</title>
+
+         {/* Added meta description for SEO improvement as part of issue #1736 */} 
+        
+        <meta
+          name="description"
+          content="Get in touch with the Great British Public Toilet Map team. 
+          Contact us for any issues, feedback, or to provide details about public toilets."
+        />
       </Head>
 
       <Container maxWidth={845}>
@@ -31,4 +39,4 @@ const ContactPage = () => {
   );
 };
 
-export default ContactPage as NextPage;
+export default ContactPage;

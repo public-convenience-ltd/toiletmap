@@ -32,6 +32,16 @@ const MapPage: NextPage = () => {
     <>
       <Head>
         <title>{pageTitle}</title>
+        
+         {/* Added meta description for SEO improvement as part of issue #1736 */} 
+
+
+        <meta
+          name="description"
+          content="Explore the area map of public toilets in the Great British Public Toilet Map. 
+          Find toilets near you by using our interactive map feature."
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
       <VisuallyHidden>

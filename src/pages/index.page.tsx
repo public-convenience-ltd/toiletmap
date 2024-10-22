@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Box from '../components/Box';
 import Sidebar from '../components/Sidebar/Sidebar';
@@ -6,7 +6,6 @@ import VisuallyHidden from '../components/VisuallyHidden';
 import { useMapState } from '../components/MapState';
 import config from '../config';
 import { withApollo } from '../api-client/withApollo';
-import { useEffect } from 'react';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
@@ -22,6 +21,14 @@ const HomePage = () => {
     <>
       <Head>
         <title>{pageTitle}</title>
+
+         {/* Added meta description for SEO improvement as part of issue #1736 */}
+        
+        <meta
+          name="description"
+          content="Find publicly-accessible toilets across the UK using the Great British Public Toilet Map. 
+          Explore toilet locations, add new toilets, and contribute to improving public sanitation."
+        />
       </Head>
 
       <VisuallyHidden>

@@ -25,6 +25,10 @@ const LoginPage = () => {
     <Box mt={5}>
       <Head>
         <title>{config.getTitle('Contributing')}</title>
+        
+         {/* Added meta description for SEO improvement as part of issue #1736 */} 
+
+        <meta name="description" content="Join us in contributing to the Great British Public Toilet Map. Learn how to add or edit public toilet data, and find examples of accessible toilets." />
       </Head>
 
       <Container maxWidth={845}>
