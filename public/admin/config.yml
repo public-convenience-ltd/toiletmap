@@ -1,9 +1,9 @@
 backend:
   name: github
   repo: public-convenience-ltd/toiletmap
-  branch: ob/decap
+  branch: main
   site_domain: toiletmap-git-ob-decap-public-convenience-ltd.vercel.app/
-  base_url: https://toiletmap-git-ob-decap-public-convenience-ltd.vercel.app
+  base_url: https://toiletmap.org.uk
   auth_endpoint: api/decap-oauth
   commit_messages:
     create: Create {{collection}} “{{slug}}”
@@ -13,23 +13,12 @@ backend:
     deleteMedia: Delete “{{path}}”
     openAuthoring: '{{message}}'
   squash_merges: true
-site_url: https://toiletmap-git-ob-decap-public-convenience-ltd.vercel.app/
-display_url: https://toiletmap-git-ob-decap-public-convenience-ltd.vercel.app/
+site_url: https://toiletmap.org.uk/
+display_url: https://toiletmap.org.uk/
 publish_mode: editorial_workflow
 media_folder: public/images/uploads
 public_folder: /images/uploads
 collections:
-  - name: "pages"
-    label: "Pages"
-    label_singular: 'Page'
-    folder: content/pages
-    extension: "mdx"
-    format: "frontmatter"
-    fields:
-      - { label: "Title", name: "title", widget: "string"}
-      - { label: "Publish Date", name: "date", widget: "datetime" }
-      - { label: "Author", name: "author", widget: "string" }
-      - { label: "Body", name: "body", widget: "markdown" }
   - name: "posts"
     label: "Blog Posts"
     create: true
