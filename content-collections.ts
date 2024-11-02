@@ -1,0 +1,29 @@
+import { defineCollection, defineConfig } from '@content-collections/core';
+import { compileMarkdown } from '@content-collections/markdown';
+
+const posts = defineCollection({
+  name: 'posts',
+  directory: 'content/posts',
+  include: '**/*.md',
+  schema: (z) => ({
+    title: z.string(),
+    date: z.string(),
+    author: z.string(),
+    profileSocialUrl: z.string().optional(),
+    profilePictureUrl: z.string().optional(),
+  }),
+  transform: async (document, context) => {
+    // @ts-expect-error -- TODO: fix this
+    const html = await compileMarkdown(context, document);
+    return {
+      ...document,
+      slug: document._meta.fileName.split('.')[0],
+      url: `/posts/${document._meta.fileName.split('.')[0]}`,
+      html,
+    };
+  },
+});
+
+export default defineConfig({
+  collections: [posts],
+});

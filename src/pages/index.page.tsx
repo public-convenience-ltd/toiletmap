@@ -1,18 +1,18 @@
 import React from 'react';
+
 import Head from 'next/head';
 import Box from '../components/Box';
 import Sidebar from '../components/Sidebar/Sidebar';
 import VisuallyHidden from '../components/VisuallyHidden';
 import { useMapState } from '../components/MapState';
-import config from '../config';
 import { withApollo } from '../api-client/withApollo';
 import { useEffect } from 'react';
+import config from '../config';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
 const HomePage = () => {
   const [, setMapState] = useMapState();
-  const pageTitle = config.getTitle('Home');
 
   useEffect(() => {
     setMapState({ focus: undefined, searchLocation: undefined });
@@ -21,12 +21,10 @@ const HomePage = () => {
   return (
     <>
       <Head>
-        <title>{pageTitle}</title>
+        <title>{config.getTitle('Home')}</title>
       </Head>
 
-      <VisuallyHidden>
-        <h1>{pageTitle}</h1>
-      </VisuallyHidden>
+      <VisuallyHidden>{config.getTitle('Home')}</VisuallyHidden>
 
       <Box
         position="absolute"

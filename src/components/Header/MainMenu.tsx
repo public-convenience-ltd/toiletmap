@@ -106,6 +106,10 @@ const MainMenu = ({ children }: IMainMenu) => {
             <StyledNavLink href="/contact">Contact</StyledNavLink>
           </Box>
 
+          <Box as="li" mt={[3, 0]} mb={['auto', 0]} ml={[0, 4]}>
+            <StyledNavLink href="/posts">Blog</StyledNavLink>
+          </Box>
+
           {user && (
             <Box as="li" mt={[3, 0]} mb={['auto', 0]} ml={[0, 4]}>
               <a href={`/api/auth/logout`}>Logout</a>

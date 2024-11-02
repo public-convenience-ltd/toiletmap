@@ -1,0 +1,33 @@
+backend:
+  name: github
+  repo: public-convenience-ltd/toiletmap
+  branch: main
+  site_domain: toiletmap-git-ob-decap-public-convenience-ltd.vercel.app/
+  base_url: https://toiletmap.org.uk
+  auth_endpoint: api/decap-oauth
+  commit_messages:
+    create: Create {{collection}} “{{slug}}”
+    update: Update {{collection}} “{{slug}}”
+    delete: Delete {{collection}} “{{slug}}”
+    uploadMedia: Upload “{{path}}”
+    deleteMedia: Delete “{{path}}”
+    openAuthoring: '{{message}}'
+  squash_merges: true
+site_url: https://toiletmap.org.uk/
+display_url: https://toiletmap.org.uk/
+publish_mode: editorial_workflow
+media_folder: public/images/uploads
+public_folder: /images/uploads
+collections:
+  - name: "posts"
+    label: "Blog Posts"
+    create: true
+    label_singular: 'Blog Post'
+    folder: content/posts
+    fields:
+      - { label: "Title", name: "title", widget: "string"}
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Author", name: "author", widget: "string" }
+      - { label: "Social URL", name: "profileSocialUrl", widget: "string" }
+      - { label: "Profile Image URL", name: "profilePictureUrl", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }

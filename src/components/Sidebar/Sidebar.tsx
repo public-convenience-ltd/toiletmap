@@ -88,7 +88,7 @@ const Sidebar = () => {
     <section aria-labelledby="heading-search">
       <Media lessThan="md">
         <VisuallyHidden>
-          <h2 id="heading-search">Search</h2>
+          <span id="heading-search">Search</span>
         </VisuallyHidden>
 
         <LocationSearch
@@ -179,9 +179,9 @@ const Sidebar = () => {
 
       <Media greaterThan="sm">
         <Box p={4} borderRadius={35} bg="white" width="100%">
-          <h2 id="heading-search">
+          <span id="heading-search">
             <b>Search</b>
-          </h2>
+          </span>
 
           <Box mt={3}>
             <LocationSearch

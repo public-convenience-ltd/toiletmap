@@ -5,7 +5,7 @@ import Box from '../components/Box';
 import Spacer from '../components/Spacer';
 import Text from '../components/Text';
 
-const NotFound = ({ children }) => (
+const NotFound: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
   <>
     {children}
     <Box my={5}>

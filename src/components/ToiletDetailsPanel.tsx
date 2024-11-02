@@ -134,7 +134,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
   const titleFragment = (
     <Box display="flex" justifyContent="space-between">
       <Text fontWeight="bold" fontSize={[3, 4]} lineHeight={1.2}>
-        <h2 id="toilet-details-heading">{data.name || 'Unnamed Toilet'}</h2>
+        <span id="toilet-details-heading">{data.name || 'Unnamed Toilet'}</span>
       </Text>
       {mapState.geolocation && (
         <Box ml={5}>
@@ -185,7 +185,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
     () => (
       <Box>
         <Text fontWeight="bold">
-          <h2>Is this information correct?</h2>
+          <span>Is this information correct?</span>
         </Text>
         <Spacer mb={2} />
         <Box display="flex" alignItems="center">
@@ -318,7 +318,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
 
             <Box width={['100%', '50%', '25%']} padding={3}>
               <Text fontWeight="bold">
-                <h3>Features</h3>
+                <span>Features</span>
               </Text>
               <Spacer mb={2} />
               <UnstyledList>
@@ -358,7 +358,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
               {Boolean(data.notes) && (
                 <>
                   <Text fontWeight="bold">
-                    <h3>Notes</h3>
+                    <span>Notes</span>
                   </Text>
                   <Spacer mb={2} />
                   <div>
@@ -375,7 +375,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
                 <Icon icon="clock" />
                 <Spacer mr={2} />
                 <Text fontWeight="bold">
-                  <h2>Opening Hours</h2>
+                  <span>Opening Hours</span>
                 </Text>
               </Box>
               <Spacer mb={[0, 2]} />

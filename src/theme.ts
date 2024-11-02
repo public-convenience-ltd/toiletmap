@@ -14,7 +14,12 @@ const theme = {
     grey: '#807f7f',
     aqua: '#93f9db',
   },
-  mediaQueries: breakpoints.map((n) => `@media screen and (min-width: ${n})`),
+  mediaQueries: {
+    sm: '0',
+    md: `@media screen and (min-width: ${breakpoints[0]})`,
+    lg: `@media screen and (min-width: ${breakpoints[1]})`,
+    xl: `@media screen and (min-width: ${breakpoints[2]})`,
+  },
 };
 
 import '@emotion/react';
@@ -35,7 +40,7 @@ declare module '@emotion/react' {
       grey: string;
       aqua: string;
     };
-    mediaQueries: string[];
+    mediaQueries: { [key: string]: string };
   }
 }
 

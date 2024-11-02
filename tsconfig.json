@@ -16,7 +16,10 @@
     "incremental": true,
     "downlevelIteration": true,
     "types": ["cypress", "@testing-library/cypress"],
-    "isolatedModules": true
+    "isolatedModules": true,
+    "paths": {
+      "content-collections": ["./.content-collections/generated"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"],
   "exclude": [
