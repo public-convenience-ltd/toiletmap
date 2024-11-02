@@ -46,16 +46,15 @@ const AboutPage = () => {
           find toilets sooner rather than later.
         </p>
         <p>
-          The Great British Public Toilet Map aims to be a complete, up-to-date,
-          sustainable source of toilet locations. It&apos;s the UK&apos;s
-          largest database of publicly-accessible toilets (see below), with over
-          14,000 facilities.
+          The Toilet Map aims to be a complete, up-to-date, sustainable source
+          of toilet locations. It&apos;s the UK&apos;s largest database of
+          publicly-accessible toilets (see below), with over 14,000 facilities.
         </p>
         <p>
-          The Great British Public Toilet Map is run by Public Convenience, a
-          joint venture between researchers Dr Jo-Anne Bichard and Gail Ramster
-          (who created the map at the RCA Helen Hamlyn Centre for Design) and
-          software development company{' '}
+          The Toilet Map is run by Public Convenience, a joint venture between
+          researchers Dr Jo-Anne Bichard and Gail Ramster (who created the map
+          at the RCA Helen Hamlyn Centre for Design) and software development
+          company{' '}
           <Link
             href="https://www.neontribe.co.uk/"
             target="_blank"
