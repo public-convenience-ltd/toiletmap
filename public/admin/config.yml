@@ -2,7 +2,7 @@ backend:
   name: github
   repo: public-convenience-ltd/toiletmap
   branch: main
-  site_domain: toiletmap-git-ob-decap-public-convenience-ltd.vercel.app/
+  site_domain: toiletmap.org.uk/
   base_url: https://toiletmap.org.uk
   auth_endpoint: api/decap-oauth
   commit_messages:
