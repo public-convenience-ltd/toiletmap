@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Head from 'next/head';
 import Box from '../components/Box';
 import Sidebar from '../components/Sidebar/Sidebar';
@@ -6,32 +7,11 @@ import VisuallyHidden from '../components/VisuallyHidden';
 import { useMapState } from '../components/MapState';
 import { withApollo } from '../api-client/withApollo';
 import { useEffect } from 'react';
-
-import { GetStaticProps, InferGetStaticPropsType } from 'next';
-import { allPages, Page } from 'content-collections';
-
-export const getStaticProps = (async () => {
-  try {
-    const pageData =
-      allPages.find((post) => post._meta.fileName === 'home.mdx') ?? null;
-
-    return {
-      props: {
-        pageData,
-      },
-    };
-  } catch {
-    //
-  }
-}) satisfies GetStaticProps<{
-  pageData?: Page;
-}>;
+import config from '../config';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
-const HomePage = ({
-  pageData,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+const HomePage = () => {
   const [, setMapState] = useMapState();
 
   useEffect(() => {
@@ -41,12 +21,10 @@ const HomePage = ({
   return (
     <>
       <Head>
-        <title>{pageData.title}</title>
+        <title>{config.getTitle('Home')}</title>
       </Head>
 
-      <VisuallyHidden>
-        <h1>{pageData.title}</h1>
-      </VisuallyHidden>
+      <VisuallyHidden>{config.getTitle('Home')}</VisuallyHidden>
 
       <Box
         position="absolute"
