@@ -6,7 +6,7 @@ const Logo = React.forwardRef<HTMLDivElement>((props, ref) => (
   <div className="logo" ref={ref}>
     <Image
       src={logo}
-      alt="The Great British Toilet Map"
+      alt="Toilet Map"
       unoptimized={!!process.env.STORYBOOK}
       priority={true}
       {...props}
