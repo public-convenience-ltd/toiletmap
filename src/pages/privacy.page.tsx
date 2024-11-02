@@ -27,10 +27,9 @@ const PrivacyPage = () => {
         <Spacer mb={3} />
 
         <p>
-          The Great British Public Toilet Map uses a cookieless approach to
-          gather anonymous data such as which pages are viewed, what time the
-          visit occurred, and which site referred the visitor to the web page
-          etc.
+          The Toilet Map uses a cookieless approach to gather anonymous data
+          such as which pages are viewed, what time the visit occurred, and
+          which site referred the visitor to the web page etc.
         </p>
         <p>
           Public Convenience Ltd also notes and saves information such as time
@@ -51,13 +50,13 @@ const PrivacyPage = () => {
         </Text>
         <Spacer mb={3} />
         <p>
-          Contributors to The Great British Public Toilet Map website are asked
-          to sign-in via the Auth0 platform using their email address. This
-          helps us to share data on the quantity and spread of contributions to
-          the site which helps show how the community value the project, to
-          improve our interfaces for our users, to protect our dataset from
-          misuse and to recognise contributions from a user if that user is
-          adding unsuitable content, whether intentionally or inadvertently.
+          Contributors to The Toilet Map website are asked to sign-in via the
+          Auth0 platform using their email address. This helps us to share data
+          on the quantity and spread of contributions to the site which helps
+          show how the community value the project, to improve our interfaces
+          for our users, to protect our dataset from misuse and to recognise
+          contributions from a user if that user is adding unsuitable content,
+          whether intentionally or inadvertently.
         </p>
         <p>
           A full list of a contributor’s activities will only be accessible to
@@ -65,15 +64,15 @@ const PrivacyPage = () => {
         </p>
         <p>
           The content of feedback submitted via the site feedback mechanism will
-          be reviewed by a human and may be used to improve the service. It may pass
-          through third party services in legislative regions with different privacy
-          protections before it reaches us.
+          be reviewed by a human and may be used to improve the service. It may
+          pass through third party services in legislative regions with
+          different privacy protections before it reaches us.
         </p>
         <p>
-          Should you choose to provide an email address with your feedback it will
-          be stored against your comments and Public Convenience Ltd. may choose
-          to contact you to follow up on the feedback you gave. There is no
-          obligation to respond to or engage in a dialogue stemming from such
+          Should you choose to provide an email address with your feedback it
+          will be stored against your comments and Public Convenience Ltd. may
+          choose to contact you to follow up on the feedback you gave. There is
+          no obligation to respond to or engage in a dialogue stemming from such
           contact.
         </p>
         <p>
