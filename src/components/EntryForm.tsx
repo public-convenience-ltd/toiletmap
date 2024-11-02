@@ -78,7 +78,7 @@ const Section: React.FC<Section> = ({
         <thead>
           <tr>
             <th>
-              <h2 id={`heading-${id}`}>{title}</h2>
+              <span id={`heading-${id}`}>{title}</span>
             </th>
 
             <Text
@@ -584,7 +584,9 @@ const EntryForm = ({ title, loo, children, ...props }) => {
 
           <Spacer mt={4} />
 
-          <h2 id="opening-hours-heading">6. Do you know the opening hours?</h2>
+          <span id="opening-hours-heading">
+            6. Do you know the opening hours?
+          </span>
 
           <Spacer mt={2} />
 
@@ -653,7 +655,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                       pl={[2, 4]}
                       pr={[2, 4]}
                     >
-                      <h3 id={id}>{day}</h3>
+                      <span id={id}>{day}</span>
 
                       <Spacer ml={2} />
 
