@@ -2,7 +2,7 @@ backend:
   name: github
   repo: public-convenience-ltd/toiletmap
   branch: main
-  site_domain: toiletmap.org.uk/
+  site_domain: toiletmap.org.uk
   base_url: https://toiletmap.org.uk
   auth_endpoint: api/decap-oauth
   commit_messages:
@@ -13,8 +13,8 @@ backend:
     deleteMedia: Delete “{{path}}”
     openAuthoring: '{{message}}'
   squash_merges: true
-site_url: https://toiletmap.org.uk/
-display_url: https://toiletmap.org.uk/
+site_url: https://toiletmap.org.uk
+display_url: https://toiletmap.org.uk
 publish_mode: editorial_workflow
 media_folder: public/images/uploads
 public_folder: /images/uploads
