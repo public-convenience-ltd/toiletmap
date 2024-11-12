@@ -13,7 +13,7 @@ import {
 import { MockedProvider } from '@apollo/client/testing';
 
 // Import design system component styles for our Stories.
-import '../src/design-system/components/stylesheet.css';
+import '../src/design-system/stylesheet.css';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
