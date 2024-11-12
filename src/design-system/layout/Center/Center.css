@@ -1,0 +1,13 @@
+.center {
+    box-sizing: content-box;
+    margin-inline: auto;
+    max-inline-size: var(--toilet-max-width);
+  }
+
+  .center--text {
+    text-align: center;
+  }
+
+  .center--gutter {
+    padding: var(--toilet-gutter);
+  }
