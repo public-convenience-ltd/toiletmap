@@ -1,0 +1,41 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.stack--3xs > * + * {
+  margin-block-start: var(--space-3xs);
+}
+
+.stack--2xs > * + * {
+  margin-block-start: var(--space-2xs);
+} 
+
+.stack--xs > * + * {
+  margin-block-start: var(--space-xs);
+} 
+
+.stack--s > * + * {
+  margin-block-start: var(--space-s);
+}
+
+.stack--m > * + * {
+  margin-block-start: var(--space-m);
+} 
+
+.stack--l > * + * {
+  margin-block-start: var(--space-l);
+}
+
+.stack--xl > * + * {
+  margin-block-start: var(--space-xl);
+}
+
+.stack--2xl > * + * {
+  margin-block-start: var(--space-2xl);
+}
+
+.stack--3xl > * + * {
+  margin-block-start: var(--space-3xl);
+}
