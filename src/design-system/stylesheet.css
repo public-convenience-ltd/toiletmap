@@ -1,3 +1,4 @@
+/* Components */
 @import '~/src/design-system/components/Badge/Badge.css';
 @import '~/src/design-system/components/Button/Button.css';
 @import '~/src/design-system/components/Icon/Icon.css';
@@ -7,6 +8,15 @@
 @import '~/src/design-system/components/TextArea/TextArea.css';
 @import '~/src/design-system/components/Drawer/Drawer.css';
 @import '~/src/design-system/components/Logo/Logo.css';
+
+/* Layout */
+
+@import '~/src/design-system/layout/Center/Center.css';
+@import '~/src/design-system/layout/Stack/Stack.css';
+
+/* Utilities */
+
+/* Exception */
 
 /* Leaflet Marker Cluster custom styles */
 .leaflet-marker-icon.marker-cluster {

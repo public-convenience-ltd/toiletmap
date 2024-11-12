@@ -5,7 +5,7 @@ import { UserProvider } from '@auth0/nextjs-auth0';
 import Main from '../components/Main';
 import { useRouter } from 'next/router';
 import LooMap from '../components/LooMap/LooMapLoader';
-import '../design-system/components/stylesheet.css';
+import '../design-system/stylesheet.css';
 
 const App = (props) => {
   const router = useRouter();
