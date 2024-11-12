@@ -37,6 +37,9 @@ const globalStyles = (
         --text-3: clamp(1.73rem, calc(1.56rem + 0.82vw), 2.2rem);
         --text-4: clamp(2.07rem, calc(1.84rem + 1.17vw), 2.75rem);
         --text-5: clamp(2.49rem, calc(2.16rem + 1.64vw), 3.43rem);
+
+        --toilet-max-width: 845px;
+        --toilet-gutter: var(--space-l);
       }
 
       *,
