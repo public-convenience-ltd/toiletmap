@@ -129,7 +129,7 @@ const globalStyles = (
 
       /* natural flow and rhythm in articles by default */
       article > * + * {
-        margin-top: 1em;
+        margin-top: var(--space-s);
       }
 
       /* inherit fonts for inputs and buttons */
@@ -151,6 +151,7 @@ const globalStyles = (
       h5,
       h6 {
         font: inherit;
+        font-weight: 700;
       }
 
       h1 {
@@ -180,8 +181,8 @@ const globalStyles = (
         vertical-align: bottom;
       }
 
-      p + p {
-        margin-top: 1em;
+      p {
+        margin-top: var(--space-s);
       }
 
       a:hover,
