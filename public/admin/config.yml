@@ -3,7 +3,7 @@ backend:
   repo: public-convenience-ltd/toiletmap
   branch: main
   site_domain: toiletmap.org.uk
-  base_url: https://toiletmap.org.uk
+  base_url: https://www.toiletmap.org.uk
   auth_endpoint: api/decap-oauth
   commit_messages:
     create: Create {{collection}} “{{slug}}”
