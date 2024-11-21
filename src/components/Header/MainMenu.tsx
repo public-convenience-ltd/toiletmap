@@ -56,8 +56,9 @@ const MainMenu = ({ children }: IMainMenu) => {
           height={['100%', 'auto']}
           width="100%"
           alignItems="center"
+          style={{ listStyle: 'none' }}
         >
-          <Box as="li" ml={[0, 4]}>
+          <Box as="li" mt={[3, 0]} ml={[0, 4]}>
             <StyledNavLink href="/">Find a Toilet</StyledNavLink>
           </Box>
           <Box as="li" mt={[3, 0]} ml={[0, 4]}>

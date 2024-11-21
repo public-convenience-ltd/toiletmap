@@ -618,7 +618,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
 
           {getValues('has-opening-times') && (
             <div data-testid="opening-hours-selection">
-              <ol>
+              <ol style={{ listStyle: 'none' }}>
                 <Box
                   display="flex"
                   alignItems="center"
@@ -654,6 +654,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                       mt={index === 0 ? undefined : 2}
                       pl={[2, 4]}
                       pr={[2, 4]}
+                      ml="0"
                     >
                       <span id={id}>{day}</span>
 

@@ -99,10 +99,10 @@ const globalStyles = (
         color: var(--color-blue);
       }
 
-      /* remove list styles on ul, ol elements */
-      ul,
-      ol {
-        list-style: none;
+      /* add default margins on li elements */
+      li {
+        margin-block-start: var(--space-2xs);
+        margin-inline-start: var(--space-m);
       }
 
       /* have link and buttons be indistinguishable */

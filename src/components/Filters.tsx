@@ -24,7 +24,7 @@ const Filters: React.FC<{
   const plausible = usePlausible();
 
   return (
-    <ul>
+    <ul style={{ listStyle: 'none' }}>
       {config.filters.map(({ id, label }, index) => (
         <Box
           as="li"
@@ -32,7 +32,8 @@ const Filters: React.FC<{
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          mt={index ? 3 : undefined}
+          mt={index ? 3 : 0}
+          ml="0"
         >
           <Box display="flex" alignItems="center">
             <Icon {...iconMap[id]} size="medium" />
