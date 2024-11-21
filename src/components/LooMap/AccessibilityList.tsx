@@ -47,7 +47,7 @@ const Content = ({ toilets }) => {
       <Spacer mt={3} />
 
       <Text fontSize={18}>
-        <ul>
+        <ul style={{ listStyle: 'none' }}>
           {toilets.map((toilet, index) => (
             <Box
               className="accessibility-list-item"
@@ -59,6 +59,7 @@ const Content = ({ toilets }) => {
                   margin-top: ${theme.space[1]}px;
                 }
               `}
+              ml="0"
             >
               <Key>{index}</Key>
 
@@ -109,7 +110,7 @@ const AccessibilityList = ({
   useEffect(() => {
     if (data && data?.looNamesByIds) {
       const nameMap = Object.fromEntries(
-        data.looNamesByIds.map((e) => [e.id, e.name]) || []
+        data.looNamesByIds.map((e) => [e.id, e.name]) || [],
       );
 
       const names = toilets.map((t) => nameMap[t?.id] || 'Name Unknown');

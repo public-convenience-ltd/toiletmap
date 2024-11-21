@@ -28,7 +28,12 @@ const Default = (props) => {
           <ul style={{ listStyle: 'none', padding: '0.5rem' }}>
             {Array.from({ length: 5 }, (_, i) => (
               <li
-                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  margin: '0',
+                }}
                 key={i}
               >
                 <Icon icon="note-sticky" size="medium" />

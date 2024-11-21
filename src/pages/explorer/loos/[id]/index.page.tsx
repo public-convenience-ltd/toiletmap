@@ -142,7 +142,7 @@ const diffValueMapping = (key: string, value: unknown) => {
     const openingTimes = value as Array<unknown[]>;
     const todayWeekdayIndex = getISODay(new Date()) - 1; // getISODay returns 1 (Monday) to 7 (Sunday)
     return (
-      <ul>
+      <ul style={{ listStyle: 'none' }}>
         {openingTimes?.map((timeRange, i) => (
           <Box
             as="li"
@@ -153,6 +153,8 @@ const diffValueMapping = (key: string, value: unknown) => {
             bg={i === todayWeekdayIndex ? theme.colors.primary : 'white'}
             color={i === todayWeekdayIndex ? 'white' : theme.colors.primary}
             width="15rem"
+            mt="0"
+            ml="0"
           >
             <span>{WEEKDAYS[i]}</span>
             <span>{getTimeRangeLabel(timeRange)}</span>

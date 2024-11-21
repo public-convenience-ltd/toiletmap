@@ -23,15 +23,20 @@ const Footer = ({ children = null }) => {
     >
       <Box order={[-1, 0]} mb={[0]}>
         <Text fontSize={[12, 16]}>
-          <Box as="ul" display={['flex']} alignItems="center">
+          <Box
+            as="ul"
+            display={['flex']}
+            alignItems="center"
+            style={{ listStyle: 'none' }}
+          >
             {React.Children.map(children, (child, index) => (
               <li key={index}>{child}</li>
             ))}
 
-            <Box as="li" ml={[0, 4]}>
+            <Box as="li" ml={[0, 4]} mt="0">
               <Link href="/privacy">Privacy Policy</Link>
             </Box>
-            <Box as="li" ml={[2, 4]}>
+            <Box as="li" ml={[2, 4]} mt="0">
               <Link href="/explorer">Explorer</Link>
             </Box>
           </Box>

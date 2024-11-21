@@ -330,6 +330,8 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
                     alignItems="center"
                     justifyContent="space-between"
                     mb={1}
+                    mt="0"
+                    ml="0"
                   >
                     <Box display="flex" alignItems="center">
                       <Box width="20px" display="flex" justifyContent="center">
@@ -388,6 +390,8 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
                     key={i}
                     padding={1}
                     bg={i === todayWeekdayIndex - 1 ? 'ice' : 'white'}
+                    mt="0"
+                    ml="0"
                   >
                     <span>{WEEKDAYS[i]}</span>
                     <span>{getTimeRangeLabel(timeRange)}</span>
