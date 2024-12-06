@@ -1,4 +1,5 @@
 /* Components */
+
 @import '~/src/design-system/components/Badge/Badge.css';
 @import '~/src/design-system/components/Button/Button.css';
 @import '~/src/design-system/components/Icon/Icon.css';
@@ -15,6 +16,8 @@
 @import '~/src/design-system/layout/Stack/Stack.css';
 
 /* Utilities */
+
+@import '~/src/design-system/utilities/VisuallyHidden/VisuallyHidden.css';
 
 /* Exception */
 
