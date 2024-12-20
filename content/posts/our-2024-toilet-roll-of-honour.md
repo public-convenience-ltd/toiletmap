@@ -89,8 +89,6 @@ Most visited toilet page (number of hits in brackets)
 
 ![A brick church with red door, cream window surrounds and a clock tower. It sits at the corner of a road junction, twice the height on the village buildings behind. The sky is blue with stormy clouds. ](https://upload.wikimedia.org/wikipedia/commons/c/cc/Friockheim_and_Kinnell_Parish_Kirk_-_geograph.org.uk_-_1455639.jpg "Description: Friockheim and Kinnell Parish Church Attribution: Anne Burgess / Friockheim and Kinnell Parish Kirk / CC BY-SA 2.0")
 
-https://upload.wikimedia.org/wikipedia/commons/c/cc/Friockheim_and_Kinnell_Parish\_Kirk\_-\_geograph.org.uk\_-_1455639.jpg Description: Friockheim and Kinnell Parish Kirk Attribution: Anne Burgess / *Friockheim and Kinnell Parish Kirk* / [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/)
-
 We had one toilet updated last New Year’s Day, and what a loo it was! 
 
 Friockheim Public Toilet Block on the East Coast of Scotland. A locally-run toilet, managed by volunteers, refurbished following a fire in 2021.
