@@ -25,7 +25,24 @@ That’s amazing!
 
 That’s 40% more than 2023, we’re on a (toilet) roll!
 
-**Who’s really been winning in 2024?**
+### Where did our visitors come from?
+
+\| Source                | Visitors ↓ | Bounce Rate ↓ | Visit Duration ↓ |
+|-----------------------|-----------|--------------|------------------|
+| Direct / None         | 183k      | 61%          | 1m 42s           |
+| Google                | 149k      | 55%          | 1m 36s           |
+| news.motability.co.uk | 13.2k     | 42%          | 2m 02s           |
+| visitlondon.com       | 8.5k      | 42%          | 2m 36s           |
+| messages.uber.com     | 5.3k      | 61%          | 21s              |
+| Bing                  | 5.1k      | 38%          | 3m 02s           |
+| Facebook              | 3.6k      | 67%          | 43s              |
+| DuckDuckGo            | 3.4k      | 43%          | 2m 30s           |
+| Reddit                | 2.9k      | 36%          | 1m 46s           |
+| secretldn.com         | 2.5k      | 59%          | 51s              |
+
+
+
+**So, who's really been winning in 2024?**
 
 ## 2024 Council of the year **(most updates to toilet data)**
 
