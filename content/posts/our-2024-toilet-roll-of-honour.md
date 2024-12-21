@@ -56,7 +56,7 @@ Here are the ten council areas with the most updates (new loo, edit or removal) 
 
 ### **Trafalgar Square** Public Toilets (4.1K hits)
 
-![A landscape photograph of Trafalgar Square with the Fourth Plinth in the foreground and St Martins Church in the distance. The entrance to the toilets is between them with a black totem sign reading 'Toilets' and symbols for male, female and accessible toilets. The National Gallery is behind, on a raised level. ](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/David_Shrigley%27s_fourth_plinth_%2830730433995%29.jpg/640px-David_Shrigley%27s_fourth_plinth_%2830730433995%29.jpg 'The Fourth Plinth, Trafalgar Square, showing entrance to public toilets behind. Attribution: Matt Brown from London, England, CC BY 2.0 <https://creativecommons.org/licenses/by/2.0>, via Wikimedia Commons')
+![A landscape photograph of Trafalgar Square with the Fourth Plinth in the foreground and St Martins Church in the distance. The entrance to the toilets is between them with a black totem sign reading 'Toilets' and symbols for male, female and accessible toilets. The National Gallery is behind, on a raised level. ](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/David_Shrigley%27s_fourth_plinth_%2830730433995%29.jpg/640px-David_Shrigley%27s_fourth_plinth_%2830730433995%29.jpg 'The Fourth Plinth, Trafalgar Square, showing entrance to public toilets behind. Attribution: Matt Brown from London, England, CC BY 2.0 <https://creativecommons.org/licenses/by/2.0>, via Wikimedia Commons' "Fourth Plinth and public toilets, Trafalgar Square. Credit: Matt Brown / David Shrigley's fourth plinth / CC-BY 2.0")
 
 No surprises here as the map defaults to Trafalgar Square, London if it doesn’t know your location. That's why  it has twice the hits of the next most popular toilet on our website. But why did we choose Trafalgar Square?
 
@@ -89,7 +89,7 @@ Most visited toilet page (number of hits in brackets)
 
 ### Friockheim Public Toilet Block, Scotland
 
-![A brick church with red door, cream window surrounds and a clock tower. It sits at the corner of a road junction, twice the height on the village buildings behind. The sky is blue with stormy clouds. ](https://upload.wikimedia.org/wikipedia/commons/c/cc/Friockheim_and_Kinnell_Parish_Kirk_-_geograph.org.uk_-_1455639.jpg 'Description: Friockheim and Kinnell Parish Church Attribution: Anne Burgess / Friockheim and Kinnell Parish Kirk / CC BY-SA 2.0')
+![A brick church with red door, cream window surrounds and a clock tower. It sits at the corner of a road junction, twice the height on the village buildings behind. The sky is blue with stormy clouds. ](https://upload.wikimedia.org/wikipedia/commons/c/cc/Friockheim_and_Kinnell_Parish_Kirk_-_geograph.org.uk_-_1455639.jpg 'Description: Friockheim and Kinnell Parish Church Attribution: Anne Burgess / Friockheim and Kinnell Parish Kirk / CC BY-SA 2.0' "Friockheim and Kinnell Parish Kirk, Scotland. Credit: Anne Burgess / Friockheim and Kinnell Parish Kirk / CC BY-SA 2.0")
 
 We had one toilet updated last New Year’s Day, and what a loo it was!
 
