@@ -29,6 +29,7 @@ export interface IconProps extends React.SVGAttributes<SVGElement> {
     | 'child'
     | 'baby'
     | 'gear'
+    | 'bluesky'
     | 'magnifying-glass';
   size?: 'small' | 'medium' | 'large' | 'x-large';
   spin?: boolean;

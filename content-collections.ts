@@ -8,9 +8,13 @@ const posts = defineCollection({
   schema: (z) => ({
     title: z.string(),
     date: z.string(),
-    author: z.string(),
-    profileSocialUrl: z.string().optional(),
-    profilePictureUrl: z.string().optional(),
+    authors: z.array(
+      z.object({
+        name: z.string(),
+        social_url: z.string().optional(),
+        profile_image_url: z.string().optional(),
+      }),
+    ),
   }),
   transform: async (document, context) => {
     // @ts-expect-error -- TODO: fix this
