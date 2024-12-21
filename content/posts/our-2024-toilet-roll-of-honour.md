@@ -9,7 +9,6 @@ authors:
     social_url: https://bsky.app/profile/olliethinks.bsky.social
     profile_image_url: https://avatars.githubusercontent.com/u/1771189?v=4
 ---
-
 Welcome to the Toilet Map blog! We’re kicking off with a wrap of the year, to thank our contributors for every edit and give you a little insight into how the Toilet Map keeps up-to-date.
 
 **First, some stats.**
@@ -22,7 +21,7 @@ That’s amazing!
 
 ## Website Visits:
 
-**396000 of you** have visited the Toilet Map this year.
+**396000 of you**  visited the Toilet Map in 2024.
 
 That’s 40% more than 2023, we’re on a (toilet) roll!
 
@@ -34,13 +33,13 @@ That’s 40% more than 2023, we’re on a (toilet) roll!
 
 Kudos to London Borough of Tower Hamlets who are using the Toilet Map to support their new Community Toilet Scheme (CTS), pipping CTS veterans London Borough of Richmond-upon-Thames to the crown.
 
-Your toilet mapping activity has covered the British Isles, right up to the 15 newly mapped loos on the Shetland Islands.
+Our toilet mapping activity has covered the British Isles, right up to the 15 newly mapped loos on the Shetland Islands.
 
 Special kudos to the person/s who added and updated 39 toilets on **Guernsey & Sark** back in April - one of our biggest updates and outside of our local area boundaries so missing from our Top Ten - it nearly snuck through! Locals and holidaymakers alike will be very grateful.
 
-Edits may have been made by a member of the public, a council officer, as part of someone else’s job, or occasionally by us on the council’s behalf (current rate: flattery)
+Edits may have been made by a member of the public, a council officer, another professional, or occasionally by us on the council’s behalf (current rate: flattery)
 
-Here are the ten council areas with the most updates (new loo, edit or removal) in 2024 (new toilets only in brackets)
+Here are the ten council areas with the most updates (new loo, edit or removal) in 2024 (new toilets in brackets)
 
 1. London Borough of Tower Hamlets: 88 (46)
 2. London Borough of Richmond upon Thames: 81 (47)
@@ -59,17 +58,17 @@ Here are the ten council areas with the most updates (new loo, edit or removal) 
 
 ![A landscape photograph of Trafalgar Square with the Fourth Plinth in the foreground and St Martins Church in the distance. The entrance to the toilets is between them with a black totem sign reading 'Toilets' and symbols for male, female and accessible toilets. The National Gallery is behind, on a raised level. ](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/David_Shrigley%27s_fourth_plinth_%2830730433995%29.jpg/640px-David_Shrigley%27s_fourth_plinth_%2830730433995%29.jpg 'The Fourth Plinth, Trafalgar Square, showing entrance to public toilets behind. Attribution: Matt Brown from London, England, CC BY 2.0 <https://creativecommons.org/licenses/by/2.0>, via Wikimedia Commons')
 
-No surprises here as the map defaults to Trafalgar Square in London if it doesn’t know your location, accounting for why it has twice the hits of our website. But why Trafalgar Square?
+No surprises here as the map defaults to Trafalgar Square, London if it doesn’t know your location. That's why  it has twice the hits of the next most popular toilet on our website. But why did we choose Trafalgar Square?
 
 Well, London is instantly recognisable due to our familiarity with the place names, helping visitors to orientate themselves. And Trafalgar Square is special in both mapping and toilets.
 
 Why? Here are some fun facts:
 
-- Distances to/from London are measured from Trafalgar Square - specifically, the traffic island to the south of Nelson’s Column, a 6-way junction known as ‘Charing Cross’.
-- This used to be the location of the final Eleanor Cross, a series of monuments positioned down the East of England. The monument still exists, and is now located outside Charing Cross Station.
-- The loos at Trafalgar Square are a huge set of public toilets, and the only ones managed by the Mayor of London (not personally), if we ignore for a moment TfL loos and those at City Hall. They were built as part of the Square’s redevelopment and pedestrianisation in 2003.
+* Distances to/from London are measured from Trafalgar Square - specifically, the traffic island to the south of Nelson’s Column, a 6-way junction known as ‘Charing Cross’.
+* This used to be the location of the final Eleanor Cross, a series of monuments positioned down the East of England. The monument still exists, and is now located outside Charing Cross Station.
+* The loos at Trafalgar Square are a huge set of public toilets, and the only ones managed by the Mayor of London (not personally), if we ignore for a moment TfL loos and those at City Hall. They were built as part of the Square’s redevelopment and pedestrianisation in 2003.
 
-Those around Parliament - are more likely in the top 10 due to the massive visitor demand. But watch out - Westminster Underground Station toilets on Parliament Street are currently closed for [much needed redevelopment](https://www.architectsjournal.co.uk/news/westminster-and-hugh-broughton-roll-out-12-7m-toilets-revamp-proposals?eea=*EEA*&eea=WnlTak8yRFh3ZzBNT29Wallnd25uRXVVa3pjaDI1UWdDaXM3NS9Ud1grND0%3D&utm_source=acs&utm_medium=email&utm_campaign=FABS_AJ_EDI_SUBS_DAILY_19_11_24&deliveryName=DM289884) by Westminster City Council.
+The other toilets in our Top 10 are more likely due to massive tourist numbers from Big Ben to Piccadilly Circus. But watch out - Westminster Underground Station toilets on Parliament Street are currently closed for [much needed redevelopment](https://www.architectsjournal.co.uk/news/westminster-and-hugh-broughton-roll-out-12-7m-toilets-revamp-proposals?eea=*EEA*&eea=WnlTak8yRFh3ZzBNT29Wallnd25uRXVVa3pjaDI1UWdDaXM3NS9Ud1grND0%3D&utm_source=acs&utm_medium=email&utm_campaign=FABS_AJ_EDI_SUBS_DAILY_19_11_24&deliveryName=DM289884) by Westminster City Council.
 
 Most visited toilet page (number of hits in brackets)
 
@@ -94,11 +93,11 @@ Most visited toilet page (number of hits in brackets)
 
 We had one toilet updated last New Year’s Day, and what a loo it was!
 
-Friockheim Public Toilet Block on the East Coast of Scotland. A locally-run toilet, managed by volunteers, refurbished following a fire in 2021.
+[Friockheim Public Toilet Block](https://www.toiletmap.org.uk/loos/9bf2c4f5fa6e78a72e5f1f93) on the East Coast of Scotland. A locally-run toilet, managed by volunteers, and refurbished following a fire in 2021.
 
 Friockheim also boasts a 24h [Changing Places toilet at The Hub @ Friockheim](https://www.changing-places.org/find?toilet=1451), impressive stuff for a village of 1130 people.
 
-Details read: _Owned By Angus Council & Maintained [Friockheim Park Community Volunteers](https://friockheimpark.weebly.com/) Community Group. Male & Female Toilet Facilities, Award Winning, Community Maintained, Clean & Safe. We are pleased to be able to provide Free Period Products in the ladies toilets in partnership with HeyGirls & Free Period Angus. Farnell Road, Friockheim, Arbroath, DD11 4XB_
+Details read: *Owned By Angus Council & Maintained [Friockheim Park Community Volunteers](https://friockheimpark.weebly.com/) Community Group. Male & Female Toilet Facilities, Award Winning, Community Maintained, Clean & Safe. We are pleased to be able to provide Free Period Products in the ladies toilets in partnership with HeyGirls & Free Period Angus. Farnell Road, Friockheim, Arbroath, DD11 4XB*
 
 **Will yours be the last?**
 
