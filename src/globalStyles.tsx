@@ -114,6 +114,7 @@ const globalStyles = (
 
       a {
         text-decoration: underline;
+        transition: color 0.2s ease;
       }
 
       button {
@@ -129,7 +130,7 @@ const globalStyles = (
 
       /* natural flow and rhythm in articles by default */
       article > * + * {
-        margin-top: var(--space-s);
+        margin-top: var(--space-m);
       }
 
       /* inherit fonts for inputs and buttons */
@@ -152,6 +153,7 @@ const globalStyles = (
       h6 {
         font: inherit;
         font-weight: 700;
+        line-height: 1.25;
       }
 
       h1 {
@@ -190,7 +192,6 @@ const globalStyles = (
       button:hover,
       button:focus {
         color: var(--color-pink);
-        transition: all 0.2s ease;
       }
 
       [hidden] {

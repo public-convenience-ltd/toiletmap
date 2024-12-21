@@ -5,15 +5,12 @@ import { allPosts, Post } from 'content-collections';
 import { format, parseISO } from 'date-fns';
 
 import Head from 'next/head';
-import Box from '../../components/Box';
-import Container from '../../components/Container';
-import Spacer from '../../components/Spacer';
-import Text from '../../components/Text';
 
-import styled from '@emotion/styled';
 import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import Link from 'next/link';
 import config from '../../config';
+import Center from '../../design-system/layout/Center';
+import Stack from '../../design-system/layout/Stack';
 
 type Props = {
   posts: Post[];
@@ -23,72 +20,67 @@ export const getStaticProps = (async () => {
   return { props: { posts: allPosts } };
 }) satisfies GetStaticProps<Props>;
 
-const PostWrapper = styled(Box)`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-`;
-
 export default function PostPage({
   posts,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const postsAvailable = posts && posts.length > 0;
   return (
-    <Box my={5}>
+    <div>
       <Head>
         <title>{config.getTitle('Blog')}</title>
       </Head>
-      <Container maxWidth={845}>
-        <Text fontSize={6} fontWeight="bold" textAlign="center">
-          <h1>Toilet Map Blog</h1>
-        </Text>
-        <Spacer mb={5} />
-        <PostWrapper>
+      <Center text={false} gutter={true}>
+        <Stack space="xl">
+          <h1 style={{ textAlign: 'center' }}>Toilet Map Blog</h1>
+
           {!postsAvailable && (
-            <Text fontSize={4} fontWeight="bold">
-              <p>Our blog is currently out of paper—check back soon!</p>
-            </Text>
+            <h2>Our blog is currently out of paper—check back soon!</h2>
           )}
           {postsAvailable &&
             posts.map((postData) => (
-              <Box
+              <div
                 key={postData._meta.fileName}
-                display="flex"
-                flexDirection="column"
-                flex="50%"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  flex: '50%',
+                }}
               >
                 <Link
                   href={postData.url}
                   style={{ display: 'flex', gap: '.2rem' }}
                 >
-                  <Text fontSize={4} fontWeight="bold">
-                    <h2>{postData.title}</h2>
-                  </Text>
+                  <h2>{postData.title}</h2>
                 </Link>
-                <Box style={{ display: 'inline-flex', gap: '.2rem' }}>
-                  {postData.profileSocialUrl ? (
-                    <Link
-                      href={postData.profileSocialUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Text>{postData.author}</Text>
-                    </Link>
-                  ) : (
-                    <Text>{postData.author}</Text>
-                  )}
-                  <Text>—</Text>
-                  <Text>
+                <div style={{ display: 'inline-flex', gap: 'var(--space-2)' }}>
+                  {postData.authors.map((author, i) => (
+                    <>
+                      {author.social_url ? (
+                        <Link
+                          href={author.social_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          key={author.name}
+                        >
+                          {author.name}
+                        </Link>
+                      ) : (
+                        <span>{author.name}</span>
+                      )}
+                      {i < postData.authors.length - 1 ? <span>,</span> : null}
+                    </>
+                  ))}
+                  <span>—</span>
+                  <span>
                     <time dateTime={postData.date}>
                       {format(parseISO(postData.date), 'LLLL d, yyyy')}
                     </time>
-                  </Text>
-                </Box>
-              </Box>
+                  </span>
+                </div>
+              </div>
             ))}
-        </PostWrapper>
-      </Container>
-    </Box>
+        </Stack>
+      </Center>
+    </div>
   );
 }
