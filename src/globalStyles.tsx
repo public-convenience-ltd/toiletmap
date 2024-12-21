@@ -120,6 +120,7 @@ const globalStyles = (
       button {
         border: none;
         background: none;
+        transition: color 0.2s ease;
       }
 
       /* make images easier to work with */
@@ -177,9 +178,28 @@ const globalStyles = (
         border: 0;
       }
 
+      /* table styling */
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td,
+      th {
+        padding: var(--space-2xs);
+      }
+
+      tr:nth-child(odd) td {
+        background-color: var(--color-white);
+      }
+
+      tr:nth-child(even) td {
+        background-color: var(--color-light-grey);
+      }
+
       th {
         text-align: left;
-        font-weight: normal;
+        font-weight: bold;
         vertical-align: bottom;
       }
 

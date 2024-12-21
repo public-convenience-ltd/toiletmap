@@ -147,7 +147,7 @@ export default function PostPage({
                         }}
                       >
                         <Icon
-                          icon="comments"
+                          icon="share"
                           size="x-large"
                           width={'1rem'}
                           height={'1rem'}

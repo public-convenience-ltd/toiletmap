@@ -22,11 +22,13 @@ That’s amazing!
 
 ## Website Visits
 
-**396000 of you** visited the Toilet Map in 2024.
+**396,000 of you** visited the Toilet Map in 2024.
 
 That’s 40% more than 2023, we’re on a (toilet) roll!
 
 ### Where did our visitors come from?
+
+Here's a look at how visitors are discovering—and interacting with—our Toilet Map, based on the numbers:
 
 | Source                | Visitors | Bounce Rate | Visit Duration |
 | --------------------- | -------- | ----------- | -------------- |
@@ -41,9 +43,7 @@ That’s 40% more than 2023, we’re on a (toilet) roll!
 | Reddit                | 2.9k     | 36%         | 1m 46s         |
 | secretldn.com         | 2.5k     | 59%         | 51s            |
 
-Here's a look at how visitors are discovering—and interacting with—our Toilet Map, based on the numbers:
-
-...
+---
 
 **So, who's really been winning in 2024?**
 
@@ -59,18 +59,20 @@ Special kudos to the person/s who added and updated 39 toilets on **Guernsey & S
 
 Edits may have been made by a member of the public, a council officer, another professional, or occasionally by us on the council’s behalf (current rate: flattery)
 
-Here are the ten council areas with the most updates (new loo, edit or removal) in 2024 (new toilets in brackets)
+Here are the ten council areas with the most updates (new loo, edit or removal) in 2024
 
-1. London Borough of Tower Hamlets: 88 (46)
-2. London Borough of Richmond upon Thames: 81 (47)
-3. Dumfries and Galloway Council: 73 (24)
-4. Argyll and Bute Council: 64 (15)
-5. Birmingham City Council: 50 (15)
-6. Westminster City Council: 46 (21)
-7. London Borough of Southwark: 35 (21)
-8. Wiltshire Council: 31 (15)
-9. Allerdale Borough Council: 30 (15)
-10. Shetland Islands: 29 (15)
+| Rank | Council Area                           | Total Updates | New Toilets |
+| ---- | -------------------------------------- | ------------- | ----------- |
+| 1    | London Borough of Tower Hamlets        | 88            | 46          |
+| 2    | London Borough of Richmond upon Thames | 81            | 47          |
+| 3    | Dumfries and Galloway Council          | 73            | 24          |
+| 4    | Argyll and Bute Council                | 64            | 15          |
+| 5    | Birmingham City Council                | 50            | 15          |
+| 6    | Westminster City Council               | 46            | 21          |
+| 7    | London Borough of Southwark            | 35            | 21          |
+| 8    | Wiltshire Council                      | 31            | 15          |
+| 9    | Allerdale Borough Council              | 30            | 15          |
+| 10   | Shetland Islands                       | 29            | 15          |
 
 ## 2024 Loo of the year (most visited page) 
 
@@ -98,20 +100,24 @@ Why? Here are some fun facts:
 
 The other toilets in our Top 10 are more likely due to massive tourist numbers from Big Ben to Piccadilly Circus. But watch out - Westminster Underground Station toilets on Parliament Street are currently closed for [much needed redevelopment](https://www.architectsjournal.co.uk/news/westminster-and-hugh-broughton-roll-out-12-7m-toilets-revamp-proposals?eea=*EEA*&eea=WnlTak8yRFh3ZzBNT29Wallnd25uRXVVa3pjaDI1UWdDaXM3NS9Ud1grND0%3D&utm_source=acs&utm_medium=email&utm_campaign=FABS_AJ_EDI_SUBS_DAILY_19_11_24&deliveryName=DM289884) by Westminster City Council.
 
-Most visited toilet page (number of hits in brackets)
+### Most visited toilet pages
 
-1. [Trafalgar Square](<https://www.toiletmap.org.uk/loos/9c87f46cef7571c34d4a9f6a >) (4.1K)
-2. [Charing Cross Station](https://www.toiletmap.org.uk/loos/b3d7be6461b0d74c913219f0) [](https://www.toiletmap.org.uk/loos/b3d7be6461b0d74c913219f0) (2.6K)
-3. [Cafe in the Crypt](https://www.toiletmap.org.uk/loos/a5187bec9c4c584ab68734d3) [](https://www.toiletmap.org.uk/loos/a5187bec9c4c584ab68734d3) (2.5K)
-4. Westminster Underground Station (in subway) (2.2K)
-5. Horse Guards toilets (2.1K)
-6. Craven Street Temporary Urinal (2.1K)
-7. Institute of Contemporary Arts (ICA) (2K)
-8. Westminster Bridge (2K)
-9. The National Gallery, (1.8K)
-10. Piccadilly Circus - inside Underground Station (1.8K)
+| Rank | Location                                                                                                     | Visits |
+| ---- | ------------------------------------------------------------------------------------------------------------ | ------ |
+| 1    | [Trafalgar Square](https://www.toiletmap.org.uk/loos/9c87f46cef7571c34d4a9f6a)                               | 4.1K   |
+| 2    | [Charing Cross Station](https://www.toiletmap.org.uk/loos/b3d7be6461b0d74c913219f0)                          | 2.6K   |
+| 3    | [Cafe in the Crypt](https://www.toiletmap.org.uk/loos/a5187bec9c4c584ab68734d3)                              | 2.5K   |
+| 4    | [Westminster Underground Station (in subway)](https://www.toiletmap.org.uk/loos/1b2a8eca18a105b40607fb79)    | 2.2K   |
+| 5    | [Horse Guards toilets](https://www.toiletmap.org.uk/loos/da2d6315d2d29d364869d0f8)                           | 2.1K   |
+| 6    | [Craven Street Temporary Urinal](https://www.toiletmap.org.uk/loos/c6fd90101169345ac973c15f)                 | 2.1K   |
+| 7    | [Institute of Contemporary Arts (ICA)](https://www.toiletmap.org.uk/loos/2f55f7ab3b94a4396870ff78)           | 2K     |
+| 8    | [Westminster Bridge](https://www.toiletmap.org.uk/loos/97d128d08d0fdf9111a6054d)                             | 2K     |
+| 9    | [The National Gallery](https://www.toiletmap.org.uk/loos/644a91db011d9a18db57e8ef)                           | 1.8K   |
+| 10   | [Piccadilly Circus - inside Underground Station](https://www.toiletmap.org.uk/loos/c49bebbca720d77c5ea1a1bc) | 1.8K   |
 
-**How did the year start?**
+---
+
+**So, how did the year start?**
 
 ## 2024 First edit of the year 
 
@@ -135,7 +141,7 @@ We had one toilet updated last New Year’s Day, and what a loo it was!
 
 Friockheim also boasts a 24h [Changing Places toilet at The Hub @ Friockheim](https://www.changing-places.org/find?toilet=1451), impressive stuff for a village of 1130 people.
 
-**Will yours be the last?**
+[**Will yours be the last?**](https://www.toiletmap.org.uk/loos/add)
 
 Thank you so much for every edit made to the map, whether you have added, edited or removed a toilet online, or sent us details of changes to make, by email or the feedback box. We’re grateful for every input, to help us help you find the loo!
 
