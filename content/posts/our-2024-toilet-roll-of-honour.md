@@ -12,7 +12,9 @@ authors:
 
 Welcome to the Toilet Map blog! We’re kicking off with a wrap of the year, to thank our contributors for every edit and give you a little insight into how the Toilet Map keeps up-to-date.
 
-**First, some stats.**
+**First, some stats!**
+
+---
 
 ## New toilets
 
@@ -28,7 +30,7 @@ That’s 40% more than 2023, we’re on a (toilet) roll!
 
 ### Where did our visitors come from?
 
-Here's a look at how visitors are discovering—and interacting with—our Toilet Map, based on the numbers:
+Here's a look at how visitors are discovering—and interacting with—the Toilet Map, based on the numbers:
 
 | Source                | Visitors | Bounce Rate | Visit Duration |
 | --------------------- | -------- | ----------- | -------------- |
@@ -43,9 +45,19 @@ Here's a look at how visitors are discovering—and interacting with—our Toile
 | Reddit                | 2.9k     | 36%         | 1m 46s         |
 | secretldn.com         | 2.5k     | 59%         | 51s            |
 
----
+Over 183,000 valiant explorers charted their own course straight to the Toilet Map, it seems many of them dive in, quickly check for the nearest loo, and head off to answer nature’s call. We're really happy that such a large number of people know to directly visit the site when they are in an hour of need.
+
+Huge thanks to [Motability](https://www.motability.co.uk/) and [Visit London](https://www.visitlondon.com/) who have consistently referenced the map on their sites. Visitors tend to spend longer exploring the site, and their visits span across multiple pages.
+
+We're not quite sure how Uber are using the service, but we're glad that they've found a use for it!
+
+Social media was a large driver for engagement. We found that Reddit in particular was a source of engaged users, with people often recommending the Toilet Map as part of community discussions about public toilet provision across the country[^reddit-thread].
+
+[^reddit-thread]: https://old.reddit.com/r/Scotland/comments/1ch152r/toilets_around_scotland_advice_ibd_disease/l1zhztr/
 
 **So, who's really been winning in 2024?**
+
+---
 
 ## 2024 Council of the year **(most updates to toilet data)**
 
@@ -115,9 +127,9 @@ The other toilets in our Top 10 are more likely due to massive tourist numbers f
 | 9    | [The National Gallery](https://www.toiletmap.org.uk/loos/644a91db011d9a18db57e8ef)                           | 1.8K   |
 | 10   | [Piccadilly Circus - inside Underground Station](https://www.toiletmap.org.uk/loos/c49bebbca720d77c5ea1a1bc) | 1.8K   |
 
----
-
 **So, how did the year start?**
+
+---
 
 ## 2024 First edit of the year 
 
@@ -141,8 +153,12 @@ We had one toilet updated last New Year’s Day, and what a loo it was!
 
 Friockheim also boasts a 24h [Changing Places toilet at The Hub @ Friockheim](https://www.changing-places.org/find?toilet=1451), impressive stuff for a village of 1130 people.
 
-[**Will yours be the last?**](https://www.toiletmap.org.uk/loos/add)
+So now we've covered the first update of the year... [**will yours be the last?**](https://www.toiletmap.org.uk/loos/add)
+
+## And that's a wrap!
 
 Thank you so much for every edit made to the map, whether you have added, edited or removed a toilet online, or sent us details of changes to make, by email or the feedback box. We’re grateful for every input, to help us help you find the loo!
 
 Here’s to more and better toilet mapping in 2025 x
+
+---
