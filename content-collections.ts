@@ -1,5 +1,6 @@
 import { defineCollection, defineConfig } from '@content-collections/core';
 import { compileMarkdown } from '@content-collections/markdown';
+import remarkGfm from 'remark-gfm';
 
 const posts = defineCollection({
   name: 'posts',
@@ -18,7 +19,10 @@ const posts = defineCollection({
   }),
   transform: async (document, context) => {
     // @ts-expect-error -- TODO: fix this
-    const html = await compileMarkdown(context, document);
+    const html = await compileMarkdown(context, document, {
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [],
+    });
     return {
       ...document,
       slug: document._meta.fileName.split('.')[0],
