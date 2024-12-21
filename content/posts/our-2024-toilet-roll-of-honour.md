@@ -13,13 +13,13 @@ Welcome to the Toilet Map blog! We’re kicking off with a wrap of the year, to 
 
 **First, some stats.**
 
-## New toilets: 
+## New toilets
 
 We've had **854 toilets** added to the Toilet Map this year, with another 800 updates of toilets we already show.
 
 That’s amazing!
 
-## Website Visits:
+## Website Visits
 
 **396000 of you**  visited the Toilet Map in 2024.
 
