@@ -183,11 +183,6 @@ const globalStyles = (
       table {
         border-collapse: collapse;
         width: 100%;
-        overflow: auto;
-        display: inline-block;
-        overflow-x: auto;
-        white-space: nowrap;
-        border-collapse: collapse;
       }
 
       td,
@@ -207,6 +202,11 @@ const globalStyles = (
         text-align: left;
         font-weight: bold;
         vertical-align: bottom;
+      }
+
+      div.table-wrapper {
+        overflow-x: auto;
+        width: 100%;
       }
 
       p {
