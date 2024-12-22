@@ -53,7 +53,7 @@ We're not quite sure how Uber are using the service, but we're glad that they've
 
 Social media was a large driver for engagement. We found that Reddit in particular was a source of engaged users, with people often recommending the Toilet Map as part of community discussions about public toilet provision across the country[^reddit-thread].
 
-[^reddit-thread]: https://old.reddit.com/r/Scotland/comments/1ch152r/toilets_around_scotland_advice_ibd_disease/l1zhztr/
+[^reddit-thread]: Source: https://old.reddit.com/r/Scotland/comments/1ch152r/toilets_around_scotland_advice_ibd_disease/l1zhztr/
 
 **So, who's really been winning in 2024?**
 

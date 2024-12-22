@@ -114,6 +114,7 @@ const globalStyles = (
 
       a {
         text-decoration: underline;
+        overflow-wrap: break-word;
         transition: color 0.2s ease;
       }
 
@@ -182,6 +183,11 @@ const globalStyles = (
       table {
         border-collapse: collapse;
         width: 100%;
+        overflow: auto;
+        display: inline-block;
+        overflow-x: auto;
+        white-space: nowrap;
+        border-collapse: collapse;
       }
 
       td,
