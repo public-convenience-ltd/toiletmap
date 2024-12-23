@@ -9,12 +9,11 @@ authors:
     social_url: https://bsky.app/profile/olliethinks.bsky.social
     profile_image_url: https://avatars.githubusercontent.com/u/1771189?v=4
 ---
-
 Welcome to the Toilet Map blog! We’re kicking off with a wrap of the year, to thank our contributors for every edit and give you a little insight into how the Toilet Map keeps up-to-date.
 
 **First, some stats!**
 
----
+- - -
 
 ## New toilets
 
@@ -57,7 +56,7 @@ Social media was a large driver for engagement. We found that Reddit in particul
 
 **So, who's really been winning in 2024?**
 
----
+- - -
 
 ## 2024 Council of the year **(most updates to toilet data)**
 
@@ -71,9 +70,9 @@ Special kudos to the person/s who added and updated 39 toilets on **Guernsey & S
 
 Edits may have been made by a member of the public, a council officer, another professional, or occasionally by us on the council’s behalf (current rate: flattery)
 
-Here are the ten council areas with the most updates (new loo, edit or removal) in 2024
+Here are the ten council areas with the most updates (new entry, edit or removal) in 2024
 
-| Rank | Council Area                           | Total Updates | New Toilets |
+| Rank | Council Area                           | Total Updates | New Entries |
 | ---- | -------------------------------------- | ------------- | ----------- |
 | 1    | London Borough of Tower Hamlets        | 88            | 46          |
 | 2    | London Borough of Richmond upon Thames | 81            | 47          |
@@ -92,9 +91,7 @@ Here are the ten council areas with the most updates (new loo, edit or removal) 
 
 ![A landscape photograph of Trafalgar Square with the Fourth Plinth in the foreground and St Martins Church in the distance.
 The entrance to the toilets is between them with a black totem sign reading 'Toilets' and symbols for male, female and accessible toilets.
-The National Gallery is behind, on a raised level.][trafalgar-img]
-
-[trafalgar-img]: https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/David_Shrigley%27s_fourth_plinth_%2830730433995%29.jpg/640px-David_Shrigley%27s_fourth_plinth_%2830730433995%29.jpg 'Fourth Plinth and public toilets, Trafalgar Square. Credit: Matt Brown / David Shrigley’s fourth plinth / CC-BY 2.0'
+The National Gallery is behind, on a raised level.](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/David_Shrigley%27s_fourth_plinth_%2830730433995%29.jpg/640px-David_Shrigley%27s_fourth_plinth_%2830730433995%29.jpg "Fourth Plinth and public toilets, Trafalgar Square. Credit: Matt Brown / David Shrigley’s fourth plinth / CC-BY 2.0")
 
 [^trafalgar-details]:
     The Fourth Plinth, Trafalgar Square, showing entrance to public toilets behind.
@@ -106,9 +103,9 @@ Well, London is instantly recognisable due to our familiarity with the place nam
 
 Why? Here are some fun facts:
 
-- Distances to/from London are measured from Trafalgar Square - specifically, the traffic island to the south of Nelson’s Column, a 6-way junction known as ‘Charing Cross’.
-- This used to be the location of the final Eleanor Cross, a series of monuments positioned down the East of England. The monument still exists, and is now located outside Charing Cross Station.
-- The loos at Trafalgar Square are a huge set of public toilets, and the only ones managed by the Mayor of London (not personally), if we ignore for a moment TfL loos and those at City Hall. They were built as part of the Square’s redevelopment and pedestrianisation in 2003.
+* Distances to/from London are measured from Trafalgar Square - specifically, the traffic island to the south of Nelson’s Column, a 6-way junction known as ‘Charing Cross’.
+* This used to be the location of the final Eleanor Cross, a series of monuments positioned down the East of England. The monument still exists, and is now located outside Charing Cross Station.
+* The loos at Trafalgar Square are a huge set of public toilets, and the only ones managed by the Mayor of London (not personally), if we ignore for a moment TfL loos and those at City Hall. They were built as part of the Square’s redevelopment and pedestrianisation in 2003.
 
 The other toilets in our Top 10 are more likely due to massive tourist numbers from Big Ben to Piccadilly Circus. But watch out - Westminster Underground Station toilets on Parliament Street are currently closed for [much needed redevelopment](https://www.architectsjournal.co.uk/news/westminster-and-hugh-broughton-roll-out-12-7m-toilets-revamp-proposals?eea=*EEA*&eea=WnlTak8yRFh3ZzBNT29Wallnd25uRXVVa3pjaDI1UWdDaXM3NS9Ud1grND0%3D&utm_source=acs&utm_medium=email&utm_campaign=FABS_AJ_EDI_SUBS_DAILY_19_11_24&deliveryName=DM289884) by Westminster City Council.
 
@@ -129,7 +126,7 @@ The other toilets in our Top 10 are more likely due to massive tourist numbers f
 
 **So, how did the year start?**
 
----
+- - -
 
 ## 2024 First edit of the year 
 
@@ -137,9 +134,7 @@ The other toilets in our Top 10 are more likely due to massive tourist numbers f
 
 ![A brick church with red door, cream window surrounds and a clock tower.
 It sits at the corner of a road junction, twice the height of the village buildings behind.
-The sky is blue with stormy clouds.][friockheim-img]
-
-[friockheim-img]: https://upload.wikimedia.org/wikipedia/commons/c/cc/Friockheim_and_Kinnell_Parish_Kirk_-_geograph.org.uk_-_1455639.jpg 'Friockheim and Kinnell Parish Kirk, Scotland. Credit: Anne Burgess / Friockheim and Kinnell Parish Kirk / CC BY-SA 2.0'
+The sky is blue with stormy clouds.](https://upload.wikimedia.org/wikipedia/commons/c/cc/Friockheim_and_Kinnell_Parish_Kirk_-_geograph.org.uk_-_1455639.jpg "Friockheim and Kinnell Parish Kirk, Scotland. Credit: Anne Burgess / Friockheim and Kinnell Parish Kirk / CC BY-SA 2.0")
 
 [^friockheim-attr]:
     Friockheim and Kinnell Parish Church.
@@ -153,7 +148,7 @@ We had one toilet updated last New Year’s Day, and what a loo it was!
 
 Friockheim also boasts a 24h [Changing Places toilet at The Hub @ Friockheim](https://www.changing-places.org/find?toilet=1451), impressive stuff for a village of 1130 people.
 
-So now we've covered the first update of the year... [**will yours be the last?**](https://www.toiletmap.org.uk/loos/add)
+So now we've covered the first update of the year... **[will yours be the last?](https://www.toiletmap.org.uk/loos/add)**
 
 ## And that's a wrap!
 
@@ -161,4 +156,4 @@ Thank you so much for every edit made to the map, whether you have added, edited
 
 Here’s to more and better toilet mapping in 2025 x
 
----
+- - -
