@@ -19,7 +19,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     return res.redirect(`/loos/${id}?message=${finalMessage}`);
-  } catch (err) {
+  } catch {
     // If there was an error, Next.js will continue
     // to show the last successfully generated page
     return res.redirect(`/loos/${id}?message=generic_error`);

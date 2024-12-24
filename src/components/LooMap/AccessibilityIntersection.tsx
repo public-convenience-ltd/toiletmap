@@ -39,7 +39,7 @@ const AccessibilityIntersection = ({
         boundingBoxWest,
         boundingBoxNorth,
         boundingBoxEast,
-        geohashPrecision
+        geohashPrecision,
       );
     }
 
@@ -84,7 +84,6 @@ const AccessibilityIntersection = ({
   return <Rectangle className={className} bounds={bounds}></Rectangle>;
 };
 
-// eslint-disable-next-line functional/immutable-data
 AccessibilityIntersection.propTypes = {
   onIntersection: PropTypes.func.isRequired,
   onSelection: PropTypes.func.isRequired,

@@ -44,7 +44,6 @@ export const MapStateProvider = ({ children }) => {
 
   // default any unsaved filters as 'false'
   config.filters.forEach((filter) => {
-    // eslint-disable-next-line functional/immutable-data
     initialFilterState[filter.id] = initialFilterState?.[filter.id] || false;
   });
 

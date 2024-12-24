@@ -54,11 +54,8 @@ const moduleExports = {
 };
 
 // https://plausible.io/docs/proxy/guides/nextjs
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { withPlausibleProxy } = require('next-plausible');
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { withContentCollections } = require('@content-collections/next');
 
-// eslint-disable-next-line functional/immutable-data
 module.exports = withContentCollections(withPlausibleProxy()(moduleExports));

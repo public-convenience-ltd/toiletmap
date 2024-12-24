@@ -16,8 +16,8 @@ enum FeedbackState {
 const Feedback = () => {
   const [submitState, setSubmitState] = useState(FeedbackState.PENDING);
 
-  const feedbackTextArea = useRef<HTMLTextAreaElement>();
-  const emailInput = useRef<HTMLInputElement>();
+  const feedbackTextArea = useRef<HTMLTextAreaElement>(null);
+  const emailInput = useRef<HTMLInputElement>(null);
 
   const submitFeedback = async () => {
     const hasUserInputText = feedbackTextArea.current?.value.length > 0;
@@ -46,13 +46,12 @@ const Feedback = () => {
         body: JSON.stringify(payload),
       });
 
-      // eslint-disable-next-line functional/immutable-data
       feedbackTextArea.current.value = '';
-      // eslint-disable-next-line functional/immutable-data
+
       emailInput.current.value = '';
 
       setSubmitState(FeedbackState.SUCCESS);
-    } catch (e) {
+    } catch {
       setSubmitState(FeedbackState.FAILURE);
     }
   };

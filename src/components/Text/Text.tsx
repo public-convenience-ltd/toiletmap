@@ -10,12 +10,24 @@ import {
 } from 'styled-system';
 
 interface ITextProps extends ColorProps, TypographyProps, HeightProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-const Text = styled.div<ITextProps>(compose(color, typography, height));
+const TextWrapper = styled.div<ITextProps>(compose(color, typography, height));
 
-export type TextProps = typeof Text.defaultProps;
+// const Text: React.FC<ITextProps> = ({
+//   children,
+//   color = 'black',
+//   fontSize = '16px',
+//   height = 'auto',
+//   ...rest
+// }) => (
+//   <TextWrapper color={color} fontSize={fontSize} height={height} {...rest}>
+//     {children}
+//   </TextWrapper>
+// );
+
+export type TextProps = ITextProps;
 
 /** @component */
-export default Text;
+export default TextWrapper;

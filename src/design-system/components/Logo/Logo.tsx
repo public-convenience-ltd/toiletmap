@@ -14,7 +14,6 @@ const Logo = React.forwardRef<HTMLDivElement>((props, ref) => (
   </div>
 ));
 
-// eslint-disable-next-line functional/immutable-data
 Logo.displayName = 'Logo';
 
 export default Logo;
