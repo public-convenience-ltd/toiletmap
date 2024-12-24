@@ -290,7 +290,6 @@ const EntryForm = ({ title, loo, children, ...props }) => {
 
     transformed = omit(transformed, ['geometry']);
 
-    // eslint-disable-next-line functional/immutable-data
     transformed.noPayment = data.isFree;
 
     // transform data
@@ -298,19 +297,16 @@ const EntryForm = ({ title, loo, children, ...props }) => {
       const value = transformed[property];
 
       if (value === 'true') {
-        // eslint-disable-next-line functional/immutable-data
         transformed[property] = true;
       } else if (value === 'false') {
-        // eslint-disable-next-line functional/immutable-data
         transformed[property] = false;
       } else if (value === '') {
-        // eslint-disable-next-line functional/immutable-data
         transformed[property] = null;
       }
     });
 
     // map geometry data to expected structure
-    // eslint-disable-next-line functional/immutable-data
+
     transformed.location = {
       // @ts-expect-error -- data isn't typed and we're assuming it has a geometry property here.
       lat: data.geometry?.coordinates[0],
@@ -321,7 +317,6 @@ const EntryForm = ({ title, loo, children, ...props }) => {
     // remove payment details if the isFree field value has changed and is now
     // either Yes or Don't know
     if (dirtyFieldNames.includes('isFree') && data.isFree !== 'false') {
-      // eslint-disable-next-line functional/immutable-data
       transformed.paymentDetails = null;
     }
 
@@ -344,10 +339,8 @@ const EntryForm = ({ title, loo, children, ...props }) => {
           ];
         });
 
-        // eslint-disable-next-line functional/immutable-data
         transformed.openingTimes = openingTimes;
       } else {
-        // eslint-disable-next-line functional/immutable-data
         transformed.openingTimes = null;
       }
     }

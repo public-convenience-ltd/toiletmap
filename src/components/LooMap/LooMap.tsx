@@ -226,7 +226,6 @@ const LooMap: React.FC<LooMapProps> = ({
       <MapContainer
         id="gbptm-map"
         zoomControl={false} // we are overriding this with our own custom placed zoom control
-        tap={false}
         dragging={!staticMap}
         ref={mapRef}
         center={center}

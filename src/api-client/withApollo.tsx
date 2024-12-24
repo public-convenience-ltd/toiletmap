@@ -18,12 +18,10 @@ let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 function createApolloClient(): ApolloClient<NormalizedCacheObject> {
   let terminatingLink: SchemaLink | ApolloLink;
   if (typeof window === 'undefined') {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { SchemaLink } = require('@apollo/client/link/schema');
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { default: schema } = require('./schema');
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const schema = require('./schema').default;
     const { context } = require('../api/graphql/context');
+
     terminatingLink = new SchemaLink({
       schema: schema(authDirective),
       context,

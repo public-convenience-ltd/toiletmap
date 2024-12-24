@@ -193,7 +193,6 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
   );
 };
 
-// eslint-disable-next-line functional/immutable-data
 LocationSearch.propTypes = {
   onSelectedItemChange: PropTypes.func.isRequired,
 };

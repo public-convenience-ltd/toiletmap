@@ -226,7 +226,6 @@ const MarkerGroup: React.FC<{
     return () => {
       mcg?.clearLayers();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mcg]);
 
   return null;

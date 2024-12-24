@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { DetailedHTMLProps, HTMLAttributes } from 'react';
 import {
   compose,
   space,
@@ -32,7 +33,8 @@ const Box = styled.div<IBoxProps>`
   min-width: 0;
 `;
 
-export type BoxProps = typeof Box.defaultProps;
+export type BoxProps = IBoxProps &
+  DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 /** @component */
 export default Box;

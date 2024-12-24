@@ -1,7 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
 
-// eslint-disable-next-line functional/immutable-data
 module.exports = {
   stories: ['../src'],
   addons: [
@@ -32,10 +30,6 @@ module.exports = {
         alias: {
           ...config.resolve.alias,
           src: path.resolve(__dirname, '../src'),
-          // 'contentlayer/generated': path.resolve(
-          //   __dirname,
-          //   '../.contentlayer/generated',
-          // ),
         },
         fallback: {
           ...(config.resolve || {}).fallback,

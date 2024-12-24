@@ -6,7 +6,7 @@ import Text from '../Text';
 import Icon from '../../design-system/components/Icon';
 import Spacer from '../Spacer';
 
-const Notification = ({ allowClose, children }) => {
+const Notification = ({ allowClose = true, children }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   if (!isVisible) {
@@ -46,7 +46,6 @@ const Notification = ({ allowClose, children }) => {
   );
 };
 
-// eslint-disable-next-line functional/immutable-data
 Notification.propTypes = {
   /** Allow the notification to be closed */
   allowClose: PropTypes.bool,
