@@ -78,6 +78,7 @@
     "graphql-iso-date": "^3.6.1",
     "graphql-yoga": "^3.9.1",
     "hasha": "^5.2.2",
+    "jsdom": "^25.0.1",
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.1.0",
     "leaflet": "^1.9.4",
@@ -94,8 +95,7 @@
     "react-leaflet": "^5.0.0",
     "remark-gfm": "^4.0.0",
     "resize-observer-polyfill": "^1.5.1",
-    "styled-system": "^5.1.5",
-    "xmldom": "^0.6.0"
+    "styled-system": "^5.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
@@ -133,6 +133,7 @@
     "@testing-library/cypress": "^8.0.3",
     "@types/cli-progress": "^3.11.6",
     "@types/jest": "^29.5.14",
+    "@types/jsdom": "^21.1.7",
     "@types/leaflet": "^1.9.15",
     "@types/leaflet.markercluster": "^1.5.5",
     "@types/lodash": "^4.17.13",

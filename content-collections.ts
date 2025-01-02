@@ -1,20 +1,20 @@
 import { defineCollection, defineConfig } from '@content-collections/core';
 import { compileMarkdown } from '@content-collections/markdown';
 import remarkGfm from 'remark-gfm';
-import { DOMParser, XMLSerializer } from 'xmldom';
+import { JSDOM } from 'jsdom';
 
 function wrapTables(html: string) {
-  // Create a DOMParser to manipulate the HTML string
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
+  const dom = new JSDOM(`<!DOCTYPE html>${html}`, {
+    contentType: 'text/html',
+  });
 
   // Select all table elements
-  const tables = Array.from(doc.getElementsByTagName('table'));
+  const tables = Array.from(dom.window.document.getElementsByTagName('table'));
 
   // Wrap each table with a div
   tables.forEach((table) => {
-    const wrapper = doc.createElement('div');
-    wrapper.setAttribute('class', 'table-wrapper'); // Add a class if needed
+    const wrapper = dom.window.document.createElement('div');
+    wrapper.setAttribute('class', 'table-wrapper');
     const parent = table.parentNode;
     if (parent) {
       parent.replaceChild(wrapper, table);
@@ -22,9 +22,7 @@ function wrapTables(html: string) {
     }
   });
 
-  // Serialize the modified document back to an HTML string
-  const serializer = new XMLSerializer();
-  return serializer.serializeToString(doc);
+  return dom.serialize();
 }
 
 const posts = defineCollection({
