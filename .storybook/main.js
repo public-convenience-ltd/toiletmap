@@ -10,9 +10,7 @@ module.exports = {
     '@storybook/addon-mdx-gfm',
     'storybook-addon-apollo-client',
   ],
-  framework: {
-    name: '@storybook/nextjs',
-  },
+  framework: '@storybook/nextjs',
   babel: async (options) => {
     options.presets.push('@emotion/babel-preset-css-prop');
     return options;
@@ -39,6 +37,7 @@ module.exports = {
           os: false,
           stream: false,
           http: false,
+          worker_threads: false,
         },
       },
     };
