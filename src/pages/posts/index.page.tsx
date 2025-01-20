@@ -29,7 +29,7 @@ export default function PostPage({
       <Head>
         <title>{config.getTitle('Blog')}</title>
       </Head>
-      <Center text={false} gutter={true}>
+      <Center text={false} gutter={true} article={true}>
         <Stack space="xl">
           <h1 style={{ textAlign: 'center' }}>Toilet Map Blog</h1>
 

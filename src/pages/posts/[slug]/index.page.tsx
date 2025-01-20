@@ -66,7 +66,7 @@ export default function PostPage({
       <Head>
         <title>{config.getTitle(postData.title)}</title>
       </Head>
-      <Center text={false} gutter={true}>
+      <Center text={false} gutter={true} article={true}>
         <Stack space="xl">
           <section
             style={{
