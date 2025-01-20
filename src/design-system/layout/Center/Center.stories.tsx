@@ -14,7 +14,7 @@ export default meta;
 export const Default: StoryObj<typeof Center> = {
   render: () => {
     return (
-      <Center text={false} gutter={true}>
+      <Center text={false} gutter={true} article={false}>
         <h1>Center layout</h1>
         <p>
           The Center layout is a layout inspired by the Center component from{' '}
@@ -34,7 +34,7 @@ export const Default: StoryObj<typeof Center> = {
 export const WithCenteredText: StoryObj<typeof Center> = {
   render: () => {
     return (
-      <Center text={true} gutter={true}>
+      <Center text={true} gutter={true} article={false}>
         <h1>Center layout</h1>
         <p>
           The Center layout is a layout inspired by the Center component from{' '}
@@ -54,7 +54,7 @@ export const WithCenteredText: StoryObj<typeof Center> = {
 export const WithoutGutter: StoryObj<typeof Center> = {
   render: () => {
     return (
-      <Center text={false} gutter={false}>
+      <Center text={false} gutter={false} article={false}>
         <h1>Center layout</h1>
         <p>
           The Center layout is a layout inspired by the Center component from{' '}

@@ -38,7 +38,10 @@ const globalStyles = (
         --text-4: clamp(2.07rem, calc(1.84rem + 1.17vw), 2.75rem);
         --text-5: clamp(2.49rem, calc(2.16rem + 1.64vw), 3.43rem);
 
-        --toilet-max-width: 845px;
+        /* toilet-article-max-width is used for for blogs and other text based inspired by this article - https://piccalil.li/blog/line-length/ */
+        --toilet-article-max-width: 75ch;
+        /* toilet-max-width is used for wider content the needs containing like footer, header, etc.  */
+        --toilet-max-width: 1680px;
         --toilet-gutter: var(--space-l);
       }
 

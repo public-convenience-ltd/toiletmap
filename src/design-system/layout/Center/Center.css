@@ -9,5 +9,9 @@
   }
 
   .center--gutter {
-    padding: var(--toilet-gutter);
+    padding-inline: var(--toilet-gutter);
+  }
+
+  .center--article {
+    max-inline-size: var(--toilet-article-max-width);
   }
