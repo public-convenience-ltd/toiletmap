@@ -18,7 +18,7 @@ import Notification from '../components/Notification';
 import Box from '../components/Box';
 import Text from '../components/Text';
 import Spacer from '../components/Spacer';
-import VisuallyHidden from '../components/VisuallyHidden';
+import VisuallyHidden from '../design-system/utilities/VisuallyHidden';
 import Switch from '../design-system/components/Switch';
 import { WEEKDAYS, isClosed, Weekdays } from '../lib/openingTimes';
 import crosshair from '../../public/crosshair-small.svg';
@@ -119,7 +119,7 @@ const Section: React.FC<Section> = ({
                 </Box>
                 <Text as="td" textAlign="center" css={{ width: '16%' }}>
                   <label htmlFor={`${field}:yes`}>
-                    <VisuallyHidden>Yes</VisuallyHidden>
+                    <VisuallyHidden as="span">Yes</VisuallyHidden>
 
                     <Radio
                       name={field}
@@ -135,7 +135,7 @@ const Section: React.FC<Section> = ({
 
                 <Text as="td" textAlign="center" css={{ width: '16%' }}>
                   <label htmlFor={`${field}:no`}>
-                    <VisuallyHidden>No</VisuallyHidden>
+                    <VisuallyHidden as="span">No</VisuallyHidden>
 
                     <Radio
                       name={field}
@@ -151,7 +151,7 @@ const Section: React.FC<Section> = ({
 
                 <Text as="td" textAlign="center" css={{ width: '16%' }}>
                   <label htmlFor={`${field}:na`}>
-                    <VisuallyHidden>Don&apos;t know</VisuallyHidden>
+                    <VisuallyHidden as="span">Don&apos;t know</VisuallyHidden>
 
                     <Radio
                       id={`${field}:na`}
@@ -387,7 +387,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
           flexDirection="column"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <VisuallyHidden>
+          <VisuallyHidden as="span">
             <h1>{title}</h1>
           </VisuallyHidden>
 
@@ -405,7 +405,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
             </Box>
             &nbsp;
             <span>with where you believe the toilet to be</span>
-            <VisuallyHidden>
+            <VisuallyHidden as="span">
               <label htmlFor="geometry.coordinates.0">Latitude </label>
               <InputField
                 type="text"
@@ -439,7 +439,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                     icon="asterisk"
                     data-test="asterisk"
                   ></Icon>
-                  <VisuallyHidden as={'span'} role="alert">
+                  <VisuallyHidden as="span" role="alert">
                     {message}
                   </VisuallyHidden>
                 </>
@@ -536,7 +536,9 @@ const EntryForm = ({ title, loo, children, ...props }) => {
               {
                 field: 'isFree',
                 subQuestion: (
-                  <VisuallyHidden>Is this toilet free?</VisuallyHidden>
+                  <VisuallyHidden as="span">
+                    Is this toilet free?
+                  </VisuallyHidden>
                 ),
                 value: noPayment === null ? '' : noPayment,
                 onChange: (event) => {
@@ -711,7 +713,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                                     icon="asterisk"
                                     data-test="asterisk"
                                   ></Icon>
-                                  <VisuallyHidden as={'span'} role="alert">
+                                  <VisuallyHidden as="span" role="alert">
                                     {message}
                                   </VisuallyHidden>
                                 </>
@@ -754,7 +756,7 @@ const EntryForm = ({ title, loo, children, ...props }) => {
                                     icon="asterisk"
                                     data-test="asterisk"
                                   ></Icon>
-                                  <VisuallyHidden as={'span'} role="alert">
+                                  <VisuallyHidden as="span" role="alert">
                                     {message}
                                   </VisuallyHidden>
                                 </>

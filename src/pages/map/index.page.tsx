@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import Box from '../../components/Box';
-import VisuallyHidden from '../../components/VisuallyHidden';
+import VisuallyHidden from '../../design-system/utilities/VisuallyHidden';
 import { useMapState } from '../../components/MapState';
 import config from '../../config';
 import { useRouter } from 'next/router';
@@ -23,7 +23,7 @@ const MapPage: NextPage = () => {
       lat: parseFloat(router.query.lat as string),
       lng: parseFloat(router.query.lng as string),
     }),
-    [router]
+    [router],
   );
 
   const pageTitle = config.getTitle('Area Map');
@@ -34,7 +34,7 @@ const MapPage: NextPage = () => {
         <title>{pageTitle}</title>
       </Head>
 
-      <VisuallyHidden>
+      <VisuallyHidden as="div">
         <h1>{pageTitle}</h1>
       </VisuallyHidden>
 

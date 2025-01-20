@@ -2,10 +2,10 @@ import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
 
 import Box from '../Box';
-import VisuallyHidden from '../VisuallyHidden';
 import { Media } from '../Media';
 import Icon from '../../design-system/components/Icon';
 import Logo from '../../design-system/components/Logo';
+import VisuallyHidden from '../../design-system/utilities/VisuallyHidden';
 
 import MainMenu from './MainMenu';
 import { useMapState } from '../MapState';
@@ -53,13 +53,13 @@ const Header = ({ children }) => {
 
         <Box as="nav" width="100%" aria-labelledby="menu-main">
           <h2 id="menu-main">
-            <VisuallyHidden>Main menu</VisuallyHidden>
+            <VisuallyHidden as="span">Main menu</VisuallyHidden>
           </h2>
 
           <Media at="sm" css={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button aria-describedby={feedbackPopoverId} onClick={handleClick}>
               <Icon icon="comments" size="x-large" />
-              <VisuallyHidden>
+              <VisuallyHidden as="span">
                 <Text>Feedback</Text>
               </VisuallyHidden>
             </button>
@@ -70,7 +70,7 @@ const Header = ({ children }) => {
                 aria-expanded={isMenuVisible}
                 onClick={() => setIsMenuVisible(!isMenuVisible)}
               >
-                <VisuallyHidden>Toggle main menu</VisuallyHidden>
+                <VisuallyHidden as="span">Toggle main menu</VisuallyHidden>
                 <Icon icon="bars" size="large" />
               </button>
             </Box>

@@ -10,7 +10,7 @@ import styled from '@emotion/styled';
 
 import Icon from '../../design-system/components/Icon';
 import Box from '../Box';
-import VisuallyHidden from '../VisuallyHidden';
+import VisuallyHidden from '../../design-system/utilities/VisuallyHidden';
 
 import useNominatimAutocomplete, { Place } from './useNominatimAutocomplete';
 
@@ -102,7 +102,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
 
   return (
     <>
-      <VisuallyHidden>
+      <VisuallyHidden as="div">
         <label htmlFor="searchLocation" {...getLabelProps()}>
           Search for a location
         </label>

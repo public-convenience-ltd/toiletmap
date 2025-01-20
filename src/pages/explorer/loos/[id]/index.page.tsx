@@ -43,7 +43,7 @@ import { useMapState } from '../../../../components/MapState';
 import Notification from '../../../../components/Notification';
 import Spacer from '../../../../components/Spacer';
 import Text from '../../../../components/Text';
-import VisuallyHidden from '../../../../components/VisuallyHidden';
+import VisuallyHidden from '../../../../design-system/utilities/VisuallyHidden';
 import NotFound from '../../../404.page';
 
 // Utilities and Constants
@@ -338,7 +338,7 @@ const LooPage: FC<LooPageProps> = ({ looData, reportData, notFound }) => {
         <title>{pageTitle}</title>
       </Head>
 
-      <VisuallyHidden>
+      <VisuallyHidden as="div">
         <h1>{pageTitle}</h1>
       </VisuallyHidden>
 
