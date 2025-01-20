@@ -1,8 +1,8 @@
 import { Popover, ThemeProvider, createTheme } from '@mui/material';
 import React from 'react';
 
-import Feedback from '../Feedback/Feedback';
-import theme from '../../theme';
+import Feedback from '../../../components/Feedback/Feedback';
+import theme from '../../../theme';
 
 export const useFeedbackPopover = () => {
   const [feedbackElement, setFeedbackElement] =
