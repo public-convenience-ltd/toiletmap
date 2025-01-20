@@ -3,15 +3,13 @@ import 'resize-observer-polyfill';
 
 import React from 'react';
 import Box from '../components/Box';
-import Header from '../components/Header';
+import Header from '../design-system/components/Header';
 import Footer from '../components/Footer';
 
 const Main = ({ Component, pageProps, map = undefined }) => {
   return (
     <Box display="flex" flexDirection="column" height="100%">
-      <Header>
-        <Footer />
-      </Header>
+      <Header />
       <Box position="relative" display="flex" flexGrow={1}>
         <Box
           as="main"
