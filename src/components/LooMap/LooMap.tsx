@@ -13,7 +13,7 @@ import { Map } from 'leaflet';
 import useLocateMapControl from './useLocateMapControl';
 import AccessibilityIntersection from './AccessibilityIntersection';
 import AccessibilityList from './AccessibilityList';
-import VisuallyHidden from '../VisuallyHidden';
+import VisuallyHidden from '../../design-system/utilities/VisuallyHidden';
 import 'focus-visible';
 import React from 'react';
 import router from 'next/router';
@@ -348,15 +348,14 @@ const LooMap: React.FC<LooMapProps> = ({
 
             <AccessibilityList toilets={intersectingToilets} />
 
-            <VisuallyHidden>
-              <div
-                role="status"
-                aria-atomic="true"
-                aria-live="polite"
-                aria-relevant="additions text"
-              >
-                {announcement}
-              </div>
+            <VisuallyHidden
+              as="span"
+              role="status"
+              aria-atomic="true"
+              aria-live="polite"
+              aria-relevant="additions text"
+            >
+              {announcement}
             </VisuallyHidden>
           </>
         )}

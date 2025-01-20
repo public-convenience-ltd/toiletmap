@@ -10,7 +10,7 @@ import { ssrStatistics } from '../../api-client/page';
 import { StatisticsQuery } from '../../api-client/graphql';
 import theme from '../../theme';
 import { css } from '@emotion/react';
-import VisuallyHidden from '../../components/VisuallyHidden';
+import VisuallyHidden from '../../design-system/utilities/VisuallyHidden';
 import Link from 'next/link';
 
 const Stats = ({ data: { statistics } }: { data: StatisticsQuery }) => {
@@ -22,7 +22,7 @@ const Stats = ({ data: { statistics } }: { data: StatisticsQuery }) => {
         <title>{pageTitle}</title>
       </Head>
 
-      <VisuallyHidden>
+      <VisuallyHidden as="div">
         <h1>{pageTitle}</h1>
       </VisuallyHidden>
 

@@ -4,7 +4,7 @@ import isPropValid from '@emotion/is-prop-valid';
 import Link from 'next/link';
 
 import { Media } from '../Media';
-import VisuallyHidden from '../VisuallyHidden';
+import VisuallyHidden from '../../design-system/utilities/VisuallyHidden';
 import Box from '../Box';
 import Text from '../Text';
 import Icon from '../../design-system/components/Icon';
@@ -87,8 +87,8 @@ const Sidebar = () => {
   return (
     <section aria-labelledby="heading-search">
       <Media lessThan="md">
-        <VisuallyHidden>
-          <span id="heading-search">Search</span>
+        <VisuallyHidden as="span" id="heading-search">
+          Search
         </VisuallyHidden>
 
         <LocationSearch
@@ -193,7 +193,7 @@ const Sidebar = () => {
 
           <Box as="section" my={4} aria-labelledby="heading-filters">
             <h2 id="heading-filters">
-              <VisuallyHidden>
+              <VisuallyHidden as="span">
                 Filters — {appliedFilterCount} filters are applied.
               </VisuallyHidden>
             </h2>
@@ -246,7 +246,7 @@ const Sidebar = () => {
 
           <Box as="section" mt={4} aria-labelledby="heading-add">
             <h2 id="heading-add">
-              <VisuallyHidden>Add a toilet</VisuallyHidden>
+              <VisuallyHidden as="span">Add a toilet</VisuallyHidden>
             </h2>
             <StyledNavLink
               href={`/loos/add?lat=${mapState.center.lat}&lng=${mapState.center.lng}`}
@@ -264,7 +264,7 @@ const Sidebar = () => {
             </StyledNavLink>
             <Box as="section" mt={4} aria-labelledby="heading-find">
               <h2 id="heading-find">
-                <VisuallyHidden>Find a toilet near me</VisuallyHidden>
+                <VisuallyHidden as="span">Find a toilet near me</VisuallyHidden>
               </h2>
               <Box
                 as="button"

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Box from '../../../components/Box';
-import VisuallyHidden from '../../../components/VisuallyHidden';
+import VisuallyHidden from '../../../design-system/utilities/VisuallyHidden';
 import { useMapState } from '../../../components/MapState';
 import config from '../../../config';
 import { withApollo } from '../../../api-client/withApollo';
@@ -56,7 +56,7 @@ const LooPage: CustomLooByIdComp = (props) => {
       message,
       router.isReady,
       setMapState,
-    ]
+    ],
   );
 
   const pageTitle = config.getTitle('Home');
@@ -103,7 +103,7 @@ const LooPage: CustomLooByIdComp = (props) => {
         <title>{pageTitle}</title>
       </Head>
 
-      <VisuallyHidden>
+      <VisuallyHidden as="div">
         <h1>{pageTitle}</h1>
       </VisuallyHidden>
 
@@ -157,7 +157,7 @@ export const getStaticProps: GetServerSideProps = async ({ params, req }) => {
         variables: { id: params.id as string },
         fetchPolicy: 'no-cache',
       },
-      { req }
+      { req },
     );
 
     if (res.props.error && !res.props.data) {

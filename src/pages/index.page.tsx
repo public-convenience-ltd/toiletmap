@@ -3,7 +3,7 @@ import React from 'react';
 import Head from 'next/head';
 import Box from '../components/Box';
 import Sidebar from '../components/Sidebar/Sidebar';
-import VisuallyHidden from '../components/VisuallyHidden';
+import VisuallyHidden from '../design-system/utilities/VisuallyHidden';
 import { useMapState } from '../components/MapState';
 import { withApollo } from '../api-client/withApollo';
 import { useEffect } from 'react';
@@ -24,7 +24,7 @@ const HomePage = () => {
         <title>{config.getTitle('Home')}</title>
       </Head>
 
-      <VisuallyHidden>{config.getTitle('Home')}</VisuallyHidden>
+      <VisuallyHidden as="div">{config.getTitle('Home')}</VisuallyHidden>
 
       <Box
         position="absolute"
