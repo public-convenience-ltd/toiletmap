@@ -27,69 +27,145 @@ const Stats = ({ data: { statistics } }: { data: StatisticsQuery }) => {
       </VisuallyHidden>
 
       <Container maxWidth={845}>
-        <Text fontSize={6} fontWeight="bold">
-          <h1>Toilet Map Explorer</h1>
-        </Text>
-        <Spacer mb={5} />
-        <Text fontSize={5} fontWeight="bold">
-          <h2>Overview</h2>
-        </Text>
-        <Spacer mb={2} />
-        <Text fontSize={3} fontWeight="bold">
-          <h2>
-            <Link href="/explorer/search">Search Tool 🔎</Link>
-          </h2>
-        </Text>
-        <Spacer mb={2} />
-        <Text fontSize={3}>
-          <h3>
-            Total Toilets:
-            <Text as="span" color={theme.colors.tertiary}>
-              {statistics.total}
-            </Text>
-          </h3>
-        </Text>
-        <Spacer mb={1} />
-        <Text fontSize={3}>
-          <h3>
-            Active:
-            <Text as="span" color={theme.colors.tertiary}>
-              {statistics.active}
-            </Text>
-          </h3>
-        </Text>
-        <Spacer mb={1} />
-        <Text fontSize={3}>
-          <h3>
-            Removed:
-            <Text as="span" color={theme.colors.tertiary}>
-              {statistics.removed}
-            </Text>
-          </h3>
-        </Text>
+        <div
+          style={{
+            display: 'inline-block',
+            width: '100%',
+            textAlign: 'center',
+            marginBottom: '1rem',
+          }}
+        >
+          <Text fontSize={6} fontWeight="bold" color={theme.colors.darkGrey}>
+            <h1>Toilet Map Explorer</h1>
+          </Text>
+          <Spacer mb={4} />
 
-        <Spacer mb={4} />
-        <Text fontSize={5} fontWeight="bold">
-          <h2>Area Breakdown</h2>
+          <Text fontSize={5} fontWeight="bold" color={theme.colors.cool}>
+            <h2>Overview</h2>
+          </Text>
+          <Spacer mb={2} />
+
+          <Text fontSize={4}>
+            <Link
+              href="/explorer/search"
+              css={css`
+                display: inline-block;
+                padding: 0.5rem 0.75rem;
+                background-color: ${theme.colors.darkGrey};
+                color: ${theme.colors.white};
+                border-radius: ${theme.radii[3]}px;
+                text-decoration: none;
+                font-weight: bold;
+                transition: background-color 0.3s ease;
+                &:hover {
+                  background-color: ${theme.colors.primary};
+                  color: ${theme.colors.white};
+                }
+                &:focus {
+                  box-shadow: 0 0 0 3px ${theme.colors.aqua};
+                } /*Brighter color for Accessibility*/
+              `}
+            >
+              Go to Search Tool 🔎
+            </Link>
+          </Text>
+          <Spacer mb={2} />
+        </div>
+
+        <div
+          style={{
+            display: 'inline-block',
+            width: '100%',
+            textAlign: 'center',
+            marginBottom: '1rem',
+          }}
+        >
+          <div style={{ display: 'inline-block', marginRight: '2rem' }}>
+            <Text fontSize={3}>
+              <h3>
+                Total Toilets: &nbsp;
+                <Text as="span" color={theme.colors.darkGrey} fontWeight="bold">
+                  {statistics.total}
+                </Text>
+              </h3>
+            </Text>
+          </div>
+
+          <div style={{ display: 'inline-block', marginRight: '2rem' }}>
+            <Text fontSize={3}>
+              <h3>
+                Active: &nbsp;
+                <Text as="span" color={theme.colors.green} fontWeight="bold">
+                  {statistics.active}
+                </Text>
+              </h3>
+            </Text>
+          </div>
+
+          <div style={{ display: 'inline-block' }}>
+            <Text fontSize={3}>
+              <h3>
+                Removed: &nbsp;
+                <Text as="span" color={theme.colors.grey} fontWeight="bold">
+                  {statistics.removed}
+                </Text>
+              </h3>
+            </Text>
+          </div>
+        </div>
+
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '845px', // Same as the container width
+            borderBottom: `2px solid ${theme.colors.primary}`,
+            margin: '0 auto',
+          }}
+        />
+
+        <Spacer mb={3} />
+
+        <Text fontSize={5} fontWeight="bold" color={theme.colors.primary}>
+          <h2>Area-wise Breakdown</h2>
         </Text>
+        <Spacer mb={3} />
+
         <table
           css={css`
             border-collapse: collapse;
             width: 100%;
-            td,
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            tr {
+              &:nth-child(odd) {
+                background-color: ${theme.colors.lightGrey};
+              }
+              &:nth-child(even) {
+                background-color: ${theme.colors.white};
+              }
+            }
             th {
-              padding: 0.5rem;
+              background-color: ${theme.colors.darkGrey};
+              color: ${theme.colors.white};
+              padding: 0.75rem;
+              text-align: left;
+              text-align: left;
+              &:nth-child(n + 2) {
+                text-align: center; /*Center align for second column onward*/
+              }
             }
-            tr:nth-child(odd) td {
-              background-color: ${theme.colors.white};
-            }
-            tr:nth-child(even) td {
-              background-color: ${theme.colors.lightGrey};
+            td {
+              padding: 0.75rem;
+              text-align: left;
+              border-bottom: 1px solid ${theme.colors.grey};
+              text-align: left;
+              &:nth-child(n + 2) {
+                text-align: center; /*Center align for second column onward*/
+              }
             }
           `}
         >
-          <tbody>
-            <tr css={{ borderBottom: '1pt solid black' }}>
+          <thead>
+            <tr>
               <th>
                 <Text fontWeight={'bold'}>Area</Text>
               </th>
@@ -103,17 +179,24 @@ const Stats = ({ data: { statistics } }: { data: StatisticsQuery }) => {
                 <Text fontWeight={'bold'}>Total Toilets</Text>
               </th>
             </tr>
+          </thead>
+          <tbody>
             {statistics.areaToiletCount
-              // Order alphabetically
-              .sort((a, b) => {
-                return a.name.localeCompare(b.name);
-              })
+              .sort((a, b) => a.name.localeCompare(b.name))
               .map((area) => (
-                <tr key={area.name} css={{ borderBottom: '1px solid black' }}>
+                <tr key={area.name}>
                   <td>{area.name}</td>
-                  <td>{area.active}</td>
-                  <td>{area.removed}</td>
-                  <td>{area.active + area.removed}</td>
+                  <td>
+                    <Text color={theme.colors.green}>{area.active}</Text>
+                  </td>
+                  <td>
+                    <Text color={theme.colors.darkGrey}>{area.removed}</Text>
+                  </td>
+                  <td>
+                    <Text color={theme.colors.darkGrey}>
+                      {area.active + area.removed}
+                    </Text>
+                  </td>
                 </tr>
               ))}
           </tbody>
