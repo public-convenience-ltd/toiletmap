@@ -1,4 +1,5 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "headers": [
     {
       "source": "/(.*)",
@@ -8,6 +9,12 @@
           "value": "interest-cohort=()"
         }
       ]
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/daily_export",
+      "schedule": "0 0 * * *"
     }
   ]
 }
