@@ -91,15 +91,18 @@ export default async function GET(request: NextRequest) {
     return new Response('Unauthorized', { status: 401 });
   }
 
-  const toilets: ExportToilet[] = [];
-  for await (const batch of fetchAllToilets({
-    batchSize: 4000,
-    filter: { active: true },
-    orderBy: { direction: 'asc', field: 'created_at' },
-    onProgress: (count) => console.log(`Fetched ${count} toilets so far`),
-  })) {
-    toilets.push(...batch);
-  }
+  // Use Array.fromAsync to collect all batches from the async generator
+  const batches = await Array.fromAsync(
+    fetchAllToilets({
+      batchSize: 4000,
+      filter: { active: true },
+      orderBy: { direction: 'asc', field: 'created_at' },
+      onProgress: (count) => console.log(`Fetched ${count} toilets so far`),
+    }),
+  );
+
+  // Flatten the array of batches into a single array of toilets
+  const toilets = batches.flat();
 
   const toiletsJson = JSON.stringify(toilets);
 
