@@ -207,7 +207,17 @@
       "axios@>=0.8.1 <0.28.0": ">=0.28.0"
     },
     "onlyBuiltDependencies": [
-      "sharp"
+      "@parcel/watcher",
+      "@prisma/client",
+      "@prisma/engines",
+      "@swc/core",
+      "core-js",
+      "core-js-pure",
+      "cypress",
+      "esbuild",
+      "prisma",
+      "sharp",
+      "supabase"
     ]
   }
 }
