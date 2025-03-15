@@ -1,6 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest } from 'next/server';
 import prisma from '../../../api/prisma/prisma';
 import type { toilets as Toilet } from '@prisma/client';
+import { put, list, del } from '@vercel/blob';
 
 type ExportToilet = Omit<Toilet, 'contributors' | 'removal_reason'>;
 
@@ -28,8 +29,8 @@ async function fetchAllToilets(
     let hasNextBatch = true;
 
     for (
-      let batchNumber = 1;
-      hasNextBatch && batchNumber <= batchLimit;
+      let batchNumber = 0;
+      hasNextBatch && batchNumber < batchLimit;
       batchNumber++
     ) {
       // Fetch the next batch of records
@@ -67,35 +68,88 @@ async function fetchAllToilets(
       hasNextBatch = toiletsBatch.length === batchSize;
     }
 
-    // Return as readonly to prevent accidental mutations by consumers
-    return Object.freeze(results) as readonly Toilet[];
+    return results;
   } catch (error) {
     console.error('Error fetching toilet records:', error);
     throw new Error(
       `Failed to fetch toilets: ${error instanceof Error ? error.message : String(error)}`,
     );
   }
-  // Moved connection management responsibility to the caller
 }
 
-export default async function GET(
-  request: NextApiRequest,
-  response: NextApiResponse,
-) {
-  // const authHeader = request.headers['authorization'];
-  // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-  //   return new Response('Unauthorized', {
-  //     status: 401,
-  //   });
-  // }
+/**
+ * Deletes old exported files from the "exports" folder.
+ * It lists all files under "exports/", filters out the current export file,
+ * and then deletes the older ones.
+ */
+async function deleteOldFiles(currentFileName: string) {
+  try {
+    // List all files in the exports directory.
+    const allFiles = (await list({ prefix: 'exports/' })).blobs;
+
+    // Filter files that follow the export naming pattern and are not the current file.
+    const filesToDelete = allFiles.filter(({ pathname }) => {
+      return (
+        pathname !== `exports/${currentFileName}` &&
+        pathname.startsWith('exports/toilets-') &&
+        pathname.endsWith('.json')
+      );
+    });
+
+    console.log(filesToDelete, 'filesToDelete');
+
+    // Delete each old file.
+    for (const file of filesToDelete) {
+      await del(file.url);
+      console.log(`Deleted old file: ${file.pathname}`);
+    }
+  } catch (error) {
+    console.error('Error deleting old files:', error);
+  }
+}
+
+export default async function GET(request: NextRequest) {
+  const authHeader = request.headers['authorization'];
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return new Response('Unauthorized', {
+      status: 401,
+    });
+  }
 
   const toilets = await fetchAllToilets({
-    batchSize: 500,
-    batchLimit: 1,
+    batchSize: 4000,
     filter: { active: true },
     orderBy: { direction: 'asc', field: 'created_at' },
     onProgress: (count) => console.log(`Fetched ${count} toilets so far`),
   });
 
-  return response.json(toilets);
+  // Convert the fetched data to a JSON string
+  const toiletsJson = JSON.stringify(toilets);
+
+  try {
+    const fileName = `toilets-${+new Date()}.json`;
+    const uploadPath = `exports/${fileName}`;
+    const blob = await put(uploadPath, toiletsJson, {
+      access: 'public',
+      multipart: true,
+      onUploadProgress: (progress) => {
+        console.log(
+          `Uploading toilets export progress: ${progress.percentage}%`,
+        );
+      },
+      contentType: 'application/json',
+    });
+
+    console.log(`Successfully uploaded toilets export to blob at ${blob.url}`);
+
+    // Delete old backup files, keeping only the latest one that was just uploaded.
+    await deleteOldFiles(fileName);
+
+    return Response.json({ success: true, blobUrl: blob.url });
+  } catch (uploadError) {
+    console.error('Error uploading blob:', uploadError);
+    return new Response('Failed to upload blob', {
+      status: 500,
+    });
+  }
 }
