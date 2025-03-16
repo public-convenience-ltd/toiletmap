@@ -12,7 +12,6 @@ type ExportToilet = Omit<Toilet, 'contributors' | 'removal_reason'>;
 export async function* fetchAllToilets(
   options: {
     batchSize?: number;
-    batchLimit?: number;
     onProgress?: (fetchedCount: number, batch: readonly ExportToilet[]) => void;
   } = {},
 ): AsyncGenerator<ExportToilet, void, unknown> {
