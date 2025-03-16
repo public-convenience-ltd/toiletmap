@@ -9,51 +9,59 @@ type ExportToilet = Omit<Toilet, 'contributors' | 'removal_reason'>;
  * An async generator that yields batches of toilet records.
  * This version uses a cursor-based approach to paginate through results.
  */
+/**
+ * An async generator that yields toilet records.
+ * This version uses a cursor-based approach to paginate through results.
+ */
 export async function* fetchAllToilets(
   options: {
     batchSize?: number;
     batchLimit?: number;
-    filter?: { active?: boolean };
     orderBy?: { field: keyof ExportToilet; direction: 'asc' | 'desc' };
     onProgress?: (fetchedCount: number, batch: readonly ExportToilet[]) => void;
   } = {},
-): AsyncGenerator<readonly ExportToilet[], void, unknown> {
-  const {
-    batchSize = 100,
-    batchLimit = Infinity, // Fetch all batches by default
-    filter = { active: true },
-    orderBy = { field: 'created_at', direction: 'asc' },
-    onProgress,
-  } = options;
+): AsyncGenerator<ExportToilet, void, unknown> {
+  const { batchSize = 100, onProgress } = options;
 
-  let cursor: string | null = null;
+  let cursor: string | undefined;
   let fetchedCount = 0;
 
-  for (let batchNumber = 0; batchNumber < batchLimit; batchNumber++) {
+  while (true) {
     // Fetch the next batch of records using a cursor-based pagination
     const toiletsBatch = await prisma.toilets.findMany({
-      where: filter,
-      include: { areas: { select: { name: true, id: true } } },
+      // Only include active toilets in the response.
+      where: { active: true },
+      // Include the "areas" relation in the response so we can access the area name.
+      include: {
+        areas: { select: { name: true, id: true } },
+      },
+      // Omit the removal_reason and contributors fields from the response
       omit: { removal_reason: true, contributors: true },
-      orderBy: { [orderBy.field]: orderBy.direction },
+      // Sort by the cursor as recommended in the docs:
+      // https://www.prisma.io/docs/orm/prisma-client/queries/pagination#-pros-of-cursor-based-pagination
+      orderBy: {
+        id: 'asc',
+      },
+      // Limit the number of records returned to the value of batchSize.
       take: batchSize,
+      // If a cursor is provided, we skip the record at the cursor position.
+      // This prevents returning the record that was already used as the starting point.
       skip: cursor ? 1 : 0,
+      // If a cursor value is provided, start the query from the record with that id.
       ...(cursor && { cursor: { id: cursor } }),
     });
 
-    if (toiletsBatch.length === 0) break;
-
     fetchedCount += toiletsBatch.length;
-    cursor = toiletsBatch[toiletsBatch.length - 1].id;
+    cursor = toiletsBatch.at(-1)?.id;
+
+    // If no cursor was found we've reached the end
+    if (!cursor) return;
 
     // Report progress if a callback is provided
     onProgress?.(fetchedCount, toiletsBatch);
 
-    // Yield the current batch
-    yield toiletsBatch;
-
-    // If the batch is not full, assume we've reached the end
-    if (toiletsBatch.length < batchSize) break;
+    // Yield the current items from the batch
+    yield* toiletsBatch;
   }
 }
 
@@ -95,8 +103,6 @@ export default async function GET(request: NextRequest) {
   const batches = await Array.fromAsync(
     fetchAllToilets({
       batchSize: 4000,
-      filter: { active: true },
-      orderBy: { direction: 'asc', field: 'created_at' },
       onProgress: (count) => console.log(`Fetched ${count} toilets so far`),
     }),
   );
