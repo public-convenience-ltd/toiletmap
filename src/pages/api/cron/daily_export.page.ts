@@ -9,15 +9,10 @@ type ExportToilet = Omit<Toilet, 'contributors' | 'removal_reason'>;
  * An async generator that yields batches of toilet records.
  * This version uses a cursor-based approach to paginate through results.
  */
-/**
- * An async generator that yields toilet records.
- * This version uses a cursor-based approach to paginate through results.
- */
 export async function* fetchAllToilets(
   options: {
     batchSize?: number;
     batchLimit?: number;
-    orderBy?: { field: keyof ExportToilet; direction: 'asc' | 'desc' };
     onProgress?: (fetchedCount: number, batch: readonly ExportToilet[]) => void;
   } = {},
 ): AsyncGenerator<ExportToilet, void, unknown> {
@@ -85,13 +80,47 @@ async function cleanExportDirectory() {
     console.error('Error deleting old files:', error);
   }
 }
+/**
+ * Converts an array of ExportToilet objects into CSV format.
+ *
+ * @param {ExportToilet[]} data - Array of ExportToilet objects.
+ * @returns {string} CSV formatted string.
+ */
+function convertToCSV(data: ExportToilet[]): string {
+  // Replacer function for JSON.stringify that converts null values to empty strings
+  const replacer = (_key: string, value: ExportToilet) =>
+    value === null ? '' : value;
+
+  // Extract headers from the keys of the first object
+  const headers = Object.keys(data[0]);
+
+  // Map each data row into a CSV formatted string
+  const csvRows = data.map((row) => {
+    const formattedRow = headers.map((header) => {
+      let cellValue = row[header];
+
+      // If the cell value is an object, convert it to a JSON string
+      if (typeof cellValue === 'object') {
+        cellValue = JSON.stringify(cellValue, replacer);
+      }
+
+      // Escape double quotes by doubling them and wrap the value in quotes
+      const escapedValue = String(cellValue).replace(/"/g, '""');
+      return `"${escapedValue}"`;
+    });
+    return formattedRow.join(',');
+  });
+
+  // Prepend the header row and join all rows with newlines
+  return [headers.join(','), ...csvRows].join('\n');
+}
 
 /**
  * GET endpoint that:
  * 1. Fetches all active toilet records using the async generator.
- * 2. Converts the records to JSON.
+ * 2. Converts the records to JSON and CSV.
  * 3. Deletes old exported files.
- * 4. Uploads the JSON file as a blob.
+ * 4. Uploads the JSON and CSV files as blobs.
  */
 export default async function GET(request: NextRequest) {
   const authHeader = request.headers['authorization'];
@@ -99,39 +128,60 @@ export default async function GET(request: NextRequest) {
     return new Response('Unauthorized', { status: 401 });
   }
 
-  // Use Array.fromAsync to collect all batches from the async generator
+  // Collect all toilet records using the async generator.
   const batches = await Array.fromAsync(
     fetchAllToilets({
       batchSize: 4000,
       onProgress: (count) => console.log(`Fetched ${count} toilets so far`),
     }),
   );
-
-  // Flatten the array of batches into a single array of toilets
   const toilets = batches.flat();
 
   const toiletsJson = JSON.stringify(toilets);
+  const toiletsCsv = convertToCSV(toilets);
 
   try {
-    // Clean the export directory before uploading the new file.
+    // Clean the export directory before uploading new files.
     await cleanExportDirectory();
 
-    const fileName = `toilets-${Date.now()}.json`;
-    const uploadPath = `exports/${fileName}`;
-    const blob = await put(uploadPath, toiletsJson, {
+    const timestamp = Date.now();
+    const jsonFileName = `toilets-${timestamp}.json`;
+    const csvFileName = `toilets-${timestamp}.csv`;
+    const jsonUploadPath = `exports/${jsonFileName}`;
+    const csvUploadPath = `exports/${csvFileName}`;
+
+    // Upload both JSON and CSV concurrently.
+    const jsonUploadPromise = put(jsonUploadPath, toiletsJson, {
       access: 'public',
       multipart: true,
       onUploadProgress: (progress) => {
-        console.log(
-          `Uploading toilets export progress: ${progress.percentage}%`,
-        );
+        console.log(`Uploading JSON export progress: ${progress.percentage}%`);
       },
       contentType: 'application/json',
     });
 
-    console.log(`Successfully uploaded toilets export to blob at ${blob.url}`);
+    const csvUploadPromise = put(csvUploadPath, toiletsCsv, {
+      access: 'public',
+      multipart: true,
+      onUploadProgress: (progress) => {
+        console.log(`Uploading CSV export progress: ${progress.percentage}%`);
+      },
+      contentType: 'text/csv',
+    });
 
-    return Response.json({ success: true, blobUrl: blob.url });
+    const [jsonBlob, csvBlob] = await Promise.all([
+      jsonUploadPromise,
+      csvUploadPromise,
+    ]);
+
+    console.log(`Successfully uploaded JSON export to blob at ${jsonBlob.url}`);
+    console.log(`Successfully uploaded CSV export to blob at ${csvBlob.url}`);
+
+    return Response.json({
+      success: true,
+      jsonBlobUrl: jsonBlob.url,
+      csvBlobUrl: csvBlob.url,
+    });
   } catch (uploadError) {
     console.error('Error uploading blob:', uploadError);
     return new Response('Failed to upload blob', { status: 500 });
