@@ -87,7 +87,7 @@ async function cleanExportDirectory() {
  */
 function convertToCSV(data: ExportToilet[]): string {
   // Replacer function for JSON.stringify that converts null values to empty strings
-  const replacer = (_key: string, value: ExportToilet) =>
+  const replacer = (_key: string, value: unknown) =>
     value === null ? '' : value;
 
   // Extract headers from the keys of the first object
@@ -128,13 +128,12 @@ export default async function GET(request: NextRequest) {
   }
 
   // Collect all toilet records using the async generator.
-  const batches = await Array.fromAsync(
+  const toilets = await Array.fromAsync(
     fetchAllToilets({
       batchSize: 4000,
       onProgress: (count) => console.log(`Fetched ${count} toilets so far`),
     }),
   );
-  const toilets = batches.flat();
 
   const toiletsJson = JSON.stringify(toilets);
   const toiletsCsv = convertToCSV(toilets);
@@ -143,7 +142,7 @@ export default async function GET(request: NextRequest) {
     // Clean the export directory before uploading new files.
     await cleanExportDirectory();
 
-    const timestamp = Date.now();
+    const timestamp = new Date().toISOString();
     const jsonFileName = `toilets-${timestamp}.json`;
     const csvFileName = `toilets-${timestamp}.csv`;
     const jsonUploadPath = `exports/${jsonFileName}`;
