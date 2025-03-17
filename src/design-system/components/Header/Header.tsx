@@ -13,7 +13,7 @@ import VisuallyHidden from '../../utilities/VisuallyHidden';
 import { useFeedbackPopover } from './hooks';
 import { useMapState } from '../../../components/MapState';
 
-const Drawer = dynamic(() => import('../Drawer'));
+const Drawer = dynamic(() => import('../Drawer'), { ssr: false });
 
 const Header = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);

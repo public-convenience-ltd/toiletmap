@@ -27,7 +27,7 @@ import {
   postgresUpsertLooQueryFromReport,
 } from './helpers';
 import { toilets } from '@prisma/client';
-import { UserProfile } from '@auth0/nextjs-auth0';
+import { UserProfile } from 'auth0';
 
 const fetchGraphQLLoosWithinGeohash = async (
   prisma: Context['prisma'],

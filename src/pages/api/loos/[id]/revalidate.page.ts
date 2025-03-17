@@ -1,6 +1,6 @@
-import { getSession } from '@auth0/nextjs-auth0';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { alertMessages } from '../../../../config';
+import { auth0 } from '../../../../lib/auth0';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id, message } = req.query;
@@ -13,7 +13,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     // Check that the user has a valid session before allowing revalidation.
     // We might have a session on toiletmap.org.uk.
-    const { user } = getSession(req, res);
+    const { user } = await auth0.getSession(req);
     if (user) {
       await res.revalidate(`/loos/${id}`);
     }
