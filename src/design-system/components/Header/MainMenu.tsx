@@ -42,7 +42,7 @@ const MainMenu: React.FC<IMainMenu> = () => {
 
         {user && (
           <li>
-            <Button htmlElement="a" variant="primary" href={`/api/auth/logout`}>
+            <Button htmlElement="a" variant="primary" href={`/auth/logout`}>
               Logout
             </Button>
           </li>
