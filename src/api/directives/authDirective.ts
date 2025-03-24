@@ -33,16 +33,17 @@ export default function authDirective(directiveName: string) {
               const { resolve = defaultFieldResolver } = fieldConfig;
               fieldConfig.resolve = function (source, args, context, info) {
                 if (context && context.user) {
+                  console.log(context);
                   if (!checkRole(context.user, requires)) {
                     throw new GraphQLError(
-                      'You are not authorized to perform this operation.'
+                      'You are not authorized to perform this operation.',
                     );
                   } else {
                     return resolve(source, args, context, info);
                   }
                 } else {
                   throw new GraphQLError(
-                    'You must be signed in to perform this operation.'
+                    'You must be signed in to perform this operation.',
                   );
                 }
               };
