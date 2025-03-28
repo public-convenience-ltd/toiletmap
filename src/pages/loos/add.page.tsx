@@ -46,6 +46,8 @@ const AddPage = () => {
     }
   }, [lat, lng, setMapState]);
 
+  const [revalidationComplete, setRevalidationComplete] = React.useState(false);
+
   const [
     updateLooMutation,
     { data: saveData, loading: saveLoading, error: saveError },
@@ -61,18 +63,30 @@ const AddPage = () => {
       console.log(formData);
       console.error('save error', errors);
     }
+
+    try {
+      // Make sure that we revalidate the /loo/[id] ISR route.
+      const result = await (
+        await fetch(`/api/loos/${formData.id}/revalidate`)
+      ).json();
+
+      if (result?.ok) {
+        setRevalidationComplete(true);
+      }
+    } catch (e) {
+      console.error('Error revalidating the page', e);
+    }
   };
 
   // redirect to new toilet entry page upon successful addition
   useEffect(() => {
-    if (saveData) {
+    if (saveData && revalidationComplete) {
       setMapState({ searchLocation: undefined });
+
       // redirect to updated toilet entry page
-      router.push(
-        `/api/loos/${saveData.submitReport.loo.id}/revalidate?message=created`
-      );
+      router.push(`/loos/${saveData.submitReport.loo.id}?message=created`);
     }
-  }, [saveData, router, setMapState]);
+  }, [saveData, router, setMapState, revalidationComplete]);
 
   if (isLoading) {
     return <PageLoading />;

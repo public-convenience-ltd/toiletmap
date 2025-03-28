@@ -1,13 +1,11 @@
 import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils';
 import { GraphQLSchema, defaultFieldResolver, GraphQLError } from 'graphql';
-import checkRole from './checkRole';
 
 export default function authDirective(directiveName: string) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const typeDirectiveArgumentMaps: Record<string, any> = {};
   return {
     authDirectiveTypeDefs: `directive @${directiveName}(requires: Permission) on OBJECT |FIELD_DEFINITION
-
     enum Permission {
       SUBMIT_REPORT
       MODERATE_REPORT
@@ -32,18 +30,12 @@ export default function authDirective(directiveName: string) {
             if (requires) {
               const { resolve = defaultFieldResolver } = fieldConfig;
               fieldConfig.resolve = function (source, args, context, info) {
-                if (context && context.user) {
-                  console.log(context);
-                  if (!checkRole(context.user, requires)) {
-                    throw new GraphQLError(
-                      'You are not authorized to perform this operation.',
-                    );
-                  } else {
-                    return resolve(source, args, context, info);
-                  }
+                // Only allow authenticated and verified users to add / remove toilets.
+                if (context && context.user && context.user.email_verified) {
+                  return resolve(source, args, context, info);
                 } else {
                   throw new GraphQLError(
-                    'You must be signed in to perform this operation.',
+                    'You must be authenticated to perform this operation.',
                   );
                 }
               };
