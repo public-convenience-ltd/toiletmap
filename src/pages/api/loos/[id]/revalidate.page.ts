@@ -8,6 +8,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     // Check that the user has a valid session before allowing revalidation.
     // We might have a session on toiletmap.org.uk.
     const { user } = await auth0.getSession(req);
+
     if (user) {
       await res.revalidate(`/loos/${id}`);
       await res.revalidate(`/explorer/loos/${id}`);
