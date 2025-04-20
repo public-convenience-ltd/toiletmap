@@ -207,8 +207,12 @@ input PointInput {
 
 input ReportInput {
   edit: ID
-  location: PointInput!
+  location: PointInput! # { lat: Float, lng: Float }
   name: String
+  # If not known an empty array.
+  # If known, an array of 7 arrays of strings representing opening times
+  # Example of openingTimes where some days are closed:
+  # [ [ "08:00", "17:00" ], [], [ "08:00", "17:00" ], [], [], [], [] ]
   openingTimes: OpeningTimes
   accessible: Boolean
   allGender: Boolean
