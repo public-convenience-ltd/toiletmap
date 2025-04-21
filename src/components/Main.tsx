@@ -4,7 +4,7 @@ import 'resize-observer-polyfill';
 import React from 'react';
 import Box from '../components/Box';
 import Header from '../design-system/components/Header';
-import Footer from '../components/Footer';
+import Footer from '../design-system/components/Footer';
 
 const Main = ({ Component, pageProps, map = undefined }) => {
   return (
