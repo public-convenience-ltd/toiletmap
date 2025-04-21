@@ -31,7 +31,8 @@ export interface IconProps extends React.SVGAttributes<SVGElement> {
     | 'gear'
     | 'bluesky'
     | 'share'
-    | 'magnifying-glass';
+    | 'magnifying-glass'
+    | 'patreon';
   size?: 'small' | 'medium' | 'large' | 'x-large';
   spin?: boolean;
 }
