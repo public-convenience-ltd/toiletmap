@@ -1,9 +1,12 @@
 import { Meta } from '@storybook/react';
-import Footer from '.';
+import Footer from './Footer';
 
-export default {
-  name: 'Footer',
+const meta: Meta<typeof Footer> = {
+  title: 'Design-System/Components/Footer',
   component: Footer,
-} as Meta;
+  tags: ['autodocs'],
+};
+
+export default meta;
 
 export const Default = () => <Footer />;
