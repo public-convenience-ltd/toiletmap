@@ -172,7 +172,7 @@ export default function PostPage({
                     flexDirection: 'column',
                     justifyContent: 'center',
                     minWidth: '125px',
-                    marginLeft: `${i < postData.authors.length - 1 ? 0 : '-25px'}`,
+                    marginLeft: `${i > 0 ? '-25px' : 0}`,
                   }}
                 >
                   {author.profile_image_url && (

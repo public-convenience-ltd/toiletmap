@@ -216,6 +216,14 @@ const globalStyles = (
         margin-top: var(--space-s);
       }
 
+      blockquote {
+        margin-top: var(--space-s);
+        padding: var(--space-s) var(--space-m);
+        padding-top: var(--space-3xs);
+        border-left: 4px solid var(--color-blue);
+        background-color: var(--color-light-grey);
+      }
+
       a:hover,
       a:focus,
       button:hover,
