@@ -14,7 +14,9 @@ This exclusion from toilets that align with someone’s gender [was repeated by]
 
 Let’s set aside for now that the previous government introduced a new [Building Regulation](https://assets.publishing.service.gov.uk/media/67167c02d100972c0f4c9b38/ADT_2024.pdf) to inhibit the freedom to provide fully unisex provision, by requiring all new non-domestic buildings to have single-sex toilets, with gender-neutral loos an extra 'if space allows'. 
 
-Is the Minister right? **How many publicly-accessible toilets have gender-neutral provision?**
+Is the Minister right? 
+
+**How many publicly-accessible toilets have gender-neutral provision?**
 
 ![A toilet in a small stone building on a green hillside with blue sea and blue skies behind.](/images/uploads/img_6413.jpeg)
 
