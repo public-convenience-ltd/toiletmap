@@ -4,7 +4,7 @@ date: 2025-05-05T01:10:00.000Z
 authors:
   - name: Jo-Anne Bichard
     social_url: https://bsky.app/profile/
-    profile_image_url: https://rca-media2.rca.ac.uk/images/Screenshot_2023-08-09_at_13.21.58.2e16d0ba.fill-277x277.png
+    profile_image_url: https://toiletmap.org.uk/images/uploads/70d58c93-4e4d-4954-8dd5-f3edb0f02749.jpeg
 ---
 
 # Loos in the News
