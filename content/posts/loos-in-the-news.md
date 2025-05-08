@@ -8,7 +8,7 @@ authors:
 ---
 Toilets are popular local news items. Sometimes this is good news such as new toilets opening and successful refurbishments, but more often than not it’s Bad Loos News concerning vandalism, anti-social behaviours and closures that’s the story. These articles can result in multiple letters to the editors.
 
-I’ve been collecting 'Loos in the News' articles for a number of years now. Here’s a roundup of 2025 so far…
+I’ve been collecting 'Loos in the News' articles for a number of years now. Here’s a roundup of 2025 so far.
 
 ## The Good
 
@@ -32,7 +32,7 @@ Toilets are often reported closed for maintenance. There have been four reports 
 
 ## The Problems
 
-A number of news reports have commented on how restricted opening hours are resulting in anti-social behaviour coming from people peeing in the street and in some cases pooing… [Haringey Council](https://www.times-series.co.uk/news/24890595.haringey-council-brings-1k-fine-urinating-public/) in London have decided to instigate heavy fines if people are caught doing this, whilst residents in [Hackney](https://www.mylondon.news/news/east-london-news/disgusted-londoners-fed-up-people-30857627) (London) and [Plymouth](https://www.plymouthherald.co.uk/news/news-opinion/public-toilet-closures-blamed-antisocial-10070739) recognise that the lack of  public toilets causes anti-social behaviour such as ‘weeing on walls’.
+A number of news reports have commented on how restricted opening hours are resulting in anti-social behaviour coming from people peeing in the street and in some cases pooing. [Haringey Council](https://www.times-series.co.uk/news/24890595.haringey-council-brings-1k-fine-urinating-public/) in London have decided to instigate heavy fines if people are caught doing this, whilst residents in [Hackney](https://www.mylondon.news/news/east-london-news/disgusted-londoners-fed-up-people-30857627) (London) and [Plymouth](https://www.plymouthherald.co.uk/news/news-opinion/public-toilet-closures-blamed-antisocial-10070739) recognise that the lack of public toilets causes anti-social behaviour such as "weeing on walls".
 
 The decline in general of public toilet provision has been noted and actively campaigned against by [Age UK London](https://www.bbc.co.uk/news/articles/c626wqyqzg1o). In [Scotland](https://www.dailyrecord.co.uk/news/politics/public-toilets-scotland-shut-down-34406197) closures have become a political issue, and in Wales, [planned closures](https://www.dailypost.co.uk/news/communities-set-lose-public-toilets-31305601) have [people worried about going out](https://www.dailypost.co.uk/news/news-opinion/plans-close-public-toilets-branded-31336321).
 
