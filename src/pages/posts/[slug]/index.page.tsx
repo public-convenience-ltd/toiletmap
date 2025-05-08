@@ -187,9 +187,10 @@ export default function PostPage({
                         style={{
                           borderRadius: '100%',
                           border: '4px solid var(--color-blue)',
+                          objectFit: 'cover',
                         }}
-                        width={125}
-                        height={125}
+                        width={150}
+                        height={150}
                         src={author.profile_image_url}
                         alt={`A picture of the author: ${author.name}`}
                       ></Image>

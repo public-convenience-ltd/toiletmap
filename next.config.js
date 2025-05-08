@@ -7,6 +7,7 @@ const moduleExports = {
     remotePatterns: [
       { hostname: 'avatars.githubusercontent.com' },
       { hostname: 'rca-media2.rca.ac.uk' },
+      { hostname: 'toiletmap.org.uk' },
     ],
   },
   transpilePackages: [
