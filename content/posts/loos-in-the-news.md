@@ -6,7 +6,7 @@ authors:
     social_url: https://bsky.app/profile/
     profile_image_url: https://toiletmap.org.uk/images/uploads/70d58c93-4e4d-4954-8dd5-f3edb0f02749.jpeg
 ---
-Toilets are popular local news items. Sometimes this is good news such as new toilets opening and successful refurbishments, but more often than not it’s bad loos news concerning vandalism, anti-social behaviours and closures that’s the story. These articles can result in multiple letters to the editors.
+Toilets are popular local news items. Sometimes this is good news such as new toilets opening and successful refurbishments, but more often than not it’s Bad Loos News concerning vandalism, anti-social behaviours and closures that’s the story. These articles can result in multiple letters to the editors.
 
 I’ve been collecting 'Loos in the News' articles for a number of years now. Here’s a roundup of 2025 so far…
 
