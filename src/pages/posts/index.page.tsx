@@ -23,7 +23,12 @@ export const getStaticProps = (async () => {
 export default function PostPage({
   posts,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const postsAvailable = posts && posts.length > 0;
+  // Sort posts by date in descending order (newest first)
+  const sortedPosts = [...posts].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  );
+
+  const postsAvailable = sortedPosts && sortedPosts.length > 0;
   return (
     <div>
       <Head>
@@ -37,7 +42,7 @@ export default function PostPage({
             <h2>Our blog is currently out of paper—check back soon!</h2>
           )}
           {postsAvailable &&
-            posts.map((postData) => (
+            sortedPosts.map((postData) => (
               <div
                 key={postData._meta.fileName}
                 style={{
