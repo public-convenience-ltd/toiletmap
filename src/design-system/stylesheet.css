@@ -2,15 +2,16 @@
 
 @import '~/src/design-system/components/Badge/Badge.css';
 @import '~/src/design-system/components/Button/Button.css';
+@import '~/src/design-system/components/Drawer/Drawer.css';
+@import '~/src/design-system/components/Footer/Footer.css';
+@import '~/src/design-system/components/Header/Header.css';
 @import '~/src/design-system/components/Icon/Icon.css';
 @import '~/src/design-system/components/InputField/InputField.css';
+@import '~/src/design-system/components/Logo/Logo.css';
 @import '~/src/design-system/components/RadioInput/RadioInput.css';
+@import '~/src/design-system/components/Sidebar/Sidebar.css';
 @import '~/src/design-system/components/Switch/Switch.css';
 @import '~/src/design-system/components/TextArea/TextArea.css';
-@import '~/src/design-system/components/Drawer/Drawer.css';
-@import '~/src/design-system/components/Logo/Logo.css';
-@import '~/src/design-system/components/Header/Header.css';
-@import '~/src/design-system/components/Footer/Footer.css';
 
 /* Layout */
 
