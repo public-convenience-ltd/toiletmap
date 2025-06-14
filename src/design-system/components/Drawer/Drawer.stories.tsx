@@ -5,11 +5,13 @@ import { default as DrawerComponent } from './Drawer';
 import Icon from '../../components/Icon';
 import Switch from '../../components/Switch';
 
-export default {
-  title: 'Design-System/Drawer',
+const meta: Meta<typeof DrawerComponent> = {
+  title: 'Design-System/Components/Drawer',
   component: DrawerComponent,
   tags: ['autodocs'],
-} as Meta;
+};
+
+export default meta;
 
 const Default = (props) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);

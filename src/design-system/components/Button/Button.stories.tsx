@@ -3,14 +3,13 @@ import { Meta, StoryObj } from '@storybook/react';
 import Button from './Button';
 import Icon from '../Icon/Icon';
 
-export default {
-  title: 'Design-System/Button',
+const meta: Meta<typeof Button> = {
+  title: 'Design-System/Components/Button',
   component: Button,
   tags: ['autodocs'],
   args: {
     variant: 'primary',
     htmlElement: 'button',
-    href: 'www.google.com',
   },
   argTypes: {
     variant: {
@@ -26,7 +25,9 @@ export default {
       description: 'Only required when using the button as a link',
     },
   },
-} as Meta;
+};
+
+export default meta;
 
 export const Primary: StoryObj<typeof Button> = {
   render: (args) => {

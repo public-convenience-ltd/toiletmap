@@ -2,11 +2,13 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import Logo from './Logo';
 
-export default {
-  title: 'Design-System/Logo',
+const meta: Meta<typeof Logo> = {
+  title: 'Design-System/Components/Logo',
   component: Logo,
   tags: ['autodocs'],
-} as Meta;
+};
+
+export default meta;
 
 export const Default: StoryObj<typeof Logo> = {
   render: () => {
