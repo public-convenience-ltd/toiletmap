@@ -10,7 +10,9 @@ import { NextPage } from 'next';
 import { LooMapLoader } from '../../components/LooMap/LooMapLoader';
 import dynamic from 'next/dynamic';
 
-const Sidebar = dynamic(() => import('../../components/Sidebar/Sidebar'));
+const Sidebar = dynamic(
+  () => import('../../design-system/components/Sidebar/Sidebar'),
+);
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
