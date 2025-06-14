@@ -1,10 +1,13 @@
 import { Meta } from '@storybook/react';
 import Header from '.';
 
-export default {
-  name: 'Header',
+const meta: Meta<typeof Header> = {
+  title: 'Design-System/Components/Header',
   component: Header,
-} as Meta;
+  tags: ['autodocs'],
+};
+
+export default meta;
 
 export const Default = (props) => (
   <Header {...props}>
