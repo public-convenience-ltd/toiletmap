@@ -18,7 +18,9 @@ import dynamic from 'next/dynamic';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
-const Sidebar = dynamic(() => import('../../../components/Sidebar/Sidebar'));
+const Sidebar = dynamic(
+  () => import('../../../design-system/components/Sidebar/Sidebar'),
+);
 
 type CustomLooByIdComp = React.FC<{
   data?: FindLooByIdQuery;
