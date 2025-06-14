@@ -2,7 +2,7 @@ import React from 'react';
 
 import Head from 'next/head';
 import Box from '../components/Box';
-import Sidebar from '../components/Sidebar/Sidebar';
+import Sidebar from '../design-system/components/Sidebar/Sidebar';
 import VisuallyHidden from '../design-system/utilities/VisuallyHidden';
 import { useMapState } from '../components/MapState';
 import { withApollo } from '../api-client/withApollo';
