@@ -54,6 +54,7 @@ jobs:
           AUTH0_AUDIENCE: https://www.toiletmap.org.uk/graphql
           AUTH0_PERMISSIONS_KEY: https://toiletmap.org.uk/permissions
           AUTH0_PROFILE_KEY: https://toiletmap.org.uk/profile
+          BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
           CYPRESS_auth0SessionCookieName: 'appSession'
           CYPRESS_auth0Username: ${{ secrets.CYPRESS_AUTH0USERNAME }}
           CYPRESS_auth0Password: ${{ secrets.CYPRESS_AUTH0PASSWORD }}
