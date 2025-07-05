@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/react';
 import React from 'react';
 
-import AboutPage from '../pages/about.page';
+import AboutPage from './about.page';
 import Main from '../components/Main';
 
 export default {
