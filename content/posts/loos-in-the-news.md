@@ -3,7 +3,7 @@ title: Loos in the News
 date: 2025-05-13T10:46:00.000Z
 authors:
   - name: Jo-Anne Bichard
-    social_url: "#"
+    social_url: https://bsky.app/profile/jo-anneb.bsky.social
     profile_image_url: https://toiletmap.org.uk/images/uploads/70d58c93-4e4d-4954-8dd5-f3edb0f02749.jpeg
 ---
 Toilets are popular local news items. Sometimes this is good news such as new toilets opening and successful refurbishments, but more often than not it’s Bad Loos News concerning vandalism, anti-social behaviours and closures that’s the story. These articles can result in multiple letters to the editors.
