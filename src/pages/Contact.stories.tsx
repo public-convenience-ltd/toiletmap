@@ -2,7 +2,7 @@ import { Meta } from '@storybook/react';
 import React from 'react';
 import Main from '../components/Main';
 
-import ContactPage from '../pages/contact.page';
+import ContactPage from './contact.page';
 
 export default {
   name: 'Happy',

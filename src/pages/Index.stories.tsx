@@ -4,7 +4,7 @@ import LooMap from '../components/LooMap/LooMapLoader';
 
 import Main from '../components/Main';
 
-import IndexPageNext from '../pages/index.page';
+import IndexPageNext from './index.page';
 
 export default {
   name: 'Pages',
