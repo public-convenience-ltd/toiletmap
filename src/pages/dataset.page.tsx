@@ -1,54 +1,55 @@
 import Head from 'next/head';
-
 import Button from '../design-system/components/Button';
 import Center from '../design-system/layout/Center';
 import Stack from '../design-system/layout/Stack';
 import VisuallyHidden from '../design-system/utilities/VisuallyHidden';
-
 import config from '../config';
 import { InferGetStaticPropsType } from 'next';
 import { list } from '@vercel/blob';
 
-export const getStaticProps = async () => {
-  try {
-    // Fetch backup dir listing.
-    const allFiles = (await list({ prefix: 'exports/' })).blobs;
+// Revalidate once every 1 hour
+export const revalidate = 3600;
 
-    return {
-      props: {
-        fileListing: allFiles.map(
-          ({ downloadUrl, pathname, size, uploadedAt }) => ({
-            downloadUrl,
-            pathname,
-            size,
-            type: pathname.split('.').pop(),
-            // Last updated with resolution to the minute
-            lastUpdated: new Date(uploadedAt).toLocaleString('en-GB', {
-              timeZone: 'Europe/London',
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-              hour: '2-digit',
-              minute: '2-digit',
-            }),
-          }),
-        ),
-      },
-    };
-  } catch {
-    return {
-      props: {
-        notFound: true,
-      },
-    };
+export const getStaticProps = async () => {
+  const hasToken = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+  let blobs = [];
+
+  if (hasToken) {
+    blobs = (await list({ prefix: 'exports/' })).blobs;
   }
+
+  const fileListing = blobs.map(
+    ({ downloadUrl, pathname, size, uploadedAt }) => ({
+      downloadUrl,
+      pathname,
+      size,
+      type: pathname.split('.').pop(),
+      lastUpdated: new Date(uploadedAt).toLocaleString('en-GB', {
+        timeZone: 'Europe/London',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+    }),
+  );
+
+  return {
+    props: {
+      hasToken,
+      fileListing,
+    },
+    revalidate,
+  };
 };
 
 const DatasetPage = ({
+  hasToken,
   fileListing,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const jsonDetails = fileListing.find((file) => file.type === 'json');
-  const csvDetails = fileListing.find((file) => file.type === 'csv');
+  const jsonDetails = fileListing.find((f) => f.type === 'json');
+  const csvDetails = fileListing.find((f) => f.type === 'csv');
 
   return (
     <>
@@ -61,49 +62,58 @@ const DatasetPage = ({
           <Center text={true} gutter={false} article={false}>
             <h1>Toilet Data</h1>
           </Center>
+
           <section>
             <p>
-              We are happy to provide a complete copy of the data behind the
-              Toilet Map for free to whoever would like to use it in their
+              We’re happy to provide a free copy of the Toilet Map data for your
               project.
             </p>
           </section>
+
           <section>
             <h2 id="download-a-copy">Download a copy</h2>
             <Stack direction="column" space="m">
-              <p>
-                You can download a copy of our dataset in CSV or JSON format. We
-                update the dataset every 24 hours, so you can always get the
-                most up-to-date information.
-              </p>
-              <Stack direction="row" space="s">
-                <Button
-                  htmlElement="a"
-                  variant="primary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={jsonDetails.downloadUrl}
-                >
-                  JSON ({(jsonDetails.size / 1000000).toFixed(2)} mb)
-                </Button>
-
-                <Button
-                  htmlElement="a"
-                  variant="primary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={csvDetails.downloadUrl}
-                >
-                  CSV ({(csvDetails.size / 1000000).toFixed(2)} mb)
-                </Button>
-              </Stack>
-              <p>
-                We last updated our dataset on{' '}
-                <strong>{jsonDetails.lastUpdated}</strong>.
-              </p>
+              {hasToken && jsonDetails && csvDetails ? (
+                <>
+                  <p>
+                    You can grab our data in CSV or JSON. We update it every 24
+                    hours via ISR.
+                  </p>
+                  <Stack direction="row" space="s">
+                    <Button
+                      htmlElement="a"
+                      variant="primary"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={jsonDetails.downloadUrl}
+                    >
+                      JSON ({(jsonDetails.size / 1e6).toFixed(2)} mb)
+                    </Button>
+                    <Button
+                      htmlElement="a"
+                      variant="primary"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={csvDetails.downloadUrl}
+                    >
+                      CSV ({(csvDetails.size / 1e6).toFixed(2)} mb)
+                    </Button>
+                  </Stack>
+                  <p>
+                    Last updated on <strong>{jsonDetails.lastUpdated}</strong>.
+                  </p>
+                </>
+              ) : (
+                <p style={{ fontStyle: 'italic' }}>
+                  ⚠️ Data downloads aren’t available in this environment. To
+                  view the latest files, please set{' '}
+                  <code>VERCEL_BLOB_TOKEN</code> and rebuild.
+                </p>
+              )}
             </Stack>
           </section>
-          <section id="licence" aria-labelledby="licence-title">
+
+          <section id="licence" aria-labelledby="licence-info">
             <Stack direction="column" space="m">
               <h2 id="licence-info">Licence Information</h2>
 
