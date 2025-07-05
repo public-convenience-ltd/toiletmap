@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import Head from 'next/head';
-import Box from '../../../components/Box';
-import VisuallyHidden from '../../../design-system/utilities/VisuallyHidden';
-import { useMapState } from '../../../components/MapState';
-import config from '../../../config';
-import { withApollo } from '../../../api-client/withApollo';
-import { GetServerSideProps } from 'next';
-import { ssrFindLooById } from '../../../api-client/page';
-import { useRouter } from 'next/router';
-import ToiletDetailsPanel from '../../../components/ToiletDetailsPanel';
-import Notification from '../../../components/Notification';
-import NotFound from '../../404.page';
-import { css } from '@emotion/react';
-import { FindLooByIdQuery } from '../../../api-client/graphql';
 import { ApolloError } from '@apollo/client';
+import { css } from '@emotion/react';
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import { withApollo } from '../../../api-client/withApollo';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
+import React, { useEffect, useState } from 'react';
 
-const SIDEBAR_BOTTOM_MARGIN = 32;
+import { FindLooByIdQuery } from '../../../api-client/graphql';
+import { ssrFindLooById } from '../../../api-client/page';
+import { useMapState } from '../../../components/MapState';
+import Box from '../../../components/Box';
+import config from '../../../config';
+import MapOverlay from '../../../design-system/components/MapOverlay';
+import NotFound from '../../404.page';
+import Notification from '../../../components/Notification';
+import ToiletDetailsPanel from '../../../components/ToiletDetailsPanel';
+import VisuallyHidden from '../../../design-system/utilities/VisuallyHidden';
 
 const Sidebar = dynamic(
   () => import('../../../design-system/components/Sidebar/Sidebar'),
@@ -109,20 +109,9 @@ const LooPage: CustomLooByIdComp = (props) => {
         <h1>{pageTitle}</h1>
       </VisuallyHidden>
 
-      <Box
-        position="absolute"
-        zIndex={1}
-        top={0}
-        left={[0, 3]}
-        right={0}
-        m={3}
-        maxWidth={326}
-        maxHeight={`calc(100% - 0px - ${SIDEBAR_BOTTOM_MARGIN}px)`} // TODO:fix this for mobile viewports (extra vertical scroll area)
-        // center on small viewports
-        mx={['auto', 0]}
-      >
+      <MapOverlay>
         <Sidebar />
-      </Box>
+      </MapOverlay>
 
       {props?.data?.loo && (
         <Box position="absolute" left={0} bottom={0} width="100%" zIndex={100}>
