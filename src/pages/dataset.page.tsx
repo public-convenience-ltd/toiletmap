@@ -64,8 +64,9 @@ const DatasetPage = ({
           </Center>
 
           <section>
-            <h2 id="download-a-copy">Download a copy</h2>
             <Stack direction="column" space="m">
+              <h2 id="download-a-copy">Download a copy</h2>
+
               {hasToken && jsonDetails && csvDetails ? (
                 <>
                   <Stack direction="row" space="s">
