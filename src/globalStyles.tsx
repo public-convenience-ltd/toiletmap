@@ -207,7 +207,7 @@ const globalStyles = (
         vertical-align: bottom;
       }
 
-      div.table-wrapper {
+      .table-wrapper {
         overflow-x: auto;
         width: 100%;
       }
