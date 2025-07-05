@@ -13,6 +13,15 @@ const VisuallyHidden: React.FC<VisuallyHiddenProps> = ({
       </span>
     );
   }
+
+  if (props.as === 'caption') {
+    return (
+      <caption className="visually-hidden" {...props}>
+        {children}
+      </caption>
+    );
+  }
+
   return (
     <div className="visually-hidden" {...props}>
       {children}

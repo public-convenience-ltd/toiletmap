@@ -21,6 +21,11 @@ const Footer = () => {
               </Link>
             </li>
             <li className="footer__list-item">
+              <Link className="footer__link" href="/dataset">
+                Dataset
+              </Link>
+            </li>
+            <li className="footer__list-item">
               <Link
                 className="footer__link"
                 href={'https://www.patreon.com/toiletmap'}
