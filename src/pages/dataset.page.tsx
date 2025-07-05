@@ -64,21 +64,10 @@ const DatasetPage = ({
           </Center>
 
           <section>
-            <p>
-              We’re happy to provide a free copy of the Toilet Map data for your
-              project.
-            </p>
-          </section>
-
-          <section>
             <h2 id="download-a-copy">Download a copy</h2>
             <Stack direction="column" space="m">
               {hasToken && jsonDetails && csvDetails ? (
                 <>
-                  <p>
-                    You can grab our data in CSV or JSON. We update it every 24
-                    hours via ISR.
-                  </p>
                   <Stack direction="row" space="s">
                     <Button
                       htmlElement="a"
