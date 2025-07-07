@@ -21,7 +21,6 @@ export default [
       'src/api-client/graphql.tsx',
       'src/api-client/page.tsx',
       'src/api/db',
-      'src/api/directives',
       'src/@types/resolvers-types.ts',
     ],
   },
