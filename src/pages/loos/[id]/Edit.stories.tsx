@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta } from '@storybook/react';
 import { PageFindLooByIdComp } from '../../../api-client/page';
 import { default as EditPageNext } from './edit.page';
-import Main from '../../../components/Main';
+import SiteLayout from '../../../design-system/components/SiteLayout';
 
 export default {
   name: 'Pages',
@@ -50,5 +50,5 @@ export default {
  * Edit
  */
 export const Edit = (props) => {
-  return <Main Component={EditPageNext} pageProps={props} />;
+  return <SiteLayout Component={EditPageNext} pageProps={props} />;
 };
