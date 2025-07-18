@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta } from '@storybook/react';
 import { PageFindLooByIdComp } from '../../../api-client/page';
 import { default as LooPageNext } from '../../../pages/loos/[id]/index.page';
-import Main from '../../../components/Main';
+import SiteLayout from '../../../design-system/components/SiteLayout';
 import LooMap from '../../../components/LooMap/LooMapLoader';
 
 export default {
@@ -48,12 +48,14 @@ export default {
  * Loo
  */
 export const Loo = (props) => {
-  return <Main Component={LooPageNext} pageProps={props} map={<LooMap />} />;
+  return (
+    <SiteLayout Component={LooPageNext} pageProps={props} map={<LooMap />} />
+  );
 };
 
 export const RemovedLoo = (props) => {
   return (
-    <Main
+    <SiteLayout
       Component={LooPageNext}
       pageProps={{
         ...props,

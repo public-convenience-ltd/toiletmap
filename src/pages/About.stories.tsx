@@ -2,7 +2,7 @@ import { Meta } from '@storybook/react';
 import React from 'react';
 
 import AboutPage from './about.page';
-import Main from '../components/Main';
+import SiteLayout from '../design-system/components/SiteLayout';
 
 export default {
   component: AboutPage,
@@ -11,6 +11,6 @@ export default {
 /**
  * About page
  */
-export const About = (props) => {
-  return <Main Component={AboutPage} pageProps={props} />;
+export const About = () => {
+  return <SiteLayout Component={AboutPage} />;
 };

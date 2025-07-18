@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/react';
 import React from 'react';
 
-import Main from '../components/Main';
+import SiteLayout from '../design-system/components/SiteLayout';
 
 import DatasetPage from './dataset.page';
 
@@ -34,5 +34,5 @@ export default {
  * Dataset page
  */
 export const Dataset = (props) => {
-  return <Main Component={DatasetPage} pageProps={props} />;
+  return <SiteLayout Component={DatasetPage} pageProps={props} />;
 };

@@ -2,7 +2,7 @@ import { Meta } from '@storybook/react';
 import React from 'react';
 import LooMap from '../components/LooMap/LooMapLoader';
 
-import Main from '../components/Main';
+import SiteLayout from '../design-system/components/SiteLayout';
 
 import IndexPageNext from './index.page';
 
@@ -14,7 +14,8 @@ export default {
 /**
  * Index
  */
-export const Index = (props) => {
-  return <Main Component={IndexPageNext} pageProps={props} map={<LooMap />} />;
+export const Index = () => {
+  return <SiteLayout Component={IndexPageNext} map={<LooMap />} />;
 };
+
 Index.storyName = 'Home Page';
