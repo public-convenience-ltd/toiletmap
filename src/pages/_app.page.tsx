@@ -2,7 +2,7 @@ import { Suspense, useMemo } from 'react';
 import Providers from '../components/Providers';
 import { Analytics } from '@vercel/analytics/react';
 import { UserProvider } from '@auth0/nextjs-auth0';
-import Main from '../components/Main';
+import SiteLayout from '../design-system/components/SiteLayout';
 import { useRouter } from 'next/router';
 import LooMap from '../components/LooMap/LooMapLoader';
 import '../design-system/stylesheet.css';
@@ -27,7 +27,7 @@ const App = (props) => {
     <>
       <Providers key={key}>
         <UserProvider>
-          <Main {...props} map={renderedMap} />
+          <SiteLayout {...props} map={renderedMap} />
         </UserProvider>
       </Providers>
       <Analytics />

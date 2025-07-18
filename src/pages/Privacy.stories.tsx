@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/react';
 import React from 'react';
 
-import Main from '../components/Main';
+import SiteLayout from '../design-system/components/SiteLayout';
 
 import PrivacyPage from './privacy.page';
 
@@ -13,6 +13,6 @@ export default {
 /**
  * Privacy page
  */
-export const Privacy = (props) => {
-  return <Main Component={PrivacyPage} pageProps={props} />;
+export const Privacy = () => {
+  return <SiteLayout Component={PrivacyPage} />;
 };

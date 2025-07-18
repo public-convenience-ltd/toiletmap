@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta } from '@storybook/react';
 import { PageFindLooByIdComp } from '../api-client/page';
 import LoginPageNext from './login.page';
-import Main from '../components/Main';
+import SiteLayout from '../design-system/components/SiteLayout';
 
 export default {
   name: 'Pages',
@@ -46,6 +46,6 @@ export default {
 /**
  * Login
  */
-export const Login = (props) => {
-  return <Main Component={LoginPageNext} pageProps={props} />;
+export const Login = () => {
+  return <SiteLayout Component={LoginPageNext} />;
 };
