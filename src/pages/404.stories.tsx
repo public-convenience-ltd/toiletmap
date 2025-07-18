@@ -2,14 +2,14 @@ import React from 'react';
 import { Meta } from '@storybook/react';
 
 import NotFoundPage from './404.page';
-import Main from '../components/Main';
+import SiteLayout from '../design-system/components/SiteLayout';
 
 export default {
   name: 'Pages',
   component: NotFoundPage,
 } as Meta;
 
-export const NotFound = (props) => {
-  return <Main Component={NotFoundPage} pageProps={props} />;
+export const NotFound = () => {
+  return <SiteLayout Component={NotFoundPage} />;
 };
 NotFound.storyName = '404';

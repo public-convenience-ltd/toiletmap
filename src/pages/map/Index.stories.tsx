@@ -1,6 +1,7 @@
 import { Meta } from '@storybook/react';
 import React from 'react';
-import Main from '../../components/Main';
+
+import SiteLayout from '../../design-system/components/SiteLayout';
 
 import MapPageNext from './index.page';
 
@@ -25,6 +26,6 @@ export default {
  * Map Page
  */
 export const Index = (props) => {
-  return <Main Component={MapPageNext} pageProps={props} />;
+  return <SiteLayout Component={MapPageNext} pageProps={props} />;
 };
 Index.storyName = 'Map Page';

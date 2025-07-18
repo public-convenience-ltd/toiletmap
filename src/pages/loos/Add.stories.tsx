@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta } from '@storybook/react';
 import { PageFindLooByIdComp } from '../../api-client/page';
 import { default as AddPageNext } from './add.page';
-import Main from '../../components/Main';
+import SiteLayout from '../../design-system/components/SiteLayout';
 
 export default {
   name: 'Pages',
@@ -17,6 +17,6 @@ export default {
 /**
  * Add
  */
-export const Add = (props) => {
-  return <Main Component={AddPageNext} pageProps={props} />;
+export const Add = () => {
+  return <SiteLayout Component={AddPageNext} />;
 };

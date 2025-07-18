@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
 
-import Main from '../components/Main';
+import SiteLayout from '../design-system/components/SiteLayout';
 import ThereWasAProblem from './500.page';
 
 export default {
@@ -9,7 +9,7 @@ export default {
   component: ThereWasAProblem,
 } as Meta;
 
-export const NotFound = (props) => {
-  return <Main Component={ThereWasAProblem} pageProps={props} />;
+export const NotFound = () => {
+  return <SiteLayout Component={ThereWasAProblem} />;
 };
 NotFound.storyName = '500';
