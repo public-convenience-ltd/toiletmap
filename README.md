@@ -2,8 +2,6 @@
 
 [Public Convenience Ltd](https://www.publicconvenience.org/)'s _[Toilet Map](https://www.toiletmap.org.uk)_
 
-[<img src="./public/powered-by-vercel.svg" width="150" alt="Powered by Vercel">](https://vercel.com/?utm_source=public-convenience-ltd&utm_campaign=oss)
-
 ## What is the Toilet Map?
 
 Everyone will, at some point in the day, need to use the toilet. Some people will need facilities more than others, and some will need to find toilets sooner rather than later.
@@ -77,12 +75,6 @@ The Toilet Map UI is built with [Next.js](https://nextjs.org/). The API is writt
 ## Sponsors
 
 Our brilliant sponsors help us to bring a stable and high quality service to our users.
-
-### Vercel
-
-[<img src="./public/powered-by-vercel.svg" width="212" alt="Powered by Vercel">](https://vercel.com/?utm_source=public-convenience-ltd&utm_campaign=oss)
-
-Vercel sponsor the hosting and deployment of the Next.js based Toilet Map, allowing us to scale confidently and iterate quickly using their versatile platform.
 
 ### Cypress
 
