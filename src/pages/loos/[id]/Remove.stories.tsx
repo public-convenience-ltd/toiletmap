@@ -1,8 +1,7 @@
 import { Meta } from '@storybook/react';
 import React from 'react';
 
-import Main from '../../../components/Main';
-
+import SiteLayout from '../../../design-system/components/SiteLayout';
 import RemovePage from '../../../pages/loos/[id]/remove.page';
 
 export default {
@@ -51,5 +50,5 @@ export default {
  * Remove page
  */
 export const Remove = (props) => {
-  return <Main Component={RemovePage} pageProps={props} />;
+  return <SiteLayout Component={RemovePage} pageProps={props} />;
 };
