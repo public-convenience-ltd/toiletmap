@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import Head from 'next/head';
 import Box from '../components/Box';
@@ -8,15 +8,35 @@ import { useMapState } from '../components/MapState';
 import { withApollo } from '../api-client/withApollo';
 import { useEffect } from 'react';
 import config from '../config';
+import { useRouter } from 'next/router';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
 const HomePage = () => {
   const [, setMapState] = useMapState();
+  const router = useRouter();
+
+  const lat = router.query.lat as string | undefined;
+  const lng = router.query.lng as string | undefined;
+
+  const initialCenter = useMemo(() => {
+    return lat && lng
+      ? { lat: parseFloat(lat), lng: parseFloat(lng) }
+      : undefined;
+  }, [lat, lng]);
 
   useEffect(() => {
-    setMapState({ focus: undefined, searchLocation: undefined });
-  }, [setMapState]);
+    if (typeof initialCenter === 'undefined') {
+      setMapState({ focus: undefined, searchLocation: undefined });
+    } else {
+      // If we're provided with an initial latitude / longitude, we centre the map there.
+      setMapState({
+        focus: undefined,
+        searchLocation: undefined,
+        center: initialCenter,
+      });
+    }
+  }, [setMapState, initialCenter]);
 
   return (
     <>

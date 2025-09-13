@@ -125,6 +125,16 @@ const Sidebar = () => {
               Find a toilet near me
             </Button>
           </Box>
+          <Box display="flex" mt={3}>
+            <Button
+              htmlElement="button"
+              type="button"
+              variant="primary"
+              aria-label="Share your current map view"
+            >
+              Share
+            </Button>
+          </Box>
         </Box>
         <Drawer visible={isFiltersExpanded} animateFrom="left">
           <Box display="flex" justifyContent="space-between" mb={4}>
@@ -262,6 +272,7 @@ const Sidebar = () => {
                 <Arrow isExpanded={false} />
               </Box>
             </StyledNavLink>
+
             <Box as="section" mt={4} aria-labelledby="heading-find">
               <h2 id="heading-find">
                 <VisuallyHidden as="span">Find a toilet near me</VisuallyHidden>
@@ -282,6 +293,41 @@ const Sidebar = () => {
                 </Box>
                 <Arrow isExpanded={false} />
               </Box>
+            </Box>
+
+            <Box
+              as="section"
+              mt={4}
+              display="flex"
+              aria-labelledby="heading-share"
+            >
+              <h2 id="heading-add">
+                <VisuallyHidden as="span">
+                  Share your current location
+                </VisuallyHidden>
+              </h2>
+              <Button
+                htmlElement="button"
+                type="button"
+                variant="secondary"
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `https://toiletmap.org.uk?lat=${mapState.center.lat}&lng=${mapState.center.lng}`,
+                  );
+                }}
+                style={{ width: '50%' }}
+              >
+                Share
+                <Icon
+                  icon="share"
+                  data-test="share-location"
+                  style={{
+                    marginLeft: '8px',
+                  }}
+                  aria-hidden={true}
+                  size="medium"
+                />
+              </Button>
             </Box>
           </Box>
         </Box>
