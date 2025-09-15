@@ -18,25 +18,35 @@ const HomePage = () => {
 
   const lat = router.query.lat as string | undefined;
   const lng = router.query.lng as string | undefined;
+  const zoom = router.query.zoom as string | undefined;
 
-  const initialCenter = useMemo(() => {
+  const initialMapState = useMemo(() => {
     return lat && lng
-      ? { lat: parseFloat(lat), lng: parseFloat(lng) }
+      ? {
+          lat: parseFloat(lat),
+          lng: parseFloat(lng),
+          // Only set the zoom level if it's provided, otherwise we default to 16.
+          zoom: zoom ? parseInt(zoom, 10) : 16,
+        }
       : undefined;
-  }, [lat, lng]);
+  }, [lat, lng, zoom]);
 
   useEffect(() => {
-    if (typeof initialCenter === 'undefined') {
+    if (typeof initialMapState === 'undefined') {
       setMapState({ focus: undefined, searchLocation: undefined });
     } else {
       // If we're provided with an initial latitude / longitude, we centre the map there.
       setMapState({
         focus: undefined,
         searchLocation: undefined,
-        center: initialCenter,
+        center: {
+          lat: initialMapState.lat,
+          lng: initialMapState.lng,
+        },
+        zoom: initialMapState.zoom,
       });
     }
-  }, [setMapState, initialCenter]);
+  }, [setMapState, initialMapState]);
 
   return (
     <>
