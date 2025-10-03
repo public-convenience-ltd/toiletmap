@@ -56,15 +56,16 @@ interface LoosByGeohashResponse {
   loosByGeohash: string[];
 }
 
-interface CachedTile {
+interface CachedEntry {
   geohash: string;
   loos: TileLoo[];
   fetchedAt: number;
+  sourcePrecision: number;
 }
 
 interface SerializedTileCache {
   version: number;
-  tiles: CachedTile[];
+  tiles: CachedEntry[];
 }
 
 interface TileCacheOptions {
@@ -79,8 +80,8 @@ interface GetLoosOptions {
 
 const DEFAULT_TILE_TTL_MS = 1000 * 60 * 10; // 10 minutes
 const DEFAULT_BACKGROUND_DELAY_MS = 75; // Throttle background fetches slightly
-const CACHE_STORAGE_KEY = 'toiletmap.tileCache.v1';
-const CACHE_STORAGE_VERSION = 1;
+const CACHE_STORAGE_KEY = 'toiletmap.tileCache.v2';
+const CACHE_STORAGE_VERSION = 2;
 
 const sleep = (ms: number) =>
   new Promise<void>((resolve) => {
@@ -92,8 +93,8 @@ const sleep = (ms: number) =>
   });
 
 export class LooTileCache {
-  private cache = new Map<string, CachedTile>();
-  private inFlight = new Map<string, Promise<CachedTile>>();
+  private cache = new Map<string, CachedEntry>();
+  private inFlight = new Map<string, Promise<CachedEntry>>();
   private backgroundQueue: string[] = [];
   private queuedSet = new Set<string>();
   private backgroundDrainRunning = false;
@@ -119,17 +120,38 @@ export class LooTileCache {
     const { requireFresh = false, backgroundRefresh = true } = options;
     const cached = this.cache.get(geohash);
 
-    if (cached && !this.isStale(cached)) {
-      return cached.loos;
+    if (cached) {
+      if (!this.isEntryStale(cached)) {
+        return cached.loos;
+      }
+
+      if (!requireFresh) {
+        if (backgroundRefresh) {
+          void this.fetchAndCache(geohash).catch((error) => {
+            console.warn(`[LooTileCache] Background refresh failed for ${geohash}`, error);
+          });
+        }
+        return cached.loos;
+      }
     }
 
-    if (cached && !requireFresh) {
-      if (backgroundRefresh) {
-        void this.fetchAndCache(geohash).catch((error) => {
-          console.warn(`[LooTileCache] Background refresh failed for ${geohash}`, error);
-        });
+    if (!requireFresh) {
+      const ancestor = this.findAncestor(geohash);
+      if (ancestor) {
+        const derived = this.materializePathFromAncestor(ancestor, geohash);
+
+        if (!this.isEntryStale(ancestor)) {
+          return derived.loos;
+        }
+
+        if (backgroundRefresh) {
+          void this.fetchAndCache(geohash).catch((error) => {
+            console.warn(`[LooTileCache] Background refresh failed for ${geohash}`, error);
+          });
+        }
+
+        return derived.loos;
       }
-      return cached.loos;
     }
 
     const tile = await this.fetchAndCache(geohash);
@@ -143,7 +165,7 @@ export class LooTileCache {
       }
 
       const cached = this.cache.get(geohash);
-      if (cached && !this.isStale(cached)) {
+      if (cached && !this.isEntryStale(cached)) {
         continue;
       }
 
@@ -167,16 +189,39 @@ export class LooTileCache {
     );
   }
 
-  private storeTile(geohash: string, loos: TileLoo[], fetchedAt: number): CachedTile {
+  private storeTile(geohash: string, loos: TileLoo[], fetchedAt: number): CachedEntry {
     const deduped = dedupeLoosById(loos);
-    const tile: CachedTile = {
-      geohash,
-      loos: deduped,
-      fetchedAt,
-    };
-    this.cache.set(geohash, tile);
+
+    this.deleteSubtree(geohash);
+
+    const buckets = this.buildBuckets(geohash, deduped);
+    let target: CachedEntry | undefined;
+
+    for (const [prefix, bucket] of buckets) {
+      const entry: CachedEntry = {
+        geohash: prefix,
+        loos: Array.from(bucket.values()),
+        fetchedAt,
+        sourcePrecision: geohash.length,
+      };
+      this.cache.set(prefix, entry);
+      if (prefix === geohash) {
+        target = entry;
+      }
+    }
+
+    if (!target) {
+      target = {
+        geohash,
+        loos: [],
+        fetchedAt,
+        sourcePrecision: geohash.length,
+      };
+      this.cache.set(geohash, target);
+    }
+
     this.persistToStorage();
-    return tile;
+    return target;
   }
 
   private async drainBackgroundQueue(): Promise<void> {
@@ -202,7 +247,7 @@ export class LooTileCache {
     this.backgroundDrainRunning = false;
   }
 
-  private async fetchAndCache(geohash: string): Promise<CachedTile> {
+  private async fetchAndCache(geohash: string): Promise<CachedEntry> {
     const existingPromise = this.inFlight.get(geohash);
     if (existingPromise) {
       return existingPromise;
@@ -230,8 +275,115 @@ export class LooTileCache {
     }
   }
 
-  private isStale(tile: CachedTile): boolean {
-    return Date.now() - tile.fetchedAt > this.ttlMs;
+  private isEntryStale(entry: CachedEntry): boolean {
+    return Date.now() - entry.fetchedAt > this.ttlMs;
+  }
+
+  private findAncestor(geohash: string): CachedEntry | undefined {
+    for (let length = geohash.length - 1; length >= 1; length -= 1) {
+      const prefix = geohash.slice(0, length);
+      const candidate = this.cache.get(prefix);
+      if (candidate) {
+        return candidate;
+      }
+    }
+    return undefined;
+  }
+
+  private materializePathFromAncestor(
+    ancestor: CachedEntry,
+    targetGeohash: string,
+  ): CachedEntry {
+    if (!targetGeohash.startsWith(ancestor.geohash)) {
+      return ancestor;
+    }
+
+    let currentLoops = ancestor.loos;
+    let modified = false;
+
+    for (
+      let length = ancestor.geohash.length + 1;
+      length <= targetGeohash.length;
+      length += 1
+    ) {
+      const prefix = targetGeohash.slice(0, length);
+      const existing = this.cache.get(prefix);
+
+      if (existing && existing.fetchedAt >= ancestor.fetchedAt) {
+        currentLoops = existing.loos;
+        continue;
+      }
+
+      currentLoops = currentLoops.filter((loo) => loo.geohash.startsWith(prefix));
+      const deduped = dedupeLoosById(currentLoops);
+      const entry: CachedEntry = {
+        geohash: prefix,
+        loos: deduped,
+        fetchedAt: ancestor.fetchedAt,
+        sourcePrecision: ancestor.sourcePrecision,
+      };
+
+      this.cache.set(prefix, entry);
+      modified = true;
+      currentLoops = entry.loos;
+    }
+
+    let target = this.cache.get(targetGeohash);
+    if (!target) {
+      target = {
+        geohash: targetGeohash,
+        loos: [],
+        fetchedAt: ancestor.fetchedAt,
+        sourcePrecision: ancestor.sourcePrecision,
+      };
+      this.cache.set(targetGeohash, target);
+      modified = true;
+    }
+
+    if (modified) {
+      this.persistToStorage();
+    }
+    return target;
+  }
+
+  private deleteSubtree(prefix: string): void {
+    for (const key of Array.from(this.cache.keys())) {
+      if (key.startsWith(prefix)) {
+        this.cache.delete(key);
+      }
+    }
+  }
+
+  private buildBuckets(
+    baseGeohash: string,
+    loos: TileLoo[],
+  ): Map<string, Map<string, TileLoo>> {
+    const buckets = new Map<string, Map<string, TileLoo>>();
+    buckets.set(baseGeohash, new Map());
+
+    const minLength = baseGeohash.length;
+
+    for (const loo of loos) {
+      const looGeohash = loo.geohash ?? '';
+
+      if (looGeohash.length < minLength) {
+        const baseBucket = buckets.get(baseGeohash);
+        baseBucket?.set(loo.id, loo);
+        continue;
+      }
+
+      for (let length = minLength; length <= looGeohash.length; length += 1) {
+        const prefix = looGeohash.slice(0, length);
+        let bucket = buckets.get(prefix);
+        if (!bucket) {
+          bucket = new Map();
+          buckets.set(prefix, bucket);
+        }
+        bucket.set(loo.id, loo);
+      }
+    }
+
+    return buckets;
   }
 
   private resolveStorage(): Storage | null {
@@ -276,10 +428,16 @@ export class LooTileCache {
         }
 
         const clonedLoos = entry.loos.map((loo) => ({ ...loo }));
+        const sourcePrecision =
+          typeof entry.sourcePrecision === 'number'
+            ? entry.sourcePrecision
+            : entry.geohash.length;
+
         this.cache.set(entry.geohash, {
           geohash: entry.geohash,
           loos: dedupeLoosById(clonedLoos),
           fetchedAt,
+          sourcePrecision,
         });
       }
 
@@ -302,6 +460,7 @@ export class LooTileCache {
         .map((tile) => ({
           geohash: tile.geohash,
           fetchedAt: tile.fetchedAt,
+          sourcePrecision: tile.sourcePrecision,
           loos: tile.loos.map((loo) => ({ ...loo })),
         }));
 
