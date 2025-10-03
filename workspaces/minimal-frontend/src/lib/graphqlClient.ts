@@ -82,6 +82,10 @@ const DEFAULT_TILE_TTL_MS = 1000 * 60 * 10; // 10 minutes
 const DEFAULT_BACKGROUND_DELAY_MS = 75; // Throttle background fetches slightly
 const CACHE_STORAGE_KEY = 'toiletmap.tileCache.v2';
 const CACHE_STORAGE_VERSION = 2;
+const PERSIST_DEBOUNCE_MS = 400;
+const MAX_PERSISTED_ENTRIES = 120;
+const MAX_DERIVED_PRECISION = 6;
+const MAX_FETCH_PRECISION = 3;
 
 const sleep = (ms: number) =>
   new Promise<void>((resolve) => {
@@ -101,6 +105,7 @@ export class LooTileCache {
   private ttlMs: number;
   private backgroundDelayMs: number;
   private storage: Storage | null;
+  private persistTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(private client: GraphQLClient, options: TileCacheOptions = {}) {
     this.ttlMs = options.ttlMs ?? DEFAULT_TILE_TTL_MS;
@@ -118,21 +123,16 @@ export class LooTileCache {
     options: GetLoosOptions = {},
   ): Promise<TileLoo[]> {
     const { requireFresh = false, backgroundRefresh = true } = options;
-    const cached = this.cache.get(geohash);
+    const fetchKey = this.getFetchKey(geohash);
+    const targetEntry = this.cache.get(geohash);
+    const fetchEntry = this.cache.get(fetchKey);
 
-    if (cached) {
-      if (!this.isEntryStale(cached)) {
-        return cached.loos;
-      }
+    if (targetEntry && !this.isEntryStale(targetEntry)) {
+      return targetEntry.loos;
+    }
 
-      if (!requireFresh) {
-        if (backgroundRefresh) {
-          void this.fetchAndCache(geohash).catch((error) => {
-            console.warn(`[LooTileCache] Background refresh failed for ${geohash}`, error);
-          });
-        }
-        return cached.loos;
-      }
+    if (fetchEntry && !this.isEntryStale(fetchEntry)) {
+      return this.materializePathFromAncestor(fetchEntry, geohash).loos;
     }
 
     if (!requireFresh) {
@@ -140,37 +140,56 @@ export class LooTileCache {
       if (ancestor) {
         const derived = this.materializePathFromAncestor(ancestor, geohash);
 
-        if (!this.isEntryStale(ancestor)) {
-          return derived.loos;
-        }
-
         if (backgroundRefresh) {
-          void this.fetchAndCache(geohash).catch((error) => {
-            console.warn(`[LooTileCache] Background refresh failed for ${geohash}`, error);
+          void this.fetchAndCache(fetchKey).catch((error) => {
+            console.warn(`[LooTileCache] Background refresh failed for ${fetchKey}`, error);
           });
         }
 
         return derived.loos;
       }
+
+      if (targetEntry) {
+        if (backgroundRefresh) {
+          void this.fetchAndCache(fetchKey).catch((error) => {
+            console.warn(`[LooTileCache] Background refresh failed for ${fetchKey}`, error);
+          });
+        }
+
+        return targetEntry.loos;
+      }
     }
 
-    const tile = await this.fetchAndCache(geohash);
-    return tile.loos;
+    const tile = await this.fetchAndCache(fetchKey);
+    return this.materializePathFromAncestor(tile, geohash).loos;
+  }
+
+  private getFetchKey(geohash: string): string {
+    if (geohash.length === 0) {
+      return geohash;
+    }
+
+    if (geohash.length <= MAX_FETCH_PRECISION) {
+      return geohash;
+    }
+
+    return geohash.slice(0, MAX_FETCH_PRECISION);
   }
 
   queueBackgroundFetch(geohashes: string[]): void {
     for (const geohash of geohashes) {
-      if (this.queuedSet.has(geohash)) {
+      const fetchKey = this.getFetchKey(geohash);
+      if (this.queuedSet.has(fetchKey)) {
         continue;
       }
 
-      const cached = this.cache.get(geohash);
+      const cached = this.cache.get(fetchKey);
       if (cached && !this.isEntryStale(cached)) {
         continue;
       }
 
-      this.backgroundQueue.push(geohash);
-      this.queuedSet.add(geohash);
+      this.backgroundQueue.push(fetchKey);
+      this.queuedSet.add(fetchKey);
     }
 
     if (!this.backgroundDrainRunning && this.backgroundQueue.length > 0) {
@@ -182,7 +201,7 @@ export class LooTileCache {
   async refreshTilesImmediately(geohashes: string[]): Promise<void> {
     await Promise.all(
       geohashes.map((geohash) =>
-        this.fetchAndCache(geohash).catch((error) => {
+        this.fetchAndCache(this.getFetchKey(geohash)).catch((error) => {
           console.warn(`[LooTileCache] Failed to refresh ${geohash}`, error);
         }),
       ),
@@ -192,36 +211,19 @@ export class LooTileCache {
   private storeTile(geohash: string, loos: TileLoo[], fetchedAt: number): CachedEntry {
     const deduped = dedupeLoosById(loos);
 
-    this.deleteSubtree(geohash);
+    this.deleteDerivedEntries(geohash, geohash.length);
 
-    const buckets = this.buildBuckets(geohash, deduped);
-    let target: CachedEntry | undefined;
+    const entry: CachedEntry = {
+      geohash,
+      loos: deduped,
+      fetchedAt,
+      sourcePrecision: geohash.length,
+    };
 
-    for (const [prefix, bucket] of buckets) {
-      const entry: CachedEntry = {
-        geohash: prefix,
-        loos: Array.from(bucket.values()),
-        fetchedAt,
-        sourcePrecision: geohash.length,
-      };
-      this.cache.set(prefix, entry);
-      if (prefix === geohash) {
-        target = entry;
-      }
-    }
-
-    if (!target) {
-      target = {
-        geohash,
-        loos: [],
-        fetchedAt,
-        sourcePrecision: geohash.length,
-      };
-      this.cache.set(geohash, target);
-    }
-
-    this.persistToStorage();
-    return target;
+    this.cache.set(geohash, entry);
+    this.populateDerivedEntries(entry);
+    this.schedulePersist();
+    return entry;
   }
 
   private async drainBackgroundQueue(): Promise<void> {
@@ -280,14 +282,25 @@ export class LooTileCache {
   }
 
   private findAncestor(geohash: string): CachedEntry | undefined {
+    let fallback: CachedEntry | undefined;
+
     for (let length = geohash.length - 1; length >= 1; length -= 1) {
       const prefix = geohash.slice(0, length);
       const candidate = this.cache.get(prefix);
-      if (candidate) {
+      if (!candidate) {
+        continue;
+      }
+
+      if (candidate.sourcePrecision === prefix.length) {
         return candidate;
       }
+
+      if (!fallback) {
+        fallback = candidate;
+      }
     }
-    return undefined;
+
+    return fallback;
   }
 
   private materializePathFromAncestor(
@@ -299,7 +312,6 @@ export class LooTileCache {
     }
 
     let currentLoops = ancestor.loos;
-    let modified = false;
 
     for (
       let length = ancestor.geohash.length + 1;
@@ -324,7 +336,6 @@ export class LooTileCache {
       };
 
       this.cache.set(prefix, entry);
-      modified = true;
       currentLoops = entry.loos;
     }
 
@@ -337,53 +348,83 @@ export class LooTileCache {
         sourcePrecision: ancestor.sourcePrecision,
       };
       this.cache.set(targetGeohash, target);
-      modified = true;
     }
 
-    if (modified) {
-      this.persistToStorage();
-    }
     return target;
   }
 
-  private deleteSubtree(prefix: string): void {
-    for (const key of Array.from(this.cache.keys())) {
-      if (key.startsWith(prefix)) {
-        this.cache.delete(key);
-      }
-    }
-  }
-
-  private buildBuckets(
-    baseGeohash: string,
-    loos: TileLoo[],
-  ): Map<string, Map<string, TileLoo>> {
+  private populateDerivedEntries(baseEntry: CachedEntry): void {
     const buckets = new Map<string, Map<string, TileLoo>>();
-    buckets.set(baseGeohash, new Map());
+    const { geohash, sourcePrecision, fetchedAt } = baseEntry;
 
-    const minLength = baseGeohash.length;
-
-    for (const loo of loos) {
-      const looGeohash = loo.geohash ?? '';
-
-      if (looGeohash.length < minLength) {
-        const baseBucket = buckets.get(baseGeohash);
-        baseBucket?.set(loo.id, loo);
+    for (const loo of baseEntry.loos) {
+      if (!loo.geohash.startsWith(geohash)) {
         continue;
       }
 
-      for (let length = minLength; length <= looGeohash.length; length += 1) {
-        const prefix = looGeohash.slice(0, length);
+      const maxLength = Math.min(MAX_DERIVED_PRECISION, loo.geohash.length);
+      for (let length = sourcePrecision + 1; length <= maxLength; length += 1) {
+        const prefix = loo.geohash.slice(0, length);
         let bucket = buckets.get(prefix);
         if (!bucket) {
-          bucket = new Map();
+          bucket = new Map<string, TileLoo>();
           buckets.set(prefix, bucket);
         }
         bucket.set(loo.id, loo);
       }
     }
 
-    return buckets;
+    for (const [prefix, bucket] of buckets.entries()) {
+      const entry: CachedEntry = {
+        geohash: prefix,
+        loos: Array.from(bucket.values()),
+        fetchedAt,
+        sourcePrecision,
+      };
+      this.cache.set(prefix, entry);
+    }
+  }
+
+  private deleteDerivedEntries(prefix: string, sourcePrecision: number): void {
+    for (const key of Array.from(this.cache.keys())) {
+      if (!key.startsWith(prefix)) {
+        continue;
+      }
+
+      if (key === prefix) {
+        this.cache.delete(key);
+        continue;
+      }
+
+      const entry = this.cache.get(key);
+      if (!entry || entry.sourcePrecision <= sourcePrecision) {
+        this.cache.delete(key);
+      }
+    }
+  }
+
+  private schedulePersist(force = false): void {
+    if (!this.storage) {
+      return;
+    }
+
+    if (force) {
+      if (this.persistTimer) {
+        clearTimeout(this.persistTimer);
+        this.persistTimer = null;
+      }
+      this.flushToStorage();
+      return;
+    }
+
+    if (this.persistTimer) {
+      return;
+    }
+
+    this.persistTimer = setTimeout(() => {
+      this.persistTimer = null;
+      this.flushToStorage();
+    }, PERSIST_DEBOUNCE_MS);
   }
 
   private resolveStorage(): Storage | null {
@@ -416,14 +457,17 @@ export class LooTileCache {
 
       const now = Date.now();
       const maxAge = this.ttlMs * 6;
+      let pruned = false;
 
       for (const entry of parsed.tiles) {
         if (!entry || typeof entry.geohash !== 'string' || !Array.isArray(entry.loos)) {
+          pruned = true;
           continue;
         }
 
         const fetchedAt = typeof entry.fetchedAt === 'number' ? entry.fetchedAt : now;
         if (now - fetchedAt > maxAge) {
+          pruned = true;
           continue;
         }
 
@@ -441,13 +485,15 @@ export class LooTileCache {
         });
       }
 
-      this.persistToStorage();
+      if (pruned) {
+        this.schedulePersist();
+      }
     } catch (error) {
       console.warn('[LooTileCache] Failed to restore cache from storage', error);
     }
   }
 
-  private persistToStorage(): void {
+  private flushToStorage(): void {
     if (!this.storage) {
       return;
     }
@@ -456,7 +502,10 @@ export class LooTileCache {
       const now = Date.now();
       const maxAge = this.ttlMs * 6;
       const tiles = Array.from(this.cache.values())
+        .filter((tile) => tile.sourcePrecision === tile.geohash.length)
         .filter((tile) => now - tile.fetchedAt <= maxAge)
+        .sort((a, b) => b.fetchedAt - a.fetchedAt)
+        .slice(0, MAX_PERSISTED_ENTRIES)
         .map((tile) => ({
           geohash: tile.geohash,
           fetchedAt: tile.fetchedAt,
