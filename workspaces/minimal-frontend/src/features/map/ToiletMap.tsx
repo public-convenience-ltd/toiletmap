@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import L, { Map as LeafletMap, Marker } from 'leaflet';
+import L from 'leaflet';
+import type { Map as LeafletMap, Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
@@ -9,19 +10,63 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-import { graphQLClient } from '@/lib/graphqlClient';
+import ngeohash from 'ngeohash';
+import { looTileCache } from '@/lib/graphqlClient';
+import { dedupeLoosById } from '@/lib/looCompression';
+import type { TileLoo } from '@/lib/looCompression';
 import styles from './ToiletMap.module.css';
-import {
-  FIND_NEARBY_LOOS,
-  FindNearbyLoosResponse,
-  Loo,
-} from './queries';
+
+const getGeohashPrecisionForZoom = (zoom: number) => {
+  switch (true) {
+    case zoom < 8:
+      return 2;
+    case zoom < 11:
+      return 3;
+    case zoom < 13:
+      return 4;
+    default:
+      return 5;
+  }
+};
+
+const computeGeohashesForBounds = (
+  bounds: L.LatLngBounds,
+  precision: number,
+) => {
+  const southWest = bounds.getSouthWest();
+  const northEast = bounds.getNorthEast();
+
+  const geohashes = ngeohash.bboxes(
+    southWest.lat,
+    southWest.lng,
+    northEast.lat,
+    northEast.lng,
+    precision,
+  );
+
+  return Array.from(new Set(geohashes));
+};
+
+const expandBounds = (bounds: L.LatLngBounds, paddingRatio: number) => {
+  const southWest = bounds.getSouthWest();
+  const northEast = bounds.getNorthEast();
+
+  const latDiff = northEast.lat - southWest.lat;
+  const lngDiff = northEast.lng - southWest.lng;
+
+  const latPadding = (latDiff * paddingRatio) / 2;
+  const lngPadding = (lngDiff * paddingRatio) / 2;
+
+  return L.latLngBounds(
+    L.latLng(southWest.lat - latPadding, southWest.lng - lngPadding),
+    L.latLng(northEast.lat + latPadding, northEast.lng + lngPadding),
+  );
+};
 
 const DEFAULT_LOCATION = {
   lat: 51.505,
   lng: -0.09,
 };
-export const DEFAULT_RADIUS_METERS = 25000;
 
 const configureLeafletIcons = () => {
   L.Icon.Default.mergeOptions({
@@ -31,9 +76,9 @@ const configureLeafletIcons = () => {
   });
 };
 
-const createMarker = (loo: Loo) => {
+const createMarker = (loo: TileLoo): Marker => {
   const marker = L.marker([loo.location.lat, loo.location.lng], {
-    title: loo.name ?? 'Public toilet',
+    title: 'Public toilet',
   });
   const features = [
     loo.accessible ? 'Accessible' : null,
@@ -45,7 +90,7 @@ const createMarker = (loo: Loo) => {
     .join(' · ');
 
   marker.bindPopup(
-    `<strong>${loo.name ?? 'Public toilet'}</strong>` +
+    '<strong>Public toilet</strong>' +
       (features ? `<br/><small>${features}</small>` : ''),
   );
 
@@ -53,56 +98,84 @@ const createMarker = (loo: Loo) => {
 };
 
 export interface ToiletMapProps {
-  onData?: (loos: Loo[]) => void;
+  onData?: (loos: TileLoo[]) => void;
   onError?: (message: string) => void;
   onLoadingChange?: (loading: boolean) => void;
   reloadKey?: number | string;
+  reloadForceNetwork?: boolean;
 }
 
-const ToiletMap = ({ onData, onError, onLoadingChange, reloadKey }: ToiletMapProps) => {
+const ToiletMap = ({
+  onData,
+  onError,
+  onLoadingChange,
+  reloadKey,
+  reloadForceNetwork,
+}: ToiletMapProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const clusterGroupRef = useRef<L.MarkerClusterGroup | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const loadLoos = useCallback(async () => {
-    if (!clusterGroupRef.current) {
-      return;
-    }
+  const loadLoos = useCallback(
+    async ({ forceRefresh = false }: { forceRefresh?: boolean } = {}) => {
+      if (!clusterGroupRef.current || !mapRef.current) {
+        return;
+      }
 
-    setLoading(true);
-    onLoadingChange?.(true);
-    setError(null);
+      const map = mapRef.current;
+      const precision = getGeohashPrecisionForZoom(map.getZoom());
+      const bounds = map.getBounds();
+      const geohashes = computeGeohashesForBounds(bounds, precision);
 
-    try {
-      const data = await graphQLClient.request<FindNearbyLoosResponse>({
-        query: FIND_NEARBY_LOOS,
-        variables: {
-          lat: DEFAULT_LOCATION.lat,
-          lng: DEFAULT_LOCATION.lng,
-          radius: DEFAULT_RADIUS_METERS,
-        },
-      });
+      if (geohashes.length === 0) {
+        return;
+      }
 
-      onData?.(data.loosByProximity);
+      setLoading(true);
+      onLoadingChange?.(true);
+      setError(null);
 
-      clusterGroupRef.current.clearLayers();
+      try {
+        const tileResults = await Promise.all(
+          geohashes.map((geohash) =>
+            looTileCache.getLoosForGeohash(geohash, {
+              requireFresh: forceRefresh,
+            }),
+          ),
+        );
 
-      const markers = data.loosByProximity.map(createMarker);
+        const loos = dedupeLoosById(tileResults.flat());
 
-      markers.forEach((marker: Marker) => {
-        clusterGroupRef.current?.addLayer(marker);
-      });
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Unknown error';
-      setError(message);
-      onError?.(message);
-    } finally {
-      setLoading(false);
-      onLoadingChange?.(false);
-    }
-  }, [onData, onError, onLoadingChange]);
+        onData?.(loos);
+
+        clusterGroupRef.current.clearLayers();
+
+        const markers = loos.map(createMarker);
+
+        markers.forEach((marker) => {
+          clusterGroupRef.current?.addLayer(marker);
+        });
+
+        const expandedBounds = expandBounds(bounds, 0.5);
+        const finerPrecision = Math.min(5, precision + 1);
+        const backgroundGeohashes = computeGeohashesForBounds(
+          expandedBounds,
+          finerPrecision,
+        );
+        looTileCache.queueBackgroundFetch(backgroundGeohashes);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Unknown error';
+        setError(message);
+        onError?.(message);
+      } finally {
+        setLoading(false);
+        onLoadingChange?.(false);
+      }
+    },
+    [onData, onError, onLoadingChange],
+  );
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) {
@@ -135,9 +208,18 @@ const ToiletMap = ({ onData, onError, onLoadingChange, reloadKey }: ToiletMapPro
     clusterGroup.addTo(map);
     clusterGroupRef.current = clusterGroup;
 
+    const handleViewportChange = () => {
+      void loadLoos();
+    };
+
+    map.on('moveend', handleViewportChange);
+    map.on('zoomend', handleViewportChange);
+
     void loadLoos();
 
     return () => {
+      map.off('moveend', handleViewportChange);
+      map.off('zoomend', handleViewportChange);
       clusterGroup.clearLayers();
       map.remove();
       mapRef.current = null;
@@ -149,8 +231,8 @@ const ToiletMap = ({ onData, onError, onLoadingChange, reloadKey }: ToiletMapPro
     if (!mapRef.current) {
       return;
     }
-    void loadLoos();
-  }, [loadLoos, reloadKey]);
+    void loadLoos({ forceRefresh: reloadForceNetwork ?? false });
+  }, [loadLoos, reloadKey, reloadForceNetwork]);
 
   return (
     <div className={styles.mapContainer} ref={containerRef}>
@@ -161,4 +243,4 @@ const ToiletMap = ({ onData, onError, onLoadingChange, reloadKey }: ToiletMapPro
 };
 
 export default ToiletMap;
-export type { Loo };
+export type { TileLoo as Loo };
