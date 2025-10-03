@@ -1,0 +1,18 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.inline {
+  flex-direction: row;
+  align-items: center;
+}
+
+.stack > * + * {
+  margin-top: var(--space-s);
+}
+
+.inline > * + * {
+  margin-top: 0;
+  margin-left: var(--space-s);
+}

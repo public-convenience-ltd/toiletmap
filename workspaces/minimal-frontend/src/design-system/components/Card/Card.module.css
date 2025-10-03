@@ -1,0 +1,11 @@
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-surface);
+  padding: var(--space-l);
+  border: 1px solid rgba(16, 30, 50, 0.04);
+}
+
+.section + .section {
+  margin-top: var(--space-m);
+}

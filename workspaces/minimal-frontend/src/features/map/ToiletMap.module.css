@@ -1,0 +1,28 @@
+.mapContainer {
+  position: absolute;
+  inset: 0;
+}
+
+.loader {
+  position: absolute;
+  top: var(--space-m);
+  left: var(--space-m);
+  background: rgba(255, 255, 255, 0.94);
+  padding: var(--space-s) var(--space-m);
+  border-radius: var(--radius-round);
+  box-shadow: var(--shadow-surface);
+  font-size: 0.9rem;
+}
+
+.error {
+  position: absolute;
+  top: var(--space-m);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(239, 71, 111, 0.92);
+  color: #fff;
+  padding: var(--space-s) var(--space-l);
+  border-radius: var(--radius-round);
+  box-shadow: var(--shadow-surface);
+  font-weight: var(--font-weight-medium);
+}

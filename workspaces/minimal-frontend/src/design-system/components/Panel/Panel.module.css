@@ -1,0 +1,21 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list {
+  display: grid;
+  gap: var(--space-s);
+}
+
+.empty {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}

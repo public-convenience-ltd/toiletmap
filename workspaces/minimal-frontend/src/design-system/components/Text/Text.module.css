@@ -1,0 +1,15 @@
+.text {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  line-height: var(--line-height-base);
+}
+
+.small {
+  font-size: 0.85rem;
+}
+
+.emphasis {
+  color: var(--color-accent);
+  font-weight: var(--font-weight-medium);
+}
