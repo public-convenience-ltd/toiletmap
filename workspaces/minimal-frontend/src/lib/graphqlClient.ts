@@ -1,4 +1,3 @@
-import ngeohash from 'ngeohash';
 import { dedupeLoosById, parseCompressedLoo, TileLoo } from './looCompression';
 
 export interface GraphQLRequestOptions {
@@ -63,11 +62,14 @@ interface CachedTile {
   fetchedAt: number;
 }
 
+interface SerializedTileCache {
+  version: number;
+  tiles: CachedTile[];
+}
+
 interface TileCacheOptions {
   ttlMs?: number;
   backgroundDelayMs?: number;
-  bucketPrecision?: number;
-  ukRequestPrecision?: number;
 }
 
 interface GetLoosOptions {
@@ -77,15 +79,8 @@ interface GetLoosOptions {
 
 const DEFAULT_TILE_TTL_MS = 1000 * 60 * 10; // 10 minutes
 const DEFAULT_BACKGROUND_DELAY_MS = 75; // Throttle background fetches slightly
-const DEFAULT_BUCKET_PRECISION = 5; // Granularity for cached lookup buckets
-const UK_REQUEST_PRECISION = 3; // Coarser tiles to minimise all-UK fetches
-
-const UK_BOUNDING_BOX = {
-  minLat: 49.85,
-  minLng: -8.65,
-  maxLat: 60.95,
-  maxLng: 2.1,
-} as const;
+const CACHE_STORAGE_KEY = 'toiletmap.tileCache.v1';
+const CACHE_STORAGE_VERSION = 1;
 
 const sleep = (ms: number) =>
   new Promise<void>((resolve) => {
@@ -104,14 +99,13 @@ export class LooTileCache {
   private backgroundDrainRunning = false;
   private ttlMs: number;
   private backgroundDelayMs: number;
-  private defaultBucketPrecision: number;
-  private ukRequestPrecision: number;
+  private storage: Storage | null;
 
   constructor(private client: GraphQLClient, options: TileCacheOptions = {}) {
     this.ttlMs = options.ttlMs ?? DEFAULT_TILE_TTL_MS;
     this.backgroundDelayMs = options.backgroundDelayMs ?? DEFAULT_BACKGROUND_DELAY_MS;
-    this.defaultBucketPrecision = options.bucketPrecision ?? DEFAULT_BUCKET_PRECISION;
-    this.ukRequestPrecision = options.ukRequestPrecision ?? UK_REQUEST_PRECISION;
+    this.storage = this.resolveStorage();
+    this.restoreFromStorage();
   }
 
   getCachedLoos(geohash: string): TileLoo[] | undefined {
@@ -163,61 +157,6 @@ export class LooTileCache {
     }
   }
 
-  async cacheGeohashes(
-    geohashes: string[],
-    options: {
-      bucketPrecision?: number;
-      delayMs?: number;
-      requireFresh?: boolean;
-    } = {},
-  ): Promise<void> {
-    const {
-      bucketPrecision = this.defaultBucketPrecision,
-      delayMs = this.backgroundDelayMs,
-      requireFresh = false,
-    } = options;
-
-    const uniqueGeohashes = Array.from(new Set(geohashes));
-
-    for (const geohash of uniqueGeohashes) {
-      let tile = this.cache.get(geohash);
-      if (requireFresh || !tile || this.isStale(tile)) {
-        tile = await this.fetchAndCache(geohash);
-      }
-
-      if (!tile) {
-        continue;
-      }
-
-      if (bucketPrecision > 0 && bucketPrecision !== geohash.length) {
-        this.ingestLoosIntoBuckets(tile.loos, bucketPrecision, tile.fetchedAt);
-      }
-
-      if (delayMs > 0) {
-        await sleep(delayMs);
-      }
-    }
-  }
-
-  async primeUkTiles(options: { bucketPrecision?: number } = {}): Promise<void> {
-    const geohashes = ngeohash.bboxes(
-      UK_BOUNDING_BOX.minLat,
-      UK_BOUNDING_BOX.minLng,
-      UK_BOUNDING_BOX.maxLat,
-      UK_BOUNDING_BOX.maxLng,
-      this.ukRequestPrecision,
-    );
-
-    if (geohashes.length === 0) {
-      return;
-    }
-
-    await this.cacheGeohashes(geohashes, {
-      bucketPrecision: options.bucketPrecision ?? this.defaultBucketPrecision,
-      requireFresh: true,
-    });
-  }
-
   async refreshTilesImmediately(geohashes: string[]): Promise<void> {
     await Promise.all(
       geohashes.map((geohash) =>
@@ -236,42 +175,8 @@ export class LooTileCache {
       fetchedAt,
     };
     this.cache.set(geohash, tile);
+    this.persistToStorage();
     return tile;
-  }
-
-  private ingestLoosIntoBuckets(
-    loos: TileLoo[],
-    targetPrecision: number,
-    fetchedAt: number,
-  ): void {
-    if (targetPrecision <= 0) {
-      return;
-    }
-
-    const buckets = new Map<string, TileLoo[]>();
-
-    for (const loo of loos) {
-      if (!loo.geohash) {
-        continue;
-      }
-
-      const bucketHash = loo.geohash.slice(0, targetPrecision);
-
-      if (bucketHash.length < targetPrecision) {
-        continue;
-      }
-
-      const group = buckets.get(bucketHash);
-      if (group) {
-        group.push(loo);
-      } else {
-        buckets.set(bucketHash, [loo]);
-      }
-    }
-
-    for (const [bucketHash, bucketLoos] of buckets.entries()) {
-      this.storeTile(bucketHash, bucketLoos, fetchedAt);
-    }
   }
 
   private async drainBackgroundQueue(): Promise<void> {
@@ -327,6 +232,88 @@ export class LooTileCache {
 
   private isStale(tile: CachedTile): boolean {
     return Date.now() - tile.fetchedAt > this.ttlMs;
+  }
+
+  private resolveStorage(): Storage | null {
+    try {
+      if (typeof window === 'undefined' || !window.localStorage) {
+        return null;
+      }
+      return window.localStorage;
+    } catch (error) {
+      console.warn('[LooTileCache] Local storage unavailable', error);
+      return null;
+    }
+  }
+
+  private restoreFromStorage(): void {
+    if (!this.storage) {
+      return;
+    }
+
+    try {
+      const raw = this.storage.getItem(CACHE_STORAGE_KEY);
+      if (!raw) {
+        return;
+      }
+
+      const parsed = JSON.parse(raw) as Partial<SerializedTileCache>;
+      if (parsed?.version !== CACHE_STORAGE_VERSION || !Array.isArray(parsed.tiles)) {
+        return;
+      }
+
+      const now = Date.now();
+      const maxAge = this.ttlMs * 6;
+
+      for (const entry of parsed.tiles) {
+        if (!entry || typeof entry.geohash !== 'string' || !Array.isArray(entry.loos)) {
+          continue;
+        }
+
+        const fetchedAt = typeof entry.fetchedAt === 'number' ? entry.fetchedAt : now;
+        if (now - fetchedAt > maxAge) {
+          continue;
+        }
+
+        const clonedLoos = entry.loos.map((loo) => ({ ...loo }));
+        this.cache.set(entry.geohash, {
+          geohash: entry.geohash,
+          loos: dedupeLoosById(clonedLoos),
+          fetchedAt,
+        });
+      }
+
+      this.persistToStorage();
+    } catch (error) {
+      console.warn('[LooTileCache] Failed to restore cache from storage', error);
+    }
+  }
+
+  private persistToStorage(): void {
+    if (!this.storage) {
+      return;
+    }
+
+    try {
+      const now = Date.now();
+      const maxAge = this.ttlMs * 6;
+      const tiles = Array.from(this.cache.values())
+        .filter((tile) => now - tile.fetchedAt <= maxAge)
+        .map((tile) => ({
+          geohash: tile.geohash,
+          fetchedAt: tile.fetchedAt,
+          loos: tile.loos.map((loo) => ({ ...loo })),
+        }));
+
+      const payload: SerializedTileCache = {
+        version: CACHE_STORAGE_VERSION,
+        tiles,
+      };
+
+      this.storage.setItem(CACHE_STORAGE_KEY, JSON.stringify(payload));
+    } catch (error) {
+      console.warn('[LooTileCache] Failed to persist cache to storage', error);
+    }
   }
 }
 

@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
 import ToiletMap, { type Loo } from './features/map/ToiletMap';
-import { looTileCache } from '@/lib/graphqlClient';
 import {
   AppShell,
   Button,
@@ -25,7 +24,6 @@ const App = () => {
     () => ({ key: 0, forceNetwork: false }),
   );
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  const [isPrimingUk, setIsPrimingUk] = useState(false);
 
   const handleData = useCallback((data: Loo[]) => {
     setLoos(data);
@@ -40,19 +38,6 @@ const App = () => {
   const handleLoadingChange = useCallback((isLoading: boolean) => {
     setLoading(isLoading);
   }, []);
-
-  const handlePrimeUk = useCallback(async () => {
-    setIsPrimingUk(true);
-    try {
-      await looTileCache.primeUkTiles();
-      setReloadState(({ key }) => ({ key: key + 1, forceNetwork: false }));
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to prime UK cache';
-      setError(message);
-    } finally {
-      setIsPrimingUk(false);
-    }
-  }, [setReloadState, setError]);
 
   const sidePanel = useMemo(() => {
     const topLoos = loos.slice(0, 5);
@@ -75,13 +60,6 @@ const App = () => {
               >
                 Refresh
               </Button>
-              <Button
-                onClick={handlePrimeUk}
-                disabled={isPrimingUk}
-                aria-label="Fetch and cache UK toilets"
-              >
-                {isPrimingUk ? 'Priming…' : 'Prime UK cache'}
-              </Button>
             </Stack>
           </Stack>
           <Text size="small">
@@ -89,7 +67,6 @@ const App = () => {
               ? 'Updating results…'
               : `Showing ${loos.length} toilet${loos.length === 1 ? '' : 's'} in the current view.`}
           </Text>
-          {isPrimingUk ? <Text size="small">Priming UK cache…</Text> : null}
           {lastUpdated ? (
             <Text size="small">Last updated at {formatTime(lastUpdated)}.</Text>
           ) : (
@@ -127,8 +104,6 @@ const App = () => {
     loading,
     lastUpdated,
     error,
-    handlePrimeUk,
-    isPrimingUk,
     setReloadState,
   ]);
 
