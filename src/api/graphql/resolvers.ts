@@ -1,4 +1,7 @@
-import { stringifyAndCompressLoos } from '../../lib/loo';
+import {
+  stringifyAndCompressFullLoos,
+  stringifyAndCompressLoos,
+} from '../../lib/loo';
 import {
   Resolvers,
   AreaToiletCount,
@@ -25,6 +28,17 @@ import {
 } from './helpers';
 import { toilets } from '@prisma/client';
 import { UserProfile } from '@auth0/nextjs-auth0';
+
+const fetchGraphQLLoosWithinGeohash = async (
+  prisma: Context['prisma'],
+  geohash: string,
+  active?: boolean | null,
+) =>
+  (
+    await getLoosWithinGeohash(prisma, geohash, active)
+  )
+    .map(postgresLooToGraphQL)
+    .flat();
 
 const resolvers: Resolvers<Context> = {
   Query: {
@@ -120,9 +134,11 @@ const resolvers: Resolvers<Context> = {
     },
     loosByGeohash: async (_parent, args, { prisma }) =>
       stringifyAndCompressLoos(
-        (await getLoosWithinGeohash(prisma, args.geohash, args.active))
-          .map(postgresLooToGraphQL)
-          .flat(),
+        await fetchGraphQLLoosWithinGeohash(prisma, args.geohash, args.active),
+      ),
+    fullLoosByGeohash: async (_parent, args, { prisma }) =>
+      stringifyAndCompressFullLoos(
+        await fetchGraphQLLoosWithinGeohash(prisma, args.geohash, args.active),
       ),
     areas: async (_parent, args, { prisma }) => getAreas(prisma),
     statistics: async (_parent, _args, { prisma }) => {

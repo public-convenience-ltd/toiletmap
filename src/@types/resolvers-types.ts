@@ -162,6 +162,8 @@ export type Query = {
   __typename?: 'Query';
   /** Retrieve a list of areas in existence, name and type only */
   areas: Array<AdminGeo>;
+  /** Retrieve detailed, compressed loos that sit within a given geohash */
+  fullLoosByGeohash: Array<Scalars['String']['output']>;
   /** Retrieve a Loo by ID */
   loo?: Maybe<Loo>;
   looNamesByIds: Array<Loo>;
@@ -174,6 +176,12 @@ export type Query = {
   reportsForLoo: Array<Report>;
   /** Get statistics about our data */
   statistics?: Maybe<Statistics>;
+};
+
+
+export type QueryFullLoosByGeohashArgs = {
+  active?: InputMaybe<Scalars['Boolean']['input']>;
+  geohash: Scalars['String']['input'];
 };
 
 
@@ -530,6 +538,7 @@ export type PointResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   areas?: Resolver<Array<ResolversTypes['AdminGeo']>, ParentType, ContextType>;
+  fullLoosByGeohash?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType, RequireFields<QueryFullLoosByGeohashArgs, 'active' | 'geohash'>>;
   loo?: Resolver<Maybe<ResolversTypes['Loo']>, ParentType, ContextType, Partial<QueryLooArgs>>;
   looNamesByIds?: Resolver<Array<ResolversTypes['Loo']>, ParentType, ContextType, Partial<QueryLooNamesByIdsArgs>>;
   loos?: Resolver<ResolversTypes['LooSearchResponse'], ParentType, ContextType, RequireFields<QueryLoosArgs, 'filters' | 'pagination' | 'sort'>>;
