@@ -77,6 +77,7 @@ const cors = Cors({
   methods: ['GET', 'HEAD', 'POST'],
   origin: [
     'https://explorer.toiletmap.org.uk',
+    'https://toiletmap-next-ui.vercel.app',
     'https://studio.apollographql.com',
     'http://localhost:6006',
     'http://localhost:3000',
