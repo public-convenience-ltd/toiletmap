@@ -182,6 +182,9 @@ type Query {
   "Retrieve loos that sit within a given geohash"
   loosByGeohash(geohash: String!, active: Boolean = true): [String!]!
     @cacheControl(maxAge: 21600, scope: PUBLIC)
+  "Retrieve detailed, compressed loos that sit within a given geohash"
+  fullLoosByGeohash(geohash: String!, active: Boolean = true): [String!]!
+    @cacheControl(maxAge: 21600, scope: PUBLIC)
   reportsForLoo(id: ID!): [Report!]!
 }
 
