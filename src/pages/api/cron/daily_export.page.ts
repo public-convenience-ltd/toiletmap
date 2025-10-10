@@ -91,21 +91,29 @@ function convertToCSV(data: ExportToilet[]): string {
     value === null ? '' : value;
 
   // Extract headers from the keys of the first object
-  const headers = Object.keys(data[0]);
+  const headers = Object.keys(data[0]) as (keyof ExportToilet)[];
 
   // Map each data row into a CSV formatted string
   const csvRows = data.map((row) => {
     const formattedRow = headers.map((header) => {
-      let cellValue = row[header];
+      const cellValue = row[header];
 
-      // If the cell value is an object, convert it to a JSON string
-      if (typeof cellValue === 'object') {
-        cellValue = JSON.stringify(cellValue, replacer);
+      // Serialise each cell as JSON, but handle dates, null, and strings
+      // manually to avoid unnecessary quotes
+      let serialised: string;
+      if (cellValue instanceof Date) {
+        serialised = cellValue.toISOString();
+      } else if (typeof cellValue === 'string') {
+        serialised = cellValue;
+      } else if (cellValue === null) {
+        serialised = '';
+      } else {
+        serialised = JSON.stringify(cellValue, replacer);
       }
 
-      // Escape double quotes by doubling them and wrap the value in quotes
-      const escapedValue = String(cellValue).replace(/"/g, '""');
-      return `"${escapedValue}"`;
+      // Always wrap in quotes, escaping existing quotes by doubling them
+      const escapedValue = `"${serialised.replace(/"/g, '""')}"`;
+      return escapedValue;
     });
     return formattedRow.join(',');
   });
