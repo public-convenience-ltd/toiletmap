@@ -54,6 +54,10 @@ const Sidebar = () => {
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   const filterToggleRef = useRef(null);
 
+  // State for the share button text and the ARIA live region
+  const [shareText, setShareText] = useState('Share');
+  const [copiedMessage, setCopiedMessage] = useState('');
+
   const filterPanel = useMemo(
     () =>
       (isFilterExpanded || isFiltersExpanded) && (
@@ -84,8 +88,38 @@ const Sidebar = () => {
     return appliedFilterCount > 0 && <b>({appliedFilterCount})</b>;
   }, [appliedFilterCount]);
 
+  // Build the share URL from the current location (works across dev/staging/prod).
+  const buildShareUrl = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('lat', String(mapState.center.lat));
+    url.searchParams.set('lng', String(mapState.center.lng));
+    url.searchParams.set('zoom', String(mapState.zoom));
+    return url.toString();
+  };
+
+  const handleShare = async () => {
+    const url = buildShareUrl();
+    try {
+      await navigator.clipboard.writeText(url);
+      setShareText('Link copied');
+      setCopiedMessage('Link copied to clipboard');
+    } catch (err) {
+      console.error('Share failed: ', err);
+    } finally {
+      setTimeout(() => {
+        setShareText('Share');
+        setCopiedMessage('');
+      }, 2000);
+    }
+  };
+
   return (
     <section aria-labelledby="heading-search">
+      {/* ARIA live region to announce copy status to screen readers */}
+      <VisuallyHidden as="span" aria-live="polite" role="status">
+        {copiedMessage}
+      </VisuallyHidden>
+
       <Media lessThan="md">
         <VisuallyHidden as="span" id="heading-search">
           Search
@@ -123,6 +157,17 @@ const Sidebar = () => {
               aria-label="Find a toilet near me"
             >
               Find a toilet near me
+            </Button>
+          </Box>
+          <Box display="flex" mt={3}>
+            <Button
+              htmlElement="button"
+              type="button"
+              variant="primary"
+              onClick={handleShare}
+              aria-label="Share your current map view"
+            >
+              {shareText}
             </Button>
           </Box>
         </Box>
@@ -262,6 +307,7 @@ const Sidebar = () => {
                 <Arrow isExpanded={false} />
               </Box>
             </StyledNavLink>
+
             <Box as="section" mt={4} aria-labelledby="heading-find">
               <h2 id="heading-find">
                 <VisuallyHidden as="span">Find a toilet near me</VisuallyHidden>
@@ -282,6 +328,37 @@ const Sidebar = () => {
                 </Box>
                 <Arrow isExpanded={false} />
               </Box>
+            </Box>
+
+            <Box
+              as="section"
+              mt={4}
+              display="flex"
+              aria-labelledby="heading-share"
+            >
+              <h2 id="heading-share">
+                <VisuallyHidden as="span">
+                  Share your current location
+                </VisuallyHidden>
+              </h2>
+              <Button
+                htmlElement="button"
+                type="button"
+                variant="secondary"
+                onClick={handleShare}
+                aria-label="Share your current map view"
+              >
+                {shareText}
+                <Icon
+                  icon="share"
+                  data-test="share-location"
+                  style={{
+                    marginLeft: '8px',
+                  }}
+                  aria-hidden={true}
+                  size="medium"
+                />
+              </Button>
             </Box>
           </Box>
         </Box>

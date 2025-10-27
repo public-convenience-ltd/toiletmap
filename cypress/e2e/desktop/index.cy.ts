@@ -105,7 +105,7 @@ describe('Home page tests', () => {
       cy.get('[data-toiletid=cc4e5e9b83de8dd9ba87b3eb]').should('exist');
     });
 
-    isPermissionAllowed('geolocation') &&
+    if (isPermissionAllowed('geolocation')) {
       it('should not break when the geolocate button is clicked multiple times', () => {
         cy.on('window:before:load', (win) => {
           const latitude = 51.5,
@@ -136,8 +136,9 @@ describe('Home page tests', () => {
         cy.contains('fabulous bandwidth');
         cy.contains('423m');
       });
+    }
 
-    isPermissionAllowed('geolocation') &&
+    if (isPermissionAllowed('geolocation')) {
       it('should geolocate the user when the "find a toilet near me" button is clicked', () => {
         cy.on('window:before:load', (win) => {
           const latitude = 51.5,
@@ -166,8 +167,9 @@ describe('Home page tests', () => {
         cy.contains('fabulous bandwidth');
         cy.contains('423m');
       });
+    }
 
-    isPermissionAllowed('geolocation') &&
+    if (isPermissionAllowed('geolocation')) {
       it('should allow user to search after geolocating', () => {
         cy.on('window:before:load', (win) => {
           const latitude = 51.5,
@@ -191,6 +193,7 @@ describe('Home page tests', () => {
         cy.get('#search-results-item-0').click();
         cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
       });
+    }
 
     it('should update the accessibility overlay list when the user pans or zooms', () => {
       cy.visit('/').wait(500);
@@ -200,8 +203,6 @@ describe('Home page tests', () => {
       cy.contains("Use number keys to show a toilet's details");
       cy.contains('Arrow keys pan the map');
       cy.contains('change the map zoom level');
-      // zoom out and confirm that toilets are intersecting the focus window
-      // and that they are added to the list.
       cy.get('#gbptm-map')
         .focus()
         .type('{-}{-}{-}', { delay: 500, force: true });
@@ -212,10 +213,8 @@ describe('Home page tests', () => {
       cy.contains('worldly file');
       cy.contains('radiant spiderling');
       cy.get('#gbptm-map').type('{downarrow}', { delay: 500 }).wait(500);
-      // these toilets have now moved outside of the selection window
       cy.contains('radiant spiderling').should('not.exist');
       cy.contains('cheery zither').should('not.exist');
-      // these toilets are now the top suggestions in the selection window
       cy.contains('slow decoration');
       cy.contains('entire caddy');
       cy.contains('agile energy');
@@ -227,13 +226,10 @@ describe('Home page tests', () => {
     it('should select a toilet using the number key associated with the accessibility overlay list', () => {
       cy.visit('/').wait(500);
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
-      // Focus the map, turning on the accessibility overlay
       cy.get('#gbptm-map').focus();
       cy.contains("Use number keys to show a toilet's details");
       cy.contains('Arrow keys pan the map');
       cy.contains('change the map zoom level');
-      // zoom out and confirm that toilets are intersecting the focus window
-      // and that they are added to the list.
       cy.get('#gbptm-map').type('{-}{-}', { delay: 300, force: true });
       cy.findByText('negative eve')
         .siblings()
@@ -245,19 +241,15 @@ describe('Home page tests', () => {
             .wait(200)
             .type(keySelector, { delay: 200 });
           cy.url().should('include', '/loos/ddad1ed1b91d99ed2bf3bcdf');
-          // Check that the loo we picked is now highlighted.
           cy.get('#highlighted-loo').invoke('attr', 'data-toiletid', '2671');
-          // Check that the accessibility view is hidden
           cy.contains("Use number keys to show a toilet's details").should(
             'not.exist',
           );
           cy.contains('Arrow keys pan the map').should('not.exist');
           cy.contains('change the map zoom level').should('not.exist');
-          // Check standard loo panel stuff is there.
           cy.contains('negative eve');
           cy.contains('Features');
           cy.contains('Opening Hours');
-          // Check that today is highlighted
           const dayOfWeekName = new Date().toLocaleString('en-GB', {
             weekday: 'long',
           });
@@ -272,25 +264,18 @@ describe('Home page tests', () => {
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').click({ force: true });
 
       cy.url().should('include', '/loos/ddad1ed1b91d99ed2bf3bcdf');
-
-      // Check that the loo we picked is now highlighted.
       cy.get('#highlighted-loo').invoke('attr', 'data-toiletid', '2671');
-
-      // Check standard loo panel stuff is there.
       cy.contains('negative eve');
       cy.contains('Features');
       cy.contains('Opening Hours');
 
-      // Check that today is highlighted
       const dayOfWeekName = new Date().toLocaleString('en-GB', {
         weekday: 'long',
       });
-
       cy.findByText(dayOfWeekName)
         .parent()
         .should('have.css', 'background-color', 'rgb(210, 255, 242)');
 
-      // Check the opening hours are as expected
       cy.findByText('Monday').siblings().contains('10:09 - 14:01');
       cy.findByText('Tuesday').siblings().contains('02:34 - 07:26');
       cy.findByText('Wednesday').siblings().contains('01:07 - 23:04');
@@ -299,7 +284,6 @@ describe('Home page tests', () => {
       cy.findByText('Saturday').siblings().contains('20:31 - 23:34');
       cy.findByText('Sunday').siblings().contains('03:43 - 03:52');
 
-      // Check that the feature values are as expected
       cy.findByText('Women').siblings().get(`[aria-label=Available]`);
       cy.findByText('Men').siblings().get(`[aria-label=Available]`);
       cy.findByText('Accessible').siblings().get(`[aria-label=Unavailable]`);
@@ -310,16 +294,8 @@ describe('Home page tests', () => {
       cy.findByText('Automatic').siblings().get(`[aria-label=Unknown]`);
       cy.findByText('Free').siblings().get(`[aria-label=Available]`);
 
-      // Check the notes
       cy.contains('vigilant toilet!! indeed photoreceptor crown!');
-
-      // Check last verified
       cy.contains('29/01/2023');
-      // cy.contains(
-      //   new Date(Date.now())
-      //     .toLocaleString(new Intl.Locale('en-gb'))
-      //     .split(',')[0]
-      // );
     });
 
     it('should filter toilets based on applied filter toggles', () => {
@@ -571,6 +547,152 @@ describe('Home page tests', () => {
         );
       });
       cy.findByText('Yes').click();
+    });
+
+    // ====================
+    // Share button tests
+    // ====================
+
+    it('should copy a share URL with lat/lng/zoom and announce it (desktop)', () => {
+      cy.clock();
+
+      cy.on('window:before:load', (win) => {
+        // @ts-expect-error test stub
+        win.navigator.clipboard = win.navigator.clipboard || {};
+        cy.stub(win.navigator.clipboard, 'writeText')
+          .as('writeText')
+          .resolves();
+      });
+
+      cy.visit('/').wait(500);
+
+      cy.findByRole('status').should('be.empty');
+      cy.findByLabelText('Share your current map view').click();
+
+      cy.get('@writeText').should('have.been.calledOnce');
+      cy.get('@writeText')
+        .its('firstCall.args.0')
+        .then((text) => {
+          const u = new URL(String(text));
+          expect(u.searchParams.get('lat')).to.match(/^-?\d+(\.\d+)?$/);
+          expect(u.searchParams.get('lng')).to.match(/^-?\d+(\.\d+)?$/);
+          expect(u.searchParams.get('zoom')).to.match(/^\d+(\.\d+)?$/);
+        });
+
+      cy.findByLabelText('Share your current map view').contains('Link copied');
+      cy.findByRole('status').should('contain', 'Link copied to clipboard');
+
+      cy.tick(2000);
+      cy.findByLabelText('Share your current map view').contains('Share');
+      cy.findByRole('status').should('be.empty');
+    });
+
+    it('should reflect current map view in the share URL (desktop)', () => {
+      cy.on('window:before:load', (win) => {
+        // @ts-expect-error test stub
+        win.navigator.clipboard = win.navigator.clipboard || {};
+        cy.stub(win.navigator.clipboard, 'writeText')
+          .as('writeText')
+          .resolves();
+      });
+
+      cy.visit('/').wait(500);
+
+      cy.findByLabelText('Share your current map view').click();
+      cy.get('@writeText').its('firstCall.args.0').as('url1');
+
+      cy.get('#gbptm-map')
+        .trigger('wheel', {
+          deltaY: 66.666666,
+          wheelDelta: 120,
+          wheelDeltaX: 0,
+          wheelDeltaY: -800,
+          bubbles: true,
+        })
+        .wait(300);
+
+      cy.findByLabelText('Share your current map view').click();
+      cy.get('@writeText').its('secondCall.args.0').as('url2');
+
+      cy.get<string>('@url1').then((u1) => {
+        cy.get<string>('@url2').then((u2) => {
+          const a = new URL(u1);
+          const b = new URL(u2);
+          expect(a.toString()).not.to.eq(b.toString());
+          const z1 = Number(a.searchParams.get('zoom'));
+          const z2 = Number(b.searchParams.get('zoom'));
+          expect(z1).to.be.a('number');
+          expect(z2).to.be.a('number');
+          expect(z1).not.to.equal(z2);
+        });
+      });
+    });
+
+    it('should handle clipboard failure gracefully (desktop)', () => {
+      cy.clock();
+
+      cy.on('window:before:load', (win) => {
+        // @ts-expect-error test stub
+        win.navigator.clipboard = win.navigator.clipboard || {};
+        cy.stub(win.navigator.clipboard, 'writeText')
+          .as('writeText')
+          .rejects(new Error('denied'));
+      });
+
+      cy.visit('/').wait(500);
+
+      cy.findByLabelText('Share your current map view')
+        .contains('Share')
+        .click();
+
+      cy.get('@writeText').should('have.been.calledOnce');
+
+      cy.findByLabelText('Share your current map view').contains('Share');
+      cy.findByRole('status').should('be.empty');
+
+      cy.tick(2000);
+      cy.findByLabelText('Share your current map view').contains('Share');
+    });
+  });
+
+  // Separate mobile context so we can assert the small-screen layout
+  context('Mobile', () => {
+    beforeEach(() => {
+      cy.viewport('iphone-6');
+    });
+
+    it('should copy a share URL and announce it (mobile)', () => {
+      cy.clock();
+      cy.on('window:before:load', (win) => {
+        // @ts-expect-error test stub
+        win.navigator.clipboard = win.navigator.clipboard || {};
+        cy.stub(win.navigator.clipboard, 'writeText')
+          .as('writeText')
+          .resolves();
+      });
+
+      cy.visit('/').wait(500);
+
+      cy.findByLabelText('Share your current map view')
+        .scrollIntoView()
+        .click();
+
+      cy.get('@writeText').should('have.been.calledOnce');
+      cy.get('@writeText')
+        .its('firstCall.args.0')
+        .then((text) => {
+          const u = new URL(String(text));
+          expect(u.searchParams.get('lat')).to.match(/^-?\d+(\.\d+)?$/);
+          expect(u.searchParams.get('lng')).to.match(/^-?\d+(\.\d+)?$/);
+          expect(u.searchParams.get('zoom')).to.match(/^\d+(\.\d+)?$/);
+        });
+
+      cy.findByLabelText('Share your current map view').contains('Link copied');
+      cy.findByRole('status').should('contain', 'Link copied to clipboard');
+
+      cy.tick(2000);
+      cy.findByLabelText('Share your current map view').contains('Share');
+      cy.findByRole('status').should('be.empty');
     });
   });
 });

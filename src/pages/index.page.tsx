@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import Head from 'next/head';
 import Box from '../components/Box';
@@ -8,15 +8,45 @@ import { useMapState } from '../components/MapState';
 import { withApollo } from '../api-client/withApollo';
 import { useEffect } from 'react';
 import config from '../config';
+import { useRouter } from 'next/router';
 
 const SIDEBAR_BOTTOM_MARGIN = 32;
 
 const HomePage = () => {
   const [, setMapState] = useMapState();
+  const router = useRouter();
+
+  const lat = router.query.lat as string | undefined;
+  const lng = router.query.lng as string | undefined;
+  const zoom = router.query.zoom as string | undefined;
+
+  const initialMapState = useMemo(() => {
+    return lat && lng
+      ? {
+          lat: parseFloat(lat),
+          lng: parseFloat(lng),
+          // Only set the zoom level if it's provided, otherwise we default to 16.
+          zoom: zoom ? parseInt(zoom, 10) : 16,
+        }
+      : undefined;
+  }, [lat, lng, zoom]);
 
   useEffect(() => {
-    setMapState({ focus: undefined, searchLocation: undefined });
-  }, [setMapState]);
+    if (typeof initialMapState === 'undefined') {
+      setMapState({ focus: undefined, searchLocation: undefined });
+    } else {
+      // If we're provided with an initial latitude / longitude, we centre the map there.
+      setMapState({
+        focus: undefined,
+        searchLocation: undefined,
+        center: {
+          lat: initialMapState.lat,
+          lng: initialMapState.lng,
+        },
+        zoom: initialMapState.zoom,
+      });
+    }
+  }, [setMapState, initialMapState]);
 
   return (
     <>
