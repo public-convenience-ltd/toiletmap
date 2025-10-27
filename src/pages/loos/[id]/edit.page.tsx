@@ -26,7 +26,7 @@ import LocationSearch from '../../../components/LocationSearch';
 import NotFound from '../../404.page';
 
 const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
-  props
+  props,
 ) => {
   const loo = props?.data?.loo;
   const router = useRouter();
@@ -41,6 +41,8 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
     });
   }, [loo, setMapState]);
 
+  const [revalidationComplete, setRevalidationComplete] = React.useState(false);
+
   const [
     updateLooMutation,
     { data: saveData, loading: saveLoading, error: saveError },
@@ -54,18 +56,29 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
     if (errors) {
       console.error('save error', errors);
     }
+
+    try {
+      // Make sure that we revalidate the /loo/[id] ISR route.
+      const result = await (
+        await fetch(`/api/loos/${loo.id}/revalidate`)
+      ).json();
+
+      if (result?.ok) {
+        setRevalidationComplete(true);
+      }
+    } catch (e) {
+      console.error('Error revalidating the page', e);
+    }
   };
 
   // redirect to toilet entry page upon successful edit
   useEffect(() => {
-    if (saveData) {
+    if (saveData && revalidationComplete) {
       setMapState({ searchLocation: undefined });
       // redirect to updated toilet entry page
-      router.push(
-        `/api/loos/${saveData.submitReport.loo.id}/revalidate?message=updated`
-      );
+      router.push(`/loos/${saveData.submitReport.loo.id}?message=updated`);
     }
-  }, [saveData, router, setMapState]);
+  }, [saveData, router, setMapState, revalidationComplete]);
 
   if (isLoading) {
     return <PageLoading />;
@@ -187,7 +200,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       {
         variables: { id: ctx.params.id as string },
       },
-      ctx
+      ctx,
     );
     if (res.props.error || !res.props.data) {
       return {
