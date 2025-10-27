@@ -79,6 +79,27 @@ async function cleanExportDirectory() {
     console.error('Error deleting old files:', error);
   }
 }
+
+function extractLngLat(location: unknown): {
+  longitude: string;
+  latitude: string;
+} {
+  try {
+    const obj = typeof location === 'string' ? JSON.parse(location) : location;
+    const coords = obj?.coordinates;
+    if (Array.isArray(coords) && coords.length >= 2) {
+      const [lng, lat] = coords;
+      return {
+        longitude: Number.isFinite(lng) ? String(lng) : '',
+        latitude: Number.isFinite(lat) ? String(lat) : '',
+      };
+    }
+  } catch {
+    // ignore
+  }
+  return { longitude: '', latitude: '' };
+}
+
 /**
  * Converts an array of ExportToilet objects into CSV format.
  *
@@ -86,39 +107,51 @@ async function cleanExportDirectory() {
  * @returns {string} CSV formatted string.
  */
 function convertToCSV(data: ExportToilet[]): string {
-  // Replacer function for JSON.stringify that converts null values to empty strings
+  if (!data?.length) return '';
+
+  // Expand each record with longitude/latitude while keeping location
+  const transformed = data.map((row) => {
+    const { longitude, latitude } = extractLngLat(row.location);
+    return { ...row, longitude, latitude };
+  });
+
+  const firstRowKeys = Object.keys(transformed[0]);
+  const headers = [
+    ...firstRowKeys.filter((k) => k !== 'longitude' && k !== 'latitude'),
+    'longitude',
+    'latitude',
+  ];
+
   const replacer = (_key: string, value: unknown) =>
     value === null ? '' : value;
 
-  // Extract headers from the keys of the first object
-  const headers = Object.keys(data[0]) as (keyof ExportToilet)[];
+  // Serialise each cell as JSON, but handle dates, null, numbers, bools, and strings
+  // manually to avoid unnecessary quotes
+  const serialise = (value: unknown): string => {
+    if (value instanceof Date) {
+      return value.toISOString();
+    }
+    if (typeof value === 'string') {
+      return value;
+    }
+    if (value === null || value === undefined) {
+      return '';
+    }
+    if (typeof value === 'number' || typeof value === 'boolean') {
+      return String(value);
+    }
+    return JSON.stringify(value, replacer);
+  };
 
-  // Map each data row into a CSV formatted string
-  const csvRows = data.map((row) => {
-    const formattedRow = headers.map((header) => {
-      const cellValue = row[header];
-
-      // Serialise each cell as JSON, but handle dates, null, and strings
-      // manually to avoid unnecessary quotes
-      let serialised: string;
-      if (cellValue instanceof Date) {
-        serialised = cellValue.toISOString();
-      } else if (typeof cellValue === 'string') {
-        serialised = cellValue;
-      } else if (cellValue === null) {
-        serialised = '';
-      } else {
-        serialised = JSON.stringify(cellValue, replacer);
-      }
-
-      // Always wrap in quotes, escaping existing quotes by doubling them
-      const escapedValue = `"${serialised.replace(/"/g, '""')}"`;
-      return escapedValue;
+  const csvRows = transformed.map((row) => {
+    const formatted = headers.map((heading) => {
+      const cellValue = row[heading];
+      const serialisedValue = serialise(cellValue);
+      return `"${serialisedValue.replace(/"/g, '""')}"`; // standard CSV escaping
     });
-    return formattedRow.join(',');
+    return formatted.join(',');
   });
 
-  // Prepend the header row and join all rows with newlines
   return [headers.join(','), ...csvRows].join('\n');
 }
 
