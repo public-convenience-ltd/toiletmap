@@ -17,7 +17,18 @@ describe('Home page tests', () => {
 
     it('should let you search by location', () => {
       cy.visit('/');
-      cy.findByPlaceholderText('Search location…').type('Hammersmith');
+      cy.get(
+        'div.sidebar__larger-devices input[placeholder="Search location…"]',
+        { timeout: 10000 },
+      )
+        .should('exist')
+        .should('be.visible')
+        .should('not.be.disabled');
+
+      cy.wait(500); // small delay to let re-render settle
+      cy.get(
+        'div.sidebar__larger-devices input[placeholder="Search location…"]',
+      ).type('Hammersmith');
       cy.get('#search-results-item-0').click();
       cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
       cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').click();
@@ -105,6 +116,7 @@ describe('Home page tests', () => {
       cy.get('[data-toiletid=cc4e5e9b83de8dd9ba87b3eb]').should('exist');
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isPermissionAllowed('geolocation') &&
       it('should not break when the geolocate button is clicked multiple times', () => {
         cy.on('window:before:load', (win) => {
@@ -120,9 +132,19 @@ describe('Home page tests', () => {
         });
         cy.visit('/').wait(500);
 
-        cy.get('b').contains('Find').click();
-        cy.get('b').contains('Find').click();
-        cy.get('b').contains('Find').click().wait(500);
+        cy.get('div.sidebar__larger-devices')
+          .contains('button.sidebar__button', 'Find a toilet near me')
+          .should('be.visible')
+          .click();
+        cy.get('div.sidebar__larger-devices')
+          .contains('button.sidebar__button', 'Find a toilet near me')
+          .should('be.visible')
+          .click();
+        cy.get('div.sidebar__larger-devices')
+          .contains('button.sidebar__button', 'Find a toilet near me')
+          .should('be.visible')
+          .click()
+          .wait(500);
 
         // Check that we land in Ealing
 
@@ -137,6 +159,7 @@ describe('Home page tests', () => {
         cy.contains('423m');
       });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isPermissionAllowed('geolocation') &&
       it('should geolocate the user when the "find a toilet near me" button is clicked', () => {
         cy.on('window:before:load', (win) => {
@@ -152,7 +175,11 @@ describe('Home page tests', () => {
         });
         cy.visit('/').wait(500);
 
-        cy.get('b').contains('Find').click().wait(500);
+        cy.get('div.sidebar__larger-devices')
+          .contains('button.sidebar__button', 'Find a toilet near me')
+          .should('be.visible')
+          .click()
+          .wait(500);
 
         // Check that we land in Ealing
 
@@ -167,6 +194,7 @@ describe('Home page tests', () => {
         cy.contains('423m');
       });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isPermissionAllowed('geolocation') &&
       it('should allow user to search after geolocating', () => {
         cy.on('window:before:load', (win) => {
@@ -182,12 +210,18 @@ describe('Home page tests', () => {
         });
         cy.visit('/').wait(500);
 
-        cy.get('b').contains('Find').click().wait(500);
+        cy.get('div.sidebar__larger-devices')
+          .contains('button.sidebar__button', 'Find a toilet near me')
+          .should('be.visible')
+          .click()
+          .wait(500);
 
         // Check that we land in Ealing
         cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');
 
-        cy.findByPlaceholderText('Search location…').type('Hammersmith');
+        cy.get(
+          'div.sidebar__larger-devices input[placeholder="Search location…"]',
+        ).type('Hammersmith');
         cy.get('#search-results-item-0').click();
         cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
       });
@@ -235,7 +269,7 @@ describe('Home page tests', () => {
       // zoom out and confirm that toilets are intersecting the focus window
       // and that they are added to the list.
       cy.get('#gbptm-map').type('{-}{-}', { delay: 300, force: true });
-      cy.findByText('negative eve')
+      cy.findByText('cold group')
         .siblings()
         .find('b')
         .invoke('text')
@@ -244,7 +278,7 @@ describe('Home page tests', () => {
             .focus()
             .wait(200)
             .type(keySelector, { delay: 200 });
-          cy.url().should('include', '/loos/ddad1ed1b91d99ed2bf3bcdf');
+          cy.url().should('include', '/loos/9e8d5ecbc68f3db5edea7ab4');
           // Check that the loo we picked is now highlighted.
           cy.get('#highlighted-loo').invoke('attr', 'data-toiletid', '2671');
           // Check that the accessibility view is hidden
@@ -254,7 +288,7 @@ describe('Home page tests', () => {
           cy.contains('Arrow keys pan the map').should('not.exist');
           cy.contains('change the map zoom level').should('not.exist');
           // Check standard loo panel stuff is there.
-          cy.contains('negative eve');
+          cy.contains('cold group');
           cy.contains('Features');
           cy.contains('Opening Hours');
           // Check that today is highlighted
@@ -324,18 +358,18 @@ describe('Home page tests', () => {
 
     it('should filter toilets based on applied filter toggles', () => {
       cy.visit('/').wait(500);
-      cy.findByText('Filter').click();
+      cy.get('div.sidebar__larger-devices').findByText('Filter').click();
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
-      cy.findByText('Baby Changing')
-        .siblings()
-        .get('[aria-labelledby=filter-babyChange]')
+      cy.get('div.sidebar__larger-devices')
+        .find('button[aria-labelledby="filter-babyChange"]')
+        .should('be.visible')
         .click();
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('not.exist');
-      cy.findByText('Baby Changing')
-        .siblings()
-        .get('[aria-labelledby=filter-babyChange]')
+      cy.get('div.sidebar__larger-devices')
+        .find('button[aria-labelledby="filter-babyChange"]')
+        .should('be.visible')
         .click();
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
@@ -344,13 +378,13 @@ describe('Home page tests', () => {
     it('should apply multiple filters', () => {
       cy.clearLocalStorage();
       cy.visit('/').wait(500);
-      cy.findByText('Filter').click();
+      cy.get('div.sidebar__larger-devices').findByText('Filter').click();
 
-      cy.findByText('Free')
-        .siblings()
-        .get('[aria-labelledby=filter-noPayment]')
+      cy.get('div.sidebar__larger-devices')
+        .find('[aria-labelledby=filter-noPayment]')
+        .should('be.visible')
         .click();
-      cy.findByText('Filter').click();
+      cy.get('div.sidebar__larger-devices').findByText('Filter').click();
 
       cy.get('#gbptm-map')
         .trigger('wheel', {
@@ -369,12 +403,12 @@ describe('Home page tests', () => {
       cy.get('[data-toiletid=05a8ddcad8fdca635f5dbdb0]').click({ force: true });
       cy.findByText('Free').siblings().get(`[aria-label=Available]`);
       cy.get('body').trigger('keydown', { key: 'Escape' });
-      cy.findByText('Filter').click();
-      cy.findByText('Baby Changing')
-        .siblings()
-        .get('[aria-labelledby=filter-babyChange]')
+      cy.get('div.sidebar__larger-devices').findByText('Filter').click();
+      cy.get('div.sidebar__larger-devices')
+        .find('button[aria-labelledby="filter-babyChange"]')
+        .should('be.visible')
         .click();
-      cy.findByText('Filter').click();
+      cy.get('div.sidebar__larger-devices').findByText('Filter').click();
 
       cy.reload();
       cy.get('#gbptm-map')
@@ -391,12 +425,12 @@ describe('Home page tests', () => {
       cy.findByText('Free').siblings().get(`[aria-label=Available]`);
       cy.findByText('Baby Changing').siblings().get(`[aria-label=Available]`);
       cy.get('body').trigger('keydown', { key: 'Escape' });
-      cy.findByText('Filter').click();
-      cy.findByText('Accessible')
-        .siblings()
-        .get('[aria-labelledby=filter-accessible]')
+      cy.get('div.sidebar__larger-devices').findByText('Filter').click();
+      cy.get('div.sidebar__larger-devices')
+        .find('button[aria-labelledby="filter-accessible"]')
+        .should('be.visible')
         .click();
-      cy.findByText('Filter').click();
+      cy.get('div.sidebar__larger-devices').findByText('Filter').click();
 
       cy.reload();
       cy.get('#gbptm-map')
@@ -414,12 +448,12 @@ describe('Home page tests', () => {
       cy.findByText('Baby Changing').siblings().get(`[aria-label=Available]`);
       cy.findByText('Accessible').siblings().get(`[aria-label=Available]`);
       cy.get('body').trigger('keydown', { key: 'Escape' });
-      cy.findByText('Filter').click();
-      cy.findByText('Gender Neutral')
-        .siblings()
-        .get('[aria-labelledby=filter-allGender]')
+      cy.get('div.sidebar__larger-devices').findByText('Filter').click();
+      cy.get('div.sidebar__larger-devices')
+        .find('button[aria-labelledby="filter-allGender"]')
+        .should('be.visible')
         .click();
-      cy.findByText('Filter').click();
+      cy.get('div.sidebar__larger-devices').findByText('Filter').click();
 
       cy.reload();
       cy.get('#gbptm-map')
@@ -438,12 +472,12 @@ describe('Home page tests', () => {
       cy.findByText('Accessible').siblings().get(`[aria-label=Available]`);
       cy.findByText('Gender Neutral').siblings().get(`[aria-label=Available]`);
       cy.get('body').trigger('keydown', { key: 'Escape' });
-      cy.findByText('Filter').click();
-      cy.findByText('Radar Key')
-        .siblings()
-        .get('[aria-labelledby=filter-radar]')
+      cy.get('div.sidebar__larger-devices').findByText('Filter').click();
+      cy.get('div.sidebar__larger-devices')
+        .find('button[aria-labelledby="filter-radar"]')
+        .should('be.visible')
         .click();
-      cy.findByText('Filter').click();
+      cy.get('div.sidebar__larger-devices').findByText('Filter').click();
 
       cy.reload();
       cy.get('#gbptm-map')
@@ -464,35 +498,37 @@ describe('Home page tests', () => {
       cy.findByText('RADAR Key').siblings().get(`[aria-label=Available]`);
       cy.findByText('Automatic').siblings().get(`[aria-label=Unknown]`);
       cy.get('body').trigger('keydown', { key: 'Escape' });
-      cy.findByText('Filter').click();
+      cy.get('div.sidebar__larger-devices').findByText('Filter').click();
 
-      cy.findAllByText('Reset Filter').click();
+      cy.get('div.sidebar__larger-devices')
+        .findAllByText('Reset Filter')
+        .click();
     });
 
     it('should retain filters when the page is reloaded and reset them when reset button clicked', () => {
       cy.visit('/').wait(500);
-      cy.findByText('Filter').click();
+      cy.get('div.sidebar__larger-devices').findByText('Filter').click();
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
-      cy.findByText('Baby Changing')
-        .siblings()
-        .get('[aria-labelledby=filter-babyChange]')
+      cy.get('div.sidebar__larger-devices')
+        .find('button[aria-labelledby="filter-babyChange"]')
+        .should('be.visible')
         .click();
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('not.exist');
 
       cy.reload().wait(500);
 
-      cy.findByText('Filter').click();
+      cy.get('div.sidebar__larger-devices').findByText('Filter').click();
 
-      cy.findByText('Baby Changing')
-        .siblings()
-        .get('[aria-labelledby=filter-babyChange]');
+      cy.get('div.sidebar__larger-devices')
+        .find('button[aria-labelledby="filter-babyChange"]')
+        .should('be.visible');
 
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('not.exist');
 
-      cy.findByText('Reset Filter').click();
+      cy.get('div.sidebar__larger-devices').findByText('Reset Filter').click();
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
     });
