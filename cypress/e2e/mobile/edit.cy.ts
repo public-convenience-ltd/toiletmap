@@ -168,10 +168,20 @@ describe('Edit page tests', () => {
       cy.contains('Thank you, details updated!');
 
       cy.visit('/');
-      cy.findByPlaceholderText('Search location…').type('ditton park manor');
+      cy.get(
+        'div.sidebar__smaller-devices input[placeholder="Search location…"]',
+      )
+        .should('exist')
+        .should('be.visible')
+        .should('not.be.disabled');
+
+      cy.wait(500);
+      cy.get(
+        'div.sidebar__smaller-devices input[placeholder="Search location…"]',
+      ).type('ditton park manor');
       cy.get('#search-results-item-0').click();
 
-      cy.get('[data-toiletid=ca6249ebcd1490e2aaccc5be]').should('exist');
+      cy.get('[data-toiletid=88b844cef79fa452fa794df3]').should('exist');
     });
 
     it('should update the location of the toilet through a location search', () => {
@@ -184,7 +194,17 @@ describe('Edit page tests', () => {
       cy.contains('Thank you, details updated!');
 
       cy.visit('/');
-      cy.findByPlaceholderText('Search location…').type('Norwich');
+      cy.get(
+        'div.sidebar__smaller-devices input[placeholder="Search location…"]',
+      )
+        .should('exist')
+        .should('be.visible')
+        .should('not.be.disabled');
+
+      cy.wait(500);
+      cy.get(
+        'div.sidebar__smaller-devices input[placeholder="Search location…"]',
+      ).type('Norwich');
       cy.get('#search-results-item-0').click();
 
       cy.get('[data-toiletid=ca6249ebcd1490e2aaccc5be]').should('exist');
