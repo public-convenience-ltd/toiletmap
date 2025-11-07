@@ -59,7 +59,7 @@ export default function PostPage({
                 </Link>
                 <div style={{ display: 'inline-flex', gap: 'var(--space-2)' }}>
                   {postData.authors.map((author, i) => (
-                    <>
+                    <span key={`${author.name}-${i}`}>
                       {author.social_url ? (
                         <Link
                           href={author.social_url}
@@ -73,7 +73,7 @@ export default function PostPage({
                         <span>{author.name}</span>
                       )}
                       {i < postData.authors.length - 1 ? <span>,</span> : null}
-                    </>
+                    </span>
                   ))}
                   <span>—</span>
                   <span>
