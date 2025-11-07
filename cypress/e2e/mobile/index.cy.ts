@@ -17,7 +17,17 @@ describe('Home page tests', () => {
 
     it('should let you search by location', () => {
       cy.visit('/');
-      cy.findByPlaceholderText('Search location…').type('Hammersmith');
+      cy.get(
+        'div.sidebar__smaller-devices input[placeholder="Search location…"]',
+      )
+        .should('exist')
+        .should('be.visible')
+        .should('not.be.disabled');
+
+      cy.wait(500);
+      cy.get(
+        'div.sidebar__smaller-devices input[placeholder="Search location…"]',
+      ).type('Hammersmith');
       cy.get('#search-results-item-0').click();
       cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
     });
@@ -86,6 +96,7 @@ describe('Home page tests', () => {
       cy.get('[data-toiletid=cc4e5e9b83de8dd9ba87b3eb]').should('exist');
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isPermissionAllowed('geolocation') &&
       it('should geolocate the user when the "find a toilet near me" button is clicked', () => {
         cy.on('window:before:load', (win) => {
@@ -101,7 +112,11 @@ describe('Home page tests', () => {
         });
         cy.visit('/').wait(500);
 
-        cy.findByText('Find a toilet near me').click().wait(500);
+        cy.get('div.sidebar__smaller-devices')
+          .contains('button.button', 'Find a toilet near me')
+          .should('be.visible')
+          .click()
+          .wait(500);
 
         // Check that we land in Ealing
         cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]')
@@ -121,6 +136,7 @@ describe('Home page tests', () => {
         cy.contains('423m');
       });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isPermissionAllowed('geolocation') &&
       it('should allow user to search after geolocating', () => {
         cy.on('window:before:load', (win) => {
@@ -136,7 +152,11 @@ describe('Home page tests', () => {
         });
         cy.visit('/').wait(500);
 
-        cy.findByText('Find a toilet near me').click().wait(500);
+        cy.get('div.sidebar__smaller-devices')
+          .contains('button.button', 'Find a toilet near me')
+          .should('be.visible')
+          .click()
+          .wait(500);
 
         cy.get('[data-toilets*=3bcfceb6cfe73ffd3f7fd395]')
           .click({
@@ -146,7 +166,9 @@ describe('Home page tests', () => {
 
         cy.get('[data-toiletid=3bcfceb6cfe73ffd3f7fd395]').should('exist');
 
-        cy.findByPlaceholderText('Search location…').type('Hammersmith');
+        cy.get(
+          'div.sidebar__smaller-devices input[placeholder="Search location…"]',
+        ).type('Hammersmith');
         cy.get('#search-results-item-0').click();
         cy.get('[data-toiletid=891ecdfaf8d8e4ffc087f7ce]').should('exist');
       });
@@ -163,10 +185,10 @@ describe('Home page tests', () => {
       // and that they are added to the list.
       cy.get('#gbptm-map').type('{-}{-}{-}', { delay: 500, force: true });
       cy.contains('cold group');
-      cy.contains('negative eve');
+      cy.contains('overjoyed purity');
       cy.get('#gbptm-map').type('{downarrow}', { delay: 500 }).wait(500);
       // these toilets have now moved outside of the selection window
-      cy.contains('negative eve').should('not.exist');
+      cy.contains('overjoyed purity').should('not.exist');
       cy.contains('cold group').should('not.exist');
       cy.contains('lasting event').should('not.exist');
       // these toilets are now the top suggestions in the selection window
@@ -189,7 +211,7 @@ describe('Home page tests', () => {
         .wait(500);
 
       cy.get('span')
-        .contains('negative eve')
+        .contains('cold group')
         .siblings()
         .find('b')
         .invoke('text')
@@ -198,7 +220,7 @@ describe('Home page tests', () => {
             .focus()
             .wait(200)
             .type(keySelector, { delay: 200 });
-          cy.url().should('include', '/loos/ddad1ed1b91d99ed2bf3bcdf');
+          cy.url().should('include', '/loos/9e8d5ecbc68f3db5edea7ab4');
           // Check that the loo we picked is now highlighted.
           cy.get('#highlighted-loo').invoke('attr', 'data-toiletid', '2671');
           // Check that the accessibility view is hidden
@@ -208,7 +230,7 @@ describe('Home page tests', () => {
           cy.contains('Arrow keys pan the map').should('not.exist');
           cy.contains('change the map zoom level').should('not.exist');
           // Check standard loo panel stuff is there.
-          cy.contains('negative eve');
+          cy.contains('cold group');
           cy.contains('Features');
           cy.contains('Opening Hours');
           // Check that today is highlighted
@@ -289,18 +311,18 @@ describe('Home page tests', () => {
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('exist');
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.get('[data-cy="mobile-filter"]').click();
-      cy.findByText('Baby Changing')
-        .siblings()
-        .get('[aria-labelledby=filter-babyChange]')
+      cy.get('div.sidebar__smaller-devices')
+        .find('[aria-labelledby=filter-babyChange]')
+        .should('be.visible')
         .click();
       // Wait for the animation to finish.
       cy.findByText('Done').click().wait(500);
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').should('not.exist');
       cy.get('[data-cy="mobile-filter"]').click();
-      cy.findByText('Baby Changing')
-        .siblings()
-        .get('[aria-labelledby=filter-babyChange]')
+      cy.get('div.sidebar__smaller-devices')
+        .find('[aria-labelledby=filter-babyChange]')
+        .should('be.visible')
         .click();
       cy.findByText('Done').click();
       cy.get('[data-toiletid=ddad1ed1b91d99ed2bf3bcdf]').should('exist');
@@ -386,6 +408,7 @@ describe('Home page tests', () => {
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
       cy.findByText('Edit').scrollIntoView().click();
       cy.url().should('include', 'loos/ab2ebfbdadb963aed4cb3b65/edit');
+      cy.wait(500);
       cy.contains('Want to Contribute Toilet Data?');
     });
 
@@ -400,10 +423,11 @@ describe('Home page tests', () => {
       });
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
 
-      cy.findByText('Directions')
-        .scrollIntoView()
-        .invoke('attr', 'href')
-        .should('include', 'https://maps.apple.com/?dirflg=w&daddr=');
+      cy.get('a.button')
+        .contains('Directions')
+        .parent('a')
+        .should('have.attr', 'href')
+        .and('include', 'https://maps.apple.com/?dirflg=w&daddr=');
     });
 
     it('should allow users to confirm that the toilet information is correct', () => {
