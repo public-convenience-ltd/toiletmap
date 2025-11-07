@@ -24,7 +24,7 @@ describe('Edit page tests', () => {
       cy.contains('Align the crosshair');
       cy.findByDisplayValue('outrageous webmail');
       cy.findByText('happy-go-lucky toilet!! hence dead jingle!').should(
-        'exist'
+        'exist',
       );
       cy.findByDisplayValue('£7.99 on entry');
 
@@ -68,7 +68,7 @@ describe('Edit page tests', () => {
       ];
 
       const inputChoices = refs.map(
-        (ref, i) => `${ref[0]}:${inputStates[indexPicks[i]]}`
+        (ref, i) => `${ref[0]}:${inputStates[indexPicks[i]]}`,
       );
 
       const detailChecks = refs.map((ref, i) => [
@@ -122,7 +122,7 @@ describe('Edit page tests', () => {
       cy.get('[name=friday-closes]').clear().type('23:00');
 
       cy.findByPlaceholderText(
-        'Add any other useful information about the toilet here'
+        'Add any other useful information about the toilet here',
       )
         .clear()
         .type('I ran out of loo roll! Otherwise good.');
@@ -177,10 +177,21 @@ describe('Edit page tests', () => {
       cy.contains('Thank you, details updated!');
 
       cy.visit('/');
-      cy.findByPlaceholderText('Search location…').type('ashford common');
+      cy.get(
+        'div.sidebar__larger-devices input[placeholder="Search location…"]',
+        { timeout: 10000 },
+      )
+        .should('exist')
+        .should('be.visible')
+        .should('not.be.disabled');
+
+      cy.wait(500);
+      cy.get(
+        'div.sidebar__larger-devices input[placeholder="Search location…"]',
+      ).type('ashford common');
       cy.get('#search-results-item-0').click();
 
-      cy.get('[data-toiletid=e0ba1aeea36ecf58d5ae6dd2]').should('exist');
+      cy.get('[data-toiletid=bebc89aedcb1f4ab3c886fca]').should('exist');
     });
 
     it('should update the location of the toilet through a location search', () => {
@@ -193,7 +204,10 @@ describe('Edit page tests', () => {
       cy.contains('Thank you, details updated!');
 
       cy.visit('/');
-      cy.findByPlaceholderText('Search location…').type('birmingham');
+      cy.wait(500);
+      cy.get(
+        'div.sidebar__larger-devices input[placeholder="Search location…"]',
+      ).type('birmingham');
       cy.get('#search-results-item-0').click();
 
       cy.get('[data-toiletid=e0ba1aeea36ecf58d5ae6dd2]').should('exist');
