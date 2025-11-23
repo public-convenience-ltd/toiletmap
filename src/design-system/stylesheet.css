@@ -14,7 +14,7 @@
 @import '~/src/design-system/components/SiteLayout/SiteLayout.css';
 @import '~/src/design-system/components/Switch/Switch.css';
 @import '~/src/design-system/components/TextArea/TextArea.css';
-
+@import '~/src/design-system/components/ToiletDetailsPanel/ToiletDetailsPanel.css';
 /* Layout */
 
 @import '~/src/design-system/layout/Center/Center.css';
