@@ -171,7 +171,7 @@ const globalStyles = (
       }
 
       h3 {
-        font-size: var(--text-2);
+        font-size: var(--text-1);
       }
 
       h4 {
