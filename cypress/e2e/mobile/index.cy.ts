@@ -339,7 +339,7 @@ describe('Home page tests', () => {
         bubbles: true,
       });
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
-      cy.get('[aria-label="Close toilet details"]').click();
+      cy.findByText('Close').click();
 
       cy.url().should('include', '/loos/ab2ebfbdadb963aed4cb3b65');
 
@@ -369,8 +369,8 @@ describe('Home page tests', () => {
       });
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
       cy.url().should('include', '/loos/ab2ebfbdadb963aed4cb3b65');
-      cy.get('[aria-label="Close toilet details"]').scrollIntoView().click();
-      cy.contains('Close').scrollIntoView().click();
+      cy.findByText('Close').scrollIntoView().click();
+      cy.findByText('Close').scrollIntoView().click();
       cy.url().should('not.include', '/loos/ab2ebfbdadb963aed4cb3b65');
     });
 

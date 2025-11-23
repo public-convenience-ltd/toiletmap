@@ -536,7 +536,7 @@ describe('Home page tests', () => {
     it('should collapse the toilet panel when the close button is clicked and reopen when details is clicked', () => {
       cy.visit('/').wait(500);
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
-      cy.get('[aria-label="Close toilet details"]').click();
+      cy.findByText('Close').click();
 
       cy.url().should('include', '/loos/ab2ebfbdadb963aed4cb3b65');
 
@@ -559,7 +559,7 @@ describe('Home page tests', () => {
       cy.visit('/');
       cy.get('[data-toiletid=ab2ebfbdadb963aed4cb3b65]').click({ force: true });
       cy.url().should('include', '/loos/ab2ebfbdadb963aed4cb3b65');
-      cy.get('[aria-label="Close toilet details"]').scrollIntoView().click();
+      cy.findByText('Close').scrollIntoView().click();
       cy.contains('Close').scrollIntoView().click();
       cy.url().should('not.include', '/loos/ab2ebfbdadb963aed4cb3b65');
     });
