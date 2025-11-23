@@ -106,14 +106,6 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
     };
   }, [escapeKeyHandler]);
 
-  // TODO (Feb 2022): use a different method for this as the useComponentSize hook doesn't play well with SSR
-  // call onDimensionsChange whenever the dimensions of the container change
-  const containerRef = React.useRef(null);
-  // const size = useComponentSize(containerRef);
-  // React.useEffect(() => {
-  //   onDimensionsChange(size);
-  // }, [size, onDimensionsChange]);
-
   const titleFragment = (
     <div className="toilet-details-panel__heading">
       <h2>
@@ -330,7 +322,6 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
     <section
       className="toilet-details-panel toilet-details-panel--collapsed"
       data-testid="toilet-details"
-      ref={containerRef}
     >
       <Center text={false} gutter={true} article={false}>
         <Stack>
