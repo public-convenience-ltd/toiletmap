@@ -15,7 +15,7 @@ import config from '../../../config';
 import MapOverlay from '../../../design-system/components/MapOverlay';
 import NotFound from '../../404.page';
 import Notification from '../../../components/Notification';
-import ToiletDetailsPanel from '../../../components/ToiletDetailsPanel';
+import ToiletDetailsPanel from '../../../design-system/components/ToiletDetailsPanel/ToiletDetailsPanel';
 import VisuallyHidden from '../../../design-system/utilities/VisuallyHidden';
 
 const Sidebar = dynamic(
