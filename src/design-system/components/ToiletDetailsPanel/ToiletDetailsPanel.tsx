@@ -1,39 +1,26 @@
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { useCallback, useEffect, useMemo } from 'react';
+
 import add from 'date-fns/add';
 import getISODay from 'date-fns/getISODay';
 import lightFormat from 'date-fns/lightFormat';
 import parseISO from 'date-fns/parseISO';
 import { usePlausible } from 'next-plausible';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useMemo } from 'react';
+
+import { getFeatures } from '../../../lib/features';
+import { WEEKDAYS, getTimeRangeLabel } from '../../../lib/openingTimes';
 import {
   Loo,
   useSubmitVerificationReportMutationMutation,
-} from '../api-client/graphql';
-import Badge from '../design-system/components/Badge';
-import Button from '../design-system/components/Button';
-import Icon from '../design-system/components/Icon';
-import { getFeatures } from '../lib/features';
-import { WEEKDAYS, getTimeRangeLabel } from '../lib/openingTimes';
-import Box from './Box';
-import { useMapState } from './MapState';
-import { Media } from './Media';
-import Spacer from './Spacer';
-import Text from './Text';
+} from '../../../api-client/graphql';
 
-const Grid = styled(Box)`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: -${({ theme }) => theme.space[3]}px;
-`;
-
-const UnstyledList = styled.ul`
-  list-style: none;
-`;
+import { useMapState } from '../../../components/MapState';
+import Badge from '../Badge';
+import Button from '../Button';
+import Center from '../../layout/Center';
+import Icon from '../Icon';
+import Stack from '../../layout/Stack';
 
 function round(value: number, precision = 0) {
   const multiplier = Math.pow(10, precision);
@@ -51,11 +38,7 @@ const DistanceTo = ({ from, to }) => {
       ? `${round(metersToLoo, 0)}m`
       : `${round(metersToLoo / 1000, 1)}km`;
 
-  return (
-    <Text as="span" fontSize="3" fontWeight="bold">
-      {distance}
-    </Text>
-  );
+  return <span>{distance}</span>;
 };
 
 interface ToiletDetailsPanelProps {
@@ -132,16 +115,16 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
   // }, [size, onDimensionsChange]);
 
   const titleFragment = (
-    <Box display="flex" justifyContent="space-between">
-      <Text fontWeight="bold" fontSize={[3, 4]} lineHeight={1.2}>
-        <span id="toilet-details-heading">{data.name || 'Unnamed Toilet'}</span>
-      </Text>
+    <div className="toilet-details-panel__heading">
+      <h2>
+        <span>{data.name || 'Unnamed Toilet'}</span>
+      </h2>
       {mapState.geolocation && (
-        <Box ml={5}>
+        <p>
           <DistanceTo from={mapState.geolocation} to={data.location} />
-        </Box>
+        </p>
       )}
-    </Box>
+    </div>
   );
 
   const getDirectionsFragment = (
@@ -183,12 +166,9 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
 
   const lastVerifiedFragment = useMemo(
     () => (
-      <Box>
-        <Text fontWeight="bold">
-          <span>Is this information correct?</span>
-        </Text>
-        <Spacer mb={2} />
-        <Box display="flex" alignItems="center">
+      <>
+        <p>Is this information correct?</p>
+        <div className="toilet-details-panel__verification-buttons">
           <Button
             variant="primary"
             htmlElement="button"
@@ -207,10 +187,8 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
               <Icon spin={true} icon="spinner" />
             )}
           </Button>
-          <Spacer mr={4} />
-          <Box display="flex" alignItems="center">
+          <p>
             No?
-            <Spacer mr={2} />
             <Button
               htmlElement="a"
               href={editUrl}
@@ -220,14 +198,15 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
               <Icon icon="pen-to-square" size="small" />
               <span>Edit</span>
             </Button>
-          </Box>
-        </Box>
-        <Spacer mb={[0, 2]} />
-        Last {verifiedOrUpdated}:{' '}
-        <Link href={`/explorer/loos/${data.id}`} prefetch={false}>
-          {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
-        </Link>
-      </Box>
+          </p>
+        </div>
+        <p>
+          Last {verifiedOrUpdated}:{' '}
+          <Link href={`/explorer/loos/${data.id}`} prefetch={false}>
+            {lightFormat(verifiedOrUpdatedDate, 'dd/MM/yyyy, hh:mm aa')}
+          </Link>
+        </p>
+      </>
     ),
     [
       data.id,
@@ -242,242 +221,127 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
 
   if (isExpanded) {
     return (
-      <Box
-        width="100%"
-        color="primary"
-        bg="white"
-        borderTopLeftRadius={[3, 4]}
-        borderTopRightRadius={[3, 4]}
-        as="section"
-        aria-labelledby="toilet-details-heading"
-        data-testid="toilet-details"
-        ref={containerRef}
-      >
-        {showCloseButton && (
-          <Media greaterThanOrEqual="md">
-            <Box position="absolute" top={30} right={30}>
-              <button
-                type="button"
-                aria-label="Close toilet details"
+      <section className="toilet-details-panel" data-testid="toilet-details">
+        <Center text={false} gutter={true} article={false}>
+          <Stack>
+            {showCloseButton && (
+              <Button
+                variant="secondary"
+                htmlElement="button"
                 onClick={() => setIsExpanded(false)}
                 aria-expanded="true"
                 ref={closeButtonRef}
               >
-                <Icon icon="circle-xmark" size="large" />
-              </button>
-            </Box>
-          </Media>
-        )}
-        {showCloseButton && (
-          <Media lessThan="md">
-            <Box display="flex" justifyContent="center" paddingTop={2}>
-              <Box
-                as="button"
-                // @ts-expect-error -- Generic box component can't handle these props
-                type="button"
-                aria-label="Close toilet details"
-                onClick={() => setIsExpanded(false)}
-                aria-expanded="true"
-                padding={2}
-                ref={closeButtonRef}
-              >
-                <Icon icon="chevron-down" size="medium" />
-              </Box>
-            </Box>
-          </Media>
-        )}
+                <Icon icon="xmark" size="medium" />
+                <span>Close</span>
+              </Button>
+            )}
 
-        <Box
-          maxHeight={[325, 400]}
-          overflow="auto"
-          padding={[3, 4]}
-          paddingTop={[0, 4]}
-          paddingRight={[4, 5]}
-          css={css`
-            scroll-behavior: smooth;
-          `}
-        >
-          <Grid>
-            <Box
-              width={['100%', '50%', '25%']}
-              padding={3}
-              id="#toilet-details-heading"
-            >
-              {titleFragment}
-              <Spacer mb={3} />
-              {data?.active === false && (
-                <Badge>Removal reason: {data?.removalReason}</Badge>
-              )}
-              <Spacer mb={3} />
-              {getDirectionsFragment}
-              <Media greaterThanOrEqual="md">
-                <Spacer mb={4} />
-                {lastVerifiedFragment}
-              </Media>
-            </Box>
+            <div className="toilet-details-panel__container">
+              <div id="toilet-details-heading">
+                <Stack>
+                  {titleFragment}
+                  {data?.active === false && (
+                    <Badge>Removal reason: {data?.removalReason}</Badge>
+                  )}
+                  {getDirectionsFragment}
+                  {lastVerifiedFragment}
+                </Stack>
+              </div>
 
-            <Box width={['100%', '50%', '25%']} padding={3}>
-              <Text fontWeight="bold">
-                <span>Features</span>
-              </Text>
-              <Spacer mb={2} />
-              <UnstyledList>
-                {features.map((feature) => (
-                  <Box
-                    as="li"
-                    key={feature.label}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    mb={1}
-                    mt="0"
-                    ml="0"
-                  >
-                    <Box display="flex" alignItems="center">
-                      <Box width="20px" display="flex" justifyContent="center">
+              <div>
+                <h3>Features</h3>
+                <ul className="toilet-details-panel__list">
+                  {features.map((feature) => (
+                    <li
+                      className="toilet-details-panel__list-item"
+                      key={feature.label}
+                    >
+                      <span className="toilet-details-panel__feature-label">
                         {feature.icon}
-                      </Box>
-                      <Spacer mr={2} />
-                      {feature.label}
-                    </Box>
-                    {feature.valueIcon}
-                  </Box>
-                ))}
-              </UnstyledList>
-            </Box>
+                        {feature.label}
+                      </span>
+                      {feature.valueIcon}
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-            <Box width={['100%', '50%', '25%']} padding={3}>
-              {data.noPayment === false && (
-                <>
-                  <Text fontWeight="bold">
+              <div>
+                {data.noPayment === false && (
+                  <>
                     <h3>Fee</h3>
-                  </Text>
-                  <Spacer mb={2} />
-                  {data.paymentDetails || 'Unknown'}
-                  <Spacer mb={3} />
-                </>
-              )}
-              {Boolean(data.notes) && (
-                <>
-                  <Text fontWeight="bold">
-                    <span>Notes</span>
-                  </Text>
-                  <Spacer mb={2} />
-                  <div>
-                    {data.notes.split('\n').map((string, i) => (
-                      <div key={i}>{string}</div>
-                    ))}
-                  </div>
-                </>
-              )}
-            </Box>
+                    <p>{data.paymentDetails || 'Unknown'}</p>
+                  </>
+                )}
+                {Boolean(data.notes) && (
+                  <>
+                    <h3>Notes</h3>
+                    <p>
+                      {data.notes.split('\n').map((string, i) => (
+                        <span key={i}>{string}</span>
+                      ))}
+                    </p>
+                  </>
+                )}
+              </div>
 
-            <Box width={['100%', '50%', '25%']} padding={3}>
-              <Box display="flex" alignItems="center">
-                <Icon icon="clock" />
-                <Spacer mr={2} />
-                <Text fontWeight="bold">
+              <div>
+                <h3>
+                  <Icon icon="clock" />
                   <span>Opening Hours</span>
-                </Text>
-              </Box>
-              <Spacer mb={[0, 2]} />
-              <UnstyledList>
-                {openingTimes.map((timeRange: unknown[], i) => (
-                  <Box
-                    as="li"
-                    display="flex"
-                    justifyContent="space-between"
-                    key={i}
-                    padding={1}
-                    bg={i === todayWeekdayIndex - 1 ? 'ice' : 'white'}
-                    mt="0"
-                    ml="0"
-                  >
-                    <span>{WEEKDAYS[i]}</span>
-                    <span>{getTimeRangeLabel(timeRange)}</span>
-                  </Box>
-                ))}
-              </UnstyledList>
-              <Spacer mb={2} />
-              <Text fontSize={1} color="grey">
-                Hours may vary with national holidays or seasonal changes. If
-                you know these hours to be out of date please{' '}
-                <Link href={editUrl} data-testid="edit-link">
-                  edit this toilet
+                </h3>
+
+                <ul className="toilet-details-panel__list">
+                  {openingTimes.map((timeRange: unknown[], i) => (
+                    <li
+                      className={`toilet-details-panel__list-item toilet-details-panel__list-item--${i === todayWeekdayIndex - 1 ? 'ice' : 'white'}`}
+                      key={i}
+                    >
+                      <span>{WEEKDAYS[i]}</span>
+                      <span>{getTimeRangeLabel(timeRange)}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="toilet-details-panel__opening-hours-warning">
+                  Hours may vary with national holidays or seasonal changes. If
+                  you know these hours to be out of date please{' '}
+                  <Link href={editUrl} data-testid="edit-link">
+                    edit this toilet
+                  </Link>
+                  .
+                </p>
+                <Link
+                  className="toilet-details-panel__back-to-top"
+                  href="#toilet-details-heading"
+                >
+                  Back to top
                 </Link>
-                .
-              </Text>
-
-              <Media lessThan="md">
-                <Spacer mb={4} />
-                {lastVerifiedFragment}
-              </Media>
-            </Box>
-
-            <Media lessThan="md">
-              <Box
-                display="flex"
-                justifyContent="center"
-                width="100%"
-                padding={2}
-                marginBottom={2}
-              >
-                <Link href="#toilet-details-heading">Back to top</Link>
-              </Box>
-            </Media>
-          </Grid>
-
-          {children}
-        </Box>
-      </Box>
+              </div>
+              {children}
+            </div>
+          </Stack>
+        </Center>
+      </section>
     );
   }
 
   return (
-    <Box
-      width="100%"
-      color="primary"
-      bg="white"
-      minHeight={100}
-      borderTopLeftRadius={[3, 4]}
-      borderTopRightRadius={[3, 4]}
-      padding={[3, 4]}
-      as="section"
-      aria-labelledby="toilet-details-heading"
+    <section
+      className="toilet-details-panel toilet-details-panel--collapsed"
       data-testid="toilet-details"
       ref={containerRef}
     >
-      <Grid>
-        <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
+      <Center text={false} gutter={true} article={false}>
+        <Stack>
           {titleFragment}
-          <Spacer mb={2} />
           {data?.active === false && (
             <Badge>Removal reason: {data?.removalReason}</Badge>
           )}
-        </Box>
+        </Stack>
 
-        <Box width={['100%', '50%', '25%']} padding={[3, 4]}>
-          {/* Supress opening hours heading during COVID-19
-          <Box display="flex" alignItems="center">
-            <Icon icon={faClock} />
-            <Spacer mr={2} />
-            <Text fontWeight="bold">
-              <h3>Opening Hours</h3>
-            </Text>
-          </Box>
-          <Spacer mb={[0, 2]} />
-          {getIsOpenLabel(openingTimes)} */}
-        </Box>
-
-        <Box
-          width={['100%', '50%']}
-          padding={3}
-          display="flex"
-          justifyContent={['flex-start', 'flex-start', 'flex-end']}
-          alignItems="center"
-        >
+        <Stack direction="row">
           {getDirectionsFragment}
-          <Spacer mr={2} />
           <Button
             htmlElement="button"
             type="button"
@@ -489,7 +353,6 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
             <Icon icon="list" size="small" />
             <span>Details</span>
           </Button>
-          <Spacer mr={2} />
           <Button
             variant="secondary"
             htmlElement="button"
@@ -501,9 +364,9 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
             <Icon icon="xmark" size="small" />
             <span>Close</span>
           </Button>
-        </Box>
-      </Grid>
-    </Box>
+        </Stack>
+      </Center>
+    </section>
   );
 };
 
