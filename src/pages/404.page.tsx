@@ -7,7 +7,6 @@ import Text from '../components/Text';
 
 const NotFound: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
   <>
-    {children}
     <Box my={5}>
       <Box
         display="flex"
@@ -22,6 +21,10 @@ const NotFound: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
           <Text fontSize={20} fontWeight="bold">
             <h1>Page not found</h1>
           </Text>
+
+          <Spacer mt={3} />
+
+          {children}
 
           <Spacer mt={3} />
 
