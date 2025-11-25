@@ -9,7 +9,7 @@ import Box from '../../../components/Box';
 import Spacer from '../../../components/Spacer';
 import Text from '../../../components/Text';
 import Button from '../../../design-system/components/Button';
-import Notification from '../../../components/Notification';
+import Banner from '../../../design-system/components/Banner';
 import Login from '../../login.page';
 import PageLoading from '../../../components/PageLoading';
 import { useRouter } from 'next/router';
@@ -18,7 +18,6 @@ import { withApollo } from '../../../api-client/withApollo';
 import { ssrFindLooById, PageFindLooByIdComp } from '../../../api-client/page';
 import { GetServerSideProps } from 'next';
 import NotFound from '../../404.page';
-import { css } from '@emotion/react';
 import { useMapState } from '../../../components/MapState';
 import TextArea from '../../../design-system/components/TextArea';
 
@@ -75,31 +74,11 @@ const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
             <title>{config.getTitle('Remove Toilet')}</title>
           </Head>
 
-          <Box display="flex" height="40vh">
-            <Box
-              my={4}
-              mx="auto"
-              css={css`
-                max-width: 360px; /* fallback */
-                max-width: fit-content;
-              `}
-            >
-              <NotFound>
-                <Box
-                  my={4}
-                  mx="auto"
-                  css={css`
-                    max-width: 360px; /* fallback */
-                    max-width: fit-content;
-                  `}
-                >
-                  <Notification allowClose>
-                    Error fetching toilet data
-                  </Notification>
-                </Box>
-              </NotFound>
-            </Box>
-          </Box>
+          <NotFound>
+            <Banner variant="error" title="Error">
+              <p>Error fetching toilet data</p>
+            </Banner>
+          </NotFound>
         </>
       );
     }
@@ -129,6 +108,23 @@ const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
 
           <Spacer mb={5} />
 
+          {loadingRemove && (
+            <Banner variant="info" title="Submitting">
+              Submitting removal report
+            </Banner>
+          )}
+
+          <Spacer mb={3} />
+
+          {removeError && (
+            <Banner variant="error" title="Error">
+              Oops. We can&lsquo;t submit your report at this time. Try again
+              later.
+            </Banner>
+          )}
+
+          <Spacer mb={3} />
+
           <p>
             Please let us know why you&apos;re removing this toilet from the map
             using the form below.
@@ -150,21 +146,15 @@ const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
 
             <Spacer mb={3} />
 
-            <Button htmlElement="button" variant="primary" type="submit">
+            <Button
+              htmlElement="button"
+              variant="primary"
+              type="submit"
+              disabled={loadingRemove}
+            >
               Remove
             </Button>
           </form>
-
-          {loadingRemove && (
-            <Notification>Submitting removal report&hellip;</Notification>
-          )}
-
-          {removeError && (
-            <Notification>
-              Oops. We can&lsquo;t submit your report at this time. Try again
-              later.
-            </Notification>
-          )}
         </Container>
       </Box>
     );
