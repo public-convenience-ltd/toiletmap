@@ -14,7 +14,7 @@ import Box from '../../../components/Box';
 import config from '../../../config';
 import MapOverlay from '../../../design-system/components/MapOverlay';
 import NotFound from '../../404.page';
-import Notification from '../../../components/Notification';
+import Banner from '../../../design-system/components/Banner';
 import ToiletDetailsPanel from '../../../design-system/components/ToiletDetailsPanel/ToiletDetailsPanel';
 import VisuallyHidden from '../../../design-system/utilities/VisuallyHidden';
 
@@ -80,18 +80,9 @@ const LooPage: CustomLooByIdComp = (props) => {
             `}
           >
             <NotFound>
-              <Box
-                my={4}
-                mx="auto"
-                css={css`
-                  max-width: 360px; /* fallback */
-                  max-width: fit-content;
-                `}
-              >
-                <Notification allowClose>
-                  Error fetching toilet data
-                </Notification>
-              </Box>
+              <Banner variant="error" title="Error">
+                <p>Error fetching toilet data</p>
+              </Banner>
             </NotFound>
           </Box>
         </Box>
@@ -117,22 +108,9 @@ const LooPage: CustomLooByIdComp = (props) => {
         <Box position="absolute" left={0} bottom={0} width="100%" zIndex={100}>
           <ToiletDetailsPanel data={props?.data?.loo} startExpanded={true}>
             {config.alertMessages[message as string] && (
-              <Box
-                position="absolute"
-                left={0}
-                right={0}
-                bottom={0}
-                display="flex"
-                justifyContent="center"
-                p={4}
-                pt={1}
-                pb={[4, 3, 4]}
-                bg={['white', 'white', 'transparent']}
-              >
-                <Notification allowClose>
-                  {config.alertMessages[message as string]}
-                </Notification>
-              </Box>
+              <Banner variant="success" title="Success">
+                <p>{config.alertMessages[message as string]}</p>
+              </Banner>
             )}
           </ToiletDetailsPanel>
         </Box>

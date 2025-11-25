@@ -11,7 +11,7 @@ import Box from '../../../components/Box';
 import Login from '../../login.page';
 import PageLoading from '../../../components/PageLoading';
 import { LooMapLoader } from '../../../components/LooMap/LooMapLoader';
-import Notification from '../../../components/Notification';
+import Banner from '../../../design-system/components/Banner';
 import config from '../../../config';
 import { useMapState } from '../../../components/MapState';
 import { useRouter } from 'next/router';
@@ -26,7 +26,7 @@ import LocationSearch from '../../../components/LocationSearch';
 import NotFound from '../../404.page';
 
 const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
-  props
+  props,
 ) => {
   const loo = props?.data?.loo;
   const router = useRouter();
@@ -62,7 +62,7 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
       setMapState({ searchLocation: undefined });
       // redirect to updated toilet entry page
       router.push(
-        `/api/loos/${saveData.submitReport.loo.id}/revalidate?message=updated`
+        `/api/loos/${saveData.submitReport.loo.id}/revalidate?message=updated`,
       );
     }
   }, [saveData, router, setMapState]);
@@ -88,18 +88,9 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
             `}
           >
             <NotFound>
-              <Box
-                my={4}
-                mx="auto"
-                css={css`
-                  max-width: 360px; /* fallback */
-                  max-width: fit-content;
-                `}
-              >
-                <Notification allowClose>
-                  Error fetching toilet data
-                </Notification>
-              </Box>
+              <Banner variant="error" title="Error">
+                <p>Error fetching toilet data</p>
+              </Banner>
             </NotFound>
           </Box>
         </Box>
@@ -187,7 +178,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       {
         variables: { id: ctx.params.id as string },
       },
-      ctx
+      ctx,
     );
     if (res.props.error || !res.props.data) {
       return {
