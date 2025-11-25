@@ -52,6 +52,9 @@ model toilets {
   location        Json?                     @default(dbgenerated("(st_asgeojson((geography)::geometry))::jsonb"))
   areas           areas?                    @relation(fields: [area_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "toilets___area_id_fk")
 
+  @@index([geohash, active], map: "idx_toilets_geohash_active")
+  @@index([updated_at])
+  @@index([verified_at])
   @@schema("public")
 }
 
