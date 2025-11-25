@@ -71,7 +71,7 @@ const EditPage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> = (
     return <PageLoading />;
   }
 
-  if (props?.notFound) {
+  if (props?.notFound || !props?.data?.loo) {
     return (
       <>
         <Head>
