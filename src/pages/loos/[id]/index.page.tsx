@@ -63,7 +63,7 @@ const LooPage: CustomLooByIdComp = (props) => {
 
   const pageTitle = config.getTitle('Home');
 
-  if (props?.notFound) {
+  if (props?.notFound || !props?.data?.loo) {
     return (
       <>
         <Head>
