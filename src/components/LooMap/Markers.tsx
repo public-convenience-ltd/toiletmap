@@ -7,7 +7,7 @@ import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { useMap } from 'react-leaflet';
-import { useLoosByGeohashQuery } from '../../api-client/graphql';
+import { useLoosByGeohash } from './useLoosByGeohash';
 import config, { Filter } from '../../config';
 import { useMapState } from '../MapState';
 import { FILTER_TYPE, getAppliedFiltersAsFilterTypes } from '../../lib/filter';
@@ -87,10 +87,7 @@ const MarkerGroup: React.FC<{
 
   const { appliedFilters: filters } = mapState;
 
-  const { data } = useLoosByGeohashQuery({
-    variables: { geohash, active: true },
-    fetchPolicy: 'cache-first',
-  });
+  const { data } = useLoosByGeohash(geohash, true);
 
   // Uncomment this to calculate the chunk bounds to draw a debug box.
   // const bbox = ngeohash.decode_bbox(geohash);
