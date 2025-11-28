@@ -1,6 +1,7 @@
 /* Components */
 
 @import '~/src/design-system/components/Badge/Badge.css';
+@import '~/src/design-system/components/Banner/Banner.css';
 @import '~/src/design-system/components/Button/Button.css';
 @import '~/src/design-system/components/Drawer/Drawer.css';
 @import '~/src/design-system/components/Footer/Footer.css';

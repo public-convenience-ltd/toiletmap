@@ -14,7 +14,7 @@ import zipObject from 'lodash/zipObject';
 import { ErrorMessage } from '@hookform/error-message';
 import Container from '../components/Container';
 import InputField from '../design-system/components/InputField';
-import Notification from '../components/Notification';
+import Banner from '../design-system/components/Banner';
 import Box from '../components/Box';
 import Text from '../components/Text';
 import Spacer from '../components/Spacer';
@@ -795,9 +795,9 @@ const EntryForm = ({ title, loo, children, ...props }) => {
           <Spacer mt={4} />
 
           {props.saveLoading && (
-            <Box maxWidth={360} mx="auto">
-              <Notification>Saving your changes&hellip;</Notification>
-            </Box>
+            <Banner variant="info">
+              <p>Saving your changes</p>
+            </Banner>
           )}
         </Box>
       </Text>

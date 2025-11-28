@@ -232,6 +232,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
             <div className="toilet-details-panel__container">
               <div id="toilet-details-heading">
                 <Stack>
+                  {children}
                   {titleFragment}
                   {data?.active === false && (
                     <Badge>Removal reason: {data?.removalReason}</Badge>
@@ -310,7 +311,6 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
                   Back to top
                 </Link>
               </div>
-              {children}
             </div>
           </Stack>
         </Center>

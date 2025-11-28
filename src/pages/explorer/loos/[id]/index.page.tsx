@@ -40,7 +40,7 @@ import CodeViewer, {
 import Container from '../../../../components/Container';
 import LooMapLoader from '../../../../components/LooMap/LooMapLoader';
 import { useMapState } from '../../../../components/MapState';
-import Notification from '../../../../components/Notification';
+import Banner from '../../../../design-system/components/Banner';
 import Spacer from '../../../../components/Spacer';
 import Text from '../../../../components/Text';
 import VisuallyHidden from '../../../../design-system/utilities/VisuallyHidden';
@@ -313,18 +313,9 @@ const LooPage: FC<LooPageProps> = ({ looData, reportData, notFound }) => {
             `}
           >
             <NotFound>
-              <Box
-                my={4}
-                mx="auto"
-                css={css`
-                  max-width: 360px;
-                  width: 100%;
-                `}
-              >
-                <Notification allowClose>
-                  Error fetching toilet data
-                </Notification>
-              </Box>
+              <Banner variant="error" title="Error">
+                <p>Error fetching toilet data</p>
+              </Banner>
             </NotFound>
           </Box>
         </Box>
