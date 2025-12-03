@@ -27,16 +27,14 @@ import {
   postgresUpsertLooQueryFromReport,
 } from './helpers';
 import { toilets } from '@prisma/client';
-import { UserProfile } from 'auth0';
+import type { User } from '@auth0/nextjs-auth0/types';
 
 const fetchGraphQLLoosWithinGeohash = async (
   prisma: Context['prisma'],
   geohash: string,
   active?: boolean | null,
 ) =>
-  (
-    await getLoosWithinGeohash(prisma, geohash, active)
-  )
+  (await getLoosWithinGeohash(prisma, geohash, active))
     .map(postgresLooToGraphQL)
     .flat();
 
@@ -313,9 +311,8 @@ const resolvers: Resolvers<Context> = {
     submitReport: async (_parent, args, { prisma, user }) => {
       try {
         // Convert the submitted report to a format that can be saved to the database.
-        const nickname = (
-          user || (user[process.env.AUTH0_PROFILE_KEY] as UserProfile)
-        )?.nickname;
+        const nickname = (user || (user[process.env.AUTH0_PROFILE_KEY] as User))
+          ?.nickname;
         const postgresLoo = await postgresUpsertLooQueryFromReport(
           args.report.edit,
           args.report,
@@ -341,9 +338,8 @@ const resolvers: Resolvers<Context> = {
     },
     submitRemovalReport: async (_parent, args, { prisma, user }) => {
       try {
-        const nickname = (
-          user || (user[process.env.AUTH0_PROFILE_KEY] as UserProfile)
-        )?.nickname;
+        const nickname = (user || (user[process.env.AUTH0_PROFILE_KEY] as User))
+          ?.nickname;
         const result = await removeLoo(prisma, args.report, nickname);
 
         return {
