@@ -1,8 +1,27 @@
+const resolveAppBaseUrl = () => {
+  if (process.env.VERCEL_ENV === 'preview' && process.env.VERCEL_BRANCH_URL) {
+    return `https://${process.env.VERCEL_BRANCH_URL}`;
+  }
+
+  if (process.env.APP_BASE_URL) {
+    return process.env.APP_BASE_URL;
+  }
+
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+
+  return 'http://localhost:3000';
+};
+
 /**
  * @type {import('next').NextConfig}
  **/
 const moduleExports = {
   reactStrictMode: true,
+  env: {
+    APP_BASE_URL: resolveAppBaseUrl(),
+  },
   images: {
     remotePatterns: [
       { hostname: 'avatars.githubusercontent.com' },
@@ -26,7 +45,7 @@ const moduleExports = {
         }
       : {}),
   },
-  pageExtensions: ['page.tsx', 'page.ts'],
+  pageExtensions: ['page.tsx', 'page.ts', 'ts'],
   async rewrites() {
     return [
       // Map lng-lat routes to a single page

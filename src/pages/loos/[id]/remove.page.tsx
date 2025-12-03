@@ -29,6 +29,8 @@ const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
     const [reason, setReason] = useState('');
     const [, setMapState] = useMapState();
 
+    const [revalidationComplete, setRevalidationComplete] = useState(false);
+
     const [
       removeLooMutation,
       { loading: loadingRemove, error: removeError, data: removeData },
@@ -47,21 +49,35 @@ const RemovePage: PageFindLooByIdComp | React.FC<{ notFound?: boolean }> =
           reason,
         },
       });
+
       if (errors) {
         console.error('remove error', errors);
+      }
+
+      try {
+        // Make sure that we revalidate the /loo/[id] ISR route.
+        const result = await (
+          await fetch(`/api/loos/${loo.id}/revalidate`)
+        ).json();
+
+        if (result?.ok) {
+          setRevalidationComplete(true);
+        }
+      } catch (e) {
+        console.error('Error revalidating the page', e);
       }
     };
 
     // redirect to toilet entry page upon successful removal
     useEffect(() => {
-      if (removeData) {
+      if (removeData && revalidationComplete) {
         setMapState({ searchLocation: undefined });
         // redirect to updated toilet entry page
         router.push(
-          `/api/loos/${removeData.submitRemovalReport.loo.id}/revalidate?message=removed`,
+          `/loos/${removeData.submitRemovalReport.loo.id}?message=removed`,
         );
       }
-    }, [removeData, router, setMapState]);
+    }, [removeData, router, setMapState, revalidationComplete]);
 
     if (isLoading) {
       return <PageLoading />;

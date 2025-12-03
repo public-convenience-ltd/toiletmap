@@ -45,7 +45,7 @@ const LoginPage = () => {
         <Button
           htmlElement="a"
           variant="primary"
-          href={`/api/auth/login?returnTo=${router.asPath}`}
+          href={`/auth/login?returnTo=${router.asPath}`}
         >
           Log In/Sign Up
         </Button>

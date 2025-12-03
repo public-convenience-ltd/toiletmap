@@ -1,4 +1,3 @@
-import { getSession } from '@auth0/nextjs-auth0';
 import Cors from 'cors';
 import { createYoga } from 'graphql-yoga';
 import jwt, { VerifyOptions } from 'jsonwebtoken';
@@ -6,9 +5,18 @@ import jwksClient from 'jwks-rsa';
 import schema from '../../api-client/schema';
 import authDirective from '../../api/directives/authDirective';
 import { context } from '../../api/graphql/context';
+import { auth0 } from '../../lib/auth0';
+
+const auth0Domain = process.env.AUTH0_DOMAIN;
+
+if (!auth0Domain) {
+  throw new Error('Missing AUTH0_DOMAIN environment variable');
+}
+
+const auth0Issuer = `https://${auth0Domain}/`;
 
 const client = jwksClient({
-  jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}.well-known/jwks.json`,
+  jwksUri: `https://${auth0Domain}/.well-known/jwks.json`,
 });
 
 function getKey(header, cb) {
@@ -20,7 +28,7 @@ function getKey(header, cb) {
 
 const options: VerifyOptions = {
   audience: process.env.AUTH0_AUDIENCE,
-  issuer: process.env.AUTH0_ISSUER_BASE_URL,
+  issuer: auth0Issuer,
   algorithms: ['RS256'],
 };
 
@@ -30,8 +38,8 @@ const finalSchema = schema(authDirective);
 export const server = createYoga({
   graphqlEndpoint: '/api',
   schema: finalSchema,
-  // @ts-expect-error -- req and res are there.
-  context: async ({ req, res }) => {
+  // @ts-expect-error -- req is there.
+  context: async ({ req }) => {
     const revalidate = req.headers.referer?.indexOf('message=') > -1;
     let user = null;
     try {
@@ -49,7 +57,7 @@ export const server = createYoga({
         });
       } else {
         // We might have a session on toiletmap.org.uk
-        const session = getSession(req, res);
+        const session = await auth0.getSession(req);
         if (session) {
           user = session.user;
         }
