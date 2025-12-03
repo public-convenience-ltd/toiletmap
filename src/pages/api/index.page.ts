@@ -7,8 +7,16 @@ import authDirective from '../../api/directives/authDirective';
 import { context } from '../../api/graphql/context';
 import { auth0 } from '../../lib/auth0';
 
+const auth0Domain = process.env.AUTH0_DOMAIN;
+
+if (!auth0Domain) {
+  throw new Error('Missing AUTH0_DOMAIN environment variable');
+}
+
+const auth0Issuer = `https://${auth0Domain}/`;
+
 const client = jwksClient({
-  jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}.well-known/jwks.json`,
+  jwksUri: `https://${auth0Domain}/.well-known/jwks.json`,
 });
 
 function getKey(header, cb) {
@@ -20,7 +28,7 @@ function getKey(header, cb) {
 
 const options: VerifyOptions = {
   audience: process.env.AUTH0_AUDIENCE,
-  issuer: process.env.AUTH0_ISSUER_BASE_URL,
+  issuer: auth0Issuer,
   algorithms: ['RS256'],
 };
 
