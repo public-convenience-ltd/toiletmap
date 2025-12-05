@@ -1,6 +1,6 @@
 # Toiletmap API
 
-Standalone GraphQL API for the Great British Public Toilet Map.
+Standalone GraphQL API for the Toilet Map.
 
 ## Overview
 
