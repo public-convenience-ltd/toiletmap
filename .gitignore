@@ -1,55 +1,32 @@
-# Node.js
+# Dependencies
+node_modules/
 
-lib-cov
-*.seed
-*.log
+# Build output
+dist/
 
-npm-debug.log
-node_modules
-
-*.sublime*
-
-# Local config
-.env*.local
-.now
-.vscode
-
-build
-
-# OSX
-.DS_Store
+# Environment files
+.env
+.env.local
+.env.*.local
 
 # IDE
-.idea
+.vscode/
+.idea/
 
-.vercel
-
-# nextjs
-.next
-.loos
-out
-certificates
-
-# Storybook build
-storybook-static
-public/storybook
-
-# Cypress
-cypress/screenshots
-cypress/downloads
-
-.areaInfo.geojson
-
-tsconfig.tsbuildinfo
+# OS files
+.DS_Store
 
 # Prisma
-generated
+prisma/migrations/
 
-# DecapCMS
-out/
+# TypeScript build info
+*.tsbuildinfo
 
-# Content Collections
-.content-collections
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Next TLS --experimental-https
-certificates
+# Test coverage
+coverage/

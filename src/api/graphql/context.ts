@@ -1,11 +1,16 @@
 import { PrismaClient } from '@prisma/client';
-import { UserProfile } from '@auth0/nextjs-auth0';
 import prisma from '../prisma/prisma';
+
+// Type for JWT-authenticated user
+export interface JWTUser {
+  sub?: string;
+  [key: string]: unknown;
+}
 
 export interface Context {
   prisma: PrismaClient;
   revalidate?: boolean;
-  user?: UserProfile;
+  user?: JWTUser;
 }
 
 export const context: Context = {

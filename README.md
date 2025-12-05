@@ -1,88 +1,171 @@
-# toiletmap.org.uk
+# Toiletmap API
 
-[Public Convenience Ltd](https://www.publicconvenience.org/)'s _[Toilet Map](https://www.toiletmap.org.uk)_
+Standalone GraphQL API for the Toilet Map.
 
-## What is the Toilet Map?
+## Overview
 
-Everyone will, at some point in the day, need to use the toilet. Some people will need facilities more than others, and some will need to find toilets sooner rather than later.
+This is a backend-only GraphQL API that serves toilet location data. It uses:
 
-The Toilet Map aims to be a complete, up-to-date, sustainable source of toilet locations. It's the UK's largest database of publicly-accessible toilets, with over 14,000 facilities.
+- **graphql-yoga** - GraphQL server
+- **Prisma** - Database ORM for PostgreSQL with PostGIS
+- **Auth0** - JWT authentication for mutations
 
-The project is completely open source and is supported by a fantastic set of [Sponsors](#sponsors) who help us make the service as good as it can possibly be.
+## Prerequisites
 
-This documentation is oriented towards developers, if you'd like to learn more about our data and how to access it please refer to [Toilet Map Explorer](https://www.toiletmap.org.uk/explorer).
+- Node.js >= 20
+- PostgreSQL with PostGIS extension
+- pnpm (or npm/yarn)
 
-## Getting Started
+## Setup
 
-The following is a "quick start" guide aimed at getting you started with a development environment to start hacking on the map. If you'd like to configure Auth0 for local authentication or run our end to end tests locally please take a look at our more in-depth [setup](./docs/setup.md) documentation.
+1. **Install dependencies**
 
-### Prerequisites
+   ```bash
+   pnpm install
+   ```
 
-- [fnm](https://github.com/Schniz/fnm) (or a node version matching the one specified in [.nvmrc](./.nvmrc))
-- [pnpm](https://pnpm.io/installation)
-- [Docker](https://docs.docker.com/get-docker/) to spin up a local postgres database to develop against.
-- Vercel CLI (optional)
+2. **Configure environment**
 
-### Installation
+   Copy `.env.example` to `.env` and fill in your values:
 
-_Clone or download and unpack the project and change into its directory and then use your favourite node version manager to switch to the version defined in our `.nvmrc`. We use [fnm](https://github.com/Schniz/fnm) as a demonstration, although alternative are available such as `asdf` and `nvm`:_
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Generate Prisma client**
+
+   ```bash
+   pnpm prisma:generate
+   ```
+
+4. **Start development server**
+
+   ```bash
+   pnpm dev
+   ```
+
+   The API will be available at `http://localhost:4000/graphql`
+
+## API Endpoints
+
+### GraphQL
+
+- **URL**: `/graphql`
+- **Methods**: `GET`, `POST`
+- **GraphQL Playground**: Navigate to `/graphql` in your browser
+
+### Example Queries
+
+**Get toilets in a geohash area:**
+
+```graphql
+query {
+  loosByGeohash(geohash: "gcpv") 
+}
+```
+
+**Get a specific toilet:**
+
+```graphql
+query {
+  loo(id: "your-toilet-id") {
+    id
+    name
+    location {
+      lat
+      lng
+    }
+    accessible
+    babyChange
+  }
+}
+```
+
+**Search toilets:**
+
+```graphql
+query {
+  loos(filters: { active: true }, pagination: { limit: 10, page: 1 }) {
+    loos {
+      id
+      name
+    }
+    total
+    pages
+  }
+}
+```
+
+## Authentication
+
+Mutations require a valid Auth0 JWT token:
+
+```bash
+curl -X POST http://localhost:4000/graphql \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{"query": "mutation { submitReport(report: {...}) { success } }"}'
+```
+
+## Scripts
+
+- `pnpm dev` - Start development server with hot reload
+- `pnpm build` - Build for production
+- `pnpm start` - Start production server
+- `pnpm test` - Run integration tests
+- `pnpm test:watch` - Run tests in watch mode
+- `pnpm codegen` - Generate GraphQL types
+- `pnpm prisma:generate` - Generate Prisma client
+- `pnpm check` - Type check without emitting
+
+## Testing
+
+The API includes a comprehensive integration test suite using Vitest:
+
+```bash
+pnpm test        # Run all tests
+pnpm test:watch  # Run tests in watch mode
+```
+
+**Test Coverage:**
+
+- **Query tests** - Verify all GraphQL queries (areas, loos, loosByGeohash, etc.)
+- **Mutation tests** - Test authentication and authorization for mutations
+- **Schema tests** - Validate schema introspection and input validation
+- **Utility tests** - Test loo compression/decompression utilities
+
+## Project Structure
 
 ```
-fnm use
+src/
+├── index.ts              # Server entry point
+├── __tests__/            # Integration tests
+│   ├── test-utils.ts     # Test utilities
+│   ├── queries.test.ts   # Query tests
+│   ├── mutations.test.ts # Mutation tests
+│   ├── schema.test.ts    # Schema tests
+│   └── loo-compression.test.ts
+├── api/
+│   ├── schema.graphql    # GraphQL schema
+│   ├── graphql/
+│   │   ├── context.ts    # GraphQL context
+│   │   ├── helpers.ts    # Utility functions
+│   │   ├── resolvers.ts  # Query/Mutation resolvers
+│   │   ├── DateTimeScalar.ts
+│   │   └── OpeningTimesScalar.ts
+│   ├── directives/
+│   │   ├── authDirective.ts
+│   │   └── checkRole.ts
+│   └── prisma/
+│       ├── prisma.ts     # Prisma client singleton
+│       └── queries.ts    # Database queries
+├── lib/
+│   ├── filter.ts         # Filter utilities
+│   └── loo.ts            # Loo compression utilities
+└── @types/
+    └── resolvers-types.ts # Generated GraphQL types
 ```
 
-_Now we install the dependencies using the `pnpm` package manager:_
+## License
 
-```
-pnpm install
-```
-
-### Run, Toiletmap, Run
-
-First we need a set of local environment variables:
-
-```
-cp .env.local.example .env.local
-```
-
-Next you'll need to set up a local instance of Postgres based on our mocked loo data. This is so that you can load something on your local instance of the Toilet Map. We use the Supabase development container to spin up a local version of the same platform that we currently use in stage and production.
-
-> **Note**
-> It's also possible to connect directly to our staging database, although you'll need to ask for those credentials should you need them.
-
-```
-pnpm supabase:start
-```
-
-When you run this command, 5000 mock toilets and UK area boundaries will be loaded from [seed.sql](./supabase/seed.sql). The loos in use here are pre-generated using faker.js in [generateMocks.ts](./scripts/generateMocks.ts).
-
-Because the faker generation is set with a static seed, the values remain the same between generations. This is important, because we depend upon the values remaining the same in our [cypress tests](./cypress/e2e//desktop/index.cy.ts) so we have a deterministic set of data to rely upon across our test runs.
-
-Once you have a local Postgres instance running you'll then be able to spin up a local development server using the following command:
-
-```
-pnpm dev
-```
-
-If all is well, upon navigation to [http://localhost:3000](http://localhost:3000) you will be presented with your very own instance of the Toilet Map that is connected to the local Postgres database that you have just set up.
-
-If you'd like to make contributions to the project this is a good time to read our [contributing guidelines](https://github.com/neontribe/gbptm/blob/master/.github/CONTRIBUTING.md) and our [code of conduct](https://github.com/neontribe/gbptm/blob/master/.github/CODE_OF_CONDUCT.md).
-
-### Architecture
-
-The Toilet Map UI is built with [Next.js](https://nextjs.org/). The API is written in GraphQL with [GraphQL Yoga Server](https://github.com/dotansimha/graphql-yoga) and data is stored in a Postgres database hosted by [Supabase](https://supabase.com/). We connect to the database through the [Prisma](https://www.prisma.io/) ORM. Authentication is handled by [Auth0](https://auth0.com/) and the site is deployed to [vercel](https://vercel.com)
-
-## Sponsors
-
-Our brilliant sponsors help us to bring a stable and high quality service to our users.
-
-### Cypress
-
-[<img src="https://user-images.githubusercontent.com/1771189/189427407-8d7fb6b2-1756-4e10-8dd7-9a4ae01986d8.png" width="212" alt="Cypress dashboard enhances our development workflow when working with our Cypress test suite">](https://www.cypress.io/dashboard)
-
-Cypress Dashboard speeds up and enhances our testing workflow, helping us to deliver changes faster and with fewer bugs.
-
----
-
-Looking to help?
-[Let us know](https://www.toiletmap.org.uk/contact)
+MIT

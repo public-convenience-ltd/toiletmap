@@ -1,30 +1,24 @@
 {
   "compilerOptions": {
-    "target": "ES2015",
-    "lib": ["dom", "dom.iterable", "esnext", "ES2015"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": false,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "strict": false,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "jsx": "preserve",
-    "jsxImportSource": "@emotion/react",
-    "incremental": true,
-    "downlevelIteration": true,
-    "types": ["cypress", "@testing-library/cypress"],
-    "isolatedModules": true,
-    "paths": {
-      "content-collections": ["./.content-collections/generated"]
-    }
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"],
+  "include": ["src/**/*.ts"],
   "exclude": [
     "node_modules",
-    "src/@types/resolvers-types.ts",
-    "scripts/areaToDatabase/*"
+    "dist",
+    "src/@types/resolvers-types.ts"
   ]
 }

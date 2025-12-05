@@ -1,8 +1,0 @@
-.badge {
-  padding: var(--space-3xs);
-  border-radius: 3px;
-  font-weight: bold;
-  border: var(--color-pink) solid 2px;
-  display: inline-block;
-  font-size: var(--text--1);
-}
