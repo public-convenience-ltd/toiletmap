@@ -55,9 +55,11 @@ export default [
 
     rules: {
       'react/prop-types': 0,
+      'react/no-unescaped-entities': 0,
       '@typescript-eslint/explicit-function-return-type': 0,
       '@typescript-eslint/explicit-module-boundary-types': 0,
       '@typescript-eslint/no-require-imports': 0,
+      '@typescript-eslint/triple-slash-reference': 0,
       'functional/no-let': 0,
       'functional/prefer-readonly-type': 0,
       'functional/no-method-signature': 0,

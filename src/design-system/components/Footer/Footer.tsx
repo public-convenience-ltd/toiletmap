@@ -16,13 +16,13 @@ const Footer = () => {
               </Link>
             </li>
             <li className="footer__list-item">
-              <Link className="footer__link" href="/explorer">
-                Explorer
+              <Link className="footer__link" href="/dataset">
+                Dataset
               </Link>
             </li>
             <li className="footer__list-item">
-              <Link className="footer__link" href="/dataset">
-                Dataset
+              <Link className="footer__link" href="/app">
+                App
               </Link>
             </li>
             <li className="footer__list-item">
