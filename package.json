@@ -26,9 +26,9 @@
     "ngeohash": "^0.6.3"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^5.0.3",
-    "@graphql-codegen/typescript": "^4.1.2",
-    "@graphql-codegen/typescript-resolvers": "^4.4.1",
+    "@graphql-codegen/cli": "^6.1.0",
+    "@graphql-codegen/typescript": "^5.0.6",
+    "@graphql-codegen/typescript-resolvers": "^5.1.4",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/ngeohash": "^0.6.8",
     "@types/node": "24.10.1",
