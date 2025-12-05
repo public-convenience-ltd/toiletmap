@@ -1,5 +1,17 @@
-import { Loo } from '../api-client/graphql';
-import { Filter } from '../config';
+import { Loo } from '../@types/resolvers-types';
+
+export type Filters =
+  | 'noPayment'
+  | 'babyChange'
+  | 'accessible'
+  | 'allGender'
+  | 'radar'
+  | 'automatic';
+
+export type Filter = {
+  id: Filters;
+  label: string;
+};
 
 export enum FILTER_TYPE {
   NO_PAYMENT = 0b00000001,
@@ -62,3 +74,4 @@ export const getAppliedFiltersAsFilterTypes = (filters: Filter[]) => {
     return p;
   }, [] as Array<FILTER_TYPE>);
 };
+

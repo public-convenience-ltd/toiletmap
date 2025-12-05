@@ -1,6 +1,5 @@
-import type { LatLngLiteral } from 'leaflet';
 import ngeohash from 'ngeohash';
-import { Loo } from '../api-client/graphql';
+import { Loo } from '../@types/resolvers-types';
 import { FILTER_TYPE, genLooFilterBitmask } from './filter';
 
 type CompressedLooString = `${string}|${string}|${number}`;
@@ -242,7 +241,7 @@ const decodeMeta = (encodedMeta: string) => {
 
 const compressBaseLoo = (loo: Loo) => {
   const id = loo.id;
-  const { lat, lng } = loo.location;
+  const { lat, lng } = loo.location!;
   const geohash = ngeohash.encode(lat, lng, 9);
   const filterMask = genLooFilterBitmask(loo);
 
@@ -353,27 +352,4 @@ export const filterCompressedLooByAppliedFilters = (
   }, true);
 
   return passesAll;
-};
-
-export const fitMapBoundsToUserLocationNeighbouringTiles = (
-  userLocation: LatLngLiteral,
-  map: L.Map
-) => {
-  //find neighbouring tiles of the user's location and set the map bounds to fit them
-  const encodedLocationFound = ngeohash.encode(
-    userLocation.lat,
-    userLocation.lng,
-    6
-  );
-  const neighbors = ngeohash.neighbors(encodedLocationFound);
-  const { latitude: cornerNWLat, longitude: cornerNWLon } = ngeohash.decode(
-    neighbors[7]
-  );
-  const { latitude: cornerSELat, longitude: cornerSELon } = ngeohash.decode(
-    neighbors[3]
-  );
-  map.fitBounds([
-    [cornerNWLat, cornerNWLon],
-    [cornerSELat, cornerSELon],
-  ]);
 };

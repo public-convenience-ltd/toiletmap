@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient, toilets, areas } from '@prisma/client';
-import { RemovalReportInput } from '../../api-client/graphql';
+import { RemovalReportInput } from '../../@types/resolvers-types';
 import { ToiletUpsertReport } from '../graphql/helpers';
 
 export const getLooById = async (
@@ -39,9 +39,9 @@ export const setLooLocation = async (
   return prisma.$executeRaw`
       UPDATE toilets SET
       geography = ST_GeomFromGeoJSON(${JSON.stringify({
-        type: 'Point',
-        coordinates: [lng, lat],
-      })}),
+    type: 'Point',
+    coordinates: [lng, lat],
+  })}),
       contributors = array_append(contributors, concat(contributors[array_upper(contributors, 1)], '-location'))
       WHERE id = ${id}
   `;

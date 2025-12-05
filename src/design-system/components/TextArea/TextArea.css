@@ -1,7 +1,0 @@
-.text-area {
-  display: block;
-  width: 100%;
-  padding: var(--space-2xs);
-  color: var(--color-blue);
-  border: 1px solid var(--color-blue);
-}

@@ -1,8 +1,0 @@
-.input {
-  display: block;
-  width: 100%;
-  margin-top: var(--space-3xs);
-  padding: var(--space-2xs);
-  color: var(--color-blue);
-  border: 1px solid var(--color-blue);
-}

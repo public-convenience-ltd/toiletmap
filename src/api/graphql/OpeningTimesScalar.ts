@@ -1,34 +1,30 @@
-import { ApolloError } from '@apollo/client';
-import { GraphQLError, GraphQLScalarType } from 'graphql';
-import { Kind } from 'graphql/language';
+import { GraphQLError, GraphQLScalarType, Kind, ValueNode } from 'graphql';
 
-const gqlOpeningTimesError = new GraphQLError('OPENING_TIMES');
-
-const astToOpeningTimes = (ast) => {
+const astToOpeningTimes = (ast: ValueNode): unknown[] => {
   if (ast.kind !== Kind.LIST) {
-    throw new ApolloError({
-      errorMessage: 'Type OpeningTimes must be an array',
-      graphQLErrors: [gqlOpeningTimesError],
+    throw new GraphQLError('Type OpeningTimes must be an array', {
+      extensions: { code: 'BAD_USER_INPUT' },
     });
   }
 
-  const traverseValues = (values) =>
+  const traverseValues = (values: readonly ValueNode[]): unknown[] =>
     values.map((item) => {
-      if (item.values) {
+      if (item.kind === Kind.LIST) {
         return traverseValues(item.values);
       }
-
-      return item.value;
+      if ('value' in item) {
+        return (item as { value: unknown }).value;
+      }
+      return null;
     });
 
   return traverseValues(ast.values);
 };
 
-const validateOpeningTimes = (value) => {
-  if (value.length !== 7) {
-    throw new ApolloError({
-      errorMessage: 'Type OpeningTimes must be an array of length 7',
-      graphQLErrors: [gqlOpeningTimesError],
+const validateOpeningTimes = (value: unknown): unknown => {
+  if (!Array.isArray(value) || value.length !== 7) {
+    throw new GraphQLError('Type OpeningTimes must be an array of length 7', {
+      extensions: { code: 'BAD_USER_INPUT' },
     });
   }
 
@@ -38,13 +34,13 @@ const validateOpeningTimes = (value) => {
     const isArrayOfTimes =
       Array.isArray(item) &&
       item.length === 2 &&
-      item.every((item) => {
-        if (typeof item !== 'string') {
+      item.every((timeItem) => {
+        if (typeof timeItem !== 'string') {
           return false;
         }
 
         const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/; // 09:00
-        const found = item.match(timeRegex);
+        const found = timeItem.match(timeRegex);
 
         return Boolean(found && found.length);
       });
@@ -53,11 +49,10 @@ const validateOpeningTimes = (value) => {
   });
 
   if (!elementsAreValid) {
-    throw new ApolloError({
-      errorMessage:
-        'Type OpeningTimes must be an array of [] or ["XX:XX", "XX:XX"] elements',
-      graphQLErrors: [gqlOpeningTimesError],
-    });
+    throw new GraphQLError(
+      'Type OpeningTimes must be an array of [] or ["XX:XX", "XX:XX"] elements',
+      { extensions: { code: 'BAD_USER_INPUT' } }
+    );
   }
 
   return value;

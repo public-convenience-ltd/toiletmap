@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="52" height="53" viewBox="0 0 52 53">
-    <g fill="none" fill-rule="evenodd" stroke-width="4">
-        <path stroke="#ED3D62" d="M8 9.5H42V43.5H8z"/>
-        <g stroke="#0A165F" opacity=".99">
-            <path d="M0 26L50.818 26" transform="translate(0 .5) rotate(90 25.41 26)"/>
-            <path d="M0 24.818L52 24.818" transform="translate(0 .5)"/>
-        </g>
-    </g>
-</svg>

@@ -1,32 +1,7 @@
 overwrite: true
 schema: 'src/api/schema.graphql'
-documents: 'src/api-client/operations/*.graphql'
 generates:
   src/@types/resolvers-types.ts:
     plugins:
       - typescript
       - typescript-resolvers
-  src/api-client/graphql.tsx:
-    plugins:
-      - 'typescript'
-      - 'typescript-operations'
-      - 'typescript-react-apollo'
-    config:
-      reactApolloVersion: 3
-      withHooks: true
-      withHOC: false
-      withComponent: false
-      exportFragmentSpreadSubTypes: true
-      documentMode: graphQLTag
-  src/api-client/page.tsx:
-    config:
-      documentMode: external
-      importDocumentNodeExternallyFrom: ./graphql
-      reactApolloVersion: 3
-      withHooks: true
-      apolloClientInstanceImport: './withApollo'
-    preset: import-types
-    presetConfig:
-      typesPath: ./graphql
-    plugins:
-      - graphql-codegen-apollo-next-ssr

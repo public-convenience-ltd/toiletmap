@@ -1,3 +1,0 @@
-query fullLoosByGeohash($geohash: String!, $active: Boolean = true) {
-  fullLoosByGeohash(geohash: $geohash, active: $active)
-}

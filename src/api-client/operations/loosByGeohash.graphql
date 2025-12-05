@@ -1,3 +1,0 @@
-query loosByGeohash($geohash: String!, $active: Boolean = true) {
-  loosByGeohash(geohash: $geohash, active: $active)
-}

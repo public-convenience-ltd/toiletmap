@@ -7,7 +7,7 @@ import {
   AreaToiletCount,
   Report,
 } from '../../@types/resolvers-types';
-import { GraphQLDateTime } from 'graphql-iso-date';
+import { GraphQLDateTime } from './DateTimeScalar';
 import OpeningTimesScalar from './OpeningTimesScalar';
 
 import {
@@ -27,7 +27,11 @@ import {
   postgresUpsertLooQueryFromReport,
 } from './helpers';
 import { toilets } from '@prisma/client';
-import { UserProfile } from '@auth0/nextjs-auth0';
+// Type for JWT-authenticated user from Auth0
+interface JWTUser {
+  sub?: string;
+  [key: string]: unknown;
+}
 
 const fetchGraphQLLoosWithinGeohash = async (
   prisma: Context['prisma'],
@@ -272,11 +276,11 @@ const resolvers: Resolvers<Context> = {
           // @ts-expect-error -- We know that coordinates are there, but the JsonValue types don't.
           location: diff.location?.coordinates
             ? {
-                // @ts-expect-error -- We know that coordinates are there, but the JsonValue types don't.
-                lat: diff.location?.coordinates[1],
-                // @ts-expect-error -- We know that coordinates are there, but the JsonValue types don't.
-                lng: diff.location?.coordinates[0],
-              }
+              // @ts-expect-error -- We know that coordinates are there, but the JsonValue types don't.
+              lat: diff.location?.coordinates[1],
+              // @ts-expect-error -- We know that coordinates are there, but the JsonValue types don't.
+              lng: diff.location?.coordinates[0],
+            }
             : undefined,
         };
       };
@@ -313,8 +317,8 @@ const resolvers: Resolvers<Context> = {
     submitReport: async (_parent, args, { prisma, user }) => {
       try {
         // Convert the submitted report to a format that can be saved to the database.
-        const nickname = (user[process.env.AUTH0_PROFILE_KEY] as UserProfile)
-          ?.nickname;
+        const nickname = (user[process.env.AUTH0_PROFILE_KEY as string] as JWTUser)
+          ?.nickname as string;
         const postgresLoo = await postgresUpsertLooQueryFromReport(
           args.report.edit,
           args.report,
@@ -340,8 +344,8 @@ const resolvers: Resolvers<Context> = {
     },
     submitRemovalReport: async (_parent, args, { prisma, user }) => {
       try {
-        const nickname = (user[process.env.AUTH0_PROFILE_KEY] as UserProfile)
-          ?.nickname;
+        const nickname = (user[process.env.AUTH0_PROFILE_KEY as string] as JWTUser)
+          ?.nickname as string;
         const result = await removeLoo(prisma, args.report, nickname);
 
         return {

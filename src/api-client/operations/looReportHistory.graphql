@@ -1,7 +1,0 @@
-#import "./looReportFragment.graphql"
-
-query looReportHistory($id: ID!) {
-  reportsForLoo(id: $id) {
-    ...LooReportFragment
-  }
-}
