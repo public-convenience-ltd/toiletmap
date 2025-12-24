@@ -324,14 +324,25 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
       data-testid="toilet-details"
     >
       <Center text={false} gutter={true} article={false}>
-        <Stack>
+        <div className="toilet-details-panel__collapsed-title">
           {titleFragment}
           {data?.active === false && (
             <Badge>Removal reason: {data?.removalReason}</Badge>
           )}
-        </Stack>
+          <Button
+            variant="secondary"
+            htmlElement="button"
+            type="button"
+            onClick={navigateAway}
+            aria-expanded="false"
+            data-testid="close-button"
+          >
+            <Icon icon="xmark" size="small" />
+            <span>Close</span>
+          </Button>
+        </div>
 
-        <Stack direction="row">
+        <div className="toilet-details-panel__actions">
           {getDirectionsFragment}
           <Button
             htmlElement="button"
@@ -344,18 +355,7 @@ const ToiletDetailsPanel: React.FC<ToiletDetailsPanelProps> = ({
             <Icon icon="list" size="small" />
             <span>Details</span>
           </Button>
-          <Button
-            variant="secondary"
-            htmlElement="button"
-            type="button"
-            onClick={navigateAway}
-            aria-expanded="false"
-            data-testid="close-button"
-          >
-            <Icon icon="xmark" size="small" />
-            <span>Close</span>
-          </Button>
-        </Stack>
+        </div>
       </Center>
     </section>
   );

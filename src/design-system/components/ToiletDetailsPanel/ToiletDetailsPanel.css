@@ -17,9 +17,9 @@
 
 .toilet-details-panel__heading {
     display: inline-flex;
+    flex-grow: 1;
     gap: var(--space-s);
     justify-content: space-between;
-    width: 100%;
 }
 
 .toilet-details-panel__container {
@@ -77,12 +77,26 @@
     align-items: flex-start;
 }
 
-.toilet-details-panel--collapsed .center {
+.toilet-details-panel__collapsed-title {
     align-items: center;
-    display: flex;    
-    flex-wrap: wrap;
+    display: flex;
     gap: var(--space-s);
-    justify-content: space-between;
+    flex-wrap: wrap-reverse;
+    margin-block-end: var(--space-m);
+}
+
+.toilet-details-panel__collapsed-title .button {
+    margin-inline-start: auto;
+}
+
+.toilet-details-panel__actions {
+    display: flex;
+    gap: var(--space-s);
+    flex-wrap: wrap;
+}
+
+.toilet-details-panel__actions .button {
+    width: min(100%, 250px);
 }
 
 .toilet-details-panel__back-to-top {
