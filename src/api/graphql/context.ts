@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
-import { UserProfile } from '@auth0/nextjs-auth0';
 import prisma from '../prisma/prisma';
+import type { User } from '@auth0/nextjs-auth0/types';
 
 export interface Context {
   prisma: PrismaClient;
   revalidate?: boolean;
-  user?: UserProfile;
+  user?: User;
 }
 
 export const context: Context = {

@@ -1,5 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { clientId, clientSecret, tokenUrl } from './config';
+import {
+  clientId,
+  clientSecret,
+  tokenUrl,
+} from '../../../lib/decapOauthConfig';
 
 export default async function handler(
   req: NextApiRequest,
