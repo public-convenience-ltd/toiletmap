@@ -35,7 +35,7 @@ export const server = createYoga({
     const revalidate = req.headers.referer?.indexOf('message=') > -1;
     let user = null;
     try {
-      // Support auth by header (legacy SPA and third-party apps)
+      // Support auth by header (legacy SPA and third-party apps, such as loocation)
       if (req.headers.authorization) {
         const token = req.headers.authorization.replace('Bearer ', '');
 
